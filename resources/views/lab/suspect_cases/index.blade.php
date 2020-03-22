@@ -51,11 +51,12 @@
             <th>RUN</th>
             <th>Edad</th>
             <th>Resultado IFD</th>
-            <th>Semana</th>
+            <th>Sem</th>
             <th>Epivigila</th>
             <th class="alert-danger">PSCR SARS COV 2</th>
             <th>PAHO FLU</th>
             <th>Estado</th>
+            <th>Observación</th>
             <th></th>
         </tr>
     </thead>
@@ -63,22 +64,19 @@
         @foreach($suspectCases as $case)
         <tr>
             <td>{{ $case->id }}</td>
-            <td>{{ (isset($case->sample_at))? $case->sample_at->format('Y-m-d'):'' }}</td>
+            <td nowrap>{{ (isset($case->sample_at))? $case->sample_at->format('Y-m-d'):'' }}</td>
             <td>{{ $case->origin }}</td>
             <td>{{ $case->patient->fullName }}</td>
-            <td class="text-center">{{ $case->patient->identifier }}</td>
+            <td class="text-center" nowrap>{{ $case->patient->identifier }}</td>
             <td>{{ $case->age }}</td>
-            <td class="{{ ($case->result_ifd <> 'Negativo')?'text-danger':''}}">{{ $case->result_ifd }}</td>
+            <td class="{{ ($case->result_ifd <> 'Negativo')?'text-danger':''}}">{{ $case->result_ifd }} {{ $case->subtype }}</td>
             <td>{{ $case->epidemiological_week }}</td>
             <td>{{ $case->epivigila }}</td>
             <td>{{ $case->pscr_sars_cov_2 }}</td>
             <td>{{ $case->paho_flu }}</td>
             <td>{{ $case->status }}</td>
+            <td class="text-muted small">{{ $case->observation }}</td>
             <td><a href="{{ route('lab.suspect_cases.edit', $case) }}">Editar</a></td>
-        </tr>
-        <tr class="d-none d-sm-table-row">
-            <td class=""></td>
-            <td class="text-muted" colspan="10">{{ $case->observation }}</td>
         </tr>
         @endforeach
     </tbody>
