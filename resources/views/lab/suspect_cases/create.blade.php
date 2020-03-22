@@ -64,11 +64,21 @@
             <input type="text" class="form-control" id="for_mothers_family"
                 name="mothers_family">
         </fieldset>
-    </div>
 
-    <div class="form-row">
 
-        <fieldset class="form-group col-5 col-md-2">
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_origin">Origen</label>
+            <select name="origin" id="for_origin" class="form-control">
+                <option value=""></option>
+                <option value="Hospital ETG">Hosptial ETG</option>
+                <option value="Clínica Tarapacá">Clínica Tarapacá</option>
+                <option value="Clínica Iquique">Clínica Iquique</option>
+                <option value="Hector Reyno">Hector Reyno</option>
+                <option value="CESFAM Guzmán">CESFAM Guzmán</option>
+            </select>
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-2">
             <label for="for_sample_at">Fecha Muestra</label>
             <input type="date" class="form-control" id="for_sample_at"
                 name="sample_at" required>
@@ -79,6 +89,10 @@
             <input type="number" class="form-control" id="for_epidemiological_week"
                 name="epidemiological_week">
         </fieldset>
+
+    </div>
+
+    <div class="form-row">
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_result_ifd">Resultado IFD</label>
@@ -95,6 +109,17 @@
                 <option value="PARAINF 3">PARAINF 3</option>
             </select>
         </fieldset>
+
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_subtype">Subtipo</label>
+            <select name="subtype" id="for_subtype" class="form-control">
+                <option value=""></option>
+                <option value="H1N1">H1N1</option>
+                <option value="H3N2">H3N2</option>
+                <option value="INF B">INF B</option>
+            </select>
+        </fieldset>
+
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_epivigila">Epivigila</label>
@@ -118,10 +143,20 @@
                 required>
         </fieldset>
 
+        <fieldset class="form-group col">
+            <label for="for_status">Estado</label>
+            <select name="status" id="for_status" class="form-control">
+                <option value=""></option>
+                <option value="Hospitalizado">Hospitalizado</option>
+                <option value="Alta">Alta</option>
+                <option value="Fallecido">Fallecido</option>
+            </select>
+        </fieldset>
+
     </div>
 
     <div class="form-row">
-        <fieldset class="form-group col-12 col-md-11">
+        <fieldset class="form-group col-12 col-md-12">
             <label for="for_observation">Observación</label>
             <input type="text" class="form-control" name="observation"
                 id="for_observation">

@@ -46,6 +46,7 @@
         <tr>
             <th>°</th>
             <th>Fecha muestra</th>
+            <th>Origen</th>
             <th>Nombre</th>
             <th>RUN</th>
             <th>Edad</th>
@@ -54,6 +55,7 @@
             <th>Epivigila</th>
             <th class="alert-danger">PSCR SARS COV 2</th>
             <th>PAHO FLU</th>
+            <th>Estado</th>
             <th></th>
         </tr>
     </thead>
@@ -62,6 +64,7 @@
         <tr>
             <td>{{ $case->id }}</td>
             <td>{{ (isset($case->sample_at))? $case->sample_at->format('Y-m-d'):'' }}</td>
+            <td>{{ $case->origin }}</td>
             <td>{{ $case->patient->fullName }}</td>
             <td class="text-center">{{ $case->patient->identifier }}</td>
             <td>{{ $case->age }}</td>
@@ -70,6 +73,7 @@
             <td>{{ $case->epivigila }}</td>
             <td>{{ $case->pscr_sars_cov_2 }}</td>
             <td>{{ $case->paho_flu }}</td>
+            <td>{{ $case->status }}</td>
             <td><a href="{{ route('lab.suspect_cases.edit', $case) }}">Editar</a></td>
         </tr>
         <tr class="d-none d-sm-table-row">
