@@ -83,6 +83,7 @@
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_result_ifd">Resultado IFD</label>
             <select name="result_ifd" id="for_result_ifd" class="form-control">
+                <option ></option>
                 <option value="Negativo">Negativo</option>
                 <option value="INF-A">INF-A</option>
             </select>
@@ -98,6 +99,7 @@
             <label for="for_pscr_sars_cov_2">PSCR SARS-CoV-2</label>
             <select name="pscr_sars_cov_2" id="for_pscr_sars_cov_2"
                 class="form-control">
+                <option></option>
                 <option value="negative">Negativo</option>
                 <option value="positive">Positivo</option>
             </select>

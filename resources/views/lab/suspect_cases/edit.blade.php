@@ -25,6 +25,7 @@
         <fieldset class="form-group col-4 col-md-2">
             <label for="for_result_ifd">Resultado IFD</label>
             <select name="result_ifd" id="for_result_ifd" class="form-control">
+                <option></option>
                 <option value="Negativo" {{ ($suspectCase->result_ifd == 'Negativo')?'selected':'' }}>Negativo</option>
                 <option value="INF-A" {{ ($suspectCase->result_ifd == 'INF-A')?'selected':'' }}>INF-A</option>
             </select>
@@ -40,6 +41,7 @@
             <label for="for_pscr_sars_cov_2">PSCR SARS-CoV-2</label>
             <select name="pscr_sars_cov_2" id="for_pscr_sars_cov_2"
                 class="form-control">
+                <option></option>
                 <option value="negative" {{ ($suspectCase->pscr_sars_cov_2 == 'negative')?'selected':'' }}>Negativo</option>
                 <option value="positive" {{ ($suspectCase->pscr_sars_cov_2 == 'positive')?'selected':'' }}>Positivo</option>
             </select>

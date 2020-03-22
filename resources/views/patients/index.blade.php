@@ -19,8 +19,6 @@
 
 
 
-
-
 <table class="table table-sm">
     <thead>
         <tr>
