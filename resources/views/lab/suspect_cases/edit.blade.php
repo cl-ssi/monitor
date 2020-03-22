@@ -56,7 +56,8 @@
 
         <fieldset class="form-group col-3 col-md-1">
             <label for="for_age">Edad</label>
-            <input type="number" class="form-control" id="for_age" name="age">
+            <input type="number" class="form-control" id="for_age" name="age"
+                value="{{ $suspectCase->age }}">
         </fieldset>
 
     </div>
