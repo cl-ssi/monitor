@@ -30,6 +30,11 @@
                 <option value="INF A" {{ ($suspectCase->result_ifd == 'INF A')?'selected':'' }}>INF A</option>
                 <option value="INF B" {{ ($suspectCase->result_ifd == 'INF B')?'selected':'' }}>INF B</option>
                 <option value="VRS" {{ ($suspectCase->result_ifd == 'VRS')?'selected':'' }}>VRS</option>
+                <option value="Metaneumovirus" {{ ($suspectCase->result_ifd == 'Metaneumovirus')?'selected':'' }}>Metaneumovirus</option>
+                <option value="Adenovirus" {{ ($suspectCase->result_ifd == 'Adenovirus')?'selected':'' }}>Adenovirus</option>
+                <option value="PARAINF 1" {{ ($suspectCase->result_ifd == 'PARAINF 1')?'selected':'' }}>PARAINF 1</option>
+                <option value="PARAINF 2" {{ ($suspectCase->result_ifd == 'PARAINF 2')?'selected':'' }}>PARAINF 2</option>
+                <option value="PARAINF 3" {{ ($suspectCase->result_ifd == 'PARAINF 3')?'selected':'' }}>PARAINF 3</option>
             </select>
         </fieldset>
 

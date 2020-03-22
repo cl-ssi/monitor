@@ -16,13 +16,18 @@ class CreateSuspectCasesTable extends Migration
         Schema::create('suspect_cases', function (Blueprint $table) {
             $table->id();
             $table->datetime('sample_at')->nullable();
+            $table->string('origin')->nullable(); /* Hospital, Clinica Tarapacá, Clinica Iquique, Hector Reyno, Guzmán */
+
             $table->smallInteger('age')->nullable();
             $table->enum('gender',['male', 'female', 'other', 'unknown']);
+
             $table->string('result_ifd')->nullable();
+            $table->string('subtype')->nullable();
             $table->unsignedSmallInteger('epidemiological_week')->nullable();
             $table->unsignedInteger('epivigila')->nullable();
             $table->enum('pscr_sars_cov_2',['negative','positive'])->nullable();
             $table->unsignedInteger('paho_flu')->nullable();
+            $table->string('status')->nullable(); /* Fallecido, Alta, Hospitalizado, Fugado */
             $table->string('observation')->nullable();
             $table->unsignedBigInteger('patient_id');
 

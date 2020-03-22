@@ -13,8 +13,9 @@ class SuspectCase extends Model
      * @var array
      */
     protected $fillable = [
-        'sample_at', 'age', 'gender', 'result_ifd', 'epidemiological_week',
-        'epivigila', 'pscr_sars_cov_2', 'paho_flu', 'observation', 'patient_id'
+        'sample_at', 'origin', 'age', 'gender', 'result_ifd', 'subtype',
+        'epidemiological_week', 'epivigila', 'pscr_sars_cov_2', 'paho_flu',
+        'status', 'observation', 'patient_id'
     ];
 
     public function Patient() {

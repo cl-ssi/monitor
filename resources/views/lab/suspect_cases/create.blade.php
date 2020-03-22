@@ -88,6 +88,11 @@
                 <option value="INF A">INF A</option>
                 <option value="INF B">INF B</option>
                 <option value="VRS">VRS</option>
+                <option value="Metaneumovirus">Metaneumovirus</option>
+                <option value="Adenovirus">Adenovirus</option>
+                <option value="PARAINF 1">PARAINF 1</option>
+                <option value="PARAINF 2">PARAINF 2</option>
+                <option value="PARAINF 3">PARAINF 3</option>
             </select>
         </fieldset>
 
