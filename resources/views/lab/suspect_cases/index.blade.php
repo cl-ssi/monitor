@@ -6,7 +6,17 @@
 
 <h3 class="mb-3">Listado de casos</h3>
 
-<a class="btn btn-primary mb-3" href="{{ route('lab.suspect_cases.create') }}">Crear nueva sospecha</a>
+<div class="row">
+    <div class="col-5 col-sm-3">
+        <a class="btn btn-primary mb-3" href="{{ route('lab.suspect_cases.create') }}">
+            Crear nueva sospecha
+        </a>
+    </div>
+    <div class="col-7 col-sm-9 alert alert-primary" role="alert">
+        Para buscar presione Ctrl+F
+    </div>
+</div>
+
 
 
 <table class="table table-sm table-bordered">
@@ -61,8 +71,8 @@
             <td>{{ $case->paho_flu }}</td>
             <td><a href="{{ route('lab.suspect_cases.edit', $case) }}">Editar</a></td>
         </tr>
-        <tr>
-            <td></td>
+        <tr class="d-none d-sm-table-row">
+            <td class=""></td>
             <td class="text-muted" colspan="10">{{ $case->observation }}</td>
         </tr>
         @endforeach
