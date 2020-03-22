@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Salud Iquique</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -70,31 +70,36 @@
                     @auth
                         <a href="{{ url('/home') }}">Home</a>
                     @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
+                        <a href="{{ route('login') }}">Iniciar Sesión</a>
                     @endauth
                 </div>
             @endif
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    Servicio de Salud Iquique
                 </div>
 
                 <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                    <a href="https://www.saludiquique.cl">Servicio de Salud Iquique</a>
+                    <a href="https://www.minsal.cl">Minsal</a>
+                    <a href="https://www.gob.cl/coronavirus/casosconfirmados/">Coronavirus Casos Confirmados</a>
                 </div>
+
+                <br> <br>
+
+                <br> <br>
+
+                <img src="https://cdn.digital.gob.cl/filer_public/bd/1f/bd1f2309-ac14-447e-8aae-ec7228bee7b2/logo-gob-footer.png"
+                    width="150px" alt="Gobierno de Chile">
+
+
+                <p>Ⓒ 2020 Gobierno de Chile.</p>
+
             </div>
+
+
         </div>
+
     </body>
 </html>

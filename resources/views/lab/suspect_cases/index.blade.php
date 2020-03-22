@@ -8,6 +8,28 @@
 
 <a class="btn btn-primary mb-3" href="{{ route('lab.suspect_cases.create') }}">Crear nueva sospecha</a>
 
+
+<table class="table table-sm table-bordered">
+    <thead>
+        <tr class="text-center">
+            <th></th>
+            <th>Total positivos</th>
+            <th>Total negativos</th>
+            <th>Total sin resultados</th>
+            <th>Total enviados a análisis</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="text-center">
+            <td>Casos</td>
+            <td>{{ $suspectCases->where('pscr_sars_cov_2','positive')->count() }}</td>
+            <td>{{ $suspectCases->where('pscr_sars_cov_2','negative')->count() }}</td>
+            <td>{{ $suspectCases->where('pscr_sars_cov_2','')->count() }}</td>
+            <td>{{ $suspectCases->count() }}</td>
+        </tr>
+    </tbody>
+</table>
+
 <table class="table table-sm table-bordered">
     <thead>
         <tr>

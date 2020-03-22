@@ -11,23 +11,23 @@
     @method('POST')
 
     <div class="form-row">
-        <fieldset class="form-group col-2">
+        <fieldset class="form-group col-10 col-md-2">
             <label for="for_run">Run</label>
             <input type="text" class="form-control" id="for_run" name="run">
         </fieldset>
 
-        <fieldset class="form-group col-1">
+        <fieldset class="form-group col-2 col-md-1">
             <label for="for_dv">DV</label>
             <input type="text" class="form-control" id="for_dv" name="dv">
         </fieldset>
 
-        <fieldset class="form-group col">
+        <fieldset class="form-group col-12 col-md-4">
             <label for="for_other_identification">Otra identificación</label>
             <input type="text" class="form-control" id="for_other_identification"
                 placeholder="Extranjeros sin run" name="other_identification">
         </fieldset>
 
-        <fieldset class="form-group col-2">
+        <fieldset class="form-group col-6 col-md-2">
             <label for="for_gender">Genero</label>
             <select name="gender" id="for_gender" class="form-control">
                 <option value="male">Masculino</option>
@@ -37,7 +37,7 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-2">
+        <fieldset class="form-group col-6 col-md-2">
             <label for="for_birthday">Fecha Nacimiento</label>
             <input type="date" class="form-control" id="for_birthday"
                 name="birthday">
@@ -45,18 +45,18 @@
     </div>
 
     <div class="form-row">
-        <fieldset class="form-group col">
+        <fieldset class="form-group col-12 col-md-4">
             <label for="for_name">Nombres</label>
             <input type="text" class="form-control" id="for_name" name="name">
         </fieldset>
 
-        <fieldset class="form-group col">
+        <fieldset class="form-group col-12 col-md-4">
             <label for="for_fathers_family">Apellido Paterno</label>
             <input type="text" class="form-control" id="for_fathers_family"
                 name="fathers_family">
         </fieldset>
 
-        <fieldset class="form-group col">
+        <fieldset class="form-group col-12 col-md-4">
             <label for="for_mothers_family">Apellido Materno</label>
             <input type="text" class="form-control" id="for_mothers_family"
                 name="mothers_family">

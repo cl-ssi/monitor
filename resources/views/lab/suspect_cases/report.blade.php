@@ -6,7 +6,7 @@
 <h3 class="mb-3">Reporte COVID-19</h3>
 
 <div class="row">
-    <div class="col-4">
+    <div class="col-12 col-sm-4">
         <table class="table table-bordered col3">
             <tbody>
                 <tr>
