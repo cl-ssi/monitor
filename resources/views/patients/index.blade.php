@@ -18,7 +18,7 @@
 </div>
 
 
-
+<div class="table-responsive">
 <table class="table table-sm">
     <thead>
         <tr>
@@ -45,7 +45,7 @@
         @endforeach
     </tbody>
 </table>
-
+</div>
 @endsection
 
 @section('custom_js')
