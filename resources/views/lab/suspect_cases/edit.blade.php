@@ -27,7 +27,8 @@
             <select name="result_ifd" id="for_result_ifd" class="form-control">
                 <option></option>
                 <option value="Negativo" {{ ($suspectCase->result_ifd == 'Negativo')?'selected':'' }}>Negativo</option>
-                <option value="INF-A" {{ ($suspectCase->result_ifd == 'INF-A')?'selected':'' }}>INF-A</option>
+                <option value="INF A" {{ ($suspectCase->result_ifd == 'INF A')?'selected':'' }}>INF A</option>
+                <option value="INF B" {{ ($suspectCase->result_ifd == 'INF B')?'selected':'' }}>INF B</option>
             </select>
         </fieldset>
 

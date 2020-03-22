@@ -85,7 +85,8 @@
             <select name="result_ifd" id="for_result_ifd" class="form-control">
                 <option ></option>
                 <option value="Negativo">Negativo</option>
-                <option value="INF-A">INF-A</option>
+                <option value="INF A">INF A</option>
+                <option value="INF B">INF B</option>
             </select>
         </fieldset>
 
