@@ -50,6 +50,11 @@
                                 Casos sospechosos
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('lab.suspect_cases.report') }}">
+                                Reporte
+                            </a>
+                        </li>
                         @endauth
                     </ul>
 
