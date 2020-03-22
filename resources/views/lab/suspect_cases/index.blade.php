@@ -64,7 +64,7 @@
             <td>{{ $case->patient->fullName }}</td>
             <td class="text-center">{{ $case->patient->identifier }}</td>
             <td>{{ $case->age }}</td>
-            <td>{{ $case->result_ifd }}</td>
+            <td class="{{ ($case->result_ifd <> 'Negativo')?'text-danger':''}}">{{ $case->result_ifd }}</td>
             <td>{{ $case->epidemiological_week }}</td>
             <td>{{ $case->epivigila }}</td>
             <td>{{ $case->pscr_sars_cov_2 }}</td>
