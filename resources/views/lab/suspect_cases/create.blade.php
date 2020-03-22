@@ -87,6 +87,7 @@
                 <option value="Negativo">Negativo</option>
                 <option value="INF A">INF A</option>
                 <option value="INF B">INF B</option>
+                <option value="VRS">VRS</option>
             </select>
         </fieldset>
 

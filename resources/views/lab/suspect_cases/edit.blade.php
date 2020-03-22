@@ -29,6 +29,7 @@
                 <option value="Negativo" {{ ($suspectCase->result_ifd == 'Negativo')?'selected':'' }}>Negativo</option>
                 <option value="INF A" {{ ($suspectCase->result_ifd == 'INF A')?'selected':'' }}>INF A</option>
                 <option value="INF B" {{ ($suspectCase->result_ifd == 'INF B')?'selected':'' }}>INF B</option>
+                <option value="VRS" {{ ($suspectCase->result_ifd == 'VRS')?'selected':'' }}>VRS</option>
             </select>
         </fieldset>
 
