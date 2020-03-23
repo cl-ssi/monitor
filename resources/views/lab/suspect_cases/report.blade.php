@@ -28,19 +28,19 @@
 
 
                 <tr>
-                    <th class="table-active">Total hospitaliazados</th>
+                    <th class="table-active">Total hospitalizados</th>
                     <th class="table-active text-center">{{ $cases->where('status','Hospitalizado')->count() }}</th>
                 </tr>
                 <tr>
-                    <td>Total hospitaliazados negativos</td>
+                    <td>Total hospitalizados negativos</td>
                     <td class="text-center">{{ $cases->where('status','Hospitalizado')->where('pscr_sars_cov_2','negative')->count() }}</td>
                 </tr>
                 <tr>
-                    <td>Total hospitaliazados positivos</td>
+                    <td>Total hospitalizados positivos</td>
                     <td class="text-center">{{ $cases->where('status','Hospitalizado')->where('pscr_sars_cov_2','positive')->count() }}</td>
                 </tr>
                 <tr>
-                    <td>Total hospitaliazados sin resultados</td>
+                    <td>Total hospitalizados sin resultados</td>
                     <td class="text-center">{{ $cases->where('status','Hospitalizado')->where('pscr_sars_cov_2','')->count() }}</td>
                 </tr>
 

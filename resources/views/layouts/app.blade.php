@@ -39,28 +39,34 @@
                                 Home
                             </a>
                         </li>
-
+                        @can('Patient: list')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('patients.index') }}">
                                 Pacientes
                             </a>
                         </li>
+                        @endcan
+                        @can('SuspectCase: list')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('lab.suspect_cases.index') }}">
                                 Casos sospechosos
                             </a>
                         </li>
+                        @endcan
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('lab.suspect_cases.report') }}">
                                 Reporte
                             </a>
                         </li>
 
+                        @can('Admin')
                         <li class="nav-item">
                           <a class="nav-link" href="{{ route('parameters.index') }}">
                               <i class="fas fa-cog fa-fw"></i> Mantenedores
                           </a>
                         </li>
+                        @endcan
+
                         @endauth
                     </ul>
 

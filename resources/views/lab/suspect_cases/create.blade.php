@@ -120,7 +120,6 @@
             </select>
         </fieldset>
 
-
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_epivigila">Epivigila</label>
             <input type="number" class="form-control" id="for_epivigila"
@@ -131,7 +130,7 @@
             <label for="for_pscr_sars_cov_2">PCR SARS-Cov2</label>
             <select name="pscr_sars_cov_2" id="for_pscr_sars_cov_2"
                 class="form-control">
-                <option></option>
+                <option value="pending">Pendiente</option>
                 <option value="negative">Negativo</option>
                 <option value="positive">Positivo</option>
             </select>
@@ -139,17 +138,19 @@
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_paho_flu">PAHO FLU</label>
-            <input type="number" class="form-control" name="paho_flu" id="for_paho_flu"
-                required>
+            <input type="number" class="form-control" name="paho_flu"
+                id="for_paho_flu">
         </fieldset>
 
         <fieldset class="form-group col">
             <label for="for_status">Estado</label>
             <select name="status" id="for_status" class="form-control">
                 <option value=""></option>
-                <option value="Hospitalizado">Hospitalizado</option>
+                <option value="Hospitalizado Básico">Hospitalizado Básico</option>
+                <option value="Hospitalizado Crítico">Hospitalizado Crítico</option>
                 <option value="Alta">Alta</option>
                 <option value="Fallecido">Fallecido</option>
+                <option value="Ambulatorio">Ambulatorio (domiciliario)</option>
             </select>
         </fieldset>
 

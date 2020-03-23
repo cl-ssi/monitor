@@ -25,7 +25,7 @@ class CreateSuspectCasesTable extends Migration
             $table->string('subtype')->nullable();
             $table->unsignedSmallInteger('epidemiological_week')->nullable();
             $table->unsignedInteger('epivigila')->nullable();
-            $table->enum('pscr_sars_cov_2',['negative','positive'])->nullable();
+            $table->string('pscr_sars_cov_2')->nullable();
             $table->unsignedInteger('paho_flu')->nullable();
             $table->string('status')->nullable(); /* Fallecido, Alta, Hospitalizado, Fugado */
             $table->string('observation')->nullable();

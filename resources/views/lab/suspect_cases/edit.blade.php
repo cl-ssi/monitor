@@ -81,7 +81,7 @@
             <label for="for_pscr_sars_cov_2">PCR SARS-Cov2</label>
             <select name="pscr_sars_cov_2" id="for_pscr_sars_cov_2"
                 class="form-control">
-                <option></option>
+                <option value="pending" {{ ($suspectCase->pscr_sars_cov_2 == 'pending')?'selected':'' }}>Pendiente</option>
                 <option value="negative" {{ ($suspectCase->pscr_sars_cov_2 == 'negative')?'selected':'' }}>Negativo</option>
                 <option value="positive" {{ ($suspectCase->pscr_sars_cov_2 == 'positive')?'selected':'' }}>Positivo</option>
             </select>
@@ -97,9 +97,11 @@
             <label for="for_status">Estado</label>
             <select name="status" id="for_status" class="form-control">
                 <option value=""></option>
-                <option value="Hospitalizado" {{ ($suspectCase->status == 'Hospitalizado')?'selected':'' }}>Hospitalizado</option>
+                <option value="Hospitalizado Básico" {{ ($suspectCase->status == 'Hospitalizado Básico')?'selected':'' }}>Hospitalizado Básico</option>
+                <option value="Hospitalizado Crítico" {{ ($suspectCase->status == 'Hospitalizado Crítico')?'selected':'' }}>Hospitalizado Crítico</option>
                 <option value="Alta" {{ ($suspectCase->status == 'Alta')?'selected':'' }}>Alta</option>
                 <option value="Fallecido" {{ ($suspectCase->status == 'Fallecido')?'selected':'' }}>Fallecido</option>
+                <option value="Ambulatorio" {{ ($suspectCase->status == 'Ambulatorio')?'selected':'' }}>Ambulatorio (domiciliario)</option>
             </select>
         </fieldset>
 

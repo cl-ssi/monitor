@@ -7,11 +7,13 @@
 <h3 class="mb-3">Listado de Pacientes</h3>
 
 <div class="row">
+    @can('Patient: create')
     <div class="col-4 col-sm-3">
         <a class="btn btn-primary mb-4" href="{{ route('patients.create') }}">
             Crear Paciente
         </a>
     </div>
+    @endcan
     <div class="col-7 col-sm-9 alert alert-primary" role="alert">
         Para buscar presione Ctrl+F
     </div>
@@ -28,7 +30,9 @@
             <th>Apellido Materno</th>
             <th>Genero</th>
             <th>Fecha Nac.</th>
+            @can('Patient: edit')
             <th></th>
+            @endcan
         </tr>
     </thead>
     <tbody>
@@ -40,7 +44,9 @@
             <td>{{ $patient->mothers_family }}</td>
             <td>{{ $patient->genderEsp }}</td>
             <td>{{ $patient->birthday }}</td>
+            @can('Patient: edit')
             <td> <a href="{{ route('patients.edit',$patient) }}">Editar</a> </td>
+            @endcan
         </tr>
         @endforeach
     </tbody>

@@ -7,11 +7,13 @@
 <h3 class="mb-3">Listado de casos</h3>
 
 <div class="row">
+    @can('SuspectCase: create')
     <div class="col-5 col-sm-3">
         <a class="btn btn-primary mb-3" href="{{ route('lab.suspect_cases.create') }}">
             Crear nueva sospecha
         </a>
     </div>
+    @endcan
     <div class="col-7 col-sm-9 alert alert-primary" role="alert">
         Para buscar presione Ctrl+F
     </div>
@@ -57,7 +59,9 @@
             <th>PAHO FLU</th>
             <th>Estado</th>
             <th>Observación</th>
+            @can('SuspectCase: edit')
             <th class="action_th"></th>
+            @endcan
         </tr>
     </thead>
     <tbody>
@@ -76,7 +80,9 @@
             <td>{{ $case->paho_flu }}</td>
             <td>{{ $case->status }}</td>
             <td class="text-muted small">{{ $case->observation }}</td>
+            @can('SuspectCase: edit')
             <td class="action_td"><a href="{{ route('lab.suspect_cases.edit', $case) }}" class="btn_edit">Editar</a></td>
+            @endcan
         </tr>
         @endforeach
     </tbody>
