@@ -62,7 +62,7 @@
     </thead>
     <tbody>
         @foreach($suspectCases as $case)
-        <tr>
+        <tr class="{{ ($case->pscr_sars_cov_2 == 'positive')?'table-danger':''}}">
             <td>{{ $case->id }}</td>
             <td nowrap>{{ (isset($case->sample_at))? $case->sample_at->format('Y-m-d'):'' }}</td>
             <td>{{ $case->origin }}</td>
