@@ -128,7 +128,7 @@
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
-            <label for="for_pscr_sars_cov_2">PSCR SARS-CoV-2</label>
+            <label for="for_pscr_sars_cov_2">PCR SARS-Cov2</label>
             <select name="pscr_sars_cov_2" id="for_pscr_sars_cov_2"
                 class="form-control">
                 <option></option>

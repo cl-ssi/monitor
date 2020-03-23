@@ -17,8 +17,6 @@
     </div>
 </div>
 
-
-
 <table class="table table-sm table-bordered">
     <thead>
         <tr class="text-center">
@@ -40,8 +38,10 @@
     </tbody>
 </table>
 
+<a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a>
+
 <div class="table-responsive">
-<table class="table table-sm table-bordered">
+<table class="table table-sm table-bordered" id="tabla_casos">
     <thead>
         <tr>
             <th>°</th>
@@ -53,11 +53,11 @@
             <th>Resultado IFD</th>
             <th>Sem</th>
             <th>Epivigila</th>
-            <th class="alert-danger">PSCR SARS COV 2</th>
+            <th class="alert-danger">PCR SARS-Cov2</th>
             <th>PAHO FLU</th>
             <th>Estado</th>
             <th>Observación</th>
-            <th></th>
+            <th class="action_th"></th>
         </tr>
     </thead>
     <tbody>
@@ -76,14 +76,26 @@
             <td>{{ $case->paho_flu }}</td>
             <td>{{ $case->status }}</td>
             <td class="text-muted small">{{ $case->observation }}</td>
-            <td><a href="{{ route('lab.suspect_cases.edit', $case) }}">Editar</a></td>
+            <td class="action_td"><a href="{{ route('lab.suspect_cases.edit', $case) }}" class="btn_edit">Editar</a></td>
         </tr>
         @endforeach
     </tbody>
 </table>
 </div>
+
+
 @endsection
 
 @section('custom_js')
-
+<script type="text/javascript">
+function exportF(elem) {
+    var table = document.getElementById("tabla_casos");
+    var html = table.outerHTML;
+    var html_no_links = html.replace(/<a[^>]*>|<\/a>/g, "");//remove if u want links in your table
+    var url = 'data:application/vnd.ms-excel,' + escape(html_no_links); // Set your html table into url
+    elem.setAttribute("href", url);
+    elem.setAttribute("download", "casos_sospecha.xls"); // Choose the file name
+    return false;
+}
+</script>
 @endsection
