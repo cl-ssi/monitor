@@ -23,8 +23,8 @@ Route::get('login', 'Auth\LoginController@showLoginForm')->middleware('guest')->
 Route::post('login', 'Auth\LoginController@login')->middleware('guest');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
-Route::get('register', 'Auth\RegisterController@showRegistrationForm')->middleware('guest')->name('register');
-Route::post('register', 'Auth\RegisterController@register')->middleware('guest');
+//Route::get('register', 'Auth\RegisterController@showRegistrationForm')->middleware('guest')->name('register');
+//Route::post('register', 'Auth\RegisterController@register')->middleware('guest');
 
 Route::prefix('users')->name('users.')->group(function () {
     Route::get('/', 'UserController@index')->name('index')->middleware('can:Admin');

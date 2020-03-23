@@ -15,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::All();
+        $users = User::Latest()->get();
         return view('users.index', compact('users'));
     }
 
@@ -88,7 +88,7 @@ class UserController extends Controller
             is_array($request->input('permissions')) ? $request->input('permissions') : array()
         );
 
-        return redirect()->back();
+        return redirect()->route('users.index');
     }
 
     /**
