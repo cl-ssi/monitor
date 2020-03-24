@@ -23,7 +23,7 @@
                 </tr>
                 <tr>
                     <td>Total sin resultados</td>
-                    <td class="text-center">{{ $cases->where('pscr_sars_cov_2','')->count() }}</td>
+                    <td class="text-center">{{ $cases->where('pscr_sars_cov_2','pending')->count() }}</td>
                 </tr>
 
 

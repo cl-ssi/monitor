@@ -34,7 +34,7 @@
             <td>Casos</td>
             <th class="text-danger">{{ $suspectCases->where('pscr_sars_cov_2','positive')->count() }}</th>
             <td>{{ $suspectCases->where('pscr_sars_cov_2','negative')->count() }}</td>
-            <td>{{ $suspectCases->where('pscr_sars_cov_2','')->count() }}</td>
+            <td>{{ $suspectCases->where('pscr_sars_cov_2','pending')->count() }}</td>
             <td>{{ $suspectCases->count() }}</td>
         </tr>
     </tbody>
