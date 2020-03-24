@@ -22,6 +22,10 @@ class SuspectCase extends Model
         return $this->belongsTo('App\Patient');
     }
 
+    public function logs() {
+        return $this->morphMany('App\Log','model');
+    }
+
     protected $dates = [
         'sample_at'
     ];

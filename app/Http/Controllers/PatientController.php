@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Patient;
+use App\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class PatientController extends Controller
@@ -39,6 +41,15 @@ class PatientController extends Controller
         $patient = new Patient($request->All());
         $patient->save();
 
+        $log = Log::CREATE([
+            'old' => NULL,
+            'new' => json_encode($patient),
+            'diferences' => NULL,
+            'model_id' => $patient->id,
+            'model_type'=> 'App\Patient',
+            'user_id'   => Auth::id()
+        ]);
+
         return redirect()->route('patients.index');
     }
 
@@ -73,8 +84,18 @@ class PatientController extends Controller
      */
     public function update(Request $request, Patient $patient)
     {
+        $patient_old = clone $patient;
         $patient->fill($request->all());
         $patient->save();
+
+        $log = Log::CREATE([
+            'old' => json_encode($patient_old),
+            'new' => json_encode($patient),
+            'diferences' => NULL,
+            'model_id' => $patient->id,
+            'model_type'=> 'App\Patient',
+            'user_id'   => Auth::id()
+        ]);
 
         return redirect()->route('patients.index');
     }

@@ -4,7 +4,7 @@
 
 @section('content')
 
-@include('parameters/nav')
+@include('parameters.nav')
 
 <h3 class="mb-3">Mantenedores de parámentros</h3>
 

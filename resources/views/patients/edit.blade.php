@@ -5,7 +5,6 @@
 @section('content')
 <h3 class="mb-3">Editar Paciente</h3>
 
-
 <form method="POST" class="form-horizontal" action="{{ route('patients.update',$patient) }}">
     @csrf
     @method('PUT')
@@ -87,14 +86,41 @@
     </a>
 
 </form>
-
+@can('Patient: delete')
 <form method="POST" class="form-horizontal" action="{{ route('patients.destroy',$patient) }}">
     @csrf
     @method('DELETE')
     <button type="submit" class="btn btn-danger float-right">Borrar</button>
 
 </form>
+@endcan
 
+
+<table class="table table-sm small text-muted mt-3">
+    <thead>
+        <tr>
+            <th colspan="3">Historial de cambios</th>
+        </tr>
+        <tr>
+            <th>Fecha</th>
+            <th>Usuario</th>
+            <th>Modificaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($patient->logs as $log)
+        <tr>
+            <td>{{ $log->created_at }}</td>
+            <td>{{ $log->user->name }}</td>
+            <td>
+                @foreach($log->diferencesArray as $key => $diference)
+                    {{ $key }} => {{ $diference}} <br>
+                @endforeach
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
 @endsection
 
 @section('custom_js')

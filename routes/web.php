@@ -67,6 +67,5 @@ Route::prefix('lab')->name('lab.')->group(function () {
 
 Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(function(){
     Route::get('/', 'Parameters\ParameterController@index')->name('index');
-    Route::put('/{parameter}', 'Parameters\ParameterController@update')->name('update');
     Route::resource('permissions','Parameters\PermissionController');
 });
