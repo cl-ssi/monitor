@@ -15,6 +15,8 @@
                     @endif
 
                     Haz iniciado sesión.
+
+                    <div class="alert alert-success">Telefono: +56 9 82598059</div>
                 </div>
             </div>
         </div>

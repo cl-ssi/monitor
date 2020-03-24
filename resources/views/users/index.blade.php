@@ -9,11 +9,9 @@
 <h3 class="mb-3">Listado de usuarios</h3>
 
 @can('Admin')
-<div class="col-4 col-sm-3">
     <a class="btn btn-primary mb-4" href="{{ route('users.create') }}">
         Crear usuario
     </a>
-</div>
 @endcan
 
 <table class="table">
