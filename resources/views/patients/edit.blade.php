@@ -79,6 +79,19 @@
 
     </div>
 
+    <div class="card mb-3">
+        <div class="card-body">
+
+        @if($patient->demographic)
+            @include('patients.demographic.edit')
+        @else
+            @include('patients.demographic.create')
+        @endif
+
+        </div>
+    </div>
+
+
     <button type="submit" class="btn btn-primary">Guardar</button>
 
     <a class="btn btn-outline-secondary" href="{{ route('patients.index') }}">

@@ -24,6 +24,10 @@ class Patient extends Model
         return $this->hasMany('App\SuspectCase');
     }
 
+    public function demographic() {
+        return $this->hasOne('App\Demographic');
+    }
+
     function getFullNameAttribute(){
         return $this->name . ' ' . $this->fathers_family . ' ' . $this->mothers_family;
     }

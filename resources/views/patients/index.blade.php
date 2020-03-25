@@ -25,11 +25,11 @@
     <thead>
         <tr>
             <th>Run o (ID)</th>
-            <th>Nombres</th>
-            <th>Apellido Paterno</th>
-            <th>Apellido Materno</th>
+            <th>Nombre</th>
             <th>Genero</th>
             <th>Fecha Nac.</th>
+            <th>Dirección/Comuna</th>
+            <th>Teléfono/Email</th>
             @can('Patient: edit')
             <th></th>
             @endcan
@@ -39,12 +39,18 @@
         @foreach($patients as $patient)
         <tr>
             <td class="text-center">{{ $patient->identifier }}</td>
-            <td>{{ $patient->name }}</td>
-            <td>{{ $patient->fathers_family }}</td>
-            <td>{{ $patient->mothers_family }}</td>
+            <td>{{ $patient->fullName }}</td>
             <td>{{ $patient->genderEsp }}</td>
             <td>{{ $patient->birthday }}</td>
-            @can('Patient: edit')
+            <td class="small">
+                {{ ($patient->demographic)?$patient->demographic->address:'' }}<br>
+                {{ ($patient->demographic)?$patient->demographic->commune:'' }}
+            </td>
+            <td class="small">
+                {{ ($patient->demographic)?$patient->demographic->telephone:'' }}<br>
+                {{ ($patient->demographic)?$patient->demographic->email:'' }}
+            </td>
+            @canany(['Patient: edit','Demographic: edit'])
             <td> <a href="{{ route('patients.edit',$patient) }}">Editar</a> </td>
             @endcan
         </tr>
