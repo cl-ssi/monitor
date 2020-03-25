@@ -18,4 +18,8 @@ class Demographic extends Model
     public function patient() {
         return $this->belongsTo('App\Patient');
     }
+
+    public function logs() {
+        return $this->morphMany('App\Log','model')->where('diferences','<>',"[]");
+    }
 }

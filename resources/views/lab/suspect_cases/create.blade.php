@@ -180,17 +180,16 @@
 <script src='{{asset('js/jquery.rut.chileno.js')}}'></script>
 <script type="text/javascript">
 jQuery(document).ready(function($){
-  //obtiene digito verificador
-  $('input[name=run]').keyup(function(e) {
-      var str = $("#for_run").val();
-      $('#for_dv').val($.rut.dv(str));
-  });
+    //obtiene digito verificador
+    $('input[name=run]').keyup(function(e) {
+        var str = $("#for_run").val();
+        $('#for_dv').val($.rut.dv(str));
+    });
 
   $('input[name=run]').change(function() {
     var str = $("#for_run").val();
     $.get('{{ route('patients.get')}}/'+str, function(data) {
-       console.log(data);
-       if(data != 0){
+       if(data){
          document.getElementById("for_id").value = data.id;
          document.getElementById("for_other_identification").value = data.other_identification;
          document.getElementById("for_gender").value = data.gender;

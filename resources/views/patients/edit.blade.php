@@ -112,9 +112,10 @@
 <table class="table table-sm small text-muted mt-3">
     <thead>
         <tr>
-            <th colspan="3">Historial de cambios</th>
+            <th colspan="4">Historial de cambios</th>
         </tr>
         <tr>
+            <th>Modelo</th>
             <th>Fecha</th>
             <th>Usuario</th>
             <th>Modificaciones</th>
@@ -123,6 +124,7 @@
     <tbody>
         @foreach($patient->logs as $log)
         <tr>
+            <td>{{ $log->model_type }}</td>
             <td>{{ $log->created_at }}</td>
             <td>{{ $log->user->name }}</td>
             <td>
@@ -132,6 +134,20 @@
             </td>
         </tr>
         @endforeach
+        @if($patient->demographic)
+            @foreach($patient->demographic->logs as $log)
+            <tr>
+                <td>{{ $log->model_type }}</td>
+                <td>{{ $log->created_at }}</td>
+                <td>{{ $log->user->name }}</td>
+                <td>
+                    @foreach($log->diferencesArray as $key => $diference)
+                        {{ $key }} => {{ $diference}} <br>
+                    @endforeach
+                </td>
+            </tr>
+            @endforeach
+        @endif
     </tbody>
 </table>
 @endsection

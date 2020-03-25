@@ -51,7 +51,7 @@ class Patient extends Model
     }
 
     public function logs() {
-        return $this->morphMany('App\Log','model');
+        return $this->morphMany('App\Log','model')->where('diferences','<>',"[]");
     }
 
 }

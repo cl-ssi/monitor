@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Log extends Model
 {
@@ -58,5 +59,19 @@ class Log extends Model
             unset($diferences['updated_at']);
         }
         return $diferences;
+    }
+
+    /* this is executed after $log->save() method */
+    protected static function booted()
+    {
+        static::creating(function ($log) {
+            $log->model_id = $log->new->id;
+            $log->model_type = get_class($log->new);
+            $log->user_id = Auth::id();
+
+            $log->new = json_encode($log->new, JSON_PRETTY_PRINT);
+            $log->old = json_encode($log->old, JSON_PRETTY_PRINT);
+            $log->diferences = null;
+        });
     }
 }

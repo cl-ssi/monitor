@@ -42,26 +42,14 @@ class PatientController extends Controller
         $patient = new Patient($request->All());
         $patient->save();
 
-        $log = Log::CREATE([
-            'old' => NULL,
-            'new' => json_encode($patient),
-            'diferences' => NULL,
-            'model_id' => $patient->id,
-            'model_type'=> 'App\Patient',
-            'user_id'   => Auth::id()
-        ]);
+        $log = new Log();
+        //$log->old = $patient;
+        $log->new = $patient;
+        $log->save();
+
 
         // $demographic = new Demographic($request->All());
         // $demographic->save();
-        //
-        // $log = Log::CREATE([
-        //     'old' => NULL,
-        //     'new' => json_encode($demographic),
-        //     'diferences' => NULL,
-        //     'model_id' => $demographic->id,
-        //     'model_type'=> 'App\Demographic',
-        //     'user_id'   => Auth::id()
-        // ]);
 
         return redirect()->route('patients.index');
     }
@@ -97,36 +85,27 @@ class PatientController extends Controller
      */
     public function update(Request $request, Patient $patient)
     {
-        //$patient_old = clone $patient;
-        //$demographic_old = clone $patient->demographic;
+        $logPatient = new Log();
+        $logPatient->old = clone $patient;
+
+        $patient->fill($request->all());
+
+        $logPatient->new = $patient;
+        $logPatient->save();
+
+
+        $logDemographic = new Log();
         if($patient->demographic) {
-            $patient->fill($request->all())->demographic->fill($request->all());
+            $logDemographic->old = clone $patient->demographic;
+            $patient->demographic->fill($request->all());
             $patient->demographic->save();
         }
         else {
-            $patient->fill($request->all());
             $demographic = new Demographic($request->All());
-            $patient->demographic()->save($demographic);
+            $patient->demographic->save($demographic);
         }
-        $patient->save();
-
-        // $log = Log::CREATE([
-        //     'old' => json_encode($patient_old),
-        //     'new' => json_encode($patient),
-        //     'diferences' => NULL,
-        //     'model_id' => $patient->id,
-        //     'model_type'=> 'App\Patient',
-        //     'user_id'   => Auth::id()
-        // ]);
-        //
-        // $log = Log::CREATE([
-        //     'old' => json_encode($demographic_old),
-        //     'new' => json_encode($patient->demographic),
-        //     'diferences' => NULL,
-        //     'model_id' => $patient->demographic->id,
-        //     'model_type'=> 'App\Demographic',
-        //     'user_id'   => Auth::id()
-        // ]);
+        $logDemographic->new = $patient->demographic;
+        $logDemographic->save();
 
         return redirect()->route('patients.index');
     }
@@ -139,6 +118,11 @@ class PatientController extends Controller
      */
     public function destroy(Patient $patient)
     {
+        $log = new Log();
+        $log->old = clone $patient;
+        $log->new = $patient->setAttribute('patient','delete');
+        $log->save();
+
         $patient->delete();
 
         return redirect()->route('patients.index');
@@ -146,8 +130,8 @@ class PatientController extends Controller
 
     public function getPatient($rut)
     {
-        $patient = Patient::where('run',$rut)->first();
-        if($patient==null){return 0;}
-        return $patient;
+        return Patient::where('run',$rut)->first();
+        // if($patient==null){return 0;}
+        // return $patient;
     }
 }
