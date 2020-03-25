@@ -16,7 +16,7 @@
 
         <fieldset class="form-group col-2 col-md-1">
             <label for="for_dv">DV</label>
-            <input type="text" class="form-control" id="for_dv" name="dv">
+            <input type="text" class="form-control" id="for_dv" name="dv" disabled>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-3">
@@ -175,5 +175,16 @@
 @endsection
 
 @section('custom_js')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src='{{asset('js/jquery.rut.chileno.js')}}'></script>
+<script type="text/javascript">
+jQuery(document).ready(function($){
+  //obtiene digito verificador
+  $('input[name=run]').keyup(function(e) {
+      var str = $("#for_run").val();
+      $('#for_dv').val($.rut.dv(str));
+  });
+});
+</script>
 
 @endsection
