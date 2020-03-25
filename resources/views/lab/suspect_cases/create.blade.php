@@ -16,7 +16,7 @@
 
         <fieldset class="form-group col-2 col-md-1">
             <label for="for_dv">DV</label>
-            <input type="text" class="form-control" id="for_dv" name="dv" disabled>
+            <input type="text" class="form-control" id="for_dv" name="dv" readonly>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-3">
