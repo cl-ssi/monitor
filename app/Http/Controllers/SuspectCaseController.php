@@ -38,8 +38,14 @@ class SuspectCaseController extends Controller
      */
     public function store(Request $request)
     {
-        $patient = new Patient($request->All());
-        $patient->save();
+        if($request->id == null){
+          $patient = new Patient($request->All());
+          $patient->save();
+        }
+        else
+        {
+          $patient = Patient::find($request->id);
+        }
 
         $suspectCase = new SuspectCase($request->All());
         $suspectCase->epidemiological_week = Carbon::createFromDate($suspectCase->sample_at->format('Y-m-d'))->add(1,'days')->weekOfYear;

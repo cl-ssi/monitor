@@ -143,4 +143,11 @@ class PatientController extends Controller
 
         return redirect()->route('patients.index');
     }
+
+    public function getPatient($rut)
+    {
+        $patient = Patient::where('run',$rut)->first();
+        if($patient==null){return 0;}
+        return $patient;
+    }
 }
