@@ -6,7 +6,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    Bienvenido al sistema de monitoreo COVID-19 del Servicio de Slaud
+                    Bienvenido al sistema de monitoreo del Servicio de Slaud
                 </div>
 
                 <div class="card-body">
@@ -28,8 +28,16 @@
             </div>
 
             <p class="mt-3">Registro de cambios: </p>
-            <ul class="text-muted">
-                <li>2020-03-25 Renombardos datos de resultado IFD equivalentes al LIS</li>
+            <ul class="text-muted small">
+                <li>2020-03-25 Renombrados datos de resultado de IFD equivalentes al LIS.</li>
+                <li>2020-03-25 Resultados IFD agregado "No procesado".</li>
+                <li>2020-03-25 Edad se mantiene en caso sospecha y no en datos del paciente.</li>
+                <li>2020-03-25 Traducido resultado covid19.</li>
+                <li>2020-03-25 Separados datos demograficos de nuevas sospechas.</li>
+                <li>2020-03-25 En editar caso sospecha agregado datos de paciente.</li>
+                <li>2020-03-25 Semana epidemiologica se calcula automáticamente.</li>
+                <li>2020-03-25 Calcular dígito verificador automaticamente.</li>
+                <li>2020-03-24 Agregado campos demograficos al paciente.</li>
             </ul>
         </div>
     </div>
