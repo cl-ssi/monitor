@@ -42,10 +42,6 @@
                 name="birthday">
         </fieldset>
 
-        <fieldset class="form-group col-2 col-md-1">
-            <label for="for_age">Edad</label>
-            <input type="number" class="form-control" id="for_age" name="age">
-        </fieldset>
     </div>
 
     <div class="form-row">
@@ -99,6 +95,11 @@
                 <option value="Fallecido">Fallecido</option>
                 <option value="Ambulatorio">Ambulatorio (domiciliario)</option>
             </select>
+        </fieldset>
+
+        <fieldset class="form-group col-2 col-md-2">
+            <label for="for_age">Edad</label>
+            <input type="number" class="form-control" id="for_age" name="age">
         </fieldset>
     </div>
 
@@ -195,7 +196,6 @@ jQuery(document).ready(function($){
          document.getElementById("for_other_identification").value = data.other_identification;
          document.getElementById("for_gender").value = data.gender;
          document.getElementById("for_birthday").value = data.birthday;
-         document.getElementById("for_age").value = getAge(data.birthday);
          document.getElementById("for_name").value = data.name;
          document.getElementById("for_fathers_family").value = data.fathers_family;
          document.getElementById("for_mothers_family").value = data.mothers_family;
@@ -204,7 +204,6 @@ jQuery(document).ready(function($){
          document.getElementById("for_other_identification").value = "";
          document.getElementById("for_gender").value = "";
          document.getElementById("for_birthday").value = "";
-         document.getElementById("for_age").value = "";
          document.getElementById("for_name").value = "";
          document.getElementById("for_fathers_family").value = "";
          document.getElementById("for_mothers_family").value = "";
@@ -213,17 +212,6 @@ jQuery(document).ready(function($){
   });
 
 });
-
-//función que calcula edad
-function getAge(dateString)
-{
-    var today = new Date();
-    var birthDate = new Date(dateString);
-    var age = today.getFullYear() - birthDate.getFullYear();
-    var m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {age--;}
-    return age;
-}
 
 </script>
 
