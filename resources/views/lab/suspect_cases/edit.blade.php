@@ -5,14 +5,17 @@
 @section('content')
 <h3 class="mb-3">Editar sospecha</h3>
 
+@include('patients.show',$suspectCase)
+
+<hr>
+
 <form method="POST" class="form-horizontal" action="{{ route('lab.suspect_cases.update', $suspectCase) }}">
     @csrf
     @method('PUT')
 
-    {{ $suspectCase->status }}
     <div class="form-row">
 
-        <fieldset class="form-group col-6 col-md-3">
+        <fieldset class="form-group col-6 col-md-2">
             <label for="for_origin">Origen</label>
             <select name="origin" id="for_origin" class="form-control">
                 <option value=""></option>
@@ -24,16 +27,23 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-3">
+        <fieldset class="form-group col-6 col-md-2">
             <label for="for_sample_at">Fecha Muestra</label>
             <input type="date" class="form-control" id="for_sample_at"
                 name="sample_at" value="{{ (isset($suspectCase->sample_at))? $suspectCase->sample_at->format('Y-m-d'):'' }}">
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-1">
-            <label for="for_epidemiological_week">Semana</label>
-            <input type="number" class="form-control" id="for_epidemiological_week"
-                name="epidemiological_week" value="{{ $suspectCase->epidemiological_week }}">
+
+        <fieldset class="form-group col-6 col-md-4">
+            <label for="for_status">Estado</label>
+            <select name="status" id="for_status" class="form-control">
+                <option value=""></option>
+                <option value="Hospitalizado Básico" {{ ($suspectCase->status == 'Hospitalizado Básico')?'selected':'' }}>Hospitalizado Básico</option>
+                <option value="Hospitalizado Crítico" {{ ($suspectCase->status == 'Hospitalizado Crítico')?'selected':'' }}>Hospitalizado Crítico</option>
+                <option value="Alta" {{ ($suspectCase->status == 'Alta')?'selected':'' }}>Alta</option>
+                <option value="Fallecido" {{ ($suspectCase->status == 'Fallecido')?'selected':'' }}>Fallecido</option>
+                <option value="Ambulatorio" {{ ($suspectCase->status == 'Ambulatorio')?'selected':'' }}>Ambulatorio (domiciliario)</option>
+            </select>
         </fieldset>
 
         <fieldset class="form-group col-3 col-md-1">
@@ -49,16 +59,47 @@
             <label for="for_result_ifd">Resultado IFD</label>
             <select name="result_ifd" id="for_result_ifd" class="form-control">
                 <option></option>
-                <option value="Negativo" {{ ($suspectCase->result_ifd == 'Negativo')?'selected':'' }}>Negativo</option>
-                <option value="INF A" {{ ($suspectCase->result_ifd == 'INF A')?'selected':'' }}>INF A</option>
-                <option value="INF B" {{ ($suspectCase->result_ifd == 'INF B')?'selected':'' }}>INF B</option>
-                <option value="VRS" {{ ($suspectCase->result_ifd == 'VRS')?'selected':'' }}>VRS</option>
-                <option value="Metaneumovirus" {{ ($suspectCase->result_ifd == 'Metaneumovirus')?'selected':'' }}>Metaneumovirus</option>
-                <option value="Adenovirus" {{ ($suspectCase->result_ifd == 'Adenovirus')?'selected':'' }}>Adenovirus</option>
-                <option value="PARAINF 1" {{ ($suspectCase->result_ifd == 'PARAINF 1')?'selected':'' }}>PARAINF 1</option>
-                <option value="PARAINF 2" {{ ($suspectCase->result_ifd == 'PARAINF 2')?'selected':'' }}>PARAINF 2</option>
-                <option value="PARAINF 3" {{ ($suspectCase->result_ifd == 'PARAINF 3')?'selected':'' }}>PARAINF 3</option>
-            </select>
+                <option value="Negativo"
+                    {{ ($suspectCase->result_ifd == 'Negativo')?'selected':'' }}>
+                    Negativo
+                </option>
+                <option value="Adenovirus"
+                    {{ ($suspectCase->result_ifd == 'Adenovirus')?'selected':'' }}>
+                    Adenovirus
+                </option>
+                <option value="Influenza A"
+                    {{ ($suspectCase->result_ifd == 'Influenza A')?'selected':'' }}>
+                    Influenza A
+                </option>
+                <option value="Influenza B"
+                    {{ ($suspectCase->result_ifd == 'Influenza B')?'selected':'' }}>
+                    Influenza B
+                </option>
+                <option value="Metapneumovirus"
+                    {{ ($suspectCase->result_ifd == 'Metapneumovirus')?'selected':'' }}>
+                    Metapneumovirus
+                </option>
+                <option value="Parainfluenza 1"
+                    {{ ($suspectCase->result_ifd == 'Parainfluenza 1')?'selected':'' }}>
+                    Parainfluenza 1
+                </option>
+                <option value="Parainfluenza 2"
+                    {{ ($suspectCase->result_ifd == 'Parainfluenza 2')?'selected':'' }}>
+                    Parainfluenza 2
+                </option>
+                <option value="Parainfluenza 3"
+                    {{ ($suspectCase->result_ifd == 'Parainfluenza 3')?'selected':'' }}>
+                    Parainfluenza 3
+                </option>
+                <option value="VRS"
+                    {{ ($suspectCase->result_ifd == 'VRS')?'selected':'' }}>
+                    VRS
+                </option>
+                <option value="No procesado"
+                    {{ ($suspectCase->result_ifd == 'No procesado')?'selected':'' }}>
+                    No procesado
+                </option>
+                </select>
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
@@ -93,17 +134,6 @@
                 value="{{ $suspectCase->paho_flu }}">
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
-            <label for="for_status">Estado</label>
-            <select name="status" id="for_status" class="form-control">
-                <option value=""></option>
-                <option value="Hospitalizado Básico" {{ ($suspectCase->status == 'Hospitalizado Básico')?'selected':'' }}>Hospitalizado Básico</option>
-                <option value="Hospitalizado Crítico" {{ ($suspectCase->status == 'Hospitalizado Crítico')?'selected':'' }}>Hospitalizado Crítico</option>
-                <option value="Alta" {{ ($suspectCase->status == 'Alta')?'selected':'' }}>Alta</option>
-                <option value="Fallecido" {{ ($suspectCase->status == 'Fallecido')?'selected':'' }}>Fallecido</option>
-                <option value="Ambulatorio" {{ ($suspectCase->status == 'Ambulatorio')?'selected':'' }}>Ambulatorio (domiciliario)</option>
-            </select>
-        </fieldset>
 
     </div>
 

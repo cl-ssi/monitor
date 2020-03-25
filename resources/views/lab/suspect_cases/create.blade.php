@@ -53,18 +53,22 @@
             <input type="text" class="form-control" id="for_name" name="name">
         </fieldset>
 
-        <fieldset class="form-group col-12 col-md-2">
+        <fieldset class="form-group col-12 col-md-3">
             <label for="for_fathers_family">Apellido Paterno</label>
             <input type="text" class="form-control" id="for_fathers_family"
                 name="fathers_family">
         </fieldset>
 
-        <fieldset class="form-group col-12 col-md-2">
+        <fieldset class="form-group col-12 col-md-3">
             <label for="for_mothers_family">Apellido Materno</label>
             <input type="text" class="form-control" id="for_mothers_family"
                 name="mothers_family">
         </fieldset>
 
+
+    </div>
+    <hr>
+    <div class="form-row">
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_origin">Origen</label>
@@ -84,12 +88,17 @@
                 name="sample_at" required>
         </fieldset>
 
-        <fieldset class="form-group col-3 col-md-1">
-            <label for="for_epidemiological_week">Semana</label>
-            <input type="number" class="form-control" id="for_epidemiological_week"
-                name="epidemiological_week">
+        <fieldset class="form-group col-12 col-md-4">
+            <label for="for_status">Estado</label>
+            <select name="status" id="for_status" class="form-control">
+                <option value=""></option>
+                <option value="Hospitalizado Básico">Hospitalizado Básico</option>
+                <option value="Hospitalizado Crítico">Hospitalizado Crítico</option>
+                <option value="Alta">Alta</option>
+                <option value="Fallecido">Fallecido</option>
+                <option value="Ambulatorio">Ambulatorio (domiciliario)</option>
+            </select>
         </fieldset>
-
     </div>
 
     <div class="form-row">
@@ -99,14 +108,15 @@
             <select name="result_ifd" id="for_result_ifd" class="form-control">
                 <option ></option>
                 <option value="Negativo">Negativo</option>
-                <option value="INF A">INF A</option>
-                <option value="INF B">INF B</option>
-                <option value="VRS">VRS</option>
-                <option value="Metaneumovirus">Metaneumovirus</option>
                 <option value="Adenovirus">Adenovirus</option>
-                <option value="PARAINF 1">PARAINF 1</option>
-                <option value="PARAINF 2">PARAINF 2</option>
-                <option value="PARAINF 3">PARAINF 3</option>
+                <option value="Influenza A">Influenza A</option>
+                <option value="Influenza B">Influenza B</option>
+                <option value="Metapneumovirus">Metapneumovirus</option>
+                <option value="Parainfluenza 1">Parainfluenza 1</option>
+                <option value="Parainfluenza 2">Parainfluenza 2</option>
+                <option value="Parainfluenza 3">Parainfluenza 3</option>
+                <option value="VRS">VRS</option>
+                <option value="No procesado">No procesado</option>
             </select>
         </fieldset>
 
@@ -142,22 +152,12 @@
                 id="for_paho_flu">
         </fieldset>
 
-        <fieldset class="form-group col">
-            <label for="for_status">Estado</label>
-            <select name="status" id="for_status" class="form-control">
-                <option value=""></option>
-                <option value="Hospitalizado Básico">Hospitalizado Básico</option>
-                <option value="Hospitalizado Crítico">Hospitalizado Crítico</option>
-                <option value="Alta">Alta</option>
-                <option value="Fallecido">Fallecido</option>
-                <option value="Ambulatorio">Ambulatorio (domiciliario)</option>
-            </select>
-        </fieldset>
+
 
     </div>
 
     <div class="form-row">
-        <fieldset class="form-group col-12 col-md-12">
+        <fieldset class="form-group col-12 col-md-10">
             <label for="for_observation">Observación</label>
             <input type="text" class="form-control" name="observation"
                 id="for_observation">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\SuspectCase;
 use App\Patient;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SuspectCaseController extends Controller
@@ -41,6 +42,7 @@ class SuspectCaseController extends Controller
         $patient->save();
 
         $suspectCase = new SuspectCase($request->All());
+        $suspectCase->epidemiological_week = Carbon::createFromDate($suspectCase->sample_at->format('Y-m-d'))->add(1,'days')->weekOfYear;
         $patient->suspectCases()->save($suspectCase);
 
         //$suspectCase->save();
@@ -80,6 +82,8 @@ class SuspectCaseController extends Controller
     public function update(Request $request, SuspectCase $suspectCase)
     {
         $suspectCase->fill($request->all());
+
+        $suspectCase->epidemiological_week = Carbon::createFromDate($suspectCase->sample_at->format('Y-m-d'))->add(1,'days')->weekOfYear;
 
         $suspectCase->save();
 

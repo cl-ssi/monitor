@@ -76,7 +76,7 @@
             <td class="{{ ($case->result_ifd <> 'Negativo')?'text-danger':''}}">{{ $case->result_ifd }} {{ $case->subtype }}</td>
             <td>{{ $case->epidemiological_week }}</td>
             <td>{{ $case->epivigila }}</td>
-            <td>{{ $case->pscr_sars_cov_2 }}</td>
+            <td>{{ $case->covid19 }}</td>
             <td>{{ $case->paho_flu }}</td>
             <td>{{ $case->status }}</td>
             <td class="text-muted small">{{ $case->observation }}</td>

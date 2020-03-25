@@ -26,6 +26,14 @@ class SuspectCase extends Model
         return $this->morphMany('App\Log','model');
     }
 
+    function getCovid19Attribute(){
+        switch($this->pscr_sars_cov_2) {
+            case 'pending': return 'Pendiente'; break;
+            case 'positive': return 'Positivo'; break;
+            case 'negative': return 'Negativo'; break;
+        }
+    }
+
     protected $dates = [
         'sample_at'
     ];
