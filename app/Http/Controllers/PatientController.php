@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\SuspectCase;
 use App\Patient;
 use App\Demographic;
 use App\Log;
@@ -132,5 +133,11 @@ class PatientController extends Controller
         return Patient::where('run',$rut)->first();
         // if($patient==null){return 0;}
         // return $patient;
+    }
+
+    public function georeferencing()
+    {
+        $suspectCases = SuspectCase::latest('id')->get();
+        return view('patients.georeferencing.georeferencing', compact('suspectCases'));
     }
 }
