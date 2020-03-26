@@ -45,6 +45,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::prefix('patients')->name('patients.')->middleware('auth')->group(function () {
     Route::get('get/{rut?}','PatientController@getPatient')->name('get')->middleware('auth');
+    Route::get('georeferencing','PatientController@georeferencing')->name('georeferencing')->middleware('auth');
     Route::get('/', 'PatientController@index')->name('index')->middleware('can:Patient: list');
     Route::get('/create', 'PatientController@create')->name('create')->middleware('can:Patient: create');
     Route::post('/', 'PatientController@store')->name('store')->middleware('can:Patient: create');

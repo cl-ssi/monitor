@@ -53,6 +53,13 @@
                             </a>
                         </li>
                         @endcan
+                        @can('Admin')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('patients.georeferencing') }}">
+                                Georeferenciación
+                            </a>
+                        </li>
+                        @endcan
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('lab.suspect_cases.report') }}">
                                 Reporte
