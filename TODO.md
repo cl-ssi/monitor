@@ -10,22 +10,26 @@ Perfil Epidemilogos:
 - Puede editar datos de demograficos.
 
 Permisos:
++ Fecha envío a ISP (lab)
++ Fecha resultado IFD (lab)
++ Fecha de resultado COVID (Lab->Epidemiologos)
++ Fecha toma muestra (lab o comuna?)
+
 + Dirección (SEREMI)
 + Telefono (SEREMI)
 + Correo Electrónico (SEREMI)
 + Fecha Nacimiento (SEREMI)
+
 - Centro que notifica (SEREMI)
-- Fecha toma muestra (comuna)
-- Fecha entrega de muestra a lab (comuna)
-- Fecha envío a ISP, (lab)
-- Fecha resultado IFD (lab)
-- Fecha notificacion paciente (SEREMI)  
-- Fecha de resultado COVID (Lab->Epidemiologos)
+- Fecha notificacion paciente (SEREMI)
+
+- Fecha recepción en Laboratorio (laboratorio)
+- Fecha toma de muestra (comuna)
 - Fecha entrega a resultado paciente (comuna)
-- Contrareferencia (epidemiologo)
 - Licencia médica (comuna)
-- Origen toma de muestra (quién completa?)
-- Centro que notifica (quién completa?)
+
+- Contrareferencia (coumna)
+
 
 
 Apuntes:

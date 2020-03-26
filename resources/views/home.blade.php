@@ -6,7 +6,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    Bienvenido al sistema de monitoreo del Servicio de Slaud
+                    Bienvenido al sistema de monitoreo del Servicio de Salud
                 </div>
 
                 <div class="card-body">
