@@ -1,6 +1,5 @@
 TODO:
 - Agregar un Log de cambios.
-- Que no se duplique el RUT.
 - Agregar pdf con resultado.
 
 Perfil Laboratorio:

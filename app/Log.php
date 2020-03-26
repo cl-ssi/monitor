@@ -55,9 +55,12 @@ class Log extends Model
 
     public function getDiferencesArrayAttribute(){
         $diferences = json_decode($this->diferences,TRUE);
-        if(isset($diferences['updated_at'])){
-            unset($diferences['updated_at']);
-        }
+        unset($diferences['updated_at']);
+        unset($diferences['created_at']);
+        unset($diferences['id']);
+        // if(isset($diferences['updated_at'])){
+        //     unset($diferences['updated_at']);
+        // }
         return $diferences;
     }
 

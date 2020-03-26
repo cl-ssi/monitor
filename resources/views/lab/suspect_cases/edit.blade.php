@@ -34,7 +34,7 @@
         </fieldset>
 
 
-        <fieldset class="form-group col-6 col-md-4">
+        <fieldset class="form-group col-8 col-md-4">
             <label for="for_status">Estado</label>
             <select name="status" id="for_status" class="form-control">
                 <option value=""></option>
@@ -46,7 +46,7 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-3 col-md-2">
+        <fieldset class="form-group col-4 col-md-2">
             <label for="for_age">Edad</label>
             <input type="number" class="form-control" id="for_age" name="age"
                 value="{{ $suspectCase->age }}">
@@ -152,6 +152,36 @@
         Cancelar
     </a>
 </form>
+
+@can('Admin')
+<table class="table table-sm small text-muted mt-3">
+    <thead>
+        <tr>
+            <th colspan="4">Historial de cambios</th>
+        </tr>
+        <tr>
+            <th>Modelo</th>
+            <th>Fecha</th>
+            <th>Usuario</th>
+            <th>Modificaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($suspectCase->logs as $log)
+        <tr>
+            <td>{{ $log->model_type }}</td>
+            <td>{{ $log->created_at }}</td>
+            <td>{{ $log->user->name }}</td>
+            <td>
+                @foreach($log->diferencesArray as $key => $diference)
+                    {{ $key }} => {{ $diference}} <br>
+                @endforeach
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+@endcan
 
 @endsection
 

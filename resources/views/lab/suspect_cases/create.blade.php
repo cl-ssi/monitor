@@ -20,13 +20,13 @@
             <input type="text" class="form-control" id="for_dv" name="dv" readonly>
         </fieldset>
 
-        <fieldset class="form-group col-12 col-md-3">
+        <fieldset class="form-group col-12 col-md-2">
             <label for="for_other_identification">Otra identificación</label>
             <input type="text" class="form-control" id="for_other_identification"
                 placeholder="Extranjeros sin run" name="other_identification">
         </fieldset>
 
-        <fieldset class="form-group col-5 col-md-2">
+        <fieldset class="form-group col-6 col-md-2">
             <label for="for_gender">Genero</label>
             <select name="gender" id="for_gender" class="form-control">
                 <option value="male">Masculino</option>
@@ -36,7 +36,7 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-5 col-md-2">
+        <fieldset class="form-group col-6 col-md-2">
             <label for="for_birthday">Fecha Nacimiento</label>
             <input type="date" class="form-control" id="for_birthday"
                 name="birthday">
@@ -85,7 +85,7 @@
                 name="sample_at" required>
         </fieldset>
 
-        <fieldset class="form-group col-12 col-md-4">
+        <fieldset class="form-group col-8 col-md-4">
             <label for="for_status">Estado</label>
             <select name="status" id="for_status" class="form-control">
                 <option value=""></option>
@@ -97,7 +97,7 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-2 col-md-2">
+        <fieldset class="form-group col-4 col-md-2">
             <label for="for_age">Edad</label>
             <input type="number" class="form-control" id="for_age" name="age">
         </fieldset>

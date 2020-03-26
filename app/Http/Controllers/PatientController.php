@@ -47,10 +47,6 @@ class PatientController extends Controller
         $log->new = $patient;
         $log->save();
 
-
-        // $demographic = new Demographic($request->All());
-        // $demographic->save();
-
         return redirect()->route('patients.index');
     }
 
@@ -89,22 +85,25 @@ class PatientController extends Controller
         $logPatient->old = clone $patient;
 
         $patient->fill($request->all());
+        $patient->save();
 
         $logPatient->new = $patient;
         $logPatient->save();
-
 
         $logDemographic = new Log();
         if($patient->demographic) {
             $logDemographic->old = clone $patient->demographic;
             $patient->demographic->fill($request->all());
             $patient->demographic->save();
+            $logDemographic->new = $patient->demographic;
         }
         else {
             $demographic = new Demographic($request->All());
-            $patient->demographic->save($demographic);
+            $demographic->patient_id = $patient->id;
+            $demographic->save();
+
+            $logDemographic->new = $demographic;
         }
-        $logDemographic->new = $patient->demographic;
         $logDemographic->save();
 
         return redirect()->route('patients.index');

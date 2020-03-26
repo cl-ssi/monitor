@@ -12,7 +12,7 @@
             value="{{ $suspectCase->patient->dv }}">
     </fieldset>
 
-    <fieldset class="form-group col-12 col-md-4">
+    <fieldset class="form-group col-12 col-md-2">
         <label for="for_other_identification">Otra identificación</label>
         <input type="text" class="form-control"
             placeholder="Extranjeros sin run" readonly disabled
@@ -51,19 +51,19 @@
 
 <div class="form-row">
 
-    <fieldset class="form-group col-12 col-md-4">
+    <fieldset class="form-group col-12 col-md-3">
         <label for="for_name">Nombres</label>
         <input type="text" class="form-control" readonly disabled
             value="{{ $suspectCase->patient->name }}">
     </fieldset>
 
-    <fieldset class="form-group col-12 col-md-4">
+    <fieldset class="form-group col-12 col-md-3">
         <label for="for_fathers_family">Apellido Paterno</label>
         <input type="text" class="form-control" readonly disabled
             value="{{ $suspectCase->patient->fathers_family }}">
     </fieldset>
 
-    <fieldset class="form-group col-12 col-md-4">
+    <fieldset class="form-group col-12 col-md-3">
         <label for="for_mothers_family">Apellido Materno</label>
         <input type="text" class="form-control" readonly disabled
             value="{{ $suspectCase->patient->mothers_family }}">

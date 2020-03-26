@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\SuspectCase;
 use App\Patient;
+use App\Log;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -38,20 +39,23 @@ class SuspectCaseController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->id == null){
-          $patient = new Patient($request->All());
-          $patient->save();
+        if($request->id == null) {
+            $patient = new Patient($request->All());
         }
-        else
-        {
-          $patient = Patient::find($request->id);
+        else {
+            $patient = Patient::find($request->id);
+            $patient->fill($request->all());
         }
+        $patient->save();
 
         $suspectCase = new SuspectCase($request->All());
         $suspectCase->epidemiological_week = Carbon::createFromDate($suspectCase->sample_at->format('Y-m-d'))->add(1,'days')->weekOfYear;
         $patient->suspectCases()->save($suspectCase);
 
-        //$suspectCase->save();
+        $log = new Log();
+        //$log->old = $suspectCase;
+        $log->new = $suspectCase;
+        $log->save();
 
         return redirect()->route('lab.suspect_cases.index');
     }
@@ -87,11 +91,18 @@ class SuspectCaseController extends Controller
      */
     public function update(Request $request, SuspectCase $suspectCase)
     {
+        $log = new Log();
+        $log->old = clone $suspectCase;
+
         $suspectCase->fill($request->all());
 
         $suspectCase->epidemiological_week = Carbon::createFromDate($suspectCase->sample_at->format('Y-m-d'))->add(1,'days')->weekOfYear;
 
         $suspectCase->save();
+
+        $log->new = $suspectCase;
+        $log->save();
+
 
         return redirect()->route('lab.suspect_cases.index');
     }

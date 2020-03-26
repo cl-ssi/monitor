@@ -29,6 +29,7 @@
 
             <p class="mt-3">Registro de cambios: </p>
             <ul class="text-muted small">
+                <li>2020-03-25 Busca si el paciente ya está ingresado y pre carga los datos.</li>
                 <li>2020-03-25 Renombrados datos de resultado de IFD equivalentes al LIS.</li>
                 <li>2020-03-25 Resultados IFD agregado "No procesado".</li>
                 <li>2020-03-25 Edad se mantiene en caso sospecha y no en datos del paciente.</li>
