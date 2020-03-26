@@ -76,6 +76,7 @@
                 <option value="Clínica Iquique">Clínica Iquique</option>
                 <option value="Hector Reyno">Hector Reyno</option>
                 <option value="CESFAM Guzmán">CESFAM Guzmán</option>
+                <option value="Particular (SEREMI)">Particular (SEREMI)</option>
             </select>
         </fieldset>
 

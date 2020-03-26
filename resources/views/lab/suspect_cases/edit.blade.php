@@ -24,6 +24,7 @@
                 <option value="Clínica Iquique" {{ ($suspectCase->origin == 'Clínica Iquique')?'selected':'' }}>Clínica Iquique</option>
                 <option value="Hector Reyno" {{ ($suspectCase->origin == 'Hector Reyno')?'selected':'' }}>Hector Reyno</option>
                 <option value="CESFAM Guzmán" {{ ($suspectCase->origin == 'CESFAM Guzmán')?'selected':'' }}>CESFAM Guzmán</option>
+                <option value="Particular (SEREMI)" {{ ($suspectCase->origin == 'Particular (SEREMI)')?'selected':'' }}>Particular (SEREMI)</option>
             </select>
         </fieldset>
 
