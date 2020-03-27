@@ -130,13 +130,13 @@
                         </span>
                     </th>
                     <th class="text-center">
-                        {{ $cases->where('patient.gender','male')->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','negative')->count() }}
+                        {{ $cases->where('patient.gender','male')->where('status','Hospitalizado Crítico')->whereIn('pscr_sars_cov_2',['negative','pending'])->count() }}
                         <span class="text-danger">
                             ({{ $cases->where('patient.gender','male')->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','positive')->count() }})
                         </span>
                     </th>
                     <th class="text-center">
-                        {{ $cases->where('patient.gender','female')->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','negative')->count() }}
+                        {{ $cases->where('patient.gender','female')->where('status','Hospitalizado Crítico')->whereIn('pscr_sars_cov_2',['negative','pending'])->count() }}
                         <span class="text-danger">
                             ({{ $cases->where('patient.gender','female')->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','positive')->count() }})
                         </span>
