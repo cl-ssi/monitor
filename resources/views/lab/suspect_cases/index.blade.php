@@ -14,8 +14,8 @@
         </a>
     </div>
     @endcan
-    <div class="col-7 col-sm-9 alert alert-primary" role="alert">
-        Para buscar presione Ctrl+F
+    <div class="col-7 col-sm-4" role="alert">
+        <input class="form-control" id="inputSearch" type="text" placeholder="Buscar">
     </div>
 </div>
 
@@ -65,7 +65,7 @@
             @endcan
         </tr>
     </thead>
-    <tbody>
+    <tbody id="tableCases">
         @foreach($suspectCases as $case)
         <tr class="{{ ($case->pscr_sars_cov_2 == 'positive')?'table-danger':''}}">
             <td>{{ $case->id }}</td>
@@ -75,7 +75,7 @@
             <td class="text-center" nowrap>{{ $case->patient->identifier }}</td>
             <td>{{ $case->age }}</td>
             <td>{{ strtoupper($case->gender[0]) }}</td>
-            <td class="{{ ($case->result_ifd <> 'Negativo')?'text-danger':''}}">{{ $case->result_ifd }} {{ $case->subtype }}</td>
+            <td class="{{ ($case->result_ifd <> 'Negativo' AND $case->result_ifd <> 'No procesado')?'text-danger':''}}">{{ $case->result_ifd }} {{ $case->subtype }}</td>
             <td>{{ $case->epidemiological_week }}</td>
             <td>{{ $case->epivigila }}</td>
             <td>{{ $case->covid19 }}</td>
@@ -95,7 +95,18 @@
 @endsection
 
 @section('custom_js')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 <script type="text/javascript">
+$(document).ready(function(){
+    $("#inputSearch").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#tableCases tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+});
+
 function exportF(elem) {
     var table = document.getElementById("tabla_casos");
     var html = table.outerHTML;

@@ -110,13 +110,13 @@
 
     <div class="form-row">
 
-        <fieldset class="form-group col-6 col-md-2">
+        <fieldset class="form-group col-6 col-md-2 alert-warning">
             <label for="for_result_ifd_at">Fecha Resultado IFD</label>
             <input type="date" class="form-control" id="for_result_ifd_at"
                 name="result_ifd_at">
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
+        <fieldset class="form-group col-6 col-md-2 alert-warning">
             <label for="for_result_ifd">Resultado IFD</label>
             <select name="result_ifd" id="for_result_ifd" class="form-control">
                 <option ></option>
@@ -134,7 +134,7 @@
         </fieldset>
 
 
-        <fieldset class="form-group col-6 col-md-2">
+        <fieldset class="form-group col-6 col-md-2 alert-warning">
             <label for="for_subtype">Subtipo</label>
             <select name="subtype" id="for_subtype" class="form-control">
                 <option value=""></option>
@@ -148,19 +148,19 @@
 
     <div class="form-row">
 
-        <fieldset class="form-group col-6 col-md-2">
+        <fieldset class="form-group col-6 col-md-2 alert-danger">
             <label for="for_sent_isp_at">Fecha envío a ISP</label>
             <input type="date" class="form-control" id="for_sent_isp_at"
                 name="sent_isp_at">
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
+        <fieldset class="form-group col-6 col-md-2 alert-danger">
             <label for="for_pscr_sars_cov_2_at">Fecha Resultado PCR</label>
             <input type="date" class="form-control" id="for_pscr_sars_cov_2_at"
                 name="pscr_sars_cov_2_at">
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
+        <fieldset class="form-group col-6 col-md-2 alert-danger">
             <label for="for_pscr_sars_cov_2">PCR SARS-Cov2</label>
             <select name="pscr_sars_cov_2" id="for_pscr_sars_cov_2"
                 class="form-control">

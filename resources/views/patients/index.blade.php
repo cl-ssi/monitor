@@ -14,8 +14,8 @@
         </a>
     </div>
     @endcan
-    <div class="col-7 col-sm-9 alert alert-primary" role="alert">
-        Para buscar presione Ctrl+F
+    <div class="col-7 col-sm-4" role="alert">
+        <input class="form-control" id="inputSearch" type="text" placeholder="Buscar">
     </div>
 </div>
 
@@ -35,7 +35,7 @@
             @endcan
         </tr>
     </thead>
-    <tbody>
+    <tbody id="tablePatients">
         @foreach($patients as $patient)
         <tr>
             <td class="text-center">{{ $patient->identifier }}</td>
@@ -61,5 +61,16 @@
 @endsection
 
 @section('custom_js')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#inputSearch").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#tablePatients tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+});
+</script>
 @endsection

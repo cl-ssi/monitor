@@ -171,7 +171,7 @@
                     <td class="text-center">
                         {{ $cases->whereIn('origin',['Clínica Tarapacá','Clínica Iquique'])->count() }}
                         <span class="text-danger">
-                            ( {{ $cases->whereIn('origin',['Clínica Tarapacá','Clínica Iquique'])->where('pscr_sars_cov_2','positive')->count() }} )
+                            ( {{ $cases->whereIn('origin',['Clínica Tarapacá','Clínica Iquique','Particular (SEREMI)'])->where('pscr_sars_cov_2','positive')->count() }} )
                         </span>
                     </td>
                 </tr>
