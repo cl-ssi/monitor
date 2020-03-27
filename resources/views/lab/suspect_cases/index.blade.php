@@ -52,6 +52,7 @@
             <th>Nombre</th>
             <th>RUN</th>
             <th>Edad</th>
+            <th>Sexo</th>
             <th>Resultado IFD</th>
             <th>Sem</th>
             <th>Epivigila</th>
@@ -73,6 +74,7 @@
             <td> <a class="link" href="{{ route('patients.edit',$case->patient) }}">{{ $case->patient->fullName }}</a></td>
             <td class="text-center" nowrap>{{ $case->patient->identifier }}</td>
             <td>{{ $case->age }}</td>
+            <td>{{ strtoupper($case->gender[0]) }}</td>
             <td class="{{ ($case->result_ifd <> 'Negativo')?'text-danger':''}}">{{ $case->result_ifd }} {{ $case->subtype }}</td>
             <td>{{ $case->epidemiological_week }}</td>
             <td>{{ $case->epivigila }}</td>
