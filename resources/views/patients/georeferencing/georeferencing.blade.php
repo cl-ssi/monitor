@@ -103,11 +103,15 @@ var scalebar = ui.getControl('scalebar');
 
           map.addObject(marker);
 
+          var genero = "";
+          @if($case->patient->gender=="male") genero = "Hombre";
+          @else genero = "Mujer"; @endif
+
           var bubble;
           console.log(position.lat);
           marker.addEventListener('pointerenter', function(evt) {
               bubble = new H.ui.InfoBubble({lat:position.lat,lng:position.lng}, {
-              content: "{{$case->patient->name}} {{$case->patient->fathers_family}} {{$case->patient->mothers_family}}"
+              content: "<b>{{$case->patient->name}}</b><br />" + genero + "<br /> {{$case->first()->age}} años."
             });
             ui.addBubble(bubble);
           }, false);
