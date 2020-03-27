@@ -6,7 +6,7 @@
 
 <h3 class="mb-3">Georeferenciación</h3>
 
-<div style="width: 100%; height: 480px" id="mapContainer"></div>
+<div style="width: 100%; height: 650px" id="mapContainer"></div>
 
 @endsection
 
@@ -39,7 +39,7 @@ var map = new H.Map(
   defaultLayers.vector.normal.map,
   {
     zoom: 12.7,
-    center: { lat: -20.25, lng: -70.1 }
+    center: { lat: -20.26, lng: -70.13 }
   }
 );
 
