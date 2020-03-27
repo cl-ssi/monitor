@@ -13,9 +13,10 @@ class SuspectCase extends Model
      * @var array
      */
     protected $fillable = [
-        'sample_at', 'origin', 'age', 'gender', 'result_ifd', 'subtype',
-        'epidemiological_week', 'epivigila', 'pscr_sars_cov_2', 'paho_flu',
-        'status', 'observation', 'patient_id'
+        'sample_at', 'origin', 'age', 'gender', 'result_ifd', 'result_ifd_at',
+        'subtype', 'epidemiological_week', 'epivigila', 'pscr_sars_cov_2',
+        'pscr_sars_cov_2_at', 'paho_flu', 'sent_isp_at', 'status',
+        'observation', 'patient_id'
     ];
 
     public function Patient() {
@@ -35,6 +36,6 @@ class SuspectCase extends Model
     }
 
     protected $dates = [
-        'sample_at'
+        'sample_at', 'result_ifd_at', 'pscr_sars_cov_2_at', 'sent_isp_at'
     ];
 }

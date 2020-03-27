@@ -22,11 +22,14 @@ class CreateSuspectCasesTable extends Migration
             $table->enum('gender',['male', 'female', 'other', 'unknown']);
 
             $table->string('result_ifd')->nullable();
+            $table->datetime('result_ifd_at')->nullable();
             $table->string('subtype')->nullable();
             $table->unsignedSmallInteger('epidemiological_week')->nullable();
             $table->unsignedInteger('epivigila')->nullable();
             $table->string('pscr_sars_cov_2')->nullable();
+            $table->datetime('pscr_sars_cov_2_at')->nullable();
             $table->unsignedInteger('paho_flu')->nullable();
+            $table->datetime('sent_isp_at')->nullable();
             $table->string('status')->nullable(); /* Fallecido, Alta, Hospitalizado, Fugado */
             $table->string('observation')->nullable();
             $table->unsignedBigInteger('patient_id');

@@ -124,6 +124,12 @@
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
+            <label for="for_result_ifd_at">Fecha Resultado IFD</label>
+            <input type="date" class="form-control" id="for_result_ifd_at"
+                name="result_ifd_at">
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-2">
             <label for="for_subtype">Subtipo</label>
             <select name="subtype" id="for_subtype" class="form-control">
                 <option value=""></option>
@@ -150,12 +156,22 @@
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
+            <label for="for_pscr_sars_cov_2_at">Fecha Resultado PCR</label>
+            <input type="date" class="form-control" id="for_pscr_sars_cov_2_at"
+                name="pscr_sars_cov_2_at">
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-2">
             <label for="for_paho_flu">PAHO FLU</label>
             <input type="number" class="form-control" name="paho_flu"
                 id="for_paho_flu">
         </fieldset>
 
-
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_sent_isp_at">Fecha envío a ISP</label>
+            <input type="date" class="form-control" id="for_sent_isp_at"
+                name="sent_isp_at">
+        </fieldset>
 
     </div>
 
