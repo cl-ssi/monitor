@@ -101,8 +101,20 @@ var scalebar = ui.getControl('scalebar');
             marker = new H.map.Marker(position, {icon: iconBlue});
           @endif
 
-
           map.addObject(marker);
+
+          var bubble;
+          console.log(position.lat);
+          marker.addEventListener('pointerenter', function(evt) {
+              bubble = new H.ui.InfoBubble({lat:position.lat,lng:position.lng}, {
+              content: "{{$case->patient->name}} {{$case->patient->fathers_family}} {{$case->patient->mothers_family}}"
+            });
+            ui.addBubble(bubble);
+          }, false);
+          marker.addEventListener('pointerleave', function(evt) {
+            bubble.close();
+          }, false);
+
         }
 
       };
