@@ -78,7 +78,7 @@ var scalebar = ui.getControl('scalebar');
 
       // Create the parameters for the geocoding request:
         var geocodingParams = {
-            searchText: '{{$case->patient->demographic->address}}, {{$case->patient->demographic->commune}}, chile'
+            searchText: '{{$case->patient->demographic->address}} {{$case->patient->demographic->number}}, {{$case->patient->demographic->commune}}, chile'
           };
 
       // Define a callback function to process the geocoding response:
