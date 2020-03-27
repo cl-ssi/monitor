@@ -10,25 +10,25 @@
 #### Configurar
 
 - Agregar todos los programas al PATH
-- En php.ini habilitar extención gd, mbstring, pdo_sqlite y no me acuerdo cual mas
--
+- En php.ini habilitar (descomentar) extención gd2, mbstring, pdo_sqlite y no me acuerdo cual mas
 
 ### Ejecutar en interprete de comandos
 
 - $ git clone https://github.com/cl-ssi/monitor
 - $ cd monitor
 - $ cp .env.example .env (copy en vez de cp en windows)
+- $ composer install
 - $ php artisan key:generate
 
 ### Base de datos
 - Editar archivo .env
 
-#### 1. Sqlite (más fácil)
+#### Opción 1. Sqlite (más fácil)
 - DB_CONNECTION=sqlite
 - DB_DATABASE=C:\\Users\\Atorres\\monitor\\database\\database.sqlite
 - Crear un archivo vacío en monitor\database\database.sqlite con el block de notas por ejemplo
 
-#### 2. MySql editar
+#### Opción 2. MySql editar
 - Configurar en .env los campos de base de datos, empiezan con DB_
 
 ### Ejecutar los siguientes comandos
