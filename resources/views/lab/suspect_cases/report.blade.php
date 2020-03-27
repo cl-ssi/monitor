@@ -152,7 +152,7 @@
                     <td class="text-center">
                         {{ $cases->where('origin','Hospital ETG')->count() }}
                         <span class="text-danger">
-                            ( {{ $cases->where('origin','Hospital ETG')->where('pscr_sars_cov_2','positive')->count() }} )
+                            ({{ $cases->where('origin','Hospital ETG')->where('pscr_sars_cov_2','positive')->count() }})
                         </span>
                     </td>
                 </tr>
@@ -162,7 +162,7 @@
                     <td class="text-center">
                         {{ $cases->whereIn('origin',['CESFAM Guzmán','Hector Reyno'])->count() }}
                         <span class="text-danger">
-                            ( {{ $cases->whereIn('origin',['CESFAM Guzmán','Hector Reyno'])->where('pscr_sars_cov_2','positive')->count() }} )
+                            ({{ $cases->whereIn('origin',['CESFAM Guzmán','Hector Reyno'])->where('pscr_sars_cov_2','positive')->count() }})
                         </span>
                     </td>
                 </tr>
@@ -171,7 +171,7 @@
                     <td class="text-center">
                         {{ $cases->whereIn('origin',['Clínica Tarapacá','Clínica Iquique'])->count() }}
                         <span class="text-danger">
-                            ( {{ $cases->whereIn('origin',['Clínica Tarapacá','Clínica Iquique','Particular (SEREMI)'])->where('pscr_sars_cov_2','positive')->count() }} )
+                            ({{ $cases->whereIn('origin',['Clínica Tarapacá','Clínica Iquique','Particular (SEREMI)'])->where('pscr_sars_cov_2','positive')->count() }})
                         </span>
                     </td>
                 </tr>
