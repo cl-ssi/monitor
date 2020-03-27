@@ -64,8 +64,16 @@
 
 
     </div>
+
     <hr>
+
     <div class="form-row">
+
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_sample_at">Fecha Muestra</label>
+            <input type="date" class="form-control" id="for_sample_at"
+                name="sample_at" required>
+        </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_origin">Origen</label>
@@ -80,11 +88,6 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
-            <label for="for_sample_at">Fecha Muestra</label>
-            <input type="date" class="form-control" id="for_sample_at"
-                name="sample_at" required>
-        </fieldset>
 
         <fieldset class="form-group col-8 col-md-4">
             <label for="for_status">Estado</label>
@@ -102,9 +105,16 @@
             <label for="for_age">Edad</label>
             <input type="number" class="form-control" id="for_age" name="age">
         </fieldset>
+
     </div>
 
     <div class="form-row">
+
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_result_ifd_at">Fecha Resultado IFD</label>
+            <input type="date" class="form-control" id="for_result_ifd_at"
+                name="result_ifd_at">
+        </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_result_ifd">Resultado IFD</label>
@@ -123,11 +133,6 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
-            <label for="for_result_ifd_at">Fecha Resultado IFD</label>
-            <input type="date" class="form-control" id="for_result_ifd_at"
-                name="result_ifd_at">
-        </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_subtype">Subtipo</label>
@@ -139,10 +144,20 @@
             </select>
         </fieldset>
 
+    </div>
+
+    <div class="form-row">
+
         <fieldset class="form-group col-6 col-md-2">
-            <label for="for_epivigila">Epivigila</label>
-            <input type="number" class="form-control" id="for_epivigila"
-                name="epivigila">
+            <label for="for_sent_isp_at">Fecha envío a ISP</label>
+            <input type="date" class="form-control" id="for_sent_isp_at"
+                name="sent_isp_at">
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_pscr_sars_cov_2_at">Fecha Resultado PCR</label>
+            <input type="date" class="form-control" id="for_pscr_sars_cov_2_at"
+                name="pscr_sars_cov_2_at">
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
@@ -155,11 +170,9 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
-            <label for="for_pscr_sars_cov_2_at">Fecha Resultado PCR</label>
-            <input type="date" class="form-control" id="for_pscr_sars_cov_2_at"
-                name="pscr_sars_cov_2_at">
-        </fieldset>
+    </div>
+
+    <div class="form-row">
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_paho_flu">PAHO FLU</label>
@@ -168,21 +181,19 @@
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
-            <label for="for_sent_isp_at">Fecha envío a ISP</label>
-            <input type="date" class="form-control" id="for_sent_isp_at"
-                name="sent_isp_at">
+            <label for="for_epivigila">Epivigila</label>
+            <input type="number" class="form-control" id="for_epivigila"
+                name="epivigila">
         </fieldset>
 
-    </div>
-
-    <div class="form-row">
-        <fieldset class="form-group col-12 col-md-10">
+        <fieldset class="form-group col-12 col-md-8">
             <label for="for_observation">Observación</label>
             <input type="text" class="form-control" name="observation"
                 id="for_observation">
         </fieldset>
 
     </div>
+
 
     <button type="submit" class="btn btn-primary">Guardar</button>
 

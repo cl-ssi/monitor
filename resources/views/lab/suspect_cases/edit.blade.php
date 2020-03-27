@@ -16,6 +16,12 @@
     <div class="form-row">
 
         <fieldset class="form-group col-6 col-md-2">
+            <label for="for_sample_at">Fecha Muestra</label>
+            <input type="date" class="form-control" id="for_sample_at"
+                name="sample_at" value="{{ (isset($suspectCase->sample_at))? $suspectCase->sample_at->format('Y-m-d'):'' }}">
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-2">
             <label for="for_origin">Origen</label>
             <select name="origin" id="for_origin" class="form-control">
                 <option value=""></option>
@@ -28,11 +34,6 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
-            <label for="for_sample_at">Fecha Muestra</label>
-            <input type="date" class="form-control" id="for_sample_at"
-                name="sample_at" value="{{ (isset($suspectCase->sample_at))? $suspectCase->sample_at->format('Y-m-d'):'' }}">
-        </fieldset>
 
 
         <fieldset class="form-group col-8 col-md-4">
@@ -52,9 +53,16 @@
             <input type="number" class="form-control" id="for_age" name="age"
                 value="{{ $suspectCase->age }}">
         </fieldset>
+
     </div>
 
     <div class="form-row">
+
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_result_ifd_at">Fecha Resultado IFD</label>
+            <input type="date" class="form-control" id="for_result_ifd_at"
+                name="result_ifd_at" value="{{( isset($suspectCase->result_ifd_at))?  $suspectCase->result_ifd_at->format('Y-m-d'):'' }}">
+        </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_result_ifd">Resultado IFD</label>
@@ -103,11 +111,6 @@
                 </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
-            <label for="for_result_ifd_at">Fecha Resultado IFD</label>
-            <input type="date" class="form-control" id="for_result_ifd_at"
-                name="result_ifd_at" value="{{( isset($suspectCase->result_ifd_at))?  $suspectCase->result_ifd_at->format('Y-m-d'):'' }}">
-        </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_subtype">Subtipo</label>
@@ -119,10 +122,20 @@
             </select>
         </fieldset>
 
+    </div>
+
+    <div class="form-row">
+
         <fieldset class="form-group col-6 col-md-2">
-            <label for="for_epivigila">Epivigila</label>
-            <input type="number" class="form-control" id="for_epivigila"
-                name="epivigila" value="{{ $suspectCase->epivigila }}">
+            <label for="for_sent_isp_at">Fecha envío a ISP</label>
+            <input type="date" class="form-control" id="for_sent_isp_at"
+                name="sent_isp_at" value="{{ isset($suspectCase->sent_isp_at)? $suspectCase->sent_isp_at->format('Y-m-d'):'' }}">
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_pscr_sars_cov_2_at">Fecha Resultado PCR</label>
+            <input type="date" class="form-control" id="for_pscr_sars_cov_2_at"
+                name="pscr_sars_cov_2_at" value="{{ isset($suspectCase->pscr_sars_cov_2_at)? $suspectCase->pscr_sars_cov_2_at->format('Y-m-d'):'' }}">
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
@@ -135,11 +148,9 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
-            <label for="for_pscr_sars_cov_2_at">Fecha Resultado PCR</label>
-            <input type="date" class="form-control" id="for_pscr_sars_cov_2_at"
-                name="pscr_sars_cov_2_at" value="{{ isset($suspectCase->pscr_sars_cov_2_at)? $suspectCase->pscr_sars_cov_2_at->format('Y-m-d'):'' }}">
-        </fieldset>
+    </div>
+
+    <div class="form-row">
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_paho_flu">PAHO FLU</label>
@@ -148,14 +159,12 @@
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
-            <label for="for_sent_isp_at">Fecha envío a ISP</label>
-            <input type="date" class="form-control" id="for_sent_isp_at"
-                name="sent_isp_at" value="{{ isset($suspectCase->sent_isp_at)? $suspectCase->sent_isp_at->format('Y-m-d'):'' }}">
+            <label for="for_epivigila">Epivigila</label>
+            <input type="number" class="form-control" id="for_epivigila"
+                name="epivigila" value="{{ $suspectCase->epivigila }}">
         </fieldset>
-    </div>
 
-    <div class="form-row">
-        <fieldset class="form-group col-12 col-md-12">
+        <fieldset class="form-group col-12 col-md-8">
             <label for="for_observation">Observación</label>
             <input type="text" class="form-control" name="observation"
                 id="for_observation" value="{{ $suspectCase->observation }}">
