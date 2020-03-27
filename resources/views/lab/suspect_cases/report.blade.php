@@ -70,77 +70,108 @@
 
 
                 <tr>
-                    <th class="table-active">Hospitalizados</th>
+                    <th class="table-active">Hospitalizados Básicos</th>
                     <th class="table-active text-center">
-                        {{ $cases->whereIn('status',['Hospitalizado Básico','Hospitalizado Crítico'])->count() }}
+                        {{ $cases->where('status','Hospitalizado Básico')->count() }}
                     </th>
                     <th class="table-active text-center">
-                        {{ $cases->where('patient.gender','male')->whereIn('status',['Hospitalizado Básico','Hospitalizado Crítico'])->count() }}
+                        {{ $cases->where('patient.gender','male')->where('status','Hospitalizado Básico')->count() }}
                     </th>
                     <th class="table-active text-center">
-                        {{ $cases->where('patient.gender','female')->whereIn('status',['Hospitalizado Básico','Hospitalizado Crítico'])->count() }}
+                        {{ $cases->where('patient.gender','female')->where('status','Hospitalizado Básico')->count() }}
                     </th>
                 </tr>
 
                 <tr>
                     <td>Negativos</td>
                     <td class="text-center">
-                        {{ $cases->whereIn('status',['Hospitalizado Básico','Hospitalizado Crítico'])->where('pscr_sars_cov_2','negative')->count() }}
+                        {{ $cases->where('status','Hospitalizado Básico')->where('pscr_sars_cov_2','negative')->count() }}
                     </td>
                     <td class="text-center">
-                        {{ $cases->where('patient.gender','male')->whereIn('status',['Hospitalizado Básico','Hospitalizado Crítico'])->where('pscr_sars_cov_2','negative')->count() }}
+                        {{ $cases->where('patient.gender','male')->where('status','Hospitalizado Básico')->where('pscr_sars_cov_2','negative')->count() }}
                     </td>
                     <td class="text-center">
-                        {{ $cases->where('patient.gender','female')->whereIn('status',['Hospitalizado Básico','Hospitalizado Crítico'])->where('pscr_sars_cov_2','negative')->count() }}
+                        {{ $cases->where('patient.gender','female')->where('status','Hospitalizado Básico')->where('pscr_sars_cov_2','negative')->count() }}
                     </td>
                 </tr>
 
                 <tr>
                     <td>Positivos</td>
                     <td class="text-danger text-center">
-                        {{ $cases->whereIn('status',['Hospitalizado Básico','Hospitalizado Crítico'])->where('pscr_sars_cov_2','positive')->count() }}
+                        {{ $cases->where('status','Hospitalizado Básico')->where('pscr_sars_cov_2','positive')->count() }}
                     </td>
                     <td class="text-danger text-center">
-                        {{ $cases->where('patient.gender','male')->whereIn('status',['Hospitalizado Básico','Hospitalizado Crítico'])->where('pscr_sars_cov_2','positive')->count() }}
+                        {{ $cases->where('patient.gender','male')->where('status','Hospitalizado Básico')->where('pscr_sars_cov_2','positive')->count() }}
                     </td>
                     <td class="text-danger text-center">
-                        {{ $cases->where('patient.gender','female')->whereIn('status',['Hospitalizado Básico','Hospitalizado Crítico'])->where('pscr_sars_cov_2','positive')->count() }}
+                        {{ $cases->where('patient.gender','female')->where('status','Hospitalizado Básico')->where('pscr_sars_cov_2','positive')->count() }}
                     </td>
                 </tr>
 
                 <tr>
                     <td>Resultado pendiente</td>
                     <td class="text-center">
-                        {{ $cases->whereIn('status',['Hospitalizado Básico','Hospitalizado Crítico'])->where('pscr_sars_cov_2','pending')->count() }}
+                        {{ $cases->where('status','Hospitalizado Básico')->where('pscr_sars_cov_2','pending')->count() }}
                     </td>
                     <td class="text-center">
-                        {{ $cases->where('patient.gender','male')->whereIn('status',['Hospitalizado Básico','Hospitalizado Crítico'])->where('pscr_sars_cov_2','pending')->count() }}
+                        {{ $cases->where('patient.gender','male')->where('status','Hospitalizado Básico')->where('pscr_sars_cov_2','pending')->count() }}
                     </td>
                     <td class="text-center">
-                        {{ $cases->where('patient.gender','female')->whereIn('status',['Hospitalizado Básico','Hospitalizado Crítico'])->where('pscr_sars_cov_2','pending')->count() }}
+                        {{ $cases->where('patient.gender','female')->where('status','Hospitalizado Básico')->where('pscr_sars_cov_2','pending')->count() }}
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <th class="table-active">Hospitalizados (UCI)</th>
+                    <th class="table-active text-center">
+                        {{ $cases->where('status','Hospitalizado Crítico')->count() }}
+                    </th>
+                    <th class="table-active text-center">
+                        {{ $cases->where('patient.gender','male')->where('status','Hospitalizado Crítico')->count() }}
+                    </th>
+                    <th class="table-active text-center">
+                        {{ $cases->where('patient.gender','female')->where('status','Hospitalizado Crítico')->count() }}
+                    </th>
+                </tr>
+
+                <tr>
+                    <td>Negativos</td>
+                    <td class="text-center">
+                        {{ $cases->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','negative')->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('patient.gender','male')->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','negative')->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('patient.gender','female')->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','negative')->count() }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th>UCI (Críticos)</th>
-                    <th class="text-center">
-                        {{ $cases->where('status','Hospitalizado Crítico')->count() }}
-                        <span class="text-danger">
-                            ({{ $cases->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','positive')->count() }})
-                        </span>
-                    </th>
-                    <th class="text-center">
-                        {{ $cases->where('patient.gender','male')->where('status','Hospitalizado Crítico')->whereIn('pscr_sars_cov_2',['negative','pending'])->count() }}
-                        <span class="text-danger">
-                            ({{ $cases->where('patient.gender','male')->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','positive')->count() }})
-                        </span>
-                    </th>
-                    <th class="text-center">
-                        {{ $cases->where('patient.gender','female')->where('status','Hospitalizado Crítico')->whereIn('pscr_sars_cov_2',['negative','pending'])->count() }}
-                        <span class="text-danger">
-                            ({{ $cases->where('patient.gender','female')->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','positive')->count() }})
-                        </span>
-                    </th>
+                    <td>Positivos</td>
+                    <td class="text-danger text-center">
+                        {{ $cases->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','positive')->count() }}
+                    </td>
+                    <td class="text-danger text-center">
+                        {{ $cases->where('patient.gender','male')->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','positive')->count() }}
+                    </td>
+                    <td class="text-danger text-center">
+                        {{ $cases->where('patient.gender','female')->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','positive')->count() }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Resultado pendiente</td>
+                    <td class="text-center">
+                        {{ $cases->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','pending')->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('patient.gender','male')->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','pending')->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('patient.gender','female')->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','pending')->count() }}
+                    </td>
                 </tr>
 
                 <tr>
