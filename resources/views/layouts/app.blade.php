@@ -53,7 +53,7 @@
                             </a>
                         </li>
                         @endcan
-                        @can('Admin')
+                        @can('Patient: georeferencing')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('patients.georeferencing') }}">
                                 Georeferenciación

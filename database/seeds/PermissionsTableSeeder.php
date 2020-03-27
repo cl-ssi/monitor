@@ -17,6 +17,7 @@ class PermissionsTableSeeder extends Seeder
         $permission = Permission::create(['name' => 'Patient: edit']);
         $permission = Permission::create(['name' => 'Patient: list']);
         $permission = Permission::create(['name' => 'Patient: delete']);
+        $permission = Permission::create(['name' => 'Patient: georeferencing']);
         $permission = Permission::create(['name' => 'SuspectCase: create']);
         $permission = Permission::create(['name' => 'SuspectCase: edit']);
         $permission = Permission::create(['name' => 'SuspectCase: list']);

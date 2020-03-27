@@ -70,7 +70,7 @@
             <td>{{ $case->id }}</td>
             <td nowrap>{{ (isset($case->sample_at))? $case->sample_at->format('Y-m-d'):'' }}</td>
             <td>{{ $case->origin }}</td>
-            <td>{{ $case->patient->fullName }}</td>
+            <td> <a class="link" href="{{ route('patients.edit',$case->patient) }}">{{ $case->patient->fullName }}</a></td>
             <td class="text-center" nowrap>{{ $case->patient->identifier }}</td>
             <td>{{ $case->age }}</td>
             <td class="{{ ($case->result_ifd <> 'Negativo')?'text-danger':''}}">{{ $case->result_ifd }} {{ $case->subtype }}</td>
