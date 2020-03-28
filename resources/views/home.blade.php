@@ -29,6 +29,11 @@
 
             <p class="mt-3">Registro de cambios: </p>
             <ul class="text-muted small">
+                <li>2020-03-27 Agregado desglose por genero en resumen.</li>
+                <li>2020-03-27 Agregado filtro de busqueda en listados.</li>
+                <li>2020-03-27 Reordenado el ingreso de caso sospecha</li>
+                <li>2020-03-26 Agregado georeferencia.</li>
+                <li>2020-30-26 Agregado campos de fecha entrega de resultados y envío ISP</li>
                 <li>2020-03-25 Busca si el paciente ya está ingresado y pre carga los datos.</li>
                 <li>2020-03-25 Renombrados datos de resultado de IFD equivalentes al LIS.</li>
                 <li>2020-03-25 Resultados IFD agregado "No procesado".</li>
