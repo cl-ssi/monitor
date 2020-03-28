@@ -102,12 +102,12 @@ class SuspectCaseController extends Controller
 
         $suspectCase->save();
 
-        $log->new = $suspectCase;
-        $log->save();
-
         if($log->old->pscr_sars_cov_2 == 'pending' AND $suspectCase->pscr_sars_cov_2 == 'positive') {
             Mail::to('alvarotorres@gmail.com')->send(new NewPositive());
         }
+
+        $log->new = $suspectCase;
+        $log->save();
 
         return redirect()->route('lab.suspect_cases.index');
     }
