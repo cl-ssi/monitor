@@ -6,6 +6,8 @@ use App\SuspectCase;
 use App\Patient;
 use App\Log;
 use Carbon\Carbon;
+use App\Mail\NewPositive;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 
 class SuspectCaseController extends Controller
@@ -103,6 +105,9 @@ class SuspectCaseController extends Controller
         $log->new = $suspectCase;
         $log->save();
 
+        if($log->old->pscr_sars_cov_2 = 'pending' AND $suspectCase->pscr_sars_cov_2 = 'positive') {
+            Mail::to('alvarotorres@gmail.com')->send(new NewPositive());
+        }
 
         return redirect()->route('lab.suspect_cases.index');
     }

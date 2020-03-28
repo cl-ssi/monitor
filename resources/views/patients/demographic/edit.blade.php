@@ -1,7 +1,7 @@
 <div class="form-row">
 
   <fieldset class="form-group col-md">
-      <label for="for_street_type">Vìa de residencia</label>
+      <label for="for_street_type">Vía de residencia</label>
       <select name="street_type" id="for_street_type" class="form-control">
           <option value="Calle" {{($patient->street_type == 'Calle')?'selected':''}}>Calle</option>
           <option value="Pasaje" {{($patient->street_type == 'Pasaje')?'selected':''}}>Pasaje</option>
@@ -26,7 +26,7 @@
 
     <fieldset class="form-group col-4">
         <label for="for_deparment">Departamento</label>
-        <input type="text" class="form-control" name="deparment" id="for_deparment" value="{{ $patient->demographic->deparment }}">
+        <input type="text" class="form-control" name="department" id="for_deparment" value="{{ $patient->demographic->department }}">
     </fieldset>
 
 </div>
