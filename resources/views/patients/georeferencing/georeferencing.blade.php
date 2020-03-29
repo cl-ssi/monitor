@@ -24,7 +24,7 @@ $( document ).ready(function() {
 
 // Instantiate a map and platform object:
 var platform = new H.service.Platform({
-  'apikey': '5mKawERqnzL1KMnNIt4n42gAV8eLomjQPKf5S5AAcZg'
+    'apikey': '5mKawERqnzL1KMnNIt4n42gAV8eLomjQPKf5S5AAcZg'
 });
 
 // Retrieve the target element for the map:
@@ -35,12 +35,12 @@ var defaultLayers = platform.createDefaultLayers();
 
 // Instantiate the map:
 var map = new H.Map(
-  document.getElementById('mapContainer'),
-  defaultLayers.vector.normal.map,
-  {
-    zoom: 12.7,
-    center: { lat: -20.26, lng: -70.13 }
-  }
+    document.getElementById('mapContainer'),
+    defaultLayers.vector.normal.map,
+    {
+        zoom: 12.7,
+        center: { lat: -20.26, lng: -70.13 }
+    }
 );
 
 // Create the default UI:

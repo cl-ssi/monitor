@@ -29,6 +29,7 @@
 
             <p class="mt-3">Registro de cambios: </p>
             <ul class="text-muted small">
+                <li>2020-03-28 Dirección desglosada en datos demográficos.</li>
                 <li>2020-03-27 Agregado desglose por genero en resumen.</li>
                 <li>2020-03-27 Agregado filtro de busqueda en listados.</li>
                 <li>2020-03-27 Reordenado el ingreso de caso sospecha</li>
