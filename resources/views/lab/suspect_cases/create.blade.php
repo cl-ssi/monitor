@@ -206,7 +206,7 @@
 
 @section('custom_js')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src='{{asset('js/jquery.rut.chileno.js')}}'></script>
+<script src='{{asset("js/jquery.rut.chileno.js")}}'></script>
 <script type="text/javascript">
 jQuery(document).ready(function($){
     //obtiene digito verificador
@@ -215,28 +215,28 @@ jQuery(document).ready(function($){
         $('#for_dv').val($.rut.dv(str));
     });
 
-  $('input[name=run]').change(function() {
+$('input[name=run]').change(function() {
     var str = $("#for_run").val();
     $.get('{{ route('patients.get')}}/'+str, function(data) {
-       if(data){
-         document.getElementById("for_id").value = data.id;
-         document.getElementById("for_other_identification").value = data.other_identification;
-         document.getElementById("for_gender").value = data.gender;
-         document.getElementById("for_birthday").value = data.birthday;
-         document.getElementById("for_name").value = data.name;
-         document.getElementById("for_fathers_family").value = data.fathers_family;
-         document.getElementById("for_mothers_family").value = data.mothers_family;
-       }else{
-         document.getElementById("for_id").value = "";
-         document.getElementById("for_other_identification").value = "";
-         document.getElementById("for_gender").value = "";
-         document.getElementById("for_birthday").value = "";
-         document.getElementById("for_name").value = "";
-         document.getElementById("for_fathers_family").value = "";
-         document.getElementById("for_mothers_family").value = "";
-       }
-     });
-  });
+        if(data){
+            document.getElementById("for_id").value = data.id;
+            document.getElementById("for_other_identification").value = data.other_identification;
+            document.getElementById("for_gender").value = data.gender;
+            document.getElementById("for_birthday").value = data.birthday;
+            document.getElementById("for_name").value = data.name;
+            document.getElementById("for_fathers_family").value = data.fathers_family;
+            document.getElementById("for_mothers_family").value = data.mothers_family;
+        } else {
+            document.getElementById("for_id").value = "";
+            document.getElementById("for_other_identification").value = "";
+            document.getElementById("for_gender").value = "";
+            document.getElementById("for_birthday").value = "";
+            document.getElementById("for_name").value = "";
+            document.getElementById("for_fathers_family").value = "";
+            document.getElementById("for_mothers_family").value = "";
+        }
+    });
+});
 
 });
 
