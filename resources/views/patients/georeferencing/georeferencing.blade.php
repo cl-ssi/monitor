@@ -50,13 +50,10 @@ var mapSettings = ui.getControl('mapsettings');
 var zoom = ui.getControl('zoom');
 var scalebar = ui.getControl('scalebar');
 
-//mapSettings.setAlignment('top-left');
-//zoom.setAlignment('top-left');
-//scalebar.setAlignment('top-left');
 
-@foreach($suspectCases as $key => $case)
-  @if($case->pscr_sars_cov_2 == 'positive' || $case->pscr_sars_cov_2 == 'pending')
-    @if($case->patient->demographic != null)
+
+
+@foreach($data as $key1 => $data1)
 
       // Define a variable holding SVG mark-up that defines an icon image:
       var svgMarkupBlue = '<svg width="10" height="10" ' +
@@ -78,7 +75,7 @@ var scalebar = ui.getControl('scalebar');
 
       // Create the parameters for the geocoding request:
         var geocodingParams = {
-            searchText: '{{$case->patient->demographic->address}} {{$case->patient->demographic->number}}, {{$case->patient->demographic->commune}}, chile'
+            searchText: '{{$key1}}, chile'
           };
 
       // Define a callback function to process the geocoding response:
@@ -95,23 +92,36 @@ var scalebar = ui.getControl('scalebar');
             lng: locations[i].Location.DisplayPosition.Longitude
           };
 
-          @if($case->pscr_sars_cov_2 == 'positive')
-            marker = new H.map.Marker(position, {icon: iconRed});
-          @else
-            marker = new H.map.Marker(position, {icon: iconBlue});
-          @endif
+          marker = new H.map.Marker(position, {icon: iconBlue});
+          @foreach ($data1 as $key2 => $data2)
+            @foreach ($data2 as $key3 => $data3)
+              @if($data3->pscr_sars_cov_2 == 'positive')
+                marker = new H.map.Marker(position, {icon: iconRed});
+              @endif
+            @endforeach
+          @endforeach
 
           map.addObject(marker);
 
-          var genero = "";
-          @if($case->patient->gender=="male") genero = "Hombre";
-          @else genero = "Mujer"; @endif
+          //se obtienen datos segun domicilio
+          var content = "";
+          @foreach ($data1 as $key2 => $data2)
+            @foreach ($data2 as $key3 => $data3)
 
+              var genero = "";
+              @if($data3->patient->gender=="male") genero = "Hombre";
+              @else genero = "Mujer"; @endif
+
+              content = content + "<b>{{$data3->patient->name}}</b><br />" + genero + "<br /> {{$data3->age}} años.<br />";
+            @endforeach
+          @endforeach
+
+          //se crea marca
           var bubble;
           console.log(position.lat);
           marker.addEventListener('pointerenter', function(evt) {
               bubble = new H.ui.InfoBubble({lat:position.lat,lng:position.lng}, {
-              content: "<b>{{$case->patient->name}}</b><br />" + genero + "<br /> {{$case->first()->age}} años."
+              content: content
             });
             ui.addBubble(bubble);
           }, false);
@@ -132,9 +142,8 @@ var scalebar = ui.getControl('scalebar');
       });
 
       //panTheMap(map);
-    @endif
-  @endif
 @endforeach
+
 
 
 function panTheMap(map) {
