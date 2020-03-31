@@ -23,5 +23,6 @@ class PermissionsTableSeeder extends Seeder
         $permission = Permission::create(['name' => 'SuspectCase: list']);
         $permission = Permission::create(['name' => 'SuspectCase: delete']);
         $permission = Permission::create(['name' => 'Demographic: edit']);
+        $permission = Permission::create(['name' => 'Report']);
     }
 }
