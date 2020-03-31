@@ -29,6 +29,8 @@
 
             <p class="mt-3">Registro de cambios: </p>
             <ul class="text-muted small">
+                <li>2020-03-31 Reporte ahora necesita logear</li>
+                <li>2020-03-31 Filtro por resultado de Covid-19</li>
                 <li>2020-03-28 Dirección desglosada en datos demográficos.</li>
                 <li>2020-03-27 Agregado desglose por genero en resumen.</li>
                 <li>2020-03-27 Agregado filtro de busqueda en listados.</li>
