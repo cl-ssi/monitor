@@ -131,13 +131,20 @@ class PatientController extends Controller
     public function getPatient($rut)
     {
         return Patient::where('run',$rut)->first();
-        // if($patient==null){return 0;}
-        // return $patient;
     }
 
     public function georeferencing()
     {
         $suspectCases = SuspectCase::latest('id')->get();
-        return view('patients.georeferencing.georeferencing', compact('suspectCases'));
+
+        $data = array();
+        foreach ($suspectCases as $key => $case) {
+          if ($case->pscr_sars_cov_2 == 'positive' || $case->pscr_sars_cov_2 == 'pending') {
+            if ($case->patient->demographic != null) {
+              $data[$case->patient->demographic->address . " " . $case->patient->demographic->number . ", " . $case->patient->demographic->commune][$case->patient->run]['paciente']=$case;
+            }
+          }
+        }
+        return view('patients.georeferencing.georeferencing', compact('suspectCases','data'));
     }
 }
