@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\SuspectCase;
 use App\Patient;
 use App\Log;
+use App\File;
 use Carbon\Carbon;
 use App\Mail\NewPositive;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 
 class SuspectCaseController extends Controller
 {
@@ -53,6 +56,18 @@ class SuspectCaseController extends Controller
         $suspectCase = new SuspectCase($request->All());
         $suspectCase->epidemiological_week = Carbon::createFromDate($suspectCase->sample_at->format('Y-m-d'))->add(1,'days')->weekOfYear;
         $patient->suspectCases()->save($suspectCase);
+
+        //guarda archivos
+        if($request->hasFile('forfile')){
+          foreach($request->file('forfile') as $file) {
+            $filename = $file->getClientOriginalName();
+            $fileModel = New File;
+            $fileModel->file = $file->store('files');
+            $fileModel->name = $filename;
+            $fileModel->suspect_case_id = $suspectCase->id;
+            $fileModel->save();
+          }
+        }
 
         $log = new Log();
         //$log->old = $suspectCase;
@@ -102,6 +117,18 @@ class SuspectCaseController extends Controller
 
         $suspectCase->save();
 
+        //guarda archivos
+        if($request->hasFile('forfile')){
+          foreach($request->file('forfile') as $file) {
+            $filename = $file->getClientOriginalName();
+            $fileModel = New File;
+            $fileModel->file = $file->store('files');
+            $fileModel->name = $filename;
+            $fileModel->suspect_case_id = $suspectCase->id;
+            $fileModel->save();
+          }
+        }
+
         if($log->old->pscr_sars_cov_2 == 'pending' AND $suspectCase->pscr_sars_cov_2 == 'positive') {
             Mail::to(['alvarotorres@gmail.com','caterinev.valencia@redsalud.gob.cl'])->send(new NewPositive());
         }
@@ -128,5 +155,10 @@ class SuspectCaseController extends Controller
     public function report() {
         $cases = SuspectCase::All();
         return view('lab.suspect_cases.report', compact('cases'));
+    }
+
+    public function download(File $file)
+    {
+        return Storage::response($file->file, mb_convert_encoding($file->name,'ASCII'));
     }
 }
