@@ -42,6 +42,12 @@
 
 <a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a>
 
+<div align="right">
+  <input type="checkbox" name="positivos" id="chk_positivos" v="Positivos" checked/> Positivos
+  <input type="checkbox" name="negativos" id="chk_negativos" v="Negativos" checked/> Negativos
+  <input type="checkbox" name="pendientes" id="chk_pendientes" v="Pendientes" checked/> Pendientes
+</div>
+
 <div class="table-responsive">
 <table class="table table-sm table-bordered" id="tabla_casos">
     <thead>
@@ -67,7 +73,7 @@
     </thead>
     <tbody id="tableCases">
         @foreach($suspectCases as $case)
-        <tr class="{{ ($case->pscr_sars_cov_2 == 'positive')?'table-danger':''}}">
+        <tr class="row_{{$case->covid19}} {{ ($case->pscr_sars_cov_2 == 'positive')?'table-danger':''}}">
             <td>{{ $case->id }}</td>
             <td nowrap>{{ (isset($case->sample_at))? $case->sample_at->format('Y-m-d'):'' }}</td>
             <td>{{ $case->origin }}</td>
@@ -104,6 +110,18 @@ $(document).ready(function(){
         $("#tableCases tr").filter(function() {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
+    });
+    //oculta segun checkbox
+    $("#chk_positivos").change(function(){
+        $(".row_Positivo").toggle();
+    });
+    $("#chk_negativos").change(function(){
+        var self = this;
+        $(".row_Negativo").toggle();
+    });
+    $("#chk_pendientes").change(function(){
+        var self = this;
+        $(".row_Pendiente").toggle();
     });
 });
 
