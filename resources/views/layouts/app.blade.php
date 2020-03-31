@@ -46,6 +46,7 @@
                             </a>
                         </li>
                         @endcan
+
                         @can('SuspectCase: list')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('lab.suspect_cases.index') }}">
@@ -53,6 +54,7 @@
                             </a>
                         </li>
                         @endcan
+
                         @can('Patient: georeferencing')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('patients.georeferencing') }}">
@@ -60,11 +62,14 @@
                             </a>
                         </li>
                         @endcan
+
+                        @can('Report')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('lab.suspect_cases.report') }}">
                                 Reporte
                             </a>
                         </li>
+                        @endcan
 
                         @can('Admin')
                         <li class="nav-item">

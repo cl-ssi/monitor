@@ -63,7 +63,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/{suspect_case}/edit', 'SuspectCaseController@edit')->name('edit')->middleware('auth','can:SuspectCase: edit');
         Route::put('/{suspect_case}', 'SuspectCaseController@update')->name('update')->middleware('auth','can:SuspectCase: edit');
         Route::delete('/{suspect_case}', 'SuspectCaseController@destroy')->name('destroy')->middleware('auth','can:SuspectCase: delete');
-        Route::get('/report','SuspectCaseController@report')->name('report');
+        Route::get('/report','SuspectCaseController@report')->name('report')->middleware('auth','can:Report');
     });
 });
 
