@@ -56,7 +56,7 @@ var scalebar = ui.getControl('scalebar');
 @foreach($data as $key1 => $data1)
 
       // Define a variable holding SVG mark-up that defines an icon image:
-      var svgMarkupBlue = '<svg width="10" height="10" ' +
+      var svgMarkupBlue = '<svg width="5" height="5" ' +
         'xmlns="http://www.w3.org/2000/svg">' +
         '<rect stroke="white" fill="blue" x="1" y="1" width="22" ' +
         'height="22" /><text x="12" y="18" font-size="12pt" ' +

@@ -9,7 +9,7 @@
 
 <hr>
 
-<form method="POST" class="form-horizontal" action="{{ route('lab.suspect_cases.update', $suspectCase) }}">
+<form method="POST" class="form-horizontal" action="{{ route('lab.suspect_cases.update', $suspectCase) }}" enctype="multipart/form-data">
     @csrf
     @method('PUT')
 
@@ -164,7 +164,7 @@
                 name="epivigila" value="{{ $suspectCase->epivigila }}">
         </fieldset>
 
-        <fieldset class="form-group col-12 col-md-8">
+        <fieldset class="form-group col-12 col-md-6">
             <label for="for_observation">Observación</label>
             <input type="text" class="form-control" name="observation"
                 id="for_observation" value="{{ $suspectCase->observation }}">
@@ -172,8 +172,27 @@
 
     </div>
 
+    <div>
+      @if($suspectCase->files != null)
+          @foreach($suspectCase->files as $file)
+              <a href="{{ route('lab.suspect_cases.download', $file->id) }}"
+                  target="_blank" data-toggle="tooltip" data-placement="top"
+                  data-original-title="{{ $file->name }}">
+                  {{$file->name}}<i class="fas fa-paperclip"></i>&nbsp
+              </a>
+          @endforeach
+      @endif
+    </div>
+
+    <div class="form-row">
+      <fieldset class="form-group col-5">
+          <label for="forFile">Adjuntar archivos</label>
+          <input type="file" class="form-control-file" id="forfile" name="forfile[]" multiple>
+      </fieldset>
+    </div>
 
     <hr>
+
     <div class="form-row">
 
 
