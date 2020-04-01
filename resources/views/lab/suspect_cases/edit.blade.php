@@ -183,7 +183,7 @@
 
     <div class="form-row">
 
-        <fieldset class="form-group col-12 col-md-6">
+        <fieldset class="form-group col-12 col-md-8">
             <label for="for_observation">Observación</label>
             <input type="text" class="form-control" name="observation"
                 id="for_observation" value="{{ $suspectCase->observation }}">
