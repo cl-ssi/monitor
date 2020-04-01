@@ -145,6 +145,15 @@ class PatientController extends Controller
             }
           }
         }
+        //dd($data);
+        // foreach ($data as $key1 => $data1) {
+        //   foreach ($data1 as $key2 => $data2) {
+        //     foreach ($data2 as $key3 => $data3) {
+        //       print_r($data3->patient->demographic->latitude);
+        //     }
+        //   }
+        // }
+
         return view('patients.georeferencing.georeferencing', compact('suspectCases','data'));
     }
 }

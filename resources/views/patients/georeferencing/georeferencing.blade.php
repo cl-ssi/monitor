@@ -81,55 +81,57 @@ var scalebar = ui.getControl('scalebar');
       // Define a callback function to process the geocoding response:
       var onResult = function(result) {
 
-        var locations = result.Response.View[0].Result,
-            position,
-            marker;
-
-        // Add a marker for each location found
-        for (i = 0;  i < locations.length; i++) {
-          position = {
-            lat: locations[i].Location.DisplayPosition.Latitude,
-            lng: locations[i].Location.DisplayPosition.Longitude
-          };
-
-          marker = new H.map.Marker(position, {icon: iconBlue});
-          @foreach ($data1 as $key2 => $data2)
-            @foreach ($data2 as $key3 => $data3)
-              @if($data3->pscr_sars_cov_2 == 'positive')
-                marker = new H.map.Marker(position, {icon: iconRed});
-              @endif
-            @endforeach
+        //determina color marca
+        var markerType;
+        //marker = new H.map.Marker(position, {icon: iconBlue});
+        markerType = iconBlue;
+        @foreach ($data1 as $key2 => $data2)
+          @foreach ($data2 as $key3 => $data3)
+            @if($data3->pscr_sars_cov_2 == 'positive')
+              //marker = new H.map.Marker(position, {icon: iconRed});
+              markerType = iconRed;
+            @endif
           @endforeach
+        @endforeach
 
-          map.addObject(marker);
-
-          //se obtienen datos segun domicilio
-          var content = "";
-          @foreach ($data1 as $key2 => $data2)
-            @foreach ($data2 as $key3 => $data3)
-
-              var genero = "";
-              @if($data3->patient->gender=="male") genero = "Hombre";
-              @else genero = "Mujer"; @endif
-
-              content = content + "<b>{{$data3->patient->name}}</b><br />" + genero + "<br /> {{$data3->age}} años.<br />";
-            @endforeach
+        //obtiene latitude y longitud (se obtiene la ultima, puesto que es la misma dirección, es decir, mismas coordenadas)
+        var latitude, longitude;
+        @foreach ($data1 as $key2 => $data2)
+          @foreach ($data2 as $key3 => $data3)
+            latitude = '{{$data3->patient->demographic->latitude}}';
+            longitude = '{{$data3->patient->demographic->longitude}}';
           @endforeach
+        @endforeach
 
-          //se crea marca
-          var bubble;
-          console.log(position.lat);
-          marker.addEventListener('pointerenter', function(evt) {
-              bubble = new H.ui.InfoBubble({lat:position.lat,lng:position.lng}, {
-              content: content
-            });
-            ui.addBubble(bubble);
-          }, false);
-          marker.addEventListener('pointerleave', function(evt) {
-            bubble.close();
-          }, false);
+        // Create a marker using the previously instantiated icon:
+        var marker = new H.map.Marker({ lat: latitude, lng: longitude }, { icon: markerType });
 
-        }
+        map.addObject(marker);
+
+        //se obtienen datos segun domicilio
+        var content = "";
+        @foreach ($data1 as $key2 => $data2)
+          @foreach ($data2 as $key3 => $data3)
+
+            var genero = "";
+            @if($data3->patient->gender=="male") genero = "Hombre";
+            @else genero = "Mujer"; @endif
+
+            content = content + "<b>{{$data3->patient->name}}</b><br />" + genero + "<br /> {{$data3->age}} años.<br />";
+          @endforeach
+        @endforeach
+
+        //se crea marca
+        var bubble;
+        marker.addEventListener('pointerenter', function(evt) {
+            bubble = new H.ui.InfoBubble({lat:latitude,lng:longitude}, {
+            content: content
+          });
+          ui.addBubble(bubble);
+        }, false);
+        marker.addEventListener('pointerleave', function(evt) {
+          bubble.close();
+        }, false);
 
       };
 
