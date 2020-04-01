@@ -3,6 +3,7 @@
 namespace App;
 
 use Patient;
+use File;
 use Illuminate\Database\Eloquent\Model;
 
 class SuspectCase extends Model
@@ -25,6 +26,10 @@ class SuspectCase extends Model
 
     public function logs() {
         return $this->morphMany('App\Log','model');
+    }
+
+    public function files() {
+        return $this->hasMany('App\File');
     }
 
     function getCovid19Attribute(){

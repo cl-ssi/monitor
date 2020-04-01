@@ -5,7 +5,7 @@
 @section('content')
 <h3 class="mb-3">Nueva sospecha</h3>
 
-<form method="POST" class="form-horizontal" action="{{ route('lab.suspect_cases.store') }}">
+<form method="POST" class="form-horizontal" action="{{ route('lab.suspect_cases.store') }}" enctype="multipart/form-data">
     @csrf
     @method('POST')
     <div class="form-row">
@@ -36,7 +36,7 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
+        <fieldset class="form-group col-6 col-md-3">
             <label for="for_birthday">Fecha Nacimiento</label>
             <input type="date" class="form-control" id="for_birthday"
                 name="birthday">
@@ -45,7 +45,7 @@
     </div>
 
     <div class="form-row">
-        <fieldset class="form-group col-12 col-md-3">
+        <fieldset class="form-group col-12 col-md-4">
             <label for="for_name">Nombres</label>
             <input type="text" class="form-control" id="for_name" name="name">
         </fieldset>
@@ -175,19 +175,19 @@
 
     <div class="form-row">
 
-        <fieldset class="form-group col-6 col-md-2">
+        <fieldset class="form-group col-md-2">
             <label for="for_paho_flu">PAHO FLU</label>
             <input type="number" class="form-control" name="paho_flu"
                 id="for_paho_flu">
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
+        <fieldset class="form-group col-md-2">
             <label for="for_epivigila">Epivigila</label>
             <input type="number" class="form-control" id="for_epivigila"
                 name="epivigila">
         </fieldset>
 
-        <fieldset class="form-group col-12 col-md-8">
+        <fieldset class="form-group col-md-6">
             <label for="for_observation">Observación</label>
             <input type="text" class="form-control" name="observation"
                 id="for_observation">
@@ -195,6 +195,14 @@
 
     </div>
 
+    <div class="form-row">
+      <fieldset class="form-group col-5">
+          <label for="forFile">Adjuntar archivos</label>
+          <input type="file" class="form-control-file" id="forfile" name="forfile[]" multiple>
+      </fieldset>
+    </div>
+
+    <hr>
 
     <button type="submit" class="btn btn-primary">Guardar</button>
 
