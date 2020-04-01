@@ -17,7 +17,7 @@ class SuspectCase extends Model
         'sample_at', 'origin', 'age', 'gender', 'result_ifd', 'result_ifd_at',
         'subtype', 'epidemiological_week', 'epivigila', 'pscr_sars_cov_2',
         'pscr_sars_cov_2_at', 'paho_flu', 'sent_isp_at', 'status',
-        'observation', 'patient_id'
+        'observation', 'patient_id','gestation_week','gestation'
     ];
 
     public function Patient() {
