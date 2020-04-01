@@ -41,7 +41,7 @@
         </select>
     </fieldset>
 
-    <fieldset class="form-group col-6 col-md-2">
+    <fieldset class="form-group col-6 col-md-3">
         <label for="for_birthday">Fecha Nacimiento</label>
         <input type="date" class="form-control" readonly disabled
             value="{{ $suspectCase->patient->birthday }}">
@@ -51,7 +51,7 @@
 
 <div class="form-row">
 
-    <fieldset class="form-group col-12 col-md-3">
+    <fieldset class="form-group col-12 col-md-4">
         <label for="for_name">Nombres</label>
         <input type="text" class="form-control" readonly disabled
             value="{{ $suspectCase->patient->name }}">
