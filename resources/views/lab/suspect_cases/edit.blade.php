@@ -30,6 +30,7 @@
                 <option value="Clínica Iquique" {{ ($suspectCase->origin == 'Clínica Iquique')?'selected':'' }}>Clínica Iquique</option>
                 <option value="Hector Reyno" {{ ($suspectCase->origin == 'Hector Reyno')?'selected':'' }}>Hector Reyno</option>
                 <option value="CESFAM Guzmán" {{ ($suspectCase->origin == 'CESFAM Guzmán')?'selected':'' }}>CESFAM Guzmán</option>
+                <option value="CESFAM Videla" {{ ($suspectCase->origin == 'CESFAM Videla')?'selected':'' }}>CESFAM Videla</option>
                 <option value="Particular (SEREMI)" {{ ($suspectCase->origin == 'Particular (SEREMI)')?'selected':'' }}>Particular (SEREMI)</option>
             </select>
         </fieldset>
@@ -164,7 +165,25 @@
                 name="epivigila" value="{{ $suspectCase->epivigila }}">
         </fieldset>
 
-        <fieldset class="form-group col-12 col-md-6">
+        <fieldset class="form-group col-md-2">
+            <label class="form-check-label" for="for_gestation">Gestante</label>
+            <br><br>
+            <input type="checkbox" class="form-check-input ml-3" name="gestation"
+                id="for_gestation" {{ ($suspectCase->gestation)?'checked':'' }}>
+
+        </fieldset>
+
+        <fieldset class="form-group col-md-2">
+            <label for="for_gestation_week">Semanas de gestación</label>
+            <input type="text" class="form-control" name="gestation_week"
+                id="for_gestation_week" value="{{ $suspectCase->gestation_week }}">
+        </fieldset>
+
+    </div>
+
+    <div class="form-row">
+
+        <fieldset class="form-group col-12 col-md-8">
             <label for="for_observation">Observación</label>
             <input type="text" class="form-control" name="observation"
                 id="for_observation" value="{{ $suspectCase->observation }}">
