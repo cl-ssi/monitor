@@ -610,7 +610,7 @@
                     </td>
                 </tr>
                 <tr class="text-center">
-                    <td>S/R</td>
+                    <td>Sin Registro</td>
                     <td class="text-danger">
                         {{
                             $cases->where('pscr_sars_cov_2','positive')
