@@ -174,16 +174,28 @@
                     </td>
                 </tr>
 
-                <tr>
-                    <th class="table-active" colspan="2">Sospechas por Origen</th>
-                </tr>
+            </tbody>
+        </table>
+    </div>
 
+    <div class="col-12 col-sm-4">
+        <table class="table table-sm table-bordered">
+            <thead>
+                <tr class="table-active">
+                    <th >Sospechas por Origen</th>
+                    <th>Total de casos</th>
+                    <th>Total posivos</th>
+                </tr>
+            </thead>
+            <tbody>
                 <tr>
                     <td>Hospital ETG</td>
                     <td class="text-center">
                         {{ $cases->where('origin','Hospital ETG')->count() }}
+                    </td>
+                    <td class="text-center">
                         <span class="text-danger">
-                            ({{ $cases->where('origin','Hospital ETG')->where('pscr_sars_cov_2','positive')->count() }})
+                            {{ $cases->where('origin','Hospital ETG')->where('pscr_sars_cov_2','positive')->count() }}
                         </span>
                     </td>
                 </tr>
@@ -192,8 +204,10 @@
                     <td>APS</td>
                     <td class="text-center">
                         {{ $cases->whereIn('origin',['CESFAM Guzmán','Hector Reyno'])->count() }}
+                    </td>
+                    <td class="text-center">
                         <span class="text-danger">
-                            ({{ $cases->whereIn('origin',['CESFAM Guzmán','Hector Reyno'])->where('pscr_sars_cov_2','positive')->count() }})
+                            {{ $cases->whereIn('origin',['CESFAM Guzmán','Hector Reyno'])->where('pscr_sars_cov_2','positive')->count() }}
                         </span>
                     </td>
                 </tr>
@@ -201,15 +215,153 @@
                     <td>Privados</td>
                     <td class="text-center">
                         {{ $cases->whereIn('origin',['Clínica Tarapacá','Clínica Iquique'])->count() }}
+                    </td>
+                    <td class="text-center">
                         <span class="text-danger">
-                            ({{ $cases->whereIn('origin',['Clínica Tarapacá','Clínica Iquique','Particular (SEREMI)'])->where('pscr_sars_cov_2','positive')->count() }})
+                            {{ $cases->whereIn('origin',['Clínica Tarapacá','Clínica Iquique','Particular (SEREMI)'])->where('pscr_sars_cov_2','positive')->count() }}
                         </span>
                     </td>
                 </tr>
             </tbody>
         </table>
+
+        <table class="table table-sm table-bordered">
+            <thead>
+                <tr class="table-active">
+                    <th>Comuna</th>
+                    <th>Positivos</th>
+                    <th>Pendientes</th>
+                    <th>Negativos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="text-center">
+                    <td>Alto Hospicio</td>
+                    <td class="text-danger">
+                        {{ $cases->where('patient.demographic.commune','Alto Hospicio')->where('pscr_sars_cov_2','positive')->count() }}
+                    </td>
+                    <td>
+                        {{ $cases->where('patient.demographic.commune','Alto Hospicio')->where('pscr_sars_cov_2','pending')->count() }}
+                    </td>
+                    <td>
+                        {{ $cases->where('patient.demographic.commune','Alto Hospicio')->where('pscr_sars_cov_2','negative')->count() }}
+                    </td>
+                </tr>
+
+                <tr class="text-center">
+                    <td>Camiña</td>
+                    <td class="text-danger">
+                        {{ $cases->where('patient.demographic.commune','Camiña')->where('pscr_sars_cov_2','positive')->count() }}
+                    </td>
+                    <td>
+                        {{ $cases->where('patient.demographic.commune','Camiña')->where('pscr_sars_cov_2','pending')->count() }}
+                    </td>
+                    <td>
+                        {{ $cases->where('patient.demographic.commune','Camiña')->where('pscr_sars_cov_2','negative')->count() }}
+                    </td>
+                </tr>
+
+                <tr class="text-center">
+                    <td>Colchane</td>
+                    <td class="text-danger">
+                        {{ $cases->where('patient.demographic.commune','Colchane')->where('pscr_sars_cov_2','positive')->count() }}
+                    </td>
+                    <td>
+                        {{ $cases->where('patient.demographic.commune','Colchane')->where('pscr_sars_cov_2','pending')->count() }}
+                    </td>
+                    <td>
+                        {{ $cases->where('patient.demographic.commune','Colchane')->where('pscr_sars_cov_2','negative')->count() }}
+                    </td>
+                </tr>
+
+                <tr class="text-center">
+                    <td>Huara</td>
+                    <td class="text-danger">
+                        {{ $cases->where('patient.demographic.commune','Huara')->where('pscr_sars_cov_2','positive')->count() }}
+                    </td>
+                    <td>
+                        {{ $cases->where('patient.demographic.commune','Huara')->where('pscr_sars_cov_2','pending')->count() }}
+                    </td>
+                    <td>
+                        {{ $cases->where('patient.demographic.commune','Huara')->where('pscr_sars_cov_2','negative')->count() }}
+                    </td>
+                </tr>
+
+                <tr class="text-center">
+                    <td>Iquique</td>
+                    <td class="text-danger">
+                        {{ $cases->where('patient.demographic.commune','Iquique')->where('pscr_sars_cov_2','positive')->count() }}
+                    </td>
+                    <td>
+                        {{ $cases->where('patient.demographic.commune','Iquique')->where('pscr_sars_cov_2','pending')->count() }}
+                    </td>
+                    <td>
+                        {{ $cases->where('patient.demographic.commune','Iquique')->where('pscr_sars_cov_2','negative')->count() }}
+                    </td>
+                </tr>
+
+                <tr class="text-center">
+                    <td>Pica</td>
+                    <td class="text-danger">
+                        {{ $cases->where('patient.demographic.commune','Pica')->where('pscr_sars_cov_2','positive')->count() }}
+                    </td>
+                    <td>
+                        {{ $cases->where('patient.demographic.commune','Pica')->where('pscr_sars_cov_2','pending')->count() }}
+                    </td>
+                    <td>
+                        {{ $cases->where('patient.demographic.commune','Pica')->where('pscr_sars_cov_2','negative')->count() }}
+                    </td>
+                </tr>
+
+                <tr class="text-center">
+                    <td>Pozo Almonte</td>
+                    <td class="text-danger">
+                        {{ $cases->where('patient.demographic.commune','Pozo Almonte')->where('pscr_sars_cov_2','positive')->count() }}
+                    </td>
+                    <td>
+                        {{ $cases->where('patient.demographic.commune','Pozo Almonte')->where('pscr_sars_cov_2','pending')->count() }}
+                    </td>
+                    <td>
+                        {{ $cases->where('patient.demographic.commune','Pozo Almonte')->where('pscr_sars_cov_2','negative')->count() }}
+                    </td>
+                </tr>
+
+                <tr class="text-center">
+                    <td>Sin registro</td>
+                    <td class="text-danger">
+                        {{
+                            $cases->where('pscr_sars_cov_2','positive')
+                                ->whereIn('patient.demographic.commune',['sin-comuna',null])
+                                ->count()
+                        }}
+                    </td>
+
+                    <td>
+                        {{
+                            $cases->where('pscr_sars_cov_2','pending')
+                                ->whereIn('patient.demographic.commune',['sin-comuna',null])
+                                ->count()
+                        }}
+                    </td>
+                    <td>
+                        {{
+                            $cases->where('pscr_sars_cov_2','negative')
+                                ->whereIn('patient.demographic.commune',['sin-comuna',null])
+                                ->count()
+                        }}
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
     </div>
 </div>
+
+
+
+
+
+
 
 @endsection
 
