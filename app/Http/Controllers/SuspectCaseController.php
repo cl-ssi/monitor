@@ -6,12 +6,15 @@ use App\SuspectCase;
 use App\Patient;
 use App\Log;
 use App\File;
+use App\User;
 use Carbon\Carbon;
 use App\Mail\NewPositive;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class SuspectCaseController extends Controller
 {
@@ -162,9 +165,22 @@ class SuspectCaseController extends Controller
         return Storage::response($file->file, mb_convert_encoding($file->name,'ASCII'));
     }
 
-    public function result(Request $request)
+    public function result($access_token)
     {
-        $user = "user";
-        return view('lab.result', compact('user'));
+        $url_base = "https://www.claveunica.gob.cl/openid/userinfo/";
+        $response = Http::withToken($access_token)->post($url_base);
+
+        $user_cu = json_decode($response);
+
+        $user = new User();
+        $user->id = $user_cu->RolUnico->numero;
+        $user->dv = $user_cu->RolUnico->DV;
+        $user->name = implode(' ', $user_cu->name->nombres);
+        $user->fathers_family = $user_cu->name->apellidos[0];
+        $user->mothers_family = $user_cu->name->apellidos[1];
+        $user->email = $user_cu->email;
+
+        Auth::login($user);
+        return view('lab.result');
     }
 }
