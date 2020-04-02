@@ -165,22 +165,29 @@ class SuspectCaseController extends Controller
         return Storage::response($file->file, mb_convert_encoding($file->name,'ASCII'));
     }
 
-    public function result($access_token)
+    public function login($access_token = null)
     {
-        $url_base = "https://www.claveunica.gob.cl/openid/userinfo/";
-        $response = Http::withToken($access_token)->post($url_base);
+        if($access_token) {
+            $url_base = "https://www.claveunica.gob.cl/openid/userinfo/";
+            $response = Http::withToken($access_token)->post($url_base);
 
-        $user_cu = json_decode($response);
+            $user_cu = json_decode($response);
 
-        $user = new User();
-        $user->id = $user_cu->RolUnico->numero;
-        $user->dv = $user_cu->RolUnico->DV;
-        $user->name = implode(' ', $user_cu->name->nombres);
-        $user->fathers_family = $user_cu->name->apellidos[0];
-        $user->mothers_family = $user_cu->name->apellidos[1];
-        $user->email = $user_cu->email;
+            $user = new User();
+            $user->id = $user_cu->RolUnico->numero;
+            $user->dv = $user_cu->RolUnico->DV;
+            $user->name = implode(' ', $user_cu->name->nombres);
+            $user->fathers_family = $user_cu->name->apellidos[0];
+            $user->mothers_family = $user_cu->name->apellidos[1];
+            $user->email = $user_cu->email;
 
-        Auth::login($user);
+            Auth::login($user);
+        }
+        return redirect()->route('lab.result');
+    }
+
+    public function result()
+    {
         return view('lab.result');
     }
 }

@@ -56,7 +56,8 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
 
 
 Route::prefix('lab')->name('lab.')->group(function () {
-    Route::get('results/{access_token}', 'SuspectCaseController@result')->name('result');
+    Route::get('login/{access_token?}', 'SuspectCaseController@login')->name('login');
+    Route::get('results', 'SuspectCaseController@result')->name('result');
     Route::prefix('suspect_cases')->name('suspect_cases.')->group(function () {
         Route::get('download/{file}',  'SuspectCaseController@download')->name('download')->middleware('auth');
         Route::get('/', 'SuspectCaseController@index')->name('index')->middleware('auth','can:SuspectCase: list');
