@@ -59,14 +59,14 @@ class SuspectCaseController extends Controller
 
         //guarda archivos
         if($request->hasFile('forfile')){
-          foreach($request->file('forfile') as $file) {
-            $filename = $file->getClientOriginalName();
-            $fileModel = New File;
-            $fileModel->file = $file->store('files');
-            $fileModel->name = $filename;
-            $fileModel->suspect_case_id = $suspectCase->id;
-            $fileModel->save();
-          }
+            foreach($request->file('forfile') as $file) {
+                $filename = $file->getClientOriginalName();
+                $fileModel = New File;
+                $fileModel->file = $file->store('files');
+                $fileModel->name = $filename;
+                $fileModel->suspect_case_id = $suspectCase->id;
+                $fileModel->save();
+            }
         }
 
         $log = new Log();
@@ -119,14 +119,14 @@ class SuspectCaseController extends Controller
 
         //guarda archivos
         if($request->hasFile('forfile')){
-          foreach($request->file('forfile') as $file) {
-            $filename = $file->getClientOriginalName();
-            $fileModel = New File;
-            $fileModel->file = $file->store('files');
-            $fileModel->name = $filename;
-            $fileModel->suspect_case_id = $suspectCase->id;
-            $fileModel->save();
-          }
+            foreach($request->file('forfile') as $file) {
+                $filename = $file->getClientOriginalName();
+                $fileModel = New File;
+                $fileModel->file = $file->store('files');
+                $fileModel->name = $filename;
+                $fileModel->suspect_case_id = $suspectCase->id;
+                $fileModel->save();
+            }
         }
 
         if($log->old->pscr_sars_cov_2 == 'pending' AND $suspectCase->pscr_sars_cov_2 == 'positive') {
@@ -160,5 +160,11 @@ class SuspectCaseController extends Controller
     public function download(File $file)
     {
         return Storage::response($file->file, mb_convert_encoding($file->name,'ASCII'));
+    }
+
+    public function result(Request $request)
+    {
+        $user = "user";
+        return view('lab.result', compact('user'));
     }
 }
