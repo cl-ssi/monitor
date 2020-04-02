@@ -167,10 +167,9 @@ class SuspectCaseController extends Controller
 
     public function login($access_token = null)
     {
-        if($access_token) {
+        //if($access_token) {
             $url_base = "https://www.claveunica.gob.cl/openid/userinfo/";
             $response = Http::withToken($access_token)->post($url_base);
-
             $user_cu = json_decode($response);
 
             $user = new User();
@@ -182,7 +181,7 @@ class SuspectCaseController extends Controller
             $user->email = $user_cu->email;
 
             Auth::login($user);
-        }
+        //}
         return redirect()->route('lab.result');
     }
 
