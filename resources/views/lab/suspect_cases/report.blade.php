@@ -176,6 +176,33 @@
 
             </tbody>
         </table>
+
+        <table class="table table-sm table-bordered">
+            <thead>
+                <tr class="table-active">
+                    <th>Gestantes</th>
+                    <th>Positivo</th>
+                    <th>Pendiente</th>
+                    <th>Negativo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-center">
+                        {{ $cases->where('gestation','on')->count() }}
+                    </td>
+                    <td class="text-center text-danger">
+                        {{ $cases->where('gestation','on')->where('pscr_sars_cov_2','positive')->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('gestation','on')->where('pscr_sars_cov_2','pending')->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('gestation','on')->where('pscr_sars_cov_2','negative')->count() }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <div class="col-12 col-sm-4">
