@@ -203,4 +203,15 @@ class SuspectCaseController extends Controller
         $patient = Patient::where('run', $user->id)->first();
         return view('lab.result', compact('patient'));
     }
+
+    public function stat() {
+        $cases = SuspectCase::All();
+
+        return json_encode((object) [
+            'total' => $cases->count(),
+            'positives' => $cases = SuspectCase::where('pscr_sars_cov_2', 'positive')->count(),
+            'pending' => $cases = SuspectCase::where('pscr_sars_cov_2', 'pending')->count(),
+            'negatives' => $cases = SuspectCase::where('pscr_sars_cov_2', 'negative')->count()
+        ]);
+    }
 }
