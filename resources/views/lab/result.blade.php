@@ -1,11 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.public')
 
 @section('title', 'Resultados COVID19')
 
 @section('content')
 
 @if($patient)
-<h3 class="mb-3">Resultado de exámenes de {{ Auth::user()->name }}</h3>
+<h3 class="mb-3">Resultado de exámenes de {{ Auth::user()->name }} {{ Auth::user()->fathers_family }}</h3>
 
 <table class="table table-bordered">
     <thead>
@@ -28,7 +28,7 @@
     </tbody>
 </table>
 @else
-    <h3>{{ Auth::user()->name }} no registra exámenes de COVID19 en el Hospital Ernesto Torres Galdámes </h3>
+    <h3>{{ Auth::user()->name }} {{ Auth::user()->fathers_family }} no registra exámenes de COVID19 en el Hospital Ernesto Torres Galdámes </h3>
 @endif
 
 @endsection
