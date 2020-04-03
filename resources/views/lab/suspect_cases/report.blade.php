@@ -636,16 +636,44 @@
             </tbody>
         </table>
     </div>
+
+    <div class="col-12 col-sm-4">
+        <div id="curve_chart" style="width: 370px; height: 500px"></div>
+    </div>
 </div>
-
-
-
-
-
-
 
 @endsection
 
-@section('custom_js')
+@section('custom_js_head')
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
 
+    function drawChart() {
+    var data = google.visualization.arrayToDataTable([
+        ['Edad',  'Casos'],
+        ['0',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[0,9])->whereNotNull('age')->count()}}],
+        ['10',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[10,19])->whereNotNull('age')->count()}}],
+        ['20',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[20,29])->whereNotNull('age')->count()}}],
+        ['30',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[30,39])->whereNotNull('age')->count()}}],
+        ['40',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[40,49])->whereNotNull('age')->count()}}],
+        ['50',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[50,59])->whereNotNull('age')->count()}}],
+        ['60',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[60,69])->whereNotNull('age')->count()}}],
+        ['70',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[70,79])->whereNotNull('age')->count()}}],
+        ['80->',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[80,120])->whereNotNull('age')->count()}}],
+    ]);
+
+    var options = {
+        title: 'Casos positivos por edad',
+        curveType: 'function',
+        legend: { position: 'bottom' },
+        chartArea: {'width': '90%', 'height': '80%'},
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+    chart.draw(data, options);
+    }
+</script>
 @endsection
