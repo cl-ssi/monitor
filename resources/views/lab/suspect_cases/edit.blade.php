@@ -29,8 +29,10 @@
                 <option value="Clínica Tarapacá" {{ ($suspectCase->origin == 'Clínica Tarapacá')?'selected':'' }}>Clínica Tarapacá</option>
                 <option value="Clínica Iquique" {{ ($suspectCase->origin == 'Clínica Iquique')?'selected':'' }}>Clínica Iquique</option>
                 <option value="Hector Reyno" {{ ($suspectCase->origin == 'Hector Reyno')?'selected':'' }}>Hector Reyno</option>
+                <option value="CESFAM Aguirre" {{ ($suspectCase->origin == 'CESFAM Aguirre')?'selected':'' }}>CESFAM Aguirre</option>
                 <option value="CESFAM Guzmán" {{ ($suspectCase->origin == 'CESFAM Guzmán')?'selected':'' }}>CESFAM Guzmán</option>
                 <option value="CESFAM Videla" {{ ($suspectCase->origin == 'CESFAM Videla')?'selected':'' }}>CESFAM Videla</option>
+                <option value="CESFAM Sur" {{ ($suspectCase->origin == 'CESFAM Sur')?'selected':'' }}>CESFAM Sur</option>
                 <option value="Particular (SEREMI)" {{ ($suspectCase->origin == 'Particular (SEREMI)')?'selected':'' }}>Particular (SEREMI)</option>
             </select>
         </fieldset>
