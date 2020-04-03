@@ -25,7 +25,7 @@
 
 #### Opción 1. Sqlite (más fácil)
 - DB_CONNECTION=sqlite
-- DB_DATABASE=C:\\Users\\Atorres\\monitor\\database\\database.sqlite
+- DB_DATABASE=C:\\\\Users\\\\Atorres\\\\monitor\\\\database\\\\database.sqlite
 - Crear un archivo vacío en monitor\database\database.sqlite con el block de notas por ejemplo
 
 #### Opción 2. MySql editar
