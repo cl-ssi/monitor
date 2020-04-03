@@ -5,9 +5,12 @@ namespace App;
 use Patient;
 use File;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SuspectCase extends Model
 {
+    use SoftDeletes;
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -40,7 +43,12 @@ class SuspectCase extends Model
         }
     }
 
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
     protected $dates = [
-        'sample_at', 'result_ifd_at', 'pscr_sars_cov_2_at', 'sent_isp_at'
+        'sample_at', 'result_ifd_at', 'pscr_sars_cov_2_at', 'sent_isp_at', 'deleted_at'
     ];
 }

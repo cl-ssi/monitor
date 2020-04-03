@@ -41,6 +41,7 @@ class CreateSuspectCasesTable extends Migration
             $table->unsignedBigInteger('patient_id');
             $table->foreign('patient_id')->references('id')->on('patients');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
