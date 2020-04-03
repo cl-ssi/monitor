@@ -230,8 +230,8 @@
                 <tr class="table-active">
                     <th>Comuna</th>
                     <th>Positivos</th>
-                    <th>Pendientes</th>
-                    <th>Negativos</th>
+                    <!--th>Pendientes</th>
+                    <th>Negativos</th-->
                 </tr>
             </thead>
             <tbody>
@@ -240,12 +240,12 @@
                     <td class="text-danger">
                         {{ $cases->where('patient.demographic.commune','Alto Hospicio')->where('pscr_sars_cov_2','positive')->count() }}
                     </td>
-                    <td>
+                    <!--td>
                         {{ $cases->where('patient.demographic.commune','Alto Hospicio')->where('pscr_sars_cov_2','pending')->count() }}
                     </td>
                     <td>
                         {{ $cases->where('patient.demographic.commune','Alto Hospicio')->where('pscr_sars_cov_2','negative')->count() }}
-                    </td>
+                    </td-->
                 </tr>
 
                 <tr class="text-center">
@@ -253,12 +253,12 @@
                     <td class="text-danger">
                         {{ $cases->where('patient.demographic.commune','Camiña')->where('pscr_sars_cov_2','positive')->count() }}
                     </td>
-                    <td>
+                    <!--td>
                         {{ $cases->where('patient.demographic.commune','Camiña')->where('pscr_sars_cov_2','pending')->count() }}
                     </td>
                     <td>
                         {{ $cases->where('patient.demographic.commune','Camiña')->where('pscr_sars_cov_2','negative')->count() }}
-                    </td>
+                    </td-->
                 </tr>
 
                 <tr class="text-center">
@@ -266,12 +266,12 @@
                     <td class="text-danger">
                         {{ $cases->where('patient.demographic.commune','Colchane')->where('pscr_sars_cov_2','positive')->count() }}
                     </td>
-                    <td>
+                    <!--td>
                         {{ $cases->where('patient.demographic.commune','Colchane')->where('pscr_sars_cov_2','pending')->count() }}
                     </td>
                     <td>
                         {{ $cases->where('patient.demographic.commune','Colchane')->where('pscr_sars_cov_2','negative')->count() }}
-                    </td>
+                    </td-->
                 </tr>
 
                 <tr class="text-center">
@@ -279,12 +279,12 @@
                     <td class="text-danger">
                         {{ $cases->where('patient.demographic.commune','Huara')->where('pscr_sars_cov_2','positive')->count() }}
                     </td>
-                    <td>
+                    <!--td>
                         {{ $cases->where('patient.demographic.commune','Huara')->where('pscr_sars_cov_2','pending')->count() }}
                     </td>
                     <td>
                         {{ $cases->where('patient.demographic.commune','Huara')->where('pscr_sars_cov_2','negative')->count() }}
-                    </td>
+                    </td-->
                 </tr>
 
                 <tr class="text-center">
@@ -292,12 +292,12 @@
                     <td class="text-danger">
                         {{ $cases->where('patient.demographic.commune','Iquique')->where('pscr_sars_cov_2','positive')->count() }}
                     </td>
-                    <td>
+                    <!--td>
                         {{ $cases->where('patient.demographic.commune','Iquique')->where('pscr_sars_cov_2','pending')->count() }}
                     </td>
                     <td>
                         {{ $cases->where('patient.demographic.commune','Iquique')->where('pscr_sars_cov_2','negative')->count() }}
-                    </td>
+                    </td-->
                 </tr>
 
                 <tr class="text-center">
@@ -305,12 +305,12 @@
                     <td class="text-danger">
                         {{ $cases->where('patient.demographic.commune','Pica')->where('pscr_sars_cov_2','positive')->count() }}
                     </td>
-                    <td>
+                    <!--td>
                         {{ $cases->where('patient.demographic.commune','Pica')->where('pscr_sars_cov_2','pending')->count() }}
                     </td>
                     <td>
                         {{ $cases->where('patient.demographic.commune','Pica')->where('pscr_sars_cov_2','negative')->count() }}
-                    </td>
+                    </td-->
                 </tr>
 
                 <tr class="text-center">
@@ -318,12 +318,12 @@
                     <td class="text-danger">
                         {{ $cases->where('patient.demographic.commune','Pozo Almonte')->where('pscr_sars_cov_2','positive')->count() }}
                     </td>
-                    <td>
+                    <!--td>
                         {{ $cases->where('patient.demographic.commune','Pozo Almonte')->where('pscr_sars_cov_2','pending')->count() }}
                     </td>
                     <td>
                         {{ $cases->where('patient.demographic.commune','Pozo Almonte')->where('pscr_sars_cov_2','negative')->count() }}
-                    </td>
+                    </td-->
                 </tr>
 
                 <tr class="text-center">
@@ -336,7 +336,7 @@
                         }}
                     </td>
 
-                    <td>
+                    <!--td>
                         {{
                             $cases->where('pscr_sars_cov_2','pending')
                                 ->whereIn('patient.demographic.commune',['sin-comuna',null])
@@ -349,7 +349,7 @@
                                 ->whereIn('patient.demographic.commune',['sin-comuna',null])
                                 ->count()
                         }}
-                    </td>
+                    </td-->
                 </tr>
 
             </tbody>
@@ -361,8 +361,8 @@
                 <tr class="table-active">
                     <th>Rango Edad</th>
                     <th>Positivo</th>
-                    <th>Pendiente</th>
-                    <th>Negativo</th>
+                    <!--th>Pendiente</th>
+                    <th>Negativo</th-->
                 </tr>
             </thead>
             <tbody>
@@ -376,7 +376,7 @@
                                 ->count()
                         }}
                     </td>
-                    <td>
+                    <!--td>
                         {{
                             $cases->where('pscr_sars_cov_2','pending')
                                 ->whereBetween('age',[0,9])
@@ -391,7 +391,7 @@
                                 ->whereNotNull('age')
                                 ->count()
                         }}
-                    </td>
+                    </td-->
                 </tr>
                 <tr class="text-center">
                     <td>10-19</td>
@@ -403,7 +403,7 @@
                                 ->count()
                         }}
                     </td>
-                    <td>
+                    <!--td>
                         {{
                             $cases->where('pscr_sars_cov_2','pending')
                                 ->whereBetween('age',[10,19])
@@ -418,7 +418,7 @@
                                 ->whereNotNull('age')
                                 ->count()
                         }}
-                    </td>
+                    </td-->
                 </tr>
                 <tr class="text-center">
                     <td>20-29</td>
@@ -430,7 +430,7 @@
                                 ->count()
                         }}
                     </td>
-                    <td>
+                    <!--td>
                         {{
                             $cases->where('pscr_sars_cov_2','pending')
                                 ->whereBetween('age',[20,29])
@@ -445,7 +445,7 @@
                                 ->whereNotNull('age')
                                 ->count()
                         }}
-                    </td>
+                    </td-->
                 </tr>
                 <tr class="text-center">
                     <td>30-39</td>
@@ -457,7 +457,7 @@
                                 ->count()
                         }}
                     </td>
-                    <td>
+                    <!--td>
                         {{
                             $cases->where('pscr_sars_cov_2','pending')
                                 ->whereBetween('age',[30,39])
@@ -472,7 +472,7 @@
                                 ->whereNotNull('age')
                                 ->count()
                         }}
-                    </td>
+                    </td-->
                 </tr>
                 <tr class="text-center">
                     <td>40-49</td>
@@ -484,7 +484,7 @@
                                 ->count()
                         }}
                     </td>
-                    <td>
+                    <!--td>
                         {{
                             $cases->where('pscr_sars_cov_2','pending')
                                 ->whereBetween('age',[40,49])
@@ -499,7 +499,7 @@
                                 ->whereNotNull('age')
                                 ->count()
                         }}
-                    </td>
+                    </td-->
                 </tr>
                 <tr class="text-center">
                     <td>50-59</td>
@@ -511,7 +511,7 @@
                                 ->count()
                         }}
                     </td>
-                    <td>
+                    <!--td>
                         {{
                             $cases->where('pscr_sars_cov_2','pending')
                                 ->whereBetween('age',[50,59])
@@ -526,7 +526,7 @@
                                 ->whereNotNull('age')
                                 ->count()
                         }}
-                    </td>
+                    </td-->
                 </tr>
                 <tr class="text-center">
                     <td>60-69</td>
@@ -538,7 +538,7 @@
                                 ->count()
                         }}
                     </td>
-                    <td>
+                    <!--td>
                         {{
                             $cases->where('pscr_sars_cov_2','pending')
                                 ->whereBetween('age',[60,69])
@@ -553,7 +553,7 @@
                                 ->whereNotNull('age')
                                 ->count()
                         }}
-                    </td>
+                    </td-->
                 </tr>
                 <tr class="text-center">
                     <td>70-79</td>
@@ -565,7 +565,7 @@
                                 ->count()
                         }}
                     </td>
-                    <td>
+                    <!--td>
                         {{
                             $cases->where('pscr_sars_cov_2','pending')
                                 ->whereBetween('age',[70,79])
@@ -580,7 +580,7 @@
                                 ->whereNotNull('age')
                                 ->count()
                         }}
-                    </td>
+                    </td-->
                 </tr>
                 <tr class="text-center">
                     <td>80-></td>
@@ -592,7 +592,7 @@
                                 ->count()
                         }}
                     </td>
-                    <td>
+                    <!--td>
                         {{
                             $cases->where('pscr_sars_cov_2','pending')
                                 ->whereBetween('age',[80,900])
@@ -607,7 +607,7 @@
                                 ->whereNotNull('age')
                                 ->count()
                         }}
-                    </td>
+                    </td-->
                 </tr>
                 <tr class="text-center">
                     <td>Sin Registro</td>
@@ -618,7 +618,7 @@
                                 ->count()
                         }}
                     </td>
-                    <td>
+                    <!--td>
                         {{
                             $cases->where('pscr_sars_cov_2','pending')
                             ->whereNull('age')
@@ -631,7 +631,7 @@
                             ->whereNull('age')
                             ->count()
                         }}
-                    </td>
+                    </td-->
                 </tr>
             </tbody>
         </table>
