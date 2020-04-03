@@ -21,6 +21,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @yield('custom_js_head')
 </head>
 <body>
     <div id="app">
