@@ -167,7 +167,15 @@ class SuspectCaseController extends Controller
 
     public function login($access_token = null)
     {
-        //if($access_token) {
+        if($access_token) {
+            return redirect()->route('lab.result')->with('access_token', $access_token);
+        }
+    }
+
+    public function result()
+    {
+        if(env('APP_ENV') == 'production') {
+            $access_token = session()->get( 'access_token' );
             $url_base = "https://www.claveunica.gob.cl/openid/userinfo/";
             $response = Http::withToken($access_token)->post($url_base);
             $user_cu = json_decode($response);
@@ -179,14 +187,20 @@ class SuspectCaseController extends Controller
             $user->fathers_family = $user_cu->name->apellidos[0];
             $user->mothers_family = $user_cu->name->apellidos[1];
             $user->email = $user_cu->email;
+        }
 
-            Auth::login($user);
-        //}
-        return redirect()->route('lab.result');
-    }
+        elseif(env('APP_ENV') == 'local') {
+            $user = new User();
+            $user->id = 18371078;
+            $user->dv = 8;
+            $user->name = "maria angela";
+            $user->fathers_family = "family";
+            $user->mothers_family = "mother";
+            $user->email = "email@email.com";
+        }
 
-    public function result()
-    {
-        return view('lab.result');
+        Auth::login($user);
+        $patient = Patient::where('run', $user->id)->first();
+        return view('lab.result', compact('patient'));
     }
 }
