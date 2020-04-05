@@ -72,6 +72,12 @@ class SuspectCaseController extends Controller
             }
         }
 
+        if($suspectCase->pscr_sars_cov_2 == 'positive') {
+            $emails  = explode(',', env('EMAILS_ALERT'));
+            $emails_bcc  = explode(',', env('EMAILS_ALERT_BCC'));
+            Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($suspectCase));
+        }
+
         $log = new Log();
         //$log->old = $suspectCase;
         $log->new = $suspectCase;
@@ -133,7 +139,9 @@ class SuspectCaseController extends Controller
         }
 
         if($log->old->pscr_sars_cov_2 == 'pending' AND $suspectCase->pscr_sars_cov_2 == 'positive') {
-            Mail::to(['alvarotorres@gmail.com','caterinev.valencia@redsalud.gob.cl'])->send(new NewPositive());
+            $emails  = explode(',', env('EMAILS_ALERT'));
+            $emails_bcc  = explode(',', env('EMAILS_ALERT_BCC'));
+            Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($suspectCase));
         }
 
         $log->new = $suspectCase;
