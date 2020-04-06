@@ -1,0 +1,14 @@
+#watermark {
+    position:fixed;
+    /* bottom:50px;
+    right:25px; */
+    opacity:0.12;
+    z-index:99;
+    color:gray;
+    font-size: 90px;
+
+    left: 70%;
+    margin-left: -30px;
+    top: 50%;
+    margin-top: -50px;
+}
