@@ -227,4 +227,20 @@ class SuspectCaseController extends Controller
             'negatives' => $cases = SuspectCase::where('pscr_sars_cov_2', 'negative')->count()
         ]);
     }
+
+    public function case_chart()
+    {
+        $suspectCases = SuspectCase::latest('id')->get();
+
+        $data = array();
+        foreach ($suspectCases as $key => $case) {
+          if ($case->pscr_sars_cov_2 == 'positive' || $case->pscr_sars_cov_2 == 'pending') {
+            if ($case->patient->demographic != null) {
+              $data[$case->patient->demographic->address . " " . $case->patient->demographic->number . ", " . $case->patient->demographic->commune][$case->patient->run]['paciente']=$case;
+            }
+          }
+        }
+
+        return view('lab.suspect_cases.reports.case_chart', compact('suspectCases','data'));
+    }
 }
