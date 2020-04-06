@@ -99,6 +99,7 @@
     </a>
 
 </form>
+
 @can('Patient: delete')
 <form method="POST" class="form-horizontal" action="{{ route('patients.destroy',$patient) }}">
     @csrf

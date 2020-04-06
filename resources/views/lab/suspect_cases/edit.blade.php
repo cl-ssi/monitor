@@ -224,6 +224,14 @@
     </a>
 </form>
 
+@can('SuspectCase: delete')
+<form method="POST" class="form-horizontal" action="{{ route('lab.suspect_cases.destroy',$suspectCase) }}">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+</form>
+@endcan
+
 @can('Admin')
 <table class="table table-sm small text-muted mt-3">
     <thead>
