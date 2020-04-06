@@ -100,10 +100,10 @@ chart.data = data;
 
 @endsection
 
-{{-- @section('custom_js_head')
+@section('custom_js_head')
 
 <script src='{{asset('assets/amcharts/js/core.js')}}'></script>
 <script src='{{asset('assets/amcharts/js/charts.js')}}'></script>
 <script src='{{asset('assets/amcharts/js/animated.js')}}'></script>
 
-@endsection --}}
+@endsection
