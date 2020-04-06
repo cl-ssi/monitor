@@ -158,6 +158,11 @@ class SuspectCaseController extends Controller
      */
     public function destroy(SuspectCase $suspectCase)
     {
+        $log = new Log();
+        $log->old = clone $suspectCase;
+        $log->new = $suspectCase->setAttribute('suspect_case','delete');
+        $log->save();
+
         $suspectCase->delete();
 
         return redirect()->route('lab.suspect_cases.index');
