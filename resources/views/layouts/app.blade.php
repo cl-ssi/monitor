@@ -21,6 +21,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/ssi.css') }}" rel="stylesheet">
     @yield('custom_js_head')
 </head>
 <body>
@@ -129,6 +130,9 @@
             @yield('content')
         </main>
     </div>
+    @auth
+    <div id="watermark">{{ Auth::id() }}</div>
+    @endauth
     @yield('custom_js')
 </body>
 </html>
