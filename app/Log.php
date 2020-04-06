@@ -29,7 +29,7 @@ class Log extends Model
         $old = json_decode($this->old, TRUE);
         $new = json_decode($this->new, TRUE);
 
-        if(is_array($old)){
+        if(is_array($old) AND is_array($new)){
             $aReturn = array();
             foreach ($new as $mKey => $mValue) {
                 if (array_key_exists($mKey, $old)) {
@@ -47,8 +47,11 @@ class Log extends Model
             }
             $this->attributes['diferences'] = json_encode($aReturn);
         }
-        else {
+        else if(is_array($new)){
             $this->attributes['diferences'] = json_encode($new);
+        }
+        else {
+            $this->attributes['diferences'] = json_encode($old);
         }
 
     }
@@ -68,8 +71,15 @@ class Log extends Model
     protected static function booted()
     {
         static::creating(function ($log) {
-            $log->model_id = $log->new->id;
-            $log->model_type = get_class($log->new);
+            if($log->new) {
+                $log->model_id = $log->new->id;
+                $log->model_type = get_class($log->new);
+            }
+            else { // ($log->old)
+                $log->model_id = $log->old->id;
+                $log->model_type = get_class($log->old);
+            }
+
             $log->user_id = Auth::id();
 
             $log->new = json_encode($log->new, JSON_PRETTY_PRINT);
