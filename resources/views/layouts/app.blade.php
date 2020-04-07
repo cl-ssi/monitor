@@ -21,6 +21,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/ssi.css') }}" rel="stylesheet">
     @yield('custom_js_head')
 </head>
 <body>
@@ -67,7 +68,11 @@
                         </li>
                         @endcan
 
+<<<<<<< HEAD
                         @can('Report')
+=======
+                        @can('Developer')
+>>>>>>> b83053af17d5947fcc038199aad5a24925dd6ccc
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('lab.suspect_cases.report') }}">
                                 Reporte
@@ -127,6 +132,9 @@
             @yield('content')
         </main>
     </div>
+    @auth
+    <div id="watermark">{{ Auth::id() }}</div>
+    @endauth
     @yield('custom_js')
 </body>
 </html>
