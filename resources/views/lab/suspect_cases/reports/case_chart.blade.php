@@ -41,42 +41,6 @@
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript">
 
-      // google.charts.load('current', {'packages':['bar']});
-      // google.charts.load("current", {packages:['corechart']});
-      // google.charts.setOnLoadCallback(drawChart);
-      //
-      // function drawChart() {
-      //   var data = google.visualization.arrayToDataTable([
-      //     ['Fecha', 'Pendientes', 'Positivos'],
-      //
-      //     @foreach($data as $suspectCase)
-      //       [new Date({{$suspectCase['year']}}, {{$suspectCase['month']}}, {{$suspectCase['day']}}), {{$suspectCase['pendientes']}}, {{$suspectCase['positivos']}}],
-      //     @endforeach
-      //
-      //   ]);
-      //
-      //   var view = new google.visualization.DataView(data);
-      //   view.setColumns([0, 1,
-      //                    { calc: "stringify",
-      //                      sourceColumn: 1,
-      //                      type: "string",
-      //                      role: "annotation" },
-      //                    2]);
-      //
-      //
-      //   var options = {
-      //     chart: {
-      //       title: 'Seguimiento de casos',
-      //       subtitle: 'Pendientes vs Positivos'
-      //     }
-      //   };
-      //
-      //   var chart = new google.charts.Bar(document.getElementById('chart_div'));
-      //   chart.draw(view, options);
-      //
-      //   // chart.draw(data, google.charts.Bar.convertOptions(options));
-      // }
-
     google.charts.load("current", {packages:['corechart']});
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
@@ -88,6 +52,7 @@
       @endforeach
       ]);
 
+      @if($data != null)
       var view = new google.visualization.DataView(data);
       view.setColumns([0, 1,
                        { calc: "stringify",
@@ -99,6 +64,7 @@
                          sourceColumn: 2,
                          type: "string",
                          role: "annotation" }]);
+      @endif
 
       var options = {
         title: "Seguimiento de casos - Pendientes vs Positivos",
