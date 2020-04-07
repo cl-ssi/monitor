@@ -67,18 +67,16 @@
                         </li>
                         @endcan
 
-                        @can('Admin')
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('lab.suspect_cases.case_chart') }}">
-                                Gráfico casos
-                            </a>
-                        </li>
-                        @endcan
-
                         @can('Report')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('lab.suspect_cases.report') }}">
                                 Reporte
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('lab.suspect_cases.case_chart') }}">
+                                Casos
                             </a>
                         </li>
                         @endcan
