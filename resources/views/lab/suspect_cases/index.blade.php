@@ -84,7 +84,13 @@
             <td class="{{ ($case->result_ifd <> 'Negativo' AND $case->result_ifd <> 'No procesado')?'text-danger':''}}">{{ $case->result_ifd }} {{ $case->subtype }}</td>
             <td>{{ $case->epidemiological_week }}</td>
             <td>{{ $case->epivigila }}</td>
-            <td>{{ $case->covid19 }}</td>
+            <td>{{ $case->covid19 }}
+                @if($case->files->first())
+                <a href="{{ route('lab.suspect_cases.download', $case->files->first()->id) }}"
+                    target="_blank"><i class="fas fa-paperclip"></i>&nbsp
+                </a>
+                @endif
+            </td>
             <td>{{ $case->paho_flu }}</td>
             <td>{{ $case->status }}</td>
             <td class="text-muted small">{{ $case->observation }}</td>
