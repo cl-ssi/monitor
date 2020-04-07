@@ -228,19 +228,46 @@ class SuspectCaseController extends Controller
         ]);
     }
 
-    public function case_chart()
+    public function case_chart(Request $request)
     {
-        $suspectCases = SuspectCase::latest('id')->get();
+      // $from = $request->has('from'). ' 00:00:00';
+      // $to   = $request->has('to'). ' 23:59:59';
+      if($from = $request->has('from')){
+        $from = $request->get('from'). ' 00:00:00';
+        $to = $request->get('to'). ' 23:59:59';
+      }else{
+        $startDate = Carbon::now();
+        $from = $startDate->firstOfMonth();
+        $to = $startDate->lastOfMonth();
+      }
 
-        $data = array();
-        foreach ($suspectCases as $key => $case) {
-          if ($case->pscr_sars_cov_2 == 'positive' || $case->pscr_sars_cov_2 == 'pending') {
-            if ($case->patient->demographic != null) {
-              $data[$case->patient->demographic->address . " " . $case->patient->demographic->number . ", " . $case->patient->demographic->commune][$case->patient->run]['paciente']=$case;
-            }
-          }
+      $suspectCases = SuspectCase::whereBetween('sample_at',[$from,$to])->get();
+      // ::latest('id')->get();
+      $data = array();
+      foreach ($suspectCases as $key => $suspectCase) {
+        if ($suspectCase->pscr_sars_cov_2 == 'positive' || $suspectCase->pscr_sars_cov_2 == 'pending') {
+          $data[date("d", strtotime($suspectCase->sample_at)) . "/" . date("m", strtotime($suspectCase->sample_at)) . "/" . date("Y", strtotime($suspectCase->sample_at))]['day'] = date("d", strtotime($suspectCase->sample_at));
+          $data[date("d", strtotime($suspectCase->sample_at)) . "/" . date("m", strtotime($suspectCase->sample_at)) . "/" . date("Y", strtotime($suspectCase->sample_at))]['month'] = date("m", strtotime($suspectCase->sample_at))-1;
+          $data[date("d", strtotime($suspectCase->sample_at)) . "/" . date("m", strtotime($suspectCase->sample_at)) . "/" . date("Y", strtotime($suspectCase->sample_at))]['year'] = date("Y", strtotime($suspectCase->sample_at));
+          $data[date("d", strtotime($suspectCase->sample_at)) . "/" . date("m", strtotime($suspectCase->sample_at)) . "/" . date("Y", strtotime($suspectCase->sample_at))]['pendientes'] = 0;
+          $data[date("d", strtotime($suspectCase->sample_at)) . "/" . date("m", strtotime($suspectCase->sample_at)) . "/" . date("Y", strtotime($suspectCase->sample_at))]['positivos'] = 0;
         }
+        // $suspectCase->day = date("d", strtotime($suspectCase->sample_at));
+        // $suspectCase->month = date("m", strtotime($suspectCase->sample_at))-1;
+        // $suspectCase->year = date("Y", strtotime($suspectCase->sample_at));
 
-        return view('lab.suspect_cases.reports.case_chart', compact('suspectCases','data'));
+
+      }
+
+      foreach ($suspectCases as $key => $suspectCase) {
+        if ($suspectCase->pscr_sars_cov_2 == 'pending') {
+          $data[date("d", strtotime($suspectCase->sample_at)) . "/" . date("m", strtotime($suspectCase->sample_at)) . "/" . date("Y", strtotime($suspectCase->sample_at))]['pendientes'] += 1;
+        }
+        if ($suspectCase->pscr_sars_cov_2 == 'positive') {
+          $data[date("d", strtotime($suspectCase->sample_at)) . "/" . date("m", strtotime($suspectCase->sample_at)) . "/" . date("Y", strtotime($suspectCase->sample_at))]['positivos'] += 1;
+        }
+      }
+
+      return view('lab.suspect_cases.reports.case_chart', compact('suspectCases','data','from','to'));
     }
 }
