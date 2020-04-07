@@ -17,6 +17,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//ruta para capturar data enviada desde intranet.
+Route::match(['get', 'post'],'endpoint/receiveDispatchC19','EndpointController@receiveDispatchC19')->name('endpoint.receiveDispatchC19');
+
 //Auth::routes();
 
 Route::get('login', 'Auth\LoginController@showLoginForm')->middleware('guest')->name('login');
