@@ -13,6 +13,7 @@ class PermissionsTableSeeder extends Seeder
     public function run()
     {
         $permission = Permission::create(['name' => 'Admin']);
+        $permission = Permission::create(['name' => 'Developer']);
         $permission = Permission::create(['name' => 'Patient: create']);
         $permission = Permission::create(['name' => 'Patient: edit']);
         $permission = Permission::create(['name' => 'Patient: list']);
