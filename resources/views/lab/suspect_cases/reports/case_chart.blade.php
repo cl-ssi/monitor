@@ -45,10 +45,10 @@
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
       var data = google.visualization.arrayToDataTable([
-      ['Fecha', 'Pendientes', 'Positivos'],
+      ['Fecha', 'Positivos'],
 
       @foreach($data as $key => $suspectCase)
-        ['{{$key}}', {{$suspectCase['pendientes']}}, {{$suspectCase['positivos']}}],
+        ['{{$key}}', {{$suspectCase['positivos']}}],
       @endforeach
       ]);
 
@@ -57,11 +57,6 @@
       view.setColumns([0, 1,
                        { calc: "stringify",
                          sourceColumn: 1,
-                         type: "string",
-                         role: "annotation" },
-                       2,
-                       { calc: "stringify",
-                         sourceColumn: 2,
                          type: "string",
                          role: "annotation" }]);
       @endif
