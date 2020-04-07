@@ -58,6 +58,7 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
 Route::prefix('lab')->name('lab.')->group(function () {
     Route::get('login/{access_token}', 'SuspectCaseController@login')->name('login');
     Route::get('results', 'SuspectCaseController@result')->name('result');
+    Route::get('print', 'SuspectCaseController@print')->name('print');
     Route::prefix('suspect_cases')->name('suspect_cases.')->group(function () {
         Route::get('stat',  'SuspectCaseController@stat')->name('stat');
         Route::get('case_chart','SuspectCaseController@case_chart')->name('case_chart')->middleware('auth');
