@@ -1,12 +1,32 @@
 @extends('layouts.app')
 
-@section('title', 'Pabellon Reporte por Especialidad')
+@section('title', 'Reporte cantidad de casos sospechosos - positivos')
 
 @section('content')
 
-<h3 class="mb-3">Reporte de pabellón por especialidades</h3>
+<h3 class="mb-3">Reporte de casos</h3>
 
-<div id="chartdiv"></div>
+<form class="form-inline" method="post" action="{{ route('lab.suspect_cases.case_chart') }}">
+	@csrf
+
+	<div class="form-group ml-3">
+		<label for="for_from">Desde</label>
+		<input type="date" class="form-control mx-sm-3" id="for_from" name="from"
+			value="{{ Carbon\Carbon::parse($from)->format('Y-m-d') }}">
+	</div>
+
+	<div class="form-group">
+		<label for="for_to">Hasta</label>
+		<input type="date" class="form-control mx-sm-3" id="for_to" name="to"
+			value="{{ Carbon\Carbon::parse($to)->format('Y-m-d') }}">
+	</div>
+
+	<div class="form-group">
+		<button type="submit" name="btn_buscar" class="btn btn-primary">Buscar</button>
+	</div>
+</form>
+
+<div id="chart_div" style="height: 500px;"></div>
 
 @endsection
 
@@ -14,96 +34,85 @@
 
 @section('custom_js')
 
-<!-- Styles -->
-<style>
-#chartdiv {
-  width: 100%;
-  height: 500px;
-}
-</style>
-
-<!-- Resources -->
-<script src="https://www.amcharts.com/lib/4/core.js"></script>
-<script src="https://www.amcharts.com/lib/4/charts.js"></script>
-<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
-
-<!-- Chart code -->
-<script>
-am4core.ready(function() {
-
-// Themes begin
-am4core.useTheme(am4themes_animated);
-// Themes end
-
-// Create chart instance
-var chart = am4core.create("chartdiv", am4charts.XYChart);
-
-// Export
-chart.exporting.menu = new am4core.ExportMenu();
-
-// Data for both series
-var data = [
-
-
-{
-	"year": "2018",
-	"Hrs.Contratadas": '55',
-	"Hrs.Ejecutadas": '44'
-}
-
-];
-
-/* Create axes */
-var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-categoryAxis.dataFields.category = "year";
-categoryAxis.renderer.minGridDistance = 30;
-
-/* Create value axis */
-var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-
-/* Create series */
-var columnSeries = chart.series.push(new am4charts.ColumnSeries());
-columnSeries.name = "Hrs.Ejecutadas";//"Hrs.Contratadas";
-columnSeries.dataFields.valueY = "Hrs.Ejecutadas";//"Hrs.Contratadas";
-columnSeries.dataFields.categoryX = "year";
-
-columnSeries.columns.template.tooltipText = "[#fff font-size: 15px]{name} in {categoryX}:\n[/][#fff font-size: 20px]{valueY}[/] [#fff]{additional}[/]"
-columnSeries.columns.template.propertyFields.fillOpacity = "fillOpacity";
-columnSeries.columns.template.propertyFields.stroke = "stroke";
-columnSeries.columns.template.propertyFields.strokeWidth = "strokeWidth";
-columnSeries.columns.template.propertyFields.strokeDasharray = "columnDash";
-columnSeries.tooltip.label.textAlign = "middle";
-
-var lineSeries = chart.series.push(new am4charts.LineSeries());
-lineSeries.name = "Hrs.Contratadas";//"Hrs.Ejecutadas";
-lineSeries.dataFields.valueY = "Hrs.Contratadas";//"Hrs.Ejecutadas";
-lineSeries.dataFields.categoryX = "year";
-
-lineSeries.stroke = am4core.color("#fdd400");
-lineSeries.strokeWidth = 3;
-lineSeries.propertyFields.strokeDasharray = "lineDash";
-lineSeries.tooltip.label.textAlign = "middle";
-
-var bullet = lineSeries.bullets.push(new am4charts.Bullet());
-bullet.fill = am4core.color("#fdd400"); // tooltips grab fill from parent by default
-bullet.tooltipText = "[#fff font-size: 15px]{name} in {categoryX}:\n[/][#fff font-size: 20px]{valueY}[/] [#fff]{additional}[/]"
-var circle = bullet.createChild(am4core.Circle);
-circle.radius = 4;
-circle.fill = am4core.color("#fff");
-circle.strokeWidth = 3;
-
-chart.data = data;
-
-}); // end am4core.ready()
-</script>
-
-
 @endsection
 
 @section('custom_js_head')
 
-<script src='{{asset('assets/amcharts/js/core.js')}}'></script>
-<script src='{{asset('assets/amcharts/js/charts.js')}}'></script>
-<script src='{{asset('assets/amcharts/js/animated.js')}}'></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+
+      // google.charts.load('current', {'packages':['bar']});
+      // google.charts.load("current", {packages:['corechart']});
+      // google.charts.setOnLoadCallback(drawChart);
+      //
+      // function drawChart() {
+      //   var data = google.visualization.arrayToDataTable([
+      //     ['Fecha', 'Pendientes', 'Positivos'],
+      //
+      //     @foreach($data as $suspectCase)
+      //       [new Date({{$suspectCase['year']}}, {{$suspectCase['month']}}, {{$suspectCase['day']}}), {{$suspectCase['pendientes']}}, {{$suspectCase['positivos']}}],
+      //     @endforeach
+      //
+      //   ]);
+      //
+      //   var view = new google.visualization.DataView(data);
+      //   view.setColumns([0, 1,
+      //                    { calc: "stringify",
+      //                      sourceColumn: 1,
+      //                      type: "string",
+      //                      role: "annotation" },
+      //                    2]);
+      //
+      //
+      //   var options = {
+      //     chart: {
+      //       title: 'Seguimiento de casos',
+      //       subtitle: 'Pendientes vs Positivos'
+      //     }
+      //   };
+      //
+      //   var chart = new google.charts.Bar(document.getElementById('chart_div'));
+      //   chart.draw(view, options);
+      //
+      //   // chart.draw(data, google.charts.Bar.convertOptions(options));
+      // }
+
+    google.charts.load("current", {packages:['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+      ['Fecha', 'Pendientes', 'Positivos'],
+
+      @foreach($data as $key => $suspectCase)
+        ['{{$key}}', {{$suspectCase['pendientes']}}, {{$suspectCase['positivos']}}],
+      @endforeach
+      ]);
+
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1,
+                       { calc: "stringify",
+                         sourceColumn: 1,
+                         type: "string",
+                         role: "annotation" },
+                       2,
+                       { calc: "stringify",
+                         sourceColumn: 2,
+                         type: "string",
+                         role: "annotation" }]);
+
+      var options = {
+        title: "Seguimiento de casos - Pendientes vs Positivos",
+        subtitle: 'Pendientes vs Positivos',
+        // width: 600,
+        height: 400,
+        bar: {groupWidth: "95%"},
+        legend: { position: "none" },
+      };
+      var chart = new google.visualization.ColumnChart(document.getElementById("chart_div"));
+      chart.draw(view, options);
+    }
+
+  </script>
+
 
 @endsection
