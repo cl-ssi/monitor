@@ -68,11 +68,7 @@
                         </li>
                         @endcan
 
-<<<<<<< HEAD
                         @can('Report')
-=======
-                        @can('Developer')
->>>>>>> b83053af17d5947fcc038199aad5a24925dd6ccc
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('lab.suspect_cases.report') }}">
                                 Reporte
