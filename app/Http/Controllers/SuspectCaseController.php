@@ -217,6 +217,11 @@ class SuspectCaseController extends Controller
         return view('lab.result', compact('patient'));
     }
 
+    public function print(){
+        $pdf = \PDF::loadView('lab.results.result');
+        return $pdf->stream();
+    }
+
     public function stat() {
         $cases = SuspectCase::All();
 
