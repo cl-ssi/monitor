@@ -12,8 +12,8 @@ class EndpointController extends Controller
     //dd("holaaaa", $request->dispatch);
     $dispatch = new Dispatch();
     echo $request->dispatch;
-    $dispatch->fill($request->dispatch);
-    $dispatch->save();
+    //$dispatch->fill($request->dispatch);
+    //$dispatch->save();
 
     return view('welcome');
   }
