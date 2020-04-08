@@ -27,6 +27,10 @@
                 <option value=""></option>
                 <option value="HOSPITAL Ernesto Torres Galdames" {{ ($suspectCase->origin == 'HOSPITAL Ernesto Torres Galdames')?'selected':'' }}>HOSPITAL Ernesto Torres Galdames</option>
 
+                <option value="Clínica Tarapacá" {{ ($suspectCase->origin == 'Clínica Tarapacá')?'selected':'' }}>Clínica Tarapacá</option>
+                <option value="Clínica Iquique" {{ ($suspectCase->origin == 'Clínica Iquique')?'selected':'' }}>Clínica Iquique</option>
+                <option value="Particular (SEREMI)" {{ ($suspectCase->origin == 'Particular (SEREMI)')?'selected':'' }}>Particular (SEREMI)</option>
+
                 <option value="CECOSF El Boro" {{ ($suspectCase->origin == 'CECOSF El Boro')?'selected':'' }}>CECOSF El Boro</option>
                 <option value="CECOSF La Tortuga" {{ ($suspectCase->origin == 'CECOSF La Tortuga')?'selected':'' }}>CECOSF La Tortuga</option>
                 <option value="CESFAM Cirujano Aguirre" {{ ($suspectCase->origin == 'CESFAM Cirujano Aguirre')?'selected':'' }}>CESFAM Cirujano Aguirre</option>
@@ -61,9 +65,7 @@
                 <option value="PSR Tarapacá" {{ ($suspectCase->origin == 'PSR Tarapacá')?'selected':'' }}>PSR Tarapacá</option>
                 <!-- <option value="SAPU Pedro Pulgar" {{ ($suspectCase->origin == 'SAPU Pedro Pulgar')?'selected':'' }}>SAPU Pedro Pulgar</option> -->
                 <!-- <option value="SAPU Pozo Almonte" {{ ($suspectCase->origin == 'SAPU Pozo Almonte')?'selected':'' }}>SAPU Pozo Almonte</option> -->
-                <option value="Clínica Tarapacá" {{ ($suspectCase->origin == 'Clínica Tarapacá')?'selected':'' }}>Clínica Tarapacá</option>
-                <option value="Clínica Iquique" {{ ($suspectCase->origin == 'Clínica Iquique')?'selected':'' }}>Clínica Iquique</option>
-                <option value="Particular (SEREMI)" {{ ($suspectCase->origin == 'Particular (SEREMI)')?'selected':'' }}>Particular (SEREMI)</option>
+
             </select>
         </fieldset>
 
