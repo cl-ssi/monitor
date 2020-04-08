@@ -29,7 +29,11 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 //Route::get('register', 'Auth\RegisterController@showRegistrationForm')->middleware('guest')->name('register');
 //Route::post('register', 'Auth\RegisterController@register')->middleware('guest');
 
-Route::prefix('users')->name('users.')->group(function () {
+Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
+    Route::prefix('password')->name('password.')->group(function () {
+        Route::get('/', 'UserController@showPasswordForm')->name('show_form');
+        Route::put('/', 'UserController@updatePassword')->name('update');
+    });
     Route::get('/', 'UserController@index')->name('index')->middleware('can:Admin');
     Route::get('/create', 'UserController@create')->name('create')->middleware('can:Admin');
     Route::post('/', 'UserController@store')->name('store')->middleware('can:Admin');
@@ -60,20 +64,20 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
 Route::resource('epp','EppController')->middleware('auth');
 
 Route::prefix('lab')->name('lab.')->group(function () {
-    Route::get('login/{access_token}', 'SuspectCaseController@login')->name('login');
-    Route::get('results', 'SuspectCaseController@result')->name('result');
-    Route::get('print', 'SuspectCaseController@print')->name('print');
+    Route::get('login/{access_token}','SuspectCaseController@login')->name('login');
+    Route::get('results','SuspectCaseController@result')->name('result');
+    Route::get('print','SuspectCaseController@print')->middleware('auth')->name('print');
     Route::prefix('suspect_cases')->name('suspect_cases.')->group(function () {
-        Route::get('stat',  'SuspectCaseController@stat')->name('stat');
+        //Route::get('stat', 'SuspectCaseController@stat')->name('stat');
         // Route::get('case_chart','SuspectCaseController@case_chart')->name('case_chart')->middleware('auth');
-        Route::match(['get', 'post'],'case_chart','SuspectCaseController@case_chart')->name('case_chart');
-        Route::get('download/{file}',  'SuspectCaseController@download')->name('download')->middleware('auth');
-        Route::get('/', 'SuspectCaseController@index')->name('index')->middleware('auth','can:SuspectCase: list');
-        Route::get('/create', 'SuspectCaseController@create')->name('create')->middleware('auth','can:SuspectCase: create');
-        Route::post('/', 'SuspectCaseController@store')->name('store')->middleware('auth','can:SuspectCase: create');
-        Route::get('/{suspect_case}/edit', 'SuspectCaseController@edit')->name('edit')->middleware('auth','can:SuspectCase: edit');
-        Route::put('/{suspect_case}', 'SuspectCaseController@update')->name('update')->middleware('auth','can:SuspectCase: edit');
-        Route::delete('/{suspect_case}', 'SuspectCaseController@destroy')->name('destroy')->middleware('auth','can:SuspectCase: delete');
+        Route::match(['get','post'],'case_chart','SuspectCaseController@case_chart')->middleware('auth')->name('case_chart');
+        Route::get('download/{file}','SuspectCaseController@download')->name('download')->middleware('auth');
+        Route::get('/','SuspectCaseController@index')->name('index')->middleware('auth','can:SuspectCase: list');
+        Route::get('/create','SuspectCaseController@create')->name('create')->middleware('auth','can:SuspectCase: create');
+        Route::post('/','SuspectCaseController@store')->name('store')->middleware('auth','can:SuspectCase: create');
+        Route::get('/{suspect_case}/edit','SuspectCaseController@edit')->name('edit')->middleware('auth','can:SuspectCase: edit');
+        Route::put('/{suspect_case}','SuspectCaseController@update')->name('update')->middleware('auth','can:SuspectCase: edit');
+        Route::delete('/{suspect_case}','SuspectCaseController@destroy')->name('destroy')->middleware('auth','can:SuspectCase: delete');
         Route::get('/report','SuspectCaseController@report')->name('report')->middleware('auth','can:Report');
     });
 });

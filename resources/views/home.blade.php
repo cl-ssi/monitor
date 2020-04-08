@@ -29,14 +29,21 @@
 
             <p class="mt-3">Registro de cambios: </p>
             <ul class="text-muted small">
-                <li>2020-03-31 Reporte ahora necesita logear</li>
-                <li>2020-03-31 Filtro por resultado de Covid-19</li>
+                <li>2020-04-08 Agregado calculo de tasa en reporte.</li>
+                <li>2020-04-08 Agregado todos los establecimientos de la region.</li>
+                <li>2020-04-08 Habilitado para cambiar clave.</li>
+                <li>2020-04-07 Reordenado los datos demográficos (fix de via local).</li>
+                <li>2020-04-07 Grafico de casos positivos en el tiempo.</li>
+                <li>2020-04-06 Es posible ver el PDF de un examen en la lista de casos.</li>
+                <li>2020-04-06 Obtención de resultados a través de clave única.</li>
+                <li>2020-03-31 Reporte ahora necesita logear.</li>
+                <li>2020-03-31 Filtro por resultado de Covid-19.</li>
                 <li>2020-03-28 Dirección desglosada en datos demográficos.</li>
                 <li>2020-03-27 Agregado desglose por genero en resumen.</li>
                 <li>2020-03-27 Agregado filtro de busqueda en listados.</li>
-                <li>2020-03-27 Reordenado el ingreso de caso sospecha</li>
+                <li>2020-03-27 Reordenado el ingreso de caso sospecha.</li>
                 <li>2020-03-26 Agregado georeferencia.</li>
-                <li>2020-30-26 Agregado campos de fecha entrega de resultados y envío ISP</li>
+                <li>2020-30-26 Agregado campos de fecha entrega de resultados y envío ISP.</li>
                 <li>2020-03-25 Busca si el paciente ya está ingresado y pre carga los datos.</li>
                 <li>2020-03-25 Renombrados datos de resultado de IFD equivalentes al LIS.</li>
                 <li>2020-03-25 Resultados IFD agregado "No procesado".</li>
