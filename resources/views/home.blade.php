@@ -29,6 +29,13 @@
 
             <p class="mt-3">Registro de cambios: </p>
             <ul class="text-muted small">
+                <li>2020-04-08 Agregado calculo de tasa</li>
+                <li>2020-04-08 Agregado todos los establecimientos de la region</li>
+                <li>2020-04-08 Habilitado para cambiar clave</li>
+                <li>2020-04-07 Reordenado los datos demográficos (fix de via local)</li>
+                <li>2020-04-07 Grafico de casos positivos en el tiempo</li>
+                <li>2020-04-06 Es posible ver el PDF de un examen en la lista de casos</li>
+                <li>2020-04-06 Obtención de resultados a través de clave única</li>
                 <li>2020-03-31 Reporte ahora necesita logear</li>
                 <li>2020-03-31 Filtro por resultado de Covid-19</li>
                 <li>2020-03-28 Dirección desglosada en datos demográficos.</li>
