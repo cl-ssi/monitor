@@ -203,6 +203,18 @@
                 </tr>
             </tbody>
         </table>
+
+        <table class="table table-sm table-bordered">
+            <thead>
+                <tr>
+                    <th class="table-active">
+                        Tasa de incidencia <br>(Casos positivos / población (<span class="small">* 382.773</span>)) * 100.000
+
+                    </th>
+                    <td>{{ number_format($cases->where('pscr_sars_cov_2','positive')->count() / 382773 * 100000 ,2) }}</td>
+                </tr>
+            </thead>
+        </table>
     </div>
 
     <div class="col-12 col-sm-4">

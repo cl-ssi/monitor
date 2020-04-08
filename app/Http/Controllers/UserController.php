@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 
@@ -100,5 +102,32 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showPasswordForm()
+    {
+        return view('users.change_password');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePassword(Request $request)
+    {
+        if(Hash::check($request->input('current_password'), Auth()->user()->password)) {
+            Auth()->user()->password = bcrypt($request->input('new_password'));
+            Auth()->user()->save();
+        }
+
+        // TODO: Mostrar error si la clave antigua no coincide
+        return redirect()->route('home');
     }
 }
