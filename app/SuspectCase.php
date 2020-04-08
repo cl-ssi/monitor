@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class SuspectCase extends Model
 {
     use SoftDeletes;
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -23,7 +23,7 @@ class SuspectCase extends Model
         'observation', 'patient_id','gestation_week','gestation'
     ];
 
-    public function Patient() {
+    public function patient() {
         return $this->belongsTo('App\Patient');
     }
 

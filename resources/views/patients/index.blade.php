@@ -41,9 +41,10 @@
             <td class="text-center">{{ $patient->identifier }}</td>
             <td>{{ $patient->fullName }}</td>
             <td>{{ $patient->genderEsp }}</td>
-            <td>{{ $patient->birthday }}</td>
+            <td nowrap>{{ $patient->birthday }}</td>
             <td class="small">
-                {{ ($patient->demographic)?$patient->demographic->address:'' }}<br>
+                {{ ($patient->demographic)?$patient->demographic->address:'' }}
+                {{ ($patient->demographic)?$patient->demographic->number:'' }}<br>
                 {{ ($patient->demographic)?$patient->demographic->commune:'' }}
             </td>
             <td class="small">

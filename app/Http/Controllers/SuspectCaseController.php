@@ -25,7 +25,7 @@ class SuspectCaseController extends Controller
      */
     public function index()
     {
-        $suspectCases = SuspectCase::latest('id')->get();
+        $suspectCases = SuspectCase::with('patient')->latest('id')->get();
         return view('lab.suspect_cases.index', compact('suspectCases'));
     }
 
