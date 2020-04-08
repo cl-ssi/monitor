@@ -8,6 +8,7 @@ class EndpointController extends Controller
 {
   public function receiveDispatchC19(Request $request)
   {
-    dd($request);
+    // dd($request);
+    return view('welcome');
   }
 }
