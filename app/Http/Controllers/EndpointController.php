@@ -10,11 +10,11 @@ class EndpointController extends Controller
   public function receiveDispatchC19(Request $request)
   {
     //dd("holaaaa", $request->dispatch);
-    $dispatch = new Dispatch();
     echo $request->dispatch;
-    //$dispatch->fill($request->dispatch);
-    //$dispatch->save();
+    $dispatch = new Dispatch();
+    $dispatch->fill($request->dispatch);
+    $dispatch->save();
 
-    return view('welcome');
+    //return view('welcome');
   }
 }
