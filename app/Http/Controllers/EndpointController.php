@@ -8,7 +8,6 @@ use App\Pharmacies\DispatchItem;
 
 class EndpointController extends Controller
 {
-<<<<<<< HEAD
   public function receiveDispatchC19(Request $request)
   {
     //obtiene datos
@@ -55,16 +54,4 @@ class EndpointController extends Controller
     $DispatchItem = DispatchItem::where('dispatch_id',$request->dispatch_id)->delete();
     $Dispatch = Dispatch::where('id',$request->dispatch_id)->delete();
   }
-=======
-    public function receiveDispatchC19(Request $request)
-    {
-        //dd("holaaaa", $request->dispatch);
-        dd($request->dispatch->toArray());
-        // $dispatch = new Dispatch();
-        // $dispatch->fill($request->dispatch);
-        // $dispatch->save();
-
-        //return view('welcome');
-    }
->>>>>>> d2049930d84ade8e24803bedcf190cae9f8687ad
 }
