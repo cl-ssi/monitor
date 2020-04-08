@@ -80,6 +80,10 @@
             <select name="origin" id="for_origin" class="form-control">
                 <option value=""></option>
                 <option value="HOSPITAL Ernesto Torres Galdames">HOSPITAL Ernesto Torres Galdames</option>
+                
+                <option value="Clínica Tarapacá">Clínica Tarapacá</option>
+                <option value="Clínica Iquique">Clínica Iquique</option>
+                <option value="Particular (SEREMI)">Particular (SEREMI)</option>
 
                 <option value="CECOSF El Boro">CECOSF El Boro</option>
                 <option value="CECOSF La Tortuga">CECOSF La Tortuga</option>
@@ -115,10 +119,6 @@
                 <option value="PSR Tarapacá">PSR Tarapacá</option>
                 <!-- <option value="SAPU Pedro Pulgar">SAPU Pedro Pulgar</option>
                 <option value="SAPU Pozo Almonte">SAPU Pozo Almonte</option> -->
-
-                <option value="Clínica Tarapacá">Clínica Tarapacá</option>
-                <option value="Clínica Iquique">Clínica Iquique</option>
-                <option value="Particular (SEREMI)">Particular (SEREMI)</option>
             </select>
         </fieldset>
 
