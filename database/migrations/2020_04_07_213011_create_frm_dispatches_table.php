@@ -41,6 +41,9 @@ class CreateFrmDispatchesTable extends Migration
           $table->longText('batch'); //lote
 
           $table->foreign('dispatch_id')->references('id')->on('frm_dispatches')->onDelete('cascade');
+
+          $table->timestamps();
+          $table->softDeletes();
         });
     }
 
