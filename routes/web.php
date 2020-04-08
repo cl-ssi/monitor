@@ -67,7 +67,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
     Route::get('results','SuspectCaseController@result')->name('result');
     Route::get('print','SuspectCaseController@print')->middleware('auth')->name('print');
     Route::prefix('suspect_cases')->name('suspect_cases.')->group(function () {
-        Route::get('stat', 'SuspectCaseController@stat')->name('stat');
+        //Route::get('stat', 'SuspectCaseController@stat')->name('stat');
         // Route::get('case_chart','SuspectCaseController@case_chart')->name('case_chart')->middleware('auth');
         Route::match(['get','post'],'case_chart','SuspectCaseController@case_chart')->middleware('auth')->name('case_chart');
         Route::get('download/{file}','SuspectCaseController@download')->name('download')->middleware('auth');
