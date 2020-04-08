@@ -9,7 +9,7 @@ class EndpointController extends Controller
 {
   public function receiveDispatchC19(Request $request)
   {
-    dd($request);
+    dd("holaaaa", $request);
     // $dispatch = new Dispatch($request->all());
     // $dispatch->save();
 
