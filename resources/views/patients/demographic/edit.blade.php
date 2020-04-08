@@ -3,10 +3,10 @@
     <fieldset class="form-group col-12 col-md-2">
         <label for="for_street_type">Vía de residencia</label>
         <select name="street_type" id="for_street_type" class="form-control">
-            <option value="Calle" {{($patient->street_type == 'Calle')?'selected':''}}>Calle</option>
-            <option value="Pasaje" {{($patient->street_type == 'Pasaje')?'selected':''}}>Pasaje</option>
-            <option value="Avenida" {{($patient->street_type == 'Avenida')?'selected':''}}>Avenida</option>
-            <option value="Camino" {{($patient->street_type == 'Camino')?'selected':''}}>Camino</option>
+            <option value="Calle" {{($patient->demographic->street_type == 'Calle')?'selected':''}}>Calle</option>
+            <option value="Pasaje" {{($patient->demographic->street_type == 'Pasaje')?'selected':''}}>Pasaje</option>
+            <option value="Avenida" {{($patient->demographic->street_type == 'Avenida')?'selected':''}}>Avenida</option>
+            <option value="Camino" {{($patient->demographic->street_type == 'Camino')?'selected':''}}>Camino</option>
         </select>
     </fieldset>
 
