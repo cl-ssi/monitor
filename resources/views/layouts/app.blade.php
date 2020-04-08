@@ -23,10 +23,27 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/ssi.css') }}" rel="stylesheet">
     @yield('custom_js_head')
+
+    <style media="screen">
+        .navbar-custom {
+            background-color:
+            @switch(App::environment())
+                @case('local')
+                    #CE9DD9;
+                    @break
+                @case('testing')
+                    #B5EAD7;
+                    @break
+                @case('production')
+                    #FFFFFF;
+                    @break
+            @endswitch
+        }
+    </style>
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light shadow-sm navbar-custom">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
