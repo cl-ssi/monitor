@@ -60,9 +60,9 @@
             <th>Edad</th>
             <th>Sexo</th>
             <th>Resultado IFD</th>
+            <th class="alert-danger">PCR SARS-Cov2</th>
             <th>Sem</th>
             <th>Epivigila</th>
-            <th class="alert-danger">PCR SARS-Cov2</th>
             <th>PAHO FLU</th>
             <th>Estado</th>
             <th>Observación</th>
@@ -75,15 +75,13 @@
         @foreach($suspectCases as $case)
         <tr class="row_{{$case->covid19}} {{ ($case->pscr_sars_cov_2 == 'positive')?'table-danger':''}}">
             <td>{{ $case->id }}</td>
-            <td nowrap>{{ (isset($case->sample_at))? $case->sample_at->format('Y-m-d'):'' }}</td>
+            <td nowrap class="small">{{ (isset($case->sample_at))? $case->sample_at->format('Y-m-d'):'' }}</td>
             <td>{{ $case->origin }}</td>
             <td> <a class="link" href="{{ route('patients.edit',$case->patient) }}">{{ $case->patient->fullName }}</a></td>
             <td class="text-center" nowrap>{{ $case->patient->identifier }}</td>
             <td>{{ $case->age }}</td>
             <td>{{ strtoupper($case->gender[0]) }}</td>
             <td class="{{ ($case->result_ifd <> 'Negativo' AND $case->result_ifd <> 'No procesado')?'text-danger':''}}">{{ $case->result_ifd }} {{ $case->subtype }}</td>
-            <td>{{ $case->epidemiological_week }}</td>
-            <td>{{ $case->epivigila }}</td>
             <td>{{ $case->covid19 }}
                 @if($case->files->first())
                 <a href="{{ route('lab.suspect_cases.download', $case->files->first()->id) }}"
@@ -91,6 +89,8 @@
                 </a>
                 @endif
             </td>
+            <td>{{ $case->epidemiological_week }}</td>
+            <td>{{ $case->epivigila }}</td>
             <td>{{ $case->paho_flu }}</td>
             <td>{{ $case->status }}</td>
             <td class="text-muted small">{{ $case->observation }}</td>
