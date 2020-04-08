@@ -207,8 +207,8 @@
         <table class="table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="table-active">Tasa (Población regional* / casos positivos) <span class="small">* 330.558 censo 2017</span></th>
-                    <td>{{ number_format($cases->where('pscr_sars_cov_2','positive')->count() / 330558,8) }}</td>
+                    <th class="table-active">Tasa de incidencia (Casos positivos / población*) * 100.000 <span class="small">* 382.773</span></th>
+                    <td>{{ number_format($cases->where('pscr_sars_cov_2','positive')->count() / 382773 * 100000 ,2) }}</td>
                 </tr>
             </thead>
         </table>
