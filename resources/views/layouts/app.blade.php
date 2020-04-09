@@ -99,6 +99,14 @@
                         </li>
                         @endcan
 
+                        @can('Epp: list')
+                        <li class="nav-item">
+                          <a class="nav-link" href="{{ route('epp.index') }}">
+                              Egresos EPP
+                          </a>
+                        </li>
+                        @endcan
+
                         @can('Admin')
                         <li class="nav-item">
                           <a class="nav-link" href="{{ route('parameters.index') }}">
