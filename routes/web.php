@@ -19,8 +19,8 @@ Route::get('/', function () {
 
 //ruta para capturar data enviada desde intranet.
 Route::match(['get', 'post'],'endpoint/receiveDispatchC19','EndpointController@receiveDispatchC19')->name('endpoint.receiveDispatchC19');
+Route::match(['get', 'post'],'endpoint/deleteDispatchC19','EndpointController@deleteDispatchC19')->name('endpoint.deleteDispatchC19');
 
-//Auth::routes();
 
 Route::get('login', 'Auth\LoginController@showLoginForm')->middleware('guest')->name('login');
 Route::post('login', 'Auth\LoginController@login')->middleware('guest');
@@ -61,6 +61,7 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
     Route::delete('/{patient}', 'PatientController@destroy')->name('destroy')->middleware('can:Patient: delete');
 });
 
+Route::resource('epp','EppController')->middleware('auth');
 
 Route::prefix('lab')->name('lab.')->group(function () {
     Route::get('login/{access_token}','SuspectCaseController@login')->name('login');

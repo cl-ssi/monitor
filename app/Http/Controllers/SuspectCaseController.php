@@ -241,9 +241,8 @@ class SuspectCaseController extends Controller
         $from = $request->get('from'). ' 00:00:00';
         $to = $request->get('to'). ' 23:59:59';
       }else{
-        $startDate = Carbon::now();
-        $from = $startDate->firstOfMonth();
-        $to = $startDate->lastOfMonth();
+        $from = Carbon::now()->firstOfMonth();
+        $to = Carbon::now()->lastOfMonth();
       }
 
       $suspectCases = SuspectCase::whereBetween('sample_at',[$from,$to])->get();
