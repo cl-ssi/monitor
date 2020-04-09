@@ -204,69 +204,16 @@
             </tbody>
         </table>
 
-        <table class="table table-sm table-bordered">
-            <thead>
-                <tr>
-                    <th class="table-active">
-                        Tasa de incidencia regional<br>(Casos positivos / población <span class="small"> 382.773</span>) * 100.000
-                    </th>
-                    <td>{{ number_format($cases->where('pscr_sars_cov_2','positive')->count() / 382773 * 100000 ,2) }}</td>
-                </tr>
-            </thead>
-        </table>
+
+
     </div>
 
     <div class="col-12 col-sm-4">
-        <table class="table table-sm table-bordered">
-            <thead>
-                <tr class="table-active">
-                    <th>Sospechas por Origen</th>
-                    <th>Total de casos</th>
-                    <th>Total posivos</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Hospital ETG</td>
-                    <td class="text-center">
-                        {{ $cases->where('origin','HOSPITAL Ernesto Torres Galdames')->count() }}
-                    </td>
-                    <td class="text-center">
-                        <span class="text-danger">
-                            {{ $cases->where('origin','HOSPITAL Ernesto Torres Galdames')->where('pscr_sars_cov_2','positive')->count() }}
-                        </span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>APS</td>
-                    <td class="text-center">
-                        {{ $cases->whereNotIn('origin',['HOSPITAL Ernesto Torres Galdames','Clínica Tarapacá','Clínica Iquique'])->count() }}
-                    </td>
-                    <td class="text-center">
-                        <span class="text-danger">
-                            {{ $cases->whereNotIn('origin',['HOSPITAL Ernesto Torres Galdames','Clínica Tarapacá','Clínica Iquique'])->where('pscr_sars_cov_2','positive')->count() }}
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Privados</td>
-                    <td class="text-center">
-                        {{ $cases->whereIn('origin',['Clínica Tarapacá','Clínica Iquique'])->count() }}
-                    </td>
-                    <td class="text-center">
-                        <span class="text-danger">
-                            {{ $cases->whereIn('origin',['Clínica Tarapacá','Clínica Iquique','Particular (SEREMI)'])->where('pscr_sars_cov_2','positive')->count() }}
-                        </span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
 
         <table class="table table-sm table-bordered">
             <thead>
                 <tr class="table-active">
-                    <th>Comuna</th>
+                    <th>Casos por comuna</th>
                     <th>Positivos</th>
                     <!--th>Pendientes</th>
                     <th>Negativos</th-->
@@ -393,6 +340,125 @@
             </tbody>
         </table>
 
+        <table class="table table-sm table-bordered">
+            <thead>
+                <tr class="table-active">
+                    <th colspan="2">
+                        Tasa de incidencia<br>(Casos positivos / población*) x 100.000
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Alto Hospicio (129.999*)</td>
+                    <td class="text-right">
+                        {{ number_format($cases->where('patient.demographic.commune','Alto Hospicio')
+                            ->where('pscr_sars_cov_2','positive')->count() / 129999 * 100000 ,2) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Camiña (1.375*)</td>
+                    <td class="text-right">
+                        {{ number_format($cases->where('patient.demographic.commune','Camiña')
+                            ->where('pscr_sars_cov_2','positive')->count() / 1375 * 100000 ,2) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Colchane (1.583*)</td>
+                    <td class="text-right">
+                        {{ number_format($cases->where('patient.demographic.commune','Colchane')
+                            ->where('pscr_sars_cov_2','positive')->count() / 1583 * 100000 ,2) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Huara (3.000*)</td>
+                    <td class="text-right">
+                        {{ number_format($cases->where('patient.demographic.commune','Huara')
+                            ->where('pscr_sars_cov_2','positive')->count() / 3000 * 100000 ,2) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Iquique (223.463*)</td>
+                    <td class="text-right">
+                        {{ number_format($cases->where('patient.demographic.commune','Iquique')
+                            ->where('pscr_sars_cov_2','positive')->count() / 223463 * 100000 ,2) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Pica (5.958*)</td>
+                    <td class="text-right">
+                        {{ number_format($cases->where('patient.demographic.commune','Pica')
+                            ->where('pscr_sars_cov_2','positive')->count() / 5958 * 100000 ,2) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Pozo Almonte (17.395*)</td>
+                    <td class="text-right">
+                        {{ number_format($cases->where('patient.demographic.commune','Pozo Almonte')
+                            ->where('pscr_sars_cov_2','positive')->count() / 17395 * 100000 ,2) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Región Tarapacá (382.773*)</th>
+                    <th class="text-right">
+                        {{ number_format($cases->where('pscr_sars_cov_2','positive')
+                            ->count() / 382773 * 100000 ,2) }}
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <table class="table table-sm table-bordered">
+            <thead>
+                <tr class="table-active">
+                    <th>Sospechas por Origen</th>
+                    <th>Total de casos</th>
+                    <th>Total posivos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Hospital ETG</td>
+                    <td class="text-center">
+                        {{ $cases->where('origin','HOSPITAL Ernesto Torres Galdames')->count() }}
+                    </td>
+                    <td class="text-center">
+                        <span class="text-danger">
+                            {{ $cases->where('origin','HOSPITAL Ernesto Torres Galdames')->where('pscr_sars_cov_2','positive')->count() }}
+                        </span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>APS</td>
+                    <td class="text-center">
+                        {{ $cases->whereNotIn('origin',['HOSPITAL Ernesto Torres Galdames','Clínica Tarapacá','Clínica Iquique'])->count() }}
+                    </td>
+                    <td class="text-center">
+                        <span class="text-danger">
+                            {{ $cases->whereNotIn('origin',['HOSPITAL Ernesto Torres Galdames','Clínica Tarapacá','Clínica Iquique'])->where('pscr_sars_cov_2','positive')->count() }}
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Privados</td>
+                    <td class="text-center">
+                        {{ $cases->whereIn('origin',['Clínica Tarapacá','Clínica Iquique'])->count() }}
+                    </td>
+                    <td class="text-center">
+                        <span class="text-danger">
+                            {{ $cases->whereIn('origin',['Clínica Tarapacá','Clínica Iquique','Particular (SEREMI)'])->where('pscr_sars_cov_2','positive')->count() }}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+    </div>
+
+    <div class="col-12 col-sm-4">
 
         <table class="table table-sm table-bordered">
             <thead>
@@ -673,9 +739,7 @@
                 </tr>
             </tbody>
         </table>
-    </div>
 
-    <div class="col-12 col-sm-4">
         <div id="curve_chart" style="width: 370px; height: 500px"></div>
     </div>
 </div>
