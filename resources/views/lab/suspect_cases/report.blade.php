@@ -208,8 +208,7 @@
             <thead>
                 <tr>
                     <th class="table-active">
-                        Tasa de incidencia <br>(Casos positivos / población (<span class="small">* 382.773</span>)) * 100.000
-
+                        Tasa de incidencia regional<br>(Casos positivos / población <span class="small"> 382.773</span>) * 100.000
                     </th>
                     <td>{{ number_format($cases->where('pscr_sars_cov_2','positive')->count() / 382773 * 100000 ,2) }}</td>
                 </tr>
@@ -221,7 +220,7 @@
         <table class="table table-sm table-bordered">
             <thead>
                 <tr class="table-active">
-                    <th >Sospechas por Origen</th>
+                    <th>Sospechas por Origen</th>
                     <th>Total de casos</th>
                     <th>Total posivos</th>
                 </tr>
@@ -230,11 +229,11 @@
                 <tr>
                     <td>Hospital ETG</td>
                     <td class="text-center">
-                        {{ $cases->where('origin','Hospital ETG')->count() }}
+                        {{ $cases->where('origin','HOSPITAL Ernesto Torres Galdames')->count() }}
                     </td>
                     <td class="text-center">
                         <span class="text-danger">
-                            {{ $cases->where('origin','Hospital ETG')->where('pscr_sars_cov_2','positive')->count() }}
+                            {{ $cases->where('origin','HOSPITAL Ernesto Torres Galdames')->where('pscr_sars_cov_2','positive')->count() }}
                         </span>
                     </td>
                 </tr>
@@ -242,11 +241,11 @@
                 <tr>
                     <td>APS</td>
                     <td class="text-center">
-                        {{ $cases->whereIn('origin',['CESFAM Guzmán','Hector Reyno'])->count() }}
+                        {{ $cases->whereNotIn('origin',['HOSPITAL Ernesto Torres Galdames','Clínica Tarapacá','Clínica Iquique'])->count() }}
                     </td>
                     <td class="text-center">
                         <span class="text-danger">
-                            {{ $cases->whereIn('origin',['CESFAM Guzmán','Hector Reyno'])->where('pscr_sars_cov_2','positive')->count() }}
+                            {{ $cases->whereNotIn('origin',['HOSPITAL Ernesto Torres Galdames','Clínica Tarapacá','Clínica Iquique'])->where('pscr_sars_cov_2','positive')->count() }}
                         </span>
                     </td>
                 </tr>
