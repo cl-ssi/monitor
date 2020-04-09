@@ -260,7 +260,7 @@
 <form method="POST" class="form-horizontal" action="{{ route('lab.suspect_cases.destroy',$suspectCase) }}">
     @csrf
     @method('DELETE')
-    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <button type="submit" class="btn btn-danger" onclick="return confirm('¿Está seguro de eliminar esta sospecha?');">Eliminar</button>
 </form>
 @endcan
 
