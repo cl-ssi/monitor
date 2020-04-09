@@ -771,11 +771,11 @@
         ]);
 
         var options = {
-            title: 'Casos positivos por edad',
+            title: 'Cantidad de casos positivos por edad',
             curveType: 'function',
             width: 400,
             height: 400,
-            legend: { position: 'bottom' },
+            legend: { position: 'none' },
             backgroundColor: '#f8fafc',
             chartArea: {'width': '90%', 'height': '80%'},
         };
@@ -795,7 +795,7 @@
         dataTable.addColumn({type: 'string', role: 'tooltip'});
         dataTable.addRows([
             @foreach($evolucion as $key => $total)
-                [{{ $loop->iteration }},{{ $total }},'{{ $key }}'],
+                [{{ $loop->iteration }},{{ $total }},'{{ $key }} ({{ $total }})'],
             @endforeach
         ]);
 
@@ -807,6 +807,9 @@
             legend: { position: "none" },
             backgroundColor: '#f8fafc',
             hAxis: {
+                textStyle : {
+                    fontSize: 9 // or the number you want
+                },
                 gridlines:{count: {{ count($evolucion) }} },
                 textPosition: '50',
             },
