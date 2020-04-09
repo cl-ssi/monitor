@@ -29,6 +29,7 @@
 
             <p class="mt-3">Registro de cambios: </p>
             <ul class="text-muted small">
+                <li>2020-04-09 Agregada incidencia por comunas en reporte.</li>
                 <li>2020-04-08 Agregado calculo de tasa en reporte.</li>
                 <li>2020-04-08 Agregado todos los establecimientos de la region.</li>
                 <li>2020-04-08 Habilitado para cambiar clave.</li>
