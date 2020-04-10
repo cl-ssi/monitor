@@ -757,30 +757,34 @@
     google.charts.setOnLoadCallback(drawChartEvolution);
 
     function drawChartAges() {
-        var data = google.visualization.arrayToDataTable([
-            ['Edad',  'Casos'],
-            ['0',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[0,9])->whereNotNull('age')->count()}}],
-            ['10',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[10,19])->whereNotNull('age')->count()}}],
-            ['20',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[20,29])->whereNotNull('age')->count()}}],
-            ['30',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[30,39])->whereNotNull('age')->count()}}],
-            ['40',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[40,49])->whereNotNull('age')->count()}}],
-            ['50',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[50,59])->whereNotNull('age')->count()}}],
-            ['60',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[60,69])->whereNotNull('age')->count()}}],
-            ['70',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[70,79])->whereNotNull('age')->count()}}],
-            ['80->',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[80,120])->whereNotNull('age')->count()}}],
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Edad');
+        data.addColumn('number', 'Hombres');
+        data.addColumn('number', 'Mujeres');
+        data.addRows([
+            ['0', {{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[0,9])->whereNotNull('age')->count()}}  ,{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[0,9])->whereNotNull('age')->count()}}],
+            ['10',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[10,19])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[10,19])->whereNotNull('age')->count()}}],
+            ['20',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[20,29])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[20,29])->whereNotNull('age')->count()}}],
+            ['30',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[30,39])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[30,39])->whereNotNull('age')->count()}}],
+            ['40',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[40,49])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[40,49])->whereNotNull('age')->count()}}],
+            ['50',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[50,59])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[50,59])->whereNotNull('age')->count()}}],
+            ['60',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[60,69])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[60,69])->whereNotNull('age')->count()}}],
+            ['70',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[70,79])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[70,79])->whereNotNull('age')->count()}}],
+            ['80->',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[80,120])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[80,120])->whereNotNull('age')->count()}}],
         ]);
 
         var options = {
             title: 'Cantidad de casos positivos por edad',
-            curveType: 'function',
+            curveType: 'log',
             width: 400,
             height: 400,
-            legend: { position: 'none' },
+            colors: ['#3366CC', '#CC338C'],
+            legend: { position: 'bottom' },
             backgroundColor: '#f8fafc',
             chartArea: {'width': '90%', 'height': '80%'},
         };
 
-        var chart = new google.visualization.LineChart(document.getElementById('chart_ages'));
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_ages'));
 
         chart.draw(data, options);
     }
@@ -800,8 +804,8 @@
         ]);
 
         var options = {
-            title: "Cantidad de casos positivos por día",
-            curveType: 'log',
+            title: "Comportamiento de casos positivos en el tiempo",
+            curveType: 'function',
             width: 400,
             height: 400,
             legend: { position: "none" },
@@ -816,7 +820,7 @@
             chartArea: {'width': '90%', 'height': '80%'},
 
         };
-        var chart = new google.visualization.ColumnChart(document.getElementById('evolution'));
+        var chart = new google.visualization.LineChart(document.getElementById('evolution'));
         chart.draw(dataTable, options);
     }
 </script>
