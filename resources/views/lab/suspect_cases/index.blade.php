@@ -77,7 +77,11 @@
             <td>{{ $case->id }}</td>
             <td nowrap class="small">{{ (isset($case->sample_at))? $case->sample_at->format('Y-m-d'):'' }}</td>
             <td>{{ $case->origin }}</td>
-            <td> <a class="link" href="{{ route('patients.edit',$case->patient) }}">{{ $case->patient->fullName }}</a></td>
+            <td> <a class="link" href="{{ route('patients.edit',$case->patient) }}">
+                    {{ $case->patient->fullName }}
+                    @if($case->gestation == "on") <img align="center" src="{{ asset('images/pregnant.png') }}" width="24"> @endif
+                 </a>
+            </td>
             <td class="text-center" nowrap>{{ $case->patient->identifier }}</td>
             <td>{{ $case->age }}</td>
             <td>{{ strtoupper($case->gender[0]) }}</td>
