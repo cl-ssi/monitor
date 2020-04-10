@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 
 class SuspectCaseController extends Controller
 {
@@ -171,7 +172,36 @@ class SuspectCaseController extends Controller
 
     public function report() {
         $cases = SuspectCase::All();
-        return view('lab.suspect_cases.report', compact('cases'));
+        $totales_dia = DB::table('suspect_cases')
+                    ->select('sample_at', DB::raw('count(*) as total'))
+                    ->where('pscr_sars_cov_2','positive')
+                    ->groupBy('sample_at')
+                    ->orderBy('sample_at')
+                    ->get();
+
+        $begin = new \DateTime($totales_dia->first()->sample_at);
+        $end   = new \DateTime($totales_dia->last()->sample_at);
+
+        for($i = $begin; $i <= $end; $i->modify('+1 day')){
+            $evolucion[$i->format("Y-m-d")] = 0;
+
+        }
+        foreach($totales_dia as $dia) {
+            list($fecha, $hora) = explode(' ', $dia->sample_at);
+            $evolucion[$fecha] = $dia->total;
+        }
+
+
+        $acumulado = 0;
+        foreach ($evolucion as $key => $dia) {
+            $acumulado += $dia;
+            $evo[$key] = $acumulado;
+        }
+        $evolucion = $evo;
+        // echo '<pre>';
+        // print_r($evo);
+        // die();
+        return view('lab.suspect_cases.report', compact('cases','evolucion'));
     }
 
     public function download(File $file)
@@ -233,6 +263,7 @@ class SuspectCaseController extends Controller
             'negatives' => $cases = SuspectCase::where('pscr_sars_cov_2', 'negative')->count()
         ]);
     }
+
 
     public function case_chart(Request $request)
     {
