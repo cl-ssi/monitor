@@ -24,7 +24,7 @@ class EppController extends Controller
         $to = Carbon::now()->lastOfMonth();
       }
 
-      $dispatchs = Dispatch::whereBetween('date',[$from,$to])->get();
+      $dispatchs = Dispatch::whereBetween('date',[$from,$to])->orderBy('date','DESC')->get();
       return view('epp.index', compact('dispatchs','from','to'));
     }
 
