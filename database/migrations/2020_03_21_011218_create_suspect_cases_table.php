@@ -33,7 +33,7 @@ class CreateSuspectCasesTable extends Migration
 
             $table->unsignedInteger('paho_flu')->nullable();
             $table->unsignedInteger('epivigila')->nullable();
-            $table->boolean('gestation')->nullable();
+            $table->char('gestation',2)->nullable();
             $table->smallInteger('gestation_week')->nullable();
 
             $table->string('observation')->nullable();
