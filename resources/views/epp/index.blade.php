@@ -32,13 +32,13 @@
 	<table class="table table-striped table-sm" id="myTable" border="1" >
 		<thead>
 			<tr>
-				<th scope="col">id</th>
+				{{-- <th scope="col">id</th> --}}
 				<th scope="col">Fecha</th>
 				<th scope="col">Establecimiento</th>
 				{{-- <th scope="col">Notas</th> --}}
         <th scope="col">Producto</th>
-        <th scope="col">Cantidad</th>
-        <th scope="col">Unidad</th>
+        <th scope="col">Cant</th>
+        {{-- <th scope="col">Unidad</th> --}}
         {{-- <th scope="col">F.Venc.</th>
         <th scope="col">Lote</th> --}}
 			</tr>
@@ -47,13 +47,13 @@
 			@foreach($dispatchs as $key => $dispatch)
         @foreach ($dispatch->dispatchItems as $key2 => $dispatchItem)
           <tr>
-    				<td>{{ $dispatch->id }}</td>
+    				{{-- <td>{{ $dispatch->id }}</td> --}}
         		<td>{{ Carbon\Carbon::parse($dispatch->date)->format('d/m/Y')}}</td>
-        		<td>{{ $dispatch->establishment }}</td>
+        		<td style ="word-break:break-all;">{{ $dispatch->establishment }}</td>
         		{{-- <td>{{ $dispatch->notes }}</td> --}}
-            <td>{{ $dispatchItem->product }}</td>
-            <td>{{ $dispatchItem->amount }}</td>
-            <td>{{ $dispatchItem->unity }}</td>
+            <td style ="word-break:break-all;">{{ $dispatchItem->product }}</td>
+            <td style ="word-break:break-all;">{{ $dispatchItem->amount }} {{ $dispatchItem->unity }}</td>
+            {{-- <td>{{ $dispatchItem->unity }}</td> --}}
             {{-- <td>{{ $dispatchItem->due_date }}</td>
             <td>{{ $dispatchItem->batch }}</td> --}}
           </tr>
