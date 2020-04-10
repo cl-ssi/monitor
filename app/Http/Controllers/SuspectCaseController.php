@@ -190,9 +190,13 @@ class SuspectCaseController extends Controller
             $evolucion[$fecha] = $dia->total;
         }
 
-        // foreach ($evo as $key => $dia) {
-        //     echo "['".$key."',".$dia.'],<br>';
-        // }
+
+        $acumulado = 0;
+        foreach ($evolucion as $key => $dia) {
+            $acumulado += $dia;
+            $evo[$key] = $acumulado;
+        }
+        $evolucion = $evo;
         // echo '<pre>';
         // print_r($evo);
         // die();
