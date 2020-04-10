@@ -740,7 +740,9 @@
             </tbody>
         </table>
 
-        <div id="curve_chart" style="width: 370px; height: 500px"></div>
+        <div id="chart_ages" style="width: 400px; height: 400px"></div>
+
+        <div id="evolution" style="width: 500px; height: 400"></div>
     </div>
 </div>
 
@@ -749,33 +751,77 @@
 @section('custom_js_head')
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-    google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(drawChart);
+    google.charts.load('current', {'packages':['corechart','line']});
 
-    function drawChart() {
-    var data = google.visualization.arrayToDataTable([
-        ['Edad',  'Casos'],
-        ['0',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[0,9])->whereNotNull('age')->count()}}],
-        ['10',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[10,19])->whereNotNull('age')->count()}}],
-        ['20',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[20,29])->whereNotNull('age')->count()}}],
-        ['30',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[30,39])->whereNotNull('age')->count()}}],
-        ['40',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[40,49])->whereNotNull('age')->count()}}],
-        ['50',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[50,59])->whereNotNull('age')->count()}}],
-        ['60',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[60,69])->whereNotNull('age')->count()}}],
-        ['70',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[70,79])->whereNotNull('age')->count()}}],
-        ['80->',     {{$cases->where('pscr_sars_cov_2','positive')->whereBetween('age',[80,120])->whereNotNull('age')->count()}}],
-    ]);
+    google.charts.setOnLoadCallback(drawChartAges);
+    google.charts.setOnLoadCallback(drawChartEvolution);
 
-    var options = {
-        title: 'Casos positivos por edad',
-        curveType: 'function',
-        legend: { position: 'bottom' },
-        chartArea: {'width': '90%', 'height': '80%'},
-    };
+    function drawChartAges() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Edad');
+        data.addColumn('number', 'Hombres');
+        data.addColumn('number', 'Mujeres');
+        data.addRows([
+            ['0', {{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[0,9])->whereNotNull('age')->count()}}  ,{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[0,9])->whereNotNull('age')->count()}}],
+            ['10',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[10,19])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[10,19])->whereNotNull('age')->count()}}],
+            ['20',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[20,29])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[20,29])->whereNotNull('age')->count()}}],
+            ['30',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[30,39])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[30,39])->whereNotNull('age')->count()}}],
+            ['40',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[40,49])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[40,49])->whereNotNull('age')->count()}}],
+            ['50',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[50,59])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[50,59])->whereNotNull('age')->count()}}],
+            ['60',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[60,69])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[60,69])->whereNotNull('age')->count()}}],
+            ['70',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[70,79])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[70,79])->whereNotNull('age')->count()}}],
+            ['80->',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[80,120])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[80,120])->whereNotNull('age')->count()}}],
+        ]);
 
-    var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+        var options = {
+            title: 'Cantidad de casos positivos por edad',
+            curveType: 'log',
+            width: 400,
+            height: 400,
+            colors: ['#3366CC', '#CC338C'],
+            legend: { position: 'bottom' },
+            backgroundColor: '#f8fafc',
+            chartArea: {'width': '90%', 'height': '80%'},
+        };
 
-    chart.draw(data, options);
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_ages'));
+
+        chart.draw(data, options);
+    }
+
+
+
+    function drawChartEvolution() {
+        var dataTable = new google.visualization.DataTable();
+        dataTable.addColumn('number', 'Día');
+        dataTable.addColumn('number', 'Positivos');
+        // A column for custom tooltip content
+        dataTable.addColumn({type: 'string', role: 'tooltip'});
+        dataTable.addRows([
+            @foreach($evolucion as $key => $total)
+                [{{ $loop->iteration }},{{ $total }},'{{ $key }} ({{ $total }})'],
+            @endforeach
+        ]);
+
+        var options = {
+            title: "Comportamiento de casos positivos en el tiempo",
+            curveType: 'function',
+            width: 400,
+            height: 400,
+            legend: { position: "none" },
+            backgroundColor: '#f8fafc',
+            hAxis: {
+                textStyle : {
+                    fontSize: 9 // or the number you want
+                },
+                gridlines:{count: {{ count($evolucion) }} },
+                textPosition: '50',
+            },
+            chartArea: {'width': '90%', 'height': '80%'},
+
+        };
+        var chart = new google.visualization.LineChart(document.getElementById('evolution'));
+        chart.draw(dataTable, options);
     }
 </script>
 @endsection

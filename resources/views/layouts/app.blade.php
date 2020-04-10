@@ -92,18 +92,18 @@
                             </a>
                         </li>
 
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="{{ route('lab.suspect_cases.case_chart') }}">
                                 Casos
                             </a>
-                        </li>
+                        </li> -->
                         @endcan
 
                         @can('Epp: list')
                         <li class="nav-item">
-                          <a class="nav-link" href="{{ route('epp.index') }}">
-                              Egresos EPP
-                          </a>
+                            <a class="nav-link" href="{{ route('epp.index') }}">
+                                Egresos EPP
+                            </a>
                         </li>
                         @endcan
 
