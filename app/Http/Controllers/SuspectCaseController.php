@@ -121,6 +121,7 @@ class SuspectCaseController extends Controller
         $log->old = clone $suspectCase;
 
         $suspectCase->fill($request->all());
+        $suspectCase->gestation = $request->gestation;
 
         $suspectCase->epidemiological_week = Carbon::createFromDate($suspectCase->sample_at->format('Y-m-d'))->add(1,'days')->weekOfYear;
 
