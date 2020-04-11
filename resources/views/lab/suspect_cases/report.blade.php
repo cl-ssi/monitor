@@ -7,7 +7,7 @@
 
 <div class="row">
     <div class="col-12 col-sm-4">
-        <table class="table table-bordered col3">
+        <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
                     <td></td>
@@ -177,33 +177,8 @@
             </tbody>
         </table>
 
-        <table class="table table-sm table-bordered">
-            <thead>
-                <tr class="table-active">
-                    <th>Gestantes</th>
-                    <th>Positivo</th>
-                    <th>Pendiente</th>
-                    <th>Negativo</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="text-center">
-                        {{ $cases->where('gestation','on')->count() }}
-                    </td>
-                    <td class="text-center text-danger">
-                        {{ $cases->where('gestation','on')->where('pscr_sars_cov_2','positive')->count() }}
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('gestation','on')->where('pscr_sars_cov_2','pending')->count() }}
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('gestation','on')->where('pscr_sars_cov_2','negative')->count() }}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
 
+        <div id="evolution" style="width: 480px; height: 400"></div>
 
 
     </div>
@@ -454,7 +429,6 @@
                 </tr>
             </tbody>
         </table>
-
 
     </div>
 
@@ -742,7 +716,33 @@
 
         <div id="chart_ages" style="width: 400px; height: 400px"></div>
 
-        <div id="evolution" style="width: 500px; height: 400"></div>
+        <table class="table table-sm table-bordered">
+            <thead>
+                <tr class="table-active">
+                    <th>Gestantes</th>
+                    <th>Positivo</th>
+                    <th>Pendiente</th>
+                    <th>Negativo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-center">
+                        {{ $cases->where('gestation','on')->count() }}
+                    </td>
+                    <td class="text-center text-danger">
+                        {{ $cases->where('gestation','on')->where('pscr_sars_cov_2','positive')->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('gestation','on')->where('pscr_sars_cov_2','pending')->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('gestation','on')->where('pscr_sars_cov_2','negative')->count() }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
     </div>
 </div>
 
@@ -776,7 +776,7 @@
         var options = {
             title: 'Cantidad de casos positivos por edad',
             curveType: 'log',
-            width: 400,
+            width: 380,
             height: 400,
             colors: ['#3366CC', '#CC338C'],
             legend: { position: 'bottom' },
@@ -806,7 +806,7 @@
         var options = {
             title: "Comportamiento de casos positivos en el tiempo",
             curveType: 'function',
-            width: 400,
+            width: 380,
             height: 400,
             legend: { position: "none" },
             backgroundColor: '#f8fafc',
