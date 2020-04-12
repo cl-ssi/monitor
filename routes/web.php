@@ -86,3 +86,23 @@ Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(functi
     Route::get('/', 'Parameters\ParameterController@index')->name('index');
     Route::resource('permissions','Parameters\PermissionController');
 });
+
+Route::prefix('sanitary_hotels')->name('sanitary_hotels.')->middleware('auth')->group(function () {
+    Route::prefix('hotels')->name('hotels.')->group(function () {
+        Route::get('/', 'HotelController@index')->name('index');
+        Route::get('/create', 'HotelController@create')->name('create');
+        Route::post('/', 'HotelController@store')->name('store');
+        // Route::get('/{hotel}/edit', 'HotelController@edit')->name('edit');
+        // Route::put('/{hotel}', 'HotelController@update')->name('update');
+        // Route::delete('/{hotel}', 'HotelController@destroy')->name('destroy');
+    });
+
+    Route::prefix('rooms')->name('rooms.')->group(function () {
+        Route::get('/', 'RoomController@index')->name('index');
+        Route::get('/create', 'RoomController@create')->name('create');
+        Route::post('/', 'RoomController@store')->name('store');
+        // Route::get('/{room}/edit', 'RoomController@edit')->name('edit');
+        // Route::put('/{room}', 'RoomController@update')->name('update');
+        // Route::delete('/{room}', 'RoomController@destroy')->name('destroy');
+    });
+});
