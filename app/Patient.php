@@ -3,12 +3,17 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+//use Illuminate\Foundation\Auth\User as Authenticatable;
+//use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Patient extends Model
+class Patient extends Model //Authenticatable
 {
+    //use Notifiable;
     use SoftDeletes;
-    
+
+    //protected $guard = 'patient';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -19,16 +24,22 @@ class Patient extends Model
         'mothers_family', 'gender', 'birthday'
     ];
 
-    protected $date = [
-        'birthday'
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'remember_token',
     ];
+
 
     /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
-    protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at','birthday'];
 
 
     public function suspectCases() {
