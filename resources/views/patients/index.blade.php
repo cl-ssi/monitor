@@ -37,7 +37,7 @@
     </thead>
     <tbody id="tablePatients">
         @foreach($patients as $patient)
-        <tr>
+        <tr class="{{ ($patient->suspectCases->where('pscr_sars_cov_2','positive')->first())?'alert-danger':'' }}">
             <td class="text-center">{{ $patient->identifier }}</td>
             <td>{{ $patient->fullName }}</td>
             <td>{{ $patient->genderEsp }}</td>

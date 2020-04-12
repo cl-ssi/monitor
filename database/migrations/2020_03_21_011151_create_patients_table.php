@@ -23,6 +23,7 @@ class CreatePatientsTable extends Migration
             $table->string('mothers_family')->nullable();
             $table->enum('gender',['male', 'female', 'other', 'unknown']);
             $table->date('birthday')->nullable();
+            $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
         });
