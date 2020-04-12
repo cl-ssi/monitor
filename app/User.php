@@ -26,6 +26,10 @@ class User extends Authenticatable
         return $this->morphMany('App\Log','model');
     }
 
+    public function vitalSigns() {
+        return $this->hasMany('App\SanitaryHotel\VitalSign');
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *
