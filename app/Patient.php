@@ -50,6 +50,14 @@ class Patient extends Model //Authenticatable
         return $this->hasOne('App\Demographic');
     }
 
+    public function bookings() {
+        return $this->hasMany('App\SanitaryHotel\Booking');
+    }
+
+    public function vitalSigns() {
+        return $this->hasMany('App\SanitaryHotel\VitalSign');
+    }
+
     function getFullNameAttribute(){
         return $this->name . ' ' . $this->fathers_family . ' ' . $this->mothers_family;
     }
