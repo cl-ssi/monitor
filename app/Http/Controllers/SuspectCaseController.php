@@ -249,8 +249,13 @@ class SuspectCaseController extends Controller
     }
 
     public function print(){
-        $pdf = \PDF::loadView('lab.results.result');
+        $var = 'Alvaro';
+
+        $paciente = Patient::find(1);
+        $pdf = \PDF::loadView('lab.results.result',compact('paciente'));
         return $pdf->stream();
+
+
     }
 
     public function stat() {

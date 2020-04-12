@@ -63,7 +63,7 @@
 
         </div>
 
-        <h2 id="peticion">RESULTADO DE EXAMEN N°: 123</h2>
+        <h2 id="peticion">RESULTADO DE EXAMEN N°: 123 {{ $paciente->name }}</h2>
 
         <table id="demograficos">
             <tr>
@@ -107,7 +107,7 @@
                 <tbody>
                     <tr>
                         <td>SARS-CoV-2 (COVID-19)</td>
-                        <td>Negativo</td>
+                        <td>(){{ $paciente->suspectCases->first()->pscr_sars_cov_2 }}</td>
                         <td>[ Negativo ]</td>
                         <td>PCR en tiempo real</td>
                     </tr>
