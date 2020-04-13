@@ -39,9 +39,13 @@ class CreateSuspectCasesTable extends Migration
             $table->string('observation')->nullable();
 
             $table->unsignedBigInteger('patient_id');
-            $table->foreign('patient_id')->references('id')->on('patients');
+            $table->unsignedBigInteger('laboratory_id')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('patient_id')->references('id')->on('patients');
+            $table->foreign('laboratory_id')->references('id')->on('laboratories');
         });
     }
 

@@ -69,20 +69,6 @@
             </select>
         </fieldset>
 
-
-
-        <fieldset class="form-group col-8 col-md-4">
-            <label for="for_status">Estado</label>
-            <select name="status" id="for_status" class="form-control">
-                <option value=""></option>
-                <option value="Hospitalizado Básico" {{ ($suspectCase->status == 'Hospitalizado Básico')?'selected':'' }}>Hospitalizado Básico</option>
-                <option value="Hospitalizado Crítico" {{ ($suspectCase->status == 'Hospitalizado Crítico')?'selected':'' }}>Hospitalizado Crítico</option>
-                <option value="Alta" {{ ($suspectCase->status == 'Alta')?'selected':'' }}>Alta</option>
-                <option value="Fallecido" {{ ($suspectCase->status == 'Fallecido')?'selected':'' }}>Fallecido</option>
-                <option value="Ambulatorio" {{ ($suspectCase->status == 'Ambulatorio')?'selected':'' }}>Ambulatorio (domiciliario)</option>
-            </select>
-        </fieldset>
-
         <fieldset class="form-group col-4 col-md-2">
             <label for="for_age">Edad</label>
             <input type="number" class="form-control" id="for_age" name="age"
@@ -211,6 +197,18 @@
             <label for="for_gestation_week">Semanas de gestación</label>
             <input type="text" class="form-control" name="gestation_week"
                 id="for_gestation_week" value="{{ $suspectCase->gestation_week }}">
+        </fieldset>
+
+        <fieldset class="form-group col-8 col-md-4">
+            <label for="for_status">Estado</label>
+            <select name="status" id="for_status" class="form-control">
+                <option value=""></option>
+                <option value="Hospitalizado Básico" {{ ($suspectCase->status == 'Hospitalizado Básico')?'selected':'' }}>Hospitalizado Básico</option>
+                <option value="Hospitalizado Crítico" {{ ($suspectCase->status == 'Hospitalizado Crítico')?'selected':'' }}>Hospitalizado Crítico</option>
+                <option value="Alta" {{ ($suspectCase->status == 'Alta')?'selected':'' }}>Alta</option>
+                <option value="Fallecido" {{ ($suspectCase->status == 'Fallecido')?'selected':'' }}>Fallecido</option>
+                <option value="Ambulatorio" {{ ($suspectCase->status == 'Ambulatorio')?'selected':'' }}>Ambulatorio (domiciliario)</option>
+            </select>
         </fieldset>
 
     </div>

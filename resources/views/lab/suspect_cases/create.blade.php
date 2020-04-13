@@ -80,7 +80,7 @@
             <select name="origin" id="for_origin" class="form-control">
                 <option value=""></option>
                 <option value="HOSPITAL Ernesto Torres Galdames">HOSPITAL Ernesto Torres Galdames</option>
-                
+
                 <option value="Clínica Tarapacá">Clínica Tarapacá</option>
                 <option value="Clínica Iquique">Clínica Iquique</option>
                 <option value="Particular (SEREMI)">Particular (SEREMI)</option>
@@ -122,26 +122,15 @@
             </select>
         </fieldset>
 
-
-        <fieldset class="form-group col-8 col-md-4">
-            <label for="for_status">Estado</label>
-            <select name="status" id="for_status" class="form-control">
-                <option value=""></option>
-                <option value="Hospitalizado Básico">Hospitalizado Básico</option>
-                <option value="Hospitalizado Crítico">Hospitalizado Crítico</option>
-                <option value="Alta">Alta</option>
-                <option value="Fallecido">Fallecido</option>
-                <option value="Ambulatorio">Ambulatorio (domiciliario)</option>
-            </select>
-        </fieldset>
-
         <fieldset class="form-group col-4 col-md-2">
             <label for="for_age">Edad</label>
             <input type="number" class="form-control" id="for_age" name="age">
         </fieldset>
 
+
     </div>
 
+    @can('SuspectCase: tecnologo')
     <div class="form-row">
 
         <fieldset class="form-group col-6 col-md-2 alert-warning">
@@ -233,6 +222,18 @@
                 id="for_gestation_week">
         </fieldset>
 
+        <fieldset class="form-group col-8 col-md-4">
+            <label for="for_status">Estado</label>
+            <select name="status" id="for_status" class="form-control">
+                <option value=""></option>
+                <option value="Hospitalizado Básico">Hospitalizado Básico</option>
+                <option value="Hospitalizado Crítico">Hospitalizado Crítico</option>
+                <option value="Alta">Alta</option>
+                <option value="Fallecido">Fallecido</option>
+                <option value="Ambulatorio">Ambulatorio (domiciliario)</option>
+            </select>
+        </fieldset>
+
     </div>
 
     <div class="form-row">
@@ -253,6 +254,8 @@
     </div>
 
     <hr>
+
+    @endcan
 
     <button type="submit" class="btn btn-primary">Guardar</button>
 
