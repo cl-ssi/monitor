@@ -14,6 +14,7 @@
     @method('PUT')
 
     <div class="form-row">
+        
         <fieldset class="form-group col">
             <label for="for_name">Nombre</label>
             <input type="text" class="form-control" name="name" id="for_name"
@@ -34,8 +35,6 @@
                 <option value="2" {{ ($user->laboratory_id == 2)?'selected':'' }}>UNAP</option>
             </select>
         </fieldset>
-
-
 
     </div>
 
