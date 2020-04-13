@@ -3,8 +3,10 @@
 @section('title', 'Crear Hotel')
 
 @section('content')
-<h3 class="mb-3">Crear Hotel</h3>
 
+@include('sanitary_hotels.nav')
+
+<h3 class="mb-3">Crear Hotel</h3>
 
 <form method="POST" class="form-horizontal" action="{{ route('sanitary_hotels.hotels.store') }}">
     @csrf

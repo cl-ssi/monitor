@@ -3,6 +3,9 @@
 @section('title', 'Crear Signos Vitales')
 
 @section('content')
+
+@include('sanitary_hotels.nav')
+
 <h3 class="mb-3">Crear Signos Vitales</h3>
 
 <form method="POST" class="form-horizontal" action="{{ route('sanitary_hotels.vital_signs.store') }}">
@@ -59,7 +62,7 @@
         <fieldset class="form-group col-4 col-md-2">
             <label for="for_pain_scale">Escala Dolor</label>
             <input type="text" class="form-control" name="pain_scale" id="for_pain_scale" required placeholder="" autocomplete="off">
-        </fieldset>        
+        </fieldset>
     </div>
 
     <button type="submit" class="btn btn-primary">Guardar</button>

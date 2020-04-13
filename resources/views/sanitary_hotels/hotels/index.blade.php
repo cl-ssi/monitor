@@ -3,6 +3,9 @@
 @section('title', 'Listado de Hoteles')
 
 @section('content')
+
+@include('sanitary_hotels.nav')
+
 <h3 class="mb-3">Listado de Hoteles</h3>
 
 <a class="btn btn-primary mb-3" href="{{ route('sanitary_hotels.hotels.create') }}">Crear un nuevo hotel</a>
