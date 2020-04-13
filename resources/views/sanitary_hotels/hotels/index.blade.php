@@ -5,7 +5,9 @@
 @section('content')
 <h3 class="mb-3">Listado de Hoteles</h3>
 
-<table class="table table-sm">
+<a class="btn btn-primary mb-3" href="{{ route('sanitary_hotels.hotels.create') }}">Crear un nuevo hotel</a>
+
+<table class="table table-sm table-bordered">
     <thead>
         <tr>
             <th>Nombre</th>
