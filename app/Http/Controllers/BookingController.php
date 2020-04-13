@@ -16,9 +16,9 @@ class BookingController extends Controller
      */
     public function index()
     {
-        //
-        $bookings = Booking::all();        
-        return view('sanitary_hotels.bookings.index', compact('bookings'));
+        $rooms = Room::All();
+        $bookings = Booking::all();
+        return view('sanitary_hotels.bookings.index', compact('bookings','rooms'));
     }
 
     /**

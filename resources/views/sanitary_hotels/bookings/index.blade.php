@@ -10,6 +10,33 @@
 
 <a class="btn btn-primary mb-3" href="{{ route('sanitary_hotels.bookings.create') }}">Crear un Booking</a>
 
+@php ($piso = 0)
+
+@foreach($rooms as $room)
+
+    @if($room->floor != $piso)
+        @if($piso != 0)
+            </div>
+        @endif
+        <div class="row mt-3">
+    @endif
+
+    <div class="border text-center" style="width: 150px; height: 150px;">
+        Habitación {{ $room->number }}
+        <hr>
+
+        @if($room->bookings->first())
+            {{ $room->bookings->first()->patient->fullName }}
+        @endif
+
+    </div>
+
+    @php ($piso = $room->floor)
+
+@endforeach
+
+
+
 <table class="table table-sm">
     <thead>
         <tr>
