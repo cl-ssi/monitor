@@ -6,12 +6,6 @@
         </a>
     </li>
 
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('sanitary_hotels.vital_signs.index') }}">
-            <i class="fas fa-inbox"></i> Signos Vitales
-        </a>
-    </li>
-
     @can('SanitaryHotel: admin')
     <li class="nav-item">
         <a class="nav-link" href="{{ route('sanitary_hotels.hotels.index') }}">

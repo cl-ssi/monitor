@@ -11,6 +11,7 @@
 {{ $booking->id }}
 
 // Agregar datos del booking
+booking from, to, indicaion, obser
 
 <hr>
 
