@@ -35,10 +35,6 @@
             <td>{{ $vitalsign->oxygen_saturation }}</td>
             <td>{{ $vitalsign->hgt }}</td>
             <td>{{ $vitalsign->pain_scale }}</td>
-
-
-
-
             <td></td>
         </tr>
         @endforeach
