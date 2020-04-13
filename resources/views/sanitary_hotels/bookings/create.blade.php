@@ -43,9 +43,9 @@
 
     </div>
 
-    <fieldset class="form-group" >
+    <fieldset class="form-group">
         <label for="for_indications">Indicaciones</label>
-        <input type="textarea" class="form-control"  name="indications" id="for_indications"  placeholder="Escribir Indicaciones en caso de ser necesario">
+        <textarea class="form-control" id="for_indications" rows="3" name="indications"></textarea>
     </fieldset>
 
     <fieldset class="form-group" >
