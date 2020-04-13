@@ -13,7 +13,8 @@ class VitalSign extends Model
      */
     protected $fillable = [
         'temperature','heart_rate','blood_pressure','respiratory_rate',
-        'oxygen_saturation','hgt','pain_scale'
+        'oxygen_saturation','hgt','pain_scale',
+        'booking_id','patient_id'
     ];
 
     public function patient() {
