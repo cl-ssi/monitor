@@ -34,12 +34,9 @@ class Patient extends Model //Authenticatable
     ];
 
 
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = ['deleted_at','birthday'];
+    protected $casts = [
+        'birthday'  => 'date:Y-m-d'
+    ];
 
 
     public function suspectCases() {
