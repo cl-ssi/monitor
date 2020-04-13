@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','laboratory_id'
     ];
 
 
@@ -28,6 +28,10 @@ class User extends Authenticatable
 
     public function vitalSigns() {
         return $this->hasMany('App\SanitaryHotel\VitalSign');
+    }
+
+    public function laboratory() {
+        return $this->belongsTo('App\Laboratory');
     }
 
     /**

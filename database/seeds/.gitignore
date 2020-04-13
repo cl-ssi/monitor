@@ -1,2 +1,2 @@
-PatientsTableSeeder.php
-SuspectCasesTableSeeder.php
+PatientSeeder.php
+SuspectCaseSeeder.php

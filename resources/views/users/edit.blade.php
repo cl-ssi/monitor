@@ -26,6 +26,16 @@
                 required value="{{ $user->email }}">
         </fieldset>
 
+        <fieldset class="form-group col">
+            <label for="for_laboratory_id">Laboratorio</label>
+            <select name="laboratory_id" id="for_laboratory_id" class="form-control">
+                <option value=""></option>
+                <option value="1" {{ ($user->laboratory_id == 1)?'selected':'' }}>HETG</option>
+                <option value="2" {{ ($user->laboratory_id == 2)?'selected':'' }}>UNAP</option>
+            </select>
+        </fieldset>
+
+
 
     </div>
 
