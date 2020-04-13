@@ -8,7 +8,6 @@
 
 <form class="form-inline" method="get" action="{{ route('epp.index') }}">
 	@csrf
-
 	<div class="form-group ml-3">
 		<label for="for_from">Desde</label>
 		<input type="date" class="form-control mx-sm-3" id="for_from" name="from"
@@ -20,6 +19,16 @@
 		<input type="date" class="form-control mx-sm-3" id="for_to" name="to"
 			value="{{ Carbon\Carbon::parse($to)->format('Y-m-d') }}">
 	</div>
+
+	<div class="form-group">
+    <label for="for_establishment">Destino</label>
+    <select class="form-control" id="establishment" name="establishment">
+      <option value="">Todos</option>
+			@foreach($pharmacies as $pharmacy)
+      	<option value="{{$pharmacy->establishment}}" {{ ($pharmacy->establishment == $establishment)?'selected':'' }}>{{$pharmacy->establishment}}</option>
+			@endforeach
+    </select>
+  </div>
 
 	<div class="form-group">
 		<button type="submit" name="btn_buscar" class="btn btn-primary">Buscar</button>

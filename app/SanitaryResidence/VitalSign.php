@@ -1,6 +1,6 @@
 <?php
 
-namespace App\SanitaryHotel;
+namespace App\SanitaryResidence;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,7 +22,7 @@ class VitalSign extends Model
     }
 
     public function booking() {
-        return $this->belongsTo('App\SanitaryHotel\Booking');
+        return $this->belongsTo('App\SanitaryResidence\Booking');
     }
 
     public function user() {

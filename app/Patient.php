@@ -48,11 +48,11 @@ class Patient extends Model //Authenticatable
     }
 
     public function bookings() {
-        return $this->hasMany('App\SanitaryHotel\Booking');
+        return $this->hasMany('App\SanitaryResidence\Booking');
     }
 
     public function vitalSigns() {
-        return $this->hasMany('App\SanitaryHotel\VitalSign');
+        return $this->hasMany('App\SanitaryResidence\VitalSign');
     }
 
     function getFullNameAttribute(){

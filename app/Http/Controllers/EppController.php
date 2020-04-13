@@ -16,6 +16,8 @@ class EppController extends Controller
     public function index(Request $request)
     {
 
+      $establishment = $request->establishment;
+      //dd($establishment);
       if($from = $request->has('from')){
         $from = $request->get('from'). ' 00:00:00';
         $to = $request->get('to'). ' 23:59:59';
@@ -24,8 +26,15 @@ class EppController extends Controller
         $to = Carbon::now()->lastOfMonth();
       }
 
-      $dispatchs = Dispatch::whereBetween('date',[$from,$to])->orderBy('date','DESC')->get();
-      return view('epp.index', compact('dispatchs','from','to'));
+      $dispatchs = Dispatch::whereBetween('date',[$from,$to])
+                           ->when($establishment, function ($query, $establishment) {
+                                return $query->where('establishment', $establishment);
+                           })
+                           ->orderBy('date','DESC')
+                           ->get();
+      $pharmacies = Dispatch::select('establishment')->distinct('establishment')->get();
+      //dd($pharmacies);
+      return view('epp.index', compact('dispatchs','from','to','pharmacies','establishment'));
     }
 
     /**

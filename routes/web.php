@@ -87,14 +87,14 @@ Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(functi
     Route::resource('permissions','Parameters\PermissionController');
 });
 
-Route::prefix('sanitary_hotels')->name('sanitary_hotels.')->middleware('auth')->group(function () {
-    Route::prefix('hotels')->name('hotels.')->group(function () {
-        Route::get('/create', 'HotelController@create')->name('create');
-        Route::get('/', 'HotelController@index')->name('index');        
-        Route::post('/', 'HotelController@store')->name('store');
-        // Route::get('/{hotel}/edit', 'HotelController@edit')->name('edit');
-        // Route::put('/{hotel}', 'HotelController@update')->name('update');
-        // Route::delete('/{hotel}', 'HotelController@destroy')->name('destroy');
+Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('auth')->group(function () {
+    Route::prefix('residences')->name('residences.')->group(function () {
+        Route::get('/create', 'ResidenceController@create')->name('create');
+        Route::get('/', 'ResidenceController@index')->name('index');
+        Route::post('/', 'ResidenceController@store')->name('store');
+        // Route::get('/{residence}/edit', 'ResidenceController@edit')->name('edit');
+        // Route::put('/{residence}', 'ResidenceController@update')->name('update');
+        // Route::delete('/{residence}', 'ResidenceController@destroy')->name('destroy');
     });
 
     Route::prefix('rooms')->name('rooms.')->group(function () {
@@ -109,7 +109,7 @@ Route::prefix('sanitary_hotels')->name('sanitary_hotels.')->middleware('auth')->
     Route::prefix('bookings')->name('bookings.')->group(function () {
         Route::get('/', 'BookingController@index')->name('index');
         Route::get('/create', 'BookingController@create')->name('create');
-        Route::get('/{booking}', 'BookingController@show')->name('show');        
+        Route::get('/{booking}', 'BookingController@show')->name('show');
         Route::post('/', 'BookingController@store')->name('store');
         Route::get('/{booking}', 'BookingController@show')->name('show');
         // Route::get('/{booking}/edit', 'BookingController@edit')->name('edit');

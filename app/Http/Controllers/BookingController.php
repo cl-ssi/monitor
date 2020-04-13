@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\SanitaryHotel\Booking;
-use App\SanitaryHotel\Room;
+use App\SanitaryResidence\Booking;
+use App\SanitaryResidence\Room;
 use App\Patient;
 use Illuminate\Http\Request;
 
@@ -18,7 +18,7 @@ class BookingController extends Controller
     {
         $rooms = Room::All();
         $bookings = Booking::all();
-        return view('sanitary_hotels.bookings.index', compact('bookings','rooms'));
+        return view('sanitary_residences.bookings.index', compact('bookings','rooms'));
     }
 
     /**
@@ -31,7 +31,7 @@ class BookingController extends Controller
         //
         $patients = Patient::orderBy('name')->get();
         $rooms = Room::All();
-        return view('sanitary_hotels.bookings.create', compact('patients','rooms'));
+        return view('sanitary_residences.bookings.create', compact('patients','rooms'));
 
 
     }
@@ -48,24 +48,24 @@ class BookingController extends Controller
         $booking = new Booking($request->All());
         $booking->save();
 
-        return redirect()->route('sanitary_hotels.bookings.index');
+        return redirect()->route('sanitary_residences.bookings.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\SanitaryHotel\Booking  $booking
+     * @param  \App\SanitaryResidence\Booking  $booking
      * @return \Illuminate\Http\Response
      */
     public function show(Booking $booking)
     {
-        return view('sanitary_hotels.bookings.show', compact('booking'));
+        return view('sanitary_residences.bookings.show', compact('booking'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\SanitaryHotel\Booking  $booking
+     * @param  \App\SanitaryResidence\Booking  $booking
      * @return \Illuminate\Http\Response
      */
     public function edit(Booking $booking)
@@ -77,7 +77,7 @@ class BookingController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\SanitaryHotel\Booking  $booking
+     * @param  \App\SanitaryResidence\Booking  $booking
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Booking $booking)
@@ -88,7 +88,7 @@ class BookingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\SanitaryHotel\Booking  $booking
+     * @param  \App\SanitaryResidence\Booking  $booking
      * @return \Illuminate\Http\Response
      */
     public function destroy(Booking $booking)

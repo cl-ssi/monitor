@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\SanitaryHotel\Hotel;
+use App\SanitaryResidence\Residence;
 use Illuminate\Http\Request;
 
-class HotelController extends Controller
+class ResidenceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class HotelController extends Controller
      */
     public function index()
     {
-        $hotels = Hotel::All();
-        return view('sanitary_hotels.hotels.index', compact('hotels'));
+        $residences = Residence::All();
+        return view('sanitary_residences.residences.index', compact('residences'));
     }
 
     /**
@@ -25,7 +25,7 @@ class HotelController extends Controller
      */
     public function create()
     {
-        return view('sanitary_hotels.hotels.create');
+        return view('sanitary_residences.residences.create');
     }
 
     /**
@@ -36,19 +36,19 @@ class HotelController extends Controller
      */
     public function store(Request $request)
     {
-        $hotel = new Hotel($request->All());
-        $hotel->save();
+        $residence = new Residence($request->All());
+        $residence->save();
 
-        return redirect()->route('sanitary_hotels.hotels.index');
+        return redirect()->route('sanitary_residences.residences.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\SanitaryHotel\Hotel  $hotel
+     * @param  \App\SanitaryResidence\Residence  $residence
      * @return \Illuminate\Http\Response
      */
-    public function show(Hotel $hotel)
+    public function show(Residence $residence)
     {
         //
     }
@@ -56,10 +56,10 @@ class HotelController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\SanitaryHotel\Hotel  $hotel
+     * @param  \App\SanitaryResidence\Residence  $residence
      * @return \Illuminate\Http\Response
      */
-    public function edit(Hotel $hotel)
+    public function edit(Residence $residence)
     {
         //
     }
@@ -68,10 +68,10 @@ class HotelController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\SanitaryHotel\Hotel  $hotel
+     * @param  \App\SanitaryResidence\Residence  $residence
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Hotel $hotel)
+    public function update(Request $request, Residence $residence)
     {
         //
     }
@@ -79,10 +79,10 @@ class HotelController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\SanitaryHotel\Hotel  $hotel
+     * @param  \App\SanitaryResidence\Residence  $residence
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Hotel $hotel)
+    public function destroy(Residence $residence)
     {
         //
     }

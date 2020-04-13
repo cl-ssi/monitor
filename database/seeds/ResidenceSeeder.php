@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class HotelSeeder extends Seeder
+class ResidenceSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,13 +13,13 @@ class HotelSeeder extends Seeder
     {
         //
         $items = [
-            
+
             ['id' => 1, 'name' => 'Hotel Agua Luna' , 'address' => 'Caleta Rio Seco 2152', 'telephone'=> '572449287' ],                       
 
         ];
 
         foreach ($items as $item) {
-            \App\SanitaryHotel\Hotel::create($item);
+            \App\SanitaryResidence\Residence::create($item);
         }
     }
 }
