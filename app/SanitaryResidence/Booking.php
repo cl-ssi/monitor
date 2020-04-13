@@ -1,6 +1,6 @@
 <?php
 
-namespace App\SanitaryHotel;
+namespace App\SanitaryResidence;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,10 +25,10 @@ class Booking extends Model
     }
 
     public function room() {
-        return $this->belongsTo('App\SanitaryHotel\Room');
+        return $this->belongsTo('App\SanitaryResidence\Room');
     }
 
     public function vitalSigns() {
-        return $this->hasMany('App\SanitaryHotel\VitalSign');
+        return $this->hasMany('App\SanitaryResidence\VitalSign');
     }
 }

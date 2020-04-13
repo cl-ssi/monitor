@@ -1,10 +1,10 @@
 <?php
 
-namespace App\SanitaryHotel;
+namespace App\SanitaryResidence;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Hotel extends Model
+class Residence extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -16,6 +16,6 @@ class Hotel extends Model
     ];
 
     public function rooms() {
-        return $this->hasMany('App\SanitaryHotel\Room');
+        return $this->hasMany('App\SanitaryResidence\Room');
     }
 }

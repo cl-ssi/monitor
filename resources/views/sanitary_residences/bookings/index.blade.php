@@ -4,11 +4,11 @@
 
 @section('content')
 
-@include('sanitary_hotels.nav')
+@include('sanitary_residences.nav')
 
 <h3 class="mb-3">Listado de Bookings</h3>
 
-<a class="btn btn-primary mb-3" href="{{ route('sanitary_hotels.bookings.create') }}">Crear un Booking</a>
+<a class="btn btn-primary mb-3" href="{{ route('sanitary_residences.bookings.create') }}">Crear un Booking</a>
 
 @php ($piso = 0)
 
@@ -26,7 +26,7 @@
         <hr>
 
         @if($room->bookings->first())
-        <a href="{{ route('sanitary_hotels.bookings.show',$room->bookings->first()->id) }}">
+        <a href="{{ route('sanitary_residences.bookings.show',$room->bookings->first()->id) }}">
             {{ $room->bookings->first()->patient->fullName }}
         </a>
         @endif
@@ -43,7 +43,7 @@
     <thead>
         <tr>
             <th>Paciente</th>
-            <th>Hotel</th>
+            <th>Residence</th>
             <th>Habitación</th>
             <th>Desde</th>
             <th>Hasta (Estimado)</th>
@@ -56,7 +56,7 @@
         @foreach($bookings as $booking)
         <tr>
             <td>{{ $booking->patient->fullName }}</td>
-            <td>{{ $booking->room->hotel->name }}</td>
+            <td>{{ $booking->room->residence->name }}</td>
             <td>{{ $booking->room->number }}</td>
             <td>{{ $booking->from }}</td>
             <td>{{ $booking->to }}</td>

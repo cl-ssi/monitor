@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\SanitaryHotel\Room;
+use App\SanitaryResidence\Room;
 use Illuminate\Http\Request;
-use App\SanitaryHotel\Hotel;
+use App\SanitaryResidence\Residence;
 
 class RoomController extends Controller
 {
@@ -16,7 +16,7 @@ class RoomController extends Controller
     public function index()
     {
         $rooms = Room::all();
-        return view('sanitary_hotels.rooms.index', compact('rooms'));
+        return view('sanitary_residences.rooms.index', compact('rooms'));
     }
 
     /**
@@ -26,8 +26,8 @@ class RoomController extends Controller
      */
     public function create()
     {
-        $hotels = Hotel::All();
-        return view('sanitary_hotels.rooms.create', compact('hotels'));
+        $residences = Residence::All();
+        return view('sanitary_residences.rooms.create', compact('residences'));
     }
 
     /**
@@ -41,13 +41,13 @@ class RoomController extends Controller
         $room = new Room($request->All());
         $room->save();
 
-        return redirect()->route('sanitary_hotels.rooms.index');
+        return redirect()->route('sanitary_residences.rooms.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\SanitaryHotel\Room  $room
+     * @param  \App\SanitaryResidence\Room  $room
      * @return \Illuminate\Http\Response
      */
     public function show(Room $room)
@@ -58,7 +58,7 @@ class RoomController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\SanitaryHotel\Room  $room
+     * @param  \App\SanitaryResidence\Room  $room
      * @return \Illuminate\Http\Response
      */
     public function edit(Room $room)
@@ -70,7 +70,7 @@ class RoomController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\SanitaryHotel\Room  $room
+     * @param  \App\SanitaryResidence\Room  $room
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Room $room)
@@ -81,7 +81,7 @@ class RoomController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\SanitaryHotel\Room  $room
+     * @param  \App\SanitaryResidence\Room  $room
      * @return \Illuminate\Http\Response
      */
     public function destroy(Room $room)
