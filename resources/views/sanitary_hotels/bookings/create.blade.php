@@ -26,7 +26,7 @@
             <label for="for_room_id">Hotel - Habitación</label>
             <select name="room_id" id="for_room_id" class="form-control">
                 @foreach($rooms as $room)
-                <option value="{{ $room->id }}">{{ $room->hotel->name }} -{{ $room->number }}</option>
+                <option value="{{ $room->id }}">{{ $room->hotel->name }} - Habitación {{ $room->number }}</option>
                 @endforeach
             </select>
         </fieldset>
