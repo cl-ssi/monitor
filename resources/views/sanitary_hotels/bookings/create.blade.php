@@ -50,11 +50,12 @@
 
     <fieldset class="form-group" >
         <label for="for_observations">Observaciones</label>
-        <input type="textarea" class="form-control"  name="observations" id="for_observations"  placeholder="Escribir Observaciones en caso de ser necesario">
+        <textarea type="textarea" class="form-control" rows="3"  name="observations" id="for_observations"> </textarea>
     </fieldset>
 
 
     <button type="submit" class="btn btn-primary">Guardar</button>
+    <a class="btn btn-outline-secondary" href="{{ route('sanitary_hotels.bookings.index') }}">Cancelar</a>
 
 
 </form>
