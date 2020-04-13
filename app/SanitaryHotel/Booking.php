@@ -12,7 +12,7 @@ class Booking extends Model
      * @var array
      */
     protected $fillable = [
-        'from', 'to', 'indications', 'observations'
+        'from', 'to', 'indications', 'observations', 'patient_id', 'room_id'
     ];
 
     protected $dates = [

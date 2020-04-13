@@ -105,4 +105,25 @@ Route::prefix('sanitary_hotels')->name('sanitary_hotels.')->middleware('auth')->
         // Route::put('/{room}', 'RoomController@update')->name('update');
         // Route::delete('/{room}', 'RoomController@destroy')->name('destroy');
     });
+
+    Route::prefix('bookings')->name('bookings.')->group(function () {
+        Route::get('/', 'BookingController@index')->name('index');
+        Route::get('/create', 'BookingController@create')->name('create');
+        Route::post('/', 'BookingController@store')->name('store');
+        // Route::get('/{room}/edit', 'RoomController@edit')->name('edit');
+        // Route::put('/{room}', 'RoomController@update')->name('update');
+        // Route::delete('/{room}', 'RoomController@destroy')->name('destroy');
+    });
+
+
+    Route::prefix('vital_signs')->name('vital_signs.')->group(function () {
+        Route::get('/', 'VitalSignController@index')->name('index');
+        Route::get('/create', 'VitalSignController@create')->name('create');
+        Route::post('/', 'VitalSignController@store')->name('store');
+        // Route::get('/{room}/edit', 'RoomController@edit')->name('edit');
+        // Route::put('/{room}', 'RoomController@update')->name('update');
+        // Route::delete('/{room}', 'RoomController@destroy')->name('destroy');
+    });
+
+
 });

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\SanitaryHotel\Booking;
+use App\SanitaryHotel\Room;
+use App\Patient;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
@@ -15,6 +17,8 @@ class BookingController extends Controller
     public function index()
     {
         //
+        $bookings = Booking::all();        
+        return view('sanitary_hotels.bookings.index', compact('bookings'));
     }
 
     /**
@@ -25,6 +29,11 @@ class BookingController extends Controller
     public function create()
     {
         //
+        $patients = Patient::All();
+        $rooms = Room::All();
+        return view('sanitary_hotels.bookings.create', compact('patients','rooms'));
+
+
     }
 
     /**
@@ -36,6 +45,11 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         //
+
+        $booking = new Booking($request->All());
+        $booking->save();
+
+        return redirect()->route('sanitary_hotels.bookings.index');
     }
 
     /**
