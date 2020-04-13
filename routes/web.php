@@ -89,8 +89,8 @@ Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(functi
 
 Route::prefix('sanitary_hotels')->name('sanitary_hotels.')->middleware('auth')->group(function () {
     Route::prefix('hotels')->name('hotels.')->group(function () {
-        Route::get('/', 'HotelController@index')->name('index');
         Route::get('/create', 'HotelController@create')->name('create');
+        Route::get('/', 'HotelController@index')->name('index');        
         Route::post('/', 'HotelController@store')->name('store');
         // Route::get('/{hotel}/edit', 'HotelController@edit')->name('edit');
         // Route::put('/{hotel}', 'HotelController@update')->name('update');
@@ -108,8 +108,8 @@ Route::prefix('sanitary_hotels')->name('sanitary_hotels.')->middleware('auth')->
 
     Route::prefix('bookings')->name('bookings.')->group(function () {
         Route::get('/', 'BookingController@index')->name('index');
-        Route::get('/{booking}', 'BookingController@show')->name('show');
         Route::get('/create', 'BookingController@create')->name('create');
+        Route::get('/{booking}', 'BookingController@show')->name('show');        
         Route::post('/', 'BookingController@store')->name('store');
         // Route::get('/{booking}/edit', 'BookingController@edit')->name('edit');
         // Route::put('/{booking}', 'BookingController@update')->name('update');
