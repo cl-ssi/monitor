@@ -33,14 +33,14 @@
     </div>
 
     <div class="form-row">
-        <fieldset class="form-group col-4 col-md-2">
+        <fieldset class="form-group col-4 col-md-3">
             <label for="for_from">Desde</label>
-            <input type="date" class="form-control date" name="from" id="for_from" required placeholder="">
+            <input type="datetime-local" class="form-control date" name="from" id="for_from" required >
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-2">
+        <fieldset class="form-group col-4 col-md-3">
             <label for="for_to">Hasta (Estimado)</label>
-            <input type="date" class="form-control date" name="to" id="for_to" required placeholder="">
+            <input type="datetime-local" class="form-control date" name="to" id="for_to" required >
         </fieldset>
 
 
