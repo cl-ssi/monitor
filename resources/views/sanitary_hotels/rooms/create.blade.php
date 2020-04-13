@@ -37,6 +37,7 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Guardar</button>
+    <a class="btn btn-outline-secondary" href="{{ route('sanitary_hotels.rooms.index') }}">Cancelar</a>
 
 
 </form>

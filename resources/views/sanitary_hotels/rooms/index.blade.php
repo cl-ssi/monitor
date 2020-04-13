@@ -7,6 +7,7 @@
 @include('sanitary_hotels.nav')
 
 <h3 class="mb-3">Listado de Habitaciones</h3>
+<a class="btn btn-primary mb-3" href="{{ route('sanitary_hotels.rooms.create') }}">Crear una nueva habitación</a>
 
 <table class="table table-sm">
     <thead>
