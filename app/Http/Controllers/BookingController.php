@@ -45,7 +45,6 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         //
-
         $booking = new Booking($request->All());
         $booking->save();
 
@@ -60,7 +59,7 @@ class BookingController extends Controller
      */
     public function show(Booking $booking)
     {
-        //
+        return view('sanitary_hotels.bookings.show', compact('booking'));
     }
 
     /**

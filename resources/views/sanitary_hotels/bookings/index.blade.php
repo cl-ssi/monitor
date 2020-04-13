@@ -26,7 +26,10 @@
         <hr>
 
         @if($room->bookings->first())
+        <a href="{{ route('sanitary_hotels.bookings.show',$room->bookings->first()->id) }}">
             {{ $room->bookings->first()->patient->fullName }}
+        </a>
+
         @endif
 
     </div>
