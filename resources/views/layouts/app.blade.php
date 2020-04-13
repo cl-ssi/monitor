@@ -107,6 +107,14 @@
                         </li>
                         @endcan
 
+                        @can('SanitaryHotel: user')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('sanitary_hotels.rooms.index') }}">
+                                Hotel Sanitario
+                            </a>
+                        </li>
+                        @endcan
+
                         @can('Admin')
                         <li class="nav-item">
                           <a class="nav-link" href="{{ route('parameters.index') }}">

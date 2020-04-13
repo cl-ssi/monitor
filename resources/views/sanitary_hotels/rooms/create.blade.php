@@ -3,6 +3,9 @@
 @section('title', 'Crear Habitación')
 
 @section('content')
+
+@include('sanitary_hotels.nav')
+
 <h3 class="mb-3">Crear Habitación</h3>
 
 <form method="POST" class="form-horizontal" action="{{ route('sanitary_hotels.rooms.store') }}">

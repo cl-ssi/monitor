@@ -3,6 +3,9 @@
 @section('title', 'Listado de Signos Vitales')
 
 @section('content')
+
+@include('sanitary_hotels.nav')
+
 <h3 class="mb-3">Listado de Signos Vitales</h3>
 
 <table class="table table-sm">
@@ -33,9 +36,9 @@
             <td>{{ $vitalsign->hgt }}</td>
             <td>{{ $vitalsign->pain_scale }}</td>
 
-            
 
-            
+
+
             <td></td>
         </tr>
         @endforeach

@@ -3,6 +3,9 @@
 @section('title', 'Listado de Habitaciones')
 
 @section('content')
+
+@include('sanitary_hotels.nav')
+
 <h3 class="mb-3">Listado de Habitaciones</h3>
 
 <table class="table table-sm">
