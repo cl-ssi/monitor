@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 
-class PermissionsTableSeeder extends Seeder
+class PermissionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -19,11 +19,14 @@ class PermissionsTableSeeder extends Seeder
         $permission = Permission::create(['name' => 'Patient: list']);
         $permission = Permission::create(['name' => 'Patient: delete']);
         $permission = Permission::create(['name' => 'Patient: georeferencing']);
+        $permission = Permission::create(['name' => 'Patient: epidemiologist']);
+        $permission = Permission::create(['name' => 'Demographic: edit']);
         $permission = Permission::create(['name' => 'SuspectCase: create']);
         $permission = Permission::create(['name' => 'SuspectCase: edit']);
         $permission = Permission::create(['name' => 'SuspectCase: list']);
         $permission = Permission::create(['name' => 'SuspectCase: delete']);
-        $permission = Permission::create(['name' => 'Demographic: edit']);
+        $permission = Permission::create(['name' => 'SuspectCase: admission']);
+        $permission = Permission::create(['name' => 'SuspectCase: tecnologo']);
         $permission = Permission::create(['name' => 'Report']);
         $permission = Permission::create(['name' => 'Epp: list']);
     }

@@ -59,6 +59,7 @@ class SuspectCaseController extends Controller
 
         $suspectCase = new SuspectCase($request->All());
         $suspectCase->epidemiological_week = Carbon::createFromDate($suspectCase->sample_at->format('Y-m-d'))->add(1,'days')->weekOfYear;
+        $suspectCase->laboratory_id = Auth::user()->laboratory->id;
         $patient->suspectCases()->save($suspectCase);
 
         //guarda archivos
@@ -73,10 +74,12 @@ class SuspectCaseController extends Controller
             }
         }
 
-        if($suspectCase->pscr_sars_cov_2 == 'positive') {
-            $emails  = explode(',', env('EMAILS_ALERT'));
-            $emails_bcc  = explode(',', env('EMAILS_ALERT_BCC'));
-            Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($suspectCase));
+        if(env('APP_ENV') == 'production') {
+            if($suspectCase->pscr_sars_cov_2 == 'positive') {
+                $emails  = explode(',', env('EMAILS_ALERT'));
+                $emails_bcc  = explode(',', env('EMAILS_ALERT_BCC'));
+                Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($suspectCase));
+            }
         }
 
         $log = new Log();
@@ -84,6 +87,7 @@ class SuspectCaseController extends Controller
         $log->new = $suspectCase;
         $log->save();
 
+        session()->flash('success', 'Se ha creado el caso número: <h3>'.$suspectCase->id.'</h3>');
         return redirect()->route('lab.suspect_cases.index');
     }
 
@@ -140,10 +144,12 @@ class SuspectCaseController extends Controller
             }
         }
 
-        if($log->old->pscr_sars_cov_2 == 'pending' AND $suspectCase->pscr_sars_cov_2 == 'positive') {
-            $emails  = explode(',', env('EMAILS_ALERT'));
-            $emails_bcc  = explode(',', env('EMAILS_ALERT_BCC'));
-            Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($suspectCase));
+        if(env('APP_ENV') == 'production') {
+            if($log->old->pscr_sars_cov_2 == 'pending' AND $suspectCase->pscr_sars_cov_2 == 'positive') {
+                $emails  = explode(',', env('EMAILS_ALERT'));
+                $emails_bcc  = explode(',', env('EMAILS_ALERT_BCC'));
+                Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($suspectCase));
+            }
         }
 
         $log->new = $suspectCase;
