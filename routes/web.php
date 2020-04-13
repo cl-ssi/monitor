@@ -108,11 +108,12 @@ Route::prefix('sanitary_hotels')->name('sanitary_hotels.')->middleware('auth')->
 
     Route::prefix('bookings')->name('bookings.')->group(function () {
         Route::get('/', 'BookingController@index')->name('index');
+        Route::get('/{booking}', 'BookingController@show')->name('show');
         Route::get('/create', 'BookingController@create')->name('create');
         Route::post('/', 'BookingController@store')->name('store');
-        // Route::get('/{room}/edit', 'RoomController@edit')->name('edit');
-        // Route::put('/{room}', 'RoomController@update')->name('update');
-        // Route::delete('/{room}', 'RoomController@destroy')->name('destroy');
+        // Route::get('/{booking}/edit', 'BookingController@edit')->name('edit');
+        // Route::put('/{booking}', 'BookingController@update')->name('update');
+        // Route::delete('/{booking}', 'BookingController@destroy')->name('destroy');
     });
 
 
