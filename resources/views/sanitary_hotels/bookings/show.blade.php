@@ -6,22 +6,49 @@
 
 @include('sanitary_hotels.nav')
 
-<h3 class="mb-3">Ver booking</h3>
 
-{{ $booking->id }}
-
-// Agregar datos del booking
+<u>
+    <strong>
+        <h3 class="mb-3" align="center">{{ $booking->patient->fullName }}</h3>
+        <h4 class="mb-3" align="center">{{ $booking->room->hotel->name }}</h4>
+        <h5 class="mb-3" align="center">Habitacion:{{ $booking->room->number }}</h5>
+    </strong>
+</u>
 
 <hr>
-
-@include('sanitary_hotels.vital_signs.partials.create', compact('booking'))
-
+<h5 class="mb-3" align="center">Ingreso:{{ $booking->from->format('d-m-Y H:i') }} - Salida Estimada:{{ $booking->to->format('d-m-Y H:i') }}</h5>
 <hr>
 
-@include('sanitary_hotels.vital_signs.partials.index', compact('booking'))
+@if ($booking->indications <> null)
+    
+    <label for="for_indications">Indicaciones</label>
+    <p readonly class="form-control" id="for_indications" rows="3" name="indications">{{ $booking->indications }}</p>
+    <hr>
+    @endif
 
-@endsection
+    @if ($booking->observations <> null)
+        <label for="for_observations">Observaciones</label>
+        <p readonly  class="form-control" rows="3" name="observations" id="for_observations">{{ $booking->observations }}</p>
+        <hr>
+        @endif
 
-@section('custom_js')
+        
 
-@endsection
+
+
+
+
+
+        
+
+        @include('sanitary_hotels.vital_signs.partials.create', compact('booking'))
+
+        <hr>
+
+        @include('sanitary_hotels.vital_signs.partials.index', compact('booking'))
+
+        @endsection
+
+        @section('custom_js')
+
+        @endsection
