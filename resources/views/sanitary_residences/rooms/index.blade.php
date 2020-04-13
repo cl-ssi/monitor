@@ -4,15 +4,15 @@
 
 @section('content')
 
-@include('sanitary_hotels.nav')
+@include('sanitary_residences.nav')
 
 <h3 class="mb-3">Listado de Habitaciones</h3>
-<a class="btn btn-primary mb-3" href="{{ route('sanitary_hotels.rooms.create') }}">Crear una nueva habitación</a>
+<a class="btn btn-primary mb-3" href="{{ route('sanitary_residences.rooms.create') }}">Crear una nueva habitación</a>
 
 <table class="table table-sm">
     <thead>
         <tr>
-            <th>Hotel</th>
+            <th>Residence</th>
             <th>Piso</th>
             <th>Numero</th>
             <th></th>
@@ -21,7 +21,7 @@
     <tbody>
         @foreach($rooms as $room)
         <tr>
-            <td>{{ $room->hotel->name }}</td>
+            <td>{{ $room->residence->name }}</td>
             <td>{{ $room->floor }}</td>
             <td>{{ $room->number }}</td>
             <td></td>

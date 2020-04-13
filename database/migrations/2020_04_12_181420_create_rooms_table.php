@@ -18,12 +18,12 @@ class CreateRoomsTable extends Migration
             $table->string('number');
             $table->integer('floor')->nullable();
             $table->text('description')->nullable();
-            $table->unsignedBigInteger('hotel_id');
+            $table->unsignedBigInteger('residence_id');
             
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('hotel_id')->references('id')->on('hotels');
+            $table->foreign('residence_id')->references('id')->on('residences');
         });
     }
 

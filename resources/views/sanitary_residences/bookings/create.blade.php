@@ -4,11 +4,11 @@
 
 @section('content')
 
-@include('sanitary_hotels.nav')
+@include('sanitary_residences.nav')
 
 <h3 class="mb-3">Crear Booking</h3>
 
-<form method="POST" class="form-horizontal" action="{{ route('sanitary_hotels.bookings.store') }}">
+<form method="POST" class="form-horizontal" action="{{ route('sanitary_residences.bookings.store') }}">
     @csrf
     @method('POST')
 
@@ -23,10 +23,10 @@
         </fieldset>
 
         <fieldset class="form-group col-4 col-md-4">
-            <label for="for_room_id">Hotel - Habitación</label>
+            <label for="for_room_id">Residence - Habitación</label>
             <select name="room_id" id="for_room_id" class="form-control">
                 @foreach($rooms as $room)
-                <option value="{{ $room->id }}">{{ $room->hotel->name }} - Habitación {{ $room->number }}</option>
+                <option value="{{ $room->id }}">{{ $room->residence->name }} - Habitación {{ $room->number }}</option>
                 @endforeach
             </select>
         </fieldset>
@@ -58,7 +58,7 @@
 
 
     <button type="submit" class="btn btn-primary">Guardar</button>
-    <a class="btn btn-outline-secondary" href="{{ route('sanitary_hotels.bookings.index') }}">Cancelar</a>
+    <a class="btn btn-outline-secondary" href="{{ route('sanitary_residences.bookings.index') }}">Cancelar</a>
 
 
 </form>
