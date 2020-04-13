@@ -1,6 +1,6 @@
 <h3 class="mb-3">Crear Signos Vitales</h3>
 
-<form method="POST" class="form-horizontal" action="{{ route('sanitary_hotels.vital_signs.store') }}">
+<form method="POST" class="form-horizontal" action="{{ route('sanitary_residences.vital_signs.store') }}">
     @csrf
     @method('POST')
 
@@ -44,7 +44,7 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Guardar</button>
-    <a class="btn btn-outline-secondary" href="{{ route('sanitary_hotels.bookings.index') }}">Cancelar</a>
+    <a class="btn btn-outline-secondary" href="{{ route('sanitary_residences.vital_signs.index') }}">Cancelar</a>
 
 
 </form>

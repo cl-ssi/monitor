@@ -19,20 +19,5 @@ class UserSeeder extends Seeder
         $user->password = bcrypt('admin');
         $user->save();
         $user->givePermissionTo(Permission::all());
-
-        $user = new User();
-        $user->name = "Sandra Riquelme";
-        $user->email = "sandra.riquelmemolina@gmail.com";
-        $user->password = bcrypt('salud123');
-        $user->save();
-        $user->givePermissionTo(Permission::all());
-
-
-        $user = new User();
-        $user->name = "Liumara Davalos";
-        $user->email = "liudamaldonado@gmail.com";
-        $user->password = bcrypt('salud123');
-        $user->save();
-        $user->givePermissionTo(Permission::all());
     }
 }

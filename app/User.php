@@ -27,7 +27,7 @@ class User extends Authenticatable
     }
 
     public function vitalSigns() {
-        return $this->hasMany('App\SanitaryHotel\VitalSign');
+        return $this->hasMany('App\SanitaryResidence\VitalSign');
     }
 
     public function laboratory() {

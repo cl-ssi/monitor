@@ -4,13 +4,13 @@
 
 @section('content')
 
-@include('sanitary_hotels.nav')
+@include('sanitary_residences.nav')
 
 
 <u>
     <strong>
         <h3 class="mb-3" align="center">{{ $booking->patient->fullName }}</h3>
-        <h4 class="mb-3" align="center">{{ $booking->room->hotel->name }}</h4>
+        <h4 class="mb-3" align="center">{{ $booking->room->residence->name }}</h4>
         <h5 class="mb-3" align="center">Habitacion:{{ $booking->room->number }}</h5>
     </strong>
 </u>
@@ -77,11 +77,11 @@
 
 
 
-        @include('sanitary_hotels.vital_signs.partials.create', compact('booking'))
+        @include('sanitary_residences.vital_signs.partials.create', compact('booking'))
 
         <hr>
 
-        @include('sanitary_hotels.vital_signs.partials.index', compact('booking'))
+        @include('sanitary_residences.vital_signs.partials.index', compact('booking'))
 
         @endsection
 

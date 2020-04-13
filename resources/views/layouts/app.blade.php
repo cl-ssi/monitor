@@ -107,10 +107,10 @@
                         </li>
                         @endcan
 
-                        @can('SanitaryHotel: user')
+                        @can('SanitaryResidence: user')
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('sanitary_hotels.bookings.index') }}">
-                                Hotel Sanitario
+                            <a class="nav-link" href="{{ route('sanitary_residences.bookings.index') }}">
+                                Residencia Sanitaria
                             </a>
                         </li>
                         @endcan

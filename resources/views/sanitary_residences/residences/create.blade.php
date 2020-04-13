@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Crear Hotel')
+@section('title', 'Crear Residencia')
 
 @section('content')
 
-@include('sanitary_hotels.nav')
+@include('sanitary_residences.nav')
 
-<h3 class="mb-3">Crear Hotel</h3>
+<h3 class="mb-3">Crear Residencia</h3>
 
-<form method="POST" class="form-horizontal" action="{{ route('sanitary_hotels.hotels.store') }}">
+<form method="POST" class="form-horizontal" action="{{ route('sanitary_residences.residences.store') }}">
     @csrf
     @method('POST')
 
@@ -36,7 +36,7 @@
 
     <button type="submit" class="btn btn-primary">Guardar</button>
 
-    <a class="btn btn-outline-secondary" href="{{ route('sanitary_hotels.hotels.index') }}">Cancelar</a>
+    <a class="btn btn-outline-secondary" href="{{ route('sanitary_residences.residences.index') }}">Cancelar</a>
 
 </form>
 

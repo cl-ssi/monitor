@@ -29,6 +29,15 @@
                 required>
         </fieldset>
 
+        <fieldset class="form-group col">
+            <label for="for_laboratory_id">Laboratorio</label>
+            <select name="laboratory_id" id="for_laboratory_id" class="form-control">
+                <option value=""></option>
+                <option value="1">HETG</option>
+                <option value="2">UNAP</option>
+            </select>
+        </fieldset>
+
 
     </div>
 

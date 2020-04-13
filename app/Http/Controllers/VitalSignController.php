@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\SanitaryHotel\VitalSign;
-use App\SanitaryHotel\Booking;
+use App\SanitaryResidence\VitalSign;
+use App\SanitaryResidence\Booking;
 use Illuminate\Http\Request;
 
 class VitalSignController extends Controller
@@ -17,7 +17,7 @@ class VitalSignController extends Controller
     {
         //
         $vitalsigns = VitalSign::all();
-        return view('sanitary_hotels.vital_signs.index', compact('vitalsigns'));
+        return view('sanitary_residences.vital_signs.index', compact('vitalsigns'));
     }
 
     /**
@@ -29,7 +29,7 @@ class VitalSignController extends Controller
     {
         //
         $bookings = Booking::All();
-        return view('sanitary_hotels.vital_signs.create', compact('bookings'));
+        return view('sanitary_residences.vital_signs.create', compact('bookings'));
 
     }
 
@@ -46,13 +46,13 @@ class VitalSignController extends Controller
         $vitalsign->patient_id = $vitalsign->booking->patient->id;
         $vitalsign->user_id = auth()->user()->id;
         $vitalsign->save();
-        return redirect()->route('sanitary_hotels.vital_signs.index');
+        return redirect()->route('sanitary_residences.vital_signs.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\SanitaryHotel\VitalSign  $vitalSign
+     * @param  \App\SanitaryResidence\VitalSign  $vitalSign
      * @return \Illuminate\Http\Response
      */
     public function show(VitalSign $vitalSign)
@@ -63,7 +63,7 @@ class VitalSignController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\SanitaryHotel\VitalSign  $vitalSign
+     * @param  \App\SanitaryResidence\VitalSign  $vitalSign
      * @return \Illuminate\Http\Response
      */
     public function edit(VitalSign $vitalSign)
@@ -75,7 +75,7 @@ class VitalSignController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\SanitaryHotel\VitalSign  $vitalSign
+     * @param  \App\SanitaryResidence\VitalSign  $vitalSign
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, VitalSign $vitalSign)
@@ -86,7 +86,7 @@ class VitalSignController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\SanitaryHotel\VitalSign  $vitalSign
+     * @param  \App\SanitaryResidence\VitalSign  $vitalSign
      * @return \Illuminate\Http\Response
      */
     public function destroy(VitalSign $vitalSign)
