@@ -44,7 +44,7 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Guardar</button>
-    <a class="btn btn-outline-secondary" href="{{ route('sanitary_hotels.vital_signs.index') }}">Cancelar</a>
+    <a class="btn btn-outline-secondary" href="{{ route('sanitary_hotels.bookings.index') }}">Cancelar</a>
 
 
 </form>
