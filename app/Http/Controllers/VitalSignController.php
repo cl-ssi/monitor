@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\SanitaryHotel\VitalSign;
+use App\SanitaryHotel\Booking;
 use Illuminate\Http\Request;
 
 class VitalSignController extends Controller
@@ -15,6 +16,8 @@ class VitalSignController extends Controller
     public function index()
     {
         //
+        $vitalsigns = VitalSign::all();
+        return view('sanitary_hotels.vital_signs.index', compact('vitalsigns'));
     }
 
     /**
@@ -25,6 +28,9 @@ class VitalSignController extends Controller
     public function create()
     {
         //
+        $bookings = Booking::All();
+        return view('sanitary_hotels.vital_signs.create', compact('bookings'));
+
     }
 
     /**
@@ -36,6 +42,11 @@ class VitalSignController extends Controller
     public function store(Request $request)
     {
         //
+        $vitalsign = new VitalSign($request->All());
+        $vitalsign->patient_id = $vitalsign->booking->patient->id;
+        $vitalsign->user_id = auth()->user()->id;
+        $vitalsign->save();
+        return redirect()->route('sanitary_hotels.vital_signs.index');
     }
 
     /**
