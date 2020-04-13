@@ -19,4 +19,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::get('stat', 'SuspectCaseController@stat')->name('stat');
+//Route::get('stat', 'SuspectCaseController@stat')->name('stat');
