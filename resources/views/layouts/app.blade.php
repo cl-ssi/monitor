@@ -85,20 +85,6 @@
                         </li>
                         @endcan
 
-                        @can('Report')
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('lab.suspect_cases.report') }}">
-                                Reporte
-                            </a>
-                        </li>
-
-                        <!-- <li class="nav-item">
-                            <a class="nav-link" href="{{ route('lab.suspect_cases.case_chart') }}">
-                                Casos
-                            </a>
-                        </li> -->
-                        @endcan
-
                         @can('Epp: list')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('epp.index') }}">
@@ -113,6 +99,20 @@
                                 Residencia Sanitaria
                             </a>
                         </li>
+                        @endcan
+
+                        @can('Report')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('lab.suspect_cases.report') }}">
+                                Reporte
+                            </a>
+                        </li>
+
+                        <!-- <li class="nav-item">
+                            <a class="nav-link" href="{{ route('lab.suspect_cases.case_chart') }}">
+                                Casos
+                            </a>
+                        </li> -->
                         @endcan
 
                         @can('Admin')
