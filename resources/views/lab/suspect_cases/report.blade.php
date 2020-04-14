@@ -743,6 +743,110 @@
             </tbody>
         </table>
 
+        <table class="table table-sm table-bordered">
+            <thead>
+                <tr class="table-active">
+                    <th colspan="5">Residencia Sanitaria</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>Total</th>
+                    <th>Posit.</th>
+                    <th>Pendi.</th>
+                    <th>Negat.</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        Región
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('status','Residencia Sanitaria')->count() }}
+                    </td>
+                    <td class="text-center text-danger">
+                        {{ $cases->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','positive')->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','pending')->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','negative')->count() }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Alto Hospicio
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('patient.demographic.commune','Alto Hospicio')->where('status','Residencia Sanitaria')->count() }}
+                    </td>
+                    <td class="text-center text-danger">
+                        {{ $cases->where('patient.demographic.commune','Alto Hospicio')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','positive')->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('patient.demographic.commune','Alto Hospicio')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','pending')->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('patient.demographic.commune','Alto Hospicio')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','negative')->count() }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Iquique
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('patient.demographic.commune','Iquique')->where('status','Residencia Sanitaria')->count() }}
+                    </td>
+                    <td class="text-center text-danger">
+                        {{ $cases->where('patient.demographic.commune','Iquique')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','positive')->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('patient.demographic.commune','Iquique')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','pending')->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('patient.demographic.commune','Iquique')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','negative')->count() }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Pica
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('patient.demographic.commune','Pica')->where('status','Residencia Sanitaria')->count() }}
+                    </td>
+                    <td class="text-center text-danger">
+                        {{ $cases->where('patient.demographic.commune','Pica')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','positive')->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('patient.demographic.commune','Pica')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','pending')->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('patient.demographic.commune','Pica')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','negative')->count() }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Pozo Almonte
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('patient.demographic.commune','Pozo Almonte')->where('status','Residencia Sanitaria')->count() }}
+                    </td>
+                    <td class="text-center text-danger">
+                        {{ $cases->where('patient.demographic.commune','Pozo Almonte')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','positive')->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('patient.demographic.commune','Pozo Almonte')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','pending')->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('patient.demographic.commune','Pozo Almonte')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','negative')->count() }}
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+
     </div>
 </div>
 
