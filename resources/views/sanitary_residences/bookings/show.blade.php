@@ -102,18 +102,18 @@
         <input type="text" class="form-control" name="relationship" id="for_relationship" value="{{$booking->relationship}}">
     </fieldset>
 
-    {{-- <fieldset class="form-group col-4 col-md-3">
+    <fieldset class="form-group col-4 col-md-3">
         <label for="for_diagnostic">Diagnostico</label>
         <input type="text" class="form-control" name="diagnostic" id="for_diagnostic" autocomplete="off" value="{{$booking->diagnostic}}">
-    </fieldset> --}}
+    </fieldset>
 
-</div>
-
-<div class="form-row">
     <fieldset class="form-group col-4 col-md-3">
         <label for="for_doctor">Doctor</label>
         <input type="text" class="form-control" name="doctor" id="for_doctor" value="{{$booking->doctor}}">
     </fieldset>
+</div>
+
+<div class="form-row">
 
     <fieldset class="form-group col-4 col-md-3">
         <label for="for_entry_criteria">Criterio de Ingreso</label>
@@ -131,10 +131,12 @@
     </fieldset>
 </div>
 
-{{-- <fieldset class="form-group">
-    <label for="for_morbid_history">Antecedentes Mórbidos</label>
-    <textarea class="form-control" id="for_morbid_history" rows="3" name="morbid_history" value="{{$booking->morbid_history}}"></textarea>
-</fieldset> --}}
+<div class="form-row">
+    <fieldset class="form-group col-12">
+        <label for="for_morbid_history">Antecedentes Mórbidos</label>
+        <textarea class="form-control" id="for_morbid_history" rows="3" name="morbid_history" value="{{$booking->morbid_history}}"></textarea>
+    </fieldset>
+</div>
 
 
 <div class="form-row">
