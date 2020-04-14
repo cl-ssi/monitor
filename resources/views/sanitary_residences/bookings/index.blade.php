@@ -19,11 +19,11 @@
             </div>
             <hr>
         @endif
-        <h4>Piso {{$room->floor}}</h4>
+        <h5>Piso {{$room->floor}}</h5>
         <div class="row mt-3">
     @endif
 
-    <div class="border text-center small" style="width: 150px; height: 150px;">
+    <div class="border text-center small m-2" style="width: 150px; height: 150px;">
         Habitación {{ $room->number }}
         <hr>
 
