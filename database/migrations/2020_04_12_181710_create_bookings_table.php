@@ -42,6 +42,11 @@ class CreateBookingsTable extends Migration
 
             $table->string('status')->nullable(); /* Fallecido, Alta, Hospitalizado, Fugado */
 
+            $table->string('healthcare_centre')->nullable(); //centro de salud
+            $table->boolean('influenza_vaccinated')->default(0); //vacunado influenza
+            $table->boolean('covid_exit_test')->default(0); //examen covid al egreso
+            $table->string('released_cause')->nullable(); //causal de alta
+
             $table->unsignedBigInteger('patient_id');
             $table->unsignedBigInteger('room_id');
 
