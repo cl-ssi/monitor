@@ -19,7 +19,7 @@
         @foreach($booking->vitalSigns->reverse() as $vitalsign)
         <tr>
             <td nowrap>{{ $vitalsign->created_at->format('d-m-Y H:i') }}</td>
-            <td>{{ $vitalsign->user->name }}</td>
+            <td nowrap>{{ $vitalsign->user->name }}</td>
             <td>{{ $vitalsign->temperature }}</td>
             <td>{{ $vitalsign->heart_rate }}</td>
             <td>{{ $vitalsign->blood_pressure }}</td>
