@@ -1,6 +1,6 @@
 <h3 class="mb-3">Listado de Signos Vitales</h3>
 
-<table class="table table-sm">
+<table class="table table-sm table-bordered table-responsive">
     <thead>
         <tr>
             <th>Fecha y hora</th>
