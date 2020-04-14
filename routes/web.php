@@ -93,7 +93,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
         Route::get('/', 'ResidenceController@index')->name('index');
         Route::post('/', 'ResidenceController@store')->name('store');
         // Route::get('/{residence}/edit', 'ResidenceController@edit')->name('edit');
-        // Route::put('/{residence}', 'ResidenceController@update')->name('update');
+        // Route::put('update/{residence}', 'ResidenceController@update')->name('update');
         // Route::delete('/{residence}', 'ResidenceController@destroy')->name('destroy');
     });
 
@@ -113,7 +113,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
         Route::post('/', 'BookingController@store')->name('store');
         Route::get('/{booking}', 'BookingController@show')->name('show');
         // Route::get('/{booking}/edit', 'BookingController@edit')->name('edit');
-        // Route::put('/{booking}', 'BookingController@update')->name('update');
+        Route::put('/{booking}', 'BookingController@update')->name('update');
         // Route::delete('/{booking}', 'BookingController@destroy')->name('destroy');
     });
 
