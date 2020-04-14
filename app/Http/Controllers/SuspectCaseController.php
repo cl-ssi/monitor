@@ -179,7 +179,8 @@ class SuspectCaseController extends Controller
     {
         $cases = SuspectCase::All();
         $cases = $cases->whereNotIn('patient.demographic.region',
-                        ['Arica y Parinacota',
+                        [   'sin-region',
+                            'Arica y Parinacota',
                            'Antofagasta',
                            'Atacama',
                            'Coquimbo',
@@ -197,7 +198,8 @@ class SuspectCaseController extends Controller
                               // /->orWhereNull('patient.demographic.region')
         $cases_other_region = SuspectCase::All();
         $cases_other_region = $cases_other_region->whereIn('patient.demographic.region',
-                        ['Arica y Parinacota',
+                        ['sin-region',
+                        'Arica y Parinacota',
                            'Antofagasta',
                            'Atacama',
                            'Coquimbo',
