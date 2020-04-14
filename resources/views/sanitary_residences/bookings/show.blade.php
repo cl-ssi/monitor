@@ -223,17 +223,16 @@
 
 
     <div class="form-row">
-        <fieldset class="form-group col-12">
+        <fieldset class="form-group col-12 col-md-7">
             <label for="for_indications">Indicaciones</label>
-            <textarea class="form-control" id="for_indications" rows="4" name="indications">{{$booking->indications}}</textarea>
+            <textarea class="form-control" id="for_indications" rows="6" name="indications">{{$booking->indications}}</textarea>
         </fieldset>
-    </div>
 
-    <div class="form-row">
-        <fieldset class="form-group col-12">
+        <fieldset class="form-group col-12 col-md-5">
             <label for="for_observations">Observaciones</label>
-            <textarea type="textarea" class="form-control" rows="1" name="observations" id="for_observations">{{$booking->observations}}</textarea>
+            <textarea type="textarea" class="form-control" rows="4" name="observations" id="for_observations">{{$booking->observations}}</textarea>
         </fieldset>
+
     </div>
 
     <button type="submit" class="btn btn-primary">Guardar</button>
