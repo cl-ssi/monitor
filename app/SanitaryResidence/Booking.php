@@ -13,7 +13,7 @@ class Booking extends Model
      */
     protected $fillable = [
         'from', 'to', 'indications', 'observations', 'patient_id', 'room_id', 'prevision',
-        'entry_criteria', 'prevision', 'responsible_family_member', 'relationship', 'doctor',
+        'entry_criteria', 'prevision', 'responsible_family_member', 'relationship', 'doctor', 'diagnostic'
         'morbid_history', 'length_of_stay', 'onset_on_symptoms', 'end_of_symptoms',
         'allergies', 'commonly_used_drugs',
         'healthcare_centre', 'influenza_vaccinated', 'covid_exit_test', 'released_cause'
