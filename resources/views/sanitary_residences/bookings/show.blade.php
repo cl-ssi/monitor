@@ -134,7 +134,7 @@
 <div class="form-row">
     <fieldset class="form-group col-12">
         <label for="for_morbid_history">Antecedentes Mórbidos</label>
-        <textarea class="form-control" id="for_morbid_history" rows="3" name="morbid_history" value="{{$booking->morbid_history}}"></textarea>
+        <textarea class="form-control" id="for_morbid_history" rows="3" name="morbid_history">{{$booking->morbid_history}}</textarea>
     </fieldset>
 </div>
 
