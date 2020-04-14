@@ -4,7 +4,7 @@
 
 @section('content')
 
-<h3 class="mb-3">Georeferenciación</h3>
+<h3 class="mb-3">Georreferenciación</h3>
 
 <div style="width: 100%; height: 650px" id="mapContainer"></div>
 
