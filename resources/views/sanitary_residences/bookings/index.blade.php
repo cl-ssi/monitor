@@ -17,16 +17,18 @@
     @if($room->floor != $piso)
         @if($piso != 0)
             </div>
+            <hr>
         @endif
+        <h5>Piso {{$room->floor}}</h5>
         <div class="row mt-3">
     @endif
 
-    <div class="border text-center small" style="width: 150px; height: 150px;">
+    <div class="border text-center small m-2" style="width: 150px; height: 150px;">
         Habitación {{ $room->number }}
         <hr>
 
         @if($room->bookings->first())
-        
+
             @foreach($room->bookings as $booking)
             <li>
                 <a href="{{ route('sanitary_residences.bookings.show',$booking) }}">
@@ -34,7 +36,7 @@
                 </a>
                 </li>
             @endforeach
-        
+
         @endif
 
     </div>
@@ -45,7 +47,7 @@
 
 
 
-<table class="table table-sm">
+<table class="table table-sm table-responsive mt-3">
     <thead>
         <tr>
             <th>Paciente</th>
