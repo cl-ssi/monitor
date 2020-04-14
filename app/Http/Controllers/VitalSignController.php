@@ -46,7 +46,7 @@ class VitalSignController extends Controller
         $vitalsign->patient_id = $vitalsign->booking->patient->id;
         $vitalsign->user_id = auth()->user()->id;
         $vitalsign->save();
-        return redirect()->route('sanitary_residences.vital_signs.index');
+        return redirect()->back();
     }
 
     /**
