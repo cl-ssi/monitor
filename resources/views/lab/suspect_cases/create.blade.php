@@ -84,6 +84,7 @@
                 <option value="Clínica Tarapacá">Clínica Tarapacá</option>
                 <option value="Clínica Iquique">Clínica Iquique</option>
                 <option value="Particular (SEREMI)">Particular (SEREMI)</option>
+                <option value="Servicio Médico Legal">Servicio Médico Legal</option>
 
                 <option value="CECOSF El Boro">CECOSF El Boro</option>
                 <option value="CECOSF La Tortuga">CECOSF La Tortuga</option>
