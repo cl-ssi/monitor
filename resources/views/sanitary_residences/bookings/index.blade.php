@@ -17,11 +17,13 @@
     @if($room->floor != $piso)
         @if($piso != 0)
             </div>
+            <hr>
         @endif
+        <h4>Piso {{$room->floor}}</h4>
         <div class="row mt-3">
     @endif
 
-    <div class="border text-center" style="width: 150px; height: 150px;">
+    <div class="border text-center m-2" style="width: 150px; height: 150px;">
         Habitación {{ $room->number }}
         <hr>
 
@@ -39,7 +41,7 @@
 
 
 
-<table class="table table-sm">
+<table class="table table-sm table-responsive mt-3">
     <thead>
         <tr>
             <th>Paciente</th>
