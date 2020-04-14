@@ -9,22 +9,22 @@
 
     <div class="form-row">
         <fieldset class="form-group col-4 col-md-1">
-            <label for="for_temperature">Temperatura</label>
+            <label for="for_temperature">Temp.</label>
             <input type="text" class="form-control" name="temperature" id="for_temperature" required autocomplete="off">
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-2">
-            <label for="for_heart_rate">Frec. Cardiaca</label>
+        <fieldset class="form-group col-4 col-md-1">
+            <label for="for_heart_rate">Frec. Card.</label>
             <input type="text" class="form-control" name="heart_rate" id="for_heart_rate"  autocomplete="off">
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-2">
-            <label for="for_blood_pressure">Presión Arterial</label>
+        <fieldset class="form-group col-4 col-md-1">
+            <label for="for_blood_pressure">P. Arterial</label>
             <input type="text" class="form-control" name="blood_pressure" id="for_blood_pressure"  autocomplete="off">
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-2">
-            <label for="for_respiratory_rate">Frec. Respirat.</label>
+        <fieldset class="form-group col-4 col-md-1">
+            <label for="for_respiratory_rate">Frec. Resp.</label>
             <input type="text" class="form-control" name="respiratory_rate" id="for_respiratory_rate"  autocomplete="off">
         </fieldset>
 
@@ -43,7 +43,7 @@
             <input type="text" class="form-control" name="pain_scale" id="for_pain_scale"  autocomplete="off">
         </fieldset>
 
-        <fieldset class="form-group col-12 col-md-2">
+        <fieldset class="form-group col-12 col-md-5">
             <label for="for_observations">Observaciones</label>
             <input type="text" class="form-control" name="observations" id="for_observations2"  autocomplete="off">
         </fieldset>
