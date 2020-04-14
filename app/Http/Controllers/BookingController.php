@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\SanitaryResidence\Booking;
 use App\SanitaryResidence\Room;
 use App\Patient;
+use App\Log;
 use App\SuspectCase;
 use Illuminate\Http\Request;
 
@@ -47,7 +48,7 @@ class BookingController extends Controller
         $booking = new Booking($request->All());
         $booking->patient->suspectCases->last()->status = 'Residencia Sanitaria';
         $booking->patient->suspectCases->last()->save();
-        $booking->save();        
+        $booking->save();
 
         return redirect()->route('sanitary_residences.bookings.index');
     }
@@ -60,7 +61,9 @@ class BookingController extends Controller
      */
     public function show(Booking $booking)
     {
-        return view('sanitary_residences.bookings.show', compact('booking'));
+      $patients = Patient::orderBy('name')->get();
+      $rooms = Room::All();
+      return view('sanitary_residences.bookings.show', compact('booking','patients', 'rooms'));
     }
 
     /**
@@ -83,7 +86,19 @@ class BookingController extends Controller
      */
     public function update(Request $request, Booking $booking)
     {
-        //
+        $logPatient = new Log();
+        $logPatient->old = clone $booking;
+
+        $booking->fill($request->all());
+        $booking->save();
+
+        session()->flash('success', 'Se modificó la información.');
+
+        // return redirect()->route('sanitary_residences.bookings.index');
+
+        $patients = Patient::orderBy('name')->get();
+        $rooms = Room::All();
+        return view('sanitary_residences.bookings.show', compact('booking','patients', 'rooms'));
     }
 
     /**

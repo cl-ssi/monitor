@@ -22,6 +22,7 @@ class CreateVitalSignsTable extends Migration
             $table->string('oxygen_saturation')->nullable();
             $table->string('hgt')->nullable();
             $table->string('pain_scale')->nullable();
+            $table->longText('observations')->nullable();
 
             $table->unsignedBigInteger('booking_id');
             $table->unsignedBigInteger('patient_id');

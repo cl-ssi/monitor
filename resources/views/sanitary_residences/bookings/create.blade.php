@@ -13,7 +13,7 @@
     @method('POST')
 
     <div class="form-row">
-        <fieldset class="form-group col-12 col-md-6">
+        <fieldset class="form-group col-12 col-md-3">
             <label for="for_patient_id">Paciente</label>
             <select name="patient_id" id="for_patient_id" class="form-control">
                 @foreach($patients as $patient)
@@ -22,7 +22,7 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-12 col-md-4">
+        <fieldset class="form-group col-12 col-md-3">
             <label for="for_room_id">Residence - Habitación</label>
             <select name="room_id" id="for_room_id" class="form-control">
                 @foreach($rooms as $room)
@@ -30,30 +30,97 @@
                 @endforeach
             </select>
         </fieldset>
-    </div>
 
-    <div class="form-row">
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_from">Desde</label>
-            <input type="datetime-local" class="form-control date" name="from" id="for_from" required >
+            <input type="datetime-local" class="form-control date" name="from" id="for_from" required>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_to">Hasta (Estimado)</label>
-            <input type="datetime-local" class="form-control date" name="to" id="for_to" required >
+            <input type="datetime-local" class="form-control date" name="to" id="for_to" required>
         </fieldset>
 
+    </div>
+
+
+    <div class="form-row">
+        <fieldset class="form-group col-4 col-md-3">
+            <label for="for_responsible_family_member">Familiar Responsable</label>
+            <input type="text" class="form-control" name="responsible_family_member" id="for_responsible_family_member" autocomplete="off">
+        </fieldset>
+
+        <fieldset class="form-group col-4 col-md-3">
+            <label for="for_relationship">Parentesco</label>
+            <input type="text" class="form-control" name="relationship" id="for_relationship">
+        </fieldset>
+
+        <fieldset class="form-group col-4 col-md-3">
+            <label for="for_doctor">Doctor</label>
+            <input type="text" class="form-control" name="doctor" id="for_doctor">
+        </fieldset>
+
+        <fieldset class="form-group col-4 col-md-3">
+            <label for="for_diagnostic">Diagnostico</label>
+            <input type="text" class="form-control" name="diagnostic" id="for_diagnostic" autocomplete="off">
+        </fieldset>
 
     </div>
+
+    <div class="form-row">
+        <fieldset class="form-group col-4 col-md-3">
+            <label for="for_entry_criteria">Criterio de Ingreso</label>
+            <input type="text" class="form-control" name="entry_criteria" id="for_entry_criteria">
+        </fieldset>
+
+        <fieldset class="form-group col-4 col-md-3">
+            <label for="for_prevision">Previsión</label>
+            <input type="text" class="form-control" name="prevision" id="for_prevision" >
+        </fieldset>
+
+        <fieldset class="form-group col-4 col-md-3">
+            <label for="for_length_of_stay">Tiempo de Estadía (Días)</label>
+            <input type="number" class="form-control" name="length_of_stay" id="for_length_of_stay">
+        </fieldset>
+    </div>
+
+    <fieldset class="form-group">
+        <label for="for_morbid_history">Antecedentes Mórbidos</label>
+        <textarea class="form-control" id="for_morbid_history" rows="3" name="morbid_history"></textarea>
+    </fieldset>
+
+
+    <div class="form-row">
+        <fieldset class="form-group col-4 col-md-3">
+            <label for="for_onset_on_symptoms">Fecha de Inicio de Sintomas</label>
+            <input type="date" class="form-control" name="onset_on_symptoms" id="for_onset_on_symptoms">
+        </fieldset>
+
+        <fieldset class="form-group col-4 col-md-3">
+            <label for="for_end_of_symptoms">Fecha de Termino de Sintomas</label>
+            <input type="date" class="form-control" name="end_of_symptoms" id="for_end_of_symptoms" >
+        </fieldset>
+
+        <fieldset class="form-group col-4 col-md-3">
+            <label for="for_allergies">Alergias</label>
+            <input type="text" class="form-control" name="allergies" id="for_allergies" autocomplete="off">
+        </fieldset>
+
+        <fieldset class="form-group col-4 col-md-3">
+            <label for="for_commonly_used_drugs">Farmacos de Uso Común</label>
+            <input type="text" class="form-control" name="commonly_used_drugs" id="for_commonly_used_drugs" autocomplete="off">
+        </fieldset>
+    </div>
+
 
     <fieldset class="form-group">
         <label for="for_indications">Indicaciones</label>
         <textarea class="form-control" id="for_indications" rows="3" name="indications"></textarea>
     </fieldset>
 
-    <fieldset class="form-group" >
+    <fieldset class="form-group">
         <label for="for_observations">Observaciones</label>
-        <textarea type="textarea" class="form-control" rows="3"  name="observations" id="for_observations"> </textarea>
+        <textarea type="textarea" class="form-control" rows="3" name="observations" id="for_observations"> </textarea>
     </fieldset>
 
 

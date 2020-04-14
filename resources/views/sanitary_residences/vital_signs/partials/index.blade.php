@@ -12,6 +12,7 @@
             <th>SAT 02</th>
             <th>HGT</th>
             <th>Escala Dolor</th>
+            <th>Observaciones</th>
             <th></th>
         </tr>
     </thead>
@@ -27,7 +28,13 @@
             <td>{{ $vitalsign->oxygen_saturation }}</td>
             <td>{{ $vitalsign->hgt }}</td>
             <td>{{ $vitalsign->pain_scale }}</td>
-            <td></td>
+            <td>{{ $vitalsign->observations }}</td>
+
+            <td><button type="submit" class="btn btn-outline-secondary btn-sm" id="btn_{{$vitalsign->id}}">
+    							<i class="fas fa-edit"></i>
+    						</button>
+            </td>
+
         </tr>
         @endforeach
 
