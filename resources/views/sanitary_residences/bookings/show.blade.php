@@ -242,19 +242,6 @@
 
 <hr>
 
-@if ($booking->indications <> null)
-    <label class="font-weight-bold">Indicaciones:</label>
-    <p>{{ $booking->indications }}</p>
-    <hr>
-@endif
-
-@if ($booking->observations <> null)
-    <label class="font-weight-bold">Observaciones:</label>
-    <p>{{ $booking->observations }}</p>
-    <hr>
-@endif
-
-
 @include('sanitary_residences.vital_signs.partials.index', compact('booking'))
 
 <hr>
