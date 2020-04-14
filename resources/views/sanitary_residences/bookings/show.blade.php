@@ -56,13 +56,13 @@
 <hr>
 
 @if ($booking->indications <> null)
-    <label for="for_indications">Indicaciones</label>
+    <label class="font-weight-bold">Indicaciones:</label>
     <p>{{ $booking->indications }}</p>
     <hr>
 @endif
 
 @if ($booking->observations <> null)
-    <label for="for_observations">Observaciones</label>
+    <label class="font-weight-bold">Observaciones:</label>
     <p>{{ $booking->observations }}</p>
     <hr>
 @endif
