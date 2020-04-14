@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\SanitaryResidence\VitalSign;
 use App\SanitaryResidence\Booking;
 use Illuminate\Http\Request;
+use App\Log;
 
 class VitalSignController extends Controller
 {
@@ -41,11 +42,22 @@ class VitalSignController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $vitalsign = new VitalSign($request->All());
-        $vitalsign->patient_id = $vitalsign->booking->patient->id;
-        $vitalsign->user_id = auth()->user()->id;
-        $vitalsign->save();
+        if($request->vitalsign_id == null){
+          $vitalsign = new VitalSign($request->All());
+          $vitalsign->patient_id = $vitalsign->booking->patient->id;
+          $vitalsign->user_id = auth()->user()->id;
+          $vitalsign->save();
+          session()->flash('success', 'Se guardó la información.');
+        }else{
+          $vitalsign = VitalSign::where('id',$request->vitalsign_id)->first();
+          $vitalsign->fill($request->All());
+          $vitalsign->save();
+          session()->flash('success', 'Se modificó la información.');
+        }
+
+        $logPatient = new Log();
+        $logPatient->old = clone $vitalsign;
+
         return redirect()->back();
     }
 

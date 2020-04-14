@@ -5,6 +5,7 @@
     @method('POST')
 
     <input type="hidden" name="booking_id" value="{{ $booking->id }}">
+    <input type="hidden" name="vitalsign_id" id="for_id">
 
     <div class="form-row">
         <fieldset class="form-group col-4 col-md-1">
@@ -40,6 +41,11 @@
         <fieldset class="form-group col-4 col-md-1">
             <label for="for_pain_scale">Escala Dolor</label>
             <input type="text" class="form-control" name="pain_scale" id="for_pain_scale"  autocomplete="off">
+        </fieldset>
+
+        <fieldset class="form-group col-4 col-md-2">
+            <label for="for_observations">Observaciones</label>
+            <input type="text" class="form-control" name="observations" id="for_observations2"  autocomplete="off">
         </fieldset>
     </div>
 
