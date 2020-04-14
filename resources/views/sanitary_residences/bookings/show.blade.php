@@ -206,13 +206,13 @@
       $("#btn_{{$vitalSigns->id}}").click(function(){
 
           $('#for_id').val({{$vitalSigns->id}});
-          $('#for_temperature').val({{$vitalSigns->temperature}});
-          $('#for_heart_rate').val({{$vitalSigns->heart_rate}});
+          $('#for_temperature').val("{{$vitalSigns->temperature}}");
+          $('#for_heart_rate').val("{{$vitalSigns->heart_rate}}");
           $('#for_blood_pressure').val("{{$vitalSigns->blood_pressure}}");
-          $('#for_respiratory_rate').val({{$vitalSigns->respiratory_rate}});
-          $('#for_oxygen_saturation').val({{$vitalSigns->oxygen_saturation}});
-          $('#for_hgt').val({{$vitalSigns->hgt}});
-          $('#for_pain_scale').val({{$vitalSigns->pain_scale}});
+          $('#for_respiratory_rate').val("{{$vitalSigns->respiratory_rate}}");
+          $('#for_oxygen_saturation').val("{{$vitalSigns->oxygen_saturation}}");
+          $('#for_hgt').val("{{$vitalSigns->hgt}}");
+          $('#for_pain_scale').val("{{$vitalSigns->pain_scale}}");
           $('#for_observations2').val("{{$vitalSigns->observations}}");
 
       });
