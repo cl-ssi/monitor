@@ -33,7 +33,7 @@
         </tr>
     </thead>
     <tbody id="tablePatients">
-        <td class="text-center">{{ $booking->patient->identifier }}</td>
+        <td nowrap class="text-center">{{ $booking->patient->identifier }}</td>
         <td>{{ $booking->patient->genderEsp }}</td>
         <td nowrap>{{ ($booking->patient->birthday)? $booking->patient->birthday->format('d-m-Y'):'' }}</td>
         <td class="small">
@@ -46,9 +46,9 @@
             {{ ($booking->patient->demographic)?$booking->patient->demographic->email:'' }}
         </td>
         <td>{{ $booking->patient->suspectCases->first()->origin }}</td>
-        <td>{{ ($booking->patient->suspectCases->first()->sample_at)? $booking->patient->suspectCases->first()->sample_at->format('d-m-Y'):''  }}</td>
+        <td nowrap>{{ ($booking->patient->suspectCases->first()->sample_at)? $booking->patient->suspectCases->first()->sample_at->format('d-m-Y'):''  }}</td>
         <td>{{ $booking->patient->suspectCases->first()->covid19 }}</td>
-        <td>{{ ($booking->patient->suspectCases->first()->pscr_sars_cov_2_at)? $booking->patient->suspectCases->first()->pscr_sars_cov_2_at->format('d-m-Y'):''  }}</td>
+        <td nowrap>{{ ($booking->patient->suspectCases->first()->pscr_sars_cov_2_at)? $booking->patient->suspectCases->first()->pscr_sars_cov_2_at->format('d-m-Y'):''  }}</td>
 
     </tbody>
 </table>
