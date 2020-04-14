@@ -45,22 +45,22 @@
 
 
     <div class="form-row">
-        <fieldset class="form-group col-4 col-md-3">
+        <fieldset class="form-group col-12 col-md-3">
             <label for="for_responsible_family_member">Familiar Responsable</label>
             <input type="text" class="form-control" name="responsible_family_member" id="for_responsible_family_member" autocomplete="off">
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-3">
+        <fieldset class="form-group col-12 col-md-3">
             <label for="for_relationship">Parentesco</label>
             <input type="text" class="form-control" name="relationship" id="for_relationship">
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-3">
+        <fieldset class="form-group col-12 col-md-3">
             <label for="for_doctor">Doctor</label>
             <input type="text" class="form-control" name="doctor" id="for_doctor">
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-3">
+        <fieldset class="form-group col-12 col-md-3">
             <label for="for_diagnostic">Diagnostico</label>
             <input type="text" class="form-control" name="diagnostic" id="for_diagnostic">
         </fieldset>
@@ -68,17 +68,17 @@
     </div>
 
     <div class="form-row">
-        <fieldset class="form-group col-4 col-md-3">
+        <fieldset class="form-group col-6 col-md-3">
             <label for="for_entry_criteria">Criterio de Ingreso</label>
             <input type="text" class="form-control" name="entry_criteria" id="for_entry_criteria">
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-3">
+        <fieldset class="form-group col-6 col-md-3">
             <label for="for_prevision">Previsión</label>
             <input type="text" class="form-control" name="prevision" id="for_prevision" >
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-3">
+        <fieldset class="form-group col-6 col-md-3">
             <label for="for_length_of_stay">Tiempo de Estadía (Días)</label>
             <input type="number" class="form-control" name="length_of_stay" id="for_length_of_stay">
         </fieldset>
@@ -91,22 +91,22 @@
 
 
     <div class="form-row">
-        <fieldset class="form-group col-4 col-md-3">
+        <fieldset class="form-group col-6 col-md-3">
             <label for="for_onset_on_symptoms">Fecha de Inicio de Sintomas</label>
             <input type="date" class="form-control" name="onset_on_symptoms" id="for_onset_on_symptoms">
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-3">
+        <fieldset class="form-group col-6 col-md-3">
             <label for="for_end_of_symptoms">Fecha de Termino de Sintomas</label>
             <input type="date" class="form-control" name="end_of_symptoms" id="for_end_of_symptoms" >
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-3">
+        <fieldset class="form-group col-12 col-md-3">
             <label for="for_allergies">Alergias</label>
             <input type="text" class="form-control" name="allergies" id="for_allergies" autocomplete="off">
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-3">
+        <fieldset class="form-group col-12 col-md-3">
             <label for="for_commonly_used_drugs">Farmacos de Uso Común</label>
             <input type="text" class="form-control" name="commonly_used_drugs" id="for_commonly_used_drugs" autocomplete="off">
         </fieldset>
