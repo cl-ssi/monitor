@@ -8,10 +8,9 @@
 
 
 <div class="row">
-    <div class="col-12 col-md-4 font-weight-bold p-2">
+    <div class="col-12 col-md-12 font-weight-bold p-2">
         <h4>{{ $booking->patient->fullName }}</h4>
     </div>
-
 </div>
 
 <div class="row">
@@ -19,7 +18,7 @@
         <strong>Residencia: </strong>{{ $booking->room->residence->name }}
     </div>
 
-    <div class="col-12 col-md-3 p-2">
+    <div class="col-12 col-md-2 p-2">
         <strong>Habitacion: </strong>{{ $booking->room->number }}
     </div>
 
@@ -35,43 +34,22 @@
 
 <div class="row">
 
-    <div class="border col-6 col-md-4 p-2">
+    <div class="col-6 col-md-3 p-2">
         <strong>Run o (ID): </strong>
         {{ $booking->patient->identifier }}
     </div>
 
-    <div class="border col-6 col-md-4 p-2">
+    <div class="col-6 col-md-2 p-2">
         <strong>Genero: </strong>
         {{ $booking->patient->genderEsp }}
     </div>
 
-    <div class="border col-12 col-md-4 p-2">
+    <div class="col-12 col-md-3 p-2">
         <strong>Fecha Nac.: </strong>
         {{ ($booking->patient->birthday)? $booking->patient->birthday->format('d-m-Y'):'' }}
     </div>
 
-</div>
-
-<div class="row">
-
-    <div class="border col-12 col-md-8 p-2">
-        <strong>Dirección: </strong>
-        {{ ($booking->patient->demographic)?$booking->patient->demographic->address:'' }}
-        {{ ($booking->patient->demographic)?$booking->patient->demographic->number:'' }}
-        {{ ($booking->patient->demographic)?$booking->patient->demographic->commune:'' }}
-    </div>
-
-    <div class="border col-12 col-md-4 p-2">
-        <strong>Teléfono: </strong>
-        {{ ($booking->patient->demographic)?$booking->patient->demographic->telephone:'' }}
-    </div>
-
-    <div class="border col-12 col-md-8 p-2">
-        <strong>Email: </strong>
-        {{ ($booking->patient->demographic)?$booking->patient->demographic->email:'' }}
-    </div>
-
-    <div class="border col-12 col-md-4 p-2">
+    <div class="col-12 col-md-4 p-2">
         <strong>Procedencia: </strong>
         {{ $booking->patient->suspectCases->last()->origin }}
     </div>
@@ -80,17 +58,42 @@
 
 <div class="row">
 
-    <div class="border col-6 col-md-4 p-2">
+    <div class="col-12 col-md-12 p-2">
+        <strong>Dirección: </strong>
+        {{ ($booking->patient->demographic)?$booking->patient->demographic->address:'' }}
+        {{ ($booking->patient->demographic)?$booking->patient->demographic->number:'' }}
+        {{ ($booking->patient->demographic)?$booking->patient->demographic->commune:'' }}
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-12 col-md-3 p-2">
+        <strong>Teléfono: </strong>
+        {{ ($booking->patient->demographic)?$booking->patient->demographic->telephone:'' }}
+    </div>
+
+    <div class="col-12 col-md-8 p-2">
+        <strong>Email: </strong>
+        {{ ($booking->patient->demographic)?$booking->patient->demographic->email:'' }}
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-6 col-md-3 p-2">
         <strong>Fecha Muestra: </strong>
         {{ ($booking->patient->suspectCases->last()->sample_at)? $booking->patient->suspectCases->last()->sample_at->format('d-m-Y'):''  }}
     </div>
 
-    <div class="border col-6 col-md-4 p-2">
+    <div class="col-6 col-md-5 p-2">
         <strong>Fecha Resultado: </strong>
         {{ ($booking->patient->suspectCases->last()->pscr_sars_cov_2_at)? $booking->patient->suspectCases->last()->pscr_sars_cov_2_at->format('d-m-Y'):''  }}
     </div>
 
-    <div class="border col-12 col-md-4 p-2">
+    <div class="col-12 col-md-4 p-2">
         <strong>Resultado: </strong>
         {{ $booking->patient->suspectCases->last()->covid19 }}
     </div>
