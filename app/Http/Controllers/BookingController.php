@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\SanitaryResidence\Booking;
 use App\SanitaryResidence\Room;
 use App\Patient;
+use App\SuspectCase;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
@@ -18,7 +19,7 @@ class BookingController extends Controller
     {
         $rooms = Room::All();
         $bookings = Booking::all();
-        return view('sanitary_residences.bookings.index', compact('bookings','rooms'));
+        return view('sanitary_residences.bookings.index', compact('bookings', 'rooms'));
     }
 
     /**
@@ -31,9 +32,7 @@ class BookingController extends Controller
         //
         $patients = Patient::orderBy('name')->get();
         $rooms = Room::All();
-        return view('sanitary_residences.bookings.create', compact('patients','rooms'));
-
-
+        return view('sanitary_residences.bookings.create', compact('patients', 'rooms'));
     }
 
     /**
@@ -46,7 +45,9 @@ class BookingController extends Controller
     {
         //
         $booking = new Booking($request->All());
-        $booking->save();
+        $booking->patient->suspectCases->last()->status = 'Residencia Sanitaria';
+        $booking->patient->suspectCases->last()->save();
+        $booking->save();        
 
         return redirect()->route('sanitary_residences.bookings.index');
     }
