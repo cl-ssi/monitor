@@ -56,27 +56,23 @@
 <hr>
 
 @if ($booking->indications <> null)
-
     <label for="for_indications">Indicaciones</label>
-    <p readonly class="form-control" id="for_indications" rows="3" name="indications">{{ $booking->indications }}</p>
+    <p>{{ $booking->indications }}</p>
     <hr>
-    @endif
+@endif
 
-    @if ($booking->observations <> null)
-        <label for="for_observations">Observaciones</label>
-        <p readonly class="form-control" rows="3" name="observations" id="for_observations">{{ $booking->observations }}</p>
-        <hr>
-    @endif
-
-
-
-    @include('sanitary_residences.vital_signs.partials.index', compact('booking'))
-
-
-
+@if ($booking->observations <> null)
+    <label for="for_observations">Observaciones</label>
+    <p>{{ $booking->observations }}</p>
     <hr>
+@endif
 
-    @include('sanitary_residences.vital_signs.partials.create', compact('booking'))
+
+@include('sanitary_residences.vital_signs.partials.index', compact('booking'))
+
+<hr>
+
+@include('sanitary_residences.vital_signs.partials.create', compact('booking'))
 
 @endsection
 
