@@ -208,6 +208,7 @@
                 <option value="Alta" {{ ($suspectCase->status == 'Alta')?'selected':'' }}>Alta</option>
                 <option value="Fallecido" {{ ($suspectCase->status == 'Fallecido')?'selected':'' }}>Fallecido</option>
                 <option value="Ambulatorio" {{ ($suspectCase->status == 'Ambulatorio')?'selected':'' }}>Ambulatorio (domiciliario)</option>
+                <option value="Residencia Sanitaria" {{ ($suspectCase->status == 'Residencia Sanitaria')?'selected':'' }}>Residencia Sanitaria</option>
             </select>
         </fieldset>
 

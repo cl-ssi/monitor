@@ -231,6 +231,7 @@
                 <option value="Alta">Alta</option>
                 <option value="Fallecido">Fallecido</option>
                 <option value="Ambulatorio">Ambulatorio (domiciliario)</option>
+                <option value="Residencia Sanitaria">Residencia Sanitaria</option>
             </select>
         </fieldset>
 
