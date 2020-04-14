@@ -17,10 +17,34 @@ class CreateBookingsTable extends Migration
             $table->id();
             $table->datetime('from')->nullable();
             $table->datetime('to')->nullable();
+            $table->datetime('real_to')->nullable();
             $table->text('indications')->nullable();
             $table->text('observations')->nullable();
+
+            // criterio de ingreso, prevision, familiar responzable, parentesco,
+            // médico derivador, diagnostivo, antecedentes mórbidos,
+            // indicaion tiempo estadía en residencia
+            // fecha inicio sintomas, fecha termino sintomas
+            // alergias, farmacos de uso comun
+
+            $table->string('entry_criteria')->nullable();
+            $table->string('prevision')->nullable();
+            $table->string('responsible_family_member')->nullable();
+            $table->string('relationship')->nullable();
+            $table->string('doctor')->nullable();
+            $table->string('diagnostic')->nullable();
+            $table->text('morbid_history')->nullable();
+            $table->integer('length_of_stay')->nullable();
+            $table->date('onset_on_symptoms')->nullable();
+            $table->date('end_of_symptoms')->nullable();
+            $table->string('allergies')->nullable();
+            $table->string('commonly_used_drugs')->nullable();
+
+            $table->string('status')->nullable(); /* Fallecido, Alta, Hospitalizado, Fugado */
+
             $table->unsignedBigInteger('patient_id');
             $table->unsignedBigInteger('room_id');
+
             $table->timestamps();
             $table->softDeletes();
 

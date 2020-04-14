@@ -9,7 +9,7 @@
     @can('SanitaryResidence: admin')
     <li class="nav-item">
         <a class="nav-link" href="{{ route('sanitary_residences.residences.index') }}">
-            <i class="fas fa-inbox"></i> Residencees
+            <i class="fas fa-inbox"></i> Residencias
         </a>
     </li>
 
