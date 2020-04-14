@@ -21,14 +21,20 @@
         <div class="row mt-3">
     @endif
 
-    <div class="border text-center" style="width: 150px; height: 150px;">
+    <div class="border text-center small" style="width: 150px; height: 150px;">
         Habitación {{ $room->number }}
         <hr>
 
         @if($room->bookings->first())
-        <a href="{{ route('sanitary_residences.bookings.show',$room->bookings->first()->id) }}">
-            {{ $room->bookings->first()->patient->fullName }}
-        </a>
+        
+            @foreach($room->bookings as $booking)
+            <li>
+                <a href="{{ route('sanitary_residences.bookings.show',$booking) }}">
+                {{ $booking->patient->fullName }}
+                </a>
+                </li>
+            @endforeach
+        
         @endif
 
     </div>
