@@ -62,7 +62,7 @@
 
         <fieldset class="form-group col-4 col-md-3">
             <label for="for_diagnostic">Diagnostico</label>
-            <input type="text" class="form-control" name="diagnostic" id="for_diagnostic" autocomplete="off">
+            <input type="text" class="form-control" name="diagnostic" id="for_diagnostic">
         </fieldset>
 
     </div>
