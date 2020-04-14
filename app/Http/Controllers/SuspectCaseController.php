@@ -178,6 +178,41 @@ class SuspectCaseController extends Controller
     public function report()
     {
         $cases = SuspectCase::All();
+        $cases = $cases->whereNotIn('patient.demographic.region',
+                        ['Arica y Parinacota',
+                           'Antofagasta',
+                           'Atacama',
+                           'Coquimbo',
+                           'Valparaíso',
+                           'Región del Libertador Gral. Bernardo O’Higgins',
+                           'Región del Maule',
+                           'Región del Ñuble',
+                           'Región del Biobío',
+                           'Región de la Araucanía',
+                           'Región de Los Ríos',
+                           'Región de Los Lagos',
+                           'Región Aisén del Gral. Carlos Ibáñez del Campo',
+                           'Región de Magallanes y de la Antártica Chilena',
+                           'Región Metropolitana de Santiago']);
+                              // /->orWhereNull('patient.demographic.region')
+        $cases_other_region = SuspectCase::All();
+        $cases_other_region = $cases_other_region->whereIn('patient.demographic.region',
+                        ['Arica y Parinacota',
+                           'Antofagasta',
+                           'Atacama',
+                           'Coquimbo',
+                           'Valparaíso',
+                           'Región del Libertador Gral. Bernardo O’Higgins',
+                           'Región del Maule',
+                           'Región del Ñuble',
+                           'Región del Biobío',
+                           'Región de la Araucanía',
+                           'Región de Los Ríos',
+                           'Región de Los Lagos',
+                           'Región Aisén del Gral. Carlos Ibáñez del Campo',
+                           'Región de Magallanes y de la Antártica Chilena',
+                           'Región Metropolitana de Santiago']);
+
         $totales_dia = DB::table('suspect_cases')
             ->select('sample_at', DB::raw('count(*) as total'))
             ->where('pscr_sars_cov_2', 'positive')
@@ -206,7 +241,7 @@ class SuspectCaseController extends Controller
         // echo '<pre>';
         // print_r($evo);
         // die();
-        return view('lab.suspect_cases.report', compact('cases', 'evolucion'));
+        return view('lab.suspect_cases.report', compact('cases', 'cases_other_region', 'evolucion'));
     }
 
     public function download(File $file)
