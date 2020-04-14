@@ -21,7 +21,7 @@
     <table class="table table-sm">
         <thead>
             <tr>
-                <th>Run o (ID)</th>                
+                <th>Run o (ID)</th>
                 <th>Genero</th>
                 <th>Fecha Nac.</th>
                 <th>Dirección/Comuna</th>
@@ -33,10 +33,10 @@
             </tr>
         </thead>
         <tbody id="tablePatients">
-        <td class="text-center">{{ $booking->patient->identifier }}</td>
-        <td>{{ $booking->patient->genderEsp }}</td>
-        <td nowrap>{{ $booking->patient->birthday }}</td>
-        <td class="small">
+            <td class="text-center">{{ $booking->patient->identifier }}</td>
+            <td>{{ $booking->patient->genderEsp }}</td>
+            <td nowrap>{{ ($booking->patient->birthday)? $booking->patient->birthday->format('d-m-Y'):'' }}</td>
+            <td class="small">
                 {{ ($booking->patient->demographic)?$booking->patient->demographic->address:'' }}
                 {{ ($booking->patient->demographic)?$booking->patient->demographic->number:'' }}<br>
                 {{ ($booking->patient->demographic)?$booking->patient->demographic->commune:'' }}
@@ -46,9 +46,9 @@
                 {{ ($booking->patient->demographic)?$booking->patient->demographic->email:'' }}
             </td>
             <td>{{ $booking->patient->suspectCases->first()->origin }}</td>
-            <td>{{ ($booking->patient->suspectCases->first()->sample_at->format('d-m-Y') ) }}</td>
+            <td>{{ ($booking->patient->suspectCases->first()->sample_at)? $booking->patient->suspectCases->first()->sample_at->format('d-m-Y'):''  }}</td>
             <td>{{ $booking->patient->suspectCases->first()->covid19 }}</td>
-            <td>{{ $booking->patient->suspectCases->first()->pscr_sars_cov_2_at }}</td>
+            <td>{{ ($booking->patient->suspectCases->first()->pscr_sars_cov_2_at)? $booking->patient->suspectCases->first()->pscr_sars_cov_2_at->format('d-m-Y'):''  }}</td>
 
         </tbody>
     </table>
@@ -66,25 +66,20 @@
         <label for="for_observations">Observaciones</label>
         <p readonly class="form-control" rows="3" name="observations" id="for_observations">{{ $booking->observations }}</p>
         <hr>
-        @endif
+    @endif
 
 
 
+    @include('sanitary_residences.vital_signs.partials.index', compact('booking'))
 
 
 
+    <hr>
 
+    @include('sanitary_residences.vital_signs.partials.create', compact('booking'))
 
+@endsection
 
+@section('custom_js')
 
-        @include('sanitary_residences.vital_signs.partials.create', compact('booking'))
-
-        <hr>
-
-        @include('sanitary_residences.vital_signs.partials.index', compact('booking'))
-
-        @endsection
-
-        @section('custom_js')
-
-        @endsection
+@endsection
