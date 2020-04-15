@@ -5,7 +5,7 @@
     @method('POST')
 
     <input type="hidden" name="booking_id" value="{{ $booking->id }}">
-    <input type="hidden" name="evolution_id" id="for_id">
+    <input type="hidden" name="evolution_id" id="evolution_id">
 
     <div class="form-row">
 
@@ -13,7 +13,7 @@
         
         <fieldset class="form-group col-8 col-md-3">
             <label for="for_created_at">Fecha y Hora Chequeo</label>
-            <input type="datetime-local" class="form-control" name="created_at" id="for_created_at" required>
+            <input type="datetime-local" class="form-control" name="created_at" id="for_evolution_created_at" required>
         </fieldset>
         
         <fieldset class="form-group col-12">
