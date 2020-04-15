@@ -8,6 +8,12 @@
     <input type="hidden" name="evolution_id" id="for_id">
 
     <div class="form-row">
+
+        <fieldset class="form-group col-4 col-md-3">
+            <label for="for_created_at">Fecha y Hora Chequeo</label>
+            <input type="datetime-local" class="form-control" name="created_at" id="for_created_at" required>
+        </fieldset>
+        
         <fieldset class="form-group col-12">
             <label for="for_content">Evolución</label>
             <textarea class="form-control" id="for_content" rows="2" name="content"></textarea>

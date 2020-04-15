@@ -11,7 +11,8 @@ class Evolution extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'content', 'user_id', 'booking_id', 'patient_id'
+        'content', 'user_id', 'booking_id', 'patient_id',
+        'created_at'
     ];
 
     public function user()
