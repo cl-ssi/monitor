@@ -9,7 +9,7 @@
 
     <div class="form-row">
         
-        <fieldset class="form-group col-4 col-md-3">
+        <fieldset class="form-group col-12 col-md-3">
             <label for="for_created_at">Fecha y Hora Chequeo</label>
             <input type="datetime-local" class="form-control" name="created_at" id="for_created_at" required>
         </fieldset>
