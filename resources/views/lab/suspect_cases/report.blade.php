@@ -7,28 +7,55 @@
 
 <div class="row">
     <div class="col-12 col-sm-4">
+
         <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td></td>
+            <thead>
+                <tr class="table-active">
+                    <td>Enviados a análisis</td>
                     <td>Total</td>
                     <td>Hom</td>
                     <td>Muj</td>
                 </tr>
-
+            </thead>
+            <tbody>
                 <tr>
-                    <th class="table-active">Enviados a análisis</th>
-                    <th class="table-active text-center">
+                    <td>Tarapacá</td>
+                    <td class="text-center">
                         {{ $cases->count() }}
-                    </th>
-                    <th class="table-active text-center">
+                    </td>
+                    <td class="text-center">
                         {{ $cases->where('patient.gender','male')->count() }}
-                    </th>
-                    <th class="table-active text-center">
+                    </td>
+                    <td class="text-center">
                         {{ $cases->where('patient.gender','female')->count() }}
-                    </th>
+                    </td>
                 </tr>
 
+                <tr>
+                    <td class="">Otras Regiones</td>
+                    <td class="text-center">
+                        {{ $cases_other_region->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases_other_region->where('patient.gender','male')->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases_other_region->where('patient.gender','female')->count() }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-sm table-bordered">
+            <thead>
+                <tr class="table-active">
+                    <td>Tarapacá</td>
+                    <td>Total</td>
+                    <td>Hom</td>
+                    <td>Muj</td>
+                </tr>
+            </thead>
+            <tbody>
                 <tr>
                     <td>Positivos</td>
                     <th class="text-danger text-center">
