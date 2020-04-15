@@ -351,4 +351,14 @@ class SuspectCaseController extends Controller
 
         return view('lab.suspect_cases.reports.case_chart', compact('suspectCases', 'data', 'from', 'to'));
     }
+
+    public function file_report(Request $request)
+    {
+      $from = Carbon::now()->subDays(2);
+      $to = Carbon::now();
+      //dd($from, $to);
+      $files = File::whereBetween('created_at', [$from, $to])->get();
+
+      return view('lab.suspect_cases.reports.file_report', compact('files'));
+    }
 }
