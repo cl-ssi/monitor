@@ -11,10 +11,10 @@
         <table class="table table-sm table-bordered">
             <thead>
                 <tr class="table-active">
-                    <td>Enviados a análisis</td>
-                    <td>Total</td>
-                    <td>Hom</td>
-                    <td>Muj</td>
+                    <th>Enviados a análisis</th>
+                    <th>Total</th>
+                    <th>Hom</th>
+                    <th>Muj</th>
                 </tr>
             </thead>
             <tbody>
@@ -49,10 +49,10 @@
         <table class="table table-sm table-bordered">
             <thead>
                 <tr class="table-active">
-                    <td>Tarapacá</td>
-                    <td>Total</td>
-                    <td>Hom</td>
-                    <td>Muj</td>
+                    <th>Tarapacá</th>
+                    <th>Total</th>
+                    <th>Hom</th>
+                    <th>Muj</th>
                 </tr>
             </thead>
             <tbody>
