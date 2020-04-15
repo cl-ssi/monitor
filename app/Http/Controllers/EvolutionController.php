@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\SanitaryResidence\Evolution;;
+use App\SanitaryResidence\Evolution;
+use App\Log;
+
 use Illuminate\Http\Request;
 
 class EvolutionController extends Controller
@@ -37,15 +39,23 @@ class EvolutionController extends Controller
     public function store(Request $request)
     {
         //
-        if($request->evolution_id == null){
+        if ($request->evolution_id == null) {
             $evolution = new Evolution($request->All());
             $evolution->patient_id = $evolution->booking->patient->id;
             $evolution->user_id = auth()->user()->id;
             $evolution->save();
             session()->flash('success', 'Se guardó la información.');
-          }
+        } else {
+            $evolution = Evolution::find($request->evolution_id);
+            $evolution->fill($request->All());
+            $evolution->save();
+            session()->flash('success', 'Se modificó la información.');
+        }
 
-          return redirect()->back();
+        $logPatient = new Log();
+        $logPatient->old = clone $evolution;
+
+        return redirect()->back();
     }
 
     /**
