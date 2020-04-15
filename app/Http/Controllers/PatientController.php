@@ -140,9 +140,13 @@ class PatientController extends Controller
         $data = array();
         foreach ($suspectCases as $key => $case) {
           if ($case->pscr_sars_cov_2 == 'positive' || $case->pscr_sars_cov_2 == 'pending') {
-            if ($case->patient->demographic != null) {
-              $data[$case->patient->demographic->address . " " . $case->patient->demographic->number . ", " . $case->patient->demographic->commune][$case->patient->run]['paciente']=$case;
-            }
+              // FIX , pendiente ver que pasó que hay un caso sin paciente asociado
+              if($case->patient) {
+                  if ($case->patient->demographic != null) {
+                    $data[$case->patient->demographic->address . " " . $case->patient->demographic->number . ", " . $case->patient->demographic->commune][$case->patient->run]['paciente']=$case;
+                  }
+              }
+
           }
         }
         //dd($data);
