@@ -41,7 +41,7 @@
             <td class="text-center">{{ $patient->identifier }}</td>
             <td>{{ $patient->fullName }}</td>
             <td>{{ $patient->genderEsp }}</td>
-            <td nowrap>{{ $patient->birthday }}</td>
+            <td nowrap>{{ ($patient->birthday)?$patient->birthday->format('d-m-Y'):'' }}</td>
             <td class="small">
                 {{ ($patient->demographic)?$patient->demographic->address:'' }}
                 {{ ($patient->demographic)?$patient->demographic->number:'' }}<br>

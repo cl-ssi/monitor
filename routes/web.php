@@ -128,4 +128,14 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
     });
 
 
+    Route::prefix('evolutions')->name('evolutions.')->group(function () {
+        Route::get('/', 'EvolutionController@index')->name('index');
+        Route::get('/create', 'EvolutionController@create')->name('create');
+        Route::post('/', 'EvolutionController@store')->name('store');
+        // Route::get('/{room}/edit', 'RoomController@edit')->name('edit');
+        // Route::put('/{room}', 'RoomController@update')->name('update');
+        // Route::delete('/{room}', 'RoomController@destroy')->name('destroy');
+    });
+
+
 });

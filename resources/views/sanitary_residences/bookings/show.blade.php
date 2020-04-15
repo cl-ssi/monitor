@@ -250,6 +250,11 @@
 
 @include('sanitary_residences.vital_signs.partials.create', compact('booking'))
 
+<hr>
+@include('sanitary_residences.evolutions.partials.index', compact('booking'))
+<hr>
+
+@include('sanitary_residences.evolutions.partials.create', compact('booking'))
 @endsection
 
 @section('custom_js')
@@ -260,7 +265,8 @@
     @foreach($booking->vitalSigns as $vitalSigns)
       $("#btn_{{$vitalSigns->id}}").click(function(){
 
-          $('#for_id').val({{$vitalSigns->id}});
+          $('#for_id').val({{$vitalSigns->id}});          
+          $("#for_created_at").val("{{$vitalSigns->created_at->format('Y-m-d')}}"+"T"+"{{$vitalSigns->created_at->format('H:i')}}");
           $('#for_temperature').val("{{$vitalSigns->temperature}}");
           $('#for_heart_rate').val("{{$vitalSigns->heart_rate}}");
           $('#for_blood_pressure').val("{{$vitalSigns->blood_pressure}}");

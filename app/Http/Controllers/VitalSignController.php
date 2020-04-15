@@ -49,7 +49,8 @@ class VitalSignController extends Controller
           $vitalsign->save();
           session()->flash('success', 'Se guardó la información.');
         }else{
-          $vitalsign = VitalSign::where('id',$request->vitalsign_id)->first();
+          //$vitalsign = VitalSign::where('id',$request->vitalsign_id)->first();
+          $vitalsign = VitalSign::find($request->vitalsign_id);
           $vitalsign->fill($request->All());
           $vitalsign->save();
           session()->flash('success', 'Se modificó la información.');
