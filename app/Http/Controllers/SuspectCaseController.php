@@ -360,7 +360,7 @@ class SuspectCaseController extends Controller
       $from = Carbon::now()->subDays(2);
       $to = Carbon::now();
       //dd($from, $to);
-      $files = File::whereBetween('created_at', [$from, $to])->get();
+      $files = File::whereBetween('created_at', [$from, $to])->orderBy('created_at','DESC')->get();
 
       return view('lab.suspect_cases.reports.file_report', compact('files'));
     }
