@@ -278,6 +278,19 @@
 
       });
     @endforeach
+
+
+    @foreach($booking->evolutions as $evolutions)
+      $("#btn_evoluciones_{{$evolutions->id}}").click(function(){        
+          $('#evolution_id').val({{$evolutions->id}});          
+          $("#for_evolution_created_at").val("{{$evolutions->created_at->format('Y-m-d')}}"+"T"+"{{$evolutions->created_at->format('H:i')}}");
+          $('#for_content').val("{{$evolutions->content}}");          
+
+      });
+    @endforeach
+
+
+
   });
   </script>
 
