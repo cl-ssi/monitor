@@ -32,7 +32,7 @@
             @foreach($room->bookings as $booking)
             <li>
                 <a href="{{ route('sanitary_residences.bookings.show',$booking) }}">
-                {{ $booking->patient->fullName }}
+                {{ $booking->patient->fullName }} ({{ $booking->patient->suspectCases->last()->age }} AÑOS)
                 </a>
                 </li>
             @endforeach
