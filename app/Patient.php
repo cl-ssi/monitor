@@ -61,8 +61,8 @@ class Patient extends Model //Authenticatable
 
     function getGenderEspAttribute(){
         switch($this->gender) {
-            case 'male': return 'Hombre'; break;
-            case 'female': return 'Mujer'; break;
+            case 'male': return 'Masculino'; break;
+            case 'female': return 'Femenino'; break;
             case 'other': return 'Otro'; break;
             case 'unknown': return 'Desconocido'; break;
         }
