@@ -360,7 +360,11 @@ class SuspectCaseController extends Controller
       $from = Carbon::now()->subDays(2);
       $to = Carbon::now();
       //dd($from, $to);
-      $files = File::whereBetween('created_at', [$from, $to])->get();
+      $files = File::whereBetween('created_at', [$from, $to])
+                   ->whereHas('suspectCase', function ($query) {
+                        $query->where('pscr_sars_cov_2', 'like', 'positive');
+                    })
+                   ->orderBy('created_at','DESC')->get();
 
       return view('lab.suspect_cases.reports.file_report', compact('files'));
     }
