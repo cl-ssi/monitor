@@ -36,9 +36,30 @@
             <td><a href="{{ route('lab.suspect_cases.download', $file->id) }}"
                     target="_blank" data-toggle="tooltip" data-placement="top"
                     data-original-title="{{ $file->name }}">
-                    {{$file->name}}<i class="fas fa-paperclip"></i>&nbsp
+                    {{-- {{$file->name}} --}}
+                    <i class="fas fa-paperclip"></i>&nbsp
                 </a></td>
         </tr>
+        @endforeach
+        @foreach ($suspectCases as $key => $suspectCase)
+          <tr>
+            <td>
+              @if($suspectCase->patient != null)
+                {{$suspectCase->patient->run}}
+              @endif
+            </td>
+            <td>
+              @if($suspectCase->patient != null)
+                {{ $suspectCase->patient->name }} {{ $suspectCase->patient->fathers_family }} {{ $suspectCase->patient->mothers_family }}
+             @endif
+            </td>
+             <td>{{ $suspectCase->sample_at }}</td>
+             <td>{{ $suspectCase->result_ifd_at }}</td>
+            <td><a href="{{ route('lab.print', $suspectCase) }}"
+                    target="_blank" data-toggle="tooltip" data-placement="top"> <i class="fas fa-paperclip"></i>&nbsp
+                </a>
+            </td>
+          </tr>
         @endforeach
     </tbody>
 </table>
