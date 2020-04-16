@@ -133,13 +133,13 @@
             <tr>
                 <td>
                     <div class="firma">
-                        <img src="images/firma_juan_moreno.png" width="140" alt="Firma tecnólogo">
+                        <img src="images/firma_user_59.png" width="140" alt="Firma Director Técnico">
                     </div>
                 </td>
 
                 <td>
                     <div class="firma">
-                        <!--img src="images/firma.jpg" width="140" alt="Firma tecnólogo"-->
+                        <img src="images/firma_user_{{ $case->validator->id}}.png" width="140" alt="Firma Validador">
                     </div>
                 </td>
 
