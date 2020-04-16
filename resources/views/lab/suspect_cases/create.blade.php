@@ -76,6 +76,11 @@
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
+            <label for="for_sample_type">Tipo de muestra</label>
+            <input type="text" class="form-control" name="sample_type" id="for_sample_type">
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-2">
             <label for="for_origin">Origen</label>
             <select name="origin" id="for_origin" class="form-control">
                 <option value=""></option>
@@ -173,12 +178,6 @@
     <div class="form-row">
 
         <fieldset class="form-group col-6 col-md-2 alert-danger">
-            <label for="for_sent_isp_at">Fecha envío a ISP</label>
-            <input type="date" class="form-control" id="for_sent_isp_at"
-                name="sent_isp_at">
-        </fieldset>
-
-        <fieldset class="form-group col-6 col-md-2 alert-danger">
             <label for="for_pscr_sars_cov_2_at">Fecha Resultado PCR</label>
             <input type="date" class="form-control" id="for_pscr_sars_cov_2_at"
                 name="pscr_sars_cov_2_at">
@@ -192,6 +191,12 @@
                 <option value="negative">Negativo</option>
                 <option value="positive">Positivo</option>
             </select>
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_sent_isp_at">Fecha envío lab externo</label>
+            <input type="date" class="form-control" id="for_sent_isp_at"
+                name="sent_isp_at">
         </fieldset>
 
     </div>

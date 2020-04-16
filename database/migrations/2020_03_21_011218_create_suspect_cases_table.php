@@ -30,6 +30,8 @@ class CreateSuspectCasesTable extends Migration
             $table->datetime('sent_isp_at')->nullable();
             $table->datetime('pscr_sars_cov_2_at')->nullable();
             $table->string('pscr_sars_cov_2')->nullable();
+            $table->string('sample_type')->nullable();
+            $table->unsignedBigInteger('validator_id')->nullable();
 
             $table->unsignedInteger('paho_flu')->nullable();
             $table->unsignedInteger('epivigila')->nullable();
@@ -44,6 +46,7 @@ class CreateSuspectCasesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+            $table->foreign('validator_id')->references('id')->on('users');
             $table->foreign('patient_id')->references('id')->on('patients');
             $table->foreign('laboratory_id')->references('id')->on('laboratories');
         });

@@ -132,6 +132,11 @@ class SuspectCaseController extends Controller
 
         $suspectCase->epidemiological_week = Carbon::createFromDate($suspectCase->sample_at->format('Y-m-d'))->add(1, 'days')->weekOfYear;
 
+        /* Setar el validador */
+        if ($log->old->pscr_sars_cov_2 == 'pending' and $suspectCase->pscr_sars_cov_2 != 'pending') {
+            $suspectCase->validator_id = Auth::id();
+        }
+
         $suspectCase->save();
 
         //guarda archivos
@@ -145,6 +150,7 @@ class SuspectCaseController extends Controller
                 $fileModel->save();
             }
         }
+
 
         if (env('APP_ENV') == 'production') {
             if ($log->old->pscr_sars_cov_2 == 'pending' and $suspectCase->pscr_sars_cov_2 == 'positive') {

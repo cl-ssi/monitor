@@ -19,12 +19,21 @@ class SuspectCase extends Model
     protected $fillable = [
         'sample_at', 'origin', 'age', 'gender', 'result_ifd', 'result_ifd_at',
         'subtype', 'epidemiological_week', 'epivigila', 'pscr_sars_cov_2',
-        'pscr_sars_cov_2_at', 'paho_flu', 'sent_isp_at', 'status',
-        'observation', 'patient_id','gestation_week','gestation','laboratory_id'
+        'pscr_sars_cov_2_at', 'sample_type', 'validator_id', 'sent_isp_at',
+        'paho_flu', 'status', 'observation', 'patient_id','gestation_week',
+        'gestation','laboratory_id'
     ];
 
     public function patient() {
         return $this->belongsTo('App\Patient');
+    }
+
+    public function validator() {
+        return $this->belongsTo('App\User','validator_id');
+    }
+
+    public function laboratory() {
+        return $this->belongsTo('App\Laboratory');
     }
 
     public function logs() {
