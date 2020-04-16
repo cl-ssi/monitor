@@ -111,7 +111,7 @@
             <tbody>
                 <tr>
                     <td>SARS-CoV-2 (COVID-19)</td>
-                    <td>{{ $case->first()->covid19 }}</td>
+                    <td>{{ $case->covid19 }}</td>
                     <td>[ Negativo ]</td>
                     <td>PCR en tiempo real</td>
                 </tr>
