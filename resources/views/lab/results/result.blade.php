@@ -110,7 +110,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>SARS-CoV-2 (COVID-19)</td>
+                    <td>SARS-CoV-2</td>
                     <td>{{ $case->covid19 }}</td>
                     <td>[ Negativo ]</td>
                     <td>PCR en tiempo real</td>
@@ -118,14 +118,14 @@
             </tbody>
         </table>
 
+        <br>
         <p id="tipomuestra">
             Tipo de muestra:<br>
-            - Aspirado Nasofaringeo<br>
-            - Esputo
+            - Tórulas Nasofaringeas<br>
         </p>
 
 
-        <div style="height: 250px;">
+        <div style="height: 270px;">
 
         </div>
 
@@ -133,7 +133,7 @@
             <tr>
                 <td>
                     <div id="firma">
-                        <!--img src="images/firma.jpg" width="140" alt="Firma tecnólogo"-->
+                        <img src="images/firma_juan_moreno.png" width="140" alt="Firma tecnólogo">
                         <br>
                          DR. JUAN MORENO SAAVEDRA<br>
                          DIRECTOR TÉCNICO LABORATORIO
@@ -153,7 +153,7 @@
         </table>
 
 
-        <p id="fecha">Fecha y hora informe: {{ ($case->pscr_sars_cov_2_at)? $case->pscr_sars_cov_2_at->format('d-m-Y H:i'): '' }}</p>
+        <p id="fecha">Fecha y hora informe: {{ ($case->updated_at)? $case->updated_at->format('d-m-Y H:i'): '' }}</p>
     </div>
 </body>
 
