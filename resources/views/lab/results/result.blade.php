@@ -34,7 +34,7 @@
             width: 100%;
         }
 
-        #firma {
+        .firma {
             font-size: 13px;
             width: 100%;
             text-align: center;
@@ -121,34 +121,42 @@
         <br>
         <p id="tipomuestra">
             Tipo de muestra:<br>
-            - Tórulas Nasofaringeas<br>
+            - {{ $case->sample_type }}<br>
         </p>
 
 
-        <div style="height: 270px;">
+        <div style="height: 250px;">
 
         </div>
 
-        <table width="100%" >
+        <table width="100%">
             <tr>
                 <td>
-                    <div id="firma">
+                    <div class="firma">
                         <img src="images/firma_juan_moreno.png" width="140" alt="Firma tecnólogo">
-                        <br>
-                         DR. JUAN MORENO SAAVEDRA<br>
-                         DIRECTOR TÉCNICO LABORATORIO
                     </div>
                 </td>
 
                 <td>
-                    <div id="firma">
+                    <div class="firma">
                         <!--img src="images/firma.jpg" width="140" alt="Firma tecnólogo"-->
-                        <br>
-                        <br>
-                        VALIDADOR
                     </div>
                 </td>
 
+            </tr>
+            <tr>
+                <td class="firma">
+                    DR. JUAN MORENO SAAVEDRA
+                    <br>
+                    DIRECTOR TÉCNICO LABORATORIO
+                </td>
+                <td class="firma">
+                    @if($case->validator)
+                    TM. {{ strtoupper($case->validator->name) }}
+                    @endif
+                    <br>
+                    VALIDADOR
+                </td>
             </tr>
         </table>
 
