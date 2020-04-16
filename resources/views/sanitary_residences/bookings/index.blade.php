@@ -34,6 +34,9 @@
                 <a href="{{ route('sanitary_residences.bookings.show',$booking) }}">
                 {{ $booking->patient->fullName }} ({{ $booking->patient->suspectCases->last()->age }} AÑOS)
                 </a>
+                <a href="{{ route('sanitary_residences.bookings.excel', $booking) }}">
+                <i class="fas fa-file-excel"></i>
+                </a>
                 </li>
             @endforeach
 

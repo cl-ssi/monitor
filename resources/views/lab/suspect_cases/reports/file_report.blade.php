@@ -21,8 +21,16 @@
     <tbody>
         @foreach($files as $file)
         <tr>
-            <td>{{ $file->suspectCase->patient->run }}</td>
-            <td>{{ $file->suspectCase->patient->name }} {{ $file->suspectCase->patient->fathers_family }} {{ $file->suspectCase->patient->mothers_family }}</td>
+           <td>
+             @if($file->suspectCase->patient != null)
+               {{$file->suspectCase->patient->run}}
+             @endif
+           </td>
+           <td>
+             @if($file->suspectCase->patient != null)
+               {{ $file->suspectCase->patient->name }} {{ $file->suspectCase->patient->fathers_family }} {{ $file->suspectCase->patient->mothers_family }}
+            @endif
+           </td>
             <td>{{ $file->suspectCase->sample_at }}</td>
             <td>{{ $file->suspectCase->result_ifd_at }}</td>
             <td><a href="{{ route('lab.suspect_cases.download', $file->id) }}"
