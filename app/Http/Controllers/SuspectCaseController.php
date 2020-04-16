@@ -27,6 +27,9 @@ class SuspectCaseController extends Controller
     public function index()
     {
         $suspectCases = SuspectCase::with('patient')->latest('id')->get();
+        // echo '<pre>';
+        // print_r($suspectCases->toArray());
+        // die();
         return view('lab.suspect_cases.index', compact('suspectCases'));
     }
 
@@ -222,6 +225,7 @@ class SuspectCaseController extends Controller
             ->orderBy('sample_at')
             ->get();
 
+
         $begin = new \DateTime($totales_dia->first()->sample_at);
         $end   = new \DateTime($totales_dia->last()->sample_at);
 
@@ -232,7 +236,6 @@ class SuspectCaseController extends Controller
             list($fecha, $hora) = explode(' ', $dia->sample_at);
             $evolucion[$fecha] = $dia->total;
         }
-
 
         $acumulado = 0;
         foreach ($evolucion as $key => $dia) {
@@ -350,5 +353,19 @@ class SuspectCaseController extends Controller
         }
 
         return view('lab.suspect_cases.reports.case_chart', compact('suspectCases', 'data', 'from', 'to'));
+    }
+
+    public function file_report(Request $request)
+    {
+      $from = Carbon::now()->subDays(2);
+      $to = Carbon::now();
+      //dd($from, $to);
+      $files = File::whereBetween('created_at', [$from, $to])
+                   ->whereHas('suspectCase', function ($query) {
+                        $query->where('pscr_sars_cov_2', 'like', 'positive');
+                    })
+                   ->orderBy('created_at','DESC')->get();
+
+      return view('lab.suspect_cases.reports.file_report', compact('files'));
     }
 }

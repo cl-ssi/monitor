@@ -298,4 +298,16 @@
 
 @section('custom_js')
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+  $(document).ready(function(){
+      $("#forfile").change(function(){
+        @if($suspectCase->files->count() != 0)
+          document.getElementById("forfile").value = "";
+          alert("Solo se permite adjuntar un archivo.");
+        @endif
+      });
+  });
+</script>
+
 @endsection
