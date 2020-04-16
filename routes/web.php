@@ -107,13 +107,14 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
     });
 
     Route::prefix('bookings')->name('bookings.')->group(function () {
+        Route::get('/excel/{booking}','BookingController@excel')->name('excel');
         Route::get('/', 'BookingController@index')->name('index');
         Route::get('/create', 'BookingController@create')->name('create');
         Route::get('/{booking}', 'BookingController@show')->name('show');
         Route::post('/', 'BookingController@store')->name('store');
         Route::get('/{booking}', 'BookingController@show')->name('show');
         // Route::get('/{booking}/edit', 'BookingController@edit')->name('edit');
-        Route::put('/{booking}', 'BookingController@update')->name('update');
+        Route::put('/{booking}', 'BookingController@update')->name('update');        
         // Route::delete('/{booking}', 'BookingController@destroy')->name('destroy');
     });
 

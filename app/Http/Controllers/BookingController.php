@@ -16,6 +16,9 @@ class BookingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    
+
     public function index()
     {
         $rooms = Room::All();
@@ -111,4 +114,13 @@ class BookingController extends Controller
     {
         //
     }
+
+    public function excel(Booking $booking)
+    {
+        
+        return view('sanitary_residences.bookings.excel.excel', compact('booking'));
+    }
+    
+
+
 }
