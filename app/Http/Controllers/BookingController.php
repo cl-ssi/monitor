@@ -17,12 +17,12 @@ class BookingController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    
+
 
     public function index()
     {
         $rooms = Room::All();
-        $bookings = Booking::all();
+        $bookings = Booking::where('status', 'Residencia Sanitaria')->get();
         return view('sanitary_residences.bookings.index', compact('bookings', 'rooms'));
     }
 
@@ -48,11 +48,24 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         //
-        $booking = new Booking($request->All());
-        $booking->patient->suspectCases->last()->status = 'Residencia Sanitaria';
-        $booking->patient->suspectCases->last()->save();
-        $booking->save();
-
+        if ($request->released_cause == null) 
+        {
+            $booking = new Booking($request->All());
+            $booking->status = 'Residencia Sanitaria';
+            $booking->patient->suspectCases->last()->status = 'Residencia Sanitaria';
+            $booking->patient->suspectCases->last()->save();
+            $booking->save();
+            session()->flash('success', 'Booking creado Exitosamente');
+        } 
+        else        
+        {
+          $booking = Booking::find($request->booking_id);          
+          $booking->patient->suspectCases->last()->status = $request->status;
+          $booking->patient->suspectCases->last()->save();
+          $booking->fill($request->All());
+          $booking->save();
+          session()->flash('success', 'Paciente dado de Alta Exitosamente');
+        }
         return redirect()->route('sanitary_residences.bookings.index');
     }
 
@@ -64,9 +77,9 @@ class BookingController extends Controller
      */
     public function show(Booking $booking)
     {
-      $patients = Patient::orderBy('name')->get();
-      $rooms = Room::All();
-      return view('sanitary_residences.bookings.show', compact('booking','patients', 'rooms'));
+        $patients = Patient::orderBy('name')->get();
+        $rooms = Room::All();
+        return view('sanitary_residences.bookings.show', compact('booking', 'patients', 'rooms'));
     }
 
     /**
@@ -101,7 +114,7 @@ class BookingController extends Controller
 
         $patients = Patient::orderBy('name')->get();
         $rooms = Room::All();
-        return view('sanitary_residences.bookings.show', compact('booking','patients', 'rooms'));
+        return view('sanitary_residences.bookings.show', compact('booking', 'patients', 'rooms'));
     }
 
     /**
@@ -117,10 +130,13 @@ class BookingController extends Controller
 
     public function excel(Booking $booking)
     {
-        
+
         return view('sanitary_residences.bookings.excel.excel', compact('booking'));
     }
-    
 
-
+    public function excelall()
+    {
+        $bookings = Booking::all();
+        return view('sanitary_residences.bookings.excel.excelall', compact('bookings'));
+    }
 }

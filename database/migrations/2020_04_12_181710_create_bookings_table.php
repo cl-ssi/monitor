@@ -40,7 +40,8 @@ class CreateBookingsTable extends Migration
             $table->string('allergies')->nullable();
             $table->string('commonly_used_drugs')->nullable();
 
-            $table->string('status')->nullable(); /* Fallecido, Alta, Hospitalizado, Fugado */
+            $table->string('status')->nullable(); 
+            /* Fallecido, Alta, Hospitalizado, Fugado, Residencia */
 
             $table->string('healthcare_centre')->nullable(); //centro de salud
             $table->boolean('influenza_vaccinated')->default(0); //vacunado influenza

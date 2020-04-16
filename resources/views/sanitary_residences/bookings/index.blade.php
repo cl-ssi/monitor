@@ -28,8 +28,9 @@
         <hr>
 
         @if($room->bookings->first())
-
+            
             @foreach($room->bookings as $booking)
+            @if ($booking->status == 'Residencia Sanitaria')
             <li>
                 <a href="{{ route('sanitary_residences.bookings.show',$booking) }}">
                 {{ $booking->patient->fullName }} ({{ $booking->patient->suspectCases->last()->age }} AÑOS)
@@ -38,7 +39,9 @@
                 <i class="fas fa-file-excel"></i>
                 </a>
                 </li>
+            @endif
             @endforeach
+            
 
         @endif
 
@@ -84,4 +87,16 @@
 
 @section('custom_js')
 
+<script type="text/javascript">
+function exportF(elem) {
+    var table = document.getElementById("tabla_booking");
+    var html = table.outerHTML;
+    var html_no_links = html.replace(/<a[^>]*>|<\/a>/g, "");//remove if u want links in your table
+    var url = 'data:application/vnd.ms-excel,' + escape(html_no_links); // Set your html table into url
+    elem.setAttribute("href", url);
+    elem.setAttribute("download", "booking.xls"); // Choose the file name
+    return false;
+}
+
+</script>
 @endsection
