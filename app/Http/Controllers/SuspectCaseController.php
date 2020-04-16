@@ -269,6 +269,7 @@ class SuspectCaseController extends Controller
 
     public function result()
     {
+      dd("");
         if (env('APP_ENV') == 'production') {
             $access_token = session()->get('access_token');
             $url_base = "https://www.claveunica.gob.cl/openid/userinfo/";
@@ -291,6 +292,8 @@ class SuspectCaseController extends Controller
             $user->mothers_family = "mother";
             $user->email = "email@email.com";
         }
+
+        dd($user);
 
         Auth::login($user);
         $patient = Patient::where('run', $user->id)->first();
@@ -372,6 +375,11 @@ class SuspectCaseController extends Controller
                     })
                    ->orderBy('created_at','DESC')->get();
 
-      return view('lab.suspect_cases.reports.file_report', compact('files'));
+      $suspectCases = SuspectCase::whereBetween('created_at', [$from, $to])
+                                 ->where('pscr_sars_cov_2', 'like', 'positive')
+                                 ->where('laboratory_id', 2)
+                                 ->get();
+
+      return view('lab.suspect_cases.reports.file_report', compact('files','suspectCases'));
     }
 }
