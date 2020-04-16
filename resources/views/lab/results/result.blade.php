@@ -152,7 +152,7 @@
                 </td>
                 <td class="firma">
                     @if($case->validator)
-                    TM. {{ strtoupper($case->validator->name) }}
+                    {{ strtoupper($case->validator->name) }}
                     @endif
                     <br>
                     VALIDADOR
