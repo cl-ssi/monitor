@@ -111,7 +111,7 @@
             <tbody>
                 <tr>
                     <td>SARS-CoV-2 (COVID-19)</td>
-                    <td>{{ $case->first()->covid19 }}</td>
+                    <td>{{ $case->covid19 }}</td>
                     <td>[ Negativo ]</td>
                     <td>PCR en tiempo real</td>
                 </tr>
@@ -133,7 +133,7 @@
             <tr>
                 <td>
                     <div id="firma">
-                        <img src="images/firma.jpg" width="140" alt="Firma tecnólogo">
+                        <!--img src="images/firma.jpg" width="140" alt="Firma tecnólogo"-->
                         <br>
                          DR. JUAN MORENO SAAVEDRA<br>
                          DIRECTOR TÉCNICO LABORATORIO
@@ -142,13 +142,13 @@
 
                 <td>
                     <div id="firma">
-                        <img src="images/firma.jpg" width="140" alt="Firma tecnólogo">
+                        <!--img src="images/firma.jpg" width="140" alt="Firma tecnólogo"-->
                         <br>
-                        TM DAVID ORTIZ LEIVA<br>
+                        <br>
                         VALIDADOR
                     </div>
                 </td>
-                
+
             </tr>
         </table>
 
