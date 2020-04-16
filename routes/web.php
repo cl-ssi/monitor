@@ -71,7 +71,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         //Route::get('stat', 'SuspectCaseController@stat')->name('stat');
         // Route::get('case_chart','SuspectCaseController@case_chart')->name('case_chart')->middleware('auth');
         Route::match(['get','post'],'case_chart','SuspectCaseController@case_chart')->middleware('auth')->name('case_chart');
-        Route::match(['get','post'],'file_report','SuspectCaseController@file_report')->middleware('auth')->name('file_report');
+        Route::match(['get','post'],'file_report','SuspectCaseController@file_report')->middleware('auth','can:File_report: viewer')->name('file_report');
         Route::get('download/{file}','SuspectCaseController@download')->name('download')->middleware('auth');
         Route::get('/','SuspectCaseController@index')->name('index')->middleware('auth','can:SuspectCase: list');
         Route::get('/create','SuspectCaseController@create')->name('create')->middleware('auth','can:SuspectCase: create');
