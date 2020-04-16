@@ -16,7 +16,8 @@ class Booking extends Model
         'entry_criteria', 'prevision', 'responsible_family_member', 'relationship', 'doctor', 'diagnostic',
         'morbid_history', 'length_of_stay', 'onset_on_symptoms', 'end_of_symptoms',
         'allergies', 'commonly_used_drugs',
-        'healthcare_centre', 'influenza_vaccinated', 'covid_exit_test', 'released_cause'
+        'healthcare_centre', 'influenza_vaccinated', 'covid_exit_test', 'released_cause',
+        'status', 'real_to'
     ];
 
     protected $dates = [

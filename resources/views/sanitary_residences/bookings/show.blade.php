@@ -255,6 +255,10 @@
 <hr>
 
 @include('sanitary_residences.evolutions.partials.create', compact('booking'))
+<hr>
+
+@include('sanitary_residences.bookings.medical_release.create', compact('booking'))
+
 @endsection
 
 @section('custom_js')
