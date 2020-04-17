@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,20 +28,14 @@
     <style media="screen">
         .navbar-custom {
             background-color:
-            @switch(App::environment())
-                @case('local')
-                    #CE9DD9;
-                    @break
-                @case('testing')
-                    #B5EAD7;
-                    @break
-                @case('production')
-                    #FFFFFF;
-                    @break
-            @endswitch
+                @switch(App::environment()) @case('local') #CE9DD9;
+            @break @case('testing') #B5EAD7;
+            @break @case('production') #FFFFFF;
+            @break @endswitch
         }
     </style>
 </head>
+
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light shadow-sm navbar-custom">
@@ -70,10 +65,21 @@
                         @endcan
 
                         @can('SuspectCase: list')
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="{{ route('lab.suspect_cases.index') }}">
                                 Casos sospechosos
                             </a>
+                        </li> -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Casos Sospecha
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.hetg') }}">Laboratorio HETG</a>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.unap') }}">Laboratorio UNAP</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.index') }}">Todos los Casos</a>
+                            </div>
                         </li>
                         @endcan
 
@@ -117,9 +123,9 @@
 
                         @can('Admin')
                         <li class="nav-item">
-                          <a class="nav-link" href="{{ route('parameters.index') }}">
-                              <i class="fas fa-cog fa-fw"></i> Mantenedores
-                          </a>
+                            <a class="nav-link" href="{{ route('parameters.index') }}">
+                                <i class="fas fa-cog fa-fw"></i> Mantenedores
+                            </a>
                         </li>
                         @endcan
 
@@ -130,30 +136,29 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">Iniciar Sesión</a>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">Iniciar Sesión</a>
+                        </li>
                         @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ Auth::user()->name }} <span class="caret"></span>
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('users.password.show_form') }}">
+                                    Cambiar clave
+                                </a>
+                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                    Cerrar Sesión
                                 </a>
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('users.password.show_form') }}">
-                                        Cambiar clave
-                                    </a>
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        Cerrar Sesión
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
                         @endguest
                     </ul>
                 </div>
@@ -163,12 +168,12 @@
         <main class="py-4 container">
 
             @foreach (['danger', 'warning', 'success', 'info'] as $key)
-                @if(session()->has($key))
-            	    <div class="alert alert-{{ $key }} alert-dismissable">
-            	    	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            	    	{!! session()->get($key) !!}
-            	    </div>
-                @endif
+            @if(session()->has($key))
+            <div class="alert alert-{{ $key }} alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {!! session()->get($key) !!}
+            </div>
+            @endif
             @endforeach
 
 
@@ -180,4 +185,5 @@
     @endauth
     @yield('custom_js')
 </body>
+
 </html>
