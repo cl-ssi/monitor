@@ -28,10 +28,11 @@
     <style media="screen">
         .navbar-custom {
             background-color:
-                @switch(App::environment()) @case('local') #CE9DD9;
-            @break @case('testing') #B5EAD7;
-            @break @case('production') #FFFFFF;
-            @break @endswitch
+                @switch(App::environment())
+                    @case('local') #CE9DD9; @break
+                    @case('testing') #B5EAD7; @break
+                    @case('production') #FFFFFF; @break
+                @endswitch
         }
     </style>
 </head>
@@ -53,12 +54,14 @@
                         @auth
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/home') }}">
+                                <i class="fas fa-home"></i>
                                 Home
                             </a>
                         </li>
                         @can('Patient: list')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('patients.index') }}">
+                                <i class="fas fa-user-injured"></i>
                                 Pacientes
                             </a>
                         </li>
@@ -72,7 +75,8 @@
                         </li> -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Casos Sospecha
+                                <i class="fas fa-vial"></i>
+                                Casos
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.hetg') }}">Laboratorio HETG</a>
@@ -86,6 +90,7 @@
                         @can('Patient: georeferencing')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('patients.georeferencing') }}">
+                                <i class="fas fa-globe-americas"></i>
                                 Georeferenciación
                             </a>
                         </li>
@@ -94,7 +99,8 @@
                         @can('Epp: list')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('epp.index') }}">
-                                Egresos EPP
+                                <i class="fas fa-hard-hat"></i>
+                                EPP
                             </a>
                         </li>
                         @endcan
@@ -102,6 +108,7 @@
                         @can('SanitaryResidence: user')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('sanitary_residences.bookings.index') }}">
+                                <i class="fas fa-hotel"></i>
                                 Residencia Sanitaria
                             </a>
                         </li>
@@ -110,6 +117,7 @@
                         @can('Report')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('lab.suspect_cases.report') }}">
+                                <i class="fas fa-clipboard"></i>
                                 Reporte
                             </a>
                         </li>
@@ -124,7 +132,7 @@
                         @can('Admin')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('parameters.index') }}">
-                                <i class="fas fa-cog fa-fw"></i> Mantenedores
+                                <i class="fas fa-cog fa-fw"></i> Configuración
                             </a>
                         </li>
                         @endcan
