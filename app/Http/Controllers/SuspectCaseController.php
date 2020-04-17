@@ -385,4 +385,15 @@ class SuspectCaseController extends Controller
 
       return view('lab.suspect_cases.reports.file_report', compact('files','suspectCases'));
     }
+
+
+    public function excelunap()
+    {
+        //laboratorio UNAP laboratory_id = 2
+        $cases = SuspectCase::where('laboratory_id',2)->get();
+        //dd($cases);
+        return view('lab.suspect_cases.excel.excelunap', compact('cases'));
+    }
+
+
 }
