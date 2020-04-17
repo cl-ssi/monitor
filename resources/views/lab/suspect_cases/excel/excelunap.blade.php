@@ -34,7 +34,7 @@
             <td nowrap>{{$case->patient->fullName }}</td>
             <td nowrap>{{strtoupper($case->patient->genderEsp)}}</td>
             <td nowrap>{{$case->age }}</td>
-            <td nowrap>SARS-CoV-2</td>
+            <td nowrap>{{($case->sample_type)? $case->sample_type: '' }}</td>
             <td nowrap>{{ $case->covid19 }}</td>
             <td nowrap>{{ $case->sample_at->format('d-m-Y') }}</td>
             <td nowrap>{{ ($case->created_at)? $case->created_at->format('d-m-Y'): '' }}</td>

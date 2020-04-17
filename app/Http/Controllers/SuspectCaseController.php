@@ -390,21 +390,23 @@ class SuspectCaseController extends Controller
     public function excelunap()
     {
         //laboratorio UNAP laboratory_id = 2
-        $cases = SuspectCase::where('laboratory_id',2)->get();        
+        //$cases = SuspectCase::where('laboratory_id',2)->get();
+        $yesterday = date("Y-m-d", strtotime( '-1 days' ) );
+        $cases = SuspectCase::where('laboratory_id',2)->whereDate('pscr_sars_cov_2_at', '>=', $yesterday)->get()->sortByDesc('id');
         return view('lab.suspect_cases.excel.excelunap', compact('cases'));
     }
 
     public function hetg()
     {
         //Hospital Ernesto Torres Galdames laboratory_id = 1
-        $suspectCases = SuspectCase::where('laboratory_id',1)->get();
+        $suspectCases = SuspectCase::where('laboratory_id',1)->get()->sortByDesc('id');
         return view('lab.suspect_cases.hetg', compact('suspectCases'));
     }
 
     public function unap()
     {
         //laboratorio UNAP laboratory_id = 2
-        $suspectCases = SuspectCase::where('laboratory_id',2)->get();
+        $suspectCases = SuspectCase::where('laboratory_id',2)->get()->sortByDesc('id');
         return view('lab.suspect_cases.unap', compact('suspectCases'));
     }
 
