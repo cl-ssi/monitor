@@ -392,7 +392,7 @@ class SuspectCaseController extends Controller
         //laboratorio UNAP laboratory_id = 2
         //$cases = SuspectCase::where('laboratory_id',2)->get();
         $yesterday = date("Y-m-d", strtotime( '-1 days' ) );
-        $cases = SuspectCase::where('laboratory_id',2)->whereDate('pscr_sars_cov_2_at', '>=', $yesterday)->get()->sortByDesc('id');
+        $cases = SuspectCase::where('laboratory_id',2)->whereDate('pscr_sars_cov_2_at', '=', $yesterday)->get()->sortByDesc('id');
         return view('lab.suspect_cases.excel.excelunap', compact('cases'));
     }
 
