@@ -190,6 +190,7 @@
                 <option value="pending">Pendiente</option>
                 <option value="negative">Negativo</option>
                 <option value="positive">Positivo</option>
+                <option value="undetermined">Indeterminado</option>
             </select>
         </fieldset>
 
