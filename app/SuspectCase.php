@@ -49,6 +49,7 @@ class SuspectCase extends Model
             case 'pending': return 'Pendiente'; break;
             case 'positive': return 'Positivo'; break;
             case 'negative': return 'Negativo'; break;
+            case 'undetermined': return 'Indeterminado'; break;
         }
     }
 
