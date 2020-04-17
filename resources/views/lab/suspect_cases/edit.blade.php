@@ -82,8 +82,18 @@
                 value="{{ $suspectCase->age }}">
         </fieldset>
 
+        <fieldset class="form-group col-4 col-md-2">
+            <label for="for_laboratory_id">Laboratorio</label>
+            <select name="laboratory_id" id="for_laboratory_id" class="form-control">
+                <option value="1" {{ ($suspectCase->laboratory_id == 1)?'selected':'' }}>HETG</option>
+                <option value="2" {{ ($suspectCase->laboratory_id == 2)?'selected':'' }}>UNAP</option>
+            </select>
+        </fieldset>
+
+
     </div>
 
+@can('SuspectCase: tecnologo')
     <div class="form-row">
 
         <fieldset class="form-group col-6 col-md-2 alert-warning">
@@ -253,6 +263,7 @@
 
     <div class="form-row">
 
+@endcan
 
     <button type="submit" class="btn btn-primary">Guardar</button>
 
