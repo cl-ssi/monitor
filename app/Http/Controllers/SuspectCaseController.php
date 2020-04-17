@@ -92,8 +92,14 @@ class SuspectCaseController extends Controller
         $log->new = $suspectCase;
         $log->save();
 
+        switch($suspectCase->laboratory_id) {
+            case(1): $ruta = 'lab.suspect_cases.hetg'; break;
+            case(2): $ruta = 'lab.suspect_cases.unap'; break;
+            default: $ruta = 'lab.suspect_cases.index'; break;
+        }
+
         session()->flash('success', 'Se ha creado el caso número: <h3>' . $suspectCase->id . '</h3>');
-        return redirect()->route('lab.suspect_cases.index');
+        return redirect()->route($ruta);
     }
 
     /**
@@ -166,7 +172,13 @@ class SuspectCaseController extends Controller
         $log->new = $suspectCase;
         $log->save();
 
-        return redirect()->route('lab.suspect_cases.index');
+        switch($suspectCase->laboratory_id) {
+            case(1): $ruta = 'lab.suspect_cases.hetg'; break;
+            case(2): $ruta = 'lab.suspect_cases.unap'; break;
+            default: $ruta = 'lab.suspect_cases.index'; break;
+        }
+
+        return redirect()->route($ruta);
     }
 
     /**
@@ -410,6 +422,6 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.unap', compact('suspectCases'));
     }
 
-    
+
 
 }
