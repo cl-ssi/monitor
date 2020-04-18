@@ -68,7 +68,7 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="small">
         @foreach($bookings as $booking)
         <tr>
             <td>{{ $booking->patient->fullName }}</td>
