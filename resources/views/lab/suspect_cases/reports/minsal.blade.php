@@ -19,9 +19,9 @@
         <th nowrap>Fecha de toma de muestra</th>
         <th nowrap>Fecha de recepción de la muestra</th>
         <th nowrap>Fecha de resultado</th>
-        <th nowrap>Hospital o establecimiento de origen (lugar donde se toma la muestra)</th>
+        <th nowrap>Hospital o establecimiento de origen</th>
         <th nowrap>Región de establecimiento de origen</th>
-        <th nowrap>Laboratorio de referencia (lugar donde se procesa la muestra)</th>
+        <th nowrap>Laboratorio de referencia</th>
         <th nowrap>Región de laboratorio donde se procesa la muestra</th>
         <th nowrap>Teléfono de contacto de paciente</th>
         <th nowrap>Correo de contacto de paciente</th>
@@ -41,7 +41,7 @@
             <td nowrap>{{ ($case->pscr_sars_cov_2_at)? $case->pscr_sars_cov_2_at->format('d-m-Y'): '' }}</td>
             <td nowrap>{{strtoupper($case->origin)}}</td>
             <td nowrap>TARAPACÁ</td>
-            <td nowrap>UNAPSSI</td>
+            <td nowrap class="text-uppercase">{{ last(request()->segments()) }}</td>
             <td nowrap>TARAPACÁ</td>
             <td nowrap>{{ ($case->patient->demographic)?$case->patient->demographic->telephone:'' }}</td>
             <td nowrap>{{ ($case->patient->demographic)?$case->patient->demographic->email:'' }}</td>
