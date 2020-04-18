@@ -118,7 +118,7 @@
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-4">
-            <label for="for_room_id">Residence - Habitación</label>
+            <label for="for_room_id">Residencia - Habitación</label>
             <select name="room_id" id="for_room_id" class="form-control">
                 @foreach($rooms as $room)
                 <option value="{{ $room->id }}" {{ ($room->id == $booking->room_id)?'selected':'' }}>{{ $room->residence->name }} - Habitación {{ $room->number }}</option>
@@ -233,7 +233,7 @@
 
         <fieldset class="form-group col-12 col-md-5">
             <label for="for_observations">Observaciones</label>
-            <textarea type="textarea" class="form-control" rows="4" name="observations" id="for_observations">{{$booking->observations}}</textarea>
+            <textarea type="textarea" class="form-control" rows="6" name="observations" id="for_observations">{{$booking->observations}}</textarea>
         </fieldset>
 
     </div>
@@ -269,7 +269,7 @@
     @foreach($booking->vitalSigns as $vitalSigns)
       $("#btn_{{$vitalSigns->id}}").click(function(){
 
-          $('#for_id').val({{$vitalSigns->id}});          
+          $('#for_id').val({{$vitalSigns->id}});
           $("#for_created_at").val("{{$vitalSigns->created_at->format('Y-m-d')}}"+"T"+"{{$vitalSigns->created_at->format('H:i')}}");
           $('#for_temperature').val("{{$vitalSigns->temperature}}");
           $('#for_heart_rate').val("{{$vitalSigns->heart_rate}}");
@@ -285,8 +285,8 @@
 
 
     @foreach($booking->evolutions as $evolutions)
-      $("#btn_evoluciones_{{$evolutions->id}}").click(function(){        
-          $('#evolution_id').val({{$evolutions->id}});          
+      $("#btn_evoluciones_{{$evolutions->id}}").click(function(){
+          $('#evolution_id').val({{$evolutions->id}});
           $("#for_evolution_created_at").val("{{$evolutions->created_at->format('Y-m-d')}}"+"T"+"{{$evolutions->created_at->format('H:i')}}");
           //se reemplaza el enter por espacio
           $('#for_content').val("{{  preg_replace("~[\r\n]+~"," ", ($evolutions->content))  }}");
