@@ -33,12 +33,6 @@
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
-            <label for="for_sample_type">Tipo de muestra</label>
-            <input type="text" class="form-control" name="sample_type"
-                id="for_sample_type" value="{{ $suspectCase->sample_type }}">
-        </fieldset>
-
-        <fieldset class="form-group col-6 col-md-2">
             <label for="for_origin">Origen</label>
             <select name="origin" id="for_origin" class="form-control">
                 <option value=""></option>
