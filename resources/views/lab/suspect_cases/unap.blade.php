@@ -4,7 +4,7 @@
 
 @section('content')
 
-<h3 class="mb-3">Listado de casos Laboratorio UNAP</h3>
+<h3 class="mb-3"><i class="fas fa-lungs-virus"></i> Listado de casos Laboratorio UNAP</h3>
 
 <div class="row">
     @can('SuspectCase: create')

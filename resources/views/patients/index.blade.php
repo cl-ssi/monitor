@@ -4,7 +4,7 @@
 
 @section('content')
 
-<h3 class="mb-3">Listado de Pacientes</h3>
+<h3 class="mb-3"><i class="fas fa-user-injured"></i> Listado de Pacientes</h3>
 
 <div class="row">
     @can('Patient: create')
