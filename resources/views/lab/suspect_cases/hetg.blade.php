@@ -66,15 +66,18 @@
             <th>PAHO FLU</th>
             <th>Estado</th>
             <th>Observación</th>
-            @can('SuspectCase: edit')
-            <th class="action_th"></th>
-            @endcan
         </tr>
     </thead>
     <tbody id="tableCases">
         @foreach($suspectCases as $case)
         <tr class="row_{{$case->covid19}} {{ ($case->pscr_sars_cov_2 == 'positive')?'table-danger':''}}">
-            <td class="text-center">{{ $case->id }}<br><small>{{ $case->laboratory->name }}</small></td>
+            <td class="text-center">
+                {{ $case->id }}<br>
+                <small>{{ $case->laboratory->name }}</small>
+                @can('SuspectCase: edit')
+                <a href="{{ route('lab.suspect_cases.edit', $case) }}" class="btn_edit"><i class="fas fa-edit"></i></a>
+                @endcan
+            </td>
             <td nowrap class="small">{{ (isset($case->sample_at))? $case->sample_at->format('Y-m-d'):'' }}</td>
             <td>{{ $case->origin }}</td>
             <td>
@@ -110,9 +113,6 @@
             <td>{{ $case->paho_flu }}</td>
             <td>{{ $case->status }}</td>
             <td class="text-muted small">{{ $case->observation }}</td>
-            @can('SuspectCase: edit')
-            <td class="action_td"><a href="{{ route('lab.suspect_cases.edit', $case) }}" class="btn_edit">Editar</a></td>
-            @endcan
         </tr>
         @endforeach
     </tbody>
