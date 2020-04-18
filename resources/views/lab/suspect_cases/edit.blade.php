@@ -201,6 +201,7 @@
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_external_laboratory">Laboratorio externo</label>
             <select name="external_laboratory" id="for_external_laboratory" class="form-control">
+                <option value=""></option>
                 <option value="Hospital Lucio Córdova" {{ ($suspectCase->external_laboratory == 'Hospital Lucio Córdova')?'selected':'' }}>Hospital Lucio Córdova</option>
                 <option value="Centro Oncologico del Norte" {{ ($suspectCase->external_laboratory == 'Centro Oncologico del Norte')?'selected':'' }}>Centro Oncologico del Norte</option>
                 <option value="Instituto de Salud Pública" {{ ($suspectCase->external_laboratory == 'Instituto de Salud Pública')?'selected':'' }}>Instituto de Salud Pública</option>
