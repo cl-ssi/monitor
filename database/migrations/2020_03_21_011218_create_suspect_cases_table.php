@@ -27,12 +27,13 @@ class CreateSuspectCasesTable extends Migration
             $table->string('result_ifd')->nullable();
             $table->string('subtype')->nullable();
 
-            $table->datetime('sent_isp_at')->nullable();
-            $table->string('external_laboratory')->nullable();
             $table->datetime('pscr_sars_cov_2_at')->nullable();
             $table->string('pscr_sars_cov_2')->nullable();
             $table->string('sample_type')->nullable();
             $table->unsignedBigInteger('validator_id')->nullable();
+
+            $table->datetime('sent_isp_at')->nullable();
+            $table->string('external_laboratory')->nullable();
 
             $table->unsignedInteger('paho_flu')->nullable();
             $table->unsignedInteger('epivigila')->nullable();
