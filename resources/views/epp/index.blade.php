@@ -4,7 +4,7 @@
 
 @section('content')
 
-<h3>Listado de Egresos</h3>
+<h3 class="mb-3"><i class="fas fa-head-side-mask"></i> Listado de EPP</h3>
 
 <form class="form-inline" method="get" action="{{ route('epp.index') }}">
 	@csrf

@@ -75,7 +75,7 @@
                         </li> -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-vial"></i>
+                                <i class="fas fa-lungs-virus"></i>
                                 Casos
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -99,7 +99,7 @@
                         @can('Epp: list')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('epp.index') }}">
-                                <i class="fas fa-hard-hat"></i>
+                                <i class="fas fa-head-side-mask"></i>
                                 EPP
                             </a>
                         </li>

@@ -4,7 +4,7 @@
 
 @section('content')
 
-<h3 class="mb-3">Georreferenciación</h3>
+<h3 class="mb-3"><i class="fas fa-globe-americas"></i> Georreferenciación</h3>
 
 <div style="width: 100%; height: 650px" id="mapContainer"></div>
 

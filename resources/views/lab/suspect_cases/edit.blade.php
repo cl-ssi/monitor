@@ -22,6 +22,17 @@
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
+            <label for="for_sample_type">Tipo de Muestra</label>
+            <select name="sample_type" id="for_sample_type" class="form-control">
+                <option value=""></option>
+                <option value="TÓRULAS NASOFARÍNGEAS" {{ ($suspectCase->sample_type == 'TÓRULAS NASOFARÍNGEAS')?'selected':'' }}>TORULAS NASOFARINGEAS</option>
+                <option value="ESPUTO" {{ ($suspectCase->sample_type == 'ESPUTO')?'selected':'' }}>ESPUTO</option>
+                <option value="TÓRULAS NASOFARÍNGEAS/ESPUTO" {{ ($suspectCase->sample_type == 'TÓRULAS NASOFARÍNGEAS/ESPUTO')?'selected':'' }}>TÓRULAS NASOFARÍNGEAS/ESPUTO</option>
+                <option value="ASPIRADO NASOFARÍNGEO" {{ ($suspectCase->sample_type == 'ASPIRADO NASOFARÍNGEO')?'selected':'' }}>ASPIRADO NASOFARÍNGEO</option>
+            </select>
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-2">
             <label for="for_sample_type">Tipo de muestra</label>
             <input type="text" class="form-control" name="sample_type"
                 id="for_sample_type" value="{{ $suspectCase->sample_type }}">
@@ -185,6 +196,16 @@
             <label for="for_sent_isp_at">Fecha envío lab externo</label>
             <input type="date" class="form-control" id="for_sent_isp_at"
                 name="sent_isp_at" value="{{ isset($suspectCase->sent_isp_at)? $suspectCase->sent_isp_at->format('Y-m-d'):'' }}">
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_external_laboratory">Laboratorio externo</label>
+            <select name="external_laboratory" id="for_external_laboratory" class="form-control">
+                <option value="Hospital Lucio Córdova" {{ ($suspectCase->external_laboratory == 'Hospital Lucio Córdova')?'selected':'' }}>Hospital Lucio Córdova</option>
+                <option value="Centro Oncologico del Norte" {{ ($suspectCase->external_laboratory == 'Centro Oncologico del Norte')?'selected':'' }}>Centro Oncologico del Norte</option>
+                <option value="Instituto de Salud Pública" {{ ($suspectCase->external_laboratory == 'Instituto de Salud Pública')?'selected':'' }}>Instituto de Salud Pública</option>
+                <option value="Barnafi Krause" {{ ($suspectCase->external_laboratory == 'Barnafi Krause')?'selected':'' }}>Barnafi Krause</option>
+            </select>
         </fieldset>
     </div>
 
