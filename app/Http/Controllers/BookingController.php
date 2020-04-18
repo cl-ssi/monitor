@@ -21,7 +21,7 @@ class BookingController extends Controller
 
     public function index()
     {
-        $rooms = Room::All();
+        $rooms = Room::orderBy('floor')->get();
         $bookings = Booking::where('status', 'Residencia Sanitaria')->get();
         return view('sanitary_residences.bookings.index', compact('bookings', 'rooms'));
     }
@@ -48,7 +48,7 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         //
-        if ($request->released_cause == null) 
+        if ($request->released_cause == null)
         {
             $booking = new Booking($request->All());
             $booking->status = 'Residencia Sanitaria';
@@ -56,10 +56,10 @@ class BookingController extends Controller
             $booking->patient->suspectCases->last()->save();
             $booking->save();
             session()->flash('success', 'Booking creado Exitosamente');
-        } 
-        else        
+        }
+        else
         {
-          $booking = Booking::find($request->booking_id);          
+          $booking = Booking::find($request->booking_id);
           $booking->patient->suspectCases->last()->status = $request->status;
           $booking->patient->suspectCases->last()->save();
           $booking->fill($request->All());
