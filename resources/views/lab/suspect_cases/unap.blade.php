@@ -70,7 +70,7 @@
     </thead>
     <tbody id="tableCases">
         @foreach($suspectCases as $case)
-        <tr class="small row_{{$case->covid19}} {{ ($case->pscr_sars_cov_2 == 'positive')?'table-danger':''}}">
+        <tr class="row_{{$case->covid19}} {{ ($case->pscr_sars_cov_2 == 'positive')?'table-danger':''}}">
             <td class="text-center">
                 {{ $case->id }}<br>
                 <small>{{ $case->laboratory->name }}</small>
