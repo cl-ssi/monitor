@@ -116,7 +116,7 @@
 
                         @can('Report')
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('lab.suspect_cases.report') }}">
+                            <a class="nav-link" href="{{ route('lab.suspect_cases.report.index') }}">
                                 <i class="fas fa-clipboard"></i>
                                 Reporte
                             </a>
