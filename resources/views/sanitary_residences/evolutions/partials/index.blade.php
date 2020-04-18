@@ -2,8 +2,8 @@
 
 @foreach($booking->evolutions->reverse() as $evolutions)
 <div class="row mb-4">
-    <div class="col-10 col-md-11 text-justify">
-        {{ $evolutions->content }}
+    <div class="col-10 col-md-11">
+        <span class="text-justify" style="white-space: pre-wrap;">{{ $evolutions->content }}</span>
         <footer class="blockquote-footer">{{ $evolutions->created_at->format('d-m-Y H:i') }}
             <cite>{{ $evolutions->user->name }}</cite>
         </footer>
