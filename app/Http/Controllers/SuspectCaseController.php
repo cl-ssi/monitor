@@ -399,13 +399,22 @@ class SuspectCaseController extends Controller
     }
 
 
-    public function excelunap()
+    public function report_minsal($lab = null)
     {
-        //laboratorio UNAP laboratory_id = 2
-        //$cases = SuspectCase::where('laboratory_id',2)->get();
+        switch ($lab) {
+            case 'hetg':
+                $cod_lab = 1;
+                break;
+            case 'unap':
+                $cod_lab = 2;
+                break;
+            default:
+                $cod_lab = 1;
+                break;
+        }
         $yesterday = date("Y-m-d", strtotime( '-1 days' ) );
-        $cases = SuspectCase::where('laboratory_id',2)->whereDate('pscr_sars_cov_2_at', '=', $yesterday)->get()->sortByDesc('id');
-        return view('lab.suspect_cases.excel.excelunap', compact('cases'));
+        $cases = SuspectCase::where('laboratory_id',$cod_lab)->whereDate('pscr_sars_cov_2_at', '=', $yesterday)->get()->sortByDesc('id');
+        return view('lab.suspect_cases.reports.minsal', compact('cases'));
     }
 
     public function hetg()

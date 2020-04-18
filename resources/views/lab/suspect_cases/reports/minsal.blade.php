@@ -25,7 +25,7 @@
         <th nowrap>Región de laboratorio donde se procesa la muestra</th>
         <th nowrap>Teléfono de contacto de paciente</th>
         <th nowrap>Correo de contacto de paciente</th>
-        <th nowrap>Dirección de contacto de paciente</th>        
+        <th nowrap>Dirección de contacto de paciente</th>
     </thead>
     <tbody>
         @foreach ($cases as $case)
@@ -49,7 +49,7 @@
         </tr>
         @endforeach
     </tbody>
-    
+
 
 </table>
 
@@ -66,7 +66,7 @@ function exportF(elem) {
     var html_no_links = html.replace(/<a[^>]*>|<\/a>/g, "");//remove if u want links in your table
     var url = 'data:application/vnd.ms-excel,' + escape(html_no_links); // Set your html table into url
     elem.setAttribute("href", url);
-    elem.setAttribute("download", "casos_sospechosos_unap.xls"); // Choose the file name
+    elem.setAttribute("download", "reporte_minsal.xls"); // Choose the file name
     return false;
 }
 

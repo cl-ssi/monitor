@@ -70,7 +70,6 @@ Route::prefix('lab')->name('lab.')->group(function () {
     Route::prefix('suspect_cases')->name('suspect_cases.')->group(function () {
         Route::get('/hetg','SuspectCaseController@hetg')->name('hetg');
         Route::get('/unap','SuspectCaseController@unap')->name('unap');
-        Route::get('/minal','SuspectCaseController@excelunap')->name('excelunap');
         //Route::get('stat', 'SuspectCaseController@stat')->name('stat');
         // Route::get('case_chart','SuspectCaseController@case_chart')->name('case_chart')->middleware('auth');
         Route::match(['get','post'],'case_chart','SuspectCaseController@case_chart')->middleware('auth')->name('case_chart');
@@ -82,7 +81,10 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/{suspect_case}/edit','SuspectCaseController@edit')->name('edit')->middleware('auth','can:SuspectCase: edit');
         Route::put('/{suspect_case}','SuspectCaseController@update')->name('update')->middleware('auth','can:SuspectCase: edit');
         Route::delete('/{suspect_case}','SuspectCaseController@destroy')->name('destroy')->middleware('auth','can:SuspectCase: delete');
-        Route::get('/report','SuspectCaseController@report')->name('report')->middleware('auth','can:Report');
+        Route::prefix('report')->name('report.')->group(function () {
+            Route::get('/','SuspectCaseController@report')->name('index')->middleware('auth','can:Report');
+            Route::get('/minsal/{lab}','SuspectCaseController@report_minsal')->name('minsal')->middleware('auth','can:Report');;
+        });
     });
 });
 
