@@ -95,6 +95,32 @@
                     </td>
                 </tr>
 
+                <tr>
+                    <td>Muestra rechazada</td>
+                    <td class="text-center">
+                        {{ $cases->where('pscr_sars_cov_2','rejected')->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('patient.gender','male')->where('pscr_sars_cov_2','rejected')->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('patient.gender','female')->where('pscr_sars_cov_2','rejected')->count() }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Resultado Indeterminado</td>
+                    <td class="text-center">
+                        {{ $cases->where('pscr_sars_cov_2','undetermined')->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('patient.gender','male')->where('pscr_sars_cov_2','undetermined')->count() }}
+                    </td>
+                    <td class="text-center">
+                        {{ $cases->where('patient.gender','female')->where('pscr_sars_cov_2','undetermined')->count() }}
+                    </td>
+                </tr>
+
 
                 <tr>
                     <th class="table-active">Hospitalizados Básicos</th>
@@ -147,7 +173,6 @@
                         {{ $cases->where('patient.gender','female')->where('status','Hospitalizado Básico')->where('pscr_sars_cov_2','pending')->count() }}
                     </td>
                 </tr>
-
 
                 <tr>
                     <th class="table-active">Hospitalizados (UCI)</th>
