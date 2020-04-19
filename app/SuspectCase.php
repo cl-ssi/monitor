@@ -54,6 +54,21 @@ class SuspectCase extends Model
         }
     }
 
+    function getSentExternalAtAttribute() {
+        return ($this->sent_isp_at)?
+            $this->sent_isp_at->format('d-m-Y'):'';
+    }
+
+    function getProcesingLabAttribute() {
+        if($this->external_laboratory) {
+            return $this->external_laboratory;
+        }
+        switch($this->laboratory_id) {
+            case 1: return 'HETG'; break;
+            case 2: return 'UNAP'; break;
+        }
+    }
+
     /**
      * The attributes that should be mutated to dates.
      *
@@ -62,4 +77,5 @@ class SuspectCase extends Model
     protected $dates = [
         'sample_at', 'result_ifd_at', 'pscr_sars_cov_2_at', 'sent_isp_at', 'deleted_at'
     ];
+
 }

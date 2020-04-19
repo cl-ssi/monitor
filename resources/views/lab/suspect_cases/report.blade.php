@@ -109,7 +109,7 @@
                 </tr>
 
                 <tr>
-                    <td>Resultado Indeterminado</td>
+                    <td>Resultado indeterminado</td>
                     <td class="text-center">
                         {{ $cases->where('pscr_sars_cov_2','undetermined')->count() }}
                     </td>

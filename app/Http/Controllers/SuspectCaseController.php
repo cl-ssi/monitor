@@ -417,6 +417,23 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.reports.minsal', compact('cases'));
     }
 
+    public function report_seremi($lab = null)
+    {
+        switch ($lab) {
+            case 'hetg':
+                $cod_lab = 1;
+                break;
+            case 'unap':
+                $cod_lab = 2;
+                break;
+            default:
+                $cod_lab = 1;
+                break;
+        }
+        $cases = SuspectCase::where('laboratory_id',$cod_lab)->get()->sortDesc();
+        return view('lab.suspect_cases.reports.seremi', compact('cases'));
+    }
+
     public function hetg()
     {
         //Hospital Ernesto Torres Galdames laboratory_id = 1
