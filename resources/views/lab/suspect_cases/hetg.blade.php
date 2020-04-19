@@ -22,20 +22,22 @@
 <table class="table table-sm table-bordered">
     <thead>
         <tr class="text-center">
-            <th></th>
+            <th>Total enviados a análisis</th>
             <th>Total positivos</th>
             <th>Total negativos</th>
-            <th>Total sin resultados</th>
-            <th>Total enviados a análisis</th>
+            <th>Total pendientes</th>
+            <th>Total rechazados</th>
+            <th>Total indeterminados</th>
         </tr>
     </thead>
     <tbody>
         <tr class="text-center">
-            <td>Casos</td>
+            <td>{{ $suspectCases->count() }}</td>
             <th class="text-danger">{{ $suspectCases->where('pscr_sars_cov_2','positive')->count() }}</th>
             <td>{{ $suspectCases->where('pscr_sars_cov_2','negative')->count() }}</td>
             <td>{{ $suspectCases->where('pscr_sars_cov_2','pending')->count() }}</td>
-            <td>{{ $suspectCases->count() }}</td>
+            <td>{{ $suspectCases->where('pscr_sars_cov_2','rejected')->count() }}</td>
+            <td>{{ $suspectCases->where('pscr_sars_cov_2','undetermined')->count() }}</td>
         </tr>
     </tbody>
 </table>
@@ -46,9 +48,11 @@
 </a>
 
 <div align="right">
-  <input type="checkbox" name="positivos" id="chk_positivos" v="Positivos" checked/> Positivos
-  <input type="checkbox" name="negativos" id="chk_negativos" v="Negativos" checked/> Negativos
-  <input type="checkbox" name="pendientes" id="chk_pendientes" v="Pendientes" checked/> Pendientes
+    <input type="checkbox" name="positivos" id="chk_positivos" v="Positivos" checked/> Positivos
+    <input type="checkbox" name="negativos" id="chk_negativos" v="Negativos" checked/> Negativos
+    <input type="checkbox" name="pendientes" id="chk_pendientes" v="Pendientes" checked/> Pendientes
+    <input type="checkbox" name="rechazados" id="chk_rechazados" v="Rechazados" checked/> Rechazados
+    <input type="checkbox" name="indeterminados" id="chk_indeterminados" v="Indeterminados" checked/> Indeterminados
 </div>
 
 <div class="table-responsive">
@@ -147,6 +151,14 @@ $(document).ready(function(){
     $("#chk_pendientes").change(function(){
         var self = this;
         $(".row_Pendiente").toggle();
+    });
+    $("#chk_rechazados").change(function(){
+        var self = this;
+        $(".row_Rechazado").toggle();
+    });
+    $("#chk_indeterminados").change(function(){
+        var self = this;
+        $(".row_Indeterminado").toggle();
     });
 });
 
