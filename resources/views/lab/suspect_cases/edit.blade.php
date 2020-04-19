@@ -183,6 +183,7 @@
                 <option value="pending" {{ ($suspectCase->pscr_sars_cov_2 == 'pending')?'selected':'' }}>Pendiente</option>
                 <option value="negative" {{ ($suspectCase->pscr_sars_cov_2 == 'negative')?'selected':'' }}>Negativo</option>
                 <option value="positive" {{ ($suspectCase->pscr_sars_cov_2 == 'positive')?'selected':'' }}>Positivo</option>
+                <option value="rejected" {{ ($suspectCase->pscr_sars_cov_2 == 'rejected')?'selected':'' }}>Rechazado</option>
                 <option value="undetermined" {{ ($suspectCase->pscr_sars_cov_2 == 'undetermined')?'selected':'' }}>Indeterminado</option>
             </select>
         </fieldset>
