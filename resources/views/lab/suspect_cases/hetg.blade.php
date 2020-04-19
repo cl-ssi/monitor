@@ -43,10 +43,10 @@
 </table>
 
 <a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a>
-<a class="btn btn-outline-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.minsal','hetg') }}">
+<a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.report.minsal','hetg') }}">
     Reporte MINSAL
 </a>
-<a class="btn btn-outline-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.seremi','hetg') }}">
+<a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.report.seremi','hetg') }}">
     Reporte SEREMI
 </a>
 
