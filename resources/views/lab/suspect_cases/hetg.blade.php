@@ -46,6 +46,9 @@
 <a class="btn btn-outline-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.minsal','hetg') }}">
     Reporte MINSAL
 </a>
+<a class="btn btn-outline-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.seremi','hetg') }}">
+    Reporte SEREMI
+</a>
 
 <div align="right">
     <input type="checkbox" name="positivos" id="chk_positivos" v="Positivos" checked/> Positivos
