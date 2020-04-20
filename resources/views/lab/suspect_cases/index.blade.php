@@ -42,7 +42,7 @@
     </tbody>
 </table>
 
-<a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a>
+<a type="button" class="btn btn-success" href="{{ route('lab.suspect_cases.export') }}">Descargar <i class="far fa-file-excel"></i></a>
 
 <div align="right">
     <input type="checkbox" name="positivos" id="chk_positivos" v="Positivos" checked/> Positivos
