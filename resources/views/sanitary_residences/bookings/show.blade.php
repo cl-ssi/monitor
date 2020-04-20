@@ -243,11 +243,6 @@
 </form>
 
 <hr>
-@include('sanitary_residences.indications.partials.index', compact('booking'))
-<hr>
-<hr>
-@include('sanitary_residences.indications.partials.create', compact('booking'))
-<hr>
 @include('sanitary_residences.vital_signs.partials.index', compact('booking'))
 <hr>
 @include('sanitary_residences.vital_signs.partials.create', compact('booking'))
@@ -256,7 +251,10 @@
 <hr>
 @include('sanitary_residences.evolutions.partials.create', compact('booking'))
 <hr>
-
+@include('sanitary_residences.indications.partials.index', compact('booking'))
+<hr>
+@include('sanitary_residences.indications.partials.create', compact('booking'))
+<hr>
 @include('sanitary_residences.bookings.medical_release.create', compact('booking'))
 
 @endsection
