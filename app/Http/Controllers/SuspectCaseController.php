@@ -212,14 +212,14 @@ class SuspectCaseController extends Controller
                            'Valparaíso',
                            'Región del Libertador Gral. Bernardo O’Higgins',
                            'Región del Maule',
-                           'Región del Ñuble',
                            'Región del Biobío',
                            'Región de la Araucanía',
                            'Región de Los Ríos',
                            'Región de Los Lagos',
                            'Región Aisén del Gral. Carlos Ibáñez del Campo',
                            'Región de Magallanes y de la Antártica Chilena',
-                           'Región Metropolitana de Santiago']);
+                           'Región Metropolitana de Santiago',
+                           'Región de Ñuble']);
                               // /->orWhereNull('patient.demographic.region')
         $cases_other_region = SuspectCase::All();
         $cases_other_region = $cases_other_region->whereIn('patient.demographic.region',
@@ -231,14 +231,14 @@ class SuspectCaseController extends Controller
                            'Valparaíso',
                            'Región del Libertador Gral. Bernardo O’Higgins',
                            'Región del Maule',
-                           'Región del Ñuble',
                            'Región del Biobío',
                            'Región de la Araucanía',
                            'Región de Los Ríos',
                            'Región de Los Lagos',
                            'Región Aisén del Gral. Carlos Ibáñez del Campo',
                            'Región de Magallanes y de la Antártica Chilena',
-                           'Región Metropolitana de Santiago']);
+                           'Región Metropolitana de Santiago',
+                           'Región de Ñuble']);
 
         $totales_dia = DB::table('suspect_cases')
             ->select('sample_at', DB::raw('count(*) as total'))
@@ -297,14 +297,14 @@ class SuspectCaseController extends Controller
                            'Valparaíso',
                            'Región del Libertador Gral. Bernardo O’Higgins',
                            'Región del Maule',
-                           'Región del Ñuble',
                            'Región del Biobío',
                            'Región de la Araucanía',
                            'Región de Los Ríos',
                            'Región de Los Lagos',
                            'Región Aisén del Gral. Carlos Ibáñez del Campo',
                            'Región de Magallanes y de la Antártica Chilena',
-                           'Región Metropolitana de Santiago']);
+                           'Región Metropolitana de Santiago',
+                           'Región de Ñuble']);
                               // /->orWhereNull('patient.demographic.region')
         //$cases_other_region = SuspectCase::All();
         $cases_other_region = $cases_data->whereIn('patient.demographic.region',
@@ -316,14 +316,14 @@ class SuspectCaseController extends Controller
                            'Valparaíso',
                            'Región del Libertador Gral. Bernardo O’Higgins',
                            'Región del Maule',
-                           'Región del Ñuble',
                            'Región del Biobío',
                            'Región de la Araucanía',
                            'Región de Los Ríos',
                            'Región de Los Lagos',
                            'Región Aisén del Gral. Carlos Ibáñez del Campo',
                            'Región de Magallanes y de la Antártica Chilena',
-                           'Región Metropolitana de Santiago']);
+                           'Región Metropolitana de Santiago',
+                           'Región de Ñuble']);
 
         return view('lab.suspect_cases.historical_report', compact('cases', 'cases_other_region', 'date'));
     }
