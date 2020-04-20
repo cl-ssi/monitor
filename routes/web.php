@@ -146,5 +146,14 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
         // Route::delete('/{room}', 'RoomController@destroy')->name('destroy');
     });
 
+    Route::prefix('indications')->name('indications.')->group(function () {
+        Route::get('/', 'IndicationController@index')->name('index');
+        Route::get('/create', 'IndicationController@create')->name('create');
+        Route::post('/', 'IndicationController@store')->name('store');
+        // Route::get('/{room}/edit', 'RoomController@edit')->name('edit');
+        // Route::put('/{room}', 'RoomController@update')->name('update');
+        // Route::delete('/{room}', 'RoomController@destroy')->name('destroy');
+    });
+
 
 });
