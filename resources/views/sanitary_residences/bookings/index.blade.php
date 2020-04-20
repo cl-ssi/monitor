@@ -30,7 +30,7 @@
         @if($room->bookings->first())
 
             @foreach($room->bookings as $booking)
-            @if ($booking->status == 'Residencia Sanitaria')
+            @if ($booking->status == 'Residencia Sanitaria' and $booking->patient->suspectCases->last()->status == 'Residencia Sanitaria')
             <li>
                 <a href="{{ route('sanitary_residences.bookings.show',$booking) }}">
                 {{ $booking->patient->fullName }}
