@@ -228,8 +228,8 @@ var RegionesYcomunas = {
 jQuery(document).ready(function () {
 
 	var iRegion = 0;
-	var htmlRegion = '<option value="sin-region">Seleccione región</option>';
-	var htmlComunas = '<option value="sin-region">Seleccione comuna</option>';
+	var htmlRegion = '<option value="">Seleccione región</option>';
+	var htmlComunas = '<option value="">Seleccione comuna</option>';
 
   //si no existe
   @if($patient->demographic == null)
