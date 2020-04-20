@@ -243,17 +243,17 @@
 </form>
 
 <hr>
-
-@include('sanitary_residences.vital_signs.partials.index', compact('booking'))
-
+@include('sanitary_residences.indications.partials.index', compact('booking'))
 <hr>
-
+<hr>
+@include('sanitary_residences.indications.partials.create', compact('booking'))
+<hr>
+@include('sanitary_residences.vital_signs.partials.index', compact('booking'))
+<hr>
 @include('sanitary_residences.vital_signs.partials.create', compact('booking'))
-
 <hr>
 @include('sanitary_residences.evolutions.partials.index', compact('booking'))
 <hr>
-
 @include('sanitary_residences.evolutions.partials.create', compact('booking'))
 <hr>
 
@@ -289,7 +289,18 @@
           $('#evolution_id').val({{$evolutions->id}});
           $("#for_evolution_created_at").val("{{$evolutions->created_at->format('Y-m-d')}}"+"T"+"{{$evolutions->created_at->format('H:i')}}");
           //se reemplaza el enter por espacio
-          $('#for_content').val("{{  preg_replace("~[\r\n]+~"," ", ($evolutions->content))  }}");
+          $('#for_content').val("{{  preg_replace("~[\r\n]+~","\\n", ($evolutions->content))  }}");
+
+      });
+    @endforeach
+
+    @foreach($booking->indicaciones as $indications)
+      $("#btn_indications_{{$indications->id}}").click(function(){
+          $('#indication_id').val({{$indications->id}});
+          $("#for_indication_created_at").val("{{$indications->created_at->format('Y-m-d')}}"+"T"+"{{$indications->created_at->format('H:i')}}");
+          //se reemplaza el enter por espacio
+          //$('#for_indication_content').val("{{  preg_replace("~[\r\n]+~"," ", ($indications->content))  }}");
+          $('#for_indication_content').val("{{  preg_replace("~[\r\n]+~","\\n", ($indications->content))  }}");
 
       });
     @endforeach
