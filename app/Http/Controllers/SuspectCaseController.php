@@ -16,6 +16,8 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\SuspectCasesExport;
 
 class SuspectCaseController extends Controller
 {
@@ -446,6 +448,10 @@ class SuspectCaseController extends Controller
         //laboratorio UNAP laboratory_id = 2
         $suspectCases = SuspectCase::where('laboratory_id',2)->get()->sortByDesc('id');
         return view('lab.suspect_cases.unap', compact('suspectCases'));
+    }
+
+    public function exportExcel(){
+        return Excel::download(new SuspectCasesExport, 'suspect-cases-list.xlsx');
     }
 
 
