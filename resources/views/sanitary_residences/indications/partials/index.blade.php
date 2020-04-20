@@ -9,7 +9,7 @@
         </footer>
     </div>
     <div class="col-2 col-md-1">
-        @if($indicaciones->created_at->diff(now())->days < 1)
+        @if($indicaciones->created_at->diff(now())->days < 1 and $indicaciones->user->id == Auth::id())
             <button type="submit" class="btn btn-outline-secondary btn-sm" id="btn_indications_{{$indicaciones->id}}">
                 <i class="fas fa-edit"></i>
         @endif
