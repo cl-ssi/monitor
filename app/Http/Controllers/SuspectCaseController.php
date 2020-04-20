@@ -342,7 +342,7 @@ class SuspectCaseController extends Controller
 
     public function result()
     {
-      dd("");
+      // dd("");
         if (env('APP_ENV') == 'production') {
             $access_token = session()->get('access_token');
             $url_base = "https://www.claveunica.gob.cl/openid/userinfo/";
@@ -366,7 +366,7 @@ class SuspectCaseController extends Controller
             $user->email = "email@email.com";
         }
 
-        dd($user);
+        // dd($user);
 
         Auth::login($user);
         $patient = Patient::where('run', $user->id)->first();
