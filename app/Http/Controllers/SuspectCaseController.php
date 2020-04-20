@@ -7,6 +7,7 @@ use App\Patient;
 use App\Log;
 use App\File;
 use App\User;
+use App\ReportBackup;
 use Carbon\Carbon;
 use App\Mail\NewPositive;
 use Illuminate\Support\Facades\Mail;
@@ -268,6 +269,63 @@ class SuspectCaseController extends Controller
         // print_r($evo);
         // die();
         return view('lab.suspect_cases.report', compact('cases', 'cases_other_region', 'evolucion'));
+    }
+
+    public function historical_report(Request $request)
+    {
+        if($request->has('date')){
+          $date = $request->get('date');
+        }else{
+          $date = Carbon::now();
+        }
+
+        $reportBackup = ReportBackup::whereDate('created_at',$date)->get();
+        $cases_data = collect();
+        //dd($cases_data);
+        //dd($date);
+        if($reportBackup->first() != null){
+          $cases_data = collect(json_decode($reportBackup->first()->data, true));
+        }
+
+
+        $cases = $cases_data->whereNotIn('patient.demographic.region',
+                        [
+                            'Arica y Parinacota',
+                           'Antofagasta',
+                           'Atacama',
+                           'Coquimbo',
+                           'Valparaíso',
+                           'Región del Libertador Gral. Bernardo O’Higgins',
+                           'Región del Maule',
+                           'Región del Ñuble',
+                           'Región del Biobío',
+                           'Región de la Araucanía',
+                           'Región de Los Ríos',
+                           'Región de Los Lagos',
+                           'Región Aisén del Gral. Carlos Ibáñez del Campo',
+                           'Región de Magallanes y de la Antártica Chilena',
+                           'Región Metropolitana de Santiago']);
+                              // /->orWhereNull('patient.demographic.region')
+        //$cases_other_region = SuspectCase::All();
+        $cases_other_region = $cases_data->whereIn('patient.demographic.region',
+                        [
+                        'Arica y Parinacota',
+                           'Antofagasta',
+                           'Atacama',
+                           'Coquimbo',
+                           'Valparaíso',
+                           'Región del Libertador Gral. Bernardo O’Higgins',
+                           'Región del Maule',
+                           'Región del Ñuble',
+                           'Región del Biobío',
+                           'Región de la Araucanía',
+                           'Región de Los Ríos',
+                           'Región de Los Lagos',
+                           'Región Aisén del Gral. Carlos Ibáñez del Campo',
+                           'Región de Magallanes y de la Antártica Chilena',
+                           'Región Metropolitana de Santiago']);
+
+        return view('lab.suspect_cases.historical_report', compact('cases', 'cases_other_region', 'date'));
     }
 
     public function download(File $file)
