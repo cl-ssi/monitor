@@ -7,6 +7,7 @@ use App\Patient;
 use App\Log;
 use App\File;
 use App\User;
+use App\ReportBackup;
 use Carbon\Carbon;
 use App\Mail\NewPositive;
 use Illuminate\Support\Facades\Mail;
@@ -213,14 +214,14 @@ class SuspectCaseController extends Controller
                            'Valparaíso',
                            'Región del Libertador Gral. Bernardo O’Higgins',
                            'Región del Maule',
-                           'Región del Ñuble',
                            'Región del Biobío',
                            'Región de la Araucanía',
                            'Región de Los Ríos',
                            'Región de Los Lagos',
                            'Región Aisén del Gral. Carlos Ibáñez del Campo',
                            'Región de Magallanes y de la Antártica Chilena',
-                           'Región Metropolitana de Santiago']);
+                           'Región Metropolitana de Santiago',
+                           'Región de Ñuble']);
                               // /->orWhereNull('patient.demographic.region')
         $cases_other_region = SuspectCase::All();
         $cases_other_region = $cases_other_region->whereIn('patient.demographic.region',
@@ -232,14 +233,14 @@ class SuspectCaseController extends Controller
                            'Valparaíso',
                            'Región del Libertador Gral. Bernardo O’Higgins',
                            'Región del Maule',
-                           'Región del Ñuble',
                            'Región del Biobío',
                            'Región de la Araucanía',
                            'Región de Los Ríos',
                            'Región de Los Lagos',
                            'Región Aisén del Gral. Carlos Ibáñez del Campo',
                            'Región de Magallanes y de la Antártica Chilena',
-                           'Región Metropolitana de Santiago']);
+                           'Región Metropolitana de Santiago',
+                           'Región de Ñuble']);
 
         $totales_dia = DB::table('suspect_cases')
             ->select('sample_at', DB::raw('count(*) as total'))
@@ -272,6 +273,63 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.report', compact('cases', 'cases_other_region', 'evolucion'));
     }
 
+    public function historical_report(Request $request)
+    {
+        if($request->has('date')){
+          $date = $request->get('date');
+        }else{
+          $date = Carbon::now();
+        }
+
+        $reportBackup = ReportBackup::whereDate('created_at',$date)->get();
+        $cases_data = collect();
+        //dd($cases_data);
+        //dd($date);
+        if($reportBackup->first() != null){
+          $cases_data = collect(json_decode($reportBackup->first()->data, true));
+        }
+
+
+        $cases = $cases_data->whereNotIn('patient.demographic.region',
+                        [
+                            'Arica y Parinacota',
+                           'Antofagasta',
+                           'Atacama',
+                           'Coquimbo',
+                           'Valparaíso',
+                           'Región del Libertador Gral. Bernardo O’Higgins',
+                           'Región del Maule',
+                           'Región del Biobío',
+                           'Región de la Araucanía',
+                           'Región de Los Ríos',
+                           'Región de Los Lagos',
+                           'Región Aisén del Gral. Carlos Ibáñez del Campo',
+                           'Región de Magallanes y de la Antártica Chilena',
+                           'Región Metropolitana de Santiago',
+                           'Región de Ñuble']);
+                              // /->orWhereNull('patient.demographic.region')
+        //$cases_other_region = SuspectCase::All();
+        $cases_other_region = $cases_data->whereIn('patient.demographic.region',
+                        [
+                        'Arica y Parinacota',
+                           'Antofagasta',
+                           'Atacama',
+                           'Coquimbo',
+                           'Valparaíso',
+                           'Región del Libertador Gral. Bernardo O’Higgins',
+                           'Región del Maule',
+                           'Región del Biobío',
+                           'Región de la Araucanía',
+                           'Región de Los Ríos',
+                           'Región de Los Lagos',
+                           'Región Aisén del Gral. Carlos Ibáñez del Campo',
+                           'Región de Magallanes y de la Antártica Chilena',
+                           'Región Metropolitana de Santiago',
+                           'Región de Ñuble']);
+
+        return view('lab.suspect_cases.historical_report', compact('cases', 'cases_other_region', 'date'));
+    }
+
     public function download(File $file)
     {
         return Storage::response($file->file, mb_convert_encoding($file->name, 'ASCII'));
@@ -286,7 +344,7 @@ class SuspectCaseController extends Controller
 
     public function result()
     {
-      dd("");
+      // dd("");
         if (env('APP_ENV') == 'production') {
             $access_token = session()->get('access_token');
             $url_base = "https://www.claveunica.gob.cl/openid/userinfo/";
@@ -310,7 +368,7 @@ class SuspectCaseController extends Controller
             $user->email = "email@email.com";
         }
 
-        dd($user);
+        // dd($user);
 
         Auth::login($user);
         $patient = Patient::where('run', $user->id)->first();
@@ -414,8 +472,8 @@ class SuspectCaseController extends Controller
                 $cod_lab = 1;
                 break;
         }
-        $yesterday = date("Y-m-d", strtotime( '-1 days' ) );
-        $cases = SuspectCase::where('laboratory_id',$cod_lab)->whereDate('pscr_sars_cov_2_at', '=', $yesterday)->get()->sortByDesc('id');
+        $today = date("Y-m-d");
+        $cases = SuspectCase::where('laboratory_id',$cod_lab)->whereDate('pscr_sars_cov_2_at', '=', $today)->get()->sortByDesc('id');
         return view('lab.suspect_cases.reports.minsal', compact('cases'));
     }
 
