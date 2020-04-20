@@ -6,8 +6,10 @@
 
 <h3 class="mb-3">Listado de archivos</h3>
 
+<a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a>
+
 <div class="table-responsive">
-<table class="table table-sm">
+<table class="table table-sm" id="tabla_files">
     <thead>
         <tr>
             <th>Run o (ID)</th>
@@ -67,5 +69,15 @@
 @endsection
 
 @section('custom_js')
-
+  <script type="text/javascript">
+  function exportF(elem) {
+      var table = document.getElementById("tabla_files");
+      var html = table.outerHTML;
+      var html_no_links = html.replace(/<a[^>]*>|<\/a>/g, "");//remove if u want links in your table
+      var url = 'data:application/vnd.ms-excel,' + escape(html_no_links); // Set your html table into url
+      elem.setAttribute("href", url);
+      elem.setAttribute("download", "files.xls"); // Choose the file name
+      return false;
+  }
+  </script>
 @endsection
