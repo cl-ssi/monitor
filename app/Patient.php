@@ -59,6 +59,10 @@ class Patient extends Model //Authenticatable
         return $this->name . ' ' . $this->fathers_family . ' ' . $this->mothers_family;
     }
 
+    function getRunExportAttribute(){
+        return $this->run . '-' . $this->dv;
+    }
+
     function getGenderEspAttribute(){
         switch($this->gender) {
             case 'male': return 'Masculino'; break;
