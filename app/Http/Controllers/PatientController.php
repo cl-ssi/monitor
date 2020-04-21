@@ -97,15 +97,24 @@ class PatientController extends Controller
             $patient->demographic->fill($request->all());
             $patient->demographic->save();
             $logDemographic->new = $patient->demographic;
+            $logDemographic->save();
         }
         else {
-            $demographic = new Demographic($request->All());
-            $demographic->patient_id = $patient->id;
-            $demographic->save();
 
-            $logDemographic->new = $demographic;
+          if ($request->address != null | $request->address != null | $request->deparment != null |
+              $request->town != null | $request->latitude != null | $request->longitude != null |
+              $request->email != null | $request->telephone != null | $request->number != null |
+              $request->region != null | $request->commune != null) {
+
+                $demographic = new Demographic($request->All());
+                $demographic->patient_id = $patient->id;
+                $demographic->save();
+
+                $logDemographic->new = $demographic;
+                $logDemographic->save();
+              }
         }
-        $logDemographic->save();
+        //$logDemographic->save();
 
         return redirect()->route('patients.index');
     }
