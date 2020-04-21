@@ -22,7 +22,8 @@ class BookingController extends Controller
     public function index()
     {
         $rooms = Room::orderBy('floor')->get();
-        $bookings = Booking::where('status', 'Residencia Sanitaria')->get();
+        //$bookings = Booking::where('status', 'Residencia Sanitaria')->get();
+        $bookings = Booking::All();
         return view('sanitary_residences.bookings.index', compact('bookings', 'rooms'));
     }
 
