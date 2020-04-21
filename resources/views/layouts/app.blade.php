@@ -129,6 +129,16 @@
                         </li> -->
                         @endcan
 
+                        @can('Report')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('lab.suspect_cases.report.diary_lab_report') }}">
+                                <i class="fas fa-clipboard"></i>
+                                Reporte Laboratorio
+                            </a>
+                        </li>
+
+                        @endcan
+
 
                         @can('Admin')
                         <li class="nav-item">
