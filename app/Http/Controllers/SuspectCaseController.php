@@ -223,7 +223,7 @@ class SuspectCaseController extends Controller
                            'Región Aisén del Gral. Carlos Ibáñez del Campo',
                            'Región de Magallanes y de la Antártica Chilena',
                            'Región Metropolitana de Santiago',
-                           'Región de Ñuble']);
+                           'Región de Ñuble'])->except([1192,1008]);
                               // /->orWhereNull('patient.demographic.region')
         $cases_other_region = SuspectCase::All();
         $cases_other_region = $cases_other_region->whereIn('patient.demographic.region',
