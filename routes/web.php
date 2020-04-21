@@ -90,6 +90,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::get('historical_report','SuspectCaseController@historical_report')->name('historical_report')->middleware('auth','can:Report');
             Route::get('/minsal/{lab}','SuspectCaseController@report_minsal')->name('minsal')->middleware('auth','can:Report');
             Route::get('/seremi/{lab}','SuspectCaseController@report_seremi')->name('seremi')->middleware('auth','can:Report');
+            Route::get('diary_lab_report','SuspectCaseController@diary_lab_report')->name('diary_lab_report')->middleware('auth','can:Report');
         });
     });
 });
