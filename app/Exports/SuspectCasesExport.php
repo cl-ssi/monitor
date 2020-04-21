@@ -6,10 +6,14 @@ use App\SuspectCase;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping
+class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping, WithColumnFormatting, ShouldAutoSize
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -46,7 +50,7 @@ class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping
     {
         return [
             $suspectCase->id,
-            Carbon::parse($suspectCase->sample_at)->format('d-m-Y'),
+            Date::dateTimeToExcel($suspectCase->sample_at),
             $suspectCase->origin,
             $suspectCase->patient->fullName,
             $suspectCase->patient->Identifier,
@@ -59,6 +63,25 @@ class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping
             $suspectCase->paho_flu,
             $suspectCase->status,
             $suspectCase->observation,
+        ];
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+            'A' => NumberFormat::FORMAT_GENERAL,
+            'B' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+            'C' => NumberFormat::FORMAT_GENERAL,
+            'D' => NumberFormat::FORMAT_GENERAL,
+            'F' => NumberFormat::FORMAT_GENERAL,
+            'G' => NumberFormat::FORMAT_GENERAL,
+            'H' => NumberFormat::FORMAT_GENERAL,
+            'I' => NumberFormat::FORMAT_GENERAL,
+            'J' => NumberFormat::FORMAT_GENERAL,
+            'K' => NumberFormat::FORMAT_GENERAL,
+            'L' => NumberFormat::FORMAT_GENERAL,
+            'M' => NumberFormat::FORMAT_GENERAL,
+            'N' => NumberFormat::FORMAT_GENERAL,
         ];
     }
 }
