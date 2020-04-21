@@ -111,8 +111,8 @@
         <fieldset class="form-group col-12 col-md-6">
             <label for="for_patient_id">Paciente</label>
             <select name="patient_id" id="for_patient_id" class="form-control">
-                @foreach($patients as $patient)
-                <option value="{{ $patient->id }}" {{ ($patient->id == $booking->patient_id)?'selected':'' }}>{{ $patient->fullName }}</option>
+                @foreach($patients as $patient)                
+                <option value="{{ $patient->id }}" {{ ($patient->id == $booking->patient_id)?'selected':'' }}>{{ $patient->fullName }}</option>                
                 @endforeach
             </select>
         </fieldset>
