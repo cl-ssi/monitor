@@ -129,14 +129,6 @@
                         </li> -->
                         @endcan
 
-                        @can('Historical Report')
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('lab.suspect_cases.report.historical_report') }}">
-                                <i class="fas fa-clipboard"></i>
-                                Reporte histórico
-                            </a>
-                        </li>
-                        @endcan
 
                         @can('Admin')
                         <li class="nav-item">
@@ -200,6 +192,9 @@
     @auth
     <div id="watermark">{{ Auth::id() }}</div>
     @endauth
+
+    <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+    <script src="{{ asset('js/principal.js') }}"></script>
     @yield('custom_js')
 </body>
 
