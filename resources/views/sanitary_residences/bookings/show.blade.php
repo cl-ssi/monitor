@@ -112,7 +112,9 @@
             <label for="for_patient_id">Paciente</label>
             <select name="patient_id" id="for_patient_id" class="form-control">
                 @foreach($patients as $patient)
+                @if ($patient->suspectCases->last()->status == "Residencia Sanitaria")
                 <option value="{{ $patient->id }}" {{ ($patient->id == $booking->patient_id)?'selected':'' }}>{{ $patient->fullName }}</option>
+                @endif
                 @endforeach
             </select>
         </fieldset>
