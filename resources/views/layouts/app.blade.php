@@ -200,6 +200,9 @@
     @auth
     <div id="watermark">{{ Auth::id() }}</div>
     @endauth
+
+    <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+    <script src="{{ asset('js/principal.js') }}"></script>
     @yield('custom_js')
 </body>
 
