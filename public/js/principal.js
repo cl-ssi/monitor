@@ -1,5 +1,5 @@
 jQuery.fn.preventDoubleSubmission = function() {
-  console.log("doble");
+
     $(this).on('submit',function(e){
         var $form = $(this);
 
@@ -10,7 +10,7 @@ jQuery.fn.preventDoubleSubmission = function() {
             // Mark it so that the next submit can be ignored
             $form.data('submitted', true);
         }
-        console.log("doble");
+
     });
 
     // Keep chainability
