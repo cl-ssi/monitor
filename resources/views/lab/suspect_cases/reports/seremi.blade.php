@@ -19,6 +19,7 @@
         <th nowrap>Fecha de toma de muestra</th>
         <th nowrap>Fecha de envío de muestra</th>
         <th nowrap>Institución que procesa la muestra</th>
+        <th nowrap>Fecha resultado</th>
         <th nowrap>Resultado</th>
     </thead>
     <tbody>
@@ -35,6 +36,7 @@
             <td nowrap>{{ $case->sample_at->format('d-m-Y') }}</td>
             <td nowrap>{{ $case->SentExternalAt }}</td>
             <td nowrap>{{ $case->ProcesingLab }}</td>
+            <td nowrap>{{ ($case->pscr_sars_cov_2_at)?$case->pscr_sars_cov_2_at->format('d-m-Y'):'' }}</td>
             <td nowrap>{{ $case->covid19 }}</td>
         </tr>
         @endforeach

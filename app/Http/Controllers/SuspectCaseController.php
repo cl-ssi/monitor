@@ -17,6 +17,10 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\SuspectCasesExport;
+use App\Exports\HetgSuspectCasesExport;
+use App\Exports\UnapSuspectCasesExport;
 
 class SuspectCaseController extends Controller
 {
@@ -219,7 +223,7 @@ class SuspectCaseController extends Controller
                            'Región Aisén del Gral. Carlos Ibáñez del Campo',
                            'Región de Magallanes y de la Antártica Chilena',
                            'Región Metropolitana de Santiago',
-                           'Región de Ñuble']);
+                           'Región de Ñuble'])->except([1192,1008]);
                               // /->orWhereNull('patient.demographic.region')
         $cases_other_region = SuspectCase::All();
         $cases_other_region = $cases_other_region->whereIn('patient.demographic.region',
@@ -506,6 +510,15 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.unap', compact('suspectCases'));
     }
 
+    public function exportAllExcel(SuspectCase $suspect_case){
+        return Excel::download(new SuspectCasesExport, 'lista-casos.xlsx');
+    }
 
+    public function exportHetgExcel(SuspectCase $suspect_case){
+        return Excel::download(new HetgSuspectCasesExport, 'lista-casos-hetg.xlsx');
+    }
 
+    public function exportUnapExcel(SuspectCase $suspect_case){
+        return Excel::download(new UnapSuspectCasesExport, 'lista-casos-unap.xlsx');
+    }
 }

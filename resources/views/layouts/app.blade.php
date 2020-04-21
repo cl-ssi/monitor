@@ -129,14 +129,6 @@
                         </li> -->
                         @endcan
 
-                        @can('Historical Report')
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('lab.suspect_cases.report.historical_report') }}">
-                                <i class="fas fa-clipboard"></i>
-                                Reporte histórico
-                            </a>
-                        </li>
-                        @endcan
 
                         @can('Admin')
                         <li class="nav-item">

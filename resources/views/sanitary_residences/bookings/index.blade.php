@@ -54,33 +54,36 @@
 @endforeach
 
 
-
+<hr>
 <table class="table table-sm table-responsive mt-3">
     <thead>
         <tr>
-            <th>Paciente</th>
-            <th>Residence</th>
+            <th>Paciente Egresado</th>
+            <th>Estado</th>
+            <th>Causal de Egreso</th>
+            <th>Residencial</th>
             <th>Habitación</th>
             <th>Desde</th>
-            <th>Hasta (Estimado)</th>
-            <th>Indicaciones</th>
-            <th>Observaciones</th>
+            <th>Fecha Egreso</th>            
             <th></th>
         </tr>
     </thead>
     <tbody class="small">
         @foreach($bookings as $booking)
+        @if($booking->real_to)
         <tr>
             <td>{{ $booking->patient->fullName }}</td>
+            <td>{{ $booking->status }}</td>
+            <td>{{ $booking->released_cause }}</td>
             <td>{{ $booking->room->residence->name }}</td>
             <td>{{ $booking->room->number }}</td>
             <td>{{ $booking->from }}</td>
-            <td>{{ $booking->to }}</td>
-            <td>{{ $booking->indications }}</td>
-            <td>{{ $booking->observations }}</td>
+            <td>{{ $booking->real_to }}</td>            
 
             <td></td>
         </tr>
+        @endif
+        
         @endforeach
     </tbody>
 </table>
