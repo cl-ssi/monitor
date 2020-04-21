@@ -50,7 +50,7 @@ class HetgSuspectCasesExport implements FromCollection, WithHeadings, WithMappin
             Carbon::parse($suspectCase->sample_at)->format('d-m-Y'),
             $suspectCase->origin,
             $suspectCase->patient->fullName,
-            $suspectCase->patient->runExport,
+            $suspectCase->patient->Identifier,
             $suspectCase->age,
             strtoupper($suspectCase->gender[0]),
             $suspectCase->result_ifd,
