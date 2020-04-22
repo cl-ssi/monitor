@@ -6,7 +6,7 @@
 
 
 <div class="row">
-  <div class="col-12 col-md-6">
+  <div class="col-12 col-md-4">
 
     <h3 class="mb-3">Cantidad toma de muestras diarias</h3>
     <table class="table table-sm table-bordered">
