@@ -144,6 +144,7 @@ class SuspectCaseController extends Controller
         $suspectCase->fill($request->all());
         $suspectCase->gestation = $request->gestation;
         $suspectCase->close_contact = $request->has('close_contact') ? 1 : 0;
+        $suspectCase->discharge_test = $request->has('discharge_test') ? 1 : 0;
 
         $suspectCase->epidemiological_week = Carbon::createFromDate($suspectCase->sample_at->format('Y-m-d'))->add(1, 'days')->weekOfYear;
 
