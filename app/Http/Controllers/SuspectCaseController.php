@@ -369,10 +369,16 @@ class SuspectCaseController extends Controller
         //dd($total_muestras_x_lab);
         $total_muestras_x_lab_filas = array();
         $total_muestras_x_lab_columnas = array();
+
         foreach ($total_muestras_x_lab as $key => $muestra_x_lab) {
           $total_muestras_x_lab_columnas[$muestra_x_lab->laboratory] = 0;
           $total_muestras_x_lab_filas[$muestra_x_lab->pscr_sars_cov_2_at][$muestra_x_lab->laboratory]['cantidad'] = $muestra_x_lab->total;
         }
+
+        foreach ($total_muestras_x_lab as $key => $muestra_x_lab) {
+          $total_muestras_x_lab_columnas[$muestra_x_lab->laboratory] += $muestra_x_lab->total;
+        }
+        //dd($total_muestras_x_lab_columnas);
 
         return view('lab.suspect_cases.diary_lab_report', compact('total_muestras_diarias','total_muestras_x_lab_columnas','total_muestras_x_lab_filas'));
     }
