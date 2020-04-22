@@ -250,6 +250,22 @@
 
     </div>
 
+    <div class="form-group">
+
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="for_close_contact"
+                name="close_contact" {{ ($suspectCase->close_contact) ? 'checked' : '' }}>
+            <label class="form-check-label" for="for_close_contact">Contacto directo</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="for_discharge_test"
+                name="discharge_test" {{ ($suspectCase->discharge_test) ? 'checked' : '' }}>
+            <label class="form-check-label" for="for_discharge_test">Test de salida</label>
+        </div>
+
+    </div>
+    
     <div class="form-row">
 
         <fieldset class="form-group col-12 col-md-8">
@@ -320,22 +336,6 @@
             <input type="date" class="form-control" name="discharged_at"
                 id="for_discharged_at" value="{{ ($suspectCase->discharged_at)?$suspectCase->discharged_at->format('Y-m-d'):'' }}">
         </fieldset>
-
-    </div>
-
-    <div class="form-group">
-
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="for_close_contact"
-                name="close_contact" {{ ($suspectCase->close_contact) ? 'checked' : '' }}>
-            <label class="form-check-label" for="for_close_contact">Contacto directo</label>
-        </div>
-
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="for_discharge_test"
-                name="discharge_test" {{ ($suspectCase->discharge_test) ? 'checked' : '' }}>
-            <label class="form-check-label" for="for_discharge_test">Test de salida</label>
-        </div>
 
     </div>
 
