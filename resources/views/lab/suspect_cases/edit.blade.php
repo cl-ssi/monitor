@@ -44,8 +44,11 @@
                 <option value="Servico Médico Legal" {{ ($suspectCase->origin == 'Servicio Médico Legal')?'selected':'' }}>Servicio Médico Legal</option>
                 <option value="Servicio De Salud" {{ ($suspectCase->origin == 'Servicio De Salud')?'selected':'' }}>Servicio De Salud</option>
 
+
+
                 <option value="Gendarmería de Chile" {{ ($suspectCase->origin == 'Gendarmería de Chile')?'selected':'' }}>Gendarmería de Chile</option>
                 <option value="Hogar de Ancianos" {{ ($suspectCase->origin == 'Hogar de Ancianos')?'selected':'' }}>Hogar de Ancianos</option>
+                <option value="Hospitalización Domiciliaria" {{ ($suspectCase->origin == 'Hospitalización Domiciliaria')?'selected':'' }}>Hospitalización Domiciliaria</option>
 
                 <option value="CECOSF El Boro" {{ ($suspectCase->origin == 'CECOSF El Boro')?'selected':'' }}>CECOSF El Boro</option>
                 <option value="CECOSF La Tortuga" {{ ($suspectCase->origin == 'CECOSF La Tortuga')?'selected':'' }}>CECOSF La Tortuga</option>
