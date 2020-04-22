@@ -6,7 +6,17 @@
 <h3 class="mb-3">Reporte COVID-19
 
 @can('Historical Report')
-<a class="btn btn-sm btn-outline-success"  href="{{ route('lab.suspect_cases.report.historical_report')}}"> Histórico</a>
+<a class="btn btn-sm btn-outline-success"
+    href="{{ route('lab.suspect_cases.report.historical_report')}}">
+    Histórico
+</a>
+@endcan
+
+@can('Report')
+    <a class="btn btn-sm btn-outline-success"
+        href="{{ route('lab.suspect_cases.report.diary_lab_report') }}">
+        Reporte Laboratorios y muestras
+    </a>
 @endcan
 </h3>
 
