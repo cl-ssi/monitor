@@ -98,6 +98,9 @@
                 <option value="Servicio Médico Legal">Servicio Médico Legal</option>
                 <option value="Servicio De Salud">Servicio De Salud</option>
 
+                <option value="Gendarmería de Chile">Gendarmería de Chile</option>
+                <option value="Hogar de Ancianos">Hogar de Ancianos</option>
+
                 <option value="CECOSF El Boro">CECOSF El Boro</option>
                 <option value="CECOSF La Tortuga">CECOSF La Tortuga</option>
                 <option value="CESFAM Cirujano Aguirre">CESFAM Cirujano Aguirre</option>
