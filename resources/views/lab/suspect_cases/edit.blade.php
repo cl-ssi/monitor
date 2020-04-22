@@ -44,6 +44,12 @@
                 <option value="Servico Médico Legal" {{ ($suspectCase->origin == 'Servicio Médico Legal')?'selected':'' }}>Servicio Médico Legal</option>
                 <option value="Servicio De Salud" {{ ($suspectCase->origin == 'Servicio De Salud')?'selected':'' }}>Servicio De Salud</option>
 
+
+
+                <option value="Gendarmería de Chile" {{ ($suspectCase->origin == 'Gendarmería de Chile')?'selected':'' }}>Gendarmería de Chile</option>
+                <option value="Hogar de Ancianos" {{ ($suspectCase->origin == 'Hogar de Ancianos')?'selected':'' }}>Hogar de Ancianos</option>
+                <option value="Hospitalización Domiciliaria" {{ ($suspectCase->origin == 'Hospitalización Domiciliaria')?'selected':'' }}>Hospitalización Domiciliaria</option>
+
                 <option value="CECOSF El Boro" {{ ($suspectCase->origin == 'CECOSF El Boro')?'selected':'' }}>CECOSF El Boro</option>
                 <option value="CECOSF La Tortuga" {{ ($suspectCase->origin == 'CECOSF La Tortuga')?'selected':'' }}>CECOSF La Tortuga</option>
                 <option value="CESFAM Cirujano Aguirre" {{ ($suspectCase->origin == 'CESFAM Cirujano Aguirre')?'selected':'' }}>CESFAM Cirujano Aguirre</option>
@@ -250,6 +256,22 @@
 
     </div>
 
+    <div class="form-group">
+
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="for_close_contact"
+                name="close_contact" {{ ($suspectCase->close_contact) ? 'checked' : '' }}>
+            <label class="form-check-label" for="for_close_contact">Contacto directo</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="for_discharge_test"
+                name="discharge_test" {{ ($suspectCase->discharge_test) ? 'checked' : '' }}>
+            <label class="form-check-label" for="for_discharge_test">Test de salida</label>
+        </div>
+
+    </div>
+
     <div class="form-row">
 
         <fieldset class="form-group col-12 col-md-8">
@@ -320,22 +342,6 @@
             <input type="date" class="form-control" name="discharged_at"
                 id="for_discharged_at" value="{{ ($suspectCase->discharged_at)?$suspectCase->discharged_at->format('Y-m-d'):'' }}">
         </fieldset>
-
-    </div>
-
-    <div class="form-group">
-
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="for_close_contact"
-                name="close_contact" {{ ($suspectCase->close_contact) ? 'checked' : '' }}>
-            <label class="form-check-label" for="for_close_contact">Contacto directo</label>
-        </div>
-
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="for_discharge_test"
-                name="discharge_test" {{ ($suspectCase->discharge_test) ? 'checked' : '' }}>
-            <label class="form-check-label" for="for_discharge_test">Test de salida</label>
-        </div>
 
     </div>
 
