@@ -145,6 +145,8 @@ class SuspectCaseController extends Controller
 
         $suspectCase->fill($request->all());
         $suspectCase->gestation = $request->gestation;
+        $suspectCase->close_contact = $request->has('close_contact') ? 1 : 0;
+        $suspectCase->discharge_test = $request->has('discharge_test') ? 1 : 0;
 
         $suspectCase->epidemiological_week = Carbon::createFromDate($suspectCase->sample_at->format('Y-m-d'))->add(1, 'days')->weekOfYear;
 
@@ -225,7 +227,9 @@ class SuspectCaseController extends Controller
                         'Región Aisén del Gral. Carlos Ibáñez del Campo',
                         'Región de Magallanes y de la Antártica Chilena',
                         'Región Metropolitana de Santiago',
-                        'Región de Ñuble'])->except([1192,1008]);
+                        'Región de Ñuble'])
+                        //->except([1192,1008]);
+                        ->whereNotIn('id',[1192,1008]);
                               // /->orWhereNull('patient.demographic.region')
         $cases_other_region = SuspectCase::All();
         $cases_other_region = $cases_other_region->whereIn('patient.demographic.region',
@@ -310,7 +314,8 @@ class SuspectCaseController extends Controller
                            'Región Aisén del Gral. Carlos Ibáñez del Campo',
                            'Región de Magallanes y de la Antártica Chilena',
                            'Región Metropolitana de Santiago',
-                           'Región de Ñuble']);
+                           'Región de Ñuble'])
+                           ->whereNotIn('id',[1192,1008]);
                               // /->orWhereNull('patient.demographic.region')
         //$cases_other_region = SuspectCase::All();
         $cases_other_region = $cases_data->whereIn('patient.demographic.region',
@@ -333,6 +338,53 @@ class SuspectCaseController extends Controller
 
         return view('lab.suspect_cases.historical_report', compact('cases', 'cases_other_region', 'date'));
     }
+
+    public function diary_lab_report(Request $request)
+    {
+        // if($request->has('date')){
+        //   $date = $request->get('date');
+        // }else{
+        //   $date = Carbon::now();
+        // }
+
+        $total_muestras_diarias = DB::table('suspect_cases')
+            ->select('sample_at', DB::raw('count(*) as total'))
+            ->groupBy('sample_at')
+            ->orderBy('sample_at')
+            ->get();
+        //dd($total_muestras_diarias->first()->sample_at);
+
+        $total_muestras_x_lab = DB::table('suspect_cases')
+                              ->select('pscr_sars_cov_2_at',
+                                        DB::raw('(CASE
+                                            			 WHEN external_laboratory IS NULL then (SELECT name FROM laboratories WHERE id = laboratory_id)
+                                            			 ELSE external_laboratory
+                                            		  END) AS laboratory'),
+                                        DB::raw('count(*) as total')
+                                      )
+                              ->where('pscr_sars_cov_2', '<>', 'pending' )
+                              ->where('pscr_sars_cov_2', '<>', 'rejected' )
+                              ->groupBy('external_laboratory', 'laboratory_id', 'pscr_sars_cov_2_at')
+                              ->orderBy('pscr_sars_cov_2_at')
+                              ->get();
+
+        //dd($total_muestras_x_lab);
+        $total_muestras_x_lab_filas = array();
+        $total_muestras_x_lab_columnas = array();
+
+        foreach ($total_muestras_x_lab as $key => $muestra_x_lab) {
+          $total_muestras_x_lab_columnas[$muestra_x_lab->laboratory] = 0;
+          $total_muestras_x_lab_filas[$muestra_x_lab->pscr_sars_cov_2_at][$muestra_x_lab->laboratory]['cantidad'] = $muestra_x_lab->total;
+        }
+
+        foreach ($total_muestras_x_lab as $key => $muestra_x_lab) {
+          $total_muestras_x_lab_columnas[$muestra_x_lab->laboratory] += $muestra_x_lab->total;
+        }
+        //dd($total_muestras_x_lab_columnas);
+
+        return view('lab.suspect_cases.diary_lab_report', compact('total_muestras_diarias','total_muestras_x_lab_columnas','total_muestras_x_lab_filas'));
+    }
+
 
     public function download(File $file)
     {
