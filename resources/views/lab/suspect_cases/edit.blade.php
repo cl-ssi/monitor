@@ -206,6 +206,7 @@
         </fieldset>
     </div>
 
+
     <div class="form-row">
 
         <fieldset class="form-group col-6 col-md-2">
@@ -280,7 +281,63 @@
 
     <hr>
 
+@endcan
+
+@can('SuspectCase: seremi')
+    <h4>SEREMI</h4>
+
     <div class="form-row">
+
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_notification_at">Fecha de notificación</label>
+            <input type="date" class="form-control" name="notification_at"
+                id="for_notification_at" value="{{ ($suspectCase->notification_at)?$suspectCase->notification_at->format('Y-m-d'):'' }}">
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-3">
+            <label for="for_notification_mechanism">Mecanismo de Notificación</label>
+            <select name="notification_mechanism" id="for_notification_mechanism" class="form-control">
+                <option value="Pendiente"
+                    {{ ($suspectCase->notification_mechanism == 'Pendiente')?'selected':'' }}>
+                    Pendiente</option>
+                <option value="Llamada telefónica"
+                    {{ ($suspectCase->notification_mechanism == 'Llamada telefónica')?'selected':'' }}>
+                    Llamada telefónica</option>
+                <option value="Correo electrónico"
+                    {{ ($suspectCase->notification_mechanism == 'Correo electrónico')?'selected':'' }}>
+                    Correo electrónico</option>
+                <option value="Visita domiciliaria"
+                    {{ ($suspectCase->notification_mechanism == 'Visita domiciliaria')?'selected':'' }}>
+                    Visita domiciliaria</option>
+                <option value="Centro de salud"
+                    {{ ($suspectCase->notification_mechanism == 'Centro de salud')?'selected':'' }}>
+                    Centro de salud</option>
+            </select>
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_discharged_at">Fecha de alta</label>
+            <input type="date" class="form-control" name="discharged_at"
+                id="for_discharged_at" value="{{ ($suspectCase->discharged_at)?$suspectCase->discharged_at->format('Y-m-d'):'' }}">
+        </fieldset>
+
+    </div>
+
+    <div class="form-group">
+
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="for_close_contact"
+                name="close_contact" {{ ($suspectCase->close_contact) ? 'checked' : '' }}>
+            <label class="form-check-label" for="for_close_contact">Contacto directo</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="for_discharge_test"
+                name="discharge_test" {{ ($suspectCase->discharge_test) ? 'checked' : '' }}>
+            <label class="form-check-label" for="for_discharge_test">Test de salida</label>
+        </div>
+
+    </div>
 
 @endcan
 
@@ -295,7 +352,7 @@
 <form method="POST" class="form-horizontal" action="{{ route('lab.suspect_cases.destroy',$suspectCase) }}">
     @csrf
     @method('DELETE')
-    <button type="submit" class="btn btn-danger" onclick="return confirm('¿Está seguro de eliminar esta sospecha?');">Eliminar</button>
+    <button type="submit" class="btn btn-danger float-right" onclick="return confirm('¿Está seguro de eliminar esta sospecha?');">Eliminar</button>
 </form>
 @endcan
 

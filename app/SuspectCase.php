@@ -21,7 +21,10 @@ class SuspectCase extends Model
         'origin', 'status', 'result_ifd_at', 'result_ifd', 'subtype',
         'pscr_sars_cov_2_at', 'pscr_sars_cov_2', 'sample_type', 'validator_id',
         'sent_isp_at', 'external_laboratory', 'paho_flu', 'epivigila',
-        'gestation', 'gestation_week', 'observation',
+        'gestation', 'gestation_week', 'close_contact',
+        'notification_at', 'notification_mechanism',
+        'discharged_at',
+        'observation',
         'patient_id', 'laboratory_id'
     ];
 
@@ -75,7 +78,8 @@ class SuspectCase extends Model
      * @var array
      */
     protected $dates = [
-        'sample_at', 'result_ifd_at', 'pscr_sars_cov_2_at', 'sent_isp_at', 'deleted_at'
+        'sample_at', 'result_ifd_at', 'pscr_sars_cov_2_at', 'sent_isp_at',
+        'notification_at', 'discharged_at', 'deleted_at'
     ];
 
 }
