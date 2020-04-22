@@ -21,6 +21,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\SuspectCasesExport;
 use App\Exports\HetgSuspectCasesExport;
 use App\Exports\UnapSuspectCasesExport;
+use App\Exports\MinsalSuspectCasesExport;
+use App\Exports\SeremiSuspectCasesExport;
 
 class SuspectCaseController extends Controller
 {
@@ -476,7 +478,7 @@ class SuspectCaseController extends Controller
         }
         $today = date("Y-m-d");
         $cases = SuspectCase::where('laboratory_id',$cod_lab)->whereDate('pscr_sars_cov_2_at', '=', $today)->get()->sortByDesc('id');
-        return view('lab.suspect_cases.reports.minsal', compact('cases'));
+        return view('lab.suspect_cases.reports.minsal', compact('cases', 'cod_lab'));
     }
 
     public function report_seremi($lab = null)
@@ -493,7 +495,7 @@ class SuspectCaseController extends Controller
                 break;
         }
         $cases = SuspectCase::where('laboratory_id',$cod_lab)->get()->sortDesc();
-        return view('lab.suspect_cases.reports.seremi', compact('cases'));
+        return view('lab.suspect_cases.reports.seremi', compact('cases', 'cod_lab'));
     }
 
     public function hetg()
@@ -520,5 +522,33 @@ class SuspectCaseController extends Controller
 
     public function exportUnapExcel(SuspectCase $suspect_case){
         return Excel::download(new UnapSuspectCasesExport, 'lista-casos-unap.xlsx');
+    }
+
+    public function exportMinsalExcel($cod_lab = null)
+    {
+        switch ($cod_lab) {
+            case '1':
+                $nombre_lab = 'HETG';
+                break;
+            case '2':
+                $nombre_lab = 'UNAP';
+                break;
+        }
+
+        return Excel::download(new MinsalSuspectCasesExport($cod_lab, $nombre_lab), 'reporte-minsal.xlsx');
+    }
+
+    public function exportSeremiExcel($cod_lab = null)
+    {
+        switch ($cod_lab) {
+            case '1':
+                $nombre_lab = 'HETG';
+                break;
+            case '2':
+                $nombre_lab = 'UNAP';
+                break;
+        }
+
+        return Excel::download(new SeremiSuspectCasesExport($cod_lab, $nombre_lab), 'reporte-seremi.xlsx');
     }
 }
