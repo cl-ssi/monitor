@@ -39,8 +39,21 @@ class CreateSuspectCasesTable extends Migration
             $table->unsignedInteger('epivigila')->nullable();
             $table->char('gestation',2)->nullable();
             $table->smallInteger('gestation_week')->nullable();
+            $table->boolean('close_contact')->nullable();
+
+            $table->datetime('notification_at')->nullable();
+            $table->string('notification_mechanism')->nullable();
+            /*  Pendiente
+                Llamada telefónica
+                Correo electónico
+                Visita domiciliaria
+                Centro de salud */
+
+            $table->datetime('discharged_at')->nullable();
 
             $table->string('observation')->nullable();
+
+            $table->boolean('discharge_test')->nullable();
 
             $table->unsignedBigInteger('patient_id');
             $table->unsignedBigInteger('laboratory_id')->nullable();
@@ -51,6 +64,8 @@ class CreateSuspectCasesTable extends Migration
             $table->foreign('validator_id')->references('id')->on('users');
             $table->foreign('patient_id')->references('id')->on('patients');
             $table->foreign('laboratory_id')->references('id')->on('laboratories');
+
+            $table->index('pscr_sars_cov_2');
         });
     }
 
