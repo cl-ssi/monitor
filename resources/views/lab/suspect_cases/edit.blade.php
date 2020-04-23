@@ -303,7 +303,8 @@
 @endcan
 
 @can('SuspectCase: seremi')
-    <h4>SEREMI</h4>
+    <hr>
+    <h4>Entrega de resultados a paciente</h4>
 
     <div class="form-row">
 
