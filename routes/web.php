@@ -78,9 +78,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
 
         Route::get('/','SuspectCaseController@index')->name('index')->middleware('auth','can:SuspectCase: list');
 
-        Route::get('/exportSuspectCases','SuspectCaseController@exportAllExcel')->name('exportAll')->middleware('auth', 'can:Report');
-        Route::get('/exportHetgSuspectCases','SuspectCaseController@exportHetgExcel')->name('exportHetg')->middleware('auth', 'can:Report');
-        Route::get('/exportUnapSuspectCases','SuspectCaseController@exportUnapExcel')->name('exportUnap')->middleware('auth', 'can:Report');
+        Route::get('/exportSuspectCases/{lab}','SuspectCaseController@exportExcel')->name('export')->middleware('auth', 'can:Report');
 
         Route::get('/create','SuspectCaseController@create')->name('create')->middleware('auth','can:SuspectCase: create');
         Route::post('/','SuspectCaseController@store')->name('store')->middleware('auth','can:SuspectCase: create');
