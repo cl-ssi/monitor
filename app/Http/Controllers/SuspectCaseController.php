@@ -336,7 +336,7 @@ class SuspectCaseController extends Controller
                            'Región Metropolitana de Santiago',
                            'Región de Ñuble']);
 
-        return view('lab.suspect_cases.historical_report', compact('cases', 'cases_other_region', 'date'));
+        return view('lab.suspect_cases.reports.historical_report', compact('cases', 'cases_other_region', 'date'));
     }
 
     public function diary_lab_report(Request $request)
@@ -382,8 +382,31 @@ class SuspectCaseController extends Controller
         }
         //dd($total_muestras_x_lab_columnas);
 
-        return view('lab.suspect_cases.diary_lab_report', compact('total_muestras_diarias','total_muestras_x_lab_columnas','total_muestras_x_lab_filas'));
+        return view('lab.suspect_cases.reports.diary_lab_report', compact('total_muestras_diarias','total_muestras_x_lab_columnas','total_muestras_x_lab_filas'));
     }
+
+
+    public function case_tracing(Request $request)
+    {
+        $cases = SuspectCase::where('pscr_sars_cov_2', 'positive')
+                            ->get();
+
+        $patients = array();
+        foreach ($cases as $key => $case) {
+          $patients[$case->patient->id] = $case->patient;
+        }
+
+        $cont_casos_positivos = 0;
+        foreach ($patients as $key => $patient) {
+          if($patient->suspectCases->where('pscr_sars_cov_2', 'positive')->count() >= $cont_casos_positivos){
+            $cont_casos_positivos = $patient->suspectCases->where('pscr_sars_cov_2', 'positive')->count();
+          }
+        }
+
+        return view('lab.suspect_cases.reports.case_tracing', compact('patients','cont_casos_positivos'));
+    }
+
+
 
 
     public function download(File $file)
