@@ -13,6 +13,7 @@
             text-transform: uppercase;
             font-size: 17px;
             text-decoration: underline;
+
         }
 
         h2 {
@@ -67,7 +68,7 @@
         </div>
         <div class="cabecera" style="padding-left: 10px;">
             <h1>SERVICIO DE SALUD IQUIQUE / UNAP</h1>
-            <h2>LABORATORIO DE BIOLOGÍA MOLECULAR</h2>
+            <h2 style="line-height: 1px;">LABORATORIO DE BIOLOGÍA MOLECULAR</h2>
         </div>
 
     </div>
