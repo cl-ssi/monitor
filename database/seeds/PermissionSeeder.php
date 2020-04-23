@@ -34,6 +34,6 @@ class PermissionSeeder extends Seeder
         $permission = Permission::create(['name' => 'SanitaryResidence: admin']);
         $permission = Permission::create(['name' => 'File_report: viewer']);
         $permission = Permission::create(['name' => 'Historical Report']);
-
+        $permission = Permission::create(['name' => 'Report: Seguimiento Casos']);
     }
 }
