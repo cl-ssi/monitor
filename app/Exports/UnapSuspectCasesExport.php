@@ -15,6 +15,14 @@ use Carbon\Carbon;
 
 class UnapSuspectCasesExport implements FromCollection, WithHeadings, WithMapping, WithColumnFormatting, ShouldAutoSize
 {
+    private $cod_lab;
+    private $nombre_lab;
+
+    public function __construct($cod_lab, $nombre_lab) {
+          $this->cod_lab = $cod_lab;
+          $this->nombre_lab = $nombre_lab;
+    }
+
     /**
     * @return \Illuminate\Support\Collection
     */
@@ -27,13 +35,6 @@ class UnapSuspectCasesExport implements FromCollection, WithHeadings, WithMappin
             ->where('laboratory_id', 2)
             ->orderBy('id', 'desc')
             ->get();
-
-        // return DB::table('suspect_cases')->leftJoin('patients', 'suspect_cases.patient_id', '=', 'patients.id')
-        //     ->select('suspect_cases.id', 'suspect_cases.sample_at', 'suspect_cases.origin',
-        //              'patients.name', 'patients.fathers_family', 'patients.mothers_family',
-        //              'patients.run', 'age', )
-        //     ->orderBy('suspect_cases.id', 'desc')
-        //     ->get();
     }
 
     public function headings(): array
@@ -49,6 +50,15 @@ class UnapSuspectCasesExport implements FromCollection, WithHeadings, WithMappin
     */
     public function map($suspectCase): array
     {
+        if($suspectCase->patient->demographic) {
+          if($suspectCase->patient->demographic->telephone) {
+            $telephone = $suspectCase->patient->demographic->telephone;
+          }
+          else {
+            $telephone  = ''
+          }
+        }
+
         return [
             $suspectCase->id,
             Date::dateTimeToExcel($suspectCase->sample_at),
@@ -64,7 +74,7 @@ class UnapSuspectCasesExport implements FromCollection, WithHeadings, WithMappin
             $suspectCase->paho_flu,
             $suspectCase->status,
             $suspectCase->observation,
-            ($suspectCase->patient->demographic)?$case->patient->demographic->telephone:'' 
+            $telephone,
         ];
     }
 

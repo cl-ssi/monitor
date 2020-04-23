@@ -52,6 +52,42 @@ class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
     */
     public function map($suspectCase): array
     {
+        if($suspectCase->patient->demographic) {
+            if($suspectCase->patient->demographic->telephone) {
+                $telephone = $suspectCase->patient->demographic->telephone;
+            }
+            else {
+                $telephone  = '';
+            }
+
+            if($suspectCase->patient->demographic->telephone) {
+                $email = $suspectCase->patient->demographic->email;
+            }
+            else {
+                $email  = '';
+            }
+
+            if($suspectCase->patient->demographic->address ||
+                  $suspectCase->patient->demographic->number ||
+                  $suspectCase->patient->demographic->commune) {
+                $address = $suspectCase->patient->demographic->address;
+                $number = $suspectCase->patient->demographic->number;
+                $commune = $suspectCase->patient->demographic->commune;
+            }
+            else {
+                $address  = '';
+                $number = '';
+                $commune = '';
+            }
+        }
+        else {
+          $telephone  = '';
+          $email  = '';
+          $address  = '';
+          $number = '';
+          $commune = '';
+        }
+
         return [
             $suspectCase->patient->Identifier,
             $suspectCase->patient->fullName,
@@ -66,7 +102,9 @@ class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
             'TARAPACÁ',
             $this->nombre_lab,
             'TARAPACÁ',
-            //$suspectCase->patient->telephone,
+            $telephone,
+            $email,
+            $address.' '.$number.' '.$commune,
         ];
     }
 
