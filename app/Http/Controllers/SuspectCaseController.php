@@ -599,16 +599,8 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.unap', compact('suspectCases'));
     }
 
-    public function exportAllExcel(SuspectCase $suspect_case){
-        return Excel::download(new SuspectCasesExport, 'lista-casos.xlsx');
-    }
-
-    public function exportHetgExcel(SuspectCase $suspect_case){
-        return Excel::download(new HetgSuspectCasesExport, 'lista-casos-hetg.xlsx');
-    }
-
-    public function exportUnapExcel(SuspectCase $suspect_case){
-        return Excel::download(new UnapSuspectCasesExport, 'lista-casos-unap.xlsx');
+    public function exportExcel($cod_lab = mull){
+        return Excel::download(new SuspectCasesExport($cod_lab), 'lista-casos.xlsx');
     }
 
     public function exportMinsalExcel($cod_lab = null)
