@@ -21,6 +21,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\SuspectCasesExport;
 use App\Exports\HetgSuspectCasesExport;
 use App\Exports\UnapSuspectCasesExport;
+use App\Exports\MinsalSuspectCasesExport;
+use App\Exports\SeremiSuspectCasesExport;
 
 class SuspectCaseController extends Controller
 {
@@ -225,7 +227,9 @@ class SuspectCaseController extends Controller
                         'Región Aisén del Gral. Carlos Ibáñez del Campo',
                         'Región de Magallanes y de la Antártica Chilena',
                         'Región Metropolitana de Santiago',
-                        'Región de Ñuble'])->except([1192,1008]);
+                        'Región de Ñuble'])
+                        //->except([1192,1008]);
+                        ->whereNotIn('id',[1192,1008]);
                               // /->orWhereNull('patient.demographic.region')
         $cases_other_region = SuspectCase::All();
         $cases_other_region = $cases_other_region->whereIn('patient.demographic.region',
@@ -293,6 +297,7 @@ class SuspectCaseController extends Controller
           $cases_data = collect(json_decode($reportBackup->first()->data, true));
         }
 
+
         $cases = $cases_data->whereNotIn('patient.demographic.region',
                         [
                             'Arica y Parinacota',
@@ -309,7 +314,8 @@ class SuspectCaseController extends Controller
                            'Región Aisén del Gral. Carlos Ibáñez del Campo',
                            'Región de Magallanes y de la Antártica Chilena',
                            'Región Metropolitana de Santiago',
-                           'Región de Ñuble'])->except([1192,1008]);
+                           'Región de Ñuble'])
+                           ->whereNotIn('id',[1192,1008]);
                               // /->orWhereNull('patient.demographic.region')
         //$cases_other_region = SuspectCase::All();
         $cases_other_region = $cases_data->whereIn('patient.demographic.region',
@@ -365,10 +371,16 @@ class SuspectCaseController extends Controller
         //dd($total_muestras_x_lab);
         $total_muestras_x_lab_filas = array();
         $total_muestras_x_lab_columnas = array();
+
         foreach ($total_muestras_x_lab as $key => $muestra_x_lab) {
           $total_muestras_x_lab_columnas[$muestra_x_lab->laboratory] = 0;
           $total_muestras_x_lab_filas[$muestra_x_lab->pscr_sars_cov_2_at][$muestra_x_lab->laboratory]['cantidad'] = $muestra_x_lab->total;
         }
+
+        foreach ($total_muestras_x_lab as $key => $muestra_x_lab) {
+          $total_muestras_x_lab_columnas[$muestra_x_lab->laboratory] += $muestra_x_lab->total;
+        }
+        //dd($total_muestras_x_lab_columnas);
 
         return view('lab.suspect_cases.diary_lab_report', compact('total_muestras_diarias','total_muestras_x_lab_columnas','total_muestras_x_lab_filas'));
     }
@@ -518,7 +530,7 @@ class SuspectCaseController extends Controller
         }
         $today = date("Y-m-d");
         $cases = SuspectCase::where('laboratory_id',$cod_lab)->whereDate('pscr_sars_cov_2_at', '=', $today)->get()->sortByDesc('id');
-        return view('lab.suspect_cases.reports.minsal', compact('cases'));
+        return view('lab.suspect_cases.reports.minsal', compact('cases', 'cod_lab'));
     }
 
     public function report_seremi($lab = null)
@@ -535,7 +547,7 @@ class SuspectCaseController extends Controller
                 break;
         }
         $cases = SuspectCase::where('laboratory_id',$cod_lab)->get()->sortDesc();
-        return view('lab.suspect_cases.reports.seremi', compact('cases'));
+        return view('lab.suspect_cases.reports.seremi', compact('cases', 'cod_lab'));
     }
 
     public function hetg()
@@ -562,5 +574,33 @@ class SuspectCaseController extends Controller
 
     public function exportUnapExcel(SuspectCase $suspect_case){
         return Excel::download(new UnapSuspectCasesExport, 'lista-casos-unap.xlsx');
+    }
+
+    public function exportMinsalExcel($cod_lab = null)
+    {
+        switch ($cod_lab) {
+            case '1':
+                $nombre_lab = 'HETG';
+                break;
+            case '2':
+                $nombre_lab = 'UNAP';
+                break;
+        }
+
+        return Excel::download(new MinsalSuspectCasesExport($cod_lab, $nombre_lab), 'reporte-minsal.xlsx');
+    }
+
+    public function exportSeremiExcel($cod_lab = null)
+    {
+        switch ($cod_lab) {
+            case '1':
+                $nombre_lab = 'HETG';
+                break;
+            case '2':
+                $nombre_lab = 'UNAP';
+                break;
+        }
+
+        return Excel::download(new SeremiSuspectCasesExport($cod_lab, $nombre_lab), 'reporte-seremi.xlsx');
     }
 }
