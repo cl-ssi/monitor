@@ -100,7 +100,6 @@
 
                 <option value="Gendarmería de Chile">Gendarmería de Chile</option>
                 <option value="Hogar de Ancianos">Hogar de Ancianos</option>
-                <option value="Hospitalización Domiciliaria">Hospitalización Domiciliaria</option>
 
                 <option value="CECOSF El Boro">CECOSF El Boro</option>
                 <option value="CECOSF La Tortuga">CECOSF La Tortuga</option>
