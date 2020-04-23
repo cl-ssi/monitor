@@ -5,6 +5,10 @@
 @section('content')
 
 <h3 class="mb-3">Seguimiento de Casos sospecha</h3>
+
+</main><main class="py-4"> 
+
+
 <table class="table table-sm table-bordered table-responsive small" >
     <thead>
         <tr class="text-center">
@@ -73,11 +77,11 @@
         <tr>
             <td>{{ $patient->id }}</td>
             <td nowrap>{{ $patient->name }}</td>
-            <td nowrap>{{ $patient->getRunExportAttribute() }}</td>
+            <td nowrap>{{ $patient->identifier }}</td>
             <td nowrap>{{ $patient->suspectCases->last()->age }}</td>
             <td nowrap>{{ strtoupper($patient->genderEsp) }}</td>
             <td nowrap>{{ $patient->demographic->commune }}</td>
-            <td nowrap>{{ $patient->demographic->state }}</td>
+            <td nowrap>{{ $suspectCase->status }}</td>
 
             <td nowrap>{{ Carbon\Carbon::parse($suspectCase->sample_at)->format('Y-m-d') }}</td>
             <td nowrap>{{ $suspectCase->origin }}</td>
@@ -88,11 +92,14 @@
             <td nowrap>{{ Carbon\Carbon::parse($suspectCase->result_ifd_at)->format('Y-m-d') }}</td>
             <td nowrap>{{ $suspectCase->result_ifd }}</td>
 
-            <td nowrap>@if($suspectCase->external_laboratory != null)
+            {{-- <td nowrap>@if($suspectCase->external_laboratory != null)
                   {{$suspectCase->external_laboratory}}
                 @else
                   {{ $suspectCase->laboratory->name }}
-                @endif</td>
+                @endif</td> --}}
+            <td nowrap>{{ $suspectCase->procesingLab }}</td>
+
+
             <td nowrap>{{ Carbon\Carbon::parse($suspectCase->sent_isp_at)->format('Y-m-d') }}</td>
 
             <td nowrap>{{ Carbon\Carbon::parse($suspectCase->notification_at)->format('Y-m-d') }}</td>
