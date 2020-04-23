@@ -83,6 +83,12 @@
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.unap') }}">Laboratorio UNAP</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.index') }}">Todos los Casos</a>
+
+                                @can('Report: Seguimiento Casos')
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.case_tracing') }}">Seguimiento</a>
+                                @endcan
+
                             </div>
                         </li>
                         @endcan
@@ -127,15 +133,6 @@
                                 Casos
                             </a>
                         </li> -->
-                        @endcan
-
-                        @can('Report')
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('lab.suspect_cases.report.case_tracing') }}">
-                                <i class="fas fa-clipboard"></i>
-                                Seguimiento Casos
-                            </a>
-                        </li>
                         @endcan
 
 
