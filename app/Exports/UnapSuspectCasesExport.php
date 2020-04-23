@@ -64,6 +64,7 @@ class UnapSuspectCasesExport implements FromCollection, WithHeadings, WithMappin
             $suspectCase->paho_flu,
             $suspectCase->status,
             $suspectCase->observation,
+            ($suspectCase->patient->demographic)?$case->patient->demographic->telephone:'' 
         ];
     }
 

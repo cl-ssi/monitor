@@ -89,6 +89,7 @@
                 <a class="link" href="{{ route('patients.edit', $case->patient) }}">
                     {{ $case->patient->fullName }}
                     @if($case->gestation == "on") <img align="center" src="{{ asset('images/pregnant.png') }}" width="24"> @endif
+                    @if($case->close_contact == "1") <img align="center" src="{{ asset('images/contact.png') }}" width="24"> @endif
                  </a>
                  @endif
             </td>
