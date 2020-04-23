@@ -4,10 +4,9 @@
 
 @section('content')
 
-<h3 class="mb-3">Seguimiento de Casos sospecha</h3>
+<h3 class="mb-3">Seguimiento de Casos Positivos</h3>
 
-</main><main class="py-4"> 
-
+</main><main class="py-4">
 
 <table class="table table-sm table-bordered table-responsive small" >
     <thead>
@@ -83,33 +82,27 @@
             <td nowrap>{{ $patient->demographic->commune }}</td>
             <td nowrap>{{ $suspectCase->status }}</td>
 
-            <td nowrap>{{ Carbon\Carbon::parse($suspectCase->sample_at)->format('Y-m-d') }}</td>
+            <td nowrap>{{ $suspectCase->sample_at->format('Y-m-d') }}</td>
             <td nowrap>{{ $suspectCase->origin }}</td>
 
-            <td nowrap>{{ Carbon\Carbon::parse($suspectCase->pscr_sars_cov_2_at)->format('Y-m-d') }}</td>
-            <td nowrap>{{ $suspectCase->pscr_sars_cov_2 }}</td>
+            <td nowrap>{{ ($suspectCase->pscr_sars_cov_2_at) ? $suspectCase->pscr_sars_cov_2_at->format('Y-m-d') : '' }}</td>
+            <td nowrap>{{ $suspectCase->covid19 }}</td>
 
-            <td nowrap>{{ Carbon\Carbon::parse($suspectCase->result_ifd_at)->format('Y-m-d') }}</td>
+            <td nowrap>{{ ($suspectCase->result_ifd_at) ? $suspectCase->result_ifd_at->format('Y-m-d') : '' }}</td>
             <td nowrap>{{ $suspectCase->result_ifd }}</td>
 
-            {{-- <td nowrap>@if($suspectCase->external_laboratory != null)
-                  {{$suspectCase->external_laboratory}}
-                @else
-                  {{ $suspectCase->laboratory->name }}
-                @endif</td> --}}
             <td nowrap>{{ $suspectCase->procesingLab }}</td>
 
+            <td nowrap>{{ ($suspectCase->sent_isp_at) ? $suspectCase->sent_isp_at->format('Y-m-d') : '' }}</td>
 
-            <td nowrap>{{ Carbon\Carbon::parse($suspectCase->sent_isp_at)->format('Y-m-d') }}</td>
-
-            <td nowrap>{{ Carbon\Carbon::parse($suspectCase->notification_at)->format('Y-m-d') }}</td>
+            <td nowrap>{{ ($suspectCase->notification_at) ? $suspectCase->notification_at->format('Y-m-d') : '' }}</td>
             <td nowrap>{{ $suspectCase->notification_mechanism }}</td>
 
             <td nowrap>{{ $suspectCase->epidemiological_week }}</td>
             <td nowrap>{{ $suspectCase->epivigila }}</td>
             <td nowrap>{{ $suspectCase->paho_flu }}</td>
-            <td nowrap>@if($suspectCase->gestation == "1") Sí @endif</td>
-            <td nowrap>@if($suspectCase->close_contact == "1") Sí @endif</td>
+            <td nowrap>{{ ($suspectCase->gestation == 1) ? 'Sí' : '' }}</td>
+            <td nowrap>{{ ($suspectCase->close_contact == 1) ? 'Sí':'' }}</td>
 
             @if($patient->suspectCases->where('pscr_sars_cov_2', 'positive')->count() == 1)
               <td></td>
@@ -118,9 +111,9 @@
             @else
               @foreach ($patient->suspectCases->where('pscr_sars_cov_2', 'positive') as $key => $suspectCase)
                 @if($key <> 0) {{-- no se imprime el primer item --}}
-                  <td nowrap>{{ Carbon\Carbon::parse($suspectCase->sample_at)->format('Y-m-d') }}</td>
-                  <td nowrap>{{ Carbon\Carbon::parse($suspectCase->pscr_sars_cov_2_at)->format('Y-m-d') }}</td>
-                  <td>{{ $suspectCase->pscr_sars_cov_2}}</td>
+                  <td nowrap>{{ $suspectCase->sample_at->format('Y-m-d') }}</td>
+                  <td nowrap>{{ ($suspectCase->pscr_sars_cov_2_at)? $suspectCase->pscr_sars_cov_2_at->format('Y-m-d') : '' }}</td>
+                  <td>{{ $suspectCase->covid19}}</td>
                 @endif
               @endforeach
             @endif
