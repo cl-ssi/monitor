@@ -79,7 +79,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/','SuspectCaseController@index')->name('index')->middleware('auth','can:SuspectCase: list');
 
         Route::get('/exportSuspectCases/{lab}','SuspectCaseController@exportExcel')->name('export')->middleware('auth', 'can:Report');
-        
+
         Route::get('/create','SuspectCaseController@create')->name('create')->middleware('auth','can:SuspectCase: create');
         Route::post('/','SuspectCaseController@store')->name('store')->middleware('auth','can:SuspectCase: create');
         Route::get('/{suspect_case}/edit','SuspectCaseController@edit')->name('edit')->middleware('auth','can:SuspectCase: edit');
@@ -90,16 +90,10 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::get('historical_report','SuspectCaseController@historical_report')->name('historical_report')->middleware('auth','can:Report');
             Route::get('/minsal/{lab}','SuspectCaseController@report_minsal')->name('minsal')->middleware('auth','can:Report');
             Route::get('/seremi/{lab}','SuspectCaseController@report_seremi')->name('seremi')->middleware('auth','can:Report');
-<<<<<<< HEAD
-
-            Route::get('/minsal-export/{lab}','SuspectCaseController@exportMinsalExcel')->name('exportMinsal')->middleware('auth','can:Report');
-            Route::get('/seremi-export/{lab}','SuspectCaseController@exportSeremiExcel')->name('exportSeremi')->middleware('auth','can:Report');
-=======
             Route::get('/minsal-export/{lab}','SuspectCaseController@exportMinsalExcel')->name('exportMinsal')->middleware('auth');
             Route::get('/seremi-export/{lab}','SuspectCaseController@exportSeremiExcel')->name('exportSeremi')->middleware('auth');
             Route::get('diary_lab_report','SuspectCaseController@diary_lab_report')->name('diary_lab_report')->middleware('auth','can:Report');
             Route::get('case_tracing','SuspectCaseController@case_tracing')->name('case_tracing')->middleware('auth','can:Report');
->>>>>>> 8a616b01ab92de1e743c0682c0360721a4884013
         });
     });
 });
