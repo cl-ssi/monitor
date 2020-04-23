@@ -42,7 +42,7 @@
     </tbody>
 </table>
 
-<a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.exportUnap') }}">Descargar <i class="far fa-file-excel"></i></a>
+<a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.export', 'unap') }}">Descargar <i class="far fa-file-excel"></i></a>
 <a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.report.minsal','unap') }}">
     Reporte MINSAL
 </a>

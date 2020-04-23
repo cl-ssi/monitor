@@ -42,7 +42,7 @@
     </tbody>
 </table>
 
-<a type="button" class="btn btn-success" href="{{ route('lab.suspect_cases.exportAll') }}">Descargar <i class="far fa-file-excel"></i></a>
+<a type="button" class="btn btn-success" href="{{ route('lab.suspect_cases.export', 'all') }}">Descargar <i class="far fa-file-excel"></i></a>
 
 <div align="right">
     <input type="checkbox" name="positivos" id="chk_positivos" v="Positivos" checked/> Positivos

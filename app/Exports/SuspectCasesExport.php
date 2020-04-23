@@ -15,17 +15,33 @@ use Carbon\Carbon;
 
 class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping, WithColumnFormatting, ShouldAutoSize
 {
+    private $cod_lab;
+    private $lab_id;
+
+    public function __construct($cod_lab) {
+          $this->cod_lab = $cod_lab;
+          if($this->cod_lab == 'hetg'){
+              $this->lab_id = 1;
+          }
+          if($this->cod_lab == 'unap'){
+              $this->lab_id = 2;
+          }
+    }
     /**
     * @return \Illuminate\Support\Collection
     */
     public function collection()
     {
-        return SuspectCase::select('id', 'sample_at', 'origin', 'patient_id', 'patient_id',
-            'age', 'gender', 'result_ifd', 'pscr_sars_cov_2', 'epidemiological_week',
-            'epivigila', 'paho_flu', 'status', 'observation')
-            ->with('patient')
-            ->orderBy('id', 'desc')
-            ->get();
+        if($this->cod_lab == 'all'){
+          return SuspectCase::orderBy('suspect_cases.id', 'desc')
+              ->get();
+        }
+        else{
+          return SuspectCase::where('laboratory_id', $this->lab_id)
+              ->orderBy('suspect_cases.id', 'desc')
+              ->get();
+        }
+
 
         // return DB::table('suspect_cases')->leftJoin('patients', 'suspect_cases.patient_id', '=', 'patients.id')
         //     ->select('suspect_cases.id', 'suspect_cases.sample_at', 'suspect_cases.origin',

@@ -44,6 +44,7 @@ class SeremiSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
     */
     public function map($suspectCase): array
     {
+      // if($suspectCase->sample_at) ? Date::dateTimeToExcel($suspectCase->sample_at) : $var=null;
         return [
             $suspectCase->id,
             $suspectCase->patient->fullName,
@@ -63,6 +64,13 @@ class SeremiSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
 
     public function columnFormats(): array
     {
+        // if(){
+        //
+        // }
+        // else {
+        //   // code...
+        // }
+
         return [
             'A' => NumberFormat::FORMAT_GENERAL,
             'B' => NumberFormat::FORMAT_GENERAL,
@@ -73,7 +81,7 @@ class SeremiSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
             'G' => NumberFormat::FORMAT_GENERAL,
             'H' => NumberFormat::FORMAT_GENERAL,
             'I' => NumberFormat::FORMAT_DATE_DDMMYYYY,
-            'J' => NumberFormat::FORMAT_TEXT,
+            'J' => NumberFormat::FORMAT_GENERAL,
             'K' => NumberFormat::FORMAT_GENERAL,
             'L' => NumberFormat::FORMAT_GENERAL,
             'M' => NumberFormat::FORMAT_GENERAL,
