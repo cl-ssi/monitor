@@ -2,9 +2,13 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
     <title>Resultado de examen</title>
     <style>
+
+        body { font-family: futural; }
+
         h1 {
             text-transform: uppercase;
             font-size: 17px;
@@ -38,6 +42,7 @@
             font-size: 13px;
             width: 100%;
             text-align: center;
+            text-transform: uppercase;
         }
 
         .cabecera {
@@ -67,16 +72,16 @@
 
     </div>
 
-    <h2 id="peticion">RESULTADO DE EXAMEN N°: {{$case->id}} </h2>
+    <h2 id="peticion">RESULTADO DE EXAMEN N°: {{ $case->id }} </h2>
 
     <table id="demograficos">
         <tr>
             <th>NOMBRE COMPLETO</th>
-            <td>{{$case->patient->fullName }}</td>
+            <td>{{ $case->patient->fullName }}</td>
         </tr>
         <tr>
             <th>RUN</th>
-            <td>{{$case->patient->identifier}}</td>
+            <td>{{ $case->patient->identifier }}</td>
         </tr>
         <tr>
             <th>EDAD</th>
@@ -84,11 +89,11 @@
         </tr>
         <tr>
             <th>SEXO</th>
-            <td>{{strtoupper($case->patient->genderEsp)}}</td>
+            <td>{{ strtoupper($case->patient->genderEsp) }}</td>
         </tr>
         <tr>
             <th>ORIGEN</th>
-            <td>{{strtoupper($case->origin)}}</td>
+            <td>{{ strtoupper($case->origin) }}</td>
         </tr>
         <tr>
             <th>FECHA MUESTRA</th>
@@ -125,7 +130,7 @@
         </p>
 
 
-        <div style="height: 250px;">
+        <div style="height: 240px;">
 
         </div>
 
@@ -152,7 +157,7 @@
                 </td>
                 <td class="firma">
                     @if($case->validator)
-                    {{ strtoupper($case->validator->name) }}
+                    {{ $case->validator->name }}
                     @endif
                     <br>
                     VALIDADOR
