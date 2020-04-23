@@ -290,53 +290,65 @@ class SuspectCaseController extends Controller
         }
 
         $reportBackup = ReportBackup::whereDate('created_at',$date)->get();
-        $cases_data = collect();
-        //dd($cases_data);
-        //dd($date);
-        if($reportBackup->first() != null){
-          $cases_data = collect(json_decode($reportBackup->first()->data, true));
-        }
 
+        $html = json_decode($reportBackup->first()->data, true);
 
-        $cases = $cases_data->whereNotIn('patient.demographic.region',
-                        [
-                            'Arica y Parinacota',
-                           'Antofagasta',
-                           'Atacama',
-                           'Coquimbo',
-                           'Valparaíso',
-                           'Región del Libertador Gral. Bernardo O’Higgins',
-                           'Región del Maule',
-                           'Región del Biobío',
-                           'Región de la Araucanía',
-                           'Región de Los Ríos',
-                           'Región de Los Lagos',
-                           'Región Aisén del Gral. Carlos Ibáñez del Campo',
-                           'Región de Magallanes y de la Antártica Chilena',
-                           'Región Metropolitana de Santiago',
-                           'Región de Ñuble'])
-                           ->whereNotIn('id',[1192,1008]);
-                              // /->orWhereNull('patient.demographic.region')
-        //$cases_other_region = SuspectCase::All();
-        $cases_other_region = $cases_data->whereIn('patient.demographic.region',
-                        [
-                        'Arica y Parinacota',
-                           'Antofagasta',
-                           'Atacama',
-                           'Coquimbo',
-                           'Valparaíso',
-                           'Región del Libertador Gral. Bernardo O’Higgins',
-                           'Región del Maule',
-                           'Región del Biobío',
-                           'Región de la Araucanía',
-                           'Región de Los Ríos',
-                           'Región de Los Lagos',
-                           'Región Aisén del Gral. Carlos Ibáñez del Campo',
-                           'Región de Magallanes y de la Antártica Chilena',
-                           'Región Metropolitana de Santiago',
-                           'Región de Ñuble']);
+        $begin = strpos($html, '<main class="py-4 container">')+29;
+        $v1 = substr($html, $begin, 999999);
+        $end   = strpos($v1, '</main>')-7;
+        $main = substr($v1, 0, $end);
 
-        return view('lab.suspect_cases.reports.historical_report', compact('cases', 'cases_other_region', 'date'));
+        $begin = strpos($html, '<head>')+6;
+        $v1 = substr($html, $begin, 999999);
+        $end   = strpos($v1, '</head>');
+        $head = substr($v1, 0, $end);
+
+        return view('lab.suspect_cases.reports.historical_report', compact('head','main','date'));
+
+        // $cases_data = collect();
+        // if($reportBackup->first() != null){
+        //   $cases_data = collect(json_decode($reportBackup->first()->data, true));
+        // }
+        //
+        // $cases = $cases_data->whereNotIn('patient.demographic.region',
+        //                 [
+        //                     'Arica y Parinacota',
+        //                    'Antofagasta',
+        //                    'Atacama',
+        //                    'Coquimbo',
+        //                    'Valparaíso',
+        //                    'Región del Libertador Gral. Bernardo O’Higgins',
+        //                    'Región del Maule',
+        //                    'Región del Biobío',
+        //                    'Región de la Araucanía',
+        //                    'Región de Los Ríos',
+        //                    'Región de Los Lagos',
+        //                    'Región Aisén del Gral. Carlos Ibáñez del Campo',
+        //                    'Región de Magallanes y de la Antártica Chilena',
+        //                    'Región Metropolitana de Santiago',
+        //                    'Región de Ñuble'])
+        //                    ->whereNotIn('id',[1192,1008]);
+        //                       // /->orWhereNull('patient.demographic.region')
+        // //$cases_other_region = SuspectCase::All();
+        // $cases_other_region = $cases_data->whereIn('patient.demographic.region',
+        //                 [
+        //                 'Arica y Parinacota',
+        //                    'Antofagasta',
+        //                    'Atacama',
+        //                    'Coquimbo',
+        //                    'Valparaíso',
+        //                    'Región del Libertador Gral. Bernardo O’Higgins',
+        //                    'Región del Maule',
+        //                    'Región del Biobío',
+        //                    'Región de la Araucanía',
+        //                    'Región de Los Ríos',
+        //                    'Región de Los Lagos',
+        //                    'Región Aisén del Gral. Carlos Ibáñez del Campo',
+        //                    'Región de Magallanes y de la Antártica Chilena',
+        //                    'Región Metropolitana de Santiago',
+        //                    'Región de Ñuble']);
+        //
+        // return view('lab.suspect_cases.reports.historical_report', compact('cases', 'cases_other_region', 'date'));
     }
 
     public function diary_lab_report(Request $request)
