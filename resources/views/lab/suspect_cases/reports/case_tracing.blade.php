@@ -79,7 +79,7 @@
             <td nowrap>{{ $patient->identifier }}</td>
             <td nowrap>{{ $patient->suspectCases->last()->age }}</td>
             <td nowrap>{{ strtoupper($patient->genderEsp) }}</td>
-            <td nowrap>{{ $patient->demographic->commune }}</td>
+            <td nowrap>{{ ($patient->demographic) ? $patient->demographic->commune : '' }}</td>
             <td nowrap>{{ $suspectCase->status }}</td>
 
             <td nowrap>{{ $suspectCase->sample_at->format('Y-m-d') }}</td>
