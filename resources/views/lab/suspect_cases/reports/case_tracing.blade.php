@@ -75,11 +75,7 @@
         @endphp
         <tr>
             <td>{{ $patient->id }}</td>
-<<<<<<< HEAD
             <td nowrap>{{ $patient->getFullNameAttribute() }}</td>
-=======
-            <td nowrap>{{ $patient->fullName }}</td>
->>>>>>> 0f5106d379319aafd9e84a23458569f6cd78ccf2
             <td nowrap>{{ $patient->identifier }}</td>
             <td nowrap>{{ $patient->suspectCases->last()->age }}</td>
             <td nowrap>{{ strtoupper($patient->genderEsp) }}</td>
