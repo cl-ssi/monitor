@@ -290,18 +290,22 @@ class SuspectCaseController extends Controller
         }
 
         $reportBackup = ReportBackup::whereDate('created_at',$date)->get();
+        if($reportBackup->count() <> 0){
+          $html = json_decode($reportBackup->first()->data, true);
 
-        $html = json_decode($reportBackup->first()->data, true);
+          $begin = strpos($html, '<main class="py-4 container">')+29;
+          $v1 = substr($html, $begin, 999999);
+          $end   = strpos($v1, '</main>')-7;
+          $main = substr($v1, 0, $end);
 
-        $begin = strpos($html, '<main class="py-4 container">')+29;
-        $v1 = substr($html, $begin, 999999);
-        $end   = strpos($v1, '</main>')-7;
-        $main = substr($v1, 0, $end);
-
-        $begin = strpos($html, '<head>')+6;
-        $v1 = substr($html, $begin, 999999);
-        $end   = strpos($v1, '</head>');
-        $head = substr($v1, 0, $end);
+          $begin = strpos($html, '<head>')+6;
+          $v1 = substr($html, $begin, 999999);
+          $end   = strpos($v1, '</head>');
+          $head = substr($v1, 0, $end);
+        }else{
+          $head="";
+          $main="";
+        }
 
         return view('lab.suspect_cases.reports.historical_report', compact('head','main','date'));
 
@@ -408,14 +412,14 @@ class SuspectCaseController extends Controller
           $patients[$case->patient->id] = $case->patient;
         }
 
-        $cont_casos_positivos = 0;
+        $cont_casos = 0;
         foreach ($patients as $key => $patient) {
-          if($patient->suspectCases->where('pscr_sars_cov_2', 'positive')->count() >= $cont_casos_positivos){
-            $cont_casos_positivos = $patient->suspectCases->where('pscr_sars_cov_2', 'positive')->count();
+          if($patient->suspectCases->count() >= $cont_casos){
+            $cont_casos = $patient->suspectCases->where('pscr_sars_cov_2', 'positive')->count();
           }
         }
 
-        return view('lab.suspect_cases.reports.case_tracing', compact('patients','cont_casos_positivos'));
+        return view('lab.suspect_cases.reports.case_tracing', compact('patients','cont_casos'));
     }
 
 
