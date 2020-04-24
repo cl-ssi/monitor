@@ -20,6 +20,8 @@ class CreateDemographicsTable extends Migration
             $table->string('address')->nullable();
             $table->string('number')->nullable();
             $table->string('department')->nullable();
+            $table->string('nationality')->nullable();
+            
 
             $table->enum('region',['Arica y Parinacota',
                                    'Tarapacá',
