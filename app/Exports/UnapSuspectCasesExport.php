@@ -6,11 +6,23 @@ use App\SuspectCase;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class UnapSuspectCasesExport implements FromCollection, WithHeadings, WithMapping
+class UnapSuspectCasesExport implements FromCollection, WithHeadings, WithMapping, WithColumnFormatting, ShouldAutoSize
 {
+    private $cod_lab;
+    private $nombre_lab;
+
+    public function __construct($cod_lab, $nombre_lab) {
+          $this->cod_lab = $cod_lab;
+          $this->nombre_lab = $nombre_lab;
+    }
+
     /**
     * @return \Illuminate\Support\Collection
     */
@@ -23,13 +35,6 @@ class UnapSuspectCasesExport implements FromCollection, WithHeadings, WithMappin
             ->where('laboratory_id', 2)
             ->orderBy('id', 'desc')
             ->get();
-
-        // return DB::table('suspect_cases')->leftJoin('patients', 'suspect_cases.patient_id', '=', 'patients.id')
-        //     ->select('suspect_cases.id', 'suspect_cases.sample_at', 'suspect_cases.origin',
-        //              'patients.name', 'patients.fathers_family', 'patients.mothers_family',
-        //              'patients.run', 'age', )
-        //     ->orderBy('suspect_cases.id', 'desc')
-        //     ->get();
     }
 
     public function headings(): array
@@ -45,9 +50,18 @@ class UnapSuspectCasesExport implements FromCollection, WithHeadings, WithMappin
     */
     public function map($suspectCase): array
     {
+        if($suspectCase->patient->demographic) {
+          if($suspectCase->patient->demographic->telephone) {
+            $telephone = $suspectCase->patient->demographic->telephone;
+          }
+          else {
+            $telephone  = ''
+          }
+        }
+
         return [
             $suspectCase->id,
-            Carbon::parse($suspectCase->sample_at)->format('d-m-Y'),
+            Date::dateTimeToExcel($suspectCase->sample_at),
             $suspectCase->origin,
             $suspectCase->patient->fullName,
             $suspectCase->patient->Identifier,
@@ -60,6 +74,27 @@ class UnapSuspectCasesExport implements FromCollection, WithHeadings, WithMappin
             $suspectCase->paho_flu,
             $suspectCase->status,
             $suspectCase->observation,
+            $telephone,
         ];
     }
+
+    public function columnFormats(): array
+    {
+        return [
+            'A' => NumberFormat::FORMAT_GENERAL,
+            'B' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+            'C' => NumberFormat::FORMAT_GENERAL,
+            'D' => NumberFormat::FORMAT_GENERAL,
+            'F' => NumberFormat::FORMAT_GENERAL,
+            'G' => NumberFormat::FORMAT_GENERAL,
+            'H' => NumberFormat::FORMAT_GENERAL,
+            'I' => NumberFormat::FORMAT_GENERAL,
+            'J' => NumberFormat::FORMAT_GENERAL,
+            'K' => NumberFormat::FORMAT_GENERAL,
+            'L' => NumberFormat::FORMAT_GENERAL,
+            'M' => NumberFormat::FORMAT_GENERAL,
+            'N' => NumberFormat::FORMAT_GENERAL,
+        ];
+    }
+
 }

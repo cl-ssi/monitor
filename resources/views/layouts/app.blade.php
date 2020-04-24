@@ -11,7 +11,7 @@
     <title>{{ config('app.name') }} @yield('title')</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
 
     <!-- Font Awesome - load everything-->
     <script defer src="{{ asset('js/font-awesome/all.min.js') }}"></script>
@@ -83,6 +83,12 @@
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.unap') }}">Laboratorio UNAP</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.index') }}">Todos los Casos</a>
+
+                                @can('Report: Seguimiento Casos')
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.case_tracing') }}">Seguimiento</a>
+                                @endcan
+
                             </div>
                         </li>
                         @endcan
@@ -192,6 +198,10 @@
     @auth
     <div id="watermark">{{ Auth::id() }}</div>
     @endauth
+
+    <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('js/principal.js') }}"></script>
     @yield('custom_js')
 </body>
 
