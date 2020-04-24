@@ -415,9 +415,11 @@ class SuspectCaseController extends Controller
         $cont_casos = 0;
         foreach ($patients as $key => $patient) {
           if($patient->suspectCases->count() >= $cont_casos){
-            $cont_casos = $patient->suspectCases->where('pscr_sars_cov_2', 'positive')->count();
+            $cont_casos = $patient->suspectCases->count();
           }
         }
+
+        //dd($cont_casos);
 
         return view('lab.suspect_cases.reports.case_tracing', compact('patients','cont_casos'));
     }
