@@ -75,7 +75,11 @@
         @endphp
         <tr>
             <td>{{ $patient->id }}</td>
+<<<<<<< HEAD
             <td nowrap>{{ $patient->getFullNameAttribute() }}</td>
+=======
+            <td nowrap>{{ $patient->fullName }}</td>
+>>>>>>> 0f5106d379319aafd9e84a23458569f6cd78ccf2
             <td nowrap>{{ $patient->identifier }}</td>
             <td nowrap>{{ $patient->suspectCases->last()->age }}</td>
             <td nowrap>{{ strtoupper($patient->genderEsp) }}</td>
@@ -113,7 +117,7 @@
                 @if($key <> 0) {{-- no se imprime el primer item --}}
                   <td nowrap>{{ $suspectCase2->sample_at->format('Y-m-d') }}</td>
                   <td nowrap>{{ ($suspectCase2->pscr_sars_cov_2_at)? $suspectCase2->pscr_sars_cov_2_at->format('Y-m-d') : '' }}</td>
-                  <td>{{ $suspectCase2->covid19}}</td>
+                  <td>{{ $suspectCase2->covid19 }}</td>
                 @endif
               @endforeach
             @endif
