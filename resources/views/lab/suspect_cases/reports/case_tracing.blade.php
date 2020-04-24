@@ -75,7 +75,7 @@
         @endphp
         <tr>
             <td>{{ $patient->id }}</td>
-            <td nowrap>{{ $patient->name }}</td>
+            <td nowrap>{{ $patient->fullName }}</td>
             <td nowrap>{{ $patient->identifier }}</td>
             <td nowrap>{{ $patient->suspectCases->last()->age }}</td>
             <td nowrap>{{ strtoupper($patient->genderEsp) }}</td>
@@ -113,7 +113,7 @@
                 @if($key <> 0) {{-- no se imprime el primer item --}}
                   <td nowrap>{{ $suspectCase->sample_at->format('Y-m-d') }}</td>
                   <td nowrap>{{ ($suspectCase->pscr_sars_cov_2_at)? $suspectCase->pscr_sars_cov_2_at->format('Y-m-d') : '' }}</td>
-                  <td>{{ $suspectCase->covid19}}</td>
+                  <td>{{ $suspectCase->covid19 }}</td>
                 @endif
               @endforeach
             @endif
