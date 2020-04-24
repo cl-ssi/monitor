@@ -20,7 +20,7 @@
           <th colspan="2" nowrap>Entrega de resultados</th>
           <th colspan="5"></th>
 
-          @for ($i=0; $i < ($cont_casos_positivos-1); $i++)
+          @for ($i=0; $i < ($cont_casos-1); $i++)
             <th colspan="3" nowrap>Covid salida {{$i+1}}</th>
           @endfor
 
@@ -58,7 +58,7 @@
             <th>Gestante</th>
             <th nowrap>Contacto directo</th>
 
-            @for ($i=0; $i < ($cont_casos_positivos-1); $i++)
+            @for ($i=0; $i < ($cont_casos-1); $i++)
               <th nowrap>Fecha Muestra</th>
               <th nowrap>Fecha Resultado</th>
               <th>Covid</th>
@@ -109,11 +109,11 @@
               <td></td>
               <td></td>
             @else
-              @foreach ($patient->suspectCases->where('pscr_sars_cov_2', 'positive') as $key => $suspectCase)
+              @foreach ($patient->suspectCases as $key => $suspectCase2)
                 @if($key <> 0) {{-- no se imprime el primer item --}}
-                  <td nowrap>{{ $suspectCase->sample_at->format('Y-m-d') }}</td>
-                  <td nowrap>{{ ($suspectCase->pscr_sars_cov_2_at)? $suspectCase->pscr_sars_cov_2_at->format('Y-m-d') : '' }}</td>
-                  <td>{{ $suspectCase->covid19 }}</td>
+                  <td nowrap>{{ $suspectCase2->sample_at->format('Y-m-d') }}</td>
+                  <td nowrap>{{ ($suspectCase2->pscr_sars_cov_2_at)? $suspectCase2->pscr_sars_cov_2_at->format('Y-m-d') : '' }}</td>
+                  <td>{{ $suspectCase2->covid19 }}</td>
                 @endif
               @endforeach
             @endif
