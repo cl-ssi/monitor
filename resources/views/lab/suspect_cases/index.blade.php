@@ -42,7 +42,7 @@
     </tbody>
 </table>
 
-<a type="button" class="btn btn-success" href="{{ route('lab.suspect_cases.exportAll') }}">Descargar <i class="far fa-file-excel"></i></a>
+<a type="button" class="btn btn-success" href="{{ route('lab.suspect_cases.export', 'all') }}">Descargar <i class="far fa-file-excel"></i></a>
 
 <div align="right">
     <input type="checkbox" name="positivos" id="chk_positivos" v="Positivos" checked/> Positivos
@@ -89,6 +89,7 @@
                 <a class="link" href="{{ route('patients.edit', $case->patient) }}">
                     {{ $case->patient->fullName }}
                     @if($case->gestation == "on") <img align="center" src="{{ asset('images/pregnant.png') }}" width="24"> @endif
+                    @if($case->close_contact == "1") <img align="center" src="{{ asset('images/contact.png') }}" width="24"> @endif
                  </a>
                  @endif
             </td>
