@@ -75,7 +75,7 @@
         @endphp
         <tr>
             <td>{{ $patient->id }}</td>
-            <td nowrap>{{ $patient->name }}</td>
+            <td nowrap>{{ $patient->getFullNameAttribute() }}</td>
             <td nowrap>{{ $patient->identifier }}</td>
             <td nowrap>{{ $patient->suspectCases->last()->age }}</td>
             <td nowrap>{{ strtoupper($patient->genderEsp) }}</td>
@@ -104,7 +104,7 @@
             <td nowrap>{{ ($suspectCase->gestation == 1) ? 'Sí' : '' }}</td>
             <td nowrap>{{ ($suspectCase->close_contact == 1) ? 'Sí':'' }}</td>
 
-            @if($patient->suspectCases->where('pscr_sars_cov_2', 'positive')->count() == 1)
+            @if($patient->suspectCases->count() == 1)
               <td></td>
               <td></td>
               <td></td>
