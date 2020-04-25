@@ -44,7 +44,7 @@ class ReportBackup extends Command
       // $cases = SuspectCase::with('patient')->with('patient.demographic')->get();
 
       $cases = SuspectCase::All();
-      $cases = $cases->whereNotIn('patient.demographic.region',
+      $cases = $cases->where('discharge_test', '<>', 1)->whereNotIn('patient.demographic.region',
                       [
                       'Arica y Parinacota',
                       'Antofagasta',
@@ -60,12 +60,9 @@ class ReportBackup extends Command
                       'Región Aisén del Gral. Carlos Ibáñez del Campo',
                       'Región de Magallanes y de la Antártica Chilena',
                       'Región Metropolitana de Santiago',
-                      'Región de Ñuble'])
-                      //->except([1192,1008]);
-                      ->whereNotIn('id',[1192,1008]);
-                            // /->orWhereNull('patient.demographic.region')
+                      'Región de Ñuble']);
       $cases_other_region = SuspectCase::All();
-      $cases_other_region = $cases_other_region->whereIn('patient.demographic.region',
+      $cases_other_region = $cases_other_region->where('discharge_test', '<>', 1)->whereIn('patient.demographic.region',
                       [
                       'Arica y Parinacota',
                       'Antofagasta',
