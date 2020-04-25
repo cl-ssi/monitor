@@ -44,6 +44,8 @@
                 <option value="Servico Médico Legal" {{ ($suspectCase->origin == 'Servicio Médico Legal')?'selected':'' }}>Servicio Médico Legal</option>
                 <option value="Servicio De Salud" {{ ($suspectCase->origin == 'Servicio De Salud')?'selected':'' }}>Servicio De Salud</option>
 
+                <option value="Toma de Muestra Domiciliaria" {{ ($suspectCase->origin == 'Toma de Muestra Domiciliaria')?'selected':'' }}>Toma de Muestra Domiciliaria</option>
+
                 <option value="Gendarmería de Chile" {{ ($suspectCase->origin == 'Gendarmería de Chile')?'selected':'' }}>Gendarmería de Chile</option>
                 <option value="Hogar de Ancianos" {{ ($suspectCase->origin == 'Hogar de Ancianos')?'selected':'' }}>Hogar de Ancianos</option>
 
@@ -316,6 +318,7 @@
         <fieldset class="form-group col-6 col-md-3">
             <label for="for_notification_mechanism">Mecanismo de Notificación</label>
             <select name="notification_mechanism" id="for_notification_mechanism" class="form-control">
+                <option></option>
                 <option value="Pendiente"
                     {{ ($suspectCase->notification_mechanism == 'Pendiente')?'selected':'' }}>
                     Pendiente</option>
