@@ -98,6 +98,8 @@
                 <option value="Servicio Médico Legal">Servicio Médico Legal</option>
                 <option value="Servicio De Salud">Servicio De Salud</option>
 
+                <option value="Toma de Muestra Domiciliaria">Toma de Muestra Domiciliaria</option>
+
                 <option value="Gendarmería de Chile">Gendarmería de Chile</option>
                 <option value="Hogar de Ancianos">Hogar de Ancianos</option>
 

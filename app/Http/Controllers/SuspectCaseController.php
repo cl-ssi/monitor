@@ -211,7 +211,7 @@ class SuspectCaseController extends Controller
     public function report()
     {
         $cases = SuspectCase::All();
-        $cases = $cases->whereNotIn('patient.demographic.region',
+        $cases = $cases->where('discharge_test', '<>', 1)->whereNotIn('patient.demographic.region',
                         [
                         'Arica y Parinacota',
                         'Antofagasta',
@@ -227,10 +227,7 @@ class SuspectCaseController extends Controller
                         'Región Aisén del Gral. Carlos Ibáñez del Campo',
                         'Región de Magallanes y de la Antártica Chilena',
                         'Región Metropolitana de Santiago',
-                        'Región de Ñuble'])
-                        //->except([1192,1008]);
-                        ->whereNotIn('id',[1192,1008]);
-                              // /->orWhereNull('patient.demographic.region')
+                        'Región de Ñuble']);
         $cases_other_region = SuspectCase::All();
         $cases_other_region = $cases_other_region->whereIn('patient.demographic.region',
                         [
@@ -406,6 +403,24 @@ class SuspectCaseController extends Controller
     {
         $cases = SuspectCase::where('pscr_sars_cov_2', 'positive')
                             ->get();
+        $cases = $cases->where('discharge_test', '<>', 1)
+                        ->whereNotIn('patient.demographic.region',
+                        [
+                        'Arica y Parinacota',
+                        'Antofagasta',
+                        'Atacama',
+                        'Coquimbo',
+                        'Valparaíso',
+                        'Región del Libertador Gral. Bernardo O’Higgins',
+                        'Región del Maule',
+                        'Región del Biobío',
+                        'Región de la Araucanía',
+                        'Región de Los Ríos',
+                        'Región de Los Lagos',
+                        'Región Aisén del Gral. Carlos Ibáñez del Campo',
+                        'Región de Magallanes y de la Antártica Chilena',
+                        'Región Metropolitana de Santiago',
+                        'Región de Ñuble']);
 
         $patients = array();
         foreach ($cases as $key => $case) {
