@@ -40,6 +40,7 @@
     </thead>
     <tbody>
         @foreach ($bookings as $booking)
+        @if ($booking->status == 'Residencia Sanitaria' and $booking->patient->suspectCases->last()->status == 'Residencia Sanitaria')
         <tr>
             <td nowrap>{{$booking->id}}</td>
             <td nowrap>Iquique</td>
@@ -69,6 +70,7 @@
             <td nowrap></td>
             <td nowrap> {{ $booking->observations }}</td>
         </tr>
+        @endif
         @endforeach
     </tbody>
 
