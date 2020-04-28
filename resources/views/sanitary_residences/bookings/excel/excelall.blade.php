@@ -40,7 +40,6 @@
     </thead>
     <tbody>
         @foreach ($bookings as $key => $booking)
-        @if ($booking->status == 'Residencia Sanitaria' and $booking->patient->suspectCases->first()->status == 'Residencia Sanitaria')
         <tr>
             <td nowrap>{{ ++$key }}</td>
             <td nowrap>Iquique</td>
@@ -70,7 +69,6 @@
             <td nowrap></td>
             <td nowrap> {{ $booking->observations }}</td>
         </tr>
-        @endif
         @endforeach
     </tbody>
 

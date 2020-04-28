@@ -139,6 +139,7 @@ class BookingController extends Controller
     {
         //$bookings = Booking::all();
         $bookings = Booking::where('status', 'Residencia Sanitaria')->get();
-        return view('sanitary_residences.bookings.excel.excelall', compact('bookings'));
+        $bookings = $bookings->patient->suspectCases->first()->status == 'Residencia Sanitaria';
+        //return view('sanitary_residences.bookings.excel.excelall', compact('bookings'));
     }
 }
