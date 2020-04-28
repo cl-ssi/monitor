@@ -49,6 +49,9 @@
 <a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.report.seremi','hetg') }}">
     Reporte SEREMI
 </a>
+<a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.report.estadistico_diario_covid19','hetg') }}">
+    Reporte estadistico diario
+</a>
 
 <div align="right">
     <input type="checkbox" name="positivos" id="chk_positivos" v="Positivos" checked/> Positivos

@@ -94,6 +94,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::get('/seremi-export/{lab}','SuspectCaseController@exportSeremiExcel')->name('exportSeremi')->middleware('auth');
             Route::get('diary_lab_report','SuspectCaseController@diary_lab_report')->name('diary_lab_report')->middleware('auth','can:Report');
             Route::get('case_tracing','SuspectCaseController@case_tracing')->name('case_tracing')->middleware('auth','can:Report');
+            Route::get('estadistico_diario_covid19','SuspectCaseController@estadistico_diario_covid19')->name('estadistico_diario_covid19')->middleware('auth','can:Report');
         });
     });
 });
