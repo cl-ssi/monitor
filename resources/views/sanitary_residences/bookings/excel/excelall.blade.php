@@ -39,12 +39,10 @@
         <th nowrap>OBSERVACIONES</th>
     </thead>
     <tbody>
-        @php $pos=1;
-        @endphp
-        @foreach ($bookings as $booking)
+        @foreach ($bookings as $key => $booking)
         @if ($booking->status == 'Residencia Sanitaria' and $booking->patient->suspectCases->first()->status == 'Residencia Sanitaria')
         <tr>
-            <td nowrap>{{$pos++}}</td>
+            <td nowrap>{{ ++$key }}</td>
             <td nowrap>Iquique</td>
             <td nowrap>Iquique</td>
             <td nowrap>{{$booking->room->residence->name}}</td>
