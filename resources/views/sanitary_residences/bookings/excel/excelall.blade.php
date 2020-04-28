@@ -39,10 +39,12 @@
         <th nowrap>OBSERVACIONES</th>
     </thead>
     <tbody>
+        @php $pos=1;
+        @endphp
         @foreach ($bookings as $booking)
         @if ($booking->status == 'Residencia Sanitaria' and $booking->patient->suspectCases->last()->status == 'Residencia Sanitaria')
         <tr>
-            <td nowrap>{{$loop->count - $loop->remaining}}</td>
+            <td nowrap>{{$pos++}}</td>
             <td nowrap>Iquique</td>
             <td nowrap>Iquique</td>
             <td nowrap>{{$booking->room->residence->name}}</td>
