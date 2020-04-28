@@ -37,13 +37,13 @@ class Booking extends Model
         return $this->hasMany('App\SanitaryResidence\VitalSign');
     }
 
-    public function indicaciones() {        
+    public function indicaciones() {
         return $this->hasMany('App\SanitaryResidence\Indication');
     }
 
     public function evolutions() {
-        return $this->hasMany('App\SanitaryResidence\Evolution');
+        return $this->hasMany('App\SanitaryResidence\Evolution')->orderBy('created_at');
     }
 
-    
+
 }
