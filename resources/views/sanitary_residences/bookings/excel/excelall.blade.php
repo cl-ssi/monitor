@@ -42,7 +42,7 @@
         @foreach ($bookings as $booking)
         @if ($booking->status == 'Residencia Sanitaria' and $booking->patient->suspectCases->last()->status == 'Residencia Sanitaria')
         <tr>
-            <td nowrap>{{$booking->id}}</td>
+            <td nowrap>{{$loop->iteration}}</td>
             <td nowrap>Iquique</td>
             <td nowrap>Iquique</td>
             <td nowrap>{{$booking->room->residence->name}}</td>
