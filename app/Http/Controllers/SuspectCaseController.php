@@ -439,6 +439,54 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.reports.case_tracing', compact('patients','cont_casos'));
     }
 
+    public function estadistico_diario_covid19(Request $request)
+    {
+        $yesterday = Carbon::now()->subDays(1)->format('Y-m-d 21:00');
+        $now = Carbon::now()->format('Y-m-d 21:00');
+        //dd($yesterday, $now);
+
+        $array = array();
+        $cases = SuspectCase::whereBetween('created_at',[$yesterday,$now])
+                            ->where('external_laboratory',NULL)
+                            ->get();
+        //dd($cases);
+        foreach ($cases as $key => $case) {
+          $array[$case->laboratory->name]['muestras_en_espera'] = 0;
+          $array[$case->laboratory->name]['muestras_recibidas'] = 0;
+          $array[$case->laboratory->name]['muestras_procesadas'] = 0;
+          $array[$case->laboratory->name]['muestras_positivas'] = 0;
+          $array[$case->laboratory->name]['muestras_procesadas_acumulados'] = 0;
+          $array[$case->laboratory->name]['muestras_procesadas_positivo'] = 0;
+        }
+
+        foreach ($cases as $key => $case) {
+          if($case->pscr_sars_cov_2 == "pending"){
+            $array[$case->laboratory->name]['muestras_en_espera'] += 1;
+          }
+          $array[$case->laboratory->name]['muestras_recibidas'] += 1;
+          if($case->pscr_sars_cov_2 != "pending" || $case->pscr_sars_cov_2 != "rejected"){
+            $array[$case->laboratory->name]['muestras_procesadas'] += 1;
+          }
+          if($case->pscr_sars_cov_2 == "positive"){
+            $array[$case->laboratory->name]['muestras_positivas'] += 1;
+          }
+
+          $array[$case->laboratory->name]['muestras_procesadas_acumulados'] = SuspectCase::where('external_laboratory',NULL)
+                                                                                         ->where('laboratory_id',$case->laboratory_id)
+                                                                                         ->where('pscr_sars_cov_2','<>','pending')
+                                                                                         ->where('pscr_sars_cov_2','<>','rejected')
+                                                                                         ->count();
+
+          $array[$case->laboratory->name]['muestras_procesadas_positivo'] = SuspectCase::where('external_laboratory',NULL)
+                                                                                         ->where('laboratory_id',$case->laboratory_id)
+                                                                                         ->where('pscr_sars_cov_2','positive')
+                                                                                         ->count();
+        }
+
+        //dd($array);
+
+        return view('lab.suspect_cases.reports.estadistico_diario_covid19', compact('array','yesterday', 'now'));
+    }
 
 
 
