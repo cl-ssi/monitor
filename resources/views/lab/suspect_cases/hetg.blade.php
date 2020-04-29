@@ -14,12 +14,12 @@
         </a>
     </div>
     @endcan
-    <div class="col-7 col-sm-4" role="alert">
+    {{-- <div class="col-7 col-sm-4" role="alert">
         <input class="form-control" id="inputSearch" type="text" placeholder="Buscar">
-    </div>
+    </div> --}}
 </div>
 
-<table class="table table-sm table-bordered">
+{{-- <table class="table table-sm table-bordered">
     <thead>
         <tr class="text-center">
             <th>Total enviados a análisis</th>
@@ -40,7 +40,7 @@
             <td>{{ $suspectCases->where('pscr_sars_cov_2','undetermined')->count() }}</td>
         </tr>
     </tbody>
-</table>
+</table> --}}
 
 <a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.export', 'hetg') }}">Descargar <i class="far fa-file-excel"></i></a>
 <a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.report.minsal','hetg') }}">
@@ -56,22 +56,23 @@
 <div align="right">
 <form method="get" action="{{ route('lab.suspect_cases.hetg') }}">
 
-      <div class="input-group mb-3 col-12 col-sm-5">
-        <div class="input-group-prepend">
-            <span class="input-group-text">Búsqueda</span>
-        </div>
+  <input type="checkbox" name="positivos" id="chk_positivos" v="Positivos" {{ ($positivos)?'checked':'' }} /> Positivos
+  <input type="checkbox" name="negativos" id="chk_negativos" v="Negativos" {{ ($negativos)?'checked':'' }} /> Negativos
+  <input type="checkbox" name="pendientes" id="chk_pendientes" v="Pendientes" {{ ($pendientes)?'checked':'' }} /> Pendientes
+  <input type="checkbox" name="rechazados" id="chk_rechazados" v="Rechazados" {{ ($rechazados)?'checked':'' }} /> Rechazados
+  <input type="checkbox" name="indeterminados" id="chk_indeterminados" v="Indeterminados" {{ ($indeterminados)?'checked':'' }} /> Indeterminados
 
-        <input class="form-control" type="text" placeholder="Buscar" name="text" value="{{$text}}">
-        <div class="input-group-append">
-            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
-        </div>
-      </div>
+  <div class="input-group mb-3 col-12 col-sm-5">
+    <div class="input-group-prepend">
+        <span class="input-group-text">Búsqueda</span>
+    </div>
 
-      <input type="checkbox" name="positivos" id="chk_positivos" v="Positivos" {{ ($positivos)?'checked':'' }} onChange="this.form.submit()"/> Positivos
-      <input type="checkbox" name="negativos" id="chk_negativos" v="Negativos" {{ ($negativos)?'checked':'' }} onChange="this.form.submit()"/> Negativos
-      <input type="checkbox" name="pendientes" id="chk_pendientes" v="Pendientes" {{ ($pendientes)?'checked':'' }} onChange="this.form.submit()"/> Pendientes
-      <input type="checkbox" name="rechazados" id="chk_rechazados" v="Rechazados" {{ ($rechazados)?'checked':'' }} onChange="this.form.submit()"/> Rechazados
-      <input type="checkbox" name="indeterminados" id="chk_indeterminados" v="Indeterminados" {{ ($indeterminados)?'checked':'' }} onChange="this.form.submit()"/> Indeterminados
+    <input class="form-control" type="text" placeholder="Buscar" name="text" value="{{$text}}">
+    <div class="input-group-append">
+        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
+    </div>
+  </div>
+
 </form>
 </div>
 
