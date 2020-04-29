@@ -67,18 +67,11 @@ class SuspectCaseController extends Controller
                                       ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
                                       ->paginate(50);
         }else{
-          $suspectCases = SuspectCase::latest('id')->paginate(50);
+          $suspectCases = SuspectCase::latest('id')->where('pscr_sars_cov_2',"pending")->paginate(50);
+          $request->pendientes = "on";
         }
 
-        if ($positivos == NULL && $negativos == NULL &&  $pendientes == NULL &&  $rechazados == NULL &&  $indeterminados == NULL) {
-          $positivos = "on";
-          $negativos = "on";
-          $pendientes = "on";
-          $rechazados = "on";
-          $indeterminados = "on";
-        }
-
-        return view('lab.suspect_cases.index', compact('suspectCases','positivos','negativos','pendientes','rechazados','indeterminados','text'));
+        return view('lab.suspect_cases.index', compact('suspectCases','request'));
     }
 
     /**
@@ -702,8 +695,6 @@ class SuspectCaseController extends Controller
         $pendientes = NULL;
         $rechazados = NULL;
         $indeterminados = NULL;
-        $text = NULL;
-        $parameters = $request->has('text');
 
         if ($request->get('positivos') == "on") {
           $positivos = "positive";
@@ -721,9 +712,9 @@ class SuspectCaseController extends Controller
           $indeterminados = "undetermined";
         }
         $text = $request->get('text');
-        //dd($positivos, $negativos, $pendientes, $rechazados, $indeterminados, $text);
 
-        if($parameters){
+        //dd($text);
+        if($text != null){
           //Hospital Ernesto Torres Galdames laboratory_id = 1
           $suspectCases = SuspectCase::where('laboratory_id',1)
                                       ->whereHas('patient', function($q) use ($text){
@@ -732,18 +723,11 @@ class SuspectCaseController extends Controller
                                       ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
                                       ->paginate(50);
         }else{
-          $suspectCases = SuspectCase::where('laboratory_id',1)->paginate(50);
+          $suspectCases = SuspectCase::where('laboratory_id',1)->where('pscr_sars_cov_2','pending')->paginate(50);
+          $request->pendientes = "on";
         }
 
-        if ($positivos == NULL && $negativos == NULL &&  $pendientes == NULL &&  $rechazados == NULL &&  $indeterminados == NULL) {
-          $positivos = "on";
-          $negativos = "on";
-          $pendientes = "on";
-          $rechazados = "on";
-          $indeterminados = "on";
-        }
-
-        return view('lab.suspect_cases.hetg', compact('suspectCases','positivos','negativos','pendientes','rechazados','indeterminados','text'));
+        return view('lab.suspect_cases.hetg', compact('suspectCases','request'));
     }
 
     public function unap(Request $request)
@@ -774,8 +758,8 @@ class SuspectCaseController extends Controller
         $text = $request->get('text');
         //dd($positivos, $negativos, $pendientes, $rechazados, $indeterminados);
 
-        if($parameters){
-          //laboratorio UNAP laboratory_id = 2
+        if($text != null){
+          //Hospital Unap laboratory_id = 2
           $suspectCases = SuspectCase::where('laboratory_id',2)
                                       ->whereHas('patient', function($q) use ($text){
                                               $q->Where('name', 'LIKE', '%'.$text.'%');
@@ -783,18 +767,11 @@ class SuspectCaseController extends Controller
                                       ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
                                       ->paginate(50);
         }else{
-          $suspectCases = SuspectCase::where('laboratory_id',2)->paginate(50);
+          $suspectCases = SuspectCase::where('laboratory_id',2)->where('pscr_sars_cov_2','pending')->paginate(50);
+          $request->pendientes = "on";
         }
 
-        if ($positivos == NULL && $negativos == NULL &&  $pendientes == NULL &&  $rechazados == NULL &&  $indeterminados == NULL) {
-          $positivos = "on";
-          $negativos = "on";
-          $pendientes = "on";
-          $rechazados = "on";
-          $indeterminados = "on";
-        }
-
-        return view('lab.suspect_cases.unap', compact('suspectCases','positivos','negativos','pendientes','rechazados','indeterminados','text'));
+        return view('lab.suspect_cases.unap', compact('suspectCases','request'));
     }
 
     public function exportExcel($cod_lab = mull){
