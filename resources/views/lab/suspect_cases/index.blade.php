@@ -47,18 +47,18 @@
 <div align="right">
 <form method="get" action="{{ route('lab.suspect_cases.index') }}">
 
-  <input type="checkbox" name="positivos" id="chk_positivos" v="Positivos" {{ ($positivos)?'checked':'' }} /> Positivos
-  <input type="checkbox" name="negativos" id="chk_negativos" v="Negativos" {{ ($negativos)?'checked':'' }} /> Negativos
-  <input type="checkbox" name="pendientes" id="chk_pendientes" v="Pendientes" {{ ($pendientes)?'checked':'' }} /> Pendientes
-  <input type="checkbox" name="rechazados" id="chk_rechazados" v="Rechazados" {{ ($rechazados)?'checked':'' }} /> Rechazados
-  <input type="checkbox" name="indeterminados" id="chk_indeterminados" v="Indeterminados" {{ ($indeterminados)?'checked':'' }} /> Indeterminados
+  <input type="checkbox" name="positivos" id="chk_positivos" v="Positivos" {{ ($request->positivos)?'checked':'' }} /> Positivos
+  <input type="checkbox" name="negativos" id="chk_negativos" v="Negativos" {{ ($request->negativos)?'checked':'' }} /> Negativos
+  <input type="checkbox" name="pendientes" id="chk_pendientes" v="Pendientes" {{ ($request->pendientes)?'checked':'' }} /> Pendientes
+  <input type="checkbox" name="rechazados" id="chk_rechazados" v="Rechazados" {{ ($request->rechazados)?'checked':'' }} /> Rechazados
+  <input type="checkbox" name="indeterminados" id="chk_indeterminados" v="Indeterminados" {{ ($request->indeterminados)?'checked':'' }} /> Indeterminados
 
   <div class="input-group mb-3 col-12 col-sm-5">
     <div class="input-group-prepend">
         <span class="input-group-text">Búsqueda</span>
     </div>
 
-    <input class="form-control" type="text" placeholder="Buscar" name="text" value="{{$text}}">
+    <input class="form-control" type="text" name="text" value="{{$request->text}}" placeholder="Nombre">
     <div class="input-group-append">
         <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
     </div>
