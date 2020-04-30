@@ -31,13 +31,37 @@ class SuspectCaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(request $request)
     {
-        $suspectCases = SuspectCase::with('patient')->latest('id')->get();
-        // echo '<pre>';
-        // print_r($suspectCases->toArray());
-        // die();
-        return view('lab.suspect_cases.index', compact('suspectCases'));
+      if ($request->get('positivos') == "on") {
+        $positivos = "positive";
+      }else{$positivos = NULL;}
+
+      if ($request->get('negativos') == "on") {
+        $negativos = "negative";
+      }else{$negativos = NULL;}
+
+      if ($request->get('pendientes') == "on") {
+        $pendientes = "pending";
+      }else{$pendientes = NULL;}
+
+      if ($request->get('rechazados') == "on") {
+        $rechazados = "rejected";
+      }else{$rechazados = NULL;}
+
+      if ($request->get('indeterminados') == "on") {
+        $indeterminados = "undetermined";
+      }else{$indeterminados = NULL;}
+
+      $text = $request->get('text');
+
+      $suspectCases = SuspectCase::whereHas('patient', function($q) use ($text){
+                                          $q->Where('name', 'LIKE', '%'.$text.'%');
+                                  })
+                                  ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
+                                  ->paginate(50);//->appends(request()->query());
+
+        return view('lab.suspect_cases.index', compact('suspectCases','request'));
     }
 
     /**
@@ -210,6 +234,26 @@ class SuspectCaseController extends Controller
 
     public function report()
     {
+        $patients = Patient::whereHas('suspectCases', function ($q) { $q->where('pscr_sars_cov_2','positive'); })->get();
+        $patients = $patients->whereNotIn('demographic.region',
+                    [
+                    'Arica y Parinacota',
+                    'Antofagasta',
+                    'Atacama',
+                    'Coquimbo',
+                    'Valparaíso',
+                    'Región del Libertador Gral. Bernardo O’Higgins',
+                    'Región del Maule',
+                    'Región del Biobío',
+                    'Región de la Araucanía',
+                    'Región de Los Ríos',
+                    'Región de Los Lagos',
+                    'Región Aisén del Gral. Carlos Ibáñez del Campo',
+                    'Región de Magallanes y de la Antártica Chilena',
+                    'Región Metropolitana de Santiago',
+                    'Región de Ñuble']);
+
+
         $cases = SuspectCase::All();
         $cases = $cases->where('discharge_test', '<>', 1)->whereNotIn('patient.demographic.region',
                         [
@@ -275,7 +319,7 @@ class SuspectCaseController extends Controller
         // echo '<pre>';
         // print_r($evo);
         // die();
-        return view('lab.suspect_cases.report', compact('cases', 'cases_other_region', 'evolucion'));
+        return view('lab.suspect_cases.report', compact('patients', 'cases', 'cases_other_region', 'evolucion'));
     }
 
     public function historical_report(Request $request)
@@ -644,18 +688,73 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.reports.seremi', compact('cases', 'cod_lab'));
     }
 
-    public function hetg()
+    public function hetg(Request $request)
     {
-        //Hospital Ernesto Torres Galdames laboratory_id = 1
-        $suspectCases = SuspectCase::where('laboratory_id',1)->get()->sortByDesc('id');
-        return view('lab.suspect_cases.hetg', compact('suspectCases'));
+      if ($request->get('positivos') == "on") {
+        $positivos = "positive";
+      }else{$positivos = NULL;}
+
+      if ($request->get('negativos') == "on") {
+        $negativos = "negative";
+      }else{$negativos = NULL;}
+
+      if ($request->get('pendientes') == "on") {
+        $pendientes = "pending";
+      }else{$pendientes = NULL;}
+
+      if ($request->get('rechazados') == "on") {
+        $rechazados = "rejected";
+      }else{$rechazados = NULL;}
+
+      if ($request->get('indeterminados') == "on") {
+        $indeterminados = "undetermined";
+      }else{$indeterminados = NULL;}
+
+      $text = $request->get('text');
+
+      $suspectCases = SuspectCase::where('laboratory_id',1)
+                                  ->whereHas('patient', function($q) use ($text){
+                                          $q->Where('name', 'LIKE', '%'.$text.'%');
+                                  })
+                                  ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
+                                  ->paginate(50);//->appends(request()->query());
+
+        return view('lab.suspect_cases.hetg', compact('suspectCases','request'));
     }
 
-    public function unap()
+    public function unap(Request $request)
     {
-        //laboratorio UNAP laboratory_id = 2
-        $suspectCases = SuspectCase::where('laboratory_id',2)->get()->sortByDesc('id');
-        return view('lab.suspect_cases.unap', compact('suspectCases'));
+        if ($request->get('positivos') == "on") {
+          $positivos = "positive";
+        }else{$positivos = NULL;}
+
+        if ($request->get('negativos') == "on") {
+          $negativos = "negative";
+        }else{$negativos = NULL;}
+
+        if ($request->get('pendientes') == "on") {
+          $pendientes = "pending";
+        }else{$pendientes = NULL;}
+
+        if ($request->get('rechazados') == "on") {
+          $rechazados = "rejected";
+        }else{$rechazados = NULL;}
+
+        if ($request->get('indeterminados') == "on") {
+          $indeterminados = "undetermined";
+        }else{$indeterminados = NULL;}
+
+        $text = $request->get('text');
+
+        $suspectCases = SuspectCase::where('laboratory_id',2)
+                                    ->whereHas('patient', function($q) use ($text){
+                                            $q->Where('name', 'LIKE', '%'.$text.'%');
+                                    })
+                                    ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
+                                    ->paginate(50);//->appends(request()->query());
+
+        return view('lab.suspect_cases.unap', compact('suspectCases','request'));
+        // return view('lab.suspect_cases.unap', ['suspectCases' => $suspectCases, 'request' => $request]);
     }
 
     public function exportExcel($cod_lab = mull){
