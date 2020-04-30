@@ -4,7 +4,7 @@
 
 @section('content')
 
-<h3 class="mb-3"><i class="fas fa-lungs-virus"></i> Listado de casos</h3>
+<h3 class="mb-3"><i class="fas fa-lungs-virus"></i> Listado de todos los exámenes</h3>
 
 <div class="row">
     @can('SuspectCase: create')
