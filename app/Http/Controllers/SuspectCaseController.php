@@ -234,6 +234,26 @@ class SuspectCaseController extends Controller
 
     public function report()
     {
+        $patients = Patient::whereHas('suspectCases', function ($q) { $q->where('pscr_sars_cov_2','positive'); })->get();
+        $patients = $patients->whereNotIn('demographic.region',
+                    [
+                    'Arica y Parinacota',
+                    'Antofagasta',
+                    'Atacama',
+                    'Coquimbo',
+                    'Valparaíso',
+                    'Región del Libertador Gral. Bernardo O’Higgins',
+                    'Región del Maule',
+                    'Región del Biobío',
+                    'Región de la Araucanía',
+                    'Región de Los Ríos',
+                    'Región de Los Lagos',
+                    'Región Aisén del Gral. Carlos Ibáñez del Campo',
+                    'Región de Magallanes y de la Antártica Chilena',
+                    'Región Metropolitana de Santiago',
+                    'Región de Ñuble']);
+
+
         $cases = SuspectCase::All();
         $cases = $cases->where('discharge_test', '<>', 1)->whereNotIn('patient.demographic.region',
                         [
@@ -299,7 +319,7 @@ class SuspectCaseController extends Controller
         // echo '<pre>';
         // print_r($evo);
         // die();
-        return view('lab.suspect_cases.report', compact('cases', 'cases_other_region', 'evolucion'));
+        return view('lab.suspect_cases.report', compact('patients', 'cases', 'cases_other_region', 'evolucion'));
     }
 
     public function historical_report(Request $request)
@@ -425,42 +445,32 @@ class SuspectCaseController extends Controller
 
     public function case_tracing(Request $request)
     {
-        $cases = SuspectCase::where('pscr_sars_cov_2', 'positive')
-                            ->get();
-        $cases = $cases->where('discharge_test', '<>', 1)
-                        ->whereNotIn('patient.demographic.region',
-                        [
-                        'Arica y Parinacota',
-                        'Antofagasta',
-                        'Atacama',
-                        'Coquimbo',
-                        'Valparaíso',
-                        'Región del Libertador Gral. Bernardo O’Higgins',
-                        'Región del Maule',
-                        'Región del Biobío',
-                        'Región de la Araucanía',
-                        'Región de Los Ríos',
-                        'Región de Los Lagos',
-                        'Región Aisén del Gral. Carlos Ibáñez del Campo',
-                        'Región de Magallanes y de la Antártica Chilena',
-                        'Región Metropolitana de Santiago',
-                        'Región de Ñuble']);
+        $patients = Patient::whereHas('suspectCases', function ($q) { $q->where('pscr_sars_cov_2','positive'); })->get();
+        $patients = $patients->whereNotIn('demographic.region',
+                    [
+                    'Arica y Parinacota',
+                    'Antofagasta',
+                    'Atacama',
+                    'Coquimbo',
+                    'Valparaíso',
+                    'Región del Libertador Gral. Bernardo O’Higgins',
+                    'Región del Maule',
+                    'Región del Biobío',
+                    'Región de la Araucanía',
+                    'Región de Los Ríos',
+                    'Región de Los Lagos',
+                    'Región Aisén del Gral. Carlos Ibáñez del Campo',
+                    'Región de Magallanes y de la Antártica Chilena',
+                    'Región Metropolitana de Santiago',
+                    'Región de Ñuble']);
 
-        $patients = array();
-        foreach ($cases as $key => $case) {
-          $patients[$case->patient->id] = $case->patient;
+        $max_cases = 0;
+        foreach ($patients as $patient) {
+            if($max_cases < $patient->suspectCases->count())
+                $max_cases = $patient->suspectCases->count();
         }
 
-        $cont_casos = 0;
-        foreach ($patients as $key => $patient) {
-          if($patient->suspectCases->count() >= $cont_casos){
-            $cont_casos = $patient->suspectCases->count();
-          }
-        }
-
-        //dd($cont_casos);
-
-        return view('lab.suspect_cases.reports.case_tracing', compact('patients','cont_casos'));
+        return view('lab.suspect_cases.reports.case_tracing', compact('patients','max_cases'));
     }
 
     public function estadistico_diario_covid19(Request $request)
