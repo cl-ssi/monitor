@@ -147,8 +147,7 @@
 </table>
 </div>
 
-{{ $suspectCases->appends(request()->except('page'))->links() }}
-
+{{ $suspectCases->appends(request()->query())->links() }}
 
 @endsection
 
