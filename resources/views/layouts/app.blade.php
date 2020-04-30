@@ -84,10 +84,10 @@
                                 <div class="dropdown-divider"></div>
                                 @endcan
 
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.hetg') }}">Laboratorio HETG</a>
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.unap') }}">Laboratorio UNAP</a>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.hetg') }}?text=&pendientes=on">Laboratorio HETG</a>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.unap') }}?text=&pendientes=on">Laboratorio UNAP</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.index') }}">Todos los Examenes</a>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.index') }}?text=&pendientes=on">Todos los Examenes</a>
 
                             </div>
                         </li>
