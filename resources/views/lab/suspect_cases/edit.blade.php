@@ -207,6 +207,7 @@
                 <option value="Centro Oncologico del Norte" {{ ($suspectCase->external_laboratory == 'Centro Oncologico del Norte')?'selected':'' }}>Centro Oncologico del Norte</option>
                 <option value="Instituto de Salud Pública" {{ ($suspectCase->external_laboratory == 'Instituto de Salud Pública')?'selected':'' }}>Instituto de Salud Pública</option>
                 <option value="Barnafi Krause" {{ ($suspectCase->external_laboratory == 'Barnafi Krause')?'selected':'' }}>Barnafi Krause</option>
+                <option value="Laboratorio Médico Bioclinic" {{ ($suspectCase->external_laboratory == 'Laboratorio Clínico Bioclinic')?'selected':'' }}>Laboratorio Clínico Bioclinic</option>
             </select>
         </fieldset>
     </div>

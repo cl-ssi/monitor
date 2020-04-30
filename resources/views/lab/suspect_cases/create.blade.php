@@ -221,6 +221,7 @@
                 <option value="Centro Oncologico del Norte">Centro Oncologico del Norte</option>
                 <option value="Instituto de Salud Pública">Instituto de Salud Pública</option>
                 <option value="Barnafi Krause">Barnafi Krause</option>
+                <option value="Laboratorio Médico Bioclinic">Laboratorio Médico Bioclinic</option>
             </select>
         </fieldset>
 
