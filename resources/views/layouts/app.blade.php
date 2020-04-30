@@ -79,15 +79,15 @@
                                 Casos
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                @can('Report: Seguimiento Casos')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.case_tracing') }}">Seguimiento de casos</a>
+                                <div class="dropdown-divider"></div>
+                                @endcan
+
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.hetg') }}">Laboratorio HETG</a>
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.unap') }}">Laboratorio UNAP</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.index') }}">Todos los Casos</a>
-
-                                @can('Report: Seguimiento Casos')
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.case_tracing') }}">Seguimiento</a>
-                                @endcan
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.index') }}">Todos los Examenes</a>
 
                             </div>
                         </li>
