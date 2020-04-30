@@ -50,11 +50,11 @@
             <td>{{ $patient->genderEsp }}</td>
             <td nowrap>{{ ($patient->birthday)?$patient->birthday->format('d-m-Y'):'' }}</td>
             <td nowrap>{{ ($patient->demographic)?$patient->demographic->commune:'' }}</td>
-            <td class="small">
+            <td>
                 {{ ($patient->demographic)?$patient->demographic->address:'' }}
                 {{ ($patient->demographic)?$patient->demographic->number:'' }}
             </td>
-            <td class="small">
+            <td>
                 {{ ($patient->demographic)?$patient->demographic->telephone:'' }}
             </td>
             <td>{{ ($patient->demographic)?$patient->demographic->email:'' }}</td>
