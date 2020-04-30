@@ -19,7 +19,7 @@
     </div> --}}
 </div>
 
-{{-- <table class="table table-sm table-bordered">
+<table class="table table-sm table-bordered">
     <thead>
         <tr class="text-center">
             <th>Total enviados a análisis</th>
@@ -32,15 +32,15 @@
     </thead>
     <tbody>
         <tr class="text-center">
-            <td>{{ $suspectCases->count() }}</td>
-            <th class="text-danger">{{ $suspectCases->where('pscr_sars_cov_2','positive')->count() }}</th>
-            <td>{{ $suspectCases->where('pscr_sars_cov_2','negative')->count() }}</td>
-            <td>{{ $suspectCases->where('pscr_sars_cov_2','pending')->count() }}</td>
-            <td>{{ $suspectCases->where('pscr_sars_cov_2','rejected')->count() }}</td>
-            <td>{{ $suspectCases->where('pscr_sars_cov_2','undetermined')->count() }}</td>
+            <td>{{ $suspectCasesTotal->count() }}</td>
+            <th class="text-danger">{{ $suspectCasesTotal->where('pscr_sars_cov_2','positive')->count() }}</th>
+            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','negative')->count() }}</td>
+            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','pending')->count() }}</td>
+            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','rejected')->count() }}</td>
+            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','undetermined')->count() }}</td>
         </tr>
     </tbody>
-</table> --}}
+</table>
 
 <a type="button" class="btn btn-success" href="{{ route('lab.suspect_cases.export', 'all') }}">Descargar <i class="far fa-file-excel"></i></a>
 

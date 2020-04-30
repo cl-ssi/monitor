@@ -55,13 +55,15 @@ class SuspectCaseController extends Controller
 
       $text = $request->get('text');
 
+      $suspectCasesTotal = SuspectCase::latest('id')->get();
+
       $suspectCases = SuspectCase::whereHas('patient', function($q) use ($text){
                                           $q->Where('name', 'LIKE', '%'.$text.'%');
                                   })
                                   ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
                                   ->paginate(200);//->appends(request()->query());
 
-        return view('lab.suspect_cases.index', compact('suspectCases','request'));
+        return view('lab.suspect_cases.index', compact('suspectCases','request','suspectCasesTotal'));
     }
 
     /**
@@ -712,6 +714,8 @@ class SuspectCaseController extends Controller
 
       $text = $request->get('text');
 
+      $suspectCasesTotal = SuspectCase::where('laboratory_id',1)->get();
+
       $suspectCases = SuspectCase::where('laboratory_id',1)
                                   ->whereHas('patient', function($q) use ($text){
                                           $q->Where('name', 'LIKE', '%'.$text.'%');
@@ -719,7 +723,7 @@ class SuspectCaseController extends Controller
                                   ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
                                   ->paginate(200);//->appends(request()->query());
 
-        return view('lab.suspect_cases.hetg', compact('suspectCases','request'));
+        return view('lab.suspect_cases.hetg', compact('suspectCases','request','suspectCasesTotal'));
     }
 
     public function unap(Request $request)
@@ -746,6 +750,8 @@ class SuspectCaseController extends Controller
 
         $text = $request->get('text');
 
+        $suspectCasesTotal = SuspectCase::where('laboratory_id',2)->get();
+
         $suspectCases = SuspectCase::where('laboratory_id',2)
                                     ->whereHas('patient', function($q) use ($text){
                                             $q->Where('name', 'LIKE', '%'.$text.'%');
@@ -753,7 +759,7 @@ class SuspectCaseController extends Controller
                                     ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
                                     ->paginate(200);//->appends(request()->query());
 
-        return view('lab.suspect_cases.unap', compact('suspectCases','request'));
+        return view('lab.suspect_cases.unap', compact('suspectCases','request','suspectCasesTotal'));
         // return view('lab.suspect_cases.unap', ['suspectCases' => $suspectCases, 'request' => $request]);
     }
 
