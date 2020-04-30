@@ -59,7 +59,7 @@ class SuspectCaseController extends Controller
                                           $q->Where('name', 'LIKE', '%'.$text.'%');
                                   })
                                   ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
-                                  ->paginate(50);//->appends(request()->query());
+                                  ->paginate(200);//->appends(request()->query());
 
         return view('lab.suspect_cases.index', compact('suspectCases','request'));
     }
@@ -717,7 +717,7 @@ class SuspectCaseController extends Controller
                                           $q->Where('name', 'LIKE', '%'.$text.'%');
                                   })
                                   ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
-                                  ->paginate(50);//->appends(request()->query());
+                                  ->paginate(200);//->appends(request()->query());
 
         return view('lab.suspect_cases.hetg', compact('suspectCases','request'));
     }
@@ -751,7 +751,7 @@ class SuspectCaseController extends Controller
                                             $q->Where('name', 'LIKE', '%'.$text.'%');
                                     })
                                     ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
-                                    ->paginate(50);//->appends(request()->query());
+                                    ->paginate(200);//->appends(request()->query());
 
         return view('lab.suspect_cases.unap', compact('suspectCases','request'));
         // return view('lab.suspect_cases.unap', ['suspectCases' => $suspectCases, 'request' => $request]);
