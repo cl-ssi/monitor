@@ -67,7 +67,7 @@
         <span class="input-group-text">Búsqueda</span>
     </div>
 
-    <input class="form-control" type="text" name="text" value="{{$request->text}}" placeholder="Nombre">
+    <input class="form-control" type="text" name="text" value="{{$request->text}}" placeholder="Rut / Nombre">
     <div class="input-group-append">
         <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
     </div>
