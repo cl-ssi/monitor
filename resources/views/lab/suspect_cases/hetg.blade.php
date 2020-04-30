@@ -4,7 +4,7 @@
 
 @section('content')
 
-<h3 class="mb-3"><i class="fas fa-lungs-virus"></i> Listado de casos Hospital Ernesto Torres Galdames</h3>
+<h3 class="mb-3"><i class="fas fa-lungs-virus"></i> Listado de exámenes Hospital Ernesto Torres Galdames</h3>
 
 <div class="row">
     @can('SuspectCase: create')
