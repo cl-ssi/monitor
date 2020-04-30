@@ -57,8 +57,12 @@ class SuspectCaseController extends Controller
 
       $suspectCasesTotal = SuspectCase::latest('id')->get();
 
-      $suspectCases = SuspectCase::whereHas('patient', function($q) use ($text){
-                                          $q->Where('name', 'LIKE', '%'.$text.'%');
+      $suspectCases = SuspectCase::latest('id')
+                                  ->whereHas('patient', function($q) use ($text){
+                                          $q->Where('name', 'LIKE', '%'.$text.'%')
+                                            ->orWhere('fathers_family','LIKE','%'.$text.'%')
+                                            ->orWhere('mothers_family','LIKE','%'.$text.'%')
+                                            ->orWhere('run','LIKE','%'.$text.'%');
                                   })
                                   ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
                                   ->paginate(200);//->appends(request()->query());
@@ -716,9 +720,13 @@ class SuspectCaseController extends Controller
 
       $suspectCasesTotal = SuspectCase::where('laboratory_id',1)->get();
 
-      $suspectCases = SuspectCase::where('laboratory_id',1)
+      $suspectCases = SuspectCase::latest('id')
+                                  ->where('laboratory_id',1)
                                   ->whereHas('patient', function($q) use ($text){
-                                          $q->Where('name', 'LIKE', '%'.$text.'%');
+                                          $q->Where('name', 'LIKE', '%'.$text.'%')
+                                            ->orWhere('fathers_family','LIKE','%'.$text.'%')
+                                            ->orWhere('mothers_family','LIKE','%'.$text.'%')
+                                            ->orWhere('run','LIKE','%'.$text.'%');
                                   })
                                   ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
                                   ->paginate(200);//->appends(request()->query());
@@ -752,9 +760,13 @@ class SuspectCaseController extends Controller
 
         $suspectCasesTotal = SuspectCase::where('laboratory_id',2)->get();
 
-        $suspectCases = SuspectCase::where('laboratory_id',2)
+        $suspectCases = SuspectCase::latest('id')
+                                    ->where('laboratory_id',2)
                                     ->whereHas('patient', function($q) use ($text){
-                                            $q->Where('name', 'LIKE', '%'.$text.'%');
+                                            $q->Where('name', 'LIKE', '%'.$text.'%')
+                                              ->orWhere('fathers_family','LIKE','%'.$text.'%')
+                                              ->orWhere('mothers_family','LIKE','%'.$text.'%')
+                                              ->orWhere('run','LIKE','%'.$text.'%');
                                     })
                                     ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
                                     ->paginate(200);//->appends(request()->query());
