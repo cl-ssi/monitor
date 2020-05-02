@@ -153,9 +153,9 @@
                     {{ ($suspectCase->result_ifd == 'VRS')?'selected':'' }}>
                     VRS
                 </option>
-                <option value="No procesado"
-                    {{ ($suspectCase->result_ifd == 'No procesado')?'selected':'' }}>
-                    No procesado
+                <option value="No solicitado"
+                    {{ ($suspectCase->result_ifd == 'No solicitado')?'selected':'' }}>
+                    No solicitado
                 </option>
                 </select>
         </fieldset>

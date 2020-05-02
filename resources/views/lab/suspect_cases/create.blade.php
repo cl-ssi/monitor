@@ -170,7 +170,7 @@
                 <option value="Parainfluenza 2">Parainfluenza 2</option>
                 <option value="Parainfluenza 3">Parainfluenza 3</option>
                 <option value="VRS">VRS</option>
-                <option value="No procesado">No procesado</option>
+                <option value="No solicitado">No solicitado</option>
             </select>
         </fieldset>
 
