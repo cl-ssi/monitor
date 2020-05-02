@@ -20,8 +20,7 @@
 </div>
 
 
-<div class="table-responsive">
-<table class="table table-sm small">
+<table class="table table-sm table-responsive small">
     <thead>
         <tr>
             <th>Run o (ID)</th>
@@ -62,7 +61,7 @@
         @endforeach
     </tbody>
 </table>
-</div>
+
 @endsection
 
 @section('custom_js')
