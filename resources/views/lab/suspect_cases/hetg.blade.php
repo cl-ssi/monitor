@@ -123,7 +123,7 @@
             </td>
             <td>{{ $case->age }}</td>
             <td>{{ strtoupper($case->gender[0]) }}</td>
-            <td class="{{ ($case->result_ifd <> 'Negativo' AND $case->result_ifd <> 'No procesado')?'text-danger':''}}">{{ $case->result_ifd }} {{ $case->subtype }}</td>
+            <td class="{{ ($case->result_ifd <> 'Negativo' AND $case->result_ifd <> 'No solicitado')?'text-danger':''}}">{{ $case->result_ifd }} {{ $case->subtype }}</td>
             <td>{{ $case->covid19 }}
                 @if($case->files->first())
                 <a href="{{ route('lab.suspect_cases.download', $case->files->first()->id) }}"
