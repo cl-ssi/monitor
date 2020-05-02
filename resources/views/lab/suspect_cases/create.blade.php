@@ -90,10 +90,14 @@
             <label for="for_origin">Origen</label>
             <select name="origin" id="for_origin" class="form-control">
                 <option value=""></option>
+
                 <option value="HOSPITAL Ernesto Torres Galdames">HOSPITAL Ernesto Torres Galdames</option>
 
+                <option value="ACHS">ACHS</option>
                 <option value="Clínica Tarapacá">Clínica Tarapacá</option>
                 <option value="Clínica Iquique">Clínica Iquique</option>
+                <option value="IST">IST</option>
+                <option value="Mutual de Seguridad">Mutual de Seguridad</option>
                 <option value="Particular (SEREMI)">Particular (SEREMI)</option>
                 <option value="Servicio Médico Legal">Servicio Médico Legal</option>
                 <option value="Servicio De Salud">Servicio De Salud</option>
