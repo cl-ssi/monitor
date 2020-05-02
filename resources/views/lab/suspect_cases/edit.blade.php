@@ -36,10 +36,14 @@
             <label for="for_origin">Origen</label>
             <select name="origin" id="for_origin" class="form-control">
                 <option value=""></option>
+
                 <option value="HOSPITAL Ernesto Torres Galdames" {{ ($suspectCase->origin == 'HOSPITAL Ernesto Torres Galdames')?'selected':'' }}>HOSPITAL Ernesto Torres Galdames</option>
 
+                <option value="ACHS" {{ ($suspectCase->origin == 'ACHS')?'selected':'' }}>ACHS</option>
                 <option value="Clínica Tarapacá" {{ ($suspectCase->origin == 'Clínica Tarapacá')?'selected':'' }}>Clínica Tarapacá</option>
                 <option value="Clínica Iquique" {{ ($suspectCase->origin == 'Clínica Iquique')?'selected':'' }}>Clínica Iquique</option>
+                <option value="IST" {{ ($suspectCase->origin == 'IST')?'selected':'' }}>IST</option>
+                <option value="Mutual de Seguridad" {{ ($suspectCase->origin == 'Mutual de Seguridad')?'selected':'' }}>Mutual de Seguridad</option>
                 <option value="Particular (SEREMI)" {{ ($suspectCase->origin == 'Particular (SEREMI)')?'selected':'' }}>Particular (SEREMI)</option>
                 <option value="Servico Médico Legal" {{ ($suspectCase->origin == 'Servicio Médico Legal')?'selected':'' }}>Servicio Médico Legal</option>
                 <option value="Servicio De Salud" {{ ($suspectCase->origin == 'Servicio De Salud')?'selected':'' }}>Servicio De Salud</option>
