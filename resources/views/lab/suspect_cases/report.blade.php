@@ -74,13 +74,13 @@
                 <tr>
                     <td>Positivos</td>
                     <th class="text-danger text-center">
-                        {{ $cases->where('pscr_sars_cov_2','positive')->count() }}
+                        {{ $patients->count() }}
                     </th>
                     <th class="text-danger text-center">
-                        {{ $cases->where('patient.gender','male')->where('pscr_sars_cov_2','positive')->count() }}
+                        {{ $patients->where('gender','male')->count() }}
                     </th>
                     <th class="text-danger text-center">
-                        {{ $cases->where('patient.gender','female')->where('pscr_sars_cov_2','positive')->count() }}
+                        {{ $patients->where('gender','female')->count() }}
                     </th>
                 </tr>
 
@@ -263,22 +263,14 @@
                 <tr>
                     <td>Alto Hospicio</td>
                     <td class="text-danger text-center">
-                        {{
-                            $cases->where('patient.demographic.commune','Alto Hospicio')
-                                ->where('pscr_sars_cov_2','positive')
-                                ->count()
-                        }}
+                        {{ $patients->where('demographic.commune','Alto Hospicio')->count() }}
                     </td>
                 </tr>
 
                 <tr>
                     <td>Camiña</td>
                     <td class="text-danger text-center">
-                        {{
-                            $cases->where('patient.demographic.commune','Camiña')
-                                ->where('pscr_sars_cov_2','positive')
-                                ->count()
-                        }}
+                        {{ $patients->where('demographic.commune','Camiña')->count() }}
                     </td>
 
                 </tr>
@@ -286,22 +278,14 @@
                 <tr>
                     <td>Colchane</td>
                     <td class="text-danger text-center">
-                        {{
-                            $cases->where('patient.demographic.commune','Colchane')
-                                ->where('pscr_sars_cov_2','positive')
-                                ->count()
-                        }}
+                        {{ $patients->where('demographic.commune','Colchane')->count() }}
                     </td>
                 </tr>
 
                 <tr>
                     <td>Huara</td>
                     <td class="text-danger text-center">
-                        {{
-                            $cases->where('patient.demographic.commune','Huara')
-                                ->where('pscr_sars_cov_2','positive')
-                                ->count()
-                        }}
+                        {{ $patients->where('demographic.commune','Huara')->count() }}
                     </td>
 
                 </tr>
@@ -309,44 +293,28 @@
                 <tr>
                     <td>Iquique</td>
                     <td class="text-danger text-center">
-                        {{
-                            $cases->where('patient.demographic.commune','Iquique')
-                                ->where('pscr_sars_cov_2','positive')
-                                ->count()
-                        }}
+                        {{ $patients->where('demographic.commune','Iquique')->count() }}
                     </td>
                 </tr>
 
                 <tr>
                     <td>Pica</td>
                     <td class="text-danger text-center">
-                        {{
-                            $cases->where('patient.demographic.commune','Pica')
-                                ->where('pscr_sars_cov_2','positive')
-                                ->count()
-                        }}
+                        {{ $patients->where('demographic.commune','Pica')->count() }}
                     </td>
                 </tr>
 
                 <tr>
                     <td>Pozo Almonte</td>
                     <td class="text-danger text-center">
-                        {{
-                            $cases->where('patient.demographic.commune','Pozo Almonte')
-                                ->where('pscr_sars_cov_2','positive')
-                                ->count()
-                        }}
+                        {{ $patients->where('demographic.commune','Pozo Almonte')->count() }}
                     </td>
                 </tr>
 
                 <tr>
                     <td>Sin registro</td>
                     <td class="text-danger text-center">
-                        {{
-                            $cases->where('pscr_sars_cov_2','positive')
-                                ->whereIn('patient.demographic.commune',['sin-comuna',null])
-                                ->count()
-                        }}
+                        {{ $patients->whereIn('demographic.commune',['sin-comuna',null])->count() }}
                     </td>
                 </tr>
 
@@ -376,57 +344,49 @@
                 <tr>
                     <td>Alto Hospicio (129.999*)</td>
                     <td class="text-right">
-                        {{ number_format($cases->where('patient.demographic.commune','Alto Hospicio')
-                            ->where('pscr_sars_cov_2','positive')->count() / 129999 * 100000 ,2) }}
+                        {{ number_format($patients->where('demographic.commune','Alto Hospicio')->count() / 129999 * 100000 ,2) }}
                     </td>
                 </tr>
                 <tr>
                     <td>Camiña (1.375*)</td>
                     <td class="text-right">
-                        {{ number_format($cases->where('patient.demographic.commune','Camiña')
-                            ->where('pscr_sars_cov_2','positive')->count() / 1375 * 100000 ,2) }}
+                        {{ number_format($patients->where('demographic.commune','Camiña')->count() / 1375 * 100000 ,2) }}
                     </td>
                 </tr>
                 <tr>
                     <td>Colchane (1.583*)</td>
                     <td class="text-right">
-                        {{ number_format($cases->where('patient.demographic.commune','Colchane')
-                            ->where('pscr_sars_cov_2','positive')->count() / 1583 * 100000 ,2) }}
+                        {{ number_format($patients->where('demographic.commune','Colchane')->count() / 1583 * 100000 ,2) }}
                     </td>
                 </tr>
                 <tr>
                     <td>Huara (3.000*)</td>
                     <td class="text-right">
-                        {{ number_format($cases->where('patient.demographic.commune','Huara')
-                            ->where('pscr_sars_cov_2','positive')->count() / 3000 * 100000 ,2) }}
+                        {{ number_format($patients->where('demographic.commune','Huara')->count() / 3000 * 100000 ,2) }}
                     </td>
                 </tr>
                 <tr>
                     <td>Iquique (223.463*)</td>
                     <td class="text-right">
-                        {{ number_format($cases->where('patient.demographic.commune','Iquique')
-                            ->where('pscr_sars_cov_2','positive')->count() / 223463 * 100000 ,2) }}
+                        {{ number_format($patients->where('demographic.commune','Iquique')->count() / 223463 * 100000 ,2) }}
                     </td>
                 </tr>
                 <tr>
                     <td>Pica (5.958*)</td>
                     <td class="text-right">
-                        {{ number_format($cases->where('patient.demographic.commune','Pica')
-                            ->where('pscr_sars_cov_2','positive')->count() / 5958 * 100000 ,2) }}
+                        {{ number_format($patients->where('demographic.commune','Pica')->count() / 5958 * 100000 ,2) }}
                     </td>
                 </tr>
                 <tr>
                     <td>Pozo Almonte (17.395*)</td>
                     <td class="text-right">
-                        {{ number_format($cases->where('patient.demographic.commune','Pozo Almonte')
-                            ->where('pscr_sars_cov_2','positive')->count() / 17395 * 100000 ,2) }}
+                        {{ number_format($patients->where('demographic.commune','Pozo Almonte')->count() / 17395 * 100000 ,2) }}
                     </td>
                 </tr>
                 <tr>
                     <th>Región Tarapacá (382.773*)</th>
                     <th class="text-right">
-                        {{ number_format($cases->where('pscr_sars_cov_2','positive')
-                            ->count() / 382773 * 100000 ,2) }}
+                        {{ number_format($patients->count() / 382773 * 100000 ,2) }}
                     </th>
                 </tr>
             </tbody>
