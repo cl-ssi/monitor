@@ -69,7 +69,7 @@
     <tbody>
         @php $ct = $patients->count(); @endphp
         @foreach($patients->reverse() as $patient)
-            <tr>
+            <tr class="{{ ($patient->suspectCases->first()->discharged_at) ? 'alert-success': '' }}">
                 <td>{{ $ct-- }}</td>
                 <td nowrap>
                     <a href="{{ route('patients.edit', $patient) }}">{{ $patient->fullName }}</a>
@@ -114,7 +114,7 @@
                 <td nowrap>{{ ($patient->suspectCases->first()->notification_at) ? $patient->suspectCases->first()->notification_at->format('Y-m-d') : '' }}</td>
                 <td nowrap>{{ $patient->suspectCases->first()->notification_mechanism }}</td>
 
-                <td nowrap>{{ $patient->suspectCases->first()->discharged_at }}</td>
+                <td nowrap>{{ ($patient->suspectCases->first()->discharged_at) ? $patient->suspectCases->first()->discharged_at->format('Y-m-d') : '' }}</td>
                 <td nowrap>{{ $patient->suspectCases->first()->observation }}</td>
 
             </tr>
