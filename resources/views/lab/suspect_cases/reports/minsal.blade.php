@@ -29,7 +29,7 @@
     <tbody>
         @foreach ($cases as $case)
         <tr>
-            <td nowrap>{{ $case->patient->identifier }}</td>
+            <td nowrap>{{ $case->patient->runExport }}</td>
             <td nowrap>{{ $case->patient->fullName }}</td>
             <td nowrap>{{ strtoupper($case->patient->genderEsp) }}</td>
             <td nowrap>{{ $case->age }}</td>

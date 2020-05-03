@@ -89,7 +89,7 @@ class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
         }
 
         return [
-            $suspectCase->patient->run,
+            $suspectCase->patient->runExport,
             strtoupper($suspectCase->patient->fullName),
             strtoupper($suspectCase->patient->GenderEsp),
             $suspectCase->age,
