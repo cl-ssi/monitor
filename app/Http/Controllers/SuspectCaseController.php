@@ -323,7 +323,7 @@ class SuspectCaseController extends Controller
 
         foreach($patients as $patient) {
             $evolucion['Region'][$patient->suspectCases->where('pscr_sars_cov_2','positive')->first()->sample_at->format('Y-m-d')] += 1;
-            if($patient->demographic) {
+            if($patient->demographic->commune) {
                 $evolucion[$patient->demographic->commune][$patient->suspectCases->where('pscr_sars_cov_2','positive')->first()->sample_at->format('Y-m-d')] += 1;
             }
         }
