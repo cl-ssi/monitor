@@ -60,7 +60,15 @@ class Patient extends Model //Authenticatable
     }
 
     function getRunExportAttribute(){
-        return $this->run . '-' . $this->dv;
+        if(isset($this->run) and isset($this->dv)) {
+            return $this->run . $this->dv;
+        }
+        elseif($this->other_identification)  {
+            return 'P'.$this->other_identification;
+        }
+        else {
+            return '';
+        }
     }
 
     function getSexEspAttribute(){
