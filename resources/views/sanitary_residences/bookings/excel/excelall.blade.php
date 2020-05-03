@@ -56,7 +56,7 @@
             <td nowrap>{{$booking->patient->identifier}}</td>
             <td nowrap>{{$booking->patient->fathers_family}} {{$booking->patient->mothers_family}}</td>
             <td nowrap>{{$booking->patient->name}}</td>
-            <td nowrap>{{$booking->patient->genderEsp}}</td>
+            <td nowrap>{{$booking->patient->sexEsp}}</td>
             <td nowrap>{{ ($booking->patient->birthday)? $booking->patient->birthday->format('d/m/Y') :''}}</td>
             <td nowrap>{{ $booking->patient->suspectCases->first()->covid19 }}</td>
             <td nowrap>{{ $booking->morbid_history }}</td>

@@ -752,7 +752,7 @@
         // A column for custom tooltip content
         dataTable.addColumn({type: 'string', role: 'tooltip'});
         dataTable.addRows([
-            @foreach($evolucion as $key => $total)
+            @foreach($evolucion['Region'] as $key => $total)
                 [{{ $loop->iteration }},{{ $total }},'{{ $key }} ({{ $total }})'],
             @endforeach
         ]);
@@ -768,10 +768,10 @@
                 textStyle : {
                     fontSize: 9 // or the number you want
                 },
-                gridlines:{count: {{ count($evolucion) }} },
+                gridlines:{count: {{ count($evolucion['Region']) }} },
                 textPosition: '50',
             },
-            chartArea: {'width': '90%', 'height': '80%'},
+            chartArea: {'width': '85%', 'height': '80%'},
 
         };
         var chart = new google.visualization.LineChart(document.getElementById('evolution'));

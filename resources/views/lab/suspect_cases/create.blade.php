@@ -269,6 +269,7 @@
                 <option value="Fallecido">Fallecido</option>
                 <option value="Ambulatorio">Ambulatorio (domiciliario)</option>
                 <option value="Residencia Sanitaria">Residencia Sanitaria</option>
+                <option value="Fugado">Fugado</option>
             </select>
         </fieldset>
 

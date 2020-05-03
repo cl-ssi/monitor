@@ -89,22 +89,22 @@ class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
         }
 
         return [
-            $suspectCase->patient->Identifier,
-            $suspectCase->patient->fullName,
+            $suspectCase->patient->run,
+            strtoupper($suspectCase->patient->fullName),
             strtoupper($suspectCase->patient->GenderEsp),
             $suspectCase->age,
-            $suspectCase->sample_type,
-            $suspectCase->Covid19,
+            strtoupper($suspectCase->sample_type),
+            strtoupper($suspectCase->Covid19),
             Date::dateTimeToExcel($suspectCase->sample_at),
             Date::dateTimeToExcel($suspectCase->created_at),
             Date::dateTimeToExcel($suspectCase->pscr_sars_cov_2_at),
-            $suspectCase->origin,
+            strtoupper($suspectCase->origin),
             'TARAPACÁ',
             $this->nombre_lab,
             'TARAPACÁ',
             $telephone,
             $email,
-            $address.' '.$number.' '.$commune,
+            strtoupper($address.' '.$number.' '.$commune),
         ];
     }
 
