@@ -90,7 +90,7 @@
         </tr>
         <tr>
             <th>SEXO</th>
-            <td>{{ strtoupper($case->patient->genderEsp) }}</td>
+            <td>{{ strtoupper($case->patient->sexEsp) }}</td>
         </tr>
         <tr>
             <th>ORIGEN</th>

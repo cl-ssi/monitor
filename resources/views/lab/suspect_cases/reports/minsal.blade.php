@@ -7,7 +7,7 @@
 <!-- <a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a> -->
 <a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.exportMinsal', ['lab' => $cod_lab]) }}">Descargar <i class="far fa-file-excel"></i></a>
 
-<table class="table table-sm table-bordered table-responsive small" id="tabla_casos">
+<table class="table table-sm table-bordered table-responsive small text-uppercase" id="tabla_casos">
     <thead>
         <th nowrap>RUN</th>
         <th nowrap>Nombre</th>
@@ -29,15 +29,15 @@
     <tbody>
         @foreach ($cases as $case)
         <tr>
-            <td nowrap>{{ $case->patient->identifier}}</td>
+            <td nowrap>{{ $case->patient->identifier }}</td>
             <td nowrap>{{ $case->patient->fullName }}</td>
-            <td nowrap>{{ strtoupper($case->patient->genderEsp)}}</td>
+            <td nowrap>{{ strtoupper($case->patient->genderEsp) }}</td>
             <td nowrap>{{ $case->age }}</td>
             <td nowrap>{{ ($case->sample_type)? $case->sample_type: '' }}</td>
             <td nowrap>{{ $case->covid19 }}</td>
             <td nowrap>{{ $case->sample_at->format('d-m-Y') }}</td>
             <td nowrap>{{ ($case->created_at)? $case->created_at->format('d-m-Y'): '' }}</td>
-            <td nowrap>{{ ($case->pscr_sars_cov_2_at)? $case->pscr_sars_cov_2_at->format('d-m-Y'): '' }}</td>
+            <td nowrap>{{ ($case->pscr_sars_cov_2_at) ? $case->pscr_sars_cov_2_at->format('d-m-Y') : '' }}</td>
             <td nowrap>{{ strtoupper($case->origin) }}</td>
             <td nowrap>TARAPACÁ</td>
             <td nowrap class="text-uppercase">{{ last(request()->segments()) }}</td>

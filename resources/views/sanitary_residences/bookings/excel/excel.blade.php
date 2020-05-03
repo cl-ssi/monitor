@@ -51,7 +51,7 @@
                 <td>{{$booking->patient->identifier}}</td>
                 <td>{{$booking->patient->fathers_family}} {{$booking->patient->mothers_family}}</td>
                 <td>{{$booking->patient->name}}</td>
-                <td>{{$booking->patient->genderEsp}}</td>
+                <td>{{$booking->patient->sexEsp}}</td>
                 <td>{{ ($booking->patient->birthday)? $booking->patient->birthday->format('d/m/Y') :''}}</td>
                 <td>{{ $booking->patient->suspectCases->first()->covid19 }}</td>
                 <td>{{ $booking->morbid_history }}</td>
@@ -59,7 +59,7 @@
                 <td>{{ $booking->prevision }}</td>
                 <td>{{$booking->responsible_family_member}}</td>
                 <td>{{ $booking->relationship }}</td>
-                <td> {{ $booking->from }} </td> 
+                <td> {{ $booking->from }} </td>
                 <td></td>
                 <td></td>
                 <td></td>

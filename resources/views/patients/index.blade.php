@@ -46,7 +46,7 @@
                     </a>
                 @endcan
             </td>
-            <td>{{ $patient->genderEsp }}</td>
+            <td>{{ $patient->sexEsp }}</td>
             <td nowrap>{{ ($patient->birthday)?$patient->birthday->format('d-m-Y'):'' }}</td>
             <td nowrap>{{ ($patient->demographic)?$patient->demographic->commune:'' }}</td>
             <td>

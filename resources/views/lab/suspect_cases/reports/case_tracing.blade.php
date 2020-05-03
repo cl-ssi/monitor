@@ -72,11 +72,17 @@
             <tr class="{{ ($patient->suspectCases->first()->discharged_at) ? 'alert-success': '' }}">
                 <td>{{ $ct-- }}</td>
                 <td nowrap>
-                    <a href="{{ route('patients.edit', $patient) }}">{{ $patient->fullName }}</a>
+                    <a href="{{ route('patients.edit', $patient) }}">{{ $patient->fullName }}</a> 
+                    @if($patient->suspectCases->first()->gestation == "on")
+                        <i class="fas fa-baby" title="Gestante"></i>
+                    @endif
+                    @if($patient->suspectCases->first()->close_contact == "1")
+                        <i class="fas fa-user-friends" title="Contacto Estrecho"></i>
+                    @endif
                 </td>
                 <td nowrap>{{ $patient->identifier }}</td>
                 <td nowrap>{{ $patient->suspectCases->last()->age }}</td>
-                <td nowrap>{{ strtoupper($patient->genderEsp) }}</td>
+                <td nowrap>{{ strtoupper($patient->sexEsp) }}</td>
                 <td nowrap>{{ ($patient->demographic) ? $patient->demographic->commune : '' }}</td>
                 <td nowrap>{{ $patient->suspectCases->first()->status }}</td>
 
