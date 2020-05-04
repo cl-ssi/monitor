@@ -79,17 +79,21 @@
                                 Casos
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.create') }}">Agregar nuevo caso</a>
                                 @can('Report: Seguimiento Casos')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.case_tracing') }}">Seguimiento de casos</a>
                                 <div class="dropdown-divider"></div>
                                 @endcan
 
-
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.hetg') }}?text=&pendientes=on">Laboratorio HETG</a>
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.unap') }}?text=&pendientes=on">Laboratorio UNAP</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.hetg') }}?text=&pendientes=on">Laboratorio HETG</a>
+
+                                @can('SuspectCase: create')
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.create') }}">Agregar nuevo caso</a>
+                                @endcan
+
                             </div>
                         </li>
                         @endcan
