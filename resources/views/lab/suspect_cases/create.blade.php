@@ -144,11 +144,19 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-2">
+        <fieldset class="form-group col-4 col-md-1">
             <label for="for_age">Edad</label>
             <input type="number" class="form-control" id="for_age" name="age">
         </fieldset>
 
+        <fieldset class="form-group col-4 col-md-1">
+            <label for="for_symptoms">Sintomas</label>
+            <select name="symptoms" id="for_symptoms" class="form-control">
+                <option value=""></option>
+                <option value="Si">Si</option>
+                <option value="No">No</option>
+            </select>
+        </fieldset>
 
     </div>
 

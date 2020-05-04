@@ -23,6 +23,8 @@ class CreateSuspectCasesTable extends Migration
             $table->string('origin')->nullable(); /* Hospital, Clinica Tarapacá, Clinica Iquique, Hector Reyno, Guzmán */
             $table->string('status')->nullable(); /* Fallecido, Alta, Hospitalizado, Fugado */
 
+            $table->string('symptoms')->nullable();
+
             $table->datetime('result_ifd_at')->nullable();
             $table->string('result_ifd')->nullable();
             $table->string('subtype')->nullable();

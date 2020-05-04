@@ -91,10 +91,19 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-2">
+        <fieldset class="form-group col-4 col-md-1">
             <label for="for_age">Edad</label>
             <input type="number" class="form-control" id="for_age" name="age"
                 value="{{ $suspectCase->age }}">
+        </fieldset>
+
+        <fieldset class="form-group col-4 col-md-1">
+            <label for="for_symptoms">Sintomas</label>
+            <select name="symptoms" id="for_symptoms" class="form-control">
+                <option value=""></option>
+                <option value="Si" {{ ($suspectCase->symptoms == 'Si') ? 'selected' : '' }}>Si</option>
+                <option value="No" {{ ($suspectCase->symptoms == 'No') ? 'selected' : '' }}>No</option>
+            </select>
         </fieldset>
 
         <fieldset class="form-group col-4 col-md-2">
