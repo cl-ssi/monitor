@@ -97,6 +97,14 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::get('estadistico_diario_covid19','SuspectCaseController@estadistico_diario_covid19')->name('estadistico_diario_covid19')->middleware('auth','can:Report');
         });
     });
+    Route::prefix('sample_origins')->name('sample_origins.')->group(function () {
+        Route::get('/', 'SampleOriginController@index')->name('index');
+        Route::get('/create', 'SampleOriginController@create')->name('create');
+        Route::post('/', 'SampleOriginController@store')->name('store');
+        Route::get('/{sampleOrigin}/edit', 'SampleOriginController@edit')->name('edit');
+        Route::put('/{sampleOrigin}', 'SampleOriginController@update')->name('update');
+        //Route::delete('/{sample_origins}', 'SampleOriginController@destroy')->name('destroy');
+    });
 });
 
 Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(function(){
