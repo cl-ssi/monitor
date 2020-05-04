@@ -16,6 +16,7 @@ class CreateSampleOriginsTable extends Migration
         Schema::create('sample_origins', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('alias');
             $table->string('address')->nullable();
             $table->timestamps();
             $table->softDeletes();
