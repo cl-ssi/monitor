@@ -370,7 +370,11 @@ class SuspectCaseController extends Controller
 
         $reportBackup = ReportBackup::whereDate('created_at',$date)->get();
         if($reportBackup->count() <> 0){
-          $html = $reportBackup->first()->data;
+          if($reportBackup->first()->id <= 10){
+            $html = json_decode($reportBackup->first()->data, true);
+          }else{
+            $html = $reportBackup->first()->data;
+          }
 
           $begin = strpos($html, '<main class="py-4 container">')+29;
           $v1 = substr($html, $begin, 999999);
@@ -379,7 +383,7 @@ class SuspectCaseController extends Controller
 
           $begin = strpos($html, '<head>')+6;
           $v1 = substr($html, $begin, 999999);
-          $end   = strpos($v1, '</head>')-9;
+          $end   = strpos($v1, '</head>');
           $head = substr($v1, 0, $end);
         }else{
           $head="";
