@@ -244,6 +244,20 @@
             </tbody>
         </table>
 
+        <!--table class="table table-sm">
+            <tbody>
+                @foreach($hospitalizado_critico as $p)
+                <tr>
+                    <td>{{ $p->suspectCases->last()->status }}</td>
+                    <td>{{ $p->suspectCases->last()->age }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table-->
+
+
+
+
 
         <div id="evolution" style="width: 480px; height: 400"></div>
 
@@ -321,10 +335,7 @@
                 <tr>
                     <td>Otras Regiones</td>
                     <td class="text-danger text-center">
-                        {{
-                            $cases_other_region->where('pscr_sars_cov_2','positive')
-                                ->count()
-                        }}
+                        {{ $patients_other_region->count() }}
                     </td>
 
                 </tr>
