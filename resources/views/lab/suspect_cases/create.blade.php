@@ -90,57 +90,9 @@
             <label for="for_origin">Origen</label>
             <select name="origin" id="for_origin" class="form-control">
                 <option value=""></option>
-
-                <option value="HOSPITAL Ernesto Torres Galdames">HOSPITAL Ernesto Torres Galdames</option>
-
-                <option value="ACHS">ACHS</option>
-                <option value="Clínica Tarapacá">Clínica Tarapacá</option>
-                <option value="Clínica Iquique">Clínica Iquique</option>
-                <option value="IST">IST</option>
-                <option value="Mutual de Seguridad">Mutual de Seguridad</option>
-                <option value="Particular (SEREMI)">Particular (SEREMI)</option>
-                <option value="Servicio Médico Legal">Servicio Médico Legal</option>
-                <option value="Servicio De Salud">Servicio De Salud</option>
-
-                <option value="Toma de Muestra Domiciliaria">Toma de Muestra Domiciliaria</option>
-
-                <option value="Gendarmería de Chile">Gendarmería de Chile</option>
-                <option value="Hogar de Ancianos">Hogar de Ancianos</option>
-
-                <option value="CECOSF El Boro">CECOSF El Boro</option>
-                <option value="CECOSF La Tortuga">CECOSF La Tortuga</option>
-                <option value="CESFAM Cirujano Aguirre">CESFAM Cirujano Aguirre</option>
-                <option value="CESFAM Cirujano Guzmán">CESFAM Cirujano Guzmán</option>
-                <option value="CESFAM Cirujano Videla">CESFAM Cirujano Videla</option>
-                <option value="CESFAM Dr. Héctor Reyno G.">CESFAM Dr. Héctor Reyno G.</option>
-                <option value="CESFAM Pedro Pulgar">CESFAM Pedro Pulgar</option>
-                <option value="CESFAM Pica">CESFAM Pica</option>
-                <option value="CESFAM Pozo Almonte">CESFAM Pozo Almonte</option>
-                <option value="CESFAM Sur de Iquique">CESFAM Sur de Iquique</option>
-                <option value="CGR Camiña">CGR Camiña</option>
-                <option value="CGR Colchane">CGR Colchane</option>
-                <option value="CGR Huara">CGR Huara</option>
-                <!-- <option value="COSAM Jorge Seguel C.">COSAM Jorge Seguel C.</option> -->
-                <!-- <option value="COSAM Salvador Allende">COSAM Salvador Allende</option> -->
-
-                <!-- <option value="PRAIS Iquique">PRAIS Iquique</option> -->
-                <option value="PSR Cancosa">PSR Cancosa</option>
-                <option value="PSR Cariquima">PSR Cariquima</option>
-                <option value="PSR Chanavayita">PSR Chanavayita</option>
-                <option value="PSR Chiapa">PSR Chiapa</option>
-                <option value="PSR Enquelga">PSR Enquelga</option>
-                <option value="PSR La Huayca">PSR La Huayca</option>
-                <option value="PSR La Tirana">PSR La Tirana</option>
-                <option value="PSR Mamiña">PSR Mamiña</option>
-                <option value="PSR Matilla">PSR Matilla</option>
-                <option value="PSR Moquella">PSR Moquella</option>
-                <option value="PSR Pachica">PSR Pachica</option>
-                <option value="PSR Pisagua">PSR Pisagua</option>
-                <option value="PSR San Marcos">PSR San Marcos</option>
-                <option value="PSR Sibaya">PSR Sibaya</option>
-                <option value="PSR Tarapacá">PSR Tarapacá</option>
-                <!-- <option value="SAPU Pedro Pulgar">SAPU Pedro Pulgar</option>
-                <option value="SAPU Pozo Almonte">SAPU Pozo Almonte</option> -->
+                @foreach($sampleOrigins as $sampleOrigin)
+                    <option value="{{ $sampleOrigin->name }}">{{ $sampleOrigin->alias }}</option>
+                @endforeach
             </select>
         </fieldset>
 

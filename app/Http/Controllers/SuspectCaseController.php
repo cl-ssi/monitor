@@ -8,6 +8,7 @@ use App\Log;
 use App\File;
 use App\User;
 use App\ReportBackup;
+use App\SampleOrigin;
 use Carbon\Carbon;
 use App\Mail\NewPositive;
 use Illuminate\Support\Facades\Mail;
@@ -77,7 +78,8 @@ class SuspectCaseController extends Controller
      */
     public function create()
     {
-        return view('lab.suspect_cases.create');
+        $sampleOrigins = SampleOrigin::orderBy('alias')->get();
+        return view('lab.suspect_cases.create',compact('sampleOrigins'));
     }
 
     /**
@@ -158,7 +160,8 @@ class SuspectCaseController extends Controller
      */
     public function edit(SuspectCase $suspectCase)
     {
-        return view('lab.suspect_cases.edit', compact('suspectCase'));
+        $sampleOrigins = SampleOrigin::orderBy('alias')->get();
+        return view('lab.suspect_cases.edit', compact('suspectCase','sampleOrigins'));
     }
 
     /**

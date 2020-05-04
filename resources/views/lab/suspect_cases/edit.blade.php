@@ -36,58 +36,11 @@
             <label for="for_origin">Origen</label>
             <select name="origin" id="for_origin" class="form-control">
                 <option value=""></option>
-
-                <option value="HOSPITAL Ernesto Torres Galdames" {{ ($suspectCase->origin == 'HOSPITAL Ernesto Torres Galdames')?'selected':'' }}>HOSPITAL Ernesto Torres Galdames</option>
-
-                <option value="ACHS" {{ ($suspectCase->origin == 'ACHS')?'selected':'' }}>ACHS</option>
-                <option value="Clínica Tarapacá" {{ ($suspectCase->origin == 'Clínica Tarapacá')?'selected':'' }}>Clínica Tarapacá</option>
-                <option value="Clínica Iquique" {{ ($suspectCase->origin == 'Clínica Iquique')?'selected':'' }}>Clínica Iquique</option>
-                <option value="IST" {{ ($suspectCase->origin == 'IST')?'selected':'' }}>IST</option>
-                <option value="Mutual de Seguridad" {{ ($suspectCase->origin == 'Mutual de Seguridad')?'selected':'' }}>Mutual de Seguridad</option>
-                <option value="Particular (SEREMI)" {{ ($suspectCase->origin == 'Particular (SEREMI)')?'selected':'' }}>Particular (SEREMI)</option>
-                <option value="Servico Médico Legal" {{ ($suspectCase->origin == 'Servicio Médico Legal')?'selected':'' }}>Servicio Médico Legal</option>
-                <option value="Servicio De Salud" {{ ($suspectCase->origin == 'Servicio De Salud')?'selected':'' }}>Servicio De Salud</option>
-
-                <option value="Toma de Muestra Domiciliaria" {{ ($suspectCase->origin == 'Toma de Muestra Domiciliaria')?'selected':'' }}>Toma de Muestra Domiciliaria</option>
-
-                <option value="Gendarmería de Chile" {{ ($suspectCase->origin == 'Gendarmería de Chile')?'selected':'' }}>Gendarmería de Chile</option>
-                <option value="Hogar de Ancianos" {{ ($suspectCase->origin == 'Hogar de Ancianos')?'selected':'' }}>Hogar de Ancianos</option>
-
-                <option value="CECOSF El Boro" {{ ($suspectCase->origin == 'CECOSF El Boro')?'selected':'' }}>CECOSF El Boro</option>
-                <option value="CECOSF La Tortuga" {{ ($suspectCase->origin == 'CECOSF La Tortuga')?'selected':'' }}>CECOSF La Tortuga</option>
-                <option value="CESFAM Cirujano Aguirre" {{ ($suspectCase->origin == 'CESFAM Cirujano Aguirre')?'selected':'' }}>CESFAM Cirujano Aguirre</option>
-                <option value="CESFAM Cirujano Guzmán" {{ ($suspectCase->origin == 'CESFAM Cirujano Guzmán')?'selected':'' }}>CESFAM Cirujano Guzmán</option>
-                <option value="CESFAM Cirujano Videla" {{ ($suspectCase->origin == 'CESFAM Cirujano Videla')?'selected':'' }}>CESFAM Cirujano Videla</option>
-                <option value="CESFAM Dr. Héctor Reyno G." {{ ($suspectCase->origin == 'CESFAM Dr. Héctor Reyno G.')?'selected':'' }}>CESFAM Dr. Héctor Reyno G.</option>
-                <option value="CESFAM Pedro Pulgar" {{ ($suspectCase->origin == 'CESFAM Pedro Pulgar')?'selected':'' }}>CESFAM Pedro Pulgar</option>
-                <option value="CESFAM Pica" {{ ($suspectCase->origin == 'CESFAM Pica')?'selected':'' }}>CESFAM Pica</option>
-                <option value="CESFAM Pozo Almonte" {{ ($suspectCase->origin == 'CESFAM Pozo Almonte')?'selected':'' }}>CESFAM Pozo Almonte</option>
-                <option value="CESFAM Sur de Iquique" {{ ($suspectCase->origin == 'CESFAM Sur de Iquique')?'selected':'' }}>CESFAM Sur de Iquique</option>
-                <option value="CGR Camiña" {{ ($suspectCase->origin == 'CGR Camiña')?'selected':'' }}>CGR Camiña</option>
-                <option value="CGR Colchane" {{ ($suspectCase->origin == 'CGR Colchane')?'selected':'' }}>CGR Colchane</option>
-                <option value="CGR Huara" {{ ($suspectCase->origin == 'CGR Huara')?'selected':'' }}>CGR Huara</option>
-                <!-- <option value="COSAM Jorge Seguel C." {{ ($suspectCase->origin == 'COSAM Jorge Seguel C.')?'selected':'' }}>COSAM Jorge Seguel C.</option> -->
-                <!-- <option value="COSAM Salvador Allende" {{ ($suspectCase->origin == 'COSAM Salvador Allende')?'selected':'' }}>COSAM Salvador Allende</option> -->
-
-                <!-- <option value="PRAIS Iquique" {{ ($suspectCase->origin == 'PRAIS Iquique')?'selected':'' }}>PRAIS Iquique</option> -->
-                <option value="PSR Cancosa" {{ ($suspectCase->origin == 'PSR Cancosa')?'selected':'' }}>PSR Cancosa</option>
-                <option value="PSR Cariquima" {{ ($suspectCase->origin == 'PSR Cariquima')?'selected':'' }}>PSR Cariquima</option>
-                <option value="PSR Chanavayita" {{ ($suspectCase->origin == 'PSR Chanavayita')?'selected':'' }}>PSR Chanavayita</option>
-                <option value="PSR Chiapa" {{ ($suspectCase->origin == 'PSR Chiapa')?'selected':'' }}>PSR Chiapa</option>
-                <option value="PSR Enquelga" {{ ($suspectCase->origin == 'PSR Enquelga')?'selected':'' }}>PSR Enquelga</option>
-                <option value="PSR La Huayca" {{ ($suspectCase->origin == 'PSR La Huayca')?'selected':'' }}>PSR La Huayca</option>
-                <option value="PSR La Tirana" {{ ($suspectCase->origin == 'PSR La Tirana')?'selected':'' }}>PSR La Tirana</option>
-                <option value="PSR Mamiña" {{ ($suspectCase->origin == 'PSR Mamiña')?'selected':'' }}>PSR Mamiña</option>
-                <option value="PSR Matilla" {{ ($suspectCase->origin == 'PSR Matilla')?'selected':'' }}>PSR Matilla</option>
-                <option value="PSR Moquella" {{ ($suspectCase->origin == 'PSR Moquella')?'selected':'' }}>PSR Moquella</option>
-                <option value="PSR Pachica" {{ ($suspectCase->origin == 'PSR Pachica')?'selected':'' }}>PSR Pachica</option>
-                <option value="PSR Pisagua" {{ ($suspectCase->origin == 'PSR Pisagua')?'selected':'' }}>PSR Pisagua</option>
-                <option value="PSR San Marcos" {{ ($suspectCase->origin == 'PSR San Marcos')?'selected':'' }}>PSR San Marcos</option>
-                <option value="PSR Sibaya" {{ ($suspectCase->origin == 'PSR Sibaya')?'selected':'' }}>PSR Sibaya</option>
-                <option value="PSR Tarapacá" {{ ($suspectCase->origin == 'PSR Tarapacá')?'selected':'' }}>PSR Tarapacá</option>
-                <!-- <option value="SAPU Pedro Pulgar" {{ ($suspectCase->origin == 'SAPU Pedro Pulgar')?'selected':'' }}>SAPU Pedro Pulgar</option> -->
-                <!-- <option value="SAPU Pozo Almonte" {{ ($suspectCase->origin == 'SAPU Pozo Almonte')?'selected':'' }}>SAPU Pozo Almonte</option> -->
-
+                @foreach($sampleOrigins as $sampleOrigin)
+                    <option value="{{ $sampleOrigin->name }}" {{ ($suspectCase->origin == $sampleOrigin->name)?'selected':'' }}>
+                        {{ $sampleOrigin->alias }}
+                    </option>
+                @endforeach
             </select>
         </fieldset>
 
