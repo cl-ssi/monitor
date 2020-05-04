@@ -17,6 +17,13 @@
         </fieldset>
 
         <fieldset class="form-group col">
+            <label for="for_alias">Alias (nombre corto)</label>
+            <input type="text" class="form-control" name="alias" id="for_alias"
+                required value="{{ $sampleOrigin->alias }}">
+        </fieldset>
+
+
+        <fieldset class="form-group col">
             <label for="for_address">Dirección (opcional)</label>
             <input type="text" class="form-control" name="address" id="for_address"
                 value="{{ $sampleOrigin->address }}">
@@ -25,7 +32,8 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Guardar</button>
-    
+    <a class="btn btn-outline-secondary" href="{{ route('lab.sample_origins.index') }}">Cancelar</a>
+
 </form>
 
 @endsection

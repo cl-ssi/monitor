@@ -15,7 +15,7 @@ class SampleOrigin extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'address'
+        'name', 'alias', 'address'
     ];
 
 
