@@ -244,16 +244,27 @@
             </tbody>
         </table>
 
-        <!--table class="table table-sm">
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr class="table-active">
+                    <th colspan="3">Hospitalizados críticos (UCI)</th>
+                </tr>
+                <tr>
+                    <th>Sexo</th>
+                    <th>Edad</th>
+                    <th>Comuna</th>
+                </tr>
+            </thead>
             <tbody>
                 @foreach($hospitalizado_critico as $p)
                 <tr>
-                    <td>{{ $p->suspectCases->last()->status }}</td>
+                    <td>{{ $p->genderEsp }}</td>
                     <td>{{ $p->suspectCases->last()->age }}</td>
+                    <td>{{ $p->demographic->commune }}</td>
                 </tr>
                 @endforeach
             </tbody>
-        </table-->
+        </table>
 
 
 
@@ -409,7 +420,7 @@
                 <tr class="table-active">
                     <th>Sospechas por Origen</th>
                     <th>Total de casos</th>
-                    <th>Total posivos</th>
+                    <th>Total positivos</th>
                 </tr>
             </thead>
             <tbody>
