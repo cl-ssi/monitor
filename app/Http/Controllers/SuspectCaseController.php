@@ -339,9 +339,9 @@ class SuspectCaseController extends Controller
 
         $patients_other_region = $patients->where('demographic.region','<>','Tarapacá')->whereNotNull('demographic');
 
-        //$hospitalizado_basico = Patient::whereHas('suspectCases', function ($q) { $q->where('status','Hospitalizado Básico'); })->with('suspectCases')->with('demographic')->get();
+        $hospitalizado_basico = Patient::whereHas('suspectCases', function ($q) { $q->where('status','Hospitalizado Básico'); })->whereHas('suspectCases', function ($q) { $q->where('pscr_sars_cov_2','positive'); })->with('suspectCases')->with('demographic')->get();
 
-        $hospitalizado_critico = Patient::whereHas('suspectCases', function ($q) { $q->where('status','Hospitalizado Crítico'); })->with('suspectCases')->with('demographic')->get();
+        $hospitalizado_critico = Patient::whereHas('suspectCases', function ($q) { $q->where('status','Hospitalizado Crítico'); })->whereHas('suspectCases', function ($q) { $q->where('pscr_sars_cov_2','positive'); })->with('suspectCases')->with('demographic')->get();
 
         $patients = $patients->whereNotIn('demographic.region',
                     [
@@ -452,7 +452,7 @@ class SuspectCaseController extends Controller
         // echo '<pre>';
         // print_r($hospitalizado_critico->toArray());
         // die();
-        return view('lab.suspect_cases.report', compact('patients', 'patients_other_region', 'hospitalizado_critico', 'cases', 'cases_other_region', 'evolucion'));
+        return view('lab.suspect_cases.report', compact('patients', 'patients_other_region', 'hospitalizado_critico', 'hospitalizado_basico', 'cases', 'cases_other_region', 'evolucion'));
     }
 
     public function historical_report(Request $request)
