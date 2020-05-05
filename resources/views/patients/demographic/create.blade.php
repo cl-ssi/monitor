@@ -22,8 +22,8 @@
     </fieldset>
 
     <fieldset class="form-group col-6 col-md-1">
-        <label for="for_deparment">Depto.</label>
-        <input type="text" class="form-control" name="deparment" id="for_deparment">
+        <label for="for_department">Depto.</label>
+        <input type="text" class="form-control" name="department" id="for_department">
     </fieldset>
 
     <fieldset class="form-group col-12 col-md-3">
@@ -302,7 +302,7 @@
 
     <fieldset class="form-group col-6 col-md-4">
         <label for="comunas">Comuna</label>
-        <select class="form-control" name="commune" id="comunas"></select>
+        <select class="form-control" name="commune" id="comunas" required></select>
     </fieldset>
 
     <fieldset class="form-group col-6 col-md-2">
