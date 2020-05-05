@@ -28,11 +28,10 @@
     <style media="screen">
         .navbar-custom {
             background-color:
-                @switch(App::environment())
-                    @case('local') #CE9DD9; @break
-                    @case('testing') #B5EAD7; @break
-                    @case('production') #FFFFFF; @break
-                @endswitch
+                @switch(App::environment()) @case('local') #CE9DD9;
+            @break @case('testing') #B5EAD7;
+            @break @case('production') #FFFFFF;
+            @break @endswitch
         }
     </style>
 </head>
@@ -90,7 +89,7 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.index') }}?text=&pendientes=on">Todos los exámenes</a>
                                 @endcan
-                                
+
                                 @can('SuspectCase: admission')
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.admission') }}">Agregar nuevo caso</a>
@@ -119,11 +118,25 @@
                         @endcan
 
                         @can('SanitaryResidence: user')
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="{{ route('sanitary_residences.bookings.index') }}">
                                 <i class="fas fa-hotel"></i>
                                 Residencia Sanitaria
                             </a>
+                        </li> -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-hotel"></i>
+                                Residencia Sanitaria
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">                                
+                                
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.hotelagualuna') }}">Hotel Agua Luna</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.hotelurbano') }}">Hotel Urbano</a>
+                                
+
+                            </div>
                         </li>
                         @endcan
 
