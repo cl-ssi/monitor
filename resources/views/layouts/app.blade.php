@@ -89,9 +89,9 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.index') }}?text=&pendientes=on">Todos los exámenes</a>
 
-                                @can('SuspectCase: create')
+                                @can('SuspectCase: admission')
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.create') }}">Agregar nuevo caso</a>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.admission') }}">Agregar nuevo caso</a>
                                 @endcan
 
                             </div>

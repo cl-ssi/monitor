@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\SuspectCase;
 use App\Patient;
+use App\Demographic;
 use App\Log;
 use App\File;
 use App\User;
@@ -83,6 +84,17 @@ class SuspectCaseController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function admission()
+    {
+        $sampleOrigins = SampleOrigin::orderBy('alias')->get();
+        return view('lab.suspect_cases.admission',compact('sampleOrigins'));
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -141,6 +153,85 @@ class SuspectCaseController extends Controller
         return redirect()->route($ruta);
     }
 
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeAdmission(Request $request)
+    {
+        if ($request->id == null) {
+            $patient = new Patient($request->All());
+        } else {
+            $patient = Patient::find($request->id);
+            $patient->fill($request->all());
+        }
+        $patient->save();
+
+        $suspectCase = new SuspectCase($request->All());
+
+        $suspectCase->gestation = $request->has('gestation') ? 1 : 0;
+        $suspectCase->close_contact = $request->has('close_contact') ? 1 : 0;
+        $suspectCase->discharge_test = $request->has('discharge_test') ? 1 : 0;
+
+        $suspectCase->epidemiological_week = Carbon::createFromDate(
+            $suspectCase->sample_at->format('Y-m-d'))->add(1, 'days')->weekOfYear;
+
+        $suspectCase->laboratory_id = Auth::user()->laboratory->id;
+
+        /* Marcar como pendiente el resultado, no viene en el form */
+        $suspectCase->pscr_sars_cov_2 = 'pending';
+
+        $patient->suspectCases()->save($suspectCase);
+
+        if($patient->demographic) {
+            //$logDemographic->old = clone $patient->demographic;
+            $patient->demographic->fill($request->all());
+            $patient->demographic->save();
+            //$logDemographic->new = $patient->demographic;
+            //$logDemographic->save();
+        }
+        else {
+            $demographic = new Demographic($request->All());
+            $demographic->patient_id = $patient->id;
+            $demographic->save();
+
+            // $logDemographic->new = $demographic;
+            // $logDemographic->save();
+        }
+
+        //guarda archivos
+        // if ($request->hasFile('forfile')) {
+        //     foreach ($request->file('forfile') as $file) {
+        //         $filename = $file->getClientOriginalName();
+        //         $fileModel = new File;
+        //         $fileModel->file = $file->store('files');
+        //         $fileModel->name = $filename;
+        //         $fileModel->suspect_case_id = $suspectCase->id;
+        //         $fileModel->save();
+        //     }
+        // }
+
+        if (env('APP_ENV') == 'production') {
+            if ($suspectCase->pscr_sars_cov_2 == 'positive') {
+                $emails  = explode(',', env('EMAILS_ALERT'));
+                $emails_bcc  = explode(',', env('EMAILS_ALERT_BCC'));
+                Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($suspectCase));
+            }
+        }
+
+        $log = new Log();
+        //$log->old = $suspectCase;
+        $log->new = $suspectCase;
+        $log->save();
+
+
+        session()->flash('success', 'Se ha creado el caso número: <h3>' . $suspectCase->id . '</h3>');
+        return redirect()->back();
+    }
+
     /**
      * Display the specified resource.
      *
@@ -181,7 +272,8 @@ class SuspectCaseController extends Controller
         $suspectCase->close_contact = $request->has('close_contact') ? 1 : 0;
         $suspectCase->discharge_test = $request->has('discharge_test') ? 1 : 0;
 
-        $suspectCase->epidemiological_week = Carbon::createFromDate($suspectCase->sample_at->format('Y-m-d'))->add(1, 'days')->weekOfYear;
+        $suspectCase->epidemiological_week = Carbon::createFromDate(
+            $suspectCase->sample_at->format('Y-m-d'))->add(1, 'days')->weekOfYear;
 
         /* Setar el validador */
         if ($log->old->pscr_sars_cov_2 == 'pending' and $suspectCase->pscr_sars_cov_2 != 'pending') {

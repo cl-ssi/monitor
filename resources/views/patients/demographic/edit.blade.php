@@ -23,8 +23,8 @@
     </fieldset>
 
     <fieldset class="form-group col-6 col-md-1">
-        <label for="for_deparment">Depto.</label>
-        <input type="text" class="form-control" name="department" id="for_deparment"
+        <label for="for_department">Depto.</label>
+        <input type="text" class="form-control" name="department" id="for_department"
             value="{{ $patient->demographic->department }}">
     </fieldset>
 
