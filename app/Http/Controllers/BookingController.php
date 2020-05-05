@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\SanitaryResidence\Residence;
 use App\SanitaryResidence\Booking;
 use App\SanitaryResidence\Room;
 use App\Patient;
@@ -21,10 +22,11 @@ class BookingController extends Controller
 
     public function index()
     {
+        $recidences = Residence::All();
         $rooms = Room::orderBy('floor')->get();
         //$bookings = Booking::where('status', 'Residencia Sanitaria')->get();
         $bookings = Booking::All();
-        return view('sanitary_residences.bookings.index', compact('bookings', 'rooms'));
+        return view('sanitary_residences.bookings.index', compact('recidences','bookings', 'rooms'));
     }
 
     /**

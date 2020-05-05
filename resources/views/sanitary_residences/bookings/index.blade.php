@@ -10,51 +10,56 @@
 
 <a class="btn btn-primary mb-3" href="{{ route('sanitary_residences.bookings.create') }}">Crear un Booking</a>
 
-@php ($piso = 0)
+@foreach($recidences as $recidence)
+    <h3>{{ $recidence->name }}</h3>
 
-@foreach($rooms as $room)
+    @php ($piso = 0)
 
-    @if($room->floor != $piso)
-        @if($piso != 0)
-            </div>
-            <hr>
-        @endif
-        <h5>Piso {{$room->floor}}</h5>
-        <div class="row mt-3">
-    @endif
+    @foreach($recidence->rooms as $room)
 
-    <div class="border text-center small m-2" style="width: 172px; height: 172px;">
-        Habitación {{ $room->number }}
-        <hr>
-
-        @if($room->bookings->first())
-
-            @foreach($room->bookings as $booking)
-            @if ($booking->status == 'Residencia Sanitaria' and $booking->patient->suspectCases->first()->status == 'Residencia Sanitaria')
-            <li>
-                <a href="{{ route('sanitary_residences.bookings.show',$booking) }}">
-                {{ $booking->patient->fullName }}
-                </a>
-                <br>
-                ({{ $booking->patient->suspectCases->last()->age }} AÑOS)
-                <!-- <a href="{{ route('sanitary_residences.bookings.excel', $booking) }}">
-                <i class="fas fa-file-excel"></i>
-                </a> -->
-                </li>
+        @if($room->floor != $piso)
+            @if($piso != 0)
+                </div>
+                <hr>
             @endif
-            @endforeach
-
-
+            <h5>Piso {{$room->floor}}</h5>
+            <div class="row mt-3">
         @endif
+
+        <div class="border text-center small m-2" style="width: 172px; height: 172px;">
+            Habitación {{ $room->number }}
+            <hr>
+
+            @if($room->bookings->first())
+
+                @foreach($room->bookings as $booking)
+                    @if ($booking->status == 'Residencia Sanitaria' and $booking->patient->suspectCases->first()->status == 'Residencia Sanitaria')
+                    <li>
+                        <a href="{{ route('sanitary_residences.bookings.show',$booking) }}">
+                        {{ $booking->patient->fullName }}
+                        </a>
+                        <br>
+                        ({{ $booking->patient->suspectCases->last()->age }} AÑOS)
+                        <!-- <a href="{{ route('sanitary_residences.bookings.excel', $booking) }}">
+                        <i class="fas fa-file-excel"></i>
+                        </a> -->
+                    </li>
+                    @endif
+                @endforeach
+
+            @endif
+
+        </div>
+
+        @php ($piso = $room->floor)
+
+    @endforeach
 
     </div>
-
-    @php ($piso = $room->floor)
-
+    <hr>
 @endforeach
 
 
-<hr>
 <table class="table table-sm table-responsive mt-3">
     <thead>
         <tr>
@@ -64,7 +69,7 @@
             <th>Residencial</th>
             <th>Habitación</th>
             <th>Desde</th>
-            <th>Fecha Egreso</th>            
+            <th>Fecha Egreso</th>
             <th></th>
         </tr>
     </thead>
@@ -78,12 +83,12 @@
             <td>{{ $booking->room->residence->name }}</td>
             <td>{{ $booking->room->number }}</td>
             <td>{{ $booking->from }}</td>
-            <td>{{ $booking->real_to }}</td>            
+            <td>{{ $booking->real_to }}</td>
 
             <td></td>
         </tr>
         @endif
-        
+
         @endforeach
     </tbody>
 </table>
