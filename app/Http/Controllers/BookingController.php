@@ -29,6 +29,24 @@ class BookingController extends Controller
         return view('sanitary_residences.bookings.index', compact('recidences','bookings', 'rooms'));
     }
 
+    public function hotelagualuna()
+    {
+        $recidences = Residence::where('id', 1)->get();;
+        $rooms = Room::orderBy('floor')->get();
+        //$bookings = Booking::where('status', 'Residencia Sanitaria')->get();
+        $bookings = Booking::All();
+        return view('sanitary_residences.bookings.index', compact('recidences','bookings', 'rooms'));
+    }
+
+    public function hotelurbano()
+    {
+        $recidences = Residence::where('id', 2)->get();;
+        $rooms = Room::orderBy('floor')->get();
+        //$bookings = Booking::where('status', 'Residencia Sanitaria')->get();
+        $bookings = Booking::All();
+        return view('sanitary_residences.bookings.index', compact('recidences','bookings', 'rooms'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *

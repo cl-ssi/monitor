@@ -138,6 +138,8 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
         Route::get('/excel/{booking}','BookingController@excel')->name('excel');
         Route::get('/', 'BookingController@index')->name('index');
         Route::get('/create', 'BookingController@create')->name('create');
+        Route::get('/hotelagualuna', 'BookingController@hotelagualuna')->name('hotelagualuna');
+        Route::get('/hotelurbano', 'BookingController@hotelurbano')->name('hotelurbano');
         Route::get('/{booking}', 'BookingController@show')->name('show');
         Route::post('/', 'BookingController@store')->name('store');
         Route::get('/{booking}', 'BookingController@show')->name('show');
