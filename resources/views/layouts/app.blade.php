@@ -131,8 +131,11 @@
                                 Residencia Sanitaria
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">                                
-                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.indexresidence', 1) }}">Hotel Agua Luna</a>                                
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.indexresidence', 1) }}">Hotel Agua Luna</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.indexresidence', 2) }}">Colegio Universitario UNAP</a>
                             </div>
+
                         </li>
                         @endcan
 
