@@ -70,6 +70,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
     Route::prefix('suspect_cases')->name('suspect_cases.')->group(function () {
         Route::get('/hetg','SuspectCaseController@hetg')->name('hetg')->middleware('auth');
         Route::get('/unap','SuspectCaseController@unap')->name('unap')->middleware('auth');
+        Route::post('/search_id','SuspectCaseController@search_id')->name('search_id')->middleware('auth');
         //Route::get('stat', 'SuspectCaseController@stat')->name('stat');
         // Route::get('case_chart','SuspectCaseController@case_chart')->name('case_chart')->middleware('auth');
         Route::match(['get','post'],'case_chart','SuspectCaseController@case_chart')->middleware('auth')->name('case_chart');

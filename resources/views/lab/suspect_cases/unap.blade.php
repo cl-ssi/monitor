@@ -74,6 +74,7 @@
   </div>
 
 </form>
+@include('lab.suspect_cases.partials.search_id')
 </div>
 
 <div class="table-responsive">
