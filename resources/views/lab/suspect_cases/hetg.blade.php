@@ -53,6 +53,8 @@
     Reporte estadistico diario
 </a>
 
+
+
 <div align="right">
 <form method="get" action="{{ route('lab.suspect_cases.hetg') }}">
 
@@ -74,6 +76,7 @@
   </div>
 
 </form>
+@include('lab.suspect_cases.partials.search_id')
 </div>
 
 <div class="table-responsive">
