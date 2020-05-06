@@ -15,7 +15,7 @@
             <th colspan="1"></th>
 
             @for ($i=1; $i <= $max_cases; $i++)
-                <th colspan="4" nowrap>Covid {{ $i }}</th>
+                <th colspan="5" nowrap>Covid {{ $i }}</th>
             @endfor
 
             <th colspan="2">IFD</th>
@@ -41,6 +41,7 @@
             <th>Estado</th>
 
             @for ($i=1; $i <= $max_cases; $i++)
+                <th>ID</th>
                 <th nowrap class="table-active">Fecha Muestra</th>
                 <th nowrap class="table-active">Fecha Resultado</th>
                 <th class="active">Covid</th>
@@ -95,6 +96,7 @@
 
 
                 @foreach ($patient->suspectCases as $suspectCase)
+                    <td>{{ $suspectCase->id }}</td>
                     <td nowrap>{{ $suspectCase->sample_at->format('Y-m-d') }}</td>
                     <td nowrap>{{ ($suspectCase->pscr_sars_cov_2_at) ? $suspectCase->pscr_sars_cov_2_at->format('Y-m-d') : '' }}</td>
                     <td nowrap>
@@ -105,6 +107,7 @@
                 @endforeach
 
                 @for($i = $patient->suspectCases->count(); $i < $max_cases; $i++)
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
