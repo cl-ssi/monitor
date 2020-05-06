@@ -3,7 +3,7 @@
 @section('title', 'Editar sospecha')
 
 @section('content')
-<h3 class="mb-3">Editar sospecha</h3>
+<h3 class="mb-3">Editar sospecha {{ $suspectCase->id }}</h3>
 
 @include('patients.show',$suspectCase)
 

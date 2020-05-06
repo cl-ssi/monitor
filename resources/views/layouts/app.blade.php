@@ -28,10 +28,11 @@
     <style media="screen">
         .navbar-custom {
             background-color:
-                @switch(App::environment()) @case('local') #CE9DD9;
-            @break @case('testing') #B5EAD7;
-            @break @case('production') #FFFFFF;
-            @break @endswitch
+                @switch(App::environment())
+                    @case('local') #CE9DD9; @break
+                    @case('testing') #B5EAD7; @break
+                    @case('production') #FFFFFF; @break
+                @endswitch
         }
     </style>
 </head>
@@ -129,8 +130,18 @@
                                 <i class="fas fa-hotel"></i>
                                 Residencia Sanitaria
                             </a>
+<<<<<<< HEAD
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">                                
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.hotelagualuna') }}">Hotel Agua Luna</a>                                
+=======
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.hotelagualuna') }}">Hotel Agua Luna</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.hotelurbano') }}">Hotel Urbano</a>
+
+
+>>>>>>> d916e1a3c362fe1061947dccc926d8ae3b6f1e37
                             </div>
                         </li>
                         @endcan
