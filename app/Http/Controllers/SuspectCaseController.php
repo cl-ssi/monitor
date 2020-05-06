@@ -333,6 +333,22 @@ class SuspectCaseController extends Controller
         return redirect()->route('lab.suspect_cases.index');
     }
 
+    /**
+     * Search suspectCase by ID.
+     *
+     * @param  \App\SuspectCase  $suspectCase
+     * @return \Illuminate\Http\Response
+     */
+    public function search_id(Request $request)
+    {
+        $suspectCase = SuspectCase::find($request->input('id'));
+        if($suspectCase) return redirect()->route('lab.suspect_cases.edit', $suspectCase);
+        else {
+            session()->flash('warning', 'No se ha encontrado el exámen ID: <h3>' . $request->input('id') . '</h3>');
+            return redirect()->back();
+        }
+    }
+
     public function report()
     {
         $patients = Patient::whereHas('suspectCases', function ($q) { $q->where('pscr_sars_cov_2','positive'); })->with('suspectCases')->with('demographic')->get();
