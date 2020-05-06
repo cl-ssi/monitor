@@ -130,12 +130,7 @@
                                 Residencia Sanitaria
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">                                
-                                
-                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.hotelagualuna') }}">Hotel Agua Luna</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.hotelurbano') }}">Hotel Urbano</a>
-                                
-
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.hotelagualuna') }}">Hotel Agua Luna</a>                                
                             </div>
                         </li>
                         @endcan
