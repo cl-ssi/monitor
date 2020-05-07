@@ -90,11 +90,11 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::put('/{suspect_case}','SuspectCaseController@update')->name('update')->middleware('auth','can:SuspectCase: edit');
         Route::delete('/{suspect_case}','SuspectCaseController@destroy')->name('destroy')->middleware('auth','can:SuspectCase: delete');
         Route::prefix('reports')->name('reports.')->group(function () {
-            Route::get('/positives','SuspectCaseReportController@positives')->name('positives')->middleware('auth','can:Report');
+            Route::get('/positives','SuspectCaseReportController@positives')->name('positives')->middleware('auth','can:Report: positives');
         });
         Route::prefix('report')->name('report.')->group(function () {
-            Route::get('/','SuspectCaseController@report')->name('index')->middleware('auth','can:Report');
-            Route::get('historical_report','SuspectCaseController@historical_report')->name('historical_report')->middleware('auth','can:Report');
+            Route::get('/','SuspectCaseController@report')->name('index')->middleware('auth','can:Report: other');
+            Route::get('historical_report','SuspectCaseController@historical_report')->name('historical_report')->middleware('auth','can:Report: historical');
             Route::get('/minsal/{lab}','SuspectCaseController@report_minsal')->name('minsal')->middleware('auth','can:Report');
             Route::get('/seremi/{lab}','SuspectCaseController@report_seremi')->name('seremi')->middleware('auth','can:Report');
             Route::get('/minsal-export/{lab}','SuspectCaseController@exportMinsalExcel')->name('exportMinsal')->middleware('auth');
