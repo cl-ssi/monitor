@@ -105,7 +105,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('patients.georeferencing') }}">
                                 <i class="fas fa-globe-americas"></i>
-                                Georeferenciación
+                                Geo
                             </a>
                         </li>
                         @endcan
@@ -120,47 +120,37 @@
                         @endcan
 
                         @can('SanitaryResidence: user')
-                        <!-- <li class="nav-item">
-                            <a class="nav-link" href="{{ route('sanitary_residences.bookings.index') }}">
-                                <i class="fas fa-hotel"></i>
-                                Residencia Sanitaria
-                            </a>
-                        </li> -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-hotel"></i>
-                                Residencia Sanitaria
+                                Residencias
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.indexresidence', 1) }}">Hotel Agua Luna</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.indexresidence', 2) }}">Colegio Universitario UNAP</a>
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.index', 1) }}">Hotel Agua Luna</a>
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.index', 2) }}">Colegio Universitario UNAP</a>
                             </div>
-
                         </li>
                         @endcan
 
                         @can('Report')
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('lab.suspect_cases.report.index') }}">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-clipboard"></i>
-                                Reporte
+                                Reportes
                             </a>
-                        </li>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-                        <!-- <li class="nav-item">
-                            <a class="nav-link" href="{{ route('lab.suspect_cases.case_chart') }}">
-                                Casos
-                            </a>
-                        </li> -->
-                        @endcan
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.positives') }}">Reporte de positivos (nuevo)</a>
 
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.index') }}">Reporte</a>
 
-                        @can('Admin')
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('parameters.index') }}">
-                                <i class="fas fa-cog fa-fw"></i> Configuración
-                            </a>
+                                @can('Historical Report')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.historical_report') }}">Reporte Histórico</a>
+                                @endcan
+
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.diary_lab_report') }}">Cantidad de muestras y exámenes</a>
+
+                            </div>
                         </li>
                         @endcan
 
@@ -181,6 +171,12 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                @can('Admin')
+                                    <a class="nav-link" href="{{ route('parameters.index') }}">
+                                        <i class="fas fa-cog fa-fw"></i> Configuracion
+                                    </a>
+                                @endcan
+
                                 <a class="dropdown-item" href="{{ route('users.password.show_form') }}">
                                     Cambiar clave
                                 </a>

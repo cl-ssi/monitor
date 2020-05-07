@@ -20,7 +20,5 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Guardar</button>
-    <a class="btn btn-outline-secondary" href="{{ route('sanitary_residences.bookings.index') }}">Cancelar</a>
-
 
 </form>
