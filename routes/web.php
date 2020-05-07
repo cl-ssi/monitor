@@ -89,6 +89,9 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/{suspect_case}/edit','SuspectCaseController@edit')->name('edit')->middleware('auth','can:SuspectCase: edit');
         Route::put('/{suspect_case}','SuspectCaseController@update')->name('update')->middleware('auth','can:SuspectCase: edit');
         Route::delete('/{suspect_case}','SuspectCaseController@destroy')->name('destroy')->middleware('auth','can:SuspectCase: delete');
+        Route::prefix('reports')->name('reports.')->group(function () {
+            Route::get('/positives','SuspectCaseReportController@positives')->name('positives')->middleware('auth','can:Report');
+        });
         Route::prefix('report')->name('report.')->group(function () {
             Route::get('/','SuspectCaseController@report')->name('index')->middleware('auth','can:Report');
             Route::get('historical_report','SuspectCaseController@historical_report')->name('historical_report')->middleware('auth','can:Report');
@@ -139,12 +142,11 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
 
         Route::get('/excelall','BookingController@excelall')->name('excelall');
         Route::get('/excel/{booking}','BookingController@excel')->name('excel');
-        Route::get('/', 'BookingController@index')->name('index');
+        Route::get('/residence/{residence}', 'BookingController@index')->name('index');
         Route::get('/create', 'BookingController@create')->name('create');
         Route::get('/{booking}', 'BookingController@show')->name('show');
         Route::post('/', 'BookingController@store')->name('store');
         Route::get('/{booking}', 'BookingController@show')->name('show');
-        Route::get('/residence/{residence}', 'BookingController@indexresidence')->name('indexresidence');
         // Route::get('/{booking}/edit', 'BookingController@edit')->name('edit');
         Route::put('/{booking}', 'BookingController@update')->name('update');
         // Route::delete('/{booking}', 'BookingController@destroy')->name('destroy');

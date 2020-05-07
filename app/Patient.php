@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 //use Illuminate\Foundation\Auth\User as Authenticatable;
 //use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
 
 class Patient extends Model //Authenticatable
 {
@@ -41,6 +42,18 @@ class Patient extends Model //Authenticatable
 
     public function suspectCases() {
         return $this->hasMany('App\SuspectCase');
+    }
+
+    public function lastExam() {
+        return $this->hasOne('App\SuspectCase')
+            ->whereIn('pscr_sars_cov_2',['positive','negative','pending'])
+            ->latest();
+    }
+
+    public function getAgeAttribute() {
+        if ($this->birthday)
+            return Carbon::parse($this->birthday)->age;
+        else return null;
     }
 
     public function demographic() {

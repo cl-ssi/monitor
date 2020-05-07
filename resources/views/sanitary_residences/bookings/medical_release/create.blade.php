@@ -4,7 +4,7 @@
     @csrf
     @method('POST')
 
-    <input type="hidden" name="booking_id" value="{{ $booking->id }}">    
+    <input type="hidden" name="booking_id" value="{{ $booking->id }}">
 
     <div class="form-row">
         <fieldset class="form-group col-8 col-md-3">
@@ -32,7 +32,5 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Guardar</button>
-    <a class="btn btn-outline-secondary" href="{{ route('sanitary_residences.bookings.index') }}">Cancelar</a>
-
 
 </form>
