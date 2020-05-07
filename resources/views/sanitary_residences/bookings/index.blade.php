@@ -75,7 +75,7 @@
     </thead>
     <tbody class="small">        
         @foreach($bookings as $booking)
-        @if($booking->real_to and $booking->room->residence->id==$recidence->id)
+        @if($booking->real_to)
         <tr>
             <td>{{ $booking->patient->fullName }}</td>
             <td>{{ $booking->status }}</td>
