@@ -18,6 +18,7 @@ class CreateResidencesTable extends Migration
             $table->string('name')->nullable();
             $table->string('address')->nullable();
             $table->string('telephone')->nullable();
+            $table->string('type')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
