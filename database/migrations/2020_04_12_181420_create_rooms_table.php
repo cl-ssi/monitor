@@ -18,6 +18,8 @@ class CreateRoomsTable extends Migration
             $table->string('number');
             $table->integer('floor')->nullable();
             $table->text('description')->nullable();
+            $table->string('type')->nullable();
+            
             $table->unsignedBigInteger('residence_id');
             
             $table->timestamps();
