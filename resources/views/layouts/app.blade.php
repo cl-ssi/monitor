@@ -87,6 +87,7 @@
                                 @can('SuspectCase: list')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.hetg') }}?text=&pendientes=on">Laboratorio HETG</a>
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.unap') }}?text=&pendientes=on">Laboratorio UNAP</a>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.bioclinic') }}?text=&pendientes=on">Laboratorio BIOCLINIC</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.index') }}?text=&pendientes=on">Todos los exámenes</a>
                                 @endcan
@@ -130,7 +131,7 @@
                                 <i class="fas fa-hotel"></i>
                                 Residencia Sanitaria
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">                                
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.indexresidence', 1) }}">Hotel Agua Luna</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.indexresidence', 2) }}">Colegio Universitario UNAP</a>

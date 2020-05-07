@@ -64,6 +64,7 @@
             <select name="laboratory_id" id="for_laboratory_id" class="form-control">
                 <option value="1" {{ ($suspectCase->laboratory_id == 1)?'selected':'' }}>HETG</option>
                 <option value="2" {{ ($suspectCase->laboratory_id == 2)?'selected':'' }}>UNAP</option>
+                <option value="3" {{ ($suspectCase->laboratory_id == 3)?'selected':'' }}>BIOCLINIC</option>
             </select>
         </fieldset>
 
