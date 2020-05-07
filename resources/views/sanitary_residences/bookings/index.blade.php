@@ -10,12 +10,12 @@
 
 <a class="btn btn-primary mb-3" href="{{ route('sanitary_residences.bookings.create') }}">Crear un Booking</a>
 
-@foreach($recidences as $recidence)
-    <h3>{{ $recidence->name }}</h3>
+
+    <h3>{{ $residence->name }}</h3>
 
     @php ($piso = 0)
 
-    @foreach($recidence->rooms as $room)
+    @foreach($rooms as $room)
 
         @if($room->floor != $piso)
             @if($piso != 0)
@@ -57,7 +57,6 @@
 
     </div>
     <hr>
-@endforeach
 
 
 <table class="table table-sm table-responsive mt-3">

@@ -29,15 +29,15 @@ class BookingController extends Controller
         return view('sanitary_residences.bookings.index', compact('recidences','bookings', 'rooms'));
     }
 
-    public function indexresidence($residence)
+    public function indexresidence($residence_id)
     {
-        
-        $recidences = Residence::where('id', $residence)->get();;
-        $rooms = Room::orderBy('floor')->get();
+
+        $residence = Residence::find($residence_id);
+        $rooms = $rooms = Room::where('residence_id',$residence->id)->orderBy('floor')->get();
         //$bookings = Booking::where('status', 'Residencia Sanitaria')->get();
         $bookings = Booking::All();
-        return view('sanitary_residences.bookings.index', compact('recidences','bookings', 'rooms'));
-    }    
+        return view('sanitary_residences.bookings.index', compact('residence','bookings', 'rooms'));
+    }
 
     /**
      * Show the form for creating a new resource.
