@@ -35,6 +35,7 @@
                 <option value=""></option>
                 <option value="1">HETG</option>
                 <option value="2">UNAP</option>
+                <option value="3">BIOCLINIC</option>
             </select>
         </fieldset>
 

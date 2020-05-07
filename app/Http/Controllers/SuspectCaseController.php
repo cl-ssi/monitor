@@ -146,6 +146,7 @@ class SuspectCaseController extends Controller
         switch($suspectCase->laboratory_id) {
             case(1): $ruta = 'lab.suspect_cases.hetg'; break;
             case(2): $ruta = 'lab.suspect_cases.unap'; break;
+            case(3): $ruta = 'lab.suspect_cases.bioclinic'; break;
             default: $ruta = 'lab.suspect_cases.index'; break;
         }
 
@@ -378,7 +379,7 @@ class SuspectCaseController extends Controller
                     'Región de Ñuble']);
 
 
-        $cases = SuspectCase::All();
+        $cases = SuspectCase::with('Patient')->get();
         $cases = $cases->where('discharge_test', '<>', 1)->whereNotIn('patient.demographic.region',
                         [
                         'Arica y Parinacota',
@@ -922,6 +923,46 @@ class SuspectCaseController extends Controller
         // return view('lab.suspect_cases.unap', ['suspectCases' => $suspectCases, 'request' => $request]);
     }
 
+    public function bioclinic(Request $request)
+    {
+      if ($request->get('positivos') == "on") {
+        $positivos = "positive";
+      }else{$positivos = NULL;}
+
+      if ($request->get('negativos') == "on") {
+        $negativos = "negative";
+      }else{$negativos = NULL;}
+
+      if ($request->get('pendientes') == "on") {
+        $pendientes = "pending";
+      }else{$pendientes = NULL;}
+
+      if ($request->get('rechazados') == "on") {
+        $rechazados = "rejected";
+      }else{$rechazados = NULL;}
+
+      if ($request->get('indeterminados') == "on") {
+        $indeterminados = "undetermined";
+      }else{$indeterminados = NULL;}
+
+      $text = $request->get('text');
+
+      $suspectCasesTotal = SuspectCase::where('laboratory_id',3)->get();
+
+      $suspectCases = SuspectCase::latest('id')
+                                  ->where('laboratory_id',3)
+                                  ->whereHas('patient', function($q) use ($text){
+                                          $q->Where('name', 'LIKE', '%'.$text.'%')
+                                            ->orWhere('fathers_family','LIKE','%'.$text.'%')
+                                            ->orWhere('mothers_family','LIKE','%'.$text.'%')
+                                            ->orWhere('run','LIKE','%'.$text.'%');
+                                  })
+                                  ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
+                                  ->paginate(200);//->appends(request()->query());
+
+        return view('lab.suspect_cases.bioclinic', compact('suspectCases','request','suspectCasesTotal'));
+    }
+
     public function exportExcel($cod_lab = mull){
         return Excel::download(new SuspectCasesExport($cod_lab), 'lista-casos.xlsx');
     }
@@ -954,34 +995,3 @@ class SuspectCaseController extends Controller
         return Excel::download(new SeremiSuspectCasesExport($cod_lab, $nombre_lab), 'reporte-seremi.xlsx');
     }
 }
-/*
-    public function case_tracing(Request $request)
-    {
-        $patients = Patient::whereHas('suspectCases', function ($q) { $q->where('pscr_sars_cov_2','positive'); })->get();
-        $patients = $patients->whereNotIn('demographic.region',
-                    [
-                    'Arica y Parinacota',
-                    'Antofagasta',
-                    'Atacama',
-                    'Coquimbo',
-                    'Valparaíso',
-                    'Región del Libertador Gral. Bernardo O’Higgins',
-                    'Región del Maule',
-                    'Región del Biobío',
-                    'Región de la Araucanía',
-                    'Región de Los Ríos',
-                    'Región de Los Lagos',
-                    'Región Aisén del Gral. Carlos Ibáñez del Campo',
-                    'Región de Magallanes y de la Antártica Chilena',
-                    'Región Metropolitana de Santiago',
-                    'Región de Ñuble']);
-
-        $max_cases = 0;
-        foreach ($patients as $patient) {
-            if($max_cases < $patient->suspectCases->count())
-                $max_cases = $patient->suspectCases->count();
-        }
-
-        return view('lab.suspect_cases.reports.case_tracing', compact('patients','max_cases'));
-    }
-*/

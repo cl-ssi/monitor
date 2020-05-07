@@ -70,6 +70,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
     Route::prefix('suspect_cases')->name('suspect_cases.')->group(function () {
         Route::get('/hetg','SuspectCaseController@hetg')->name('hetg')->middleware('auth');
         Route::get('/unap','SuspectCaseController@unap')->name('unap')->middleware('auth');
+        Route::get('/bioclinic','SuspectCaseController@bioclinic')->name('bioclinic')->middleware('auth');
         Route::post('/search_id','SuspectCaseController@search_id')->name('search_id')->middleware('auth');
         //Route::get('stat', 'SuspectCaseController@stat')->name('stat');
         // Route::get('case_chart','SuspectCaseController@case_chart')->name('case_chart')->middleware('auth');
@@ -135,17 +136,17 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
     });
 
     Route::prefix('bookings')->name('bookings.')->group(function () {
-        
+
         Route::get('/excelall','BookingController@excelall')->name('excelall');
         Route::get('/excel/{booking}','BookingController@excel')->name('excel');
-        Route::get('/', 'BookingController@index')->name('index');        
-        Route::get('/create', 'BookingController@create')->name('create');             
-        Route::get('/{booking}', 'BookingController@show')->name('show');        
+        Route::get('/', 'BookingController@index')->name('index');
+        Route::get('/create', 'BookingController@create')->name('create');
+        Route::get('/{booking}', 'BookingController@show')->name('show');
         Route::post('/', 'BookingController@store')->name('store');
         Route::get('/{booking}', 'BookingController@show')->name('show');
         Route::get('/residence/{residence}', 'BookingController@indexresidence')->name('indexresidence');
         // Route::get('/{booking}/edit', 'BookingController@edit')->name('edit');
-        Route::put('/{booking}', 'BookingController@update')->name('update');        
+        Route::put('/{booking}', 'BookingController@update')->name('update');
         // Route::delete('/{booking}', 'BookingController@destroy')->name('destroy');
     });
 
