@@ -71,6 +71,7 @@ class SuspectCase extends Model
         switch($this->laboratory_id) {
             case 1: return 'HETG'; break;
             case 2: return 'UNAP'; break;
+            case 3: return 'BIOCLINIC'; break;
         }
     }
 
