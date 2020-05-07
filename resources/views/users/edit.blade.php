@@ -14,7 +14,7 @@
     @method('PUT')
 
     <div class="form-row">
-        
+
         <fieldset class="form-group col">
             <label for="for_name">Nombre</label>
             <input type="text" class="form-control" name="name" id="for_name"
@@ -33,6 +33,7 @@
                 <option value=""></option>
                 <option value="1" {{ ($user->laboratory_id == 1)?'selected':'' }}>HETG</option>
                 <option value="2" {{ ($user->laboratory_id == 2)?'selected':'' }}>UNAP</option>
+                <option value="3" {{ ($user->laboratory_id == 3)?'selected':'' }}>BIOCLINIC</option>
             </select>
         </fieldset>
 
