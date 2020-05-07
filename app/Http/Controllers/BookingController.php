@@ -17,27 +17,13 @@ class BookingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
-
-
-    public function index()
+    public function index(Residence $residence)
     {
-        $recidences = Residence::All();
-        $rooms = Room::orderBy('floor')->get();
-        //$bookings = Booking::where('status', 'Residencia Sanitaria')->get();
-        $bookings = Booking::All();
-        return view('sanitary_residences.bookings.index', compact('recidences','bookings', 'rooms'));
-    }
-
-    public function indexresidence($residence_id)
-    {
-
-        $residence = Residence::find($residence_id);
         $rooms = $rooms = Room::where('residence_id',$residence->id)->orderBy('floor')->get();
-        //$bookings = Booking::where('status', 'Residencia Sanitaria')->get();
         $bookings = Booking::All();
         return view('sanitary_residences.bookings.index', compact('residence','bookings', 'rooms'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -149,8 +135,9 @@ class BookingController extends Controller
 
     public function excelall()
     {
+        $residences = Residence::All();
         //$bookings = Booking::all();
         $bookings = Booking::where('status', 'Residencia Sanitaria')->get();
-        return view('sanitary_residences.bookings.excel.excelall', compact('bookings'));
+        return view('sanitary_residences.bookings.excel.excelall', compact('residences','bookings'));
     }
 }

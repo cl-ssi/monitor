@@ -120,21 +120,15 @@
                         @endcan
 
                         @can('SanitaryResidence: user')
-                        <!-- <li class="nav-item">
-                            <a class="nav-link" href="{{ route('sanitary_residences.bookings.index') }}">
-                                <i class="fas fa-hotel"></i>
-                                Residencia Sanitaria
-                            </a>
-                        </li> -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-hotel"></i>
                                 Residencia Sanitaria
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.indexresidence', 1) }}">Hotel Agua Luna</a>
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.index', 1) }}">Hotel Agua Luna</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.indexresidence', 2) }}">Colegio Universitario UNAP</a>
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.index', 2) }}">Colegio Universitario UNAP</a>
                             </div>
 
                         </li>
