@@ -8,9 +8,9 @@
     <input type="hidden" name="vitalsign_id" id="for_id">
 
     <div class="form-row">
-        
-        
-        
+
+
+
         <fieldset class="form-group col-8 col-md-3">
             <label for="for_created_at">Fecha y Hora Chequeo</label>
             <input type="datetime-local" class="form-control" name="created_at" id="for_created_at" required>
@@ -59,7 +59,6 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Guardar</button>
-    <a class="btn btn-outline-secondary" href="{{ route('sanitary_residences.bookings.index') }}">Cancelar</a>
 
 
 </form>
