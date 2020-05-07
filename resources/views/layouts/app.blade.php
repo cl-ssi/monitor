@@ -132,19 +132,22 @@
                         </li>
                         @endcan
 
-                        @can('Report')
+                        @canany(['Report: positives','Report: full','Report: historical'])
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-clipboard"></i>
                                 Reportes
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                @can('Report: positives')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.positives') }}">Reporte de positivos</a>
+                                @endcan
 
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.positives') }}">Reporte de positivos (nuevo)</a>
-
+                                @can('Report: other')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.index') }}">Reporte</a>
+                                @endcan
 
-                                @can('Historical Report')
+                                @can('Report: historical')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.historical_report') }}">Reporte Histórico</a>
                                 @endcan
 
