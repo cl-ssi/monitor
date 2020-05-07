@@ -59,6 +59,7 @@
     <hr>
 
 
+
 <table class="table table-sm table-responsive mt-3">
     <thead>
         <tr>
@@ -72,9 +73,9 @@
             <th></th>
         </tr>
     </thead>
-    <tbody class="small">
+    <tbody class="small">        
         @foreach($bookings as $booking)
-        @if($booking->real_to)
+        @if($booking->real_to and $booking->room->residence->id==$residence->id)
         <tr>
             <td>{{ $booking->patient->fullName }}</td>
             <td>{{ $booking->status }}</td>
@@ -87,8 +88,8 @@
             <td></td>
         </tr>
         @endif
-
         @endforeach
+        
     </tbody>
 </table>
 
