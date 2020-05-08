@@ -22,7 +22,7 @@ class Patient extends Model //Authenticatable
      */
     protected $fillable = [
         'id', 'run', 'dv', 'other_identification', 'name', 'fathers_family',
-        'mothers_family', 'gender', 'birthday'
+        'mothers_family', 'gender', 'birthday', 'status'
     ];
 
     /**
