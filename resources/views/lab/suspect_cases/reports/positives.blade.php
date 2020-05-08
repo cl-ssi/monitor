@@ -35,7 +35,37 @@
 
         <div id="evolution" style="width: 480px; height: 400"></div>
 
-
+        <table class="table table-sm table-bordered">
+            <thead>
+                <tr>
+                    <th class="table-active">Hospitalizados</th>
+                    <th class="table-active text-right">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Hospitalizados Básicos</th>
+                    <td class="text-right">{{ $patients->where('status', 'Hospitalizado Básico')->count() }}</td>
+                </tr>
+                <tr>
+                    <th>Hospitalizados Medios</th>
+                    <td class="text-right">{{ $patients->where('status', 'Hospitalizado Medio')->count() }}</td>
+                </tr>
+                <tr>
+                    <th>Hospitalizados UTI</th>
+                    <td class="text-right">{{ $patients->where('status', 'Hospitalizado UTI')->count() }}</td>
+                </tr>
+                <tr>
+                    <th>Hospitalizados UCI</th>
+                    <td class="text-right">{{ $patients->where('status', 'Hospitalizado UCI')->count() }}</td>
+                </tr>
+                @foreach($patients->where('status', 'Hospitalizado UCI') as $patient)
+                <tr>
+                    <td colspan="2"> - {{ $patient->genderEsp }} - {{ $patient->age }} - {{ ($patient->demographic) ? $patient->demographic->commune:'' }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
 
     </div>
 

@@ -62,6 +62,7 @@ class SuspectCaseReportController extends Controller
         }
         /* Fin de calculo de evolución */
 
+        //echo '<pre>'; print_r($patients->where('status','Hospitalizado UCI')->count()); die();
         //echo '<pre>'; print_r($evolucion); die();
         return view('lab.suspect_cases.reports.positives', compact('patients','evolucion'));
 
