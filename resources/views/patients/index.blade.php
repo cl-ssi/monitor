@@ -23,6 +23,7 @@
 <table class="table table-sm table-responsive small">
     <thead>
         <tr>
+            <th></th>
             <th>Run o (ID)</th>
             <th>Nombre</th>
             <th>Genero</th>
@@ -36,15 +37,16 @@
     <tbody id="tablePatients">
         @foreach($patients as $patient)
         <tr class="{{ ($patient->suspectCases->where('pscr_sars_cov_2','positive')->first())?'alert-danger':'' }}">
-            <td class="text-center">{{ $patient->identifier }}</td>
             <td>
                 @canany(['Patient: edit','Demographic: edit'])
-                    <a href="{{ route('patients.edit',$patient) }}">
-                @endcan
-                {{ $patient->fullName }}
-                @canany(['Patient: edit','Demographic: edit'])
+                    <a href="{{ route('patients.edit', $patient) }}">
+                        Editar
                     </a>
                 @endcan
+            </td>
+            <td class="text-center">{{ $patient->identifier }}</td>
+            <td>
+                {{ $patient->fullName }}
             </td>
             <td>{{ $patient->sexEsp }}</td>
             <td nowrap>{{ ($patient->birthday)?$patient->birthday->format('d-m-Y'):'' }}</td>

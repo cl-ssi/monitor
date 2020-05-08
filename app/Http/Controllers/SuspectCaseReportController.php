@@ -93,4 +93,18 @@ class SuspectCaseReportController extends Controller
 
         return $patients->count();
     }
+
+    public function apuntes() {
+        $patients = Patient::all();
+        foreach($patients as $patient) {
+            foreach($patient->suspectCases as $case) {
+                if($case->status) {
+                    $patient->status = $case->status;
+                    $patient->save();
+                }
+            }
+        }
+    }
+
+
 }

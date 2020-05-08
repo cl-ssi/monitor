@@ -22,12 +22,12 @@
 <table class="table table-sm table-bordered">
     <thead>
         <tr class="text-center">
-            <th>Total enviados a análisis</th>
-            <th>Total positivos</th>
-            <th>Total negativos</th>
-            <th>Total pendientes</th>
-            <th>Total rechazados</th>
-            <th>Total indeterminados</th>
+            <th>Exámenes enviados a análisis</th>
+            <th>Exámenes positivos</th>
+            <th>Exámenes negativos</th>
+            <th>Exámenes pendientes</th>
+            <th>Exámenes rechazados</th>
+            <th>Exámenes indeterminados</th>
         </tr>
     </thead>
     <tbody>
@@ -90,9 +90,8 @@
             <th>RUN</th>
             <th>Edad</th>
             <th>Sexo</th>
-            <th>Resultado IFD</th>
             <th class="alert-danger">PCR SARS-Cov2</th>
-            <th>Sem</th>
+            <th>Resultado IFD</th>
             <th>Epivigila</th>
             <th>PAHO FLU</th>
             <th>Estado</th>
@@ -126,7 +125,6 @@
             </td>
             <td>{{ $case->age }}</td>
             <td>{{ strtoupper($case->gender[0]) }}</td>
-            <td class="{{ ($case->result_ifd <> 'Negativo' AND $case->result_ifd <> 'No solicitado')?'text-danger':''}}">{{ $case->result_ifd }} {{ $case->subtype }}</td>
             <td>{{ $case->covid19 }}
                 @if($case->files->first())
                 <a href="{{ route('lab.suspect_cases.download', $case->files->first()->id) }}"
@@ -139,10 +137,10 @@
                 </a>
                 @endif
             </td>
-            <td>{{ $case->epidemiological_week }}</td>
+            <td class="{{ ($case->result_ifd <> 'Negativo' AND $case->result_ifd <> 'No solicitado')?'text-danger':''}}">{{ $case->result_ifd }} {{ $case->subtype }}</td>
             <td>{{ $case->epivigila }}</td>
             <td>{{ $case->paho_flu }}</td>
-            <td>{{ $case->status }}</td>
+            <td>{{ $case->patient->status }}</td>
             <td class="text-muted small">{{ $case->observation }}</td>
         </tr>
         @endforeach
