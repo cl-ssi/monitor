@@ -91,6 +91,24 @@
         </div>
     </div>
 
+    <div class="form-row">
+        <fieldset class="form-group col-12 col-md-3">
+            <label for="for_status">Estado</label>
+            <select name="status" id="for_status" class="form-control">
+                <option value=""></option>
+                <option value="Alta" {{ ($patient->status == 'Alta')?'selected':'' }}>Alta</option>
+                <option value="Ambulatorio" {{ ($patient->status == 'Ambulatorio')?'selected':'' }}>Ambulatorio (domiciliario)</option>
+                <option value="Fallecido" {{ ($patient->status == 'Fallecido')?'selected':'' }}>Fallecido</option>
+                <option value="Fugado" {{ ($patient->status == 'Fugado')?'selected':'' }}>Fugado</option>
+                <option value="Hospitalizado Básico" {{ ($patient->status == 'Hospitalizado Básico')?'selected':'' }}>Hospitalizado Básico</option>
+                <option value="Hospitalizado Médio" {{ ($patient->status == 'Hospitalizado Médio')?'selected':'' }}>Hospitalizado Médio</option>
+                <option value="Hospitalizado UTI" {{ ($patient->status == 'Hospitalizado UTI')?'selected':'' }}>Hospitalizado UTI</option>
+                <option value="Hospitalizado UCI" {{ ($patient->status == 'Hospitalizado UCI')?'selected':'' }}>Hospitalizado UCI</option>
+                <option value="Residencia Sanitaria" {{ ($patient->status == 'Residencia Sanitaria')?'selected':'' }}>Residencia Sanitaria</option>
+            </select>
+        </fieldset>
+
+    </div>
 
     <button type="submit" class="btn btn-primary">Guardar</button>
 
