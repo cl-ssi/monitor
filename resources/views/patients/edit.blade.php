@@ -101,7 +101,7 @@
                 <option value="Fallecido" {{ ($patient->status == 'Fallecido')?'selected':'' }}>Fallecido</option>
                 <option value="Fugado" {{ ($patient->status == 'Fugado')?'selected':'' }}>Fugado</option>
                 <option value="Hospitalizado Básico" {{ ($patient->status == 'Hospitalizado Básico')?'selected':'' }}>Hospitalizado Básico</option>
-                <option value="Hospitalizado Médio" {{ ($patient->status == 'Hospitalizado Médio')?'selected':'' }}>Hospitalizado Médio</option>
+                <option value="Hospitalizado Medio" {{ ($patient->status == 'Hospitalizado Medio')?'selected':'' }}>Hospitalizado Medio</option>
                 <option value="Hospitalizado UTI" {{ ($patient->status == 'Hospitalizado UTI')?'selected':'' }}>Hospitalizado UTI</option>
                 <option value="Hospitalizado UCI" {{ ($patient->status == 'Hospitalizado UCI')?'selected':'' }}>Hospitalizado UCI</option>
                 <option value="Residencia Sanitaria" {{ ($patient->status == 'Residencia Sanitaria')?'selected':'' }}>Residencia Sanitaria</option>
