@@ -732,17 +732,6 @@ class SuspectCaseController extends Controller
         return $pdf->stream();
     }
 
-    public function stat()
-    {
-        $cases = SuspectCase::All();
-
-        return json_encode((object) [
-            'total' => $cases->count(),
-            'positives' => $cases = SuspectCase::where('pscr_sars_cov_2', 'positive')->count(),
-            'pending' => $cases = SuspectCase::where('pscr_sars_cov_2', 'pending')->count(),
-            'negatives' => $cases = SuspectCase::where('pscr_sars_cov_2', 'negative')->count()
-        ]);
-    }
 
 
     public function case_chart(Request $request)
