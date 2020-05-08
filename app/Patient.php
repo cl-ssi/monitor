@@ -69,7 +69,7 @@ class Patient extends Model //Authenticatable
     }
 
     function getFullNameAttribute(){
-        return $this->name . ' ' . $this->fathers_family . ' ' . $this->mothers_family;
+        return mb_strtoupper($this->name . ' ' . $this->fathers_family . ' ' . $this->mothers_family);
     }
 
     function getRunExportAttribute(){

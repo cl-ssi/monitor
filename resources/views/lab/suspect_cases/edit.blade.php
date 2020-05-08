@@ -210,16 +210,12 @@
 
         <fieldset class="form-group col-8 col-md-4">
             <label for="for_status">Estado</label>
-            <select name="status" id="for_status" class="form-control">
-                <option value=""></option>
-                <option value="Hospitalizado Básico" {{ ($suspectCase->status == 'Hospitalizado Básico')?'selected':'' }}>Hospitalizado Básico</option>
-                <option value="Hospitalizado Crítico" {{ ($suspectCase->status == 'Hospitalizado Crítico')?'selected':'' }}>Hospitalizado Crítico</option>
-                <option value="Alta" {{ ($suspectCase->status == 'Alta')?'selected':'' }}>Alta</option>
-                <option value="Fallecido" {{ ($suspectCase->status == 'Fallecido')?'selected':'' }}>Fallecido</option>
-                <option value="Ambulatorio" {{ ($suspectCase->status == 'Ambulatorio')?'selected':'' }}>Ambulatorio (domiciliario)</option>
-                <option value="Residencia Sanitaria" {{ ($suspectCase->status == 'Residencia Sanitaria')?'selected':'' }}>Residencia Sanitaria</option>
-                <option value="Fugado" {{ ($suspectCase->status == 'Fugado')?'selected':'' }}>Fugado</option>
-            </select>
+            <p>
+                <strong>{{ $suspectCase->patient->status }}</strong> 
+                @can('Patient: edit')
+                <a href="{{ route('patients.edit',$suspectCase->patient)}}"> Cambiar </a>
+                @endcan
+            </p>
         </fieldset>
 
     </div>

@@ -41,7 +41,7 @@
             <th>Estado</th>
 
             @for ($i=1; $i <= $max_cases; $i++)
-                <th>ID</th>
+                <th class="table-active">ID</th>
                 <th nowrap class="table-active">Fecha Muestra</th>
                 <th nowrap class="table-active">Fecha Resultado</th>
                 <th class="active">Covid</th>
@@ -75,7 +75,14 @@
             <tr class="{{ ($patient->suspectCases->first()->discharged_at) ? 'alert-success': '' }}">
                 <td>{{ $ct-- }}</td>
                 <td nowrap>
-                    <a href="{{ route('patients.edit', $patient) }}">{{ $patient->fullName }}</a>
+                    @can('Patient: edit')
+                    <a href="{{ route('patients.edit', $patient) }}">
+                    @endcan
+                    {{ $patient->fullName }}
+                    @can('Patient: edit')
+                    </a>
+                    @endcan
+
                     @if($patient->suspectCases->first()->gestation == "on")
                         <i class="fas fa-baby" title="Gestante"></i>
                     @endif
@@ -92,16 +99,26 @@
                             {{ $patient->demographic->nationality }}
                     @endif
                 </td>
-                <td nowrap>{{ $patient->suspectCases->first()->status }}</td>
+                <td nowrap>{{ $patient->status }}</td>
 
 
                 @foreach ($patient->suspectCases as $suspectCase)
-                    <td>{{ $suspectCase->id }}</td>
+                    <td>
+                        @can('SuspectCase: edit')
+                        <a href="{{ route('lab.suspect_cases.edit', $suspectCase) }}">
+                        @endcan
+
+                        {{ $suspectCase->id }}
+
+                        @can('SuspectCase: edit')
+                        </a>
+                        @endcan
+                    </td>
                     <td nowrap>{{ $suspectCase->sample_at->format('Y-m-d') }}</td>
                     <td nowrap>{{ ($suspectCase->pscr_sars_cov_2_at) ? $suspectCase->pscr_sars_cov_2_at->format('Y-m-d') : '' }}</td>
                     <td nowrap>
-                        <a href="{{ route('lab.suspect_cases.edit', $suspectCase) }}">{{ $suspectCase->covid19 }}</a>
-                        {{ ($suspectCase->discharge_test)? '' : 'x' }}
+                        {{ $suspectCase->covid19 }}
+                        {{ ($suspectCase->discharge_test)? 'x' : '' }}
                     </td>
                     <td title="Síntomas">{{ $suspectCase->symptoms }}</td>
                 @endforeach

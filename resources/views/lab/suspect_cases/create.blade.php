@@ -72,7 +72,7 @@
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_sample_at">Fecha Muestra</label>
             <input type="date" class="form-control" id="for_sample_at"
-                name="sample_at" required>
+                name="sample_at" required min="{{ date('Y-m-d', strtotime("-2 week")) }}" max="{{ date('Y-m-d') }}">
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
@@ -118,7 +118,7 @@
         <fieldset class="form-group col-6 col-md-2 alert-warning">
             <label for="for_result_ifd_at">Fecha Resultado IFD</label>
             <input type="date" class="form-control" id="for_result_ifd_at"
-                name="result_ifd_at">
+                name="result_ifd_at" max="{{ date('Y-m-d') }}">
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2 alert-warning">
@@ -156,7 +156,7 @@
         <fieldset class="form-group col-6 col-md-2 alert-danger">
             <label for="for_pscr_sars_cov_2_at">Fecha Resultado PCR</label>
             <input type="date" class="form-control" id="for_pscr_sars_cov_2_at"
-                name="pscr_sars_cov_2_at">
+                name="pscr_sars_cov_2_at" max="{{ date('Y-m-d') }}">
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2 alert-danger">
@@ -223,13 +223,15 @@
             <label for="for_status">Estado</label>
             <select name="status" id="for_status" class="form-control">
                 <option value=""></option>
-                <option value="Hospitalizado Básico">Hospitalizado Básico</option>
-                <option value="Hospitalizado Crítico">Hospitalizado Crítico</option>
                 <option value="Alta">Alta</option>
-                <option value="Fallecido">Fallecido</option>
                 <option value="Ambulatorio">Ambulatorio (domiciliario)</option>
-                <option value="Residencia Sanitaria">Residencia Sanitaria</option>
+                <option value="Fallecido">Fallecido</option>
                 <option value="Fugado">Fugado</option>
+                <option value="Hospitalizado Básico">Hospitalizado Básico</option>
+                <option value="Hospitalizado Médio">Hospitalizado Médio</option>
+                <option value="Hospitalizado UTI">Hospitalizado UTI</option>
+                <option value="Hospitalizado UCI">Hospitalizado UCI</option>
+                <option value="Residencia Sanitaria">Residencia Sanitaria</option>
             </select>
         </fieldset>
 
