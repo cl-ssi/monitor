@@ -281,7 +281,7 @@
                         {{ $age7female = $patients->whereBetween('age',[70,79])->where('gender','female')->count() }}
                     </td>
                     <td>
-                        {{ $age7total = $age5male + $age7female }}
+                        {{ $age7total = $age7male + $age7female }}
                     </td>
                 </tr>
                 <tr class="text-center">
