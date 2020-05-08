@@ -45,25 +45,29 @@
             <tbody>
                 <tr>
                     <th>Hospitalizados Básicos</th>
-                    <td class="text-right">{{ $patients->where('status', 'Hospitalizado Básico')->count() }}</td>
+                    <td class="text-right">{{ $hbasico = $patients->where('status', 'Hospitalizado Básico')->count() }}</td>
                 </tr>
                 <tr>
                     <th>Hospitalizados Medios</th>
-                    <td class="text-right">{{ $patients->where('status', 'Hospitalizado Medio')->count() }}</td>
+                    <td class="text-right">{{ $hmedio = $patients->where('status', 'Hospitalizado Medio')->count() }}</td>
                 </tr>
                 <tr>
                     <th>Hospitalizados UTI</th>
-                    <td class="text-right">{{ $patients->where('status', 'Hospitalizado UTI')->count() }}</td>
+                    <td class="text-right">{{ $huti = $patients->where('status', 'Hospitalizado UTI')->count() }}</td>
                 </tr>
                 <tr>
                     <th>Hospitalizados UCI</th>
-                    <td class="text-right">{{ $patients->where('status', 'Hospitalizado UCI')->count() }}</td>
+                    <td class="text-right">{{ $huci = $patients->where('status', 'Hospitalizado UCI')->count() }}</td>
                 </tr>
                 @foreach($patients->where('status', 'Hospitalizado UCI') as $patient)
                 <tr>
                     <td colspan="2"> - {{ $patient->genderEsp }} - {{ $patient->age }} - {{ ($patient->demographic) ? $patient->demographic->commune:'' }}</td>
                 </tr>
                 @endforeach
+                <tr>
+                    <th>Total</th>
+                    <th class="text-right">{{ $hbasico + $hmedio + $huti + $huci }}</th>
+                </tr>
             </tbody>
         </table>
 
