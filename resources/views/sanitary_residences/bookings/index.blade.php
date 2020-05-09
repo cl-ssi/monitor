@@ -26,7 +26,7 @@
             <div class="row mt-3">
         @endif
 
-        <div class="border text-center small m-2" {!! $residence->id==2 ? 'style="width: 400px; height: 400px;"': 'style="width: 172px; height: 172px;"'!!} >
+        <div class="border text-center small m-2" {!! $residence->id==2 ? 'style="width: 200px; height: 400px;"': 'style="width: 172px; height: 172px;"'!!} >
         
             Habitación {{ $room->number }}
             <hr>
