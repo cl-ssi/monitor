@@ -71,6 +71,28 @@
             </tbody>
         </table>
 
+
+        <table class="table table-sm table-bordered">
+            <thead>
+                <tr class="table-active">
+                    <th colspan="5">Cantidad de Ventiladores</th>
+                    <th class="text-center">{{ $ventilator->total }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="color: red;">Covid-19+</td>
+                    <th class="text-center">{{ $huci }}</th>
+                    <td>No Covid-19</td>
+                    <th class="text-center">{{ $ventilator->no_covid }}</th>
+                    <td>Disponibles</td>
+                    <th class="text-center">
+                        {{ $ventilator->total - $huci - $ventilator->no_covid }}
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+
     </div>
 
     <div class="col-12 col-md-4">

@@ -117,6 +117,8 @@ Route::prefix('lab')->name('lab.')->group(function () {
 Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(function(){
     Route::get('/', 'Parameters\ParameterController@index')->name('index');
     Route::resource('permissions','Parameters\PermissionController');
+    Route::get('/ventilators/edit', 'ventilatorController@edit')->name('ventilators.edit');
+    Route::put('/ventilators', 'ventilatorController@update')->name('ventilators.update');
 });
 
 Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('auth')->group(function () {
