@@ -51,16 +51,19 @@ class BookingController extends Controller
         {
             $booking = new Booking($request->All());
             $booking->status = 'Residencia Sanitaria';
-            $booking->patient->suspectCases->last()->status = 'Residencia Sanitaria';
-            $booking->patient->suspectCases->last()->save();
+            //$booking->patient->suspectCases->last()->status = 'Residencia Sanitaria';
+            $booking->patient->status = 'Residencia Sanitaria';
+            $booking->patient->save();
             $booking->save();
             session()->flash('success', 'Booking creado Exitosamente');
         }
         else
         {
           $booking = Booking::find($request->booking_id);
-          $booking->patient->suspectCases->last()->status = $request->status;
-          $booking->patient->suspectCases->last()->save();
+          //$booking->patient->suspectCases->last()->status = $request->status;
+          $booking->patient->status = $request->status;
+          $booking->patient->save();
+          //$booking->patient->suspectCases->last()->save();
           $booking->fill($request->All());
           $booking->save();
           session()->flash('success', 'Paciente dado de Alta Exitosamente');
