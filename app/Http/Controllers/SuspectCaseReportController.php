@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\SuspectCase;
 use App\Patient;
-
+use App\Ventilator;
 
 class SuspectCaseReportController extends Controller
 {
@@ -62,9 +62,13 @@ class SuspectCaseReportController extends Controller
         }
         /* Fin de calculo de evolución */
 
+
+        /* Ventiladores */
+        $ventilator = Ventilator::first();
+
         //echo '<pre>'; print_r($patients->where('status','Hospitalizado UCI')->count()); die();
         //echo '<pre>'; print_r($evolucion); die();
-        return view('lab.suspect_cases.reports.positives', compact('patients','evolucion'));
+        return view('lab.suspect_cases.reports.positives', compact('patients','evolucion','ventilator'));
 
     }
 

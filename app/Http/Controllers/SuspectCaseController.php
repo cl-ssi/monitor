@@ -953,7 +953,7 @@ class SuspectCaseController extends Controller
     }
 
     public function exportExcel($cod_lab = mull){
-        return Excel::download(new SuspectCasesExport($cod_lab), 'lista-casos.xlsx');
+        return Excel::download(new SuspectCasesExport($cod_lab), 'lista-examenes.xlsx');
     }
 
     public function exportMinsalExcel($cod_lab = null)
