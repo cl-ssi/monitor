@@ -26,14 +26,15 @@
             <div class="row mt-3">
         @endif
 
-        <div class="border text-center small m-2" style="width: 172px; height: 172px;">
+        <div class="border text-center small m-2" {!! $residence->id==2 ? 'style="width: 200px; height: 400px;"': 'style="width: 172px; height: 172px;"'!!} >
+        
             Habitación {{ $room->number }}
             <hr>
 
             @if($room->bookings->first())
 
                 @foreach($room->bookings as $booking)
-                    @if ($booking->status == 'Residencia Sanitaria' and $booking->patient->suspectCases->first()->status == 'Residencia Sanitaria')
+                    @if ($booking->status == 'Residencia Sanitaria' and $booking->patient->status == 'Residencia Sanitaria')
                     <li>
                         <a href="{{ route('sanitary_residences.bookings.show',$booking) }}">
                         {{ $booking->patient->fullName }}
