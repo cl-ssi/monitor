@@ -16,7 +16,7 @@ class VentilatorController extends Controller
      */
     public function edit()
     {
-        $ventilator = Ventilator::firstOrNew();
+        $ventilator = Ventilator::first();
 
         $patients = Patient::whereHas('suspectCases', function ($q) {
             $q->where('pscr_sars_cov_2','positive');
@@ -51,8 +51,9 @@ class VentilatorController extends Controller
      * @param  \App\Ventilator  $ventilator
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Ventilator $ventilator)
+    public function update(Request $request)
     {
+        $ventilator = Ventilator::first();
         $ventilator->fill($request->all());
         $ventilator->save();
 

@@ -5,7 +5,7 @@
 @section('content')
 <h3 class="mb-3">Ventiladores del Hospital ETG</h3>
 
-<form method="POST" class="form-horizontal" action="{{ route('parameters.ventilators.update',$ventilator) }}">
+<form method="POST" class="form-horizontal" action="{{ route('parameters.ventilators.update') }}">
     @csrf
     @method('PUT')
 
