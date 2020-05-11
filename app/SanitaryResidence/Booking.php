@@ -3,9 +3,13 @@
 namespace App\SanitaryResidence;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Booking extends Model
 {
+
+    use SoftDeletes;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -20,9 +24,12 @@ class Booking extends Model
         'status', 'real_to'
     ];
 
-    protected $dates = [
-        'from','to'
-    ];
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['from','to','deleted_at'];
 
 
     public function patient() {
