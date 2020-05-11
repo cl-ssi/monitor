@@ -128,6 +128,7 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.index', 1) }}">Hotel Agua Luna</a>
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.index', 2) }}">Colegio Universitario UNAP</a>
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.index', 3) }}">Hotel Urbano</a>
                             </div>
                         </li>
                         @endcan
