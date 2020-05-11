@@ -13,7 +13,7 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link" href="{{ route('sanitary_residences.bookings.index',2) }}">
+        <a class="nav-link" href="{{ route('sanitary_residences.bookings.index',3) }}">
             <i class="fas fa-inbox"></i> Booking Hotel Urbano
         </a>
     </li>
