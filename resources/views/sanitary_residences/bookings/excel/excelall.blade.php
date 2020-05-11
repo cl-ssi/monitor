@@ -6,7 +6,28 @@
 
 @include('sanitary_residences.nav')
 
+
+
 <a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a>
+
+@php 
+$contid1=0;
+$contid2=0;
+@endphp
+@foreach ($bookings as $booking)
+@if($booking->room->residence->id == 1 and $booking->patient->status == 'Residencia Sanitaria')
+@php
+$contid1++
+@endphp
+@elseif($booking->room->residence->id == 2 and $booking->patient->status == 'Residencia Sanitaria')
+@php
+$contid2++
+@endphp
+@endif
+@endforeach
+
+<h3>Agua Luna:{{$contid1}}</h3>
+<h3>Colegio Universitario UNAP:{{$contid2}}</h3>
 
 <table class="table table-sm table-bordered table-responsive small" id="tabla_booking">
     <thead>
