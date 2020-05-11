@@ -85,6 +85,7 @@
                                 @endcan
 
                                 @can('SuspectCase: list')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reception_inbox') }}?text=&pendientes=on">Bandeja de Recepción</a>
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.hetg') }}?text=&pendientes=on">Laboratorio HETG</a>
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.unap') }}?text=&pendientes=on">Laboratorio UNAP</a>
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.bioclinic') }}?text=&pendientes=on">Laboratorio BIOCLINIC</a>
