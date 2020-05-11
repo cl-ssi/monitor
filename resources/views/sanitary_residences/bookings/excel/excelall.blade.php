@@ -42,7 +42,7 @@
         @php $pos=1;
         @endphp
         @foreach ($bookings as $booking)
-        @if ($booking->status == 'Residencia Sanitaria' and $booking->patient->suspectCases->first()->status == 'Residencia Sanitaria')
+        @if ($booking->status == 'Residencia Sanitaria' and $booking->patient->status == 'Residencia Sanitaria')
         <tr>
             <td nowrap>{{$pos++}}</td>
             <td nowrap>Iquique</td>
