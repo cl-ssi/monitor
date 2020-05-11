@@ -6,10 +6,19 @@ use Illuminate\Http\Request;
 use App\SuspectCase;
 use App\Patient;
 use App\Ventilator;
+use App\SanitaryResidence\Residence;
+use App\SanitaryResidence\Booking;
 
 class SuspectCaseReportController extends Controller
 {
     public function positives() {
+        $bookings = Booking::where('status','Residencia Sanitaria')
+                    ->whereHas('patient', function ($q) {
+                        $q->where('status','Residencia Sanitaria');
+                    })->get();
+        $residences = Residence::all();
+
+
         $patients = Patient::whereHas('suspectCases', function ($q) {
             $q->where('pscr_sars_cov_2','positive');
         })->with('suspectCases')->with('demographic')->get();
@@ -68,7 +77,7 @@ class SuspectCaseReportController extends Controller
 
         //echo '<pre>'; print_r($patients->where('status','Hospitalizado UCI')->count()); die();
         //echo '<pre>'; print_r($evolucion); die();
-        return view('lab.suspect_cases.reports.positives', compact('patients','evolucion','ventilator'));
+        return view('lab.suspect_cases.reports.positives', compact('patients','evolucion','ventilator','residences','bookings'));
 
     }
 
