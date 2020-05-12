@@ -40,7 +40,7 @@
                 </a> ,
                 @endforeach
             </td>
-            <td>{{ ($covid > 0) ? 'Positivo':'Negativo'}}</td>
+            <td>{{ $patient->suspectCases->first()->covid19 }}</td>
         </tr>
         @endforeach
     </tbody>
