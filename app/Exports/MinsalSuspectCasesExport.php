@@ -25,7 +25,7 @@ class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
     */
     public function collection()
     {
-        $today = date("Y-m-d");
+        $today = '2020-05-11';//date("Y-m-d");
 
         return SuspectCase::where('laboratory_id', $this->cod_lab)
             ->whereDate('pscr_sars_cov_2_at', '=', $today)
