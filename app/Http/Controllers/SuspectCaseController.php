@@ -369,6 +369,11 @@ class SuspectCaseController extends Controller
 
     public function fileDelete(File $file)
     {
+        // $log = new Log();
+        // $log->old =  clone $file;
+        // $log->new =  $file->setAttribute('suspect_case', 'delete');
+        // $log->save();
+
         Storage::delete($file->file);
         $file->delete();
 
