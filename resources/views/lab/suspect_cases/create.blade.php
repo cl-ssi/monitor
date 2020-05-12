@@ -289,6 +289,7 @@ $('input[name=run]').change(function() {
             document.getElementById("for_name").value = data.name;
             document.getElementById("for_fathers_family").value = data.fathers_family;
             document.getElementById("for_mothers_family").value = data.mothers_family;
+            document.getElementById("for_status").value = data.status;
         } else {
             document.getElementById("for_id").value = "";
             document.getElementById("for_other_identification").value = "";
