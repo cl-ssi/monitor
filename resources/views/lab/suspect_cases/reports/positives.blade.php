@@ -35,7 +35,7 @@
 
         <div id="evolution" style="width: 480px; height: 400"></div>
 
-        <table class="table table-sm table-bordered">
+        <!-- <table class="table table-sm table-bordered">
             <thead>
                 <tr>
                     <th class="table-active">Hospitalizados</th>
@@ -69,7 +69,7 @@
                     <th class="text-right">{{ $hbasico + $hmedio + $huti + $huci }}</th>
                 </tr>
             </tbody>
-        </table>
+        </table> -->
 
 
         <table class="table table-sm table-bordered">
