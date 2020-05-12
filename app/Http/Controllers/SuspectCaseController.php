@@ -367,6 +367,14 @@ class SuspectCaseController extends Controller
         return redirect()->route('lab.suspect_cases.index');
     }
 
+    public function fileDelete(File $file)
+    {
+        Storage::delete($file->file);
+        $file->delete();
+
+        return redirect()->back();
+    }
+
     /**
      * Search suspectCase by ID.
      *

@@ -211,7 +211,7 @@
         <fieldset class="form-group col-8 col-md-4">
             <label for="for_status">Estado</label>
             <p>
-                <strong>{{ $suspectCase->patient->status }}</strong> 
+                <strong>{{ $suspectCase->patient->status }}</strong>
                 @can('Patient: edit')
                 <a href="{{ route('patients.edit',$suspectCase->patient)}}"> Cambiar </a>
                 @endcan
@@ -254,6 +254,11 @@
                   data-original-title="{{ $file->name }}">
                   {{$file->name}}<i class="fas fa-paperclip"></i>&nbsp
               </a>
+              @can('SuspectCase: file delete')
+              <a href="{{ route('lab.suspect_cases.fileDelete', $file->id) }}">
+                  [ Borrar archivo ]
+              </a>
+              @endcan
           @endforeach
       @endif
     </div>
