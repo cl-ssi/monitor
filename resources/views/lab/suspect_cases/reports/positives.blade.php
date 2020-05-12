@@ -75,7 +75,7 @@
         <table class="table table-sm table-bordered">
             <thead>
                 <tr class="table-active">
-                    <th colspan="5">Cantidad de Ventiladores</th>
+                    <th colspan="5">Cantidad de Ventiladores <small>({{ $ventilator->updated_at }})</small> </th>
                     <th class="text-center">{{ $ventilator->total }}</th>
                 </tr>
             </thead>
