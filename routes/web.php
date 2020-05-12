@@ -92,6 +92,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::delete('/{suspect_case}','SuspectCaseController@destroy')->name('destroy')->middleware('auth','can:SuspectCase: delete');
         Route::prefix('reports')->name('reports.')->group(function () {
             Route::get('/positives','SuspectCaseReportController@positives')->name('positives')->middleware('auth','can:Report: positives');
+            Route::get('/gestants','SuspectCaseReportController@gestants')->name('gestants')->middleware('auth','can:Report: positives');
         });
         Route::prefix('report')->name('report.')->group(function () {
             Route::get('/','SuspectCaseController@report')->name('index')->middleware('auth','can:Report: other');
