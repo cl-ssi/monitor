@@ -255,7 +255,7 @@
                   {{$file->name}}<i class="fas fa-paperclip"></i>&nbsp
               </a>
               @can('SuspectCase: file delete')
-              <a href="{{ route('lab.suspect_cases.fileDelete', $file->id) }}">
+              <a href="{{ route('lab.suspect_cases.fileDelete', $file->id) }}" onclick="return confirm('Estás seguro Cesar?')">
                   [ Borrar archivo ]
               </a>
               @endcan
