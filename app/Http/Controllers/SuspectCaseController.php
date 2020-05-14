@@ -149,6 +149,13 @@ class SuspectCaseController extends Controller
         if(!$request->input('pscr_sars_cov_2')) {
             $suspectCase->pscr_sars_cov_2 = 'pending';
         }
+
+        if($request->input('pscr_sars_cov_2_at')){
+            $suspectCase->pscr_sars_cov_2_at = $request->input('pscr_sars_cov_2_at').' '.date('H:i:s');
+        }
+
+        $suspectCase->sample_at = $request->input('sample_at').' '.date('H:i:s');
+
         $patient->suspectCases()->save($suspectCase);
 
         //guarda archivos
@@ -217,6 +224,8 @@ class SuspectCaseController extends Controller
 
         /* Marcar como pendiente el resultado, no viene en el form */
         $suspectCase->pscr_sars_cov_2 = 'pending';
+
+        $suspectCase->sample_at = $request->input('sample_at').' '.date('H:i:s');
 
         $patient->suspectCases()->save($suspectCase);
 
@@ -312,6 +321,9 @@ class SuspectCaseController extends Controller
         /* Setar el validador */
         if ($log->old->pscr_sars_cov_2 == 'pending' and $suspectCase->pscr_sars_cov_2 != 'pending') {
             $suspectCase->validator_id = Auth::id();
+            if($request->input('pscr_sars_cov_2_at')) {
+                $suspectCase->pscr_sars_cov_2_at = $request->input('pscr_sars_cov_2_at').' '.date('H:i:s');
+            }
         }
 
         $suspectCase->save();
