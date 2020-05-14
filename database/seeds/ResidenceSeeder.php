@@ -14,7 +14,9 @@ class ResidenceSeeder extends Seeder
         //
         $items = [
 
-            ['id' => 1, 'name' => 'Hotel Agua Luna' , 'address' => 'Caleta Rio Seco 2152', 'telephone'=> '572449287' ],                       
+            ['id' => 1, 'name' => 'Hotel Agua Luna' , 'address' => 'Caleta Rio Seco 2152', 'telephone'=> '572449287' ],
+            ['id' => 2, 'name' => 'Colegio Universitario UNAP' , 'address' => 'Zegers #426', 'telephone'=> '' ],
+            ['id' => 3, 'name' => 'Hotel Urbano' , 'address' => 'Patricio Lynch #679', 'telephone'=> '572764012' ],
 
         ];
 

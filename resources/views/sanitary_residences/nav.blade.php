@@ -1,22 +1,28 @@
 <ul class="nav nav-tabs mb-3 d-print-none">
 
+    @can('SanitaryResidence: agualuna')
     <li class="nav-item">
         <a class="nav-link" href="{{ route('sanitary_residences.bookings.index',1) }}">
             <i class="fas fa-inbox"></i> Booking Agua Luna
         </a>
     </li>
+    @endcan
 
+    @can('SanitaryResidence: unap')
     <li class="nav-item">
         <a class="nav-link" href="{{ route('sanitary_residences.bookings.index',2) }}">
             <i class="fas fa-inbox"></i> Booking Colegio UNAP
         </a>
     </li>
+    @endcan
 
+    @can('SanitaryResidence: urbano')
     <li class="nav-item">
         <a class="nav-link" href="{{ route('sanitary_residences.bookings.index',3) }}">
             <i class="fas fa-inbox"></i> Booking Hotel Urbano
         </a>
     </li>
+    @endcan
 
     @can('SanitaryResidence: admin')
     <li class="nav-item">
