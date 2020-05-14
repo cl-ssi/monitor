@@ -119,19 +119,30 @@
                         </li>
                         @endcan
 
-                        @can('SanitaryResidence: user')
+                        
+                        @canany(['SanitaryResidence: urbano','SanitaryResidence: unap','SanitaryResidence: agualuna','SanitaryResidence: user', 'SanitaryResidence: admin'])
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-hotel"></i>
                                 Residencias
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                @can('SanitaryResidence: agualuna')
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.index', 1) }}">Hotel Agua Luna</a>
+                                @endcan
+
+                                @can('SanitaryResidence: unap')
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.index', 2) }}">Colegio Universitario UNAP</a>
+                                @endcan
+
+                                @can('SanitaryResidence: urbano')
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.index', 3) }}">Hotel Urbano</a>
+                                @endcan
                             </div>
                         </li>
                         @endcan
+                        
+                        
 
                         @canany(['Report: positives','Report: full','Report: historical'])
                         <li class="nav-item dropdown">
