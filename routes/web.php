@@ -96,7 +96,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::get('/gestants','SuspectCaseReportController@gestants')->name('gestants')->middleware('auth','can:Report: positives');
         });
         Route::prefix('report')->name('report.')->group(function () {
-            Route::get('/','SuspectCaseController@report')->name('index')->middleware('auth','can:Report: other');
+            Route::get('/','SuspectCaseReportController@positives')->name('index')->middleware('auth','can:Report: other');
             Route::get('historical_report','SuspectCaseController@historical_report')->name('historical_report')->middleware('auth','can:Report: historical');
             Route::get('/minsal/{lab}','SuspectCaseController@report_minsal')->name('minsal')->middleware('auth');
             Route::get('/seremi/{lab}','SuspectCaseController@report_seremi')->name('seremi')->middleware('auth');
