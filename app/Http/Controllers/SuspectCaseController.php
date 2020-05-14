@@ -766,8 +766,8 @@ class SuspectCaseController extends Controller
             $user->email = $user_cu->email;
         } elseif (env('APP_ENV') == 'local') {
             $user = new User();
-            $user->id = 18371078;
-            $user->dv = 8;
+            $user->id = 16055586;
+            $user->dv = 6;
             $user->name = "maria angela";
             $user->fathers_family = "family";
             $user->mothers_family = "mother";
