@@ -85,4 +85,16 @@ class SuspectCase extends Model
         'notification_at', 'discharged_at', 'deleted_at'
     ];
 
+    // protected static function booted()
+    // {
+    //     /* this is executed after ->save() method */
+    //     static::created(function ($suspectCase) {
+    //         $suspectCase->pscr_sars_cov_2_at->addHour(date('H'))->addMinute(date('i'))->addSecond(date('s'));
+    //     });
+    //     /* this is executed after ->save() method */
+    //     static::updated(function ($suspectCase) {
+    //         $suspectCase->pscr_sars_cov_2_at->addHour(date('H'))->addMinute(date('i'))->addSecond(date('s'));
+    //     });
+    // }
+
 }

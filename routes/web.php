@@ -71,12 +71,14 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/hetg','SuspectCaseController@hetg')->name('hetg')->middleware('auth');
         Route::get('/unap','SuspectCaseController@unap')->name('unap')->middleware('auth');
         Route::get('/bioclinic','SuspectCaseController@bioclinic')->name('bioclinic')->middleware('auth');
+        Route::get('/reception_inbox','SuspectCaseController@reception_inbox')->name('reception_inbox')->middleware('auth');
         Route::post('/search_id','SuspectCaseController@search_id')->name('search_id')->middleware('auth');
         //Route::get('stat', 'SuspectCaseController@stat')->name('stat');
         // Route::get('case_chart','SuspectCaseController@case_chart')->name('case_chart')->middleware('auth');
         Route::match(['get','post'],'case_chart','SuspectCaseController@case_chart')->middleware('auth')->name('case_chart');
         Route::match(['get','post'],'file_report','SuspectCaseController@file_report')->middleware('auth','can:File_report: viewer')->name('file_report');
         Route::get('download/{file}','SuspectCaseController@download')->name('download')->middleware('auth');
+        Route::get('file/{file}','SuspectCaseController@fileDelete')->name('fileDelete')->middleware('auth','can:SuspectCase: file delete');
 
         Route::get('/','SuspectCaseController@index')->name('index')->middleware('auth','can:SuspectCase: list');
 
@@ -91,9 +93,10 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::delete('/{suspect_case}','SuspectCaseController@destroy')->name('destroy')->middleware('auth','can:SuspectCase: delete');
         Route::prefix('reports')->name('reports.')->group(function () {
             Route::get('/positives','SuspectCaseReportController@positives')->name('positives')->middleware('auth','can:Report: positives');
+            Route::get('/gestants','SuspectCaseReportController@gestants')->name('gestants')->middleware('auth','can:Report: positives');
         });
         Route::prefix('report')->name('report.')->group(function () {
-            Route::get('/','SuspectCaseController@report')->name('index')->middleware('auth','can:Report: other');
+            Route::get('/','SuspectCaseReportController@positives')->name('index')->middleware('auth','can:Report: other');
             Route::get('historical_report','SuspectCaseController@historical_report')->name('historical_report')->middleware('auth','can:Report: historical');
             Route::get('/minsal/{lab}','SuspectCaseController@report_minsal')->name('minsal')->middleware('auth');
             Route::get('/seremi/{lab}','SuspectCaseController@report_seremi')->name('seremi')->middleware('auth');

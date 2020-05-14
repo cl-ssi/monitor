@@ -62,10 +62,10 @@
                         {{ $patients->count() }}
                     </th>
                     <th class="text-danger text-center">
-                        {{ $patients->where('gender','male')->count() }}
+                        {{ $total_male = $patients->where('gender','male')->count() }}
                     </th>
                     <th class="text-danger text-center">
-                        {{ $patients->where('gender','female')->count() }}
+                        {{ $total_female = $patients->where('gender','female')->count() }}
                     </th>
                 </tr>
 
@@ -120,140 +120,8 @@
                         {{ $cases->where('patient.gender','female')->where('pscr_sars_cov_2','undetermined')->count() }}
                     </td>
                 </tr>
-
-
-                <tr>
-                    <th class="table-active">Hospitalizados Básicos</th>
-                    <th class="table-active text-center">
-                        {{ $cases->where('status','Hospitalizado Básico')->count() }}
-                    </th>
-                    <th class="table-active text-center">
-                        {{ $cases->where('patient.gender','male')->where('status','Hospitalizado Básico')->count() }}
-                    </th>
-                    <th class="table-active text-center">
-                        {{ $cases->where('patient.gender','female')->where('status','Hospitalizado Básico')->count() }}
-                    </th>
-                </tr>
-
-                <tr>
-                    <td>Negativos</td>
-                    <td class="text-center">
-                        {{ $cases->where('status','Hospitalizado Básico')->where('pscr_sars_cov_2','negative')->count() }}
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('patient.gender','male')->where('status','Hospitalizado Básico')->where('pscr_sars_cov_2','negative')->count() }}
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('patient.gender','female')->where('status','Hospitalizado Básico')->where('pscr_sars_cov_2','negative')->count() }}
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Positivos</td>
-                    <td class="text-danger text-center">
-                        {{ $cases->where('status','Hospitalizado Básico')->where('pscr_sars_cov_2','positive')->count() }}
-                    </td>
-                    <td class="text-danger text-center">
-                        {{ $cases->where('patient.gender','male')->where('status','Hospitalizado Básico')->where('pscr_sars_cov_2','positive')->count() }}
-                    </td>
-                    <td class="text-danger text-center">
-                        {{ $cases->where('patient.gender','female')->where('status','Hospitalizado Básico')->where('pscr_sars_cov_2','positive')->count() }}
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Resultado pendiente</td>
-                    <td class="text-center">
-                        {{ $cases->where('status','Hospitalizado Básico')->where('pscr_sars_cov_2','pending')->count() }}
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('patient.gender','male')->where('status','Hospitalizado Básico')->where('pscr_sars_cov_2','pending')->count() }}
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('patient.gender','female')->where('status','Hospitalizado Básico')->where('pscr_sars_cov_2','pending')->count() }}
-                    </td>
-                </tr>
-
-                <tr>
-                    <th class="table-active">Hospitalizados (UCI)</th>
-                    <th class="table-active text-center">
-                        {{ $cases->where('status','Hospitalizado Crítico')->count() }}
-                    </th>
-                    <th class="table-active text-center">
-                        {{ $cases->where('patient.gender','male')->where('status','Hospitalizado Crítico')->count() }}
-                    </th>
-                    <th class="table-active text-center">
-                        {{ $cases->where('patient.gender','female')->where('status','Hospitalizado Crítico')->count() }}
-                    </th>
-                </tr>
-
-                <tr>
-                    <td>Negativos</td>
-                    <td class="text-center">
-                        {{ $cases->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','negative')->count() }}
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('patient.gender','male')->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','negative')->count() }}
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('patient.gender','female')->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','negative')->count() }}
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Positivos</td>
-                    <td class="text-danger text-center">
-                        {{ $cases->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','positive')->count() }}
-                    </td>
-                    <td class="text-danger text-center">
-                        {{ $cases->where('patient.gender','male')->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','positive')->count() }}
-                    </td>
-                    <td class="text-danger text-center">
-                        {{ $cases->where('patient.gender','female')->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','positive')->count() }}
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Resultado pendiente</td>
-                    <td class="text-center">
-                        {{ $cases->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','pending')->count() }}
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('patient.gender','male')->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','pending')->count() }}
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('patient.gender','female')->where('status','Hospitalizado Crítico')->where('pscr_sars_cov_2','pending')->count() }}
-                    </td>
-                </tr>
-
             </tbody>
         </table>
-
-        <table class="table table-bordered table-sm">
-            <thead>
-                <tr class="table-active">
-                    <th colspan="3">Hospitalizados críticos (UCI)</th>
-                </tr>
-                <tr>
-                    <th>Sexo</th>
-                    <th>Edad</th>
-                    <th>Comuna</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($hospitalizado_critico as $p)
-                <tr>
-                    <td>{{ $p->genderEsp }}</td>
-                    <td>{{ $p->suspectCases->last()->age }}</td>
-                    <td>{{ $p->demographic->commune }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-
-
-
 
         <div id="evolution" style="width: 480px; height: 400"></div>
 
@@ -272,65 +140,65 @@
             <tbody>
                 <tr>
                     <td>Alto Hospicio</td>
-                    <td class="text-danger text-center">
-                        {{ $patients->where('demographic.commune','Alto Hospicio')->count() }}
+                    <td class="text-center">
+                        {{ $alto_hospicio = $patients->where('demographic.commune','Alto Hospicio')->count() }}
                     </td>
                 </tr>
 
                 <tr>
                     <td>Camiña</td>
-                    <td class="text-danger text-center">
-                        {{ $patients->where('demographic.commune','Camiña')->count() }}
+                    <td class="text-center">
+                        {{ $camiña = $patients->where('demographic.commune','Camiña')->count() }}
                     </td>
 
                 </tr>
 
                 <tr>
                     <td>Colchane</td>
-                    <td class="text-danger text-center">
-                        {{ $patients->where('demographic.commune','Colchane')->count() }}
+                    <td class="text-center">
+                        {{ $colchane = $patients->where('demographic.commune','Colchane')->count() }}
                     </td>
                 </tr>
 
                 <tr>
                     <td>Huara</td>
-                    <td class="text-danger text-center">
-                        {{ $patients->where('demographic.commune','Huara')->count() }}
+                    <td class="text-center">
+                        {{ $huara = $patients->where('demographic.commune','Huara')->count() }}
                     </td>
 
                 </tr>
 
                 <tr>
                     <td>Iquique</td>
-                    <td class="text-danger text-center">
-                        {{ $patients->where('demographic.commune','Iquique')->count() }}
+                    <td class="text-center">
+                        {{ $iquique = $patients->where('demographic.commune','Iquique')->count() }}
                     </td>
                 </tr>
 
                 <tr>
                     <td>Pica</td>
-                    <td class="text-danger text-center">
-                        {{ $patients->where('demographic.commune','Pica')->count() }}
+                    <td class="text-center">
+                        {{ $pica = $patients->where('demographic.commune','Pica')->count() }}
                     </td>
                 </tr>
 
                 <tr>
                     <td>Pozo Almonte</td>
-                    <td class="text-danger text-center">
-                        {{ $patients->where('demographic.commune','Pozo Almonte')->count() }}
+                    <td class="text-center">
+                        {{ $pozo_almonte = $patients->where('demographic.commune','Pozo Almonte')->count() }}
                     </td>
                 </tr>
 
                 <tr>
                     <td>Sin registro</td>
-                    <td class="text-danger text-center">
-                        {{ $patients->whereIn('demographic.commune',['sin-comuna',null])->count() }}
+                    <td class="text-center">
+                        {{ $sin_registro = $patients->whereIn('demographic.commune',['sin-comuna',null])->count() }}
                     </td>
                 </tr>
 
                 <tr>
                     <td>Otras Regiones</td>
-                    <td class="text-danger text-center">
+                    <td class="text-center">
                         {{ $patients_other_region->count() }}
                     </td>
 
@@ -351,49 +219,49 @@
                 <tr>
                     <td>Alto Hospicio (129.999*)</td>
                     <td class="text-right">
-                        {{ number_format($patients->where('demographic.commune','Alto Hospicio')->count() / 129999 * 100000 ,2) }}
+                        {{ number_format($alto_hospicio / 129999 * 100000 ,2) }}
                     </td>
                 </tr>
                 <tr>
                     <td>Camiña (1.375*)</td>
                     <td class="text-right">
-                        {{ number_format($patients->where('demographic.commune','Camiña')->count() / 1375 * 100000 ,2) }}
+                        {{ number_format($camiña / 1375 * 100000 ,2) }}
                     </td>
                 </tr>
                 <tr>
                     <td>Colchane (1.583*)</td>
                     <td class="text-right">
-                        {{ number_format($patients->where('demographic.commune','Colchane')->count() / 1583 * 100000 ,2) }}
+                        {{ number_format($colchane / 1583 * 100000 ,2) }}
                     </td>
                 </tr>
                 <tr>
                     <td>Huara (3.000*)</td>
                     <td class="text-right">
-                        {{ number_format($patients->where('demographic.commune','Huara')->count() / 3000 * 100000 ,2) }}
+                        {{ number_format($huara / 3000 * 100000 ,2) }}
                     </td>
                 </tr>
                 <tr>
                     <td>Iquique (223.463*)</td>
                     <td class="text-right">
-                        {{ number_format($patients->where('demographic.commune','Iquique')->count() / 223463 * 100000 ,2) }}
+                        {{ number_format($iquique / 223463 * 100000 ,2) }}
                     </td>
                 </tr>
                 <tr>
                     <td>Pica (5.958*)</td>
                     <td class="text-right">
-                        {{ number_format($patients->where('demographic.commune','Pica')->count() / 5958 * 100000 ,2) }}
+                        {{ number_format($pica / 5958 * 100000 ,2) }}
                     </td>
                 </tr>
                 <tr>
                     <td>Pozo Almonte (17.395*)</td>
                     <td class="text-right">
-                        {{ number_format($patients->where('demographic.commune','Pozo Almonte')->count() / 17395 * 100000 ,2) }}
+                        {{ number_format($pozo_almonte / 17395 * 100000 ,2) }}
                     </td>
                 </tr>
                 <tr>
                     <th>Región Tarapacá (382.773*)</th>
                     <th class="text-right">
-                        {{ number_format($patients->count() / 382773 * 100000 ,2) }}
+                        {{ number_format(($total_male + $total_female) / 382773 * 100000 ,2) }}
                     </th>
                 </tr>
             </tbody>
@@ -454,117 +322,126 @@
             <thead>
                 <tr class="table-active">
                     <th>Rango Edad</th>
-                    <th>Positivo</th>
+                    <th>Hombres</th>
+                    <th>Mujeres</th>
+                    <th>Total</th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="text-center">
                     <td>0-9</td>
-                    <td class="text-danger">
-                        {{
-                            $cases->where('pscr_sars_cov_2','positive')
-                                ->whereBetween('age',[0,9])
-                                ->whereNotNull('age')
-                                ->count()
-                        }}
+                    <td>
+                        {{ $age0male = $patients->whereBetween('age',[0,9])->where('gender','male')->count() }}
+                    </td>
+                    <td>
+                        {{ $age0female = $patients->whereBetween('age',[0,9])->where('gender','female')->count() }}
+                    </td>
+                    <td>
+                        {{ $age0total = $age0male + $age0female }}
                     </td>
                 </tr>
                 <tr class="text-center">
                     <td>10-19</td>
-                    <td class="text-danger">
-                        {{
-                            $cases->where('pscr_sars_cov_2','positive')
-                                ->whereBetween('age',[10,19])
-                                ->whereNotNull('age')
-                                ->count()
-                        }}
+                    <td>
+                        {{ $age1male = $patients->whereBetween('age',[10,19])->where('gender','male')->count() }}
+                    </td>
+                    <td>
+                        {{ $age1female = $patients->whereBetween('age',[10,19])->where('gender','female')->count() }}
+                    </td>
+                    <td>
+                        {{ $age1total = $age1male + $age1female }}
                     </td>
                 </tr>
                 <tr class="text-center">
                     <td>20-29</td>
-                    <td class="text-danger">
-                        {{
-                            $cases->where('pscr_sars_cov_2','positive')
-                                ->whereBetween('age',[20,29])
-                                ->whereNotNull('age')
-                                ->count()
-                        }}
+                    <td>
+                        {{ $age2male = $patients->whereBetween('age',[20,29])->where('gender','male')->count() }}
+                    </td>
+                    <td>
+                        {{ $age2female = $patients->whereBetween('age',[20,29])->where('gender','female')->count() }}
+                    </td>
+                    <td>
+                        {{ $age2total = $age2male + $age2female }}
                     </td>
                 </tr>
                 <tr class="text-center">
                     <td>30-39</td>
-                    <td class="text-danger">
-                        {{
-                            $cases->where('pscr_sars_cov_2','positive')
-                                ->whereBetween('age',[30,39])
-                                ->whereNotNull('age')
-                                ->count()
-                        }}
+                    <td>
+                        {{ $age3male = $patients->whereBetween('age',[30,39])->where('gender','male')->count() }}
+                    </td>
+                    <td>
+                        {{ $age3female = $patients->whereBetween('age',[30,39])->where('gender','female')->count() }}
+                    </td>
+                    <td>
+                        {{ $age3total = $age3male + $age3female }}
                     </td>
                 </tr>
                 <tr class="text-center">
                     <td>40-49</td>
-                    <td class="text-danger">
-                        {{
-                            $cases->where('pscr_sars_cov_2','positive')
-                                ->whereBetween('age',[40,49])
-                                ->whereNotNull('age')
-                                ->count()
-                        }}
+                    <td>
+                        {{ $age4male = $patients->whereBetween('age',[40,49])->where('gender','male')->count() }}
+                    </td>
+                    <td>
+                        {{ $age4female = $patients->whereBetween('age',[40,49])->where('gender','female')->count() }}
+                    </td>
+                    <td>
+                        {{ $age4total = $age4male + $age4female }}
                     </td>
                 </tr>
                 <tr class="text-center">
                     <td>50-59</td>
-                    <td class="text-danger">
-                        {{
-                            $cases->where('pscr_sars_cov_2','positive')
-                                ->whereBetween('age',[50,59])
-                                ->whereNotNull('age')
-                                ->count()
-                        }}
+                    <td>
+                        {{ $age5male = $patients->whereBetween('age',[50,59])->where('gender','male')->count() }}
+                    </td>
+                    <td>
+                        {{ $age5female = $patients->whereBetween('age',[50,59])->where('gender','female')->count() }}
+                    </td>
+                    <td>
+                        {{ $age5total = $age5male + $age5female }}
                     </td>
                 </tr>
                 <tr class="text-center">
                     <td>60-69</td>
-                    <td class="text-danger">
-                        {{
-                            $cases->where('pscr_sars_cov_2','positive')
-                                ->whereBetween('age',[60,69])
-                                ->whereNotNull('age')
-                                ->count()
-                        }}
+                    <td>
+                        {{ $age6male = $patients->whereBetween('age',[60,69])->where('gender','male')->count() }}
+                    </td>
+                    <td>
+                        {{ $age6female = $patients->whereBetween('age',[60,69])->where('gender','female')->count() }}
+                    </td>
+                    <td>
+                        {{ $age6total = $age6male + $age6female }}
                     </td>
                 </tr>
                 <tr class="text-center">
                     <td>70-79</td>
-                    <td class="text-danger">
-                        {{
-                            $cases->where('pscr_sars_cov_2','positive')
-                                ->whereBetween('age',[70,79])
-                                ->whereNotNull('age')
-                                ->count()
-                        }}
+                    <td>
+                        {{ $age7male = $patients->whereBetween('age',[70,79])->where('gender','male')->count() }}
+                    </td>
+                    <td>
+                        {{ $age7female = $patients->whereBetween('age',[70,79])->where('gender','female')->count() }}
+                    </td>
+                    <td>
+                        {{ $age7total = $age7male + $age7female }}
                     </td>
                 </tr>
                 <tr class="text-center">
                     <td>80-></td>
-                    <td class="text-danger">
-                        {{
-                            $cases->where('pscr_sars_cov_2','positive')
-                                ->whereBetween('age',[80,900])
-                                ->whereNotNull('age')
-                                ->count()
-                        }}
+                    <td>
+                        {{ $age8male = $patients->whereBetween('age',[80,999])->where('gender','male')->count() }}
+                    </td>
+                    <td>
+                        {{ $age8female = $patients->whereBetween('age',[80,999])->where('gender','female')->count() }}
+                    </td>
+                    <td>
+                        {{ $age8total = $age8male + $age8female }}
                     </td>
                 </tr>
                 <tr class="text-center">
                     <td>Sin Registro</td>
-                    <td class="text-danger">
-                        {{
-                            $cases->where('pscr_sars_cov_2','positive')
-                                ->whereNull('age')
-                                ->count()
-                        }}
+                    <td></td>
+                    <td></td>
+                    <td>
+                        {{ $patients->whereNull('age')->count() }}
                     </td>
 
                 </tr>
@@ -573,136 +450,6 @@
 
         <div id="chart_ages" style="width: 400px; height: 400px"></div>
 
-        <table class="table table-sm table-bordered">
-            <thead>
-                <tr class="table-active">
-                    <th>Gestantes</th>
-                    <th>Positivo</th>
-                    <th>Pendiente</th>
-                    <th>Negativo</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="text-center">
-                        {{ $cases->where('gestation','on')->count() }}
-                    </td>
-                    <td class="text-center text-danger">
-                        {{ $cases->where('gestation','on')->where('pscr_sars_cov_2','positive')->count() }}
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('gestation','on')->where('pscr_sars_cov_2','pending')->count() }}
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('gestation','on')->where('pscr_sars_cov_2','negative')->count() }}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <table class="table table-sm table-bordered">
-            <thead>
-                <tr class="table-active">
-                    <th colspan="5">Residencia Sanitaria</th>
-                </tr>
-                <tr>
-                    <th></th>
-                    <th>Total</th>
-                    <th>Posit.</th>
-                    <th>Pendi.</th>
-                    <th>Negat.</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        Región
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('status','Residencia Sanitaria')->count() }}
-                    </td>
-                    <td class="text-center text-danger">
-                        {{ $cases->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','positive')->count() }}
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','pending')->count() }}
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','negative')->count() }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Alto Hospicio
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('patient.demographic.commune','Alto Hospicio')->where('status','Residencia Sanitaria')->count() }}
-                    </td>
-                    <td class="text-center text-danger">
-                        {{ $cases->where('patient.demographic.commune','Alto Hospicio')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','positive')->count() }}
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('patient.demographic.commune','Alto Hospicio')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','pending')->count() }}
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('patient.demographic.commune','Alto Hospicio')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','negative')->count() }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Iquique
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('patient.demographic.commune','Iquique')->where('status','Residencia Sanitaria')->count() }}
-                    </td>
-                    <td class="text-center text-danger">
-                        {{ $cases->where('patient.demographic.commune','Iquique')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','positive')->count() }}
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('patient.demographic.commune','Iquique')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','pending')->count() }}
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('patient.demographic.commune','Iquique')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','negative')->count() }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Pica
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('patient.demographic.commune','Pica')->where('status','Residencia Sanitaria')->count() }}
-                    </td>
-                    <td class="text-center text-danger">
-                        {{ $cases->where('patient.demographic.commune','Pica')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','positive')->count() }}
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('patient.demographic.commune','Pica')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','pending')->count() }}
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('patient.demographic.commune','Pica')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','negative')->count() }}
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        Pozo Almonte
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('patient.demographic.commune','Pozo Almonte')->where('status','Residencia Sanitaria')->count() }}
-                    </td>
-                    <td class="text-center text-danger">
-                        {{ $cases->where('patient.demographic.commune','Pozo Almonte')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','positive')->count() }}
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('patient.demographic.commune','Pozo Almonte')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','pending')->count() }}
-                    </td>
-                    <td class="text-center">
-                        {{ $cases->where('patient.demographic.commune','Pozo Almonte')->where('status','Residencia Sanitaria')->where('pscr_sars_cov_2','negative')->count() }}
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
 
     </div>
 </div>
@@ -723,15 +470,15 @@
         data.addColumn('number', 'Hombres');
         data.addColumn('number', 'Mujeres');
         data.addRows([
-            ['0', {{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[0,9])->whereNotNull('age')->count()}}  ,{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[0,9])->whereNotNull('age')->count()}}],
-            ['10',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[10,19])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[10,19])->whereNotNull('age')->count()}}],
-            ['20',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[20,29])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[20,29])->whereNotNull('age')->count()}}],
-            ['30',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[30,39])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[30,39])->whereNotNull('age')->count()}}],
-            ['40',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[40,49])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[40,49])->whereNotNull('age')->count()}}],
-            ['50',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[50,59])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[50,59])->whereNotNull('age')->count()}}],
-            ['60',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[60,69])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[60,69])->whereNotNull('age')->count()}}],
-            ['70',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[70,79])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[70,79])->whereNotNull('age')->count()}}],
-            ['80->',{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','male')->whereBetween('age',[80,120])->whereNotNull('age')->count()}},{{$cases->where('pscr_sars_cov_2','positive')->where('patient.gender','female')->whereBetween('age',[80,120])->whereNotNull('age')->count()}}],
+            ['0-9',  {{ $age0male }} , {{ $age0female }}],
+            ['10-19', {{ $age1male }} , {{ $age1female }}],
+            ['20-29', {{ $age2male }} , {{ $age2female }}],
+            ['30-39', {{ $age3male }} , {{ $age3female }}],
+            ['40-49', {{ $age4male }} , {{ $age4female }}],
+            ['50-59', {{ $age5male }} , {{ $age5female }}],
+            ['60-69', {{ $age6male }} , {{ $age6female }}],
+            ['70-79', {{ $age7male }} , {{ $age7female }}],
+            ['80->',{{ $age8male }} , {{ $age8female }}],
         ]);
 
         var options = {
@@ -742,7 +489,13 @@
             colors: ['#3366CC', '#CC338C'],
             legend: { position: 'bottom' },
             backgroundColor: '#f8fafc',
-            chartArea: {'width': '90%', 'height': '80%'},
+            chartArea: {'width': '85%', 'height': '80%'},
+            hAxis: {
+                textStyle : {
+                    fontSize: 9 // or the number you want
+                },
+                textPosition: '50',
+            },
         };
 
         var chart = new google.visualization.ColumnChart(document.getElementById('chart_ages'));

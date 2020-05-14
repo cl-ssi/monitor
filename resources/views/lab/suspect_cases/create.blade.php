@@ -47,19 +47,20 @@
     <div class="form-row">
         <fieldset class="form-group col-12 col-md-4">
             <label for="for_name">Nombres</label>
-            <input type="text" class="form-control" id="for_name" name="name">
+            <input type="text" class="form-control" id="for_name" name="name"
+             style="text-transform: uppercase;">
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_fathers_family">Apellido Paterno</label>
             <input type="text" class="form-control" id="for_fathers_family"
-                name="fathers_family">
+                name="fathers_family" style="text-transform: uppercase;">
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_mothers_family">Apellido Materno</label>
             <input type="text" class="form-control" id="for_mothers_family"
-                name="mothers_family">
+                name="mothers_family" style="text-transform: uppercase;">
         </fieldset>
 
 
@@ -289,6 +290,7 @@ $('input[name=run]').change(function() {
             document.getElementById("for_name").value = data.name;
             document.getElementById("for_fathers_family").value = data.fathers_family;
             document.getElementById("for_mothers_family").value = data.mothers_family;
+            document.getElementById("for_status").value = data.status;
         } else {
             document.getElementById("for_id").value = "";
             document.getElementById("for_other_identification").value = "";

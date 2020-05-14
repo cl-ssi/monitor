@@ -6,7 +6,7 @@
 <h3 class="mb-3">Reporte Casos Positivos</h3>
 
 <div class="row">
-    <div class="col-12 col-md-4">
+    <div class="col-12 col-md-4 mb-3">
 
         <table class="table table-sm table-bordered">
             <thead>
@@ -33,9 +33,11 @@
             </tbody>
         </table>
 
+
+
         <div id="evolution" style="width: 480px; height: 400"></div>
 
-        <table class="table table-sm table-bordered">
+        <!-- <table class="table table-sm table-bordered">
             <thead>
                 <tr>
                     <th class="table-active">Hospitalizados</th>
@@ -69,13 +71,13 @@
                     <th class="text-right">{{ $hbasico + $hmedio + $huti + $huci }}</th>
                 </tr>
             </tbody>
-        </table>
+        </table> -->
 
 
         <table class="table table-sm table-bordered">
             <thead>
                 <tr class="table-active">
-                    <th colspan="5">Cantidad de Ventiladores</th>
+                    <th colspan="5">Cantidad de Ventiladores <small>({{ $ventilator->updated_at }})</small> </th>
                     <th class="text-center">{{ $ventilator->total }}</th>
                 </tr>
             </thead>
@@ -92,6 +94,43 @@
                 </tr>
             </tbody>
         </table>
+
+
+
+        <table class="table table-sm table-bordered">
+            <thead>
+                <tr class="table-active">
+                    <th>Exámenes enviados a análisis (*)</th>
+                    <th class="text-right">{{ $exams['total'] }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Resultados positivos (**)</td>
+                    <th class="text-right">{{ $exams['positives'] }}</th>
+                </tr>
+                <tr>
+                    <td>Resultados negativos</td>
+                    <th class="text-right">{{ $exams['negatives'] }}</th>
+                </tr>
+                <tr>
+                    <td>Resultados pendientes</td>
+                    <th class="text-right">{{ $exams['pending'] }}</th>
+                </tr>
+                <tr>
+                    <td>Resultados indeterminados</td>
+                    <th class="text-right">{{ $exams['undetermined'] }}</th>
+                </tr>
+                <tr>
+                    <td>Muestras rechazadas</td>
+                    <th class="text-right">{{ $exams['rejected'] }}</th>
+                </tr>
+            </tbody>
+        </table>
+        <small>* Representa la cantidad de exámenes y no de casos, ya que un
+            paciente puede tener más de un examen.</small><br>
+        <small>** Representa la cantidad de exámenes positivos, que puede
+            incluir segundas muestras a un mismo paciente, con motivo de dar de alta.</small>
 
     </div>
 
@@ -227,6 +266,25 @@
             </tbody>
         </table>
 
+        <table class="table table-sm table-bordered">
+            <thead>
+                <tr class="table-active">
+                    <th colspan="2">
+                        Residencias sanitarias
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($residences as $residence)
+                <tr>
+                    <td>{{ $residence->name }}</td>
+                    <td class="text-right">
+                        {{ $bookings->where('room.residence_id',$residence->id)->count() }}
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
 
     </div>
 
