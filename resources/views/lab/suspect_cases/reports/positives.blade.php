@@ -33,6 +33,8 @@
             </tbody>
         </table>
 
+
+
         <div id="evolution" style="width: 480px; height: 400"></div>
 
         <!-- <table class="table table-sm table-bordered">
@@ -89,6 +91,39 @@
                     <th class="text-center">
                         {{ $ventilator->total - $huci - $ventilator->no_covid }}
                     </th>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+        <table class="table table-sm table-bordered">
+            <thead>
+                <tr class="table-active">
+                    <th>Exámenes realizados</th>
+                    <th class="text-right">{{ $exams['total'] }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Positivos</td>
+                    <th class="text-right">{{ $exams['positives'] }}</th>
+                </tr>
+                <tr>
+                    <td>Negativos</td>
+                    <th class="text-right">{{ $exams['negatives'] }}</th>
+                </tr>
+                <tr>
+                    <td>Pendientes</td>
+                    <th class="text-right">{{ $exams['pending'] }}</th>
+                </tr>
+                <tr>
+                    <td>Indeterminados</td>
+                    <th class="text-right">{{ $exams['undetermined'] }}</th>
+                </tr>
+                <tr>
+                    <td>Rechazados</td>
+                    <th class="text-right">{{ $exams['rejected'] }}</th>
                 </tr>
             </tbody>
         </table>

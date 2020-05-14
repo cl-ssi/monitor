@@ -72,12 +72,20 @@ class SuspectCaseReportController extends Controller
         /* Fin de calculo de evolución */
 
 
+        /* Exámenes */
+        $exams['total'] = SuspectCase::all()->count();
+        $exams['positives'] = SuspectCase::where('pscr_sars_cov_2','positive')->get()->count();
+        $exams['negatives'] = SuspectCase::where('pscr_sars_cov_2','negative')->get()->count();
+        $exams['pending'] = SuspectCase::where('pscr_sars_cov_2','pending')->get()->count();
+        $exams['undetermined'] = SuspectCase::where('pscr_sars_cov_2','undetermined')->get()->count();
+        $exams['rejected'] = SuspectCase::where('pscr_sars_cov_2','rejected')->get()->count();
+
         /* Ventiladores */
         $ventilator = Ventilator::first();
 
         //echo '<pre>'; print_r($patients->where('status','Hospitalizado UCI')->count()); die();
         //echo '<pre>'; print_r($evolucion); die();
-        return view('lab.suspect_cases.reports.positives', compact('patients','evolucion','ventilator','residences','bookings'));
+        return view('lab.suspect_cases.reports.positives', compact('patients','evolucion','ventilator','residences','bookings','exams'));
 
     }
 
