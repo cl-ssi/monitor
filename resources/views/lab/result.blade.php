@@ -26,11 +26,11 @@
             <td>{{ ($case->pscr_sars_cov_2_at) ? $case->pscr_sars_cov_2_at : '' }}</td>
             <td>
                 @if($case->pscr_sars_cov_2 != 'positive')
-                <a href="{{ route('lab.suspect_cases.download', $case->files->first()->id) }}"
+                <!-- <a href="{{ route('lab.suspect_cases.download', $case->files->first()->id) }}"
                     target="_blank" data-toggle="tooltip" data-placement="top"
                     data-original-title="resultado_{{$case->patient->run}}.pdf">
                     resultado_{{$case->patient->run}}.pdf<i class="fas fa-paperclip"></i>&nbsp
-                </a>
+                </a> -->
                 @endif
             </td>
         </tr>
