@@ -89,7 +89,7 @@ class SuspectCaseReportController extends Controller
         return view('lab.suspect_cases.reports.gestants', compact('patients'));
     }
 
-    public function countPositives()
+    public function countPositives(Request $request)
     {
         $patients = Patient::whereHas('suspectCases', function ($q) {
             $q->where('pscr_sars_cov_2','positive');
@@ -112,6 +112,15 @@ class SuspectCaseReportController extends Controller
                     'Región de Magallanes y de la Antártica Chilena',
                     'Región Metropolitana de Santiago',
                     'Región de Ñuble']);
+
+        if($request->input('residence')) {
+            $bookings = Booking::where('status','Residencia Sanitaria')
+                        ->whereHas('patient', function ($q) {
+                            $q->where('status','Residencia Sanitaria');
+                        })->get();
+            $booking_ct = $bookings->where('room.residence_id',$request->input('residence'))->count();
+            return $patients->count() . ' ' . $booking_ct;
+        }
 
         return $patients->count();
     }
