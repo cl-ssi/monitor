@@ -18,4 +18,11 @@ class Residence extends Model
     public function rooms() {
         return $this->hasMany('App\SanitaryResidence\Room');
     }
+
+    /**
+    * The user that belong to the residence.
+    */
+    public function users() {
+        return $this->belongsToMany('App\User');
+    }
 }

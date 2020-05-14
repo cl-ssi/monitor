@@ -34,8 +34,7 @@ class BookingController extends Controller
     {
         //
         $patients = Patient::orderBy('name')->get();
-        $rooms = Room::All();
-        return view('sanitary_residences.bookings.create', compact('patients', 'rooms'));
+        return view('sanitary_residences.bookings.create', compact('patients'));
     }
 
     /**
