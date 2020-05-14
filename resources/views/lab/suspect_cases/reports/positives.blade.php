@@ -127,8 +127,10 @@
                 </tr>
             </tbody>
         </table>
-        <small>* Representa la cantidad de exámenes y no de casos, ya que un paciente puede tener más de un examen.</small>
-        <small>** Representa la cantidad de exámenes positivos, que pueden incluir segundas muestras a un mismo paciente, con motivo de dar de alta.</small>
+        <small>* Representa la cantidad de exámenes y no de casos, ya que un
+            paciente puede tener más de un examen.</small><br>
+        <small>** Representa la cantidad de exámenes positivos, que puede
+            incluir segundas muestras a un mismo paciente, con motivo de dar de alta.</small>
 
     </div>
 
