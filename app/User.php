@@ -35,6 +35,13 @@ class User extends Authenticatable
     }
 
     /**
+    * The residence that belong to the user.
+    */
+    public function residences() {
+        return $this->belongsToMany('App\SanitaryResidence\Residence');
+    }
+
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array

@@ -1,22 +1,12 @@
 <ul class="nav nav-tabs mb-3 d-print-none">
 
+    @foreach(Auth::user()->residences as $residence)
     <li class="nav-item">
-        <a class="nav-link" href="{{ route('sanitary_residences.bookings.index',1) }}">
-            <i class="fas fa-inbox"></i> Booking Agua Luna
+        <a class="nav-link" href="{{ route('sanitary_residences.bookings.index', $residence) }}">
+            <i class="fas fa-inbox"></i> {{ $residence->name }}
         </a>
     </li>
-
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('sanitary_residences.bookings.index',2) }}">
-            <i class="fas fa-inbox"></i> Booking Colegio UNAP
-        </a>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('sanitary_residences.bookings.index',3) }}">
-            <i class="fas fa-inbox"></i> Booking Hotel Urbano
-        </a>
-    </li>
+    @endforeach
 
     @can('SanitaryResidence: admin')
     <li class="nav-item">
@@ -28,6 +18,12 @@
     <li class="nav-item">
         <a class="nav-link" href="{{ route('sanitary_residences.rooms.index') }}">
             <i class="fas fa-home"></i> Habitaciones
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('sanitary_residences.users') }}">
+            <i class="fas fa-home"></i> Usuarios
         </a>
     </li>
     @endcan

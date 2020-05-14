@@ -26,8 +26,10 @@
         <fieldset class="form-group col-12 col-md-4">
             <label for="for_room_id">Residencia - Habitación</label>
             <select name="room_id" id="for_room_id" class="form-control">
-                @foreach($rooms as $room)
-                <option value="{{ $room->id }}">{{ $room->residence->name }} - Habitación {{ $room->number }}</option>
+                @foreach(Auth::user()->residences as $residence)
+                    @foreach($residence->rooms as $room)
+                    <option value="{{ $room->id }}">{{ $room->residence->name }} - Habitación {{ $room->number }}</option>
+                    @endforeach
                 @endforeach
             </select>
         </fieldset>

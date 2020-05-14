@@ -3,10 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\SanitaryResidence\Residence;
+use App\SanitaryResidence\ResidenceUser;
 use Illuminate\Http\Request;
+use App\User;
 
 class ResidenceController extends Controller
 {
+    public function home()
+    {
+        return view('sanitary_residences.home');
+    }
+
+    public function users()
+    {
+        $users = User::all();
+        $residences = Residence::all();
+        $users_with_residences = User::has('residences')->get();
+        return view('sanitary_residences.users',compact('users','residences','users_with_residences'));
+    }
+
+    public function usersStore(Request $request)
+    {
+        $residence_user = new ResidenceUser($request->All());
+        $residence_user->save();
+
+        return redirect()->back();
+    }
+
     /**
      * Display a listing of the resource.
      *

@@ -125,6 +125,10 @@ Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(functi
 });
 
 Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('auth')->group(function () {
+    Route::get('/', 'ResidenceController@home')->name('home');
+    Route::get('/users', 'ResidenceController@users')->name('users');
+    Route::post('/users', 'ResidenceController@usersStore')->name('users.store');
+
     Route::prefix('residences')->name('residences.')->group(function () {
         Route::get('/create', 'ResidenceController@create')->name('create');
         Route::get('/', 'ResidenceController@index')->name('index');

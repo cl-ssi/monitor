@@ -124,16 +124,11 @@
                         @endcan
 
                         @can('SanitaryResidence: user')
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('sanitary_residences.home') }}">
                                 <i class="fas fa-hotel"></i>
                                 Residencias
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.index', 1) }}">Hotel Agua Luna</a>
-                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.index', 2) }}">Colegio Universitario UNAP</a>
-                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.index', 3) }}">Hotel Urbano</a>
-                            </div>
                         </li>
                         @endcan
 
