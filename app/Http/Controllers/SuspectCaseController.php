@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use GuzzleHttp\Client;
 use App\SuspectCase;
 use App\Patient;
 use App\Demographic;
@@ -79,8 +80,8 @@ class SuspectCaseController extends Controller
      */
     public function create()
     {
-        $sampleOrigins = SampleOrigin::orderBy('alias')->get();
-        return view('lab.suspect_cases.create',compact('sampleOrigins'));
+      $sampleOrigins = SampleOrigin::orderBy('alias')->get();
+      return view('lab.suspect_cases.create',compact('sampleOrigins'));
     }
 
     /**
@@ -90,8 +91,40 @@ class SuspectCaseController extends Controller
      */
     public function admission()
     {
-        $sampleOrigins = SampleOrigin::orderBy('alias')->get();
-        return view('lab.suspect_cases.admission',compact('sampleOrigins'));
+      $client = new \GuzzleHttp\Client();
+
+      // ****** Webservices openagora ******
+
+      // //obtener datos
+      // $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/41381c1a-8d27-d33b-2e4a-403d757e39cc', [
+      //     'form_params' => ['parametros' => '{"id_muestra":"42"}'],
+      //     'headers'  => [ 'ACCESSKEY' => 'AK026-88QV-000Q9MOOS-000000VH80ZT']
+      // ]);
+      // $response_json = $response->getBody()->getContents();
+      // $array = json_decode($response_json, true);
+
+
+      // //guarda información
+      // $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/a3772090-34dd-d3e3-658e-c75b6ebd211a', [
+      //     'multipart' => [
+      //         [
+      //             'name'     => 'upfile',
+      //             'contents' => fopen('C:\Users\sick_\Desktop\pdf.pdf', 'r')
+      //         ],
+      //         [
+      //             'name'     => 'parametros',
+      //             'contents' => '{"id_muestra":"43","resultado":"Positivo"}'
+      //         ]
+      //     ],
+      //     'headers'  => [ 'ACCESSKEY' => 'AK026-88QV-000Q9MOOS-000000VH80ZT']
+      // ]);
+      // $response_json = $response->getBody()->getContents();
+      // $array = json_decode($response_json, true);
+      // dd($array);
+
+
+      $sampleOrigins = SampleOrigin::orderBy('alias')->get();
+      return view('lab.suspect_cases.admission',compact('sampleOrigins'));
     }
 
     /**
@@ -116,6 +149,13 @@ class SuspectCaseController extends Controller
         if(!$request->input('pscr_sars_cov_2')) {
             $suspectCase->pscr_sars_cov_2 = 'pending';
         }
+
+        if($request->input('pscr_sars_cov_2_at')){
+            $suspectCase->pscr_sars_cov_2_at = $request->input('pscr_sars_cov_2_at').' '.date('H:i:s');
+        }
+
+        $suspectCase->sample_at = $request->input('sample_at').' '.date('H:i:s');
+
         $patient->suspectCases()->save($suspectCase);
 
         //guarda archivos
@@ -184,6 +224,8 @@ class SuspectCaseController extends Controller
 
         /* Marcar como pendiente el resultado, no viene en el form */
         $suspectCase->pscr_sars_cov_2 = 'pending';
+
+        $suspectCase->sample_at = $request->input('sample_at').' '.date('H:i:s');
 
         $patient->suspectCases()->save($suspectCase);
 
@@ -279,6 +321,9 @@ class SuspectCaseController extends Controller
         /* Setar el validador */
         if ($log->old->pscr_sars_cov_2 == 'pending' and $suspectCase->pscr_sars_cov_2 != 'pending') {
             $suspectCase->validator_id = Auth::id();
+            if($request->input('pscr_sars_cov_2_at')) {
+                $suspectCase->pscr_sars_cov_2_at = $request->input('pscr_sars_cov_2_at').' '.date('H:i:s');
+            }
         }
 
         $suspectCase->save();
@@ -332,6 +377,19 @@ class SuspectCaseController extends Controller
         $suspectCase->delete();
 
         return redirect()->route('lab.suspect_cases.index');
+    }
+
+    public function fileDelete(File $file)
+    {
+        // $log = new Log();
+        // $log->old =  clone $file;
+        // $log->new =  $file->setAttribute('suspect_case', 'delete');
+        // $log->save();
+
+        Storage::delete($file->file);
+        $file->delete();
+
+        return redirect()->back();
     }
 
     /**
@@ -708,8 +766,8 @@ class SuspectCaseController extends Controller
             $user->email = $user_cu->email;
         } elseif (env('APP_ENV') == 'local') {
             $user = new User();
-            $user->id = 18371078;
-            $user->dv = 8;
+            $user->id = 16055586;
+            $user->dv = 6;
             $user->name = "maria angela";
             $user->fathers_family = "family";
             $user->mothers_family = "mother";
@@ -950,6 +1008,50 @@ class SuspectCaseController extends Controller
                                   ->paginate(200);//->appends(request()->query());
 
         return view('lab.suspect_cases.bioclinic', compact('suspectCases','request','suspectCasesTotal'));
+    }
+
+
+    public function reception_inbox(Request $request)
+    {
+      if ($request->get('positivos') == "on") {
+        $positivos = "positive";
+      }else{$positivos = NULL;}
+
+      if ($request->get('negativos') == "on") {
+        $negativos = "negative";
+      }else{$negativos = NULL;}
+
+      if ($request->get('pendientes') == "on") {
+        $pendientes = "pending";
+      }else{$pendientes = NULL;}
+
+      if ($request->get('rechazados') == "on") {
+        $rechazados = "rejected";
+      }else{$rechazados = NULL;}
+
+      if ($request->get('indeterminados') == "on") {
+        $indeterminados = "undetermined";
+      }else{$indeterminados = NULL;}
+
+      $text = $request->get('text');
+
+      $suspectCasesTotal = SuspectCase::where('laboratory_id',3)->get();
+
+      $suspectCases = SuspectCase::latest('id')
+                                  ->where('laboratory_id',NULL)
+                                  ->whereHas('patient', function($q) use ($text){
+                                          $q->Where('name', 'LIKE', '%'.$text.'%')
+                                            ->orWhere('fathers_family','LIKE','%'.$text.'%')
+                                            ->orWhere('mothers_family','LIKE','%'.$text.'%')
+                                            ->orWhere('run','LIKE','%'.$text.'%');
+                                  })
+                                  ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
+                                  //->get();
+                                  ->paginate(200);//->appends(request()->query());
+
+        //dd($suspectCases);
+
+        return view('lab.suspect_cases.reception_inbox', compact('suspectCases','request','suspectCasesTotal'));
     }
 
     public function exportExcel($cod_lab = mull){

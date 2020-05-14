@@ -12,8 +12,9 @@
         <tr>
             <th>Origen de toma de muestra</th>
             <th>Fecha de toma de muestra</th>
-            <th>Resultado COVID19</th>
             <th>Fecha del resultado</th>
+            <th>Resultado COVID19</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -21,8 +22,17 @@
         <tr>
             <td>{{ $case->origin }}</td>
             <td>{{ $case->sample_at->format('Y-m-d') }}</td>
-            <td>{{ $case->covid19 }}</td>
-            <td>{{ $case->pscr_sars_cov_2_at }}</td>
+            <td>{{ ($case->pscr_sars_cov_2 != 'positive') ? $case->covid19 : 'Será notificado' }}</td>
+            <td>{{ ($case->pscr_sars_cov_2_at) ? $case->pscr_sars_cov_2_at : '' }}</td>
+            <td>
+                @if($case->pscr_sars_cov_2 != 'positive')
+                <!-- <a href="{{ route('lab.suspect_cases.download', $case->files->first()->id) }}"
+                    target="_blank" data-toggle="tooltip" data-placement="top"
+                    data-original-title="resultado_{{$case->patient->run}}.pdf">
+                    resultado_{{$case->patient->run}}.pdf<i class="fas fa-paperclip"></i>&nbsp
+                </a> -->
+                @endif
+            </td>
         </tr>
         @endforeach
     </tbody>
