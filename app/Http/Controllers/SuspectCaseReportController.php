@@ -119,7 +119,7 @@ class SuspectCaseReportController extends Controller
                             $q->where('status','Residencia Sanitaria');
                         })->get();
             $booking_ct = $bookings->where('room.residence_id',$request->input('residence'))->count();
-            return $patients->count() . ' ' . $booking_ct;
+            return $patients->count() . "\n" . $booking_ct;
         }
 
         return $patients->count();
