@@ -47,19 +47,20 @@
     <div class="form-row">
         <fieldset class="form-group col-12 col-md-4">
             <label for="for_name">Nombres</label>
-            <input type="text" class="form-control" id="for_name" name="name">
+            <input type="text" class="form-control" id="for_name" name="name"
+                style="text-transform: uppercase;">
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_fathers_family">Apellido Paterno</label>
             <input type="text" class="form-control" id="for_fathers_family"
-                name="fathers_family">
+                name="fathers_family" style="text-transform: uppercase;">
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_mothers_family">Apellido Materno</label>
             <input type="text" class="form-control" id="for_mothers_family"
-                name="mothers_family">
+                name="mothers_family" style="text-transform: uppercase;">
         </fieldset>
 
 
