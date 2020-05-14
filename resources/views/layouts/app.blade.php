@@ -132,6 +132,8 @@
                         </li>
                         @endcan
 
+
+
                         @canany(['Report: positives','Report: full','Report: historical'])
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
