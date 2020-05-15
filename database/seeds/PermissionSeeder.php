@@ -40,10 +40,7 @@ class PermissionSeeder extends Seeder
         $permission = Permission::create(['name' => 'Epp: list']);
 
         $permission = Permission::create(['name' => 'SanitaryResidence: user']);
-        $permission = Permission::create(['name' => 'SanitaryResidence: admin']);
-        $permission = Permission::create(['name' => 'SanitaryResidence: agualuna']);
-        $permission = Permission::create(['name' => 'SanitaryResidence: unap']);
-        $permission = Permission::create(['name' => 'SanitaryResidence: urbano']);
+        $permission = Permission::create(['name' => 'SanitaryResidence: admin']);        
 
         $permission = Permission::create(['name' => 'File_report: viewer']);
 

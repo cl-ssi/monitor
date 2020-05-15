@@ -67,7 +67,9 @@ class BookingController extends Controller
           $booking->save();
           session()->flash('success', 'Paciente dado de Alta Exitosamente');
         }
-        return redirect()->route('sanitary_residences.bookings.index',1);
+        //return redirect()->route('sanitary_residences.bookings.index', auth()->user()->residences);
+        //return redirect()->back();
+        return view('sanitary_residences.home');
     }
 
     /**

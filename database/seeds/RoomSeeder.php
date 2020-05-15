@@ -33,6 +33,21 @@ class RoomSeeder extends Seeder
             ['id' => 18, 'floor' => 5, 'number' => '51', 'residence_id' => '1'],
             ['id' => 19, 'floor' => 5, 'number' => '52', 'residence_id' => '1'],
 
+
+            ///CARGA DE LOS CUARTOS DEL UNAP
+            ['id' => 20, 'floor' => 1, 'number' => '1', 'residence_id' => '2'],
+            ['id' => 21, 'floor' => 1, 'number' => '2', 'residence_id' => '2'],
+            ['id' => 22, 'floor' => 1, 'number' => '3', 'residence_id' => '2'],
+            ['id' => 23, 'floor' => 1, 'number' => '4', 'residence_id' => '2'],
+            ['id' => 24, 'floor' => 1, 'number' => '5', 'residence_id' => '2'],
+            ['id' => 25, 'floor' => 1, 'number' => '6', 'residence_id' => '2'],
+            ['id' => 26, 'floor' => 1, 'number' => '7', 'residence_id' => '2'],
+            ['id' => 27, 'floor' => 1, 'number' => '8', 'residence_id' => '2'],
+            ['id' => 28, 'floor' => 1, 'number' => '9', 'residence_id' => '2'],
+            ['id' => 29, 'floor' => 1, 'number' => '10', 'residence_id' => '2'],
+            ['id' => 30, 'floor' => 1, 'number' => '11', 'residence_id' => '2'],
+            ['id' => 31, 'floor' => 1, 'number' => '12', 'residence_id' => '2'],
+
         ];
 
         foreach ($items as $item) {
