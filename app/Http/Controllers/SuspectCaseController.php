@@ -885,8 +885,14 @@ class SuspectCaseController extends Controller
                 $cod_lab = 1;
                 break;
         }
-        $today = date("Y-m-d");
-        $cases = SuspectCase::where('laboratory_id',$cod_lab)->whereDate('pscr_sars_cov_2_at', '=', $today)->get()->sortByDesc('id');
+        $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+        $to = date("Y-m-d 20:59:59");
+
+        $cases = SuspectCase::where('laboratory_id',$cod_lab)
+                ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
+                ->whereNull('external_laboratory')
+                ->get()
+                ->sortByDesc('pscr_sars_cov_2_at');
         return view('lab.suspect_cases.reports.minsal', compact('cases', 'cod_lab'));
     }
 

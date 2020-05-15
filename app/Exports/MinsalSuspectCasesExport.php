@@ -25,12 +25,14 @@ class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
     */
     public function collection()
     {
-        $today = date("Y-m-d");
+        $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+        $to = date("Y-m-d 20:59:59");
 
-        return SuspectCase::where('laboratory_id', $this->cod_lab)
-            ->whereDate('pscr_sars_cov_2_at', '=', $today)
-            ->orderBy('id', 'desc')
-            ->get();
+        return SuspectCase::where('laboratory_id',$this->cod_lab)
+                ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
+                ->whereNull('external_laboratory')
+                ->get()
+                ->sortByDesc('pscr_sars_cov_2_at');
         // return SuspectCase::find(1301);
 
     }
