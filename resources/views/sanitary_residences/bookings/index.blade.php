@@ -40,7 +40,7 @@
                         {{ $booking->patient->fullName }}
                         </a>
                         <br>
-                        ({{ $booking->patient->suspectCases->last()->age }} AÑOS)
+                        ({{ $booking->patient->age }} AÑOS)
                         <!-- <a href="{{ route('sanitary_residences.bookings.excel', $booking) }}">
                         <i class="fas fa-file-excel"></i>
                         </a> -->
