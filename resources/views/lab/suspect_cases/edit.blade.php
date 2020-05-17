@@ -275,7 +275,6 @@
 
 @endcan
 
-@can('SuspectCase: seremi')
     <h4>Entrega de resultados a paciente</h4>
 
     <div class="form-row">
@@ -316,7 +315,6 @@
 
     </div>
 
-@endcan
 
     <button type="submit" class="btn btn-primary">Guardar</button>
 
