@@ -10,24 +10,24 @@
 
 <a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a>
 
-@php 
-$contid1=0;
-$contid2=0;
-@endphp
-@foreach ($bookings as $booking)
-@if($booking->room->residence->id == 1 and $booking->patient->status == 'Residencia Sanitaria')
+
+@foreach(Auth::user()->residences as $residence)
+<h3>{{$residence->name}}
 @php
-$contid1++
+$i=0;
 @endphp
-@elseif($booking->room->residence->id == 2 and $booking->patient->status == 'Residencia Sanitaria')
+@foreach($residence->rooms as $room)
+@foreach($room->bookings as $booking)
+@if ($booking->status == 'Residencia Sanitaria' and $booking->patient->status == 'Residencia Sanitaria')
 @php
-$contid2++
+$i++;
 @endphp
 @endif
 @endforeach
+@endforeach
+{{$i++}}</h3>
+@endforeach
 
-<h3>Agua Luna:{{$contid1}}</h3>
-<h3>Colegio Universitario UNAP:{{$contid2}}</h3>
 
 <table class="table table-sm table-bordered table-responsive small" id="tabla_booking">
     <thead>
@@ -62,9 +62,13 @@ $contid2++
     <tbody>
         @php $pos=1;
         @endphp
-        @foreach ($bookings as $booking)
+        @foreach(Auth::user()->residences as $residence)
+        @foreach($residence->rooms as $room)
+        @foreach($room->bookings as $booking)
         @if ($booking->status == 'Residencia Sanitaria' and $booking->patient->status == 'Residencia Sanitaria')
+
         <tr>
+
             <td nowrap>{{$pos++}}</td>
             <td nowrap>Iquique</td>
             <td nowrap>Iquique</td>
@@ -95,6 +99,8 @@ $contid2++
         </tr>
         @endif
         @endforeach
+        @endforeach
+        @endforeach
     </tbody>
 
 </table>
@@ -106,15 +112,14 @@ $contid2++
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <script type="text/javascript">
-function exportF(elem) {
-    var table = document.getElementById("tabla_booking");
-    var html = table.outerHTML;
-    var html_no_links = html.replace(/<a[^>]*>|<\/a>/g, "");//remove if u want links in your table
-    var url = 'data:application/vnd.ms-excel,' + escape(html_no_links); // Set your html table into url
-    elem.setAttribute("href", url);
-    elem.setAttribute("download", "residencia_sanitaria.xls"); // Choose the file name
-    return false;
-}
-
+    function exportF(elem) {
+        var table = document.getElementById("tabla_booking");
+        var html = table.outerHTML;
+        var html_no_links = html.replace(/<a[^>]*>|<\/a>/g, ""); //remove if u want links in your table
+        var url = 'data:application/vnd.ms-excel,' + escape(html_no_links); // Set your html table into url
+        elem.setAttribute("href", url);
+        elem.setAttribute("download", "residencia_sanitaria.xls"); // Choose the file name
+        return false;
+    }
 </script>
 @endsection
