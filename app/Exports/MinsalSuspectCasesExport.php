@@ -27,6 +27,8 @@ class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
     {
         $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $to = date("Y-m-d 20:59:59");
+        $from = ("2020-05-14 21:00:00");
+        $to = ("2020-05-15 20:59:59");
 
         return SuspectCase::where('laboratory_id',$this->cod_lab)
                 ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
