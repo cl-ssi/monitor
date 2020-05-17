@@ -92,6 +92,7 @@
             <th>Sexo</th>
             <th class="alert-danger">PCR SARS-Cov2</th>
             <th>Resultado IFD</th>
+            <th>Lab</th>
             <th>Epivigila</th>
             <th>PAHO FLU</th>
             <th>Estado</th>
@@ -139,6 +140,7 @@
                 @endif
             </td>
             <td class="{{ ($case->result_ifd <> 'Negativo' AND $case->result_ifd <> 'No solicitado')?'text-danger':''}}">{{ $case->result_ifd }} {{ $case->subtype }}</td>
+            <td>{{ $case->procesingLab }}</td>
             <td>{{ $case->epivigila }}</td>
             <td>{{ $case->paho_flu }}</td>
             <td>{{ $case->patient->status }}</td>
