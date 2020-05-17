@@ -145,13 +145,14 @@
         <fieldset class="form-group col-6 col-md-2 alert-danger">
             <label for="for_pscr_sars_cov_2_at">Fecha Resultado PCR</label>
             <input type="date" class="form-control" id="for_pscr_sars_cov_2_at"
-                name="pscr_sars_cov_2_at" value="{{ isset($suspectCase->pscr_sars_cov_2_at)? $suspectCase->pscr_sars_cov_2_at->format('Y-m-d'):'' }}">
+                name="pscr_sars_cov_2_at" value="{{ isset($suspectCase->pscr_sars_cov_2_at)? $suspectCase->pscr_sars_cov_2_at->format('Y-m-d'):'' }}"
+                @if(($suspectCase->pscr_sars_cov_2_at AND auth()->user()->cannot('SuspectCase: edit tecnologo'))) disabled @endif>
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2 alert-danger">
             <label for="for_pscr_sars_cov_2">PCR SARS-Cov2</label>
             <select name="pscr_sars_cov_2" id="for_pscr_sars_cov_2"
-                class="form-control">
+                class="form-control" @if(($suspectCase->pscr_sars_cov_2 != 'pending' AND auth()->user()->cannot('SuspectCase: edit tecnologo'))) disabled @endif>
                 <option value="pending" {{ ($suspectCase->pscr_sars_cov_2 == 'pending')?'selected':'' }}>Pendiente</option>
                 <option value="negative" {{ ($suspectCase->pscr_sars_cov_2 == 'negative')?'selected':'' }}>Negativo</option>
                 <option value="positive" {{ ($suspectCase->pscr_sars_cov_2 == 'positive')?'selected':'' }}>Positivo</option>
