@@ -22,7 +22,16 @@
         </table>
     </div>
     <div class="col-3">
-        @include('lab.suspect_cases.partials.search_id')
+        <form method="GET" class="form-inline" action="{{ route('lab.suspect_cases.reception_inbox') }}">
+
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="ID examen" name="search" id="for_search">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit" id="button-addon">Buscar</button>
+                </div>
+            </div>
+
+        </form>
     </div>
     <div class="col-5">
         @if(Auth::user()->laboratory)
@@ -32,6 +41,8 @@
         @endif
     </div>
 </div>
+
+
 
 
 
