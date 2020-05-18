@@ -13,19 +13,19 @@
 
 @foreach(Auth::user()->residences as $residence)
 <h3>{{$residence->name}}
-@php
-$i=0;
-@endphp
-@foreach($residence->rooms as $room)
-@foreach($room->bookings as $booking)
-@if ($booking->status == 'Residencia Sanitaria' and $booking->patient->status == 'Residencia Sanitaria')
-@php
-$i++;
-@endphp
-@endif
-@endforeach
-@endforeach
-{{$i++}}</h3>
+    @php
+    $i=0;
+    @endphp
+    @foreach($residence->rooms as $room)
+    @foreach($room->bookings as $booking)
+    @if ($booking->status == 'Residencia Sanitaria' and $booking->patient->status == 'Residencia Sanitaria')
+    @php
+    $i++;
+    @endphp
+    @endif
+    @endforeach
+    @endforeach
+    {{$i++}}</h3>
 @endforeach
 
 
@@ -90,7 +90,7 @@ $i++;
             <td nowrap>{{$booking->responsible_family_member}}</td>
             <td nowrap>{{ $booking->relationship }}</td>
             <td nowrap> {{ $booking->from }} </td>
-            <td nowrap></td>
+            <td nowrap>{{ ($booking->patient->demographic)?$booking->patient->demographic->nationality:'' }}</td>
             <td nowrap>{{ $booking->released_cause }}</td>
             <td nowrap>{{ $booking->real_to }}</td>
             <td nowrap></td>
