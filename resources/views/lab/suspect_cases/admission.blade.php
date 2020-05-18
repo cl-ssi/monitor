@@ -10,13 +10,13 @@
     @method('POST')
     <div class="form-row">
         <fieldset class="form-group col-10 col-md-2">
-            <label for="for_run">Run SIN DIGITO VERI.</label>
+            <label for="for_run">Run SIN DIGITO VERIF.</label>
             <input type="hidden" class="form-control" id="for_id" name="id">
             <input type="number" class="form-control" id="for_run" name="run">
         </fieldset>
 
         <fieldset class="form-group col-2 col-md-1">
-            <label for="for_dv">DV</label>
+            <label for="for_dv">Digito</label>
             <input type="text" class="form-control" id="for_dv" name="dv" readonly>
         </fieldset>
 
