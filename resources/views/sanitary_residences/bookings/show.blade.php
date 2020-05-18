@@ -9,7 +9,9 @@
 
 <div class="row">
     <div class="col-12 col-md-12 font-weight-bold p-2">
-        <h4>{{ $booking->patient->fullName }}</h4>
+        @canany(['Patient: edit','Patient: demographic edit'])
+        <a href="{{ route('patients.edit', $booking->patient) }}"><h4>{{ $booking->patient->fullName }}</h4></a>
+        @endcan
     </div>
 </div>
 
@@ -74,9 +76,14 @@
         {{ ($booking->patient->demographic)?$booking->patient->demographic->telephone:'' }}
     </div>
 
-    <div class="col-12 col-md-8 p-2">
+    <div class="col-12 col-md-5 p-2">
         <strong>Email: </strong>
         {{ ($booking->patient->demographic)?$booking->patient->demographic->email:'' }}
+    </div>
+
+    <div class="col-12 col-md-3 p-2">
+        <strong>Nacionalidad: </strong>
+        {{ ($booking->patient->demographic)?$booking->patient->demographic->nationality:'' }}
     </div>
 
 </div>
