@@ -915,9 +915,12 @@ class SuspectCaseController extends Controller
     }
 
 
-    public function reception_inbox()
+    public function reception_inbox(Request $request)
     {
-        $suspectCases = SuspectCase::whereNull('laboratory_id')->latest()->paginate(200);
+        $suspectCases = SuspectCase::whereNull('laboratory_id')
+            ->search($request->input('search'))
+            ->latest()
+            ->paginate(200);
 
         return view('lab.suspect_cases.reception_inbox', compact('suspectCases'));
     }
