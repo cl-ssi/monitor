@@ -43,10 +43,10 @@
 </table>
 
 <a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.export', 'bioclinic') }}">Descargar <i class="far fa-file-excel"></i></a>
-<a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.report.minsal','bioclinic') }}">
+<a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.minsal','bioclinic') }}">
     Reporte MINSAL
 </a>
-<a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.report.seremi','bioclinic') }}">
+<a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.seremi','bioclinic') }}">
     Reporte SEREMI
 </a>
 <a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.report.estadistico_diario_covid19','bioclinic') }}">

@@ -38,7 +38,7 @@
         @foreach($patients as $patient)
         <tr class="{{ ($patient->suspectCases->where('pscr_sars_cov_2','positive')->first())?'alert-danger':'' }}">
             <td>
-                @canany(['Patient: edit','Demographic: edit'])
+                @canany(['Patient: edit','Patient: demographic edit'])
                     <a href="{{ route('patients.edit', $patient) }}">
                         Editar
                     </a>

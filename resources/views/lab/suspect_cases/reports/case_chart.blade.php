@@ -6,7 +6,7 @@
 
 <h3 class="mb-3">Reporte de casos</h3>
 
-<form class="form-inline" method="post" action="{{ route('lab.suspect_cases.case_chart') }}">
+<form class="form-inline" method="post" action="{{ route('lab.suspect_cases.reports.case_chart') }}">
 	@csrf
 
 	<div class="form-group ml-3">

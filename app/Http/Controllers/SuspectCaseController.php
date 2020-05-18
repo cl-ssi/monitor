@@ -80,8 +80,8 @@ class SuspectCaseController extends Controller
      */
     public function create()
     {
-      $sampleOrigins = SampleOrigin::orderBy('alias')->get();
-      return view('lab.suspect_cases.create',compact('sampleOrigins'));
+        $sampleOrigins = SampleOrigin::orderBy('alias')->get();
+        return view('lab.suspect_cases.create',compact('sampleOrigins'));
     }
 
     /**
@@ -91,40 +91,40 @@ class SuspectCaseController extends Controller
      */
     public function admission()
     {
-      $client = new \GuzzleHttp\Client();
+        $client = new \GuzzleHttp\Client();
 
-      // ****** Webservices openagora ******
+        // ****** Webservices openagora ******
 
-      // //obtener datos
-      // $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/41381c1a-8d27-d33b-2e4a-403d757e39cc', [
-      //     'form_params' => ['parametros' => '{"id_muestra":"42"}'],
-      //     'headers'  => [ 'ACCESSKEY' => 'AK026-88QV-000Q9MOOS-000000VH80ZT']
-      // ]);
-      // $response_json = $response->getBody()->getContents();
-      // $array = json_decode($response_json, true);
-
-
-      // //guarda información
-      // $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/a3772090-34dd-d3e3-658e-c75b6ebd211a', [
-      //     'multipart' => [
-      //         [
-      //             'name'     => 'upfile',
-      //             'contents' => fopen('C:\Users\sick_\Desktop\pdf.pdf', 'r')
-      //         ],
-      //         [
-      //             'name'     => 'parametros',
-      //             'contents' => '{"id_muestra":"43","resultado":"Positivo"}'
-      //         ]
-      //     ],
-      //     'headers'  => [ 'ACCESSKEY' => 'AK026-88QV-000Q9MOOS-000000VH80ZT']
-      // ]);
-      // $response_json = $response->getBody()->getContents();
-      // $array = json_decode($response_json, true);
-      // dd($array);
+        // //obtener datos
+        // $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/41381c1a-8d27-d33b-2e4a-403d757e39cc', [
+        //     'form_params' => ['parametros' => '{"id_muestra":"42"}'],
+        //     'headers'  => [ 'ACCESSKEY' => 'AK026-88QV-000Q9MOOS-000000VH80ZT']
+        // ]);
+        // $response_json = $response->getBody()->getContents();
+        // $array = json_decode($response_json, true);
 
 
-      $sampleOrigins = SampleOrigin::orderBy('alias')->get();
-      return view('lab.suspect_cases.admission',compact('sampleOrigins'));
+        // //guarda información
+        // $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/a3772090-34dd-d3e3-658e-c75b6ebd211a', [
+        //     'multipart' => [
+        //         [
+        //             'name'     => 'upfile',
+        //             'contents' => fopen('C:\Users\sick_\Desktop\pdf.pdf', 'r')
+        //         ],
+        //         [
+        //             'name'     => 'parametros',
+        //             'contents' => '{"id_muestra":"43","resultado":"Positivo"}'
+        //         ]
+        //     ],
+        //     'headers'  => [ 'ACCESSKEY' => 'AK026-88QV-000Q9MOOS-000000VH80ZT']
+        // ]);
+        // $response_json = $response->getBody()->getContents();
+        // $array = json_decode($response_json, true);
+        // dd($array);
+
+
+        $sampleOrigins = SampleOrigin::orderBy('alias')->get();
+        return view('lab.suspect_cases.admission',compact('sampleOrigins'));
     }
 
     /**
@@ -672,37 +672,6 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.reports.diary_lab_report', compact('total_muestras_diarias','total_muestras_x_lab_columnas','total_muestras_x_lab_filas'));
     }
 
-
-    public function case_tracing(Request $request)
-    {
-        $patients = Patient::whereHas('suspectCases', function ($q) { $q->where('pscr_sars_cov_2','positive'); })->get();
-        $patients = $patients->whereNotIn('demographic.region',
-                    [
-                    'Arica y Parinacota',
-                    'Antofagasta',
-                    'Atacama',
-                    'Coquimbo',
-                    'Valparaíso',
-                    'Región del Libertador Gral. Bernardo O’Higgins',
-                    'Región del Maule',
-                    'Región del Biobío',
-                    'Región de la Araucanía',
-                    'Región de Los Ríos',
-                    'Región de Los Lagos',
-                    'Región Aisén del Gral. Carlos Ibáñez del Campo',
-                    'Región de Magallanes y de la Antártica Chilena',
-                    'Región Metropolitana de Santiago',
-                    'Región de Ñuble']);
-
-        $max_cases = 0;
-        foreach ($patients as $patient) {
-            if($max_cases < $patient->suspectCases->count())
-                $max_cases = $patient->suspectCases->count();
-        }
-
-        return view('lab.suspect_cases.reports.case_tracing', compact('patients','max_cases'));
-    }
-
     public function estadistico_diario_covid19(Request $request)
     {
         $yesterday = Carbon::now()->subDays(1)->format('Y-m-d 21:00');
@@ -808,110 +777,6 @@ class SuspectCaseController extends Controller
         return $pdf->stream();
     }
 
-
-
-    public function case_chart(Request $request)
-    {
-        // $from = $request->has('from'). ' 00:00:00';
-        // $to   = $request->has('to'). ' 23:59:59';
-        if ($from = $request->has('from')) {
-            $from = $request->get('from') . ' 00:00:00';
-            $to = $request->get('to') . ' 23:59:59';
-        } else {
-            $from = Carbon::now()->firstOfMonth();
-            $to = Carbon::now()->lastOfMonth();
-        }
-
-        $suspectCases = SuspectCase::whereBetween('sample_at', [$from, $to])->get();
-        // ::latest('id')->get();
-        $data = array();
-        foreach ($suspectCases as $key => $suspectCase) {
-            if ($suspectCase->pscr_sars_cov_2 == 'positive' || $suspectCase->pscr_sars_cov_2 == 'pending') {
-                $data[date("d", strtotime($suspectCase->sample_at)) . "/" . date("m", strtotime($suspectCase->sample_at)) . "/" . date("Y", strtotime($suspectCase->sample_at))]['day'] = date("d", strtotime($suspectCase->sample_at));
-                $data[date("d", strtotime($suspectCase->sample_at)) . "/" . date("m", strtotime($suspectCase->sample_at)) . "/" . date("Y", strtotime($suspectCase->sample_at))]['month'] = date("m", strtotime($suspectCase->sample_at)) - 1;
-                $data[date("d", strtotime($suspectCase->sample_at)) . "/" . date("m", strtotime($suspectCase->sample_at)) . "/" . date("Y", strtotime($suspectCase->sample_at))]['year'] = date("Y", strtotime($suspectCase->sample_at));
-                $data[date("d", strtotime($suspectCase->sample_at)) . "/" . date("m", strtotime($suspectCase->sample_at)) . "/" . date("Y", strtotime($suspectCase->sample_at))]['pendientes'] = 0;
-                $data[date("d", strtotime($suspectCase->sample_at)) . "/" . date("m", strtotime($suspectCase->sample_at)) . "/" . date("Y", strtotime($suspectCase->sample_at))]['positivos'] = 0;
-            }
-            // $suspectCase->day = date("d", strtotime($suspectCase->sample_at));
-            // $suspectCase->month = date("m", strtotime($suspectCase->sample_at))-1;
-            // $suspectCase->year = date("Y", strtotime($suspectCase->sample_at));
-
-
-        }
-
-        foreach ($suspectCases as $key => $suspectCase) {
-            if ($suspectCase->pscr_sars_cov_2 == 'pending') {
-                $data[date("d", strtotime($suspectCase->sample_at)) . "/" . date("m", strtotime($suspectCase->sample_at)) . "/" . date("Y", strtotime($suspectCase->sample_at))]['pendientes'] += 1;
-            }
-            if ($suspectCase->pscr_sars_cov_2 == 'positive') {
-                $data[date("d", strtotime($suspectCase->sample_at)) . "/" . date("m", strtotime($suspectCase->sample_at)) . "/" . date("Y", strtotime($suspectCase->sample_at))]['positivos'] += 1;
-            }
-        }
-
-        return view('lab.suspect_cases.reports.case_chart', compact('suspectCases', 'data', 'from', 'to'));
-    }
-
-    public function file_report(Request $request)
-    {
-      $from = Carbon::now()->subDays(2);
-      $to = Carbon::now();
-      //dd($from, $to);
-      $files = File::whereBetween('created_at', [$from, $to])
-                   ->whereHas('suspectCase', function ($query) {
-                        $query->where('pscr_sars_cov_2', 'like', 'positive');
-                    })
-                   ->orderBy('created_at','DESC')->get();
-
-      $suspectCases = SuspectCase::whereBetween('created_at', [$from, $to])
-                                 ->where('pscr_sars_cov_2', 'like', 'positive')
-                                 ->where('laboratory_id', 2)
-                                 ->get();
-
-      return view('lab.suspect_cases.reports.file_report', compact('files','suspectCases'));
-    }
-
-
-    public function report_minsal($lab = null)
-    {
-        switch ($lab) {
-            case 'hetg':
-                $cod_lab = 1;
-                break;
-            case 'unap':
-                $cod_lab = 2;
-                break;
-            default:
-                $cod_lab = 1;
-                break;
-        }
-        $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
-        $to = date("Y-m-d 20:59:59");
-
-        $cases = SuspectCase::where('laboratory_id',$cod_lab)
-                ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
-                ->whereNull('external_laboratory')
-                ->get()
-                ->sortByDesc('pscr_sars_cov_2_at');
-        return view('lab.suspect_cases.reports.minsal', compact('cases', 'cod_lab'));
-    }
-
-    public function report_seremi($lab = null)
-    {
-        switch ($lab) {
-            case 'hetg':
-                $cod_lab = 1;
-                break;
-            case 'unap':
-                $cod_lab = 2;
-                break;
-            default:
-                $cod_lab = 1;
-                break;
-        }
-        $cases = SuspectCase::where('laboratory_id',$cod_lab)->get()->sortDesc();
-        return view('lab.suspect_cases.reports.seremi', compact('cases', 'cod_lab'));
-    }
 
     public function hetg(Request $request)
     {
