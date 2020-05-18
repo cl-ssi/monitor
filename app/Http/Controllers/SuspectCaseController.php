@@ -127,6 +127,20 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.admission',compact('sampleOrigins'));
     }
 
+
+    public function reception(Request $request, SuspectCase $suspectCase)
+    {
+        $suspectCase->laboratory_id = Auth::user()->laboratory->id;
+        $suspectCase->receptor_id = Auth::id();
+        $suspectCase->reception_at = date('Y-m-d H:i:s');
+        $suspectCase->save();
+
+        session()->flash('info', 'Se ha recepcionada la muestra: '
+            . $suspectCase->id . ' en laboratorio: '
+            . Auth::user()->laboratory->name);
+
+        return redirect()->back();
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -900,47 +914,11 @@ class SuspectCaseController extends Controller
     }
 
 
-    public function reception_inbox(Request $request)
+    public function reception_inbox()
     {
-      if ($request->get('positivos') == "on") {
-        $positivos = "positive";
-      }else{$positivos = NULL;}
+        $suspectCases = SuspectCase::whereNull('laboratory_id')->latest()->paginate(200);
 
-      if ($request->get('negativos') == "on") {
-        $negativos = "negative";
-      }else{$negativos = NULL;}
-
-      if ($request->get('pendientes') == "on") {
-        $pendientes = "pending";
-      }else{$pendientes = NULL;}
-
-      if ($request->get('rechazados') == "on") {
-        $rechazados = "rejected";
-      }else{$rechazados = NULL;}
-
-      if ($request->get('indeterminados') == "on") {
-        $indeterminados = "undetermined";
-      }else{$indeterminados = NULL;}
-
-      $text = $request->get('text');
-
-      $suspectCasesTotal = SuspectCase::where('laboratory_id',3)->get();
-
-      $suspectCases = SuspectCase::latest('id')
-                                  ->where('laboratory_id',NULL)
-                                  ->whereHas('patient', function($q) use ($text){
-                                          $q->Where('name', 'LIKE', '%'.$text.'%')
-                                            ->orWhere('fathers_family','LIKE','%'.$text.'%')
-                                            ->orWhere('mothers_family','LIKE','%'.$text.'%')
-                                            ->orWhere('run','LIKE','%'.$text.'%');
-                                  })
-                                  ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
-                                  //->get();
-                                  ->paginate(200);//->appends(request()->query());
-
-        //dd($suspectCases);
-
-        return view('lab.suspect_cases.reception_inbox', compact('suspectCases','request','suspectCasesTotal'));
+        return view('lab.suspect_cases.reception_inbox', compact('suspectCases'));
     }
 
     public function exportExcel($cod_lab = mull){

@@ -25,6 +25,9 @@ class CreateSuspectCasesTable extends Migration
 
             $table->string('symptoms')->nullable();
 
+            $table->date('reception_at')->nullable();
+            $table->unsignedBigInteger('receptor_id')->nullable();
+
             $table->datetime('result_ifd_at')->nullable();
             $table->string('result_ifd')->nullable();
             $table->string('subtype')->nullable();
@@ -63,6 +66,7 @@ class CreateSuspectCasesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+            $table->foreign('receptor_id')->references('id')->on('users');
             $table->foreign('validator_id')->references('id')->on('users');
             $table->foreign('patient_id')->references('id')->on('patients');
             $table->foreign('laboratory_id')->references('id')->on('laboratories');

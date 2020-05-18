@@ -19,6 +19,7 @@ class SuspectCase extends Model
     protected $fillable = [
         'age', 'gender', 'sample_at', 'epidemiological_week',
         'origin', 'status', 'symptoms',
+        'reception_at', 'receptor_id',
         'result_ifd_at', 'result_ifd', 'subtype',
         'pscr_sars_cov_2_at', 'pscr_sars_cov_2', 'sample_type', 'validator_id',
         'sent_isp_at', 'external_laboratory', 'paho_flu', 'epivigila',
@@ -81,7 +82,7 @@ class SuspectCase extends Model
      * @var array
      */
     protected $dates = [
-        'sample_at', 'result_ifd_at', 'pscr_sars_cov_2_at', 'sent_isp_at',
+        'sample_at', 'reception_at', 'result_ifd_at', 'pscr_sars_cov_2_at', 'sent_isp_at',
         'notification_at', 'discharged_at', 'deleted_at'
     ];
 
