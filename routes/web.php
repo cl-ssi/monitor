@@ -74,9 +74,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/reception_inbox','SuspectCaseController@reception_inbox')->name('reception_inbox')->middleware('auth');
         Route::post('/search_id','SuspectCaseController@search_id')->name('search_id')->middleware('auth');
         //Route::get('stat', 'SuspectCaseController@stat')->name('stat');
-        // Route::get('case_chart','SuspectCaseController@case_chart')->name('case_chart')->middleware('auth');
-        Route::match(['get','post'],'case_chart','SuspectCaseController@case_chart')->middleware('auth')->name('case_chart');
-        Route::match(['get','post'],'file_report','SuspectCaseController@file_report')->middleware('auth','can:File_report: viewer')->name('file_report');
+
         Route::get('download/{file}','SuspectCaseController@download')->name('download')->middleware('auth');
         Route::get('file/{file}','SuspectCaseController@fileDelete')->name('fileDelete')->middleware('auth','can:SuspectCase: file delete');
 
@@ -93,17 +91,20 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::delete('/{suspect_case}','SuspectCaseController@destroy')->name('destroy')->middleware('auth','can:SuspectCase: delete');
         Route::prefix('reports')->name('reports.')->group(function () {
             Route::get('/positives','SuspectCaseReportController@positives')->name('positives')->middleware('auth','can:Report: positives');
+            Route::get('case_tracing','SuspectCaseReportController@case_tracing')->name('case_tracing')->middleware('auth','can:Patient: tracing');
             Route::get('/gestants','SuspectCaseReportController@gestants')->name('gestants')->middleware('auth','can:Report: positives');
+            // Route::get('case_chart','SuspectCaseController@case_chart')->name('case_chart')->middleware('auth');
+            Route::match(['get','post'],'case_chart','SuspectCaseReportController@case_chart')->middleware('auth')->name('case_chart');
+            Route::match(['get','post'],'exams_with_result','SuspectCaseReportController@exams_with_result')->middleware('auth','can:Report: exams with result')->name('exams_with_result');
+            Route::get('/minsal/{lab}','SuspectCaseReportController@report_minsal')->name('minsal')->middleware('auth');
+            Route::get('/seremi/{lab}','SuspectCaseReportController@report_seremi')->name('seremi')->middleware('auth');
         });
         Route::prefix('report')->name('report.')->group(function () {
             Route::get('/','SuspectCaseReportController@positives')->name('index')->middleware('auth','can:Report: other');
             Route::get('historical_report','SuspectCaseController@historical_report')->name('historical_report')->middleware('auth','can:Report: historical');
-            Route::get('/minsal/{lab}','SuspectCaseController@report_minsal')->name('minsal')->middleware('auth');
-            Route::get('/seremi/{lab}','SuspectCaseController@report_seremi')->name('seremi')->middleware('auth');
             Route::get('/minsal-export/{lab}','SuspectCaseController@exportMinsalExcel')->name('exportMinsal')->middleware('auth');
             Route::get('/seremi-export/{lab}','SuspectCaseController@exportSeremiExcel')->name('exportSeremi')->middleware('auth');
             Route::get('diary_lab_report','SuspectCaseController@diary_lab_report')->name('diary_lab_report')->middleware('auth');
-            Route::get('case_tracing','SuspectCaseController@case_tracing')->name('case_tracing')->middleware('auth','can:Report: Seguimiento Casos');
             Route::get('estadistico_diario_covid19','SuspectCaseController@estadistico_diario_covid19')->name('estadistico_diario_covid19')->middleware('auth');
         });
     });

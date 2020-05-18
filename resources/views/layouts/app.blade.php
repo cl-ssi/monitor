@@ -79,8 +79,8 @@
                                 Casos
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                @can('Report: Seguimiento Casos')
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.case_tracing') }}">Seguimiento de casos</a>
+                                @can('Patient: tracing')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing') }}">Seguimiento de casos</a>
                                 <div class="dropdown-divider"></div>
                                 @endcan
 
@@ -134,7 +134,7 @@
 
 
 
-                        @canany(['Report: positives','Report: full','Report: historical'])
+                        @canany(['Report: positives','Report: other','Report: historical'])
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-clipboard"></i>
@@ -151,6 +151,10 @@
 
                                 @can('Report: historical')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.historical_report') }}">Reporte Histórico</a>
+                                @endcan
+
+                                @can('Report: exams with result')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.exams_with_result') }}">Exámenes con resultados</a>
                                 @endcan
 
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.diary_lab_report') }}">Cantidad de muestras y exámenes</a>
