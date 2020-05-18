@@ -84,10 +84,6 @@
                                 <div class="dropdown-divider"></div>
                                 @endcan
 
-                                @can('SuspectCase: reception')
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reception_inbox') }}?text=&pendientes=on">Bandeja de Recepción</a>
-                                @endcan
-
                                 @can('SuspectCase: list')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.hetg') }}?text=&pendientes=on">Laboratorio HETG</a>
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.unap') }}?text=&pendientes=on">Laboratorio UNAP</a>
@@ -96,9 +92,14 @@
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.index') }}?text=&pendientes=on">Todos los exámenes</a>
                                 @endcan
 
-                                @can('SuspectCase: admission')
                                 <div class="dropdown-divider"></div>
+
+                                @can('SuspectCase: admission')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.admission') }}">Agregar nuevo caso</a>
+                                @endcan
+
+                                @can('SuspectCase: reception')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reception_inbox') }}">Recepcionar muestras</a>
                                 @endcan
 
                             </div>
