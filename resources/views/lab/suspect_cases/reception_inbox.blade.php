@@ -25,7 +25,11 @@
         @include('lab.suspect_cases.partials.search_id')
     </div>
     <div class="col-5">
+        @if(Auth::user()->laboratory)
         <h3>Tu Laboraotrio: {{ Auth::user()->laboratory->name }}</h3>
+        @else
+        <h3 class="text-danger">Usuario no tiene laboratorio asignado</h3>
+        @endif
     </div>
 </div>
 
@@ -51,13 +55,15 @@
         <tr class="row_{{$case->covid19}} {{ ($case->pscr_sars_cov_2 == 'positive')?'table-danger':''}}">
             <td class="text-center">{{ $case->id }}</td>
             <td>
-                @can('SuspectCase: reception')
-                    <form method="POST" class="form-inline" action="{{ route('lab.suspect_cases.reception', $case) }}">
-                        @csrf
-                        @method('POST')
-                        <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-inbox"></i></button>
-                    </form>
-                @endcan
+                @if(Auth::user()->laboratory)
+                    @can('SuspectCase: reception')
+                        <form method="POST" class="form-inline" action="{{ route('lab.suspect_cases.reception', $case) }}">
+                            @csrf
+                            @method('POST')
+                            <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-inbox"></i></button>
+                        </form>
+                    @endcan
+                @endif
             </td>
             <td nowrap class="small">@date($case->sample_at)</td>
             <td>{{ $case->origin }}</td>
