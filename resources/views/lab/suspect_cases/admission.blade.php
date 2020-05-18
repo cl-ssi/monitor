@@ -10,7 +10,7 @@
     @method('POST')
     <div class="form-row">
         <fieldset class="form-group col-10 col-md-2">
-            <label for="for_run">Run SIN DIGITO VERIFICADOR</label>
+            <label for="for_run">Run SIN DIGITO VERI.</label>
             <input type="hidden" class="form-control" id="for_id" name="id">
             <input type="number" class="form-control" id="for_run" name="run">
         </fieldset>
