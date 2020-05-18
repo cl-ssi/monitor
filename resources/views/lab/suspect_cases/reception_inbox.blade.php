@@ -99,7 +99,7 @@
     </tbody>
 </table>
 
-{{ $suspectCases->appends(request()->query())->links() }}
+{{ $suspectCases->links() }}
 
 @endsection
 
