@@ -58,7 +58,7 @@ class SuspectCaseController extends Controller
 
       $text = $request->get('text');
 
-      $suspectCasesTotal = SuspectCase::latest('id')->get();
+      $suspectCasesTotal = SuspectCase::whereNotNull('laboratory_id')->latest('id')->get();
 
       $suspectCases = SuspectCase::latest('id')
                                   ->whereHas('patient', function($q) use ($text){
@@ -67,6 +67,7 @@ class SuspectCaseController extends Controller
                                             ->orWhere('mothers_family','LIKE','%'.$text.'%')
                                             ->orWhere('run','LIKE','%'.$text.'%');
                                   })
+                                  ->whereNotNull('laboratory_id')
                                   ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
                                   ->paginate(200);//->appends(request()->query());
 
