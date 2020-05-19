@@ -183,9 +183,9 @@
         </fieldset>
 
         <fieldset class="form-group col-md-2">
-            <label for="for_epivigila">Epivigila</label>
+            <label for="for_epivigila">Epivigila *</label>
             <input type="number" class="form-control" id="for_epivigila"
-                name="epivigila">
+                name="epivigila" required>
         </fieldset>
 
 
