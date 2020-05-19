@@ -76,6 +76,13 @@ class SuspectCase extends Model
         }
     }
 
+    public function scopeSearch($query, $search)
+    {
+        if ($search) {
+            $query->where('id','LIKE', '%'.$search.'%');
+        }
+    }
+
     /**
      * The attributes that should be mutated to dates.
      *
