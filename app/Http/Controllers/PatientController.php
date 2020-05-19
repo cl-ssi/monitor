@@ -171,7 +171,7 @@ class PatientController extends Controller
 
     public function getPatient($rut)
     {
-        return Patient::where('run',$rut)->first();
+        return Patient::where('run',$rut)->orWhere('other_identification',$rut)->first();
     }
 
     public function georeferencing()
