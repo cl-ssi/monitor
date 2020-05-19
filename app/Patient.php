@@ -68,6 +68,17 @@ class Patient extends Model //Authenticatable
         return $this->hasMany('App\SanitaryResidence\VitalSign');
     }
 
+    public function scopeSearch($query, $search)
+    {
+        if ($search) {
+            $query->where('name','LIKE', '%'.$search.'%')
+                ->orWhere('fathers_family','LIKE', '%'.$search.'%')
+                ->orWhere('mothers_family','LIKE', '%'.$search.'%')
+                ->orWhere('run','LIKE', '%'.$search.'%')
+                ->orWhere('other_identification','LIKE', '%'.$search.'%');
+        }
+    }
+
     function getFullNameAttribute(){
         return mb_strtoupper($this->name . ' ' . $this->fathers_family . ' ' . $this->mothers_family);
     }

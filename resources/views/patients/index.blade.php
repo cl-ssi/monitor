@@ -14,8 +14,18 @@
         </a>
     </div>
     @endcan
-    <div class="col-7 col-sm-4" role="alert">
-        <input class="form-control" id="inputSearch" type="text" placeholder="Buscar">
+    <div class="col-7 col-md-6" role="alert">
+        <form method="GET" class="form-horizontal" action="{{ route('patients.index') }}">
+
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" id="for_search"
+                    placeholder="Nombre o Apellido o Rut" >
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit" id="button-addon">Buscar</button>
+                </div>
+            </div>
+
+        </form>
     </div>
 </div>
 
@@ -64,6 +74,8 @@
     </tbody>
 </table>
 
+{{ $patients->links() }}
+
 @endsection
 
 @section('custom_js')
@@ -71,6 +83,8 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
+    $("main").removeClass("container");
+
     $("#inputSearch").on("keyup", function() {
         var value = $(this).val().toLowerCase();
         $("#tablePatients tr").filter(function() {

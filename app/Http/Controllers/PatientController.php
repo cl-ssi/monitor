@@ -16,9 +16,13 @@ class PatientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $patients = Patient::with('demographic')->with('suspectCases')->orderBy('name')->get();
+        $patients = Patient::search($request->input('search'))
+                        ->with('demographic')
+                        ->with('suspectCases')
+                        ->orderBy('name')
+                        ->paginate(250);
         return view('patients.index', compact('patients'));
     }
 
@@ -136,6 +140,34 @@ class PatientController extends Controller
 
         return redirect()->route('patients.index');
     }
+
+    public function positives(Request $request)
+    {
+        $patients = Patient::whereHas('suspectCases', function ($q) {
+            $q->where('pscr_sars_cov_2','positive');
+        })->with('demographic')->get();
+
+        $patients = $patients->whereNotIn('demographic.region',
+                    [
+                    'Arica y Parinacota',
+                    'Antofagasta',
+                    'Atacama',
+                    'Coquimbo',
+                    'Valparaíso',
+                    'Región del Libertador Gral. Bernardo O’Higgins',
+                    'Región del Maule',
+                    'Región del Biobío',
+                    'Región de la Araucanía',
+                    'Región de Los Ríos',
+                    'Región de Los Lagos',
+                    'Región Aisén del Gral. Carlos Ibáñez del Campo',
+                    'Región de Magallanes y de la Antártica Chilena',
+                    'Región Metropolitana de Santiago',
+                    'Región de Ñuble']);
+
+        return view('patients.positives', compact('patients'));
+    }
+
 
     public function getPatient($rut)
     {
