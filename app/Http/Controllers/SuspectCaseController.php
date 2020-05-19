@@ -92,36 +92,60 @@ class SuspectCaseController extends Controller
      */
     public function admission()
     {
-        $client = new \GuzzleHttp\Client();
+      $client = new \GuzzleHttp\Client();
 
-        // ****** Webservices openagora ******
+      // ****** Webservices openagora ******
 
-        // //obtener datos
-        // $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/41381c1a-8d27-d33b-2e4a-403d757e39cc', [
-        //     'form_params' => ['parametros' => '{"id_muestra":"42"}'],
-        //     'headers'  => [ 'ACCESSKEY' => 'AK026-88QV-000Q9MOOS-000000VH80ZT']
-        // ]);
-        // $response_json = $response->getBody()->getContents();
-        // $array = json_decode($response_json, true);
+      // //obtener datos
+      // $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/41381c1a-8d27-d33b-2e4a-403d757e39cc', [
+      //     'form_params' => ['parametros' => '{"id_muestra":"42"}'],
+      //     'headers'  => [ 'ACCESSKEY' => 'AK026-88QV-000QAKZQA-000000AR5SLP']
+      // ]);
+      // $response_json = $response->getBody()->getContents();
+      // $array = json_decode($response_json, true);
+      // dd($array);
 
 
-        // //guarda información
-        // $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/a3772090-34dd-d3e3-658e-c75b6ebd211a', [
-        //     'multipart' => [
-        //         [
-        //             'name'     => 'upfile',
-        //             'contents' => fopen('C:\Users\sick_\Desktop\pdf.pdf', 'r')
-        //         ],
-        //         [
-        //             'name'     => 'parametros',
-        //             'contents' => '{"id_muestra":"43","resultado":"Positivo"}'
-        //         ]
-        //     ],
-        //     'headers'  => [ 'ACCESSKEY' => 'AK026-88QV-000Q9MOOS-000000VH80ZT']
-        // ]);
-        // $response_json = $response->getBody()->getContents();
-        // $array = json_decode($response_json, true);
-        // dd($array);
+      // //guarda información
+      // $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/a3772090-34dd-d3e3-658e-c75b6ebd211a', [
+      //     'multipart' => [
+      //         [
+      //             'name'     => 'upfile',
+      //             'contents' => fopen('C:\Users\sick_\Desktop\pdf.pdf', 'r')
+      //         ],
+      //         [
+      //             'name'     => 'parametros',
+      //             'contents' => '{"id_muestra":"43","resultado":"Positivo"}'
+      //         ]
+      //     ],
+      //     'headers'  => [ 'ACCESSKEY' => 'AK026-88QV-000QAJ3JQ-0000004IX2NE']
+      // ]);
+      // $response_json = $response->getBody()->getContents();
+      // $array = json_decode($response_json, true);
+      // dd($array);
+
+    //"id_laboratorio":"código del laboratorio. Ver maestro de laboratorios",
+    // "cod_deis":"Código DEIS de la institución relacionada",
+    // "paciente_comuna":"Paciente, id de la comuna donde vive. Ver maestro de comunas",
+    // "paciente_tipodoc":"Paciente, tipo de documento de identificació. Ver maestro tipos de documentos",
+    // "paciente_ext_paisorigen":"Paciente, país de origen. Sólo para extranjeros. Ver maestro de paises",
+    // "paciente_prevision":"Paciente, previsión. Ver maestro de previsión.",
+    // "tecnica_muestra":"Muestra, técnica de toma de muestra. Ver maestro técnica toma de muestra",
+    // "tipo_muestra":"Muestra, tipo de muestra. Campo libre, con valores sugeridos. Ver maestro de tipo de muestra"}
+
+
+    //DESCOMENTA ESTO!
+    // $array = ['[{"codigo_muestra_cliente":105,"rut_responsable":"10000227-2","cod_deis":108204,"rut_medico":"1839330-1","paciente_run":10729604,"paciente_dv":2,"paciente_nombres":"Pablo","paciente_ap_mat":"Boggiano","paciente_ap_pat":"Silva","paciente_fecha_nac":"30-08-1972","paciente_comuna":11201,"paciente_direccion":"dirección","paciente_telefono":"teléfono","paciente_tipodoc":"RUN","paciente_ext_paisorigen":"","paciente_pasaporte":"","paciente_sexo":"M","paciente_prevision":"ISAPRE","fecha_muestra":"06-05-2020","tecnica_muestra":"RT-PCR","tipo_muestra":"AAAA"}]'];
+    // // dd($array);
+    //
+    // $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/328302d8-0ba3-5611-24fa-a7a2f146241f', [
+    //       // 'form_params' => $array,
+    //       // 'body' => $array,
+    //       'json' => $array,
+    //       'headers'  => [ 'ACCESSKEY' => 'AK026-88QV-000QAKZQA-000000AR5SLP']
+    // ]);
+    //
+    // dd($response->getBody()->getContents());
 
 
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
