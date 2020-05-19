@@ -54,6 +54,7 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
     Route::get('get/{rut?}','PatientController@getPatient')->name('get')->middleware('auth');
     Route::get('georeferencing','PatientController@georeferencing')->name('georeferencing')->middleware('can:Patient: georeferencing');
     Route::get('/', 'PatientController@index')->name('index')->middleware('can:Patient: list');
+    Route::get('positives', 'PatientController@positives')->name('positives')->middleware('can:Patient: list');
     Route::get('/create', 'PatientController@create')->name('create')->middleware('can:Patient: create');
     Route::post('/', 'PatientController@store')->name('store')->middleware('can:Patient: create');
     Route::get('/{patient}/edit', 'PatientController@edit')->name('edit')->middleware('can:Patient: edit');

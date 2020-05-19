@@ -160,7 +160,8 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-     // $("main").removeClass("container");
+    // $("main").removeClass("container");
+
     // $("#inputSearch").on("keyup", function() {
     //     var value = $(this).val().toLowerCase();
     //     $("#tableCases tr").filter(function() {
