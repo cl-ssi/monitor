@@ -742,6 +742,7 @@ class SuspectCaseController extends Controller
         $array = array();
         $cases = SuspectCase::whereBetween('created_at',[$yesterday,$now])
                             ->where('external_laboratory',NULL)
+                            ->whereNotNull('laboratory_id')
                             ->get();
         //dd($cases);
         foreach ($cases as $key => $case) {
