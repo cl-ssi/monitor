@@ -737,11 +737,12 @@ class SuspectCaseController extends Controller
     {
         $yesterday = Carbon::now()->subDays(1)->format('Y-m-d 21:00');
         $now = Carbon::now()->format('Y-m-d 21:00');
-        //dd($yesterday, $now);
+        dd($yesterday, $now);
 
         $array = array();
         $cases = SuspectCase::whereBetween('created_at',[$yesterday,$now])
                             ->where('external_laboratory',NULL)
+                            ->whereNotNull('laboratory_id')
                             ->get();
         //dd($cases);
         foreach ($cases as $key => $case) {
