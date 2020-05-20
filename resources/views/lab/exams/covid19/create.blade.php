@@ -506,16 +506,15 @@ jQuery(document).ready(function($){
     $('#btn_fonasa').click(function() {
         var run = $("#for_run").val();
         var dv  = $("#for_dv").val();
-        $.get('{{ route('webservices.fonasa')}}/?run='+run+'&dv='+dv, function(data) {
+        $.get('{{ route('webservices.fonasa') }}/?run='+run+'&dv='+dv, function(data) {
+            console.log($data);
             if(data){
-                document.getElementById("for_run").value = data.run;
                 document.getElementById("for_name").value = data.name;
                 document.getElementById("for_fathers_family").value = data.fathers_family;
                 document.getElementById("for_mothers_family").value = data.mothers_family;
                 document.getElementById("for_gender").value = data.gender;
                 document.getElementById("for_birthday").value = data.birthday;
             } else {
-                document.getElementById("for_run").value = "";
                 document.getElementById("for_name").value = "";
                 document.getElementById("for_fathers_family").value = "";
                 document.getElementById("for_mothers_family").value = "";
