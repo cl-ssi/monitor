@@ -22,7 +22,7 @@
 
         <fieldset class="form-group col-1 col-md-1">
             <label for="">&nbsp;</label>
-            <button type="button" class="btn btn-outline-success" disabled>Fonasa&nbsp;</button>
+            <button type="button" id="btn_fonasa" class="btn btn-outline-success">Fonasa&nbsp;</button>
         </fieldset>
 
         <fieldset class="form-group col-1 col-md-1">
@@ -493,5 +493,37 @@
 @endsection
 
 @section('custom_js')
+<script src='{{asset("js/jquery.rut.chileno.js")}}'></script>
 
+<script type="text/javascript">
+jQuery(document).ready(function($){
+    //obtiene digito verificador
+    $('input[name=run]').keyup(function(e) {
+        var str = $("#for_run").val();
+        $('#for_dv').val($.rut.dv(str));
+    });
+
+    $('#btn_fonasa').click(function() {
+        var run = $("#for_run").val();
+        var dv  = $("#for_dv").val();
+        $.get('{{ route('webservices.fonasa')}}/?run='+run+'&dv='+dv, function(data) {
+            if(data){
+                document.getElementById("for_run").value = data.run;
+                document.getElementById("for_name").value = data.name;
+                document.getElementById("for_fathers_family").value = data.fathers_family;
+                document.getElementById("for_mothers_family").value = data.mothers_family;
+                document.getElementById("for_gender").value = data.gender;
+                document.getElementById("for_birthday").value = data.birthday;
+            } else {
+                document.getElementById("for_run").value = "";
+                document.getElementById("for_name").value = "";
+                document.getElementById("for_fathers_family").value = "";
+                document.getElementById("for_mothers_family").value = "";
+                document.getElementById("for_gender").value = "";
+                document.getElementById("for_birthday").value = "";
+            }
+        });
+    });
+});
+</script>
 @endsection
