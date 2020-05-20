@@ -11,7 +11,7 @@ class WebserviceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function fonasa()
+    public function fonasa(Request $request)
     {
         $rut = $request->input('run');
         $dv  = $request->input('dv');
