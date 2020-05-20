@@ -13,8 +13,8 @@ class TestController extends Controller
      */
     public function fonasa()
     {
-        $rut = 15287582;
-        $dv  = 7;
+        $rut = 21097570;
+        $dv  = 5;
         $wsdl = asset('ws/fonasa/CertificadorPrevisionalSoap.wsdl');
 
         $client = new \SoapClient($wsdl,array('trace'=>TRUE));
@@ -35,8 +35,17 @@ class TestController extends Controller
         //$client->soap_defencoding = 'UTF-8';
         $result = $client->getCertificadoPrevisional($parameters);
 
+	$obj_user = $result->getCertificadoPrevisionalResult->beneficiarioTO;
+	$user['run'] = $obj_user->rutbenef;
+	$user['dv'] = $obj_user->dgvbenef;
+	$user['name'] = $obj_user->nombres;
+	$user['fathers_family'] = $obj_user->apell1;
+	$user['mothers_family'] = $obj_user->apell2;
+	$user['birthday'] = $obj_user->fechaNacimiento;
+	$user['gender'] = $obj_user->generoDes;
+
         echo '<pre>';
-        print_r($result);
+        print_r(json_encode($user,JSON_UNESCAPED_UNICODE));
 
         //var_dump($result); //cuando trae false no conecta :c, del cotrario si c:
         // if ($result === false){
