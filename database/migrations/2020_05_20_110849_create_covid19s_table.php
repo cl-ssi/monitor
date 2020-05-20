@@ -17,7 +17,7 @@ class CreateCovid19sTable extends Migration
             $table->id();
 
             $table->integer('run')->nullable();
-            $table->char('dv')->nullable();
+            $table->char('dv',1)->nullable();
 
             $table->string('other_identification')->nullable();
 
