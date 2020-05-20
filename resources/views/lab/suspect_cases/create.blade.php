@@ -279,53 +279,53 @@ jQuery(document).ready(function($){
         $('#for_dv').val($.rut.dv(str));
     });
 
-$('input[name=run]').change(function() {
-    var str = $("#for_run").val();
-    $.get('{{ route('patients.get')}}/'+str, function(data) {
-        if(data){
-            document.getElementById("for_id").value = data.id;
-            document.getElementById("for_other_identification").value = data.other_identification;
-            document.getElementById("for_gender").value = data.gender;
-            document.getElementById("for_birthday").value = data.birthday;
-            document.getElementById("for_name").value = data.name;
-            document.getElementById("for_fathers_family").value = data.fathers_family;
-            document.getElementById("for_mothers_family").value = data.mothers_family;
-            document.getElementById("for_status").value = data.status;
-        } else {
-            document.getElementById("for_id").value = "";
-            document.getElementById("for_other_identification").value = "";
-            document.getElementById("for_gender").value = "";
-            document.getElementById("for_birthday").value = "";
-            document.getElementById("for_name").value = "";
-            document.getElementById("for_fathers_family").value = "";
-            document.getElementById("for_mothers_family").value = "";
-        }
+    $('input[name=run]').change(function() {
+        var str = $("#for_run").val();
+        $.get('{{ route('patients.get')}}/'+str, function(data) {
+            if(data){
+                document.getElementById("for_id").value = data.id;
+                document.getElementById("for_other_identification").value = data.other_identification;
+                document.getElementById("for_gender").value = data.gender;
+                document.getElementById("for_birthday").value = data.birthday;
+                document.getElementById("for_name").value = data.name;
+                document.getElementById("for_fathers_family").value = data.fathers_family;
+                document.getElementById("for_mothers_family").value = data.mothers_family;
+                document.getElementById("for_status").value = data.status;
+            } else {
+                document.getElementById("for_id").value = "";
+                document.getElementById("for_other_identification").value = "";
+                document.getElementById("for_gender").value = "";
+                document.getElementById("for_birthday").value = "";
+                document.getElementById("for_name").value = "";
+                document.getElementById("for_fathers_family").value = "";
+                document.getElementById("for_mothers_family").value = "";
+            }
+        });
     });
-});
 
-$('input[name=other_identification]').change(function() {
-    var str = $("#for_other_identification").val();
-    $.get('{{ route('patients.get')}}/'+str, function(data) {
-        if(data){
-            document.getElementById("for_id").value = data.id;
-            // document.getElementById("for_other_identification").value = data.other_identification;
-            document.getElementById("for_gender").value = data.gender;
-            document.getElementById("for_birthday").value = data.birthday;
-            document.getElementById("for_name").value = data.name;
-            document.getElementById("for_fathers_family").value = data.fathers_family;
-            document.getElementById("for_mothers_family").value = data.mothers_family;
-            document.getElementById("for_status").value = data.status;
-        } else {
-            document.getElementById("for_id").value = "";
-            // document.getElementById("for_other_identification").value = "";
-            document.getElementById("for_gender").value = "";
-            document.getElementById("for_birthday").value = "";
-            document.getElementById("for_name").value = "";
-            document.getElementById("for_fathers_family").value = "";
-            document.getElementById("for_mothers_family").value = "";
-        }
+    $('input[name=other_identification]').change(function() {
+        var str = $("#for_other_identification").val();
+        $.get('{{ route('patients.get')}}/'+str, function(data) {
+            if(data){
+                document.getElementById("for_id").value = data.id;
+                // document.getElementById("for_other_identification").value = data.other_identification;
+                document.getElementById("for_gender").value = data.gender;
+                document.getElementById("for_birthday").value = data.birthday;
+                document.getElementById("for_name").value = data.name;
+                document.getElementById("for_fathers_family").value = data.fathers_family;
+                document.getElementById("for_mothers_family").value = data.mothers_family;
+                document.getElementById("for_status").value = data.status;
+            } else {
+                document.getElementById("for_id").value = "";
+                // document.getElementById("for_other_identification").value = "";
+                document.getElementById("for_gender").value = "";
+                document.getElementById("for_birthday").value = "";
+                document.getElementById("for_name").value = "";
+                document.getElementById("for_fathers_family").value = "";
+                document.getElementById("for_mothers_family").value = "";
+            }
+        });
     });
-});
 
 });
 
