@@ -4,17 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class TestController extends Controller
+class WebserviceController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function fonasa()
+    public function fonasa(Request $request)
     {
-        $rut = 21097570;
-        $dv  = 5;
+        $rut = $request->input('run');
+        $dv  = $request->input('dv');
+
         $wsdl = asset('ws/fonasa/CertificadorPrevisionalSoap.wsdl');
 
         $client = new \SoapClient($wsdl,array('trace'=>TRUE));
@@ -36,7 +37,7 @@ class TestController extends Controller
 
         if ($result === false) {
             /* No se conecta con el WS */
-            $error = "No se pudo conectar a FONASA";
+            $error = array("error" => "No se pudo conectar a FONASA");
         }
         else {
             /* Si se conectó al WS */
@@ -65,12 +66,13 @@ class TestController extends Controller
             }
             else {
                 /* Error */
-                $error = $result->getCertificadoPrevisionalResult->replyTO->errorM;
+                $error = array("error" => $result->getCertificadoPrevisionalResult->replyTO->errorM);
             }
         }
 
-        echo '<pre>';
-        print_r($result);
-        print_r(json_encode($user,JSON_UNESCAPED_UNICODE));
+        return json_encode(($user)?$user:$error);
+        // echo '<pre>';
+        // print_r($result);
+        // print_r(json_encode($user));
     }
 }
