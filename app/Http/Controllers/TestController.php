@@ -15,7 +15,10 @@ class TestController extends Controller
     {
         $rut = 15287582;
         $dv  = 7;
-        $client = new \SoapClient(asset('ws/fonasa/CertificadorPrevisionalSoap.wsdl'),array('trace'=>TRUE));
+	$wsdl = asset('ws/fonasa/CertificadorPrevisionalSoap.wsdl');
+
+        $client = new \SoapClient($wsdl,array('trace'=>TRUE));
+	//$client->SomeFunction(
         $parametros = array("query" =>
                                 array("queryTO" => array("tipoEmisor"  => 3,"tipoUsuario" => 2),
                                 "entidad" => env('FONASA_ENTIDAD'),
@@ -24,9 +27,15 @@ class TestController extends Controller
                                 "dgvBeneficiario" => $dv,
                                 "canal" =>3)
                             );
+	$functions = $client->__getFunctions();
+	echo '<pre>';
+	var_dump($functions);
+	
 
         $client->soap_defencoding = 'UTF-8';
-        $result = $client->call("getCertificadoPrevisional", $parametros, "http://ws.fonasa.cl:8080/Certificados/Previsional");
+	$result = $client->getCertificadoPrevisional($parametros);
+	//$result = $client->__soapCall("getCertificadoPrevisional", $parametros);
+       	//"http://ws.fonasa.cl:8080/Certificados/Previsional");
         var_dump($result); //cuando trae false no conecta :c, del cotrario si c:
         // if ($result === false){
         //     $result = array("status" => "noContetar");
