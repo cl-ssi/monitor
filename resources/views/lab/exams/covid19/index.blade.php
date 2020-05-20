@@ -25,7 +25,7 @@
         <tr>
             <td>
                 <a href="{{ route('lab.exams.covid19.edit', $covid19) }}">
-                    {{ $covid19->identifier }}
+                    {{ $covid19->run }}
                 </a>
             </td>
             <td>{{ $covid19->name }}</td>

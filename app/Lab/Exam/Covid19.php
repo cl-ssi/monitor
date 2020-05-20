@@ -15,8 +15,12 @@ class Covid19 extends Model
      * @var array
      */
     protected $fillable = [
-        'identifier','name','fathers_family','mothers_family',
-        'origin','sample_at',
+        'run','dv','other_identification',
+        'name','fathers_family','mothers_family',
+        'gender', 'birthday',
+        'telephone','email','address','commune',
+        'origin','origin_commune',
+        'sample_type', 'sample_at',
         'reception_at', 'result_at', 'result',
         'user_id','recpetor_id','validator_id'
     ];
@@ -26,6 +30,6 @@ class Covid19 extends Model
      *
      * @var array
      */
-    protected $dates = ['sample_at','reception_at','result_at'];
+    protected $dates = ['birthday','sample_at','reception_at','result_at'];
 
 }
