@@ -34,6 +34,10 @@ class CreateCovid19sTable extends Migration
 
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('receptor_id')->references('id')->on('users');
+            $table->foreign('validator_id')->references('id')->on('users');
         });
     }
 
