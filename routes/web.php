@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 Route::get('test/fonasa', 'TestController@fonasa');
 
-Route::prefix('ws')->name('ws.')->group(function () {
+Route::prefix('webservices')->name('webservices.')->group(function () {
     Route::get('fonasa', 'WebserviceController@fonasa')->name('fonasa');
 });
 

@@ -11,7 +11,7 @@ class WebserviceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function fonasa(Request $request)
+    public function fonasa()
     {
         $rut = $request->input('run');
         $dv  = $request->input('dv');
@@ -70,7 +70,7 @@ class WebserviceController extends Controller
             }
         }
 
-        return json_encode(($user)?$user:$error);
+        return ($user) ? json_encode($user) : json_encode($error);
         // echo '<pre>';
         // print_r($result);
         // print_r(json_encode($user));
