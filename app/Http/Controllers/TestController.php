@@ -36,7 +36,7 @@ class TestController extends Controller
         $result = $client->getCertificadoPrevisional($parameters);
 
         echo '<pre>';
-        print_r($parameters);
+        print_r($result);
 
         //var_dump($result); //cuando trae false no conecta :c, del cotrario si c:
         // if ($result === false){
