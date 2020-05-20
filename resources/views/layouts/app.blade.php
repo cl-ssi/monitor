@@ -58,6 +58,7 @@
                                 Home
                             </a>
                         </li>
+
                         @can('Patient: list')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('patients.index') }}">
@@ -66,6 +67,21 @@
                             </a>
                         </li>
                         @endcan
+
+                        @can('Lab')
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-vial"></i>
+                                Lab
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                                <a class="dropdown-item" href="{{ route('lab.exams.covid19.index') }}">Covid19</a>
+
+                            </div>
+                        </li>
+                        @endcan
+
 
                         @canany(['SuspectCase: list','SuspectCase: admission'])
                         <!-- <li class="nav-item">

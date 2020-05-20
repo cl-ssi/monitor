@@ -68,6 +68,16 @@ Route::prefix('lab')->name('lab.')->group(function () {
     Route::get('login/{access_token}','SuspectCaseController@login')->name('login');
     Route::get('results','SuspectCaseController@result')->name('result');
     Route::get('print/{suspect_case}','SuspectCaseController@print')->middleware('auth')->name('print');
+    Route::prefix('exams')->name('exams.')->middleware('auth')->group(function () {
+        Route::prefix('covid19')->name('covid19.')->group(function () {
+            Route::get('/', 'Covid19Controller@index')->name('index');
+            Route::get('/create', 'Covid19Controller@create')->name('create');
+            Route::post('/', 'Covid19Controller@store')->name('store');
+            Route::get('/{covid19}/edit', 'Covid19Controller@edit')->name('edit');
+            Route::put('/{covid19}', 'Covid19Controller@update')->name('update');
+            Route::delete('/{covid19}', 'Covid19Controller@destroy')->name('destroy');
+        });
+    });
     Route::prefix('suspect_cases')->name('suspect_cases.')->group(function () {
         Route::get('/hetg','SuspectCaseController@hetg')->name('hetg')->middleware('auth');
         Route::get('/unap','SuspectCaseController@unap')->name('unap')->middleware('auth');
