@@ -45,9 +45,9 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($exams->reverse() as $key => $covid19)
+        @foreach($exams->reverse() as $covid19)
         <tr>
-            <td>{{ ++$key }}</td>
+            <td>{{ $covid19->id }}</td>
             <td class="text-right" nowrap>
                 <a href="{{ route('lab.exams.covid19.edit', $covid19) }}">
                     {{ $covid19->identifier }}
@@ -59,7 +59,17 @@
             <td nowrap>{{ $covid19->origin }}</td>
             <td nowrap class="small">{{ $covid19->sample_at }}</td>
             <td nowrap class="small">{{ $covid19->result_at }}</td>
-            <td nowrap>{{ $covid19->result }}</td>
+            <td nowrap>
+                @if($covid19->file)
+                    <a href="{{ route('lab.exams.covid19.download', $covid19->file) }}" target="_blank">
+                @endif
+
+                {{ $covid19->result }}
+
+                @if($covid19->file)
+                    </a>
+                @endif
+            </td>
         </tr>
         @endforeach
     </tbody>

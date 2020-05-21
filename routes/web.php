@@ -81,7 +81,10 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::post('/', 'Covid19Controller@store')->name('store');
             Route::get('/{covid19}/edit', 'Covid19Controller@edit')->name('edit');
             Route::put('/{covid19}', 'Covid19Controller@update')->name('update');
+            Route::put('/{covid19}/reception', 'Covid19Controller@reception')->name('reception');
+            Route::put('/{covid19}/addresult', 'Covid19Controller@addresult')->name('addresult');
             Route::delete('/{covid19}', 'Covid19Controller@destroy')->name('destroy');
+            Route::get('/download/{storage}/{file?}', 'Covid19Controller@download')->name('download');
         });
     });
     Route::prefix('suspect_cases')->name('suspect_cases.')->group(function () {
