@@ -25,6 +25,27 @@ class Covid19 extends Model
         'user_id','recpetor_id','validator_id'
     ];
 
+    function getIdentifierAttribute() {
+        if(isset($this->run) and isset($this->dv)) {
+            return $this->run . '-' . $this->dv;
+        }
+        else  {
+            return 'E:'.$this->other_identification;
+        }
+    }
+
+    public function scopeSearch($query, $search)
+    {
+        if ($search) {
+            $query->where('id',$search)
+                ->orWhere('name','LIKE', '%'.$search.'%')
+                ->orWhere('fathers_family','LIKE', '%'.$search.'%')
+                ->orWhere('mothers_family','LIKE', '%'.$search.'%')
+                ->orWhere('run','LIKE', '%'.$search.'%')
+                ->orWhere('other_identification','LIKE', '%'.$search.'%');
+        }
+    }
+
     /**
      * The attributes that should be mutated to dates.
      *
