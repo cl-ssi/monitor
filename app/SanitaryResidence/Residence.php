@@ -12,7 +12,8 @@ class Residence extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'address','telephone'
+        'name', 'address','telephone',
+        'width','height'
     ];
 
     public function rooms() {
