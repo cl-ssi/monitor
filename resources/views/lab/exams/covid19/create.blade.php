@@ -17,7 +17,7 @@
 
         <fieldset class="form-group col-md-1">
             <label for="for_dv">Digito</label>
-            <input type="text" class="form-control" name="dv" id="for_dv">
+            <input type="text" class="form-control" name="dv" id="for_dv" readonly>
         </fieldset>
 
         <fieldset class="form-group col-1 col-md-1">
@@ -505,10 +505,12 @@ jQuery(document).ready(function($){
 
     $('#btn_fonasa').click(function() {
 	    var btn = $(this);
-	btn.prop('disabled',true);
+	    btn.prop('disabled',true);
+
         var run = $("#for_run").val();
         var dv  = $("#for_dv").val();
-	var url = '{{route('webservices.fonasa')}}/?run='+run+'&dv='+dv;
+        var url = '{{route('webservices.fonasa')}}/?run='+run+'&dv='+dv;
+
         $.getJSON(url, function(data) {
             if(data){
                 document.getElementById("for_name").value = data.name;
@@ -524,8 +526,8 @@ jQuery(document).ready(function($){
                 document.getElementById("for_birthday").value = "";
             }
 	}).done(function() {
-		btn.prop('disabled',false);
-	});
+            btn.prop('disabled',false);
+        });
     });
 });
 </script>
