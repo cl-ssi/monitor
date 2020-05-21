@@ -75,6 +75,9 @@
         </fieldset>
 
     </div>
+
+    <hr>
+
     <div class="form-row">
 
         <fieldset class="form-group col-md-3">

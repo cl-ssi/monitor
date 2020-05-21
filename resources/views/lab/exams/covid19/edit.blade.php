@@ -24,11 +24,6 @@
 
         <fieldset class="form-group col-1 col-md-1">
             <label for="">&nbsp;</label>
-            <button type="button" class="btn btn-outline-success" disabled>Fonasa&nbsp;</button>
-        </fieldset>
-
-        <fieldset class="form-group col-1 col-md-1">
-            <label for="">&nbsp;</label>
             <span class="form-control-plaintext"> </span>
         </fieldset>
 
@@ -78,6 +73,9 @@
         </fieldset>
 
     </div>
+
+    <hr>
+
     <div class="form-row">
 
         <fieldset class="form-group col-md-3">
