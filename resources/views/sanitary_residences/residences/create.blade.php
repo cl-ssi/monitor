@@ -16,21 +16,35 @@
         <fieldset class="form-group col-4">
             <label for="for_name">Nombre</label>
             <input type="text" class="form-control" name="name" id="for_name"
-                required placeholder="">
+                required placeholder="" autocomplete="off">
         </fieldset>
 
         <fieldset class="form-group col">
             <label for="for_address">Dirección</label>
             <input type="text" class="form-control" name="address" id="for_address"
-                required placeholder="">
+                required placeholder="" autocomplete="off">
         </fieldset>
 
         <fieldset class="form-group col">
             <label for="for_telphone">Teléfono</label>
-            <input type="text" class="form-control" name="telphone" id="for_telphone"
-                required placeholder="">
+            <input type="number" class="form-control" name="telephone" id="for_telephone"
+                 placeholder="">
         </fieldset>
 
+    </div>
+
+    <div class="form-row">
+        <fieldset class="form-group col-2">
+            <label for="for_width">Ancho (en Pixeles, ej:172)*</label>
+            <input type="number" class="form-control" name="width" id="for_width"
+                required>
+        </fieldset>
+
+        <fieldset class="form-group col-2">
+            <label for="for_height">Largo (en Pixeles, ej:172)*</label>
+            <input type="number" class="form-control" name="height" id="for_height"
+                required>
+        </fieldset>
     </div>
 
 
