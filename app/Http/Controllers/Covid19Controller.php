@@ -13,9 +13,9 @@ class Covid19Controller extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $exams = Covid19::all();
+        $exams = Covid19::search($request->input('search'))->get();
         return view('lab.exams.covid19.index', compact('exams'));
     }
 

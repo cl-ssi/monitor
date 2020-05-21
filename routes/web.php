@@ -20,7 +20,7 @@ Route::get('/', function () {
 Route::get('test/fonasa', 'TestController@fonasa');
 
 Route::prefix('webservices')->name('webservices.')->group(function () {
-    Route::get('fonasa', 'WebserviceController@fonasa')->name('fonasa');
+    Route::get('fonasa', 'WebserviceController@fonasa')->middleware('auth')->name('fonasa');
 });
 
 //ruta para capturar data enviada desde intranet.
