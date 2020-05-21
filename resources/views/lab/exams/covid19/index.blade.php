@@ -5,11 +5,35 @@
 @section('content')
 <h3 class="mb-3">Listado de muestras</h3>
 
-<a class="btn btn-primary mb-3" href="{{ route('lab.exams.covid19.create') }}">Agregar nueva</a>
 
-<table class="table table-sm table-bordered">
+
+<div class="row">
+
+    <div class="col-4 col-sm-3">
+        <a class="btn btn-primary mb-3" href="{{ route('lab.exams.covid19.create') }}">
+            Agregar nueva
+        </a>
+    </div>
+
+    <div class="col-7 col-md-6">
+        <form method="GET" class="form-horizontal" action="{{ route('lab.exams.covid19.index') }}">
+
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" id="for_search"
+                    placeholder="Nombre o Apellido o Rut" >
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit" id="button-addon">Buscar</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<table class="table table-sm table-bordered table-responsive">
     <thead>
         <tr>
+            <th></th>
             <th>Identificador</th>
             <th>Nombre</th>
             <th>Apellido Paterno</th>
@@ -17,24 +41,25 @@
             <th>Origen</th>
             <th>Fecha Muestra</th>
             <th>Fecha Resultado</th>
-            <th>Resultado</th>
+            <th nowrap>Resultado</th>
         </tr>
     </thead>
     <tbody>
-        @foreach($exams as $covid19)
+        @foreach($exams->reverse() as $key => $covid19)
         <tr>
-            <td>
+            <td>{{ ++$key }}</td>
+            <td class="text-right" nowrap>
                 <a href="{{ route('lab.exams.covid19.edit', $covid19) }}">
-                    {{ $covid19->run }}
+                    {{ $covid19->identifier }}
                 </a>
             </td>
-            <td>{{ $covid19->name }}</td>
-            <td>{{ $covid19->fathers_family }}</td>
-            <td>{{ $covid19->mothers_family }}</td>
-            <td>{{ $covid19->origin }}</td>
-            <td>{{ $covid19->sample_at }}</td>
-            <td>{{ $covid19->result_at }}</td>
-            <td>{{ $covid19->result }}</td>
+            <td nowrap>{{ $covid19->name }}</td>
+            <td nowrap>{{ $covid19->fathers_family }}</td>
+            <td nowrap>{{ $covid19->mothers_family }}</td>
+            <td nowrap>{{ $covid19->origin }}</td>
+            <td nowrap class="small">{{ $covid19->sample_at }}</td>
+            <td nowrap class="small">{{ $covid19->result_at }}</td>
+            <td nowrap>{{ $covid19->result }}</td>
         </tr>
         @endforeach
     </tbody>
