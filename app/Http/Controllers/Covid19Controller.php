@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Lab\Exam\Covid19;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class Covid19Controller extends Controller
 {
@@ -80,6 +81,31 @@ class Covid19Controller extends Controller
         $covid19->fill($request->all());
         $covid19->result_at = date('Y-m-d H:i:s');
         $covid19->validator_id = Auth::id();
+        $covid19->file = $request->file('file')->store('external_results');
+        $covid19->save();
+
+        session()->flash('info', 'El resultado ha sido cargado a muestra: '.$covid19->id);
+
+        return redirect()->route('lab.exams.covid19.index');
+    }
+
+    public function reception(Request $request, Covid19 $covid19)
+    {
+        $covid19->fill($request->all());
+        $covid19->receptor_id = Auth::id();
+        $covid19->save();
+
+        session()->flash('info', 'El examen ha sido recepcionado: '.$covid19->id);
+
+        return redirect()->route('lab.exams.covid19.edit', $covid19);
+    }
+
+    public function addresult(Request $request, Covid19 $covid19)
+    {
+        $covid19->fill($request->all());
+        $covid19->result_at = date('Y-m-d H:i:s');
+        $covid19->validator_id = Auth::id();
+        $covid19->file = $request->file('file')->storeAs('external_results',$covid19->id);
         $covid19->save();
 
         session()->flash('info', 'El resultado ha sido cargado a muestra: '.$covid19->id);
@@ -96,5 +122,9 @@ class Covid19Controller extends Controller
     public function destroy(Covid19 $covid19)
     {
         //
+    }
+
+    public function download($storage, $file) {
+        return Storage::download($storage.'/'.$file, 'resultado.pdf');
     }
 }
