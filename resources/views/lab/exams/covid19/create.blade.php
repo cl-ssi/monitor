@@ -61,10 +61,10 @@
             <label for="for_gender">Genero *</label>
             <select name="gender" id="for_gender" class="form-control" required>
                 <option value=""></option>
-                <option value="male">Masculino</option>
-                <option value="female">Femenino</option>
-                <option value="other">Otro</option>
-                <option value="unknown">Desconocido</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                <option value="Otro">Otro</option>
+                <option value="Desconocido">Desconocido</option>
             </select>
         </fieldset>
 
@@ -504,10 +504,12 @@ jQuery(document).ready(function($){
     });
 
     $('#btn_fonasa').click(function() {
+	    var btn = $(this);
+	btn.prop('disabled',true);
         var run = $("#for_run").val();
         var dv  = $("#for_dv").val();
-        $.get('{{ route('webservices.fonasa') }}/?run='+run+'&dv='+dv, function(data) {
-            console.log($data);
+	var url = '{{route('webservices.fonasa')}}/?run='+run+'&dv='+dv;
+        $.getJSON(url, function(data) {
             if(data){
                 document.getElementById("for_name").value = data.name;
                 document.getElementById("for_fathers_family").value = data.fathers_family;
@@ -521,7 +523,9 @@ jQuery(document).ready(function($){
                 document.getElementById("for_gender").value = "";
                 document.getElementById("for_birthday").value = "";
             }
-        });
+	}).done(function() {
+		btn.prop('disabled',false);
+	});
     });
 });
 </script>
