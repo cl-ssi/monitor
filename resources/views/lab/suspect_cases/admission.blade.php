@@ -46,21 +46,21 @@
 
     <div class="form-row">
         <fieldset class="form-group col-12 col-md-4">
-            <label for="for_name">Nombres</label>
+            <label for="for_name">Nombres *</label>
             <input type="text" class="form-control" id="for_name" name="name"
-                style="text-transform: uppercase;">
+                style="text-transform: uppercase;" required>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-3">
-            <label for="for_fathers_family">Apellido Paterno</label>
+            <label for="for_fathers_family">Apellido Paterno *</label>
             <input type="text" class="form-control" id="for_fathers_family"
-                name="fathers_family" style="text-transform: uppercase;">
+                name="fathers_family" style="text-transform: uppercase;" required>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-3">
-            <label for="for_mothers_family">Apellido Materno</label>
+            <label for="for_mothers_family">Apellido Materno *</label>
             <input type="text" class="form-control" id="for_mothers_family"
-                name="mothers_family" style="text-transform: uppercase;">
+                name="mothers_family" style="text-transform: uppercase;" required>
         </fieldset>
 
 
@@ -73,14 +73,14 @@
     <div class="form-row">
 
         <fieldset class="form-group col-6 col-md-2">
-            <label for="for_sample_at">Fecha Muestra</label>
+            <label for="for_sample_at">Fecha Muestra *</label>
             <input type="date" class="form-control" id="for_sample_at"
                 name="sample_at" required min="{{ date('Y-m-d', strtotime("-2 week")) }}" max="{{ date('Y-m-d') }}">
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
-            <label for="for_sample_type">Tipo de Muestra</label>
-            <select name="sample_type" id="for_sample_type" class="form-control">
+            <label for="for_sample_type">Tipo de Muestra *</label>
+            <select name="sample_type" id="for_sample_type" class="form-control" required>
                 <option value=""></option>
                 <option value="TÓRULAS NASOFARÍNGEAS">TORULAS NASOFARINGEAS</option>
                 <option value="ESPUTO">ESPUTO</option>
@@ -103,6 +103,13 @@
             <label for="for_age">Edad</label>
             <input type="number" class="form-control" id="for_age" name="age">
         </fieldset>
+
+        <fieldset class="form-group col-4 col-md-2">
+            <label for="for_run_medic">Run Médico Solicitante *</label>
+            <input type="text" class="form-control" name="run_medic" id="for_run_medic"
+                required placeholder="Ej: 12345678-9">
+        </fieldset>
+
 
 
     </div>

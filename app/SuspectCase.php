@@ -18,7 +18,7 @@ class SuspectCase extends Model
      */
     protected $fillable = [
         'age', 'gender', 'sample_at', 'epidemiological_week',
-        'origin', 'status', 'symptoms',
+        'origin', 'status', 'run_medic', 'symptoms',
         'reception_at', 'receptor_id',
         'result_ifd_at', 'result_ifd', 'subtype',
         'pscr_sars_cov_2_at', 'pscr_sars_cov_2', 'sample_type', 'validator_id',
