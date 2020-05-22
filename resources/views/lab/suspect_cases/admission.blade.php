@@ -46,7 +46,7 @@
 
     <div class="form-row">
         <fieldset class="form-group col-12 col-md-4">
-            <label for="for_name">Nombres *</label>
+            <label for="for_name">Nombres (*)</label>
             <input type="text" class="form-control" id="for_name" name="name"
                 style="text-transform: uppercase;" required>
         </fieldset>
