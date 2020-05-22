@@ -63,6 +63,8 @@ class CreateSuspectCasesTable extends Migration
             $table->unsignedBigInteger('patient_id');
             $table->unsignedBigInteger('laboratory_id')->nullable();
 
+            $table->unsignedInteger('establishment_id');
+
             $table->timestamps();
             $table->softDeletes();
 
@@ -70,6 +72,7 @@ class CreateSuspectCasesTable extends Migration
             $table->foreign('validator_id')->references('id')->on('users');
             $table->foreign('patient_id')->references('id')->on('patients');
             $table->foreign('laboratory_id')->references('id')->on('laboratories');
+            $table->foreign('establishment_id')->references('id')->on('establishments');
 
             $table->index('pscr_sars_cov_2');
         });

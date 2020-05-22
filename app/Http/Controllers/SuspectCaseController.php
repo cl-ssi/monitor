@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use App\SuspectCase;
 use App\Patient;
 use App\Demographic;
+use App\Establishment;
 use App\Log;
 use App\File;
 use App\User;
@@ -169,9 +170,10 @@ class SuspectCaseController extends Controller
     //
     // dd($response->getBody()->getContents());
 
+        $establishments = Establishment::orderBy('name','ASC')->get();
 
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
-        return view('lab.suspect_cases.admission',compact('sampleOrigins'));
+        return view('lab.suspect_cases.admission',compact('sampleOrigins','establishments'));
     }
 
 
@@ -264,6 +266,7 @@ class SuspectCaseController extends Controller
      */
     public function storeAdmission(Request $request)
     {
+      // dd($request);
         if ($request->id == null) {
             $patient = new Patient($request->All());
         } else {
@@ -331,6 +334,48 @@ class SuspectCaseController extends Controller
         $log->new = $suspectCase;
         $log->save();
 
+        // // webservices MINSAL
+        // if (env('APP_ENV') == 'local') {
+        //   $client = new \GuzzleHttp\Client();
+        //   $array = array(
+        //
+        //     //10.314.055-2 - Jorge Patricio Moscoso Coppa
+        //     //Nro. de registro -	44151 - clave: 123456
+        //     'raw' => array('codigo_muestra_cliente' => $suspectCase->id,
+        //                    'rut_responsable' => '10314055-2',
+        //                    'cod_deis' => '02-100',//$suspectCase->establishment->deis,
+        //                    'rut_medico' => '1-9',
+        //                    'paciente_run' => $suspectCase->patient->run,
+        //                    'paciente_dv' => $suspectCase->patient->dv,
+        //                    'paciente_nombres' => $suspectCase->patient->name,
+        //                    'paciente_ap_mat' => $suspectCase->patient->fathers_family,
+        //                    'paciente_ap_pat' => $suspectCase->patient->mothers_family,
+        //                    'paciente_fecha_nac' => $suspectCase->patient->birthday,
+        //                    'paciente_comuna' => 11201,
+        //                    'paciente_direccion' => 'dirección',
+        //                    'paciente_telefono' => 'teléfono',
+        //                    'paciente_tipodoc' => 'RUN',
+        //                    'paciente_ext_paisorigen' => '',
+        //                    'paciente_pasaporte' => '',
+        //                    'paciente_sexo' => 'M',
+        //                    'paciente_prevision' => 'ISAPRE',
+        //                    'fecha_muestra' => '06-05-2020',
+        //                    'tecnica_muestra' => 'RT-PCR',
+        //                    'tipo_muestra' => 'AAAA'
+        //                  )
+        //   );
+        //
+        //   print_r($array);
+        //
+        //   $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/328302d8-0ba3-5611-24fa-a7a2f146241f', [
+        //         'json' => $array,
+        //         'headers'  => [ 'ACCESSKEY' => 'AK026-88QV-000QAQQCI-000000B8EJTK']
+        //   ]);
+        //
+        //   dd($response->getBody()->getContents());
+        // }
+
+
 
         session()->flash('success', 'Se ha creado el caso número: <h3>' . $suspectCase->id . '</h3>');
         return redirect()->back();
@@ -355,8 +400,9 @@ class SuspectCaseController extends Controller
      */
     public function edit(SuspectCase $suspectCase)
     {
+        $establishments = Establishment::orderBy('name','ASC')->get();
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
-        return view('lab.suspect_cases.edit', compact('suspectCase','sampleOrigins'));
+        return view('lab.suspect_cases.edit', compact('suspectCase','sampleOrigins','establishments'));
     }
 
     /**
