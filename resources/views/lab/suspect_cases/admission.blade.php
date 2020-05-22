@@ -99,7 +99,7 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
+        {{-- <fieldset class="form-group col-6 col-md-2">
             <label for="for_origin">Origen</label>
             <select name="origin" id="for_origin" class="form-control">
                 <option value=""></option>
@@ -107,7 +107,7 @@
                     <option value="{{ $sampleOrigin->name }}">{{ $sampleOrigin->alias }}</option>
                 @endforeach
             </select>
-        </fieldset>
+        </fieldset> --}}
 
         <fieldset class="form-group col-6 col-md-1">
             <label for="for_age">Edad</label>
