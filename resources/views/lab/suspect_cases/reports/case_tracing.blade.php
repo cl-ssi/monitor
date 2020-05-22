@@ -8,7 +8,9 @@
 
 </main><main class="">
 
-<table class="table table-sm table-bordered table-responsive small" >
+<a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a>
+
+<table class="table table-sm table-bordered table-responsive small" id="tabla_casos">
     <thead>
         <tr class="text-center">
             <th colspan="7"></th>
@@ -159,5 +161,16 @@
 @endsection
 
 @section('custom_js_head')
+<script type="text/javascript">
+function exportF(elem) {
+    var table = document.getElementById("tabla_casos");
+    var html = table.outerHTML;
+    var html_no_links = html.replace(/<a[^>]*>|<\/a>/g, "");//remove if u want links in your table
+    var url = 'data:application/vnd.ms-excel,' + escape(html_no_links); // Set your html table into url
+    elem.setAttribute("href", url);
+    elem.setAttribute("download", "reporte_minsal.xls"); // Choose the file name
+    return false;
+}
 
+</script>
 @endsection

@@ -51,9 +51,10 @@
             <label for="for_result">Resultado</label>
             <select name="result" id="for_result" class="form-control" required>
                 <option value=""></option>
-                <option value="positive" {{ ($covid19->result == 'positive') ? 'selected' : '' }}>Positivo</option>
-                <option value="negative" {{ ($covid19->result == 'negative') ? 'selected' : '' }}>Negativo</option>
-                <option value="undetermined" {{ ($covid19->result == 'undetermined') ? 'selected' : '' }}>Indeterminado</option>
+                <option value="Positivo" {{ ($covid19->result == 'Positivo') ? 'selected' : '' }}>Positivo</option>
+                <option value="Negativo" {{ ($covid19->result == 'Negativo') ? 'selected' : '' }}>Negativo</option>
+                <option value="Indeterminado" {{ ($covid19->result == 'Indeterminado') ? 'selected' : '' }}>Indeterminado</option>
+                <option value="Rechazado" {{ ($covid19->result == 'Rechazado') ? 'selected' : '' }}>Rechazado</option>
             </select>
         </fieldset>
 
