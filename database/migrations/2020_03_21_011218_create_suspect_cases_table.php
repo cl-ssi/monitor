@@ -22,6 +22,7 @@ class CreateSuspectCasesTable extends Migration
 
             $table->string('origin')->nullable(); /* Hospital, Clinica Tarapacá, Clinica Iquique, Hector Reyno, Guzmán */
             $table->string('status')->nullable(); /* Fallecido, Alta, Hospitalizado, Fugado */
+            $table->string('run_medic')->nullable();
 
             $table->string('symptoms')->nullable();
 

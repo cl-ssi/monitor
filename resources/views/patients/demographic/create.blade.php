@@ -35,8 +35,8 @@
 <div class="form-row">
 
     <fieldset class="form-group col-6 col-md-4">
-        <label for="nationality">Nacionalidad</label>
-        <select class="form-control" name="nationality" id="nationality">
+        <label for="nationality">Nacionalidad *</label>
+        <select class="form-control" name="nationality" id="nationality" required>
             <option value="Afganistán">Afganistán</option>
             <option value="Akrotiri">Akrotiri</option>
             <option value="Albania">Albania</option>
@@ -296,12 +296,12 @@
     </fieldset>
 
     <fieldset class="form-group col-6 col-md-4">
-        <label for="regiones">Región</label>
-        <select class="form-control" name="region" id="regiones"></select>
+        <label for="regiones">Región *</label>
+        <select class="form-control" name="region" id="regiones" required></select>
     </fieldset>
 
     <fieldset class="form-group col-6 col-md-4">
-        <label for="comunas">Comuna</label>
+        <label for="comunas">Comuna *</label>
         <select class="form-control" name="commune" id="comunas" required></select>
     </fieldset>
 
