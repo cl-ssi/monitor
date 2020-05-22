@@ -47,7 +47,7 @@
     </div>
 </div>
 
-<table class="table table-sm table-bordered table-responsive" id="examenes">
+<table class="table table-sm table-bordered" id="examenes">
     <thead>
         <tr>
             <th></th>
@@ -96,7 +96,7 @@
 
 @section('custom_js')
 <script type="text/javascript">
-// $( "main" ).removeClass( "container" );
+$( "main" ).removeClass( "container" );
 
 function exportF(elem) {
     var table = document.getElementById("examenes");
