@@ -51,7 +51,7 @@
         @endforeach
         @foreach($externos as $case)
         <tr>
-            <td nowrap>{{ $case->identifier }}</td>
+            <td nowrap>{{ $case->runExport }}</td>
             <td nowrap>{{ $case->fullName }}</td>
             <td nowrap>{{ strtoupper($case->gender) }}</td>
             <td nowrap>{{ $case->age }}</td>
