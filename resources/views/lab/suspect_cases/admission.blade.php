@@ -46,31 +46,19 @@
 
     <div class="form-row">
         <fieldset class="form-group col-12 col-md-4">
-<<<<<<< HEAD
             <label for="for_name">Nombres (*)</label>
-=======
-            <label for="for_name">Nombres *</label>
->>>>>>> eca06dd8af2d4214ebdaaf8e1a541f2dae4f8778
             <input type="text" class="form-control" id="for_name" name="name"
                 style="text-transform: uppercase;" required>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-3">
-<<<<<<< HEAD
             <label for="for_fathers_family">Apellido Paterno (*)</label>
-=======
-            <label for="for_fathers_family">Apellido Paterno *</label>
->>>>>>> eca06dd8af2d4214ebdaaf8e1a541f2dae4f8778
             <input type="text" class="form-control" id="for_fathers_family"
                 name="fathers_family" style="text-transform: uppercase;" required>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-3">
-<<<<<<< HEAD
             <label for="for_mothers_family">Apellido Materno (*)</label>
-=======
-            <label for="for_mothers_family">Apellido Materno *</label>
->>>>>>> eca06dd8af2d4214ebdaaf8e1a541f2dae4f8778
             <input type="text" class="form-control" id="for_mothers_family"
                 name="mothers_family" style="text-transform: uppercase;" required>
         </fieldset>
