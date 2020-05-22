@@ -109,12 +109,12 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-1">
+        <fieldset class="form-group col-6 col-md-1">
             <label for="for_age">Edad</label>
             <input type="number" class="form-control" id="for_age" name="age">
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-2">
+        <fieldset class="form-group col-6 col-md-2">
             <label for="for_run_medic">Run Médico Solicitante *</label>
             <input type="text" class="form-control" name="run_medic" id="for_run_medic"
                 required placeholder="Ej: 12345678-9">
@@ -126,7 +126,7 @@
 
     <div class="form-row">
 
-        <fieldset class="form-group col-2 col-md-1">
+        <fieldset class="form-group col-6 col-md-1">
             <label for="for_gestation">Gestante *</label>
             <select name="gestation" id="for_gestation" class="form-control" required>
                 <option value=""></option>
@@ -141,7 +141,7 @@
                 id="for_gestation_week">
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
+        <fieldset class="form-group col-4 col-md-2">
             <label for="for_close_contact">Contacto directo</label>
             <select name="close_contact" id="for_close_contact" class="form-control">
                 <option value=""></option>
@@ -150,7 +150,7 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
+        <fieldset class="form-group col-4 col-md-2">
             <label for="for_discharge_test">Test de salida</label>
             <select name="discharge_test" id="for_discharge_test" class="form-control">
                 <option value=""></option>

@@ -38,7 +38,7 @@
 
 <div class="form-row">
 
-<fieldset class="form-group col-6 col-md-4">
+<fieldset class="form-group col-12 col-md-2">
         <label for="nationality">Nacionalidad</label>
         <select class="form-control" name="nationality" id="nationality">
             <option value="{{$patient->demographic->nationality }}" selected>{{$patient->demographic->nationality }}</option>
@@ -300,13 +300,13 @@
         </select>
     </fieldset>
 
-    <fieldset class="form-group col-6 col-md-4">
+    <fieldset class="form-group col-12 col-md-3">
         <label for="regiones">Región</label>
         <select class="form-control" name="region" id="regiones"
             value="{{ $patient->demographic->region }}"></select>
     </fieldset>
 
-    <fieldset class="form-group col-6 col-md-4">
+    <fieldset class="form-group col-12 col-md-3">
         <label for="for_commune">Comuna</label>
         <select class="form-control" name="commune" id="comunas"
             value="{{ $patient->demographic->comunas }}"></select>

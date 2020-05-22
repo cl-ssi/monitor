@@ -66,15 +66,6 @@
                 required value="{{ $suspectCase->run_medic }}">
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-2">
-            <label for="for_laboratory_id">Laboratorio</label>
-            <select name="laboratory_id" id="for_laboratory_id" class="form-control">
-                <option value="1" {{ ($suspectCase->laboratory_id == 1)?'selected':'' }}>HETG</option>
-                <option value="2" {{ ($suspectCase->laboratory_id == 2)?'selected':'' }}>UNAP</option>
-                <option value="3" {{ ($suspectCase->laboratory_id == 3)?'selected':'' }}>BIOCLINIC</option>
-            </select>
-        </fieldset>
-
 
     </div>
 
@@ -183,6 +174,15 @@
                 <option value="Instituto de Salud Pública" {{ ($suspectCase->external_laboratory == 'Instituto de Salud Pública')?'selected':'' }}>Instituto de Salud Pública</option>
                 <option value="Barnafi Krause" {{ ($suspectCase->external_laboratory == 'Barnafi Krause')?'selected':'' }}>Barnafi Krause</option>
                 <option value="Laboratorio Médico Bioclinic" {{ ($suspectCase->external_laboratory == 'Laboratorio Médico Bioclinic')?'selected':'' }}>Laboratorio Médico Bioclinic</option>
+            </select>
+        </fieldset>
+
+        <fieldset class="form-group col-4 col-md-2">
+            <label for="for_laboratory_id">Laboratorio local</label>
+            <select name="laboratory_id" id="for_laboratory_id" class="form-control">
+                <option value="1" {{ ($suspectCase->laboratory_id == 1)?'selected':'' }}>HETG</option>
+                <option value="2" {{ ($suspectCase->laboratory_id == 2)?'selected':'' }}>UNAP</option>
+                <option value="3" {{ ($suspectCase->laboratory_id == 3)?'selected':'' }}>BIOCLINIC</option>
             </select>
         </fieldset>
     </div>
