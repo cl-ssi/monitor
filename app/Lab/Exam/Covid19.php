@@ -34,6 +34,10 @@ class Covid19 extends Model
         }
     }
 
+    function getFullNameAttribute(){
+        return mb_strtoupper($this->name . ' ' . $this->fathers_family . ' ' . $this->mothers_family);
+    }
+
     public function scopeSearch($query, $search)
     {
         if ($search) {
