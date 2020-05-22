@@ -41,6 +41,7 @@ class PermissionSeeder extends Seeder
         $permission = Permission::create(['name' => 'Report: other']);
         $permission = Permission::create(['name' => 'Report: historical']);
         $permission = Permission::create(['name' => 'Report: exams with result']);
+        $permission = Permission::create(['name' => 'Report: gestants']);
 
         $permission = Permission::create(['name' => 'Epp: list']);
 

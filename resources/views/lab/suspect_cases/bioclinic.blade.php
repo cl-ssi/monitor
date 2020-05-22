@@ -114,7 +114,7 @@
                 @if($case->patient)
                 <a class="link" href="{{ route('patients.edit', $case->patient) }}">
                     {{ $case->patient->fullName }}
-                    @if($case->gestation == "on") <img align="center" src="{{ asset('images/pregnant.png') }}" width="24"> @endif
+                    @if($case->gestation == "1") <img align="center" src="{{ asset('images/pregnant.png') }}" width="24"> @endif
                  </a>
                  @endif
             </td>

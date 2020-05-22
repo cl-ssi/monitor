@@ -30,7 +30,7 @@
             <td nowrap class="text-right">{{ $case->patient->identifier}}</td>
             <td nowrap class="text-uppercase">{{ $case->origin }}</td>
             <td nowrap>{{ $case->age }}</td>
-            <td nowrap>{{ ($case->gestation)?'X':'' }}</td>
+            <td nowrap>{{ ($case->gestation == 1 )?'X':'' }}</td>
             <td nowrap>{{ $case->sample_type }}</td>
             <td nowrap>{{ $case->epidemiological_week }}</td>
             <td nowrap>{{ $case->sample_at->format('d-m-Y') }}</td>

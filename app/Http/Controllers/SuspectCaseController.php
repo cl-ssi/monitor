@@ -325,9 +325,9 @@ class SuspectCaseController extends Controller
         //Se cambió para arriba para obtener id de suspect case para webservice
         // $suspectCase = new SuspectCase($request->All());
 
-        $suspectCase->gestation = $request->has('gestation') ? 1 : 0;
-        $suspectCase->close_contact = $request->has('close_contact') ? 1 : 0;
-        $suspectCase->discharge_test = $request->has('discharge_test') ? 1 : 0;
+        //$suspectCase->gestation = $request->has('gestation') ? 1 : 0;
+        // $suspectCase->close_contact = $request->has('close_contact') ? 1 : 0;
+        // $suspectCase->discharge_test = $request->has('discharge_test') ? 1 : 0;
 
         $suspectCase->epidemiological_week = Carbon::createFromDate(
             $suspectCase->sample_at->format('Y-m-d'))->add(1, 'days')->weekOfYear;
@@ -424,9 +424,9 @@ class SuspectCaseController extends Controller
         $log->old = clone $suspectCase;
 
         $suspectCase->fill($request->all());
-        $suspectCase->gestation = $request->gestation;
-        $suspectCase->close_contact = $request->has('close_contact') ? 1 : 0;
-        $suspectCase->discharge_test = $request->has('discharge_test') ? 1 : 0;
+        //$suspectCase->gestation = $request->gestation;
+        // $suspectCase->close_contact = $request->has('close_contact') ? 1 : 0;
+        // $suspectCase->discharge_test = $request->has('discharge_test') ? 1 : 0;
 
         $suspectCase->epidemiological_week = Carbon::createFromDate(
             $suspectCase->sample_at->format('Y-m-d'))->add(1, 'days')->weekOfYear;
