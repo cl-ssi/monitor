@@ -54,6 +54,7 @@
                 <option value="positive" {{ ($covid19->result == 'positive') ? 'selected' : '' }}>Positivo</option>
                 <option value="negative" {{ ($covid19->result == 'negative') ? 'selected' : '' }}>Negativo</option>
                 <option value="undetermined" {{ ($covid19->result == 'undetermined') ? 'selected' : '' }}>Indeterminado</option>
+                <option value="rejected" {{ ($covid19->result == 'rejected') ? 'selected' : '' }}>Rechazado</option>
             </select>
         </fieldset>
 
