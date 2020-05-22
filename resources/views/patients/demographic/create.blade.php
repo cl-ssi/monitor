@@ -13,7 +13,7 @@
 
     <fieldset class="form-group col-12 col-md-4">
         <label for="for_address">Dirección</label>
-        <input type="text" class="form-control" name="address" id="for_address">
+        <input type="text" class="form-control" name="address" id="for_address" required>
     </fieldset>
 
     <fieldset class="form-group col-6 col-md-2">
@@ -326,7 +326,7 @@
 
     <fieldset class="form-group col-12 col-md-4">
         <label for="for_telephone">Teléfono</label>
-        <input type="text" class="form-control" name="telephone" id="for_telephone">
+        <input type="text" class="form-control" name="telephone" id="for_telephone" required>
     </fieldset>
 
 </div>
