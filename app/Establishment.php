@@ -13,7 +13,8 @@ class Establishment extends Model
    * @var array
    */
   protected $fillable = [
-      'id','name','type','deis','commune_id'
+      // 'id','name','type','deis','commune_id'
+      'id','name','alias','type','code_deis','service','dependency','comuna','commune_code_deis','commune_id'
   ];
 
   public function commune() {
