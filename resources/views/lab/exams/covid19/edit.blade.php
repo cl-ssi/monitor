@@ -42,13 +42,13 @@
     <div class="form-row">
 
         <fieldset class="form-group col-12 col-md-3">
-            <label for="for_result_at">Fecha resultado</label>
+            <label for="for_result_at">Fecha resultado *</label>
             <input type="datetime-local" class="form-control" name="result_at" id="for_result_at"
                 value="{{ ($covid19->result_at) ? $covid19->result_at->format('Y-m-d\TH:i:s') : date('Y-m-d\TH:i:s') }}" required>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-2">
-            <label for="for_result">Resultado</label>
+            <label for="for_result">Resultado *</label>
             <select name="result" id="for_result" class="form-control" required>
                 <option value=""></option>
                 <option value="Positivo" {{ ($covid19->result == 'Positivo') ? 'selected' : '' }}>Positivo</option>
@@ -61,7 +61,7 @@
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_file">Archivo</label>
             <div class="custom-file">
-                <input type="file" name="file" class="custom-file-input" id="customFileLang" lang="es" required>
+                <input type="file" name="file" class="custom-file-input" id="customFileLang" lang="es">
                 <label class="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
             </div>
         </fieldset>
