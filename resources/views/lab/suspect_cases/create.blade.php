@@ -88,11 +88,11 @@
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
-            <label for="for_origin">Origen</label>
-            <select name="origin" id="for_origin" class="form-control">
+            <label for="for_establishment_id">Establecimiento</label>
+            <select name="establishment_id" id="for_establishment_id" class="form-control">
                 <option value=""></option>
-                @foreach($sampleOrigins as $sampleOrigin)
-                    <option value="{{ $sampleOrigin->name }}">{{ $sampleOrigin->alias }}</option>
+                @foreach($establishments as $establishment)
+                    <option value="{{ $establishment->id }}">{{ $establishment->name }}</option>
                 @endforeach
             </select>
         </fieldset>

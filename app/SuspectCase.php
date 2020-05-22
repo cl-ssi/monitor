@@ -27,7 +27,7 @@ class SuspectCase extends Model
         'notification_at', 'notification_mechanism',
         'discharged_at','discharge_test',
         'observation',
-        'patient_id', 'laboratory_id'
+        'patient_id', 'laboratory_id', 'establishment_id'
     ];
 
     public function patient() {
@@ -48,6 +48,10 @@ class SuspectCase extends Model
 
     public function files() {
         return $this->hasMany('App\File');
+    }
+
+    public function establishment() {
+        return $this->belongsTo('App\Establishment',);
     }
 
     function getCovid19Attribute(){
