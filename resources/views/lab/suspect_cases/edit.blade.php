@@ -50,13 +50,10 @@
                 value="{{ $suspectCase->age }}">
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-1">
-            <label for="for_symptoms">Sintomas</label>
-            <select name="symptoms" id="for_symptoms" class="form-control">
-                <option value=""></option>
-                <option value="Si" {{ ($suspectCase->symptoms == 'Si') ? 'selected' : '' }}>Si</option>
-                <option value="No" {{ ($suspectCase->symptoms == 'No') ? 'selected' : '' }}>No</option>
-            </select>
+        <fieldset class="form-group col-4 col-md-2">
+            <label for="for_run_medic">Run Médico Solicitante *</label>
+            <input type="text" class="form-control" name="run_medic" id="for_run_medic"
+                required value="{{ $suspectCase->run_medic }}">
         </fieldset>
 
         <fieldset class="form-group col-4 col-md-2">
@@ -180,48 +177,15 @@
         </fieldset>
     </div>
 
-
-    <div class="form-row">
-
-        <fieldset class="form-group col-6 col-md-2">
-            <label for="for_paho_flu">PAHO FLU</label>
-            <input type="number" class="form-control" name="paho_flu" id="for_paho_flu"
-                value="{{ $suspectCase->paho_flu }}">
-        </fieldset>
-
-        <fieldset class="form-group col-6 col-md-2">
-            <label for="for_epivigila">Epivigila</label>
-            <input type="number" class="form-control" id="for_epivigila"
-                name="epivigila" value="{{ $suspectCase->epivigila }}">
-        </fieldset>
-
-        <fieldset class="form-group col-md-2">
-            <label class="form-check-label" for="for_gestation">Gestante</label>
-            <br><br>
-            <input type="checkbox" class="form-check-input ml-3" name="gestation"
-                id="for_gestation" {{ ($suspectCase->gestation)?'checked':'' }}>
-
-        </fieldset>
-
-        <fieldset class="form-group col-md-2">
-            <label for="for_gestation_week">Semanas de gestación</label>
-            <input type="text" class="form-control" name="gestation_week"
-                id="for_gestation_week" value="{{ $suspectCase->gestation_week }}">
-        </fieldset>
-
-        <fieldset class="form-group col-8 col-md-4">
-            <label for="for_status">Estado</label>
-            <p>
-                <strong>{{ $suspectCase->patient->status }}</strong>
-                @can('Patient: edit')
-                <a href="{{ route('patients.edit',$suspectCase->patient)}}"> Cambiar </a>
-                @endcan
-            </p>
-        </fieldset>
-
-    </div>
+    <hr>
 
     <div class="form-group">
+
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="for_gestation"
+                name="gestation" {{ ($suspectCase->gestation) ? 'checked' : '' }}>
+            <label class="form-check-label" for="for_gestation">Gestante</label>
+        </div>
 
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="checkbox" id="for_close_contact"
@@ -239,12 +203,52 @@
 
     <div class="form-row">
 
+        <fieldset class="form-group col-md-2">
+            <label for="for_gestation_week">Semanas de gestación</label>
+            <input type="text" class="form-control" name="gestation_week"
+                id="for_gestation_week" value="{{ $suspectCase->gestation_week }}">
+        </fieldset>
+
+        <fieldset class="form-group col-4 col-md-1">
+            <label for="for_symptoms">Sintomas</label>
+            <select name="symptoms" id="for_symptoms" class="form-control">
+                <option value=""></option>
+                <option value="Si" {{ ($suspectCase->symptoms == 'Si') ? 'selected' : '' }}>Si</option>
+                <option value="No" {{ ($suspectCase->symptoms == 'No') ? 'selected' : '' }}>No</option>
+            </select>
+        </fieldset>
+
+        <fieldset class="form-group col-8 col-md-4">
+            <label for="for_status">Estado</label>
+            <p>
+                <strong>{{ $suspectCase->patient->status }}</strong>
+                @can('Patient: edit')
+                <a href="{{ route('patients.edit',$suspectCase->patient)}}"> Cambiar </a>
+                @endcan
+            </p>
+        </fieldset>
+
+    </div>
+
+    <div class="form-row">
+
         <fieldset class="form-group col-12 col-md-8">
             <label for="for_observation">Observación</label>
             <input type="text" class="form-control" name="observation"
                 id="for_observation" value="{{ $suspectCase->observation }}">
         </fieldset>
 
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_paho_flu">PAHO FLU</label>
+            <input type="number" class="form-control" name="paho_flu" id="for_paho_flu"
+                value="{{ $suspectCase->paho_flu }}">
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_epivigila">Epivigila *</label>
+            <input type="number" class="form-control" id="for_epivigila"
+                name="epivigila" value="{{ $suspectCase->epivigila }}">
+        </fieldset>
     </div>
 
     <div>
