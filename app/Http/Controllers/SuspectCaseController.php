@@ -266,8 +266,12 @@ class SuspectCaseController extends Controller
      */
     public function storeAdmission(Request $request)
     {
-        $suspectCase = new SuspectCase($request->All());
-        // dd($suspectCase);
+        // ########## webservice MINSAL ##########
+
+        // //obtiene proximo id suspect case
+        // $NextsuspectCase = SuspectCase::max('id');
+        // $NextsuspectCase += 1;
+        // // dd($NextsuspectCase);
         //
         // // webservices MINSAL
         // if (env('APP_ENV') == 'local') {
@@ -276,7 +280,7 @@ class SuspectCaseController extends Controller
         //
         //     //10.314.055-2 - Jorge Patricio Moscoso Coppa
         //     //Nro. de registro -	44151 - clave: 123456
-        //     'raw' => array('codigo_muestra_cliente' => $suspectCase->id,
+        //     'raw' => array('codigo_muestra_cliente' => $NextsuspectCase,
         //                    'rut_responsable' => '10314055-2',
         //                    'cod_deis' => '02-100',//$suspectCase->establishment->deis,
         //                    'rut_medico' => $request->run_medic,
@@ -287,11 +291,11 @@ class SuspectCaseController extends Controller
         //                    'paciente_ap_pat' => $request->mothers_family,
         //                    'paciente_fecha_nac' => $request->birthday,
         //                    'paciente_comuna' => 11201,
-        //                    'paciente_direccion' => 'dirección',
-        //                    'paciente_telefono' => 'teléfono',
+        //                    'paciente_direccion' => $request->address,
+        //                    'paciente_telefono' => $request->telephone,
         //                    'paciente_tipodoc' => 'RUN',
         //                    'paciente_ext_paisorigen' => '',
-        //                    'paciente_pasaporte' => '',
+        //                    'paciente_pasaporte' => $request->other_identification,
         //                    'paciente_sexo' => 'M',
         //                    'paciente_prevision' => 'ISAPRE',
         //                    'fecha_muestra' => '06-05-2020',
@@ -313,7 +317,9 @@ class SuspectCaseController extends Controller
         // dd("");
 
 
-        //guarda en base de datos
+
+
+        //########### guarda en base de datos ##########3
         if ($request->id == null) {
             $patient = new Patient($request->All());
         } else {
@@ -322,12 +328,11 @@ class SuspectCaseController extends Controller
         }
         $patient->save();
 
-        //Se cambió para arriba para obtener id de suspect case para webservice
-        // $suspectCase = new SuspectCase($request->All());
+        $suspectCase = new SuspectCase($request->All());
 
-        //$suspectCase->gestation = $request->has('gestation') ? 1 : 0;
-        // $suspectCase->close_contact = $request->has('close_contact') ? 1 : 0;
-        // $suspectCase->discharge_test = $request->has('discharge_test') ? 1 : 0;
+        $suspectCase->gestation = $request->has('gestation') ? 1 : 0;
+        $suspectCase->close_contact = $request->has('close_contact') ? 1 : 0;
+        $suspectCase->discharge_test = $request->has('discharge_test') ? 1 : 0;
 
         $suspectCase->epidemiological_week = Carbon::createFromDate(
             $suspectCase->sample_at->format('Y-m-d'))->add(1, 'days')->weekOfYear;
@@ -424,9 +429,9 @@ class SuspectCaseController extends Controller
         $log->old = clone $suspectCase;
 
         $suspectCase->fill($request->all());
-        //$suspectCase->gestation = $request->gestation;
-        // $suspectCase->close_contact = $request->has('close_contact') ? 1 : 0;
-        // $suspectCase->discharge_test = $request->has('discharge_test') ? 1 : 0;
+        $suspectCase->gestation = $request->gestation;
+        $suspectCase->close_contact = $request->has('close_contact') ? 1 : 0;
+        $suspectCase->discharge_test = $request->has('discharge_test') ? 1 : 0;
 
         $suspectCase->epidemiological_week = Carbon::createFromDate(
             $suspectCase->sample_at->format('Y-m-d'))->add(1, 'days')->weekOfYear;
