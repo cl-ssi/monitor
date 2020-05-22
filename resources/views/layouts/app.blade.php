@@ -174,6 +174,10 @@
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.exams_with_result') }}">Exámenes con resultados</a>
                                 @endcan
 
+                                @can('Report: gestants')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.gestants') }}">Gestantes</a>
+                                @endcan
+
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.diary_lab_report') }}">Cantidad de muestras y exámenes</a>
 
                             </div>

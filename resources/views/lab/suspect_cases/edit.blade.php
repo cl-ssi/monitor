@@ -189,34 +189,39 @@
 
     <hr>
 
-    <div class="form-group">
-
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="for_gestation"
-                name="gestation" {{ ($suspectCase->gestation) ? 'checked' : '' }}>
-            <label class="form-check-label" for="for_gestation">Gestante</label>
-        </div>
-
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="for_close_contact"
-                name="close_contact" {{ ($suspectCase->close_contact) ? 'checked' : '' }}>
-            <label class="form-check-label" for="for_close_contact">Contacto directo</label>
-        </div>
-
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="for_discharge_test"
-                name="discharge_test" {{ ($suspectCase->discharge_test) ? 'checked' : '' }}>
-            <label class="form-check-label" for="for_discharge_test">Test de salida</label>
-        </div>
-
-    </div>
-
     <div class="form-row">
 
-        <fieldset class="form-group col-md-2">
+        <fieldset class="form-group col-2 col-md-1">
+            <label for="for_gestation">Gestante</label>
+            <select name="gestation" id="for_gestation" class="form-control">
+                <option value=""></option>
+                <option value="0" {{ ($suspectCase->gestation === 0) ? 'selected' : '' }}>No</option>
+                <option value="1" {{ ($suspectCase->gestation == 1) ? 'selected' : '' }}>Si</option>
+            </select>
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-2">
             <label for="for_gestation_week">Semanas de gestación</label>
             <input type="text" class="form-control" name="gestation_week"
                 id="for_gestation_week" value="{{ $suspectCase->gestation_week }}">
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_close_contact">Contacto directo</label>
+            <select name="close_contact" id="for_close_contact" class="form-control">
+                <option value=""></option>
+                <option value="0" {{ ($suspectCase->close_contact === 0) ? 'selected' : '' }}>No</option>
+                <option value="1" {{ ($suspectCase->close_contact == 1) ? 'selected' : '' }}>Si</option>
+            </select>
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_discharge_test">Test de salida</label>
+            <select name="discharge_test" id="for_discharge_test" class="form-control">
+                <option value=""></option>
+                <option value="0" {{ ($suspectCase->discharge_test === 0) ? 'selected' : '' }}>No</option>
+                <option value="1" {{ ($suspectCase->discharge_test == 1) ? 'selected' : '' }}>Si</option>
+            </select>
         </fieldset>
 
         <fieldset class="form-group col-4 col-md-1">

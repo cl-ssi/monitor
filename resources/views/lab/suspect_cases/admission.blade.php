@@ -124,34 +124,39 @@
 
     </div>
 
-    <div class="form-group">
-
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="for_gestation"
-                name="gestation">
-            <label class="form-check-label" for="for_gestation">Gestante</label>
-        </div>
-
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="for_close_contact"
-                name="close_contact">
-            <label class="form-check-label" for="for_close_contact">Contacto directo</label>
-        </div>
-
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="for_discharge_test"
-                name="discharge_test">
-            <label class="form-check-label" for="for_discharge_test">Test de salida</label>
-        </div>
-
-    </div>
-
     <div class="form-row">
 
-        <fieldset class="form-group col-md-2">
+        <fieldset class="form-group col-2 col-md-1">
+            <label for="for_gestation">Gestante *</label>
+            <select name="gestation" id="for_gestation" class="form-control" required>
+                <option value=""></option>
+                <option value="0">No</option>
+                <option value="1">Si</option>
+            </select>
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-2">
             <label for="for_gestation_week">Semanas de gestación</label>
             <input type="text" class="form-control" name="gestation_week"
                 id="for_gestation_week">
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_close_contact">Contacto directo</label>
+            <select name="close_contact" id="for_close_contact" class="form-control">
+                <option value=""></option>
+                <option value="0">No</option>
+                <option value="1">Si</option>
+            </select>
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_discharge_test">Test de salida</label>
+            <select name="discharge_test" id="for_discharge_test" class="form-control">
+                <option value=""></option>
+                <option value="0">No</option>
+                <option value="1">Si</option>
+            </select>
         </fieldset>
 
         <fieldset class="form-group col-4 col-md-1">
@@ -163,7 +168,8 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-8 col-md-4">
+
+        <!--fieldset class="form-group col-8 col-md-4">
             <label for="for_status">Estado</label>
             <select name="status" id="for_status" class="form-control">
                 <option value=""></option>
@@ -177,7 +183,7 @@
                 <option value="Hospitalizado UCI">Hospitalizado UCI</option>
                 <option value="Residencia Sanitaria">Residencia Sanitaria</option>
             </select>
-        </fieldset>
+        </fieldset-->
 
     </div>
 
