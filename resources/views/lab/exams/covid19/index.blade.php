@@ -9,13 +9,13 @@
 
 <div class="row">
 
-    <div class="col-4 col-sm-3">
+    <div class="col-4 col-sm-2">
         <a class="btn btn-primary mb-3" href="{{ route('lab.exams.covid19.create') }}">
             Agregar nueva
         </a>
     </div>
 
-    <div class="col-7 col-md-6">
+    <div class="col-7 col-md-5">
         <form method="GET" class="form-horizontal" action="{{ route('lab.exams.covid19.index') }}">
 
             <div class="input-group">
@@ -27,6 +27,22 @@
             </div>
 
         </form>
+    </div>
+
+    <div class="col-7 col-md-4">
+        <table class="table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <th>Pendientes:</th>
+                    <td>{{ $exams->whereNull('result')->count() }}</td>
+                    <th>Positivos:</th>
+                    <td>{{ $exams->where('result','Positivo')->count() }}</td>
+                    <th>Negativos</th>
+                    <td>{{ $exams->where('result','Negativo')->count() }}</td>
+                </tr>
+            </tbody>
+        </table>
+
     </div>
 </div>
 
