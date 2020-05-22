@@ -179,7 +179,7 @@ class SuspectCaseReportController extends Controller
 
     public function gestants() {
         $patients = Patient::whereHas('suspectCases', function ($q) {
-            $q->where('gestation','on');
+            $q->where('gestation',1);
         })->with('suspectCases')->get();
 
         return view('lab.suspect_cases.reports.gestants', compact('patients'));
