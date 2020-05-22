@@ -5,8 +5,6 @@
 @section('content')
 <h3 class="mb-3">Listado de muestras</h3>
 
-
-
 <div class="row">
 
     <div class="col-4 col-md-2">
@@ -98,6 +96,8 @@
 
 @section('custom_js')
 <script type="text/javascript">
+// $( "main" ).removeClass( "container" );
+
 function exportF(elem) {
     var table = document.getElementById("examenes");
     var html = table.outerHTML;
