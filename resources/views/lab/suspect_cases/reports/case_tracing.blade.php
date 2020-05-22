@@ -83,7 +83,7 @@
                     </a>
                     @endcan
 
-                    @if($patient->suspectCases->first()->gestation == "on")
+                    @if($patient->suspectCases->first()->gestation == "1")
                         <i class="fas fa-baby" title="Gestante"></i>
                     @endif
                     @if($patient->suspectCases->first()->close_contact == "1")
