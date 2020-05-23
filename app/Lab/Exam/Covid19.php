@@ -4,6 +4,7 @@ namespace App\Lab\Exam;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
 
 class Covid19 extends Model
 {
@@ -32,6 +33,28 @@ class Covid19 extends Model
         else  {
             return 'E:'.$this->other_identification;
         }
+    }
+    
+    function getRunExportAttribute(){
+        if(isset($this->run) and isset($this->dv)) {
+            return $this->run . $this->dv;
+        }
+        elseif($this->other_identification)  {
+            return 'P'.$this->other_identification;
+        }
+        else {
+            return '';
+        }
+    }
+
+    function getFullNameAttribute(){
+        return mb_strtoupper($this->name . ' ' . $this->fathers_family . ' ' . $this->mothers_family);
+    }
+
+    public function getAgeAttribute() {
+        if ($this->birthday)
+            return Carbon::parse($this->birthday)->age;
+        else return null;
     }
 
     public function scopeSearch($query, $search)

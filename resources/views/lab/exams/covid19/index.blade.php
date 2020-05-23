@@ -5,17 +5,15 @@
 @section('content')
 <h3 class="mb-3">Listado de muestras</h3>
 
-
-
 <div class="row">
 
-    <div class="col-4 col-sm-3">
+    <div class="col-4 col-md-2">
         <a class="btn btn-primary mb-3" href="{{ route('lab.exams.covid19.create') }}">
             Agregar nueva
         </a>
     </div>
 
-    <div class="col-7 col-md-6">
+    <div class="col-7 col-md-4">
         <form method="GET" class="form-horizontal" action="{{ route('lab.exams.covid19.index') }}">
 
             <div class="input-group">
@@ -28,9 +26,28 @@
 
         </form>
     </div>
+
+    <div class="col-7 col-md-5">
+        <table class="table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <th>Pendientes:</th>
+                    <td>{{ $exams->whereNull('result')->count() }}</td>
+                    <th>Positivos:</th>
+                    <td>{{ $exams->where('result','Positivo')->count() }}</td>
+                    <th>Negativos</th>
+                    <td>{{ $exams->where('result','Negativo')->count() }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div class="col-12 col-md-1">
+        <a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar</a>
+    </div>
 </div>
 
-<table class="table table-sm table-bordered table-responsive">
+<table class="table table-sm table-bordered" id="examenes">
     <thead>
         <tr>
             <th></th>
@@ -78,5 +95,18 @@
 @endsection
 
 @section('custom_js')
+<script type="text/javascript">
+$( "main" ).removeClass( "container" );
 
+function exportF(elem) {
+    var table = document.getElementById("examenes");
+    var html = table.outerHTML;
+    var html_no_links = html.replace(/<a[^>]*>|<\/a>/g, "");//remove if u want links in your table
+    var url = 'data:application/vnd.ms-excel,' + escape(html_no_links); // Set your html table into url
+    elem.setAttribute("href", url);
+    elem.setAttribute("download", "examenes.xls"); // Choose the file name
+    return false;
+}
+
+</script>
 @endsection

@@ -13,7 +13,7 @@ class Commune extends Model
    * @var array
    */
   protected $fillable = [
-      'id','name'
+      'id','name','code_deis'
   ];
 
   public function establishments() {
