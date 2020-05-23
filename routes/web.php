@@ -158,8 +158,8 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
         Route::get('/create', 'ResidenceController@create')->name('create');
         Route::get('/', 'ResidenceController@index')->name('index');
         Route::post('/', 'ResidenceController@store')->name('store');
-        // Route::get('/{residence}/edit', 'ResidenceController@edit')->name('edit');
-        // Route::put('update/{residence}', 'ResidenceController@update')->name('update');
+        Route::get('/{residence}/edit', 'ResidenceController@edit')->name('edit');
+        Route::put('update/{residence}', 'ResidenceController@update')->name('update');
         // Route::delete('/{residence}', 'ResidenceController@destroy')->name('destroy');
     });
 
