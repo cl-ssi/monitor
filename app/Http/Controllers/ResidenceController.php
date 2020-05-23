@@ -84,7 +84,7 @@ class ResidenceController extends Controller
      */
     public function edit(Residence $residence)
     {
-        //
+        return view('sanitary_residences.residences.edit', compact('residence'));
     }
 
     /**
@@ -96,7 +96,10 @@ class ResidenceController extends Controller
      */
     public function update(Request $request, Residence $residence)
     {
-        //
+        $residence->fill($request->all());
+        $residence->save();
+        session()->flash('success', 'Se modificó la residencia exitosamente');
+        return redirect()->route('sanitary_residences.residences.index');
     }
 
     /**
