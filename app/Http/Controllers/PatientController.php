@@ -201,4 +201,52 @@ class PatientController extends Controller
 
         return view('patients.georeferencing.georeferencing', compact('suspectCases','data'));
     }
+
+    public function export()
+    {
+        $headers = array(
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=pacientes.csv",
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        );
+
+        $filas = Patient::all();
+
+        $columnas = array(
+            'ID',
+            'RUN',
+            'DV',
+            'Otro Doc',
+            'Nombre',
+            'Apellido Paterno',
+            'Apellido Materno',
+            'Genero',
+            'Fecha Nacimiento'
+        );
+
+        $callback = function() use ($filas, $columnas)
+        {
+            $file = fopen('php://output', 'w');
+            fputs($file, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
+            fputcsv($file, $columnas,';');
+
+            foreach($filas as $fila) {
+                fputcsv($file, array(
+                    $fila->id,
+                    $fila->run,
+                    $fila->dv,
+                    $fila->other_identification,
+                    $fila->name,
+                    $fila->fathers_family,
+                    $fila->mothers_family,
+                    $fila->gender,
+                    ($fila->birthday)?$fila->birthday->format('d-m-Y'):''
+                ),';');
+            }
+            fclose($file);
+        };
+        return response()->stream($callback, 200, $headers);
+    }
 }
