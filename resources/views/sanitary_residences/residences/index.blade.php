@@ -16,7 +16,7 @@
             <th>Nombre</th>
             <th>Dirección</th>
             <th>Teléfono</th>
-            <th></th>
+            <th>Editar</th>
         </tr>
     </thead>
     <tbody>
@@ -25,7 +25,7 @@
             <td>{{ $residence->name }}</td>
             <td>{{ $residence->address }}</td>
             <td>{{ $residence->telephone }}</td>
-            <td></td>
+            <td><a href="{{ route('sanitary_residences.residences.edit', $residence) }}" class="btn_edit"><i class="fas fa-edit"></i></a></td>
         </tr>
         @endforeach
     </tbody>
