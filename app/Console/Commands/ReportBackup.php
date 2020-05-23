@@ -6,6 +6,9 @@ use Illuminate\Console\Command;
 use App\ReportBackup as ReportBackup2;
 use App\SuspectCase;
 use App\Patient;
+use App\Ventilator;
+use App\SanitaryResidence\Residence;
+use App\SanitaryResidence\Booking;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
@@ -42,120 +45,83 @@ class ReportBackup extends Command
      */
     public function handle()
     {
-      // $cases = SuspectCase::with('patient')->with('patient.demographic')->get();
-
-      $patients = Patient::whereHas('suspectCases', function ($q) { $q->where('pscr_sars_cov_2','positive'); })->with('suspectCases')->get();
-      $patients = $patients->whereNotIn('demographic.region',
-                  [
-                  'Arica y Parinacota',
-                  'Antofagasta',
-                  'Atacama',
-                  'Coquimbo',
-                  'Valparaíso',
-                  'Región del Libertador Gral. Bernardo O’Higgins',
-                  'Región del Maule',
-                  'Región del Biobío',
-                  'Región de la Araucanía',
-                  'Región de Los Ríos',
-                  'Región de Los Lagos',
-                  'Región Aisén del Gral. Carlos Ibáñez del Campo',
-                  'Región de Magallanes y de la Antártica Chilena',
-                  'Región Metropolitana de Santiago',
-                  'Región de Ñuble']);
+        $bookings = Booking::where('status','Residencia Sanitaria')
+                    ->whereHas('patient', function ($q) {
+                        $q->where('status','Residencia Sanitaria');
+                    })->get();
+        $residences = Residence::all();
 
 
-      $cases = SuspectCase::All();
-      $cases = $cases->where('discharge_test', '<>', 1)->whereNotIn('patient.demographic.region',
-                      [
-                      'Arica y Parinacota',
-                      'Antofagasta',
-                      'Atacama',
-                      'Coquimbo',
-                      'Valparaíso',
-                      'Región del Libertador Gral. Bernardo O’Higgins',
-                      'Región del Maule',
-                      'Región del Biobío',
-                      'Región de la Araucanía',
-                      'Región de Los Ríos',
-                      'Región de Los Lagos',
-                      'Región Aisén del Gral. Carlos Ibáñez del Campo',
-                      'Región de Magallanes y de la Antártica Chilena',
-                      'Región Metropolitana de Santiago',
-                      'Región de Ñuble']);
-      $cases_other_region = SuspectCase::All();
-      $cases_other_region = $cases_other_region->whereIn('patient.demographic.region',
-                      [
-                      'Arica y Parinacota',
-                      'Antofagasta',
-                      'Atacama',
-                      'Coquimbo',
-                      'Valparaíso',
-                      'Región del Libertador Gral. Bernardo O’Higgins',
-                      'Región del Maule',
-                      'Región del Biobío',
-                      'Región de la Araucanía',
-                      'Región de Los Ríos',
-                      'Región de Los Lagos',
-                      'Región Aisén del Gral. Carlos Ibáñez del Campo',
-                      'Región de Magallanes y de la Antártica Chilena',
-                      'Región Metropolitana de Santiago',
-                      'Región de Ñuble']);
-      //
-      // $totales_dia = DB::table('suspect_cases')
-      //     ->select('sample_at', DB::raw('count(*) as total'))
-      //     ->where('pscr_sars_cov_2', 'positive')
-      //     ->groupBy('sample_at')
-      //     ->orderBy('sample_at')
-      //     ->get();
+        $patients = Patient::whereHas('suspectCases', function ($q) {
+            $q->where('pscr_sars_cov_2','positive');
+        })->with('suspectCases')->with('demographic')->get();
+
+        $patients = $patients->whereNotIn('demographic.region',
+                    [
+                    'Arica y Parinacota',
+                    'Antofagasta',
+                    'Atacama',
+                    'Coquimbo',
+                    'Valparaíso',
+                    'Región del Libertador Gral. Bernardo O’Higgins',
+                    'Región del Maule',
+                    'Región del Biobío',
+                    'Región de la Araucanía',
+                    'Región de Los Ríos',
+                    'Región de Los Lagos',
+                    'Región Aisén del Gral. Carlos Ibáñez del Campo',
+                    'Región de Magallanes y de la Antártica Chilena',
+                    'Región Metropolitana de Santiago',
+                    'Región de Ñuble']);
+
+        /* Calculo de gráfico de evolución */
+        $begin = SuspectCase::where('pscr_sars_cov_2','positive')->orderBy('sample_at')->first()->sample_at;
+        $end   = SuspectCase::where('pscr_sars_cov_2','positive')->orderByDesc('sample_at')->first()->sample_at;
+
+        for ($i = $begin; $i <= $end; $i->modify('+1 day')) {
+            $casos['Region'][$i->format("Y-m-d")] = 0;
+            $casos['Alto Hospicio'][$i->format("Y-m-d")] = 0;
+            $casos['Iquique'][$i->format("Y-m-d")] = 0;
+            $casos['Pica'][$i->format("Y-m-d")] = 0;
+            $casos['Pozo Almonte'][$i->format("Y-m-d")] = 0;
+            $casos['Huara'][$i->format("Y-m-d")] = 0;
+            $casos['Camiña'][$i->format("Y-m-d")] = 0;
+        }
+
+        foreach($patients as $patient) {
+            $casos['Region'][$patient->suspectCases->where('pscr_sars_cov_2','positive')->first()->sample_at->format('Y-m-d')] += 1;
+            if($patient->demographic and $patient->demographic->commune) {
+                $casos[$patient->demographic->commune][$patient->suspectCases->where('pscr_sars_cov_2','positive')->first()->sample_at->format('Y-m-d')] += 1;
+            }
+        }
+
+        foreach ($casos as $nombre_comuna => $comuna) {
+            $acumulado = 0;
+            foreach($comuna as  $dia => $valor) {
+                $acumulado += $valor;
+                $evolucion[$nombre_comuna][$dia] = $acumulado;
+            }
+        }
+        /* Fin de calculo de evolución */
 
 
-      // $begin = new \DateTime($totales_dia->first()->sample_at);
-      // $end   = new \DateTime($totales_dia->last()->sample_at);
+        /* Exámenes */
+        $exams['total'] = SuspectCase::all()->count();
+        $exams['positives'] = SuspectCase::where('pscr_sars_cov_2','positive')->get()->count();
+        $exams['negatives'] = SuspectCase::where('pscr_sars_cov_2','negative')->get()->count();
+        $exams['pending'] = SuspectCase::where('pscr_sars_cov_2','pending')->get()->count();
+        $exams['undetermined'] = SuspectCase::where('pscr_sars_cov_2','undetermined')->get()->count();
+        $exams['rejected'] = SuspectCase::where('pscr_sars_cov_2','rejected')->get()->count();
 
-      $begin = SuspectCase::where('pscr_sars_cov_2','positive')->orderBy('sample_at')->first()->sample_at;
-      $end   = SuspectCase::where('pscr_sars_cov_2','positive')->orderByDesc('sample_at')->first()->sample_at;
+        /* Ventiladores */
+        $ventilator = Ventilator::first();
 
-      for ($i = $begin; $i <= $end; $i->modify('+1 day')) {
-          $evolucion['Region'][$i->format("Y-m-d")] = 0;
-          $evolucion['Alto Hospicio'][$i->format("Y-m-d")] = 0;
-          $evolucion['Iquique'][$i->format("Y-m-d")] = 0;
-          $evolucion['Pica'][$i->format("Y-m-d")] = 0;
-          $evolucion['Pozo Almonte'][$i->format("Y-m-d")] = 0;
-          $evolucion['Huara'][$i->format("Y-m-d")] = 0;
-          $evolucion['Camiña'][$i->format("Y-m-d")] = 0;
-      }
+        //echo '<pre>'; print_r($patients->where('status','Hospitalizado UCI')->count()); die();
+        //echo '<pre>'; print_r($evolucion); die();
+        $data = view('lab.suspect_cases.reports.positives', compact('patients','evolucion','ventilator','residences','bookings','exams'))->render();;
 
-      foreach($patients as $patient) {
-          $evolucion['Region'][$patient->suspectCases->where('pscr_sars_cov_2','positive')->first()->sample_at->format('Y-m-d')] += 1;
-          if($patient->demographic) {
-              $evolucion[$patient->demographic->commune][$patient->suspectCases->where('pscr_sars_cov_2','positive')->first()->sample_at->format('Y-m-d')] += 1;
-          }
-      }
-
-
-      // foreach ($totales_dia as $dia) {
-      //     list($fecha, $hora) = explode(' ', $dia->sample_at);
-      //     $evolucion[$fecha] = $dia->total;
-      // }
-
-      // echo '<pre>';
-      // print_r($evolucion);
-      // die();
-
-
-      foreach ($evolucion as $nombre_comuna => $comuna) {
-          $acumulado = 0;
-          foreach($comuna as  $dia => $valor) {
-              $acumulado += $valor;
-              $evo[$nombre_comuna][$dia] = $acumulado;
-          }
-      }
-      $evolucion = $evo;
-
-      $data = view('lab.suspect_cases.report', compact('patients', 'cases', 'cases_other_region', 'evolucion'))->render();
-
-      $reportBackup = new ReportBackup2();
-      $reportBackup->data = trim(preg_replace('/\r\n/', ' ', $data));
-      $reportBackup->save();
+        $reportBackup = new ReportBackup2();
+        $reportBackup->data = $data;/// trim(preg_replace('/\r\n/', ' ', ));
+        $reportBackup->save();
     }
 }
