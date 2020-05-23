@@ -85,6 +85,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::put('/{covid19}/addresult', 'Covid19Controller@addresult')->name('addresult');
             Route::delete('/{covid19}', 'Covid19Controller@destroy')->name('destroy');
             Route::get('/download/{storage}/{file?}', 'Covid19Controller@download')->name('download');
+            Route::get('/export', 'Covid19Controller@export')->name('export');
         });
     });
     Route::prefix('suspect_cases')->name('suspect_cases.')->group(function () {
