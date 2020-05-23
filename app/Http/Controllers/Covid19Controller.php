@@ -129,4 +129,70 @@ class Covid19Controller extends Controller
     public function download($storage, $file) {
         return Storage::download($storage.'/'.$file, 'resultado.pdf');
     }
+
+    public function export()
+    {
+        $headers = array(
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=examenes.csv",
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        );
+
+        $filas = Covid19::all();
+
+        $columnas = array(
+            'ID',
+            'Identificador',
+            'Nombre',
+            'Apellido Paterno',
+            'Apellido Materno',
+            'Genero',
+            'Fecha Nacimiento',
+            'Telefono',
+            'Dirección',
+            'Comuna',
+            'Region',
+            'Email',
+            'Origen',
+            'Tipo de muestra',
+            'Fecha Muestra',
+            'Fecha de Recepción',
+            'Fecha de Resultado',
+            'Resultado'
+        );
+
+        $callback = function() use ($filas, $columnas)
+        {
+            $file = fopen('php://output', 'w');
+            fputs($file, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
+            fputcsv($file, $columnas,';');
+
+            foreach($filas as $fila) {
+                fputcsv($file, array(
+                    $fila->identifier,
+                    $fila->run,
+                    $fila->name,
+                    $fila->fathers_family,
+                    $fila->mothers_family,
+                    $fila->gender,
+                    $fila->birthday->format('d-m-Y'),
+                    $fila->telephone,
+                    $fila->address,
+                    $fila->commune,
+                    $fila->origin_commune,
+                    $fila->email,
+                    $fila->origin,
+                    $fila->sample_type,
+                    $fila->sample_at,
+                    $fila->reception_at,
+                    $fila->result_at,
+                    $fila->result
+                ),';');
+            }
+            fclose($file);
+        };
+        return response()->stream($callback, 200, $headers);
+    }
 }

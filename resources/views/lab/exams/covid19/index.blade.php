@@ -43,7 +43,7 @@
 
     </div>
     <div class="col-12 col-md-1">
-        <a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar</a>
+        <a class="btn btn-outline-success btn-sm" href="{{ route('lab.exams.covid19.export' )}}">Descargar</a>
     </div>
 </div>
 
@@ -57,6 +57,7 @@
             <th>Apellido Materno</th>
             <th>Origen</th>
             <th>Fecha Muestra</th>
+            <th>Fecha Recepción</th>
             <th>Fecha Resultado</th>
             <th nowrap>Resultado</th>
         </tr>
@@ -75,6 +76,7 @@
             <td nowrap>{{ $covid19->mothers_family }}</td>
             <td nowrap>{{ $covid19->origin }}</td>
             <td nowrap class="small">{{ $covid19->sample_at }}</td>
+            <td nowrap class="small">{{ ($covid19->reception_at) ? $covid19->reception_at->format('Y-m-d') : '' }}</td>
             <td nowrap class="small">{{ $covid19->result_at }}</td>
             <td nowrap>
                 @if($covid19->file)
@@ -96,17 +98,6 @@
 
 @section('custom_js')
 <script type="text/javascript">
-$( "main" ).removeClass( "container" );
-
-function exportF(elem) {
-    var table = document.getElementById("examenes");
-    var html = table.outerHTML;
-    var html_no_links = html.replace(/<a[^>]*>|<\/a>/g, "");//remove if u want links in your table
-    var url = 'data:application/vnd.ms-excel,' + escape(html_no_links); // Set your html table into url
-    elem.setAttribute("href", url);
-    elem.setAttribute("download", "examenes.xls"); // Choose the file name
-    return false;
-}
-
+    $( "main" ).removeClass( "container" );
 </script>
 @endsection
