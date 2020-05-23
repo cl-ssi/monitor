@@ -66,6 +66,7 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
     Route::get('/{patient}/edit', 'PatientController@edit')->name('edit')->middleware('can:Patient: edit');
     Route::put('/{patient}', 'PatientController@update')->name('update')->middleware('can:Patient: edit');
     Route::delete('/{patient}', 'PatientController@destroy')->name('destroy')->middleware('can:Patient: delete');
+    Route::get('/export', 'PatientController@export')->name('export');
 });
 
 Route::resource('epp','EppController')->middleware('auth');
