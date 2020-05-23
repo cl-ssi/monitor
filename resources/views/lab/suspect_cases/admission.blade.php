@@ -46,19 +46,19 @@
 
     <div class="form-row">
         <fieldset class="form-group col-12 col-md-4">
-            <label for="for_name">Nombres (*)</label>
+            <label for="for_name">Nombres *</label>
             <input type="text" class="form-control" id="for_name" name="name"
                 style="text-transform: uppercase;" required>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-3">
-            <label for="for_fathers_family">Apellido Paterno (*)</label>
+            <label for="for_fathers_family">Apellido Paterno *</label>
             <input type="text" class="form-control" id="for_fathers_family"
                 name="fathers_family" style="text-transform: uppercase;" required>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-3">
-            <label for="for_mothers_family">Apellido Materno (*)</label>
+            <label for="for_mothers_family">Apellido Materno *</label>
             <input type="text" class="form-control" id="for_mothers_family"
                 name="mothers_family" style="text-transform: uppercase;" required>
         </fieldset>
@@ -90,7 +90,7 @@
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
-            <label for="for_establishment_id">Establecimiento</label>
+            <label for="for_establishment_id">Establecimiento *</label>
             <select name="establishment_id" id="for_establishment_id" class="form-control" required>
                 <option value=""></option>
                 @foreach($establishments as $establishment)
@@ -99,7 +99,7 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
+        {{-- <fieldset class="form-group col-6 col-md-2">
             <label for="for_origin">Origen</label>
             <select name="origin" id="for_origin" class="form-control">
                 <option value=""></option>
@@ -107,7 +107,7 @@
                     <option value="{{ $sampleOrigin->name }}">{{ $sampleOrigin->alias }}</option>
                 @endforeach
             </select>
-        </fieldset>
+        </fieldset> --}}
 
         <fieldset class="form-group col-6 col-md-1">
             <label for="for_age">Edad</label>

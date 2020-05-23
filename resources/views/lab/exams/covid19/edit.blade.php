@@ -42,25 +42,26 @@
     <div class="form-row">
 
         <fieldset class="form-group col-12 col-md-3">
-            <label for="for_result_at">Fecha resultado</label>
+            <label for="for_result_at">Fecha resultado *</label>
             <input type="datetime-local" class="form-control" name="result_at" id="for_result_at"
                 value="{{ ($covid19->result_at) ? $covid19->result_at->format('Y-m-d\TH:i:s') : date('Y-m-d\TH:i:s') }}" required>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-2">
-            <label for="for_result">Resultado</label>
+            <label for="for_result">Resultado *</label>
             <select name="result" id="for_result" class="form-control" required>
                 <option value=""></option>
-                <option value="positive" {{ ($covid19->result == 'positive') ? 'selected' : '' }}>Positivo</option>
-                <option value="negative" {{ ($covid19->result == 'negative') ? 'selected' : '' }}>Negativo</option>
-                <option value="undetermined" {{ ($covid19->result == 'undetermined') ? 'selected' : '' }}>Indeterminado</option>
+                <option value="Positivo" {{ ($covid19->result == 'Positivo') ? 'selected' : '' }}>Positivo</option>
+                <option value="Negativo" {{ ($covid19->result == 'Negativo') ? 'selected' : '' }}>Negativo</option>
+                <option value="Indeterminado" {{ ($covid19->result == 'Indeterminado') ? 'selected' : '' }}>Indeterminado</option>
+                <option value="Rechazado" {{ ($covid19->result == 'Rechazado') ? 'selected' : '' }}>Rechazado</option>
             </select>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_file">Archivo</label>
             <div class="custom-file">
-                <input type="file" name="file" class="custom-file-input" id="customFileLang" lang="es" required>
+                <input type="file" name="file" class="custom-file-input" id="customFileLang" lang="es">
                 <label class="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
             </div>
         </fieldset>

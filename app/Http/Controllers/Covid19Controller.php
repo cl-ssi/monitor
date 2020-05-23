@@ -105,7 +105,9 @@ class Covid19Controller extends Controller
         $covid19->fill($request->all());
         $covid19->result_at = date('Y-m-d H:i:s');
         $covid19->validator_id = Auth::id();
-        $covid19->file = $request->file('file')->storeAs('external_results',$covid19->id);
+        if($request->file('file')) {
+            $covid19->file = $request->file('file')->storeAs('external_results',$covid19->id);
+        }
         $covid19->save();
 
         session()->flash('info', 'El resultado ha sido cargado a muestra: '.$covid19->id);

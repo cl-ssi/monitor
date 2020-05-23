@@ -10,6 +10,7 @@ use App\File;
 use App\SanitaryResidence\Residence;
 use App\SanitaryResidence\Booking;
 use Carbon\Carbon;
+use App\Lab\Exam\Covid19;
 
 class SuspectCaseReportController extends Controller
 {
@@ -146,12 +147,14 @@ class SuspectCaseReportController extends Controller
         $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $to = date("Y-m-d 20:59:59");
 
+        $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
+        
         $cases = SuspectCase::where('laboratory_id',$cod_lab)
                 ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
                 ->whereNull('external_laboratory')
                 ->get()
                 ->sortByDesc('pscr_sars_cov_2_at');
-        return view('lab.suspect_cases.reports.minsal', compact('cases', 'cod_lab'));
+        return view('lab.suspect_cases.reports.minsal', compact('cases', 'cod_lab','externos'));
     }
 
 

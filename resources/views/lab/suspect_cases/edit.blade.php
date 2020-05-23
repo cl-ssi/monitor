@@ -37,7 +37,7 @@
             <select name="establishment_id" id="for_establishment_id" class="form-control">
                 <option value=""></option>
                 @foreach($establishments as $establishment)
-                    <option value="{{ $establishment->id }}">{{ $establishment->name }}</option>
+                    <option value="{{ $establishment->id }}" {{ ($establishment->id == $suspectCase->establishment_id)?'selected':'' }}>{{ $establishment->name }}</option>
                 @endforeach
             </select>
         </fieldset>
@@ -63,7 +63,7 @@
         <fieldset class="form-group col-4 col-md-2">
             <label for="for_run_medic">Run Médico Solicitante *</label>
             <input type="text" class="form-control" name="run_medic" id="for_run_medic"
-                required value="{{ $suspectCase->run_medic }}">
+                value="{{ $suspectCase->run_medic }}">
         </fieldset>
 
 

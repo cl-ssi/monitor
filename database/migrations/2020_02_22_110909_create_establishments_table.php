@@ -16,7 +16,8 @@ class CreateEstablishmentsTable extends Migration
       Schema::create('communes', function (Blueprint $table) {
           $table->increments('id');
           $table->string('name');
-          
+          $table->integer('code_deis');
+
           $table->timestamps();
           $table->softDeletes();
       });
@@ -24,8 +25,15 @@ class CreateEstablishmentsTable extends Migration
       Schema::create('establishments', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->enum('type',['HOSPITAL','CESFAM','CECOSF','PSR','CGR','SAPU','COSAM','PRAIS']);
-            $table->string('deis');
+            // $table->enum('type',['HOSPITAL','CESFAM','CECOSF','PSR','CGR','SAPU','COSAM','PRAIS']);
+            // $table->string('deis');
+            $table->string('alias');
+            $table->string('type');
+            $table->string('code_deis');
+            $table->string('service');
+            $table->string('dependency');
+            $table->string('commune');
+            $table->string('commune_code_deis');
             $table->unsignedInteger('commune_id');
 
             $table->foreign('commune_id')->references('id')->on('communes');
