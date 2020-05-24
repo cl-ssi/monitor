@@ -95,6 +95,30 @@
             </tbody>
         </table>
 
+        <table class="table table-sm table-bordered">
+            <thead>
+                <tr class="table-active">
+                    <th></th>
+                    <th class="text-center">Hombres</th>
+                    <th class="text-center">Mujeres</th>
+                    <th class="text-center">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Fallecidos</th>
+                    <td class="text-right">
+                        {{ $fallecido_male = $patients->where('gender','male')->where('status','Fallecido')->count() }}
+                    </td>
+                    <td class="text-right">
+                        {{ $fallecido_female = $patients->where('gender','female')->where('status','Fallecido')->count() }}
+                    </td>
+                    <th class="text-right">
+                        {{ $fallecido_male + $fallecido_female}}
+                    </th>
+                </tr>
+            </tbody>
+        </table>
 
 
         <table class="table table-sm table-bordered">

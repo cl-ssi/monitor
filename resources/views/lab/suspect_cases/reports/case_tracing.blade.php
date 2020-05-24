@@ -74,7 +74,13 @@
     <tbody>
         @php $ct = $patients->count(); @endphp
         @foreach($patients->reverse() as $patient)
-            <tr class="{{ ($patient->suspectCases->first()->discharged_at) ? 'alert-success': '' }}">
+            <tr class="
+            @switch($patient->status)
+                @case ('Alta') alert-success @break
+                @case ('Fallecido') alert-danger @break
+                @case ('Hospitalizado UCI') alert-warning @break
+            @endswitch
+            ">
                 <td>{{ $ct-- }}</td>
                 <td nowrap>
                     @can('Patient: edit')
