@@ -171,7 +171,7 @@ class SuspectCaseController extends Controller
     //
     // dd($response->getBody()->getContents());
 
-        $establishments = Establishment::orderBy('name','ASC')->get();
+        $establishments = Establishment::orderBy('alias','ASC')->get();
 
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
         return view('lab.suspect_cases.admission',compact('sampleOrigins','establishments'));
@@ -412,7 +412,7 @@ class SuspectCaseController extends Controller
      */
     public function edit(SuspectCase $suspectCase)
     {
-        $establishments = Establishment::orderBy('name','ASC')->get();
+        $establishments = Establishment::orderBy('alias','ASC')->get();
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
         return view('lab.suspect_cases.edit', compact('suspectCase','sampleOrigins','establishments'));
     }
