@@ -223,7 +223,10 @@ class PatientController extends Controller
             'Apellido Paterno',
             'Apellido Materno',
             'Genero',
-            'Fecha Nacimiento'
+            'Fecha Nacimiento',
+            'Positivo',
+            'Coumuna',
+            'Direccion'
         );
 
         $callback = function() use ($filas, $columnas)
@@ -242,7 +245,10 @@ class PatientController extends Controller
                     $fila->fathers_family,
                     $fila->mothers_family,
                     $fila->gender,
-                    ($fila->birthday)?$fila->birthday->format('d-m-Y'):''
+                    ($fila->birthday)?$fila->birthday->format('d-m-Y'):'',
+                    ($fila->suspectCases->where('pscr_sars_cov_2','positive')->first())?'Si':'No',
+                    ($fila->demographic)?$fila->demographic->commune:'',
+                    ($fila->demographic)?$fila->demographic->address.' '.$fila->demographic->number:''
                 ),';');
             }
             fclose($file);
