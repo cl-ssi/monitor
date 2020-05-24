@@ -142,7 +142,10 @@
                 <td nowrap>{{ ($patient->suspectCases->first()->result_ifd_at) ? $patient->suspectCases->first()->result_ifd_at->format('Y-m-d') : '' }}</td>
                 <td nowrap>{{ $patient->suspectCases->first()->result_ifd }}</td>
 
-                <td nowrap>{{ $patient->suspectCases->first()->origin }}</td>
+                <td nowrap>
+                    {{ ($patient->suspectCases->first()->establishment) ? $patient->suspectCases->first()->establishment->alias : '' }}
+                    - {{ $patient->suspectCases->first()->origin }}
+                </td>
 
                 <td nowrap>{{ $patient->suspectCases->first()->epidemiological_week }}</td>
                 <td nowrap>{{ $patient->suspectCases->first()->epivigila }}</td>

@@ -94,13 +94,13 @@
             <select name="establishment_id" id="for_establishment_id" class="form-control" required>
                 <option value=""></option>
                 @foreach($establishments as $establishment)
-                    <option value="{{ $establishment->id }}">{{ $establishment->name }}</option>
+                    <option value="{{ $establishment->id }}">{{ $establishment->alias }}</option>
                 @endforeach
             </select>
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
-            <label for="for_origin">Origen</label>
+            <label for="for_origin">Estab. Detalle (Opcional)</label>
             <select name="origin" id="for_origin" class="form-control">
                 <option value=""></option>
                 @foreach($sampleOrigins as $sampleOrigin)
