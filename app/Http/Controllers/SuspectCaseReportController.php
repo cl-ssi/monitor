@@ -56,6 +56,7 @@ class SuspectCaseReportController extends Controller
             $casos['Pozo Almonte'][$i->format("Y-m-d")] = 0;
             $casos['Huara'][$i->format("Y-m-d")] = 0;
             $casos['Camiña'][$i->format("Y-m-d")] = 0;
+            $casos['Colchane'][$i->format("Y-m-d")] = 0;
         }
 
         foreach($patients as $patient) {
@@ -148,7 +149,7 @@ class SuspectCaseReportController extends Controller
         $to = date("Y-m-d 20:59:59");
 
         $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
-        
+
         $cases = SuspectCase::where('laboratory_id',$cod_lab)
                 ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
                 ->whereNull('external_laboratory')
