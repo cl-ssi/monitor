@@ -52,7 +52,7 @@
             <th>°</th>
             <th></th>
             <th>Fecha muestra</th>
-            <th>Origen</th>
+            <th>Establecimiento</th>
             <th>Nombre</th>
             <th>Identificador</th>
             <th>Edad</th>
@@ -77,7 +77,7 @@
                 @endif
             </td>
             <td nowrap class="small">@date($case->sample_at)</td>
-            <td>{{ $case->origin }}</td>
+            <td>{{ ($case->establishment) ? $case->establishment->name : '' }}</td>
             <td>
                 @if($case->patient)
                 <a class="link" href="{{ route('patients.edit', $case->patient) }}">
