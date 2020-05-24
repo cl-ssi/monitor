@@ -9,7 +9,7 @@
                     <h4>Bienvenido al sistema de monitoreo del Servicio de Salud</h4>
                 </div>
 
-                <div class="card-body text-center" style="background-color: #DADEDF;">
+                <div class="card-body text-center" style="background-color: #F0F0F0;">
 
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
