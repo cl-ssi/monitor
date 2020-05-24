@@ -46,7 +46,7 @@
     </thead>
     <tbody id="tablePatients">
         @foreach($patients as $patient)
-        <tr class="{{ ($patient->suspectCases->where('pscr_sars_cov_2','positive')->first())?'alert-danger':'' }}">
+        <tr {{-- class="{{ ($patient->suspectCases->where('pscr_sars_cov_2','positive')->first())?'alert-danger':'' }}" --}}>
             <td>
                 @canany(['Patient: edit','Patient: demographic edit'])
                     <a href="{{ route('patients.edit', $patient) }}">
@@ -54,7 +54,7 @@
                     </a>
                 @endcan
             </td>
-            <td class="text-center">{{ $patient->identifier }}</td>
+            <td class="text-center" nowrap>{{ $patient->identifier }}</td>
             <td>
                 {{ $patient->fullName }}
             </td>

@@ -119,20 +119,61 @@
 </form>
 
 @can('Patient: delete')
-<form method="POST" class="form-horizontal" action="{{ route('patients.destroy',$patient) }}">
-    @csrf
-    @method('DELETE')
-    <button type="submit" class="btn btn-danger float-right">Borrar</button>
+    @if($patient->suspectCases->count() == 0)
+    <form method="POST" class="form-horizontal" action="{{ route('patients.destroy',$patient) }}">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger float-right">Borrar</button>
 
-</form>
+    </form>
+    @else
+        <button class="btn btn-outline-danger float-right" disabled>No es posible eliminar, tiene examenes asociados</button>
+    @endif
+@endcan
+
+
+@can('SuspectCase: list')
+
+    <h4 class="mt-4">Examenes realizados</h4>
+
+    <table class="table table-sm table-bordered small mb-4 mt-4">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Establecimiento</th>
+                <th>Fecha muestra</th>
+                <th>Fecha resultado</th>
+                <th>Resultado</th>
+                <th>Epivigila</th>
+                <th>Observacion</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($patient->suspectCases as $case)
+            <tr>
+                <td>
+                    <a href="{{ route('lab.suspect_cases.edit', $case )}}">
+                    {{ $case->id }}
+                    </a>
+                </td>
+                <td>{{ ($case->establishment) ? $case->establishment->name : '' }}</td>
+                <td>{{ $case->sample_at }}</td>
+                <td>{{ $case->pscr_sars_cov_2_at }}</td>
+                <td>{{ $case->covid19 }}</td>
+                <td>{{ $case->epivigila }}</td>
+                <td>{{ $case->observation }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+
 @endcan
 
 @can('Admin')
+
+<h4 class="mt-3">Historial de cambios</h4>
 <table class="table table-sm small text-muted mt-3">
     <thead>
-        <tr>
-            <th colspan="4">Historial de cambios</th>
-        </tr>
         <tr>
             <th>Modelo</th>
             <th>Fecha</th>
