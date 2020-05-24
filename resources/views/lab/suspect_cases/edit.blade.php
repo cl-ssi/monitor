@@ -37,7 +37,7 @@
             <select name="establishment_id" id="for_establishment_id" class="form-control">
                 <option value=""></option>
                 @foreach($establishments as $establishment)
-                    <option value="{{ $establishment->id }}" {{ ($establishment->id == $suspectCase->establishment_id)?'selected':'' }}>{{ $establishment->name }}</option>
+                    <option value="{{ $establishment->id }}" {{ ($establishment->id == $suspectCase->establishment_id)?'selected':'' }}>{{ $establishment->alias }}</option>
                 @endforeach
             </select>
         </fieldset>

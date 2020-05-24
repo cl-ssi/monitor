@@ -97,7 +97,10 @@
                 @endcan
             </td>
             <td nowrap class="small">{{ (isset($case->sample_at))? $case->sample_at->format('Y-m-d'):'' }}</td>
-            <td>{{ $case->origin }}</td>
+            <td>
+                {{ ($case->establishment) ? $case->establishment->alias . ' - ': '' }}
+                {{ $case->origin }}
+            </td>
             <td>
                 @if($case->patient)
                 <a class="link" href="{{ route('patients.edit', $case->patient) }}">
