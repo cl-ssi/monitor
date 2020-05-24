@@ -78,7 +78,7 @@
                 name="sample_at" required min="{{ date('Y-m-d', strtotime("-2 week")) }}" max="{{ date('Y-m-d') }}">
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
+        <fieldset class="form-group col-6 col-md-3">
             <label for="for_sample_type">Tipo de Muestra *</label>
             <select name="sample_type" id="for_sample_type" class="form-control" required>
                 <option value=""></option>
@@ -89,7 +89,7 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
+        <fieldset class="form-group col-6 col-md-3">
             <label for="for_establishment_id">Establecimiento *</label>
             <select name="establishment_id" id="for_establishment_id" class="form-control" required>
                 <option value=""></option>
@@ -99,7 +99,7 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
+        <fieldset class="form-group col-6 col-md-3">
             <label for="for_origin">Estab. Detalle (Opcional)</label>
             <select name="origin" id="for_origin" class="form-control">
                 <option value=""></option>
@@ -114,17 +114,19 @@
             <input type="number" class="form-control" id="for_age" name="age">
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
-            <label for="for_run_medic">Run Médico Solicitante *</label>
-            <input type="text" class="form-control" name="run_medic" id="for_run_medic"
-                required placeholder="Ej: 12345678-9">
-        </fieldset>
-
-
 
     </div>
 
     <div class="form-row">
+
+        <fieldset class="form-group col-4 col-md-1">
+            <label for="for_symptoms">Sintomas</label>
+            <select name="symptoms" id="for_symptoms" class="form-control">
+                <option value=""></option>
+                <option value="Si">Si</option>
+                <option value="No">No</option>
+            </select>
+        </fieldset>
 
         <fieldset class="form-group col-6 col-md-1">
             <label for="for_gestation">Gestante *</label>
@@ -150,23 +152,14 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-2">
+        {{-- <fieldset class="form-group col-4 col-md-2">
             <label for="for_discharge_test">Test de salida</label>
             <select name="discharge_test" id="for_discharge_test" class="form-control">
                 <option value=""></option>
                 <option value="0">No</option>
                 <option value="1">Si</option>
             </select>
-        </fieldset>
-
-        <fieldset class="form-group col-4 col-md-1">
-            <label for="for_symptoms">Sintomas</label>
-            <select name="symptoms" id="for_symptoms" class="form-control">
-                <option value=""></option>
-                <option value="Si">Si</option>
-                <option value="No">No</option>
-            </select>
-        </fieldset>
+        </fieldset> --}}
 
 
         <!--fieldset class="form-group col-8 col-md-4">
@@ -192,18 +185,24 @@
 
     <div class="form-row">
 
-        <fieldset class="form-group col-md-8">
+        <fieldset class="form-group col-md-6">
             <label for="for_observation">Observación</label>
             <input type="text" class="form-control" name="observation"
                 id="for_observation">
         </fieldset>
-
 
         <fieldset class="form-group col-md-2">
             <label for="for_paho_flu">PAHO FLU</label>
             <input type="number" class="form-control" name="paho_flu"
                 id="for_paho_flu">
         </fieldset>
+
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_run_medic">Run Médico Solicitante *</label>
+            <input type="text" class="form-control" name="run_medic" id="for_run_medic"
+                required placeholder="Ej: 12345678-9">
+        </fieldset>
+
 
         <fieldset class="form-group col-md-2">
             <label for="for_epivigila">Epivigila *</label>

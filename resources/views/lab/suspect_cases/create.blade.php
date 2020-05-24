@@ -46,15 +46,15 @@
 
     <div class="form-row">
         <fieldset class="form-group col-12 col-md-4">
-            <label for="for_name">Nombres</label>
+            <label for="for_name">Nombres *</label>
             <input type="text" class="form-control" id="for_name" name="name"
-             style="text-transform: uppercase;">
+             style="text-transform: uppercase;" required>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-3">
-            <label for="for_fathers_family">Apellido Paterno</label>
+            <label for="for_fathers_family">Apellido Paterno *</label>
             <input type="text" class="form-control" id="for_fathers_family"
-                name="fathers_family" style="text-transform: uppercase;">
+                name="fathers_family" style="text-transform: uppercase;" required>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-3">
@@ -76,7 +76,7 @@
                 name="sample_at" required min="{{ date('Y-m-d', strtotime("-2 week")) }}" max="{{ date('Y-m-d') }}">
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
+        <fieldset class="form-group col-6 col-md-3">
             <label for="for_sample_type">Tipo de Muestra</label>
             <select name="sample_type" id="for_sample_type" class="form-control">
                 <option value=""></option>
@@ -87,9 +87,9 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
-            <label for="for_establishment_id">Establecimiento</label>
-            <select name="establishment_id" id="for_establishment_id" class="form-control">
+        <fieldset class="form-group col-6 col-md-3">
+            <label for="for_establishment_id">Establecimiento *</label>
+            <select name="establishment_id" id="for_establishment_id" class="form-control" required>
                 <option value=""></option>
                 @foreach($establishments as $establishment)
                     <option value="{{ $establishment->id }}">{{ $establishment->name }}</option>
@@ -97,8 +97,8 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
-            <label for="for_origin">Origen</label>
+        <fieldset class="form-group col-6 col-md-3">
+            <label for="for_origin">Estab. Detalle (Opcional)</label>
             <select name="origin" id="for_origin" class="form-control">
                 <option value=""></option>
                 @foreach($sampleOrigins as $sampleOrigin)
@@ -112,14 +112,6 @@
             <input type="number" class="form-control" id="for_age" name="age">
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-1">
-            <label for="for_symptoms">Sintomas</label>
-            <select name="symptoms" id="for_symptoms" class="form-control">
-                <option value=""></option>
-                <option value="Si">Si</option>
-                <option value="No">No</option>
-            </select>
-        </fieldset>
 
     </div>
 
@@ -200,10 +192,65 @@
             </select>
         </fieldset>
 
+        <fieldset class="form-group col-12 col-md-3">
+            <label for="for_file">Archivo</label>
+            <div class="custom-file">
+                <input type="file" name="forfile[]" class="custom-file-input" id="forfile" lang="es" multiple>
+                <label class="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
+            </div>
+        </fieldset>
+
+    </div>
+
+    <hr>
+
+    @endcan
+
+    <div class="form-row">
+
+        <fieldset class="form-group col-4 col-md-1">
+            <label for="for_symptoms">Sintomas</label>
+            <select name="symptoms" id="for_symptoms" class="form-control">
+                <option value=""></option>
+                <option value="Si">Si</option>
+                <option value="No">No</option>
+            </select>
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-1">
+            <label for="for_gestation">Gestante *</label>
+            <select name="gestation" id="for_gestation" class="form-control" required>
+                <option value=""></option>
+                <option value="0">No</option>
+                <option value="1">Si</option>
+            </select>
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_gestation_week">Semanas de gestación</label>
+            <input type="text" class="form-control" name="gestation_week"
+                id="for_gestation_week">
+        </fieldset>
+
+        <fieldset class="form-group col-4 col-md-2">
+            <label for="for_close_contact">Contacto estrecho</label>
+            <select name="close_contact" id="for_close_contact" class="form-control">
+                <option value=""></option>
+                <option value="0">No</option>
+                <option value="1">Si</option>
+            </select>
+        </fieldset>
+
 
     </div>
 
     <div class="form-row">
+
+        <fieldset class="form-group col-md-6">
+            <label for="for_observation">Observación</label>
+            <input type="text" class="form-control" name="observation"
+                id="for_observation">
+        </fieldset>
 
         <fieldset class="form-group col-md-2">
             <label for="for_paho_flu">PAHO FLU</label>
@@ -211,63 +258,22 @@
                 id="for_paho_flu">
         </fieldset>
 
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_run_medic">Run Médico Solicitante</label>
+            <input type="text" class="form-control" name="run_medic" id="for_run_medic"
+                placeholder="Ej: 12345678-9">
+        </fieldset>
+
+
         <fieldset class="form-group col-md-2">
             <label for="for_epivigila">Epivigila</label>
             <input type="number" class="form-control" id="for_epivigila"
                 name="epivigila">
         </fieldset>
 
-        <fieldset class="form-group col-md-2">
-            <label class="form-check-label" for="for_gestation">Gestante</label>
-            <br><br>
-            <input type="checkbox" class="form-check-input ml-3" name="gestation" id="for_gestation">
-
-        </fieldset>
-
-        <fieldset class="form-group col-md-2">
-            <label for="for_gestation_week">Semanas de gestación</label>
-            <input type="text" class="form-control" name="gestation_week"
-                id="for_gestation_week">
-        </fieldset>
-
-        <fieldset class="form-group col-8 col-md-4">
-            <label for="for_status">Estado</label>
-            <select name="status" id="for_status" class="form-control">
-                <option value=""></option>
-                <option value="Alta">Alta</option>
-                <option value="Ambulatorio">Ambulatorio (domiciliario)</option>
-                <option value="Fallecido">Fallecido</option>
-                <option value="Fugado">Fugado</option>
-                <option value="Hospitalizado Básico">Hospitalizado Básico</option>
-                <option value="Hospitalizado Medio">Hospitalizado Medio</option>
-                <option value="Hospitalizado UTI">Hospitalizado UTI</option>
-                <option value="Hospitalizado UCI">Hospitalizado UCI</option>
-                <option value="Residencia Sanitaria">Residencia Sanitaria</option>
-            </select>
-        </fieldset>
 
     </div>
 
-    <div class="form-row">
-
-        <fieldset class="form-group col-md-8">
-            <label for="for_observation">Observación</label>
-            <input type="text" class="form-control" name="observation"
-                id="for_observation">
-        </fieldset>
-
-    </div>
-
-    <div class="form-row">
-      <fieldset class="form-group col-5">
-          <label for="forFile">Adjuntar archivos</label>
-          <input type="file" class="form-control-file" id="forfile" name="forfile[]" multiple>
-      </fieldset>
-    </div>
-
-    <hr>
-
-    @endcan
 
     <button type="submit" class="btn btn-primary">Guardar</button>
 
@@ -282,6 +288,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src='{{asset("js/jquery.rut.chileno.js")}}'></script>
 <script type="text/javascript">
+
+$('input[type="file"]').change(function(e){
+    var fileName = e.target.files[0].name;
+    $('.custom-file-label').html(fileName);
+});
+
 jQuery(document).ready(function($){
     //obtiene digito verificador
     $('input[name=run]').keyup(function(e) {

@@ -295,9 +295,9 @@
         </select>
     </fieldset>
 
-    <fieldset class="form-group col-12 col-md-2">
+    <fieldset class="form-group col-12 col-md-3">
         <label for="regiones">Región *</label>
-        <select class="form-control" name="region" id="regiones" required></select>
+        <select class="form-control" name="region" id="regiones"></select>
     </fieldset>
 
     <fieldset class="form-group col-12 col-md-3">
@@ -305,7 +305,7 @@
         <select class="form-control" name="commune" id="comunas" required></select>
     </fieldset>
 
-    <fieldset class="form-group col-6 col-md-3">
+    <fieldset class="form-group col-6 col-md-2">
         <label for="for_latitude">Latitud</label>
         <input type="number" step="00.00000001" class="form-control" name="latitude" id="for_latitude">
     </fieldset>

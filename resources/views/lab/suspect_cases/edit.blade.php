@@ -21,7 +21,7 @@
                 name="sample_at" value="{{ (isset($suspectCase->sample_at))? $suspectCase->sample_at->format('Y-m-d'):'' }}">
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
+        <fieldset class="form-group col-6 col-md-3">
             <label for="for_sample_type">Tipo de Muestra</label>
             <select name="sample_type" id="for_sample_type" class="form-control">
                 <option value=""></option>
@@ -32,7 +32,7 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
+        <fieldset class="form-group col-6 col-md-3">
             <label for="for_establishment_id">Establecimiento</label>
             <select name="establishment_id" id="for_establishment_id" class="form-control">
                 <option value=""></option>
@@ -42,8 +42,8 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
-            <label for="for_origin">Origen</label>
+        <fieldset class="form-group col-6 col-md-3">
+            <label for="for_origin">Estab. Detalle (Opcional)</label>
             <select name="origin" id="for_origin" class="form-control">
                 <option value=""></option>
                 @foreach($sampleOrigins as $sampleOrigin)
@@ -59,13 +59,6 @@
             <input type="number" class="form-control" id="for_age" name="age"
                 value="{{ $suspectCase->age }}">
         </fieldset>
-
-        <fieldset class="form-group col-4 col-md-2">
-            <label for="for_run_medic">Run Médico Solicitante *</label>
-            <input type="text" class="form-control" name="run_medic" id="for_run_medic"
-                value="{{ $suspectCase->run_medic }}">
-        </fieldset>
-
 
     </div>
 
@@ -136,6 +129,21 @@
             </select>
         </fieldset>
 
+        <fieldset class="form-group col-1 col-md-2">
+            <label for="for_dumy"></label>
+            <p></p>
+        </fieldset>
+
+
+        <fieldset class="form-group col-4 col-md-3">
+            <label for="for_laboratory_id">Laboratorio local</label>
+            <select name="laboratory_id" id="for_laboratory_id" class="form-control">
+                <option value="1" {{ ($suspectCase->laboratory_id == 1)?'selected':'' }}>HETG</option>
+                <option value="2" {{ ($suspectCase->laboratory_id == 2)?'selected':'' }}>UNAP</option>
+                <option value="3" {{ ($suspectCase->laboratory_id == 3)?'selected':'' }}>BIOCLINIC</option>
+            </select>
+        </fieldset>
+
     </div>
 
     <div class="form-row">
@@ -177,23 +185,51 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-2">
-            <label for="for_laboratory_id">Laboratorio local</label>
-            <select name="laboratory_id" id="for_laboratory_id" class="form-control">
-                <option value="1" {{ ($suspectCase->laboratory_id == 1)?'selected':'' }}>HETG</option>
-                <option value="2" {{ ($suspectCase->laboratory_id == 2)?'selected':'' }}>UNAP</option>
-                <option value="3" {{ ($suspectCase->laboratory_id == 3)?'selected':'' }}>BIOCLINIC</option>
-            </select>
+
+        <fieldset class="form-group col-12 col-md-3">
+            <label for="for_file">Archivo</label>
+            <div class="custom-file">
+                <input type="file" name="forfile[]" class="custom-file-input" id="forfile" lang="es" multiple>
+                <label class="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
+            </div>
+            @if($suspectCase->files != null)
+                @foreach($suspectCase->files as $file)
+                    <a href="{{ route('lab.suspect_cases.download', $file->id) }}"
+                        target="_blank" data-toggle="tooltip" data-placement="top"
+                        data-original-title="{{ $file->name }}">Resultado <i class="fas fa-paperclip"></i>&nbsp
+                    </a>
+                    @can('SuspectCase: file delete')
+                     - <a href="{{ route('lab.suspect_cases.fileDelete', $file->id) }}" onclick="return confirm('Estás seguro Cesar?')">
+                        [ Borrar ]
+                    </a>
+                    @endcan
+                @endforeach
+            @endif
         </fieldset>
+
+        <div>
+
+        </div>
+
+
     </div>
 
     <hr>
 
     <div class="form-row">
 
+        <fieldset class="form-group col-4 col-md-1">
+            <label for="for_symptoms">Sintomas</label>
+            <select name="symptoms" id="for_symptoms" class="form-control">
+                <option value=""></option>
+                <option value="Si" {{ ($suspectCase->symptoms == 'Si') ? 'selected' : '' }}>Si</option>
+                <option value="No" {{ ($suspectCase->symptoms == 'No') ? 'selected' : '' }}>No</option>
+            </select>
+        </fieldset>
+
         <fieldset class="form-group col-2 col-md-1">
-            <label for="for_gestation">Gestante</label>
-            <select name="gestation" id="for_gestation" class="form-control">
+            <label for="for_gestation">Gestante *</label>
+            <select name="gestation" id="for_gestation" class="form-control" required>
                 <option value=""></option>
                 <option value="0" {{ ($suspectCase->gestation === 0) ? 'selected' : '' }}>No</option>
                 <option value="1" {{ ($suspectCase->gestation == 1) ? 'selected' : '' }}>Si</option>
@@ -207,7 +243,7 @@
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
-            <label for="for_close_contact">Contacto directo</label>
+            <label for="for_close_contact">Contacto estrecho</label>
             <select name="close_contact" id="for_close_contact" class="form-control">
                 <option value=""></option>
                 <option value="0" {{ ($suspectCase->close_contact === 0) ? 'selected' : '' }}>No</option>
@@ -215,23 +251,15 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
+        {{-- <fieldset class="form-group col-6 col-md-2">
             <label for="for_discharge_test">Test de salida</label>
             <select name="discharge_test" id="for_discharge_test" class="form-control">
                 <option value=""></option>
                 <option value="0" {{ ($suspectCase->discharge_test === 0) ? 'selected' : '' }}>No</option>
                 <option value="1" {{ ($suspectCase->discharge_test == 1) ? 'selected' : '' }}>Si</option>
             </select>
-        </fieldset>
+        </fieldset> --}}
 
-        <fieldset class="form-group col-4 col-md-1">
-            <label for="for_symptoms">Sintomas</label>
-            <select name="symptoms" id="for_symptoms" class="form-control">
-                <option value=""></option>
-                <option value="Si" {{ ($suspectCase->symptoms == 'Si') ? 'selected' : '' }}>Si</option>
-                <option value="No" {{ ($suspectCase->symptoms == 'No') ? 'selected' : '' }}>No</option>
-            </select>
-        </fieldset>
 
         <fieldset class="form-group col-8 col-md-4">
             <label for="for_status">Estado</label>
@@ -247,7 +275,7 @@
 
     <div class="form-row">
 
-        <fieldset class="form-group col-12 col-md-8">
+        <fieldset class="form-group col-12 col-md-6">
             <label for="for_observation">Observación</label>
             <input type="text" class="form-control" name="observation"
                 id="for_observation" value="{{ $suspectCase->observation }}">
@@ -259,35 +287,17 @@
                 value="{{ $suspectCase->paho_flu }}">
         </fieldset>
 
+        <fieldset class="form-group col-4 col-md-2">
+            <label for="for_run_medic">Run Médico Solicitante *</label>
+            <input type="text" class="form-control" name="run_medic" id="for_run_medic"
+                value="{{ $suspectCase->run_medic }}">
+        </fieldset>
+
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_epivigila">Epivigila *</label>
             <input type="number" class="form-control" id="for_epivigila"
                 name="epivigila" value="{{ $suspectCase->epivigila }}">
         </fieldset>
-    </div>
-
-    <div>
-      @if($suspectCase->files != null)
-          @foreach($suspectCase->files as $file)
-              <a href="{{ route('lab.suspect_cases.download', $file->id) }}"
-                  target="_blank" data-toggle="tooltip" data-placement="top"
-                  data-original-title="{{ $file->name }}">
-                  {{$file->name}}<i class="fas fa-paperclip"></i>&nbsp
-              </a>
-              @can('SuspectCase: file delete')
-              <a href="{{ route('lab.suspect_cases.fileDelete', $file->id) }}" onclick="return confirm('Estás seguro Cesar?')">
-                  [ Borrar archivo ]
-              </a>
-              @endcan
-          @endforeach
-      @endif
-    </div>
-
-    <div class="form-row">
-      <fieldset class="form-group col-5">
-          <label for="forFile">Adjuntar archivos</label>
-          <input type="file" class="form-control-file" id="forfile" name="forfile[]" multiple>
-      </fieldset>
     </div>
 
     <hr>
