@@ -64,7 +64,7 @@ class CreateSuspectCasesTable extends Migration
             $table->unsignedBigInteger('patient_id');
             $table->unsignedBigInteger('laboratory_id')->nullable();
 
-            $table->unsignedInteger('establishment_id');
+            $table->unsignedBigInteger('establishment_id');
 
             $table->timestamps();
             $table->softDeletes();

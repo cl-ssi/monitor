@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Laboratory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -28,8 +29,9 @@ class UserController extends Controller
      */
     public function create()
     {
+        $laboratories = Laboratory::where('external',0)->orderBy('name')->get();
         $permissions = Permission::OrderBy('name')->get();
-        return view('users.create', compact('permissions'));
+        return view('users.create', compact('permissions','laboratories'));
     }
 
     /**
@@ -70,8 +72,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $laboratories = Laboratory::where('external',0)->orderBy('name')->get();
         $permissions = Permission::OrderBy('name')->get();
-        return view('users.edit', compact('user','permissions'));
+        return view('users.edit', compact('user','permissions','laboratories'));
     }
 
     /**

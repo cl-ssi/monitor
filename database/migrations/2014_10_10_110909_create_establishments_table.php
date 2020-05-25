@@ -14,7 +14,7 @@ class CreateEstablishmentsTable extends Migration
     public function up()
     {
       Schema::create('communes', function (Blueprint $table) {
-          $table->increments('id');
+          $table->id('id');
           $table->string('name');
           $table->integer('code_deis');
 
@@ -23,7 +23,7 @@ class CreateEstablishmentsTable extends Migration
       });
 
       Schema::create('establishments', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id('id');
             $table->string('name');
             // $table->enum('type',['HOSPITAL','CESFAM','CECOSF','PSR','CGR','SAPU','COSAM','PRAIS']);
             // $table->string('deis');
@@ -34,7 +34,7 @@ class CreateEstablishmentsTable extends Migration
             $table->string('dependency');
             $table->string('commune');
             $table->string('commune_code_deis');
-            $table->unsignedInteger('commune_id');
+            $table->unsignedBigInteger('commune_id');
 
             $table->foreign('commune_id')->references('id')->on('communes');
 

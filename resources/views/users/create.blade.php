@@ -11,9 +11,9 @@
     @method('POST')
 
     <div class="form-row">
-      <fieldset class="form-group col">
+      <fieldset class="form-group col-2">
           <label for="for_run">Run</label>
-          <input type="text" class="form-control" name="run" id="for_run">
+          <input type="number" class="form-control" name="run" id="for_run">
       </fieldset>
 
       <fieldset class="form-group col-1">
@@ -32,22 +32,20 @@
           <input type="text" class="form-control" name="email" id="for_email"
               required>
       </fieldset>
-    </div>
 
-    <div class="form-row">
         <fieldset class="form-group col">
             <label for="for_password">Clave</label>
             <input type="password" class="form-control" name="password" id="for_password"
                 required>
         </fieldset>
 
-        <fieldset class="form-group col">
+        <fieldset class="form-group col-2">
             <label for="for_laboratory_id">Laboratorio</label>
             <select name="laboratory_id" id="for_laboratory_id" class="form-control">
                 <option value=""></option>
-                <option value="1">HETG</option>
-                <option value="2">UNAP</option>
-                <option value="3">BIOCLINIC</option>
+                @foreach($laboratories as $lab)
+                <option value="{{ $lab->id }}">{{ $lab->name }}</option>
+                @endforeach
             </select>
         </fieldset>
 
