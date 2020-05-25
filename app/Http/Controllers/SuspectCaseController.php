@@ -10,6 +10,7 @@ use App\Establishment;
 use App\Log;
 use App\File;
 use App\User;
+use App\Laboratory;
 use App\Commune;
 use App\ReportBackup;
 use App\SampleOrigin;
@@ -83,9 +84,10 @@ class SuspectCaseController extends Controller
      */
     public function create()
     {
+        $external_labs = Laboratory::where('external',1)->orderBy('name')->get();
         $establishments = Establishment::orderBy('name','ASC')->get();
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
-        return view('lab.suspect_cases.create',compact('sampleOrigins','establishments'));
+        return view('lab.suspect_cases.create',compact('sampleOrigins','establishments','external_labs'));
     }
 
     /**
@@ -224,7 +226,7 @@ class SuspectCaseController extends Controller
     public function storeAdmission(Request $request)
     {
         // ########## webservice MINSAL ##########
-        // 
+        //
         // //obtiene proximo id suspect case
         // $NextsuspectCase = SuspectCase::max('id');
         // $NextsuspectCase += 1;
@@ -382,9 +384,12 @@ class SuspectCaseController extends Controller
      */
     public function edit(SuspectCase $suspectCase)
     {
+        $external_labs = Laboratory::where('external',1)->orderBy('name')->get();
+        $local_labs = Laboratory::where('external',0)->orderBy('name')->get();
         $establishments = Establishment::orderBy('alias','ASC')->get();
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
-        return view('lab.suspect_cases.edit', compact('suspectCase','sampleOrigins','establishments'));
+        return view('lab.suspect_cases.edit', compact('suspectCase','sampleOrigins',
+            'establishments','external_labs','local_labs'));
     }
 
     /**
