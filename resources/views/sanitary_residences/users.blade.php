@@ -44,7 +44,7 @@
         <tr>
             <th>Usuario</th>
             <th>Residencia</th>
-            <th></th>
+            <th>Eliminar</th>
         </tr>
     </thead>
     <tbody>
@@ -53,7 +53,13 @@
         <tr>
             <td>{{ $user->name }}</td>
             <td>{{ $residence->name }}</td>
-            <td></td>
+            <td>
+                <form method="POST" class="form-horizontal" action="#">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger float-left" onclick="return confirm('¿Está seguro que desea eliminar los permisos del usuario: {{ $user->name }} para la residencia sanitaria: {{ $residence->name }}  ')"><i class="fas fa-trash-alt"></i></button>
+                </form>
+            </td>
         </tr>
         @endforeach
         @endforeach
