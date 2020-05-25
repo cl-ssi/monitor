@@ -119,7 +119,7 @@
 </form>
 
 @can('Patient: delete')
-    @if($patient->suspectCases->count() == 0)
+    @if($patient->suspectCases->count() === 0)
     <form method="POST" class="form-horizontal" action="{{ route('patients.destroy',$patient) }}">
         @csrf
         @method('DELETE')
