@@ -10,22 +10,9 @@
 
 <a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a>
 
-
 @foreach(Auth::user()->residences as $residence)
-<h3>{{$residence->name}}
-    @php
-    $i=0;
-    @endphp
-    @foreach($residence->rooms as $room)
-    @foreach($room->bookings as $booking)
-    @if ($booking->status == 'Residencia Sanitaria' and $booking->patient->status == 'Residencia Sanitaria')
-    @php
-    $i++;
-    @endphp
-    @endif
-    @endforeach
-    @endforeach
-    {{$i++}}</h3>
+<h3> {{ $residence->name }} {{ $bookings->where('room.residence_id',$residence->id)->count() }} </h3>
+
 @endforeach
 
 
