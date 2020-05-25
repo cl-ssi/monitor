@@ -23,5 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RoomSeeder::class);
         $this->call(CommunesSeeder::class);
         $this->call(EstablishmentSeeder::class);
+        $this->call(VentilatorSeeder::class);
     }
 }
