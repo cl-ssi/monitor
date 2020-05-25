@@ -12,6 +12,17 @@ class EstablishmentSeeder extends Seeder
      */
     public function run()
     {
-      // Establishment::Create(['name'=>'Dr. Enrique Paris','type'=>'COSAM','deis'=>'102-602','commune_id' => 7]);
+        Establishment::Create([
+            'id' => 6,
+            'name' => 'Centro de Salud Familiar Cirujano Aguirre',
+            'alias' => 'CESFAM Aguirre',
+            'type' => 'Centro de Salud Familiar',
+            'code_deis' => 102300,
+            'service' => 'SERVICIO DE SALUD IQUIQUE',
+            'dependency' => 'Municipal',
+            'commune' => 'IQUIQUE',
+            'commune_code_deis' => '102-602',
+            'commune_id' => 5
+        ]);
     }
 }
