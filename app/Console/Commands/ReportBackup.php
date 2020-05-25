@@ -86,6 +86,7 @@ class ReportBackup extends Command
             $casos['Pozo Almonte'][$i->format("Y-m-d")] = 0;
             $casos['Huara'][$i->format("Y-m-d")] = 0;
             $casos['Camiña'][$i->format("Y-m-d")] = 0;
+            $casos['Colchane'][$i->format("Y-m-d")] = 0;
         }
 
         foreach($patients as $patient) {
