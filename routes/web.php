@@ -72,6 +72,11 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
 Route::resource('epp','EppController')->middleware('auth');
 
 Route::prefix('lab')->name('lab.')->group(function () {
+    Route::get('/', 'LaboratoryController@index')->name('index');
+    Route::get('/create', 'LaboratoryController@create')->name('create');
+    Route::post('/store', 'LaboratoryController@store')->name('store');
+    Route::get('/{laboratory}/edit', 'LaboratoryController@edit')->name('edit');
+    Route::put('update/{laboratory}', 'LaboratoryController@update')->name('update');    
     Route::get('login/{access_token}','SuspectCaseController@login')->name('login');
     Route::get('results','SuspectCaseController@result')->name('result');
     Route::get('print/{suspect_case}','SuspectCaseController@print')->middleware('auth')->name('print');

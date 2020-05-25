@@ -16,7 +16,7 @@
             <th>Nombre</th>
             <th>Dirección</th>
             <th>Teléfono</th>
-            <th>Editar/Eliminar</th>
+            <th>Editar</th>
         </tr>
     </thead>
     <tbody>
@@ -27,14 +27,6 @@
             <td>{{ $residence->telephone }}</td>
             <td>
                 <a href="{{ route('sanitary_residences.residences.edit', $residence) }}" class="btn btn-secondary float-left"><i class="fas fa-edit"></i></a>
-                
-                <form method="POST" class="form-horizontal" action="{{ route('sanitary_residences.residences.destroy', $residence) }}">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger float-right" onclick="return confirm('¿Está seguro que desea eliminar la Residencia Sanitaria {{ $residence->name }}?, recuerde que no debe haber ningun usuario con permisos asociado a esta residencia sanitaria. Y ninguna habitación asociada a la residencia sanitaria')"><i class="fas fa-trash-alt"></i></button>
-                </form>
-
-
             </td>
         </tr>
         @endforeach

@@ -12,7 +12,7 @@
 <table class="table table-sm">
     <thead>
         <tr>
-            <th>Residence</th>
+            <th>Residencia</th>
             <th>Piso</th>
             <th>Numero</th>
             <th></th>

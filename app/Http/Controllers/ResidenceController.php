@@ -19,8 +19,8 @@ class ResidenceController extends Controller
     {
         $users = User::all();
         $residences = ResidenceUser::all();
-        $users_with_residences = User::has('residences')->get();
-        //$residences = ResidenceUser::all();
+        //$users_with_residences = User::has('residences')->get();
+        $residences = ResidenceUser::all();
         return view('sanitary_residences.users',compact('users','residences','users_with_residences'));
     }
 
