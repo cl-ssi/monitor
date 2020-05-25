@@ -181,6 +181,7 @@
         </fieldset>
 
         @endcan
+
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_external_laboratory">Laboratorio externo</label>
             <select name="external_laboratory" id="for_external_laboratory" class="form-control">
@@ -192,6 +193,7 @@
                 <option value="Laboratorio Médico Bioclinic">Laboratorio Médico Bioclinic</option>
             </select>
         </fieldset>
+
         @can('SuspectCase: tecnologo')
 
         <fieldset class="form-group col-12 col-md-3">

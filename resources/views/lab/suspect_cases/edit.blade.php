@@ -129,11 +129,12 @@
             </select>
         </fieldset>
 
+        @endcan
+        
         <fieldset class="form-group col-1 col-md-2">
             <label for="for_dumy"></label>
             <p></p>
         </fieldset>
-
 
         <fieldset class="form-group col-4 col-md-3">
             <label for="for_laboratory_id">Laboratorio local</label>
@@ -143,6 +144,8 @@
                 <option value="3" {{ ($suspectCase->laboratory_id == 3)?'selected':'' }}>BIOCLINIC</option>
             </select>
         </fieldset>
+
+        @can('SuspectCase: tecnologo')
 
     </div>
 
