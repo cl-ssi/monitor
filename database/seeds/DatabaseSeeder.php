@@ -11,14 +11,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(LaboratorySeeder::class);
-        // $this->call(PermissionSeeder::class);
-        // $this->call(UserSeeder::class);
-        // $this->call(PatientSeeder::class);
-        // $this->call(DemographicSeeder::class);
-        // $this->call(SuspectCaseSeeder::class);
-        // $this->call(ResidenceSeeder::class);
-        // $this->call(RoomSeeder::class);
+        $this->call(LaboratorySeeder::class);
+        $this->call(PermissionSeeder::class);
+        $this->call(UserSeeder::class);
+        if(env('APP_ENV') == 'testing') {
+            $this->call(PatientSeeder::class);
+            $this->call(DemographicSeeder::class);
+            $this->call(SuspectCaseSeeder::class);
+        }
+        $this->call(ResidenceSeeder::class);
+        $this->call(RoomSeeder::class);
         $this->call(CommunesSeeder::class);
         $this->call(EstablishmentSeeder::class);
     }
