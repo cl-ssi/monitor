@@ -16,7 +16,11 @@ class CreateLaboratoriesTable extends Migration
         Schema::create('laboratories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->boolean('external')->default(0);
+            $table->unsignedBigInteger('commune_id')->nullable();
             $table->timestamps();
+
+            $table->foreign('commune_id')->references('id')->on('communes');
         });
     }
 
