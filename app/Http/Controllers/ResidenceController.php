@@ -16,11 +16,10 @@ class ResidenceController extends Controller
     }
 
     public function users()
-    {
+    {        
         $users = User::all();
-        $residences = ResidenceUser::all();
-        //$users_with_residences = User::has('residences')->get();
-        $residences = ResidenceUser::all();
+        $residences = Residence::all();
+        $users_with_residences = User::has('residences')->get();
         return view('sanitary_residences.users',compact('users','residences','users_with_residences'));
     }
 
