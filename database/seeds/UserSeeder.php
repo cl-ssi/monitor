@@ -14,6 +14,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         $user = new User();
+        $user->run = "1-9";
         $user->name = "Administrador";
         $user->email = "sistemas.ssi@redsalud.gob.cl";
         $user->password = bcrypt('admin');

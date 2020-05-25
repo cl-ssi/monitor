@@ -86,6 +86,10 @@
                 <option value="ESPUTO">ESPUTO</option>
                 <option value="TÓRULAS NASOFARÍNGEAS/ESPUTO">TÓRULAS NASOFARÍNGEAS/ESPUTO</option>
                 <option value="ASPIRADO NASOFARÍNGEO">ASPIRADO NASOFARÍNGEO</option>
+                {{-- <option value="LAVADO BRONCOALVEOLAR">LAVADO BRONCOALVEOLAR</option>
+                <option value="ASPIRADO TRAQUEAL">ASPIRADO TRAQUEAL</option>
+                <option value="MUESTRA SANGUÍNEA">MUESTRA SANGUÍNEA</option>
+                <option value="TEJIDO PULMONAR">TEJIDO PULMONAR</option> --}}
             </select>
         </fieldset>
 
