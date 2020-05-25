@@ -39,7 +39,7 @@ var map = new H.Map(
     defaultLayers.vector.normal.map,
     {
         zoom: 12.7,
-        center: { lat: -20.26, lng: -70.13 }
+        center: { lat: {{ env('LATITUD') }}, lng: {{ env('LONGITUD') }} }
     }
 );
 
