@@ -15,17 +15,31 @@
 
     <div class="form-row">
 
-        <fieldset class="form-group col">
-            <label for="for_name">Nombre</label>
-            <input type="text" class="form-control" name="name" id="for_name"
-                required value="{{ $user->name }}">
-        </fieldset>
+      <fieldset class="form-group col">
+          <label for="for_run">Run</label>
+          <input type="text" class="form-control" name="run" id="for_run" value="{{ $user->run }}">
+      </fieldset>
 
-        <fieldset class="form-group col">
-            <label for="for_email">Email</label>
-            <input type="text" class="form-control" name="email" id="for_email"
-                required value="{{ $user->email }}">
-        </fieldset>
+      <fieldset class="form-group col-1">
+          <label for="for_dv">Dv</label>
+          <input type="text" class="form-control" name="dv" id="for_dv" value="{{ $user->dv }}">
+      </fieldset>
+
+      <fieldset class="form-group col">
+          <label for="for_name">Nombre</label>
+          <input type="text" class="form-control" name="name" id="for_name"
+              required value="{{ $user->name }}">
+      </fieldset>
+
+      <fieldset class="form-group col">
+          <label for="for_email">Email</label>
+          <input type="text" class="form-control" name="email" id="for_email"
+              required value="{{ $user->email }}">
+      </fieldset>
+
+    </div>
+
+    <div class="form-row">
 
         <fieldset class="form-group col">
             <label for="for_laboratory_id">Laboratorio</label>

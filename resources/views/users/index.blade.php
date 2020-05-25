@@ -17,6 +17,7 @@
 <table class="table">
     <thead>
         <tr>
+            <th>Run</th>
             <th>Nombre</th>
             <th>Email</th>
             <th></th>
@@ -25,6 +26,7 @@
     <tbody>
         @foreach($users as $user)
         <tr>
+            <td>{{ $user->run }}-{{$user->dv}}</td>
             <td>{{ $user->name }}</td>
             <td>{{ $user->email }}</td>
             <td> <a href="{{ route('users.edit', $user) }}">Editar</a> </td>

@@ -10,6 +10,7 @@ use App\Establishment;
 use App\Log;
 use App\File;
 use App\User;
+use App\Commune;
 use App\ReportBackup;
 use App\SampleOrigin;
 use Carbon\Carbon;
@@ -125,51 +126,6 @@ class SuspectCaseController extends Controller
     //   // $response_json = $response->getBody()->getContents();
     //   // $array = json_decode($response_json, true);
     //   // dd($array);
-    //
-    // //"id_laboratorio":"código del laboratorio. Ver maestro de laboratorios",
-    // // "cod_deis":"Código DEIS de la institución relacionada",
-    // // "paciente_comuna":"Paciente, id de la comuna donde vive. Ver maestro de comunas",
-    // // "paciente_tipodoc":"Paciente, tipo de documento de identificació. Ver maestro tipos de documentos",
-    // // "paciente_ext_paisorigen":"Paciente, país de origen. Sólo para extranjeros. Ver maestro de paises",
-    // // "paciente_prevision":"Paciente, previsión. Ver maestro de previsión.",
-    // // "tecnica_muestra":"Muestra, técnica de toma de muestra. Ver maestro técnica toma de muestra",
-    // // "tipo_muestra":"Muestra, tipo de muestra. Campo libre, con valores sugeridos. Ver maestro de tipo de muestra"}
-    //
-    //
-    // // DESCOMENTA ESTO!
-    // // $array = ['[{"codigo_muestra_cliente":105,"rut_responsable":"10000227-2","cod_deis":108204,"rut_medico":"1839330-1","paciente_run":10729604,"paciente_dv":2,"paciente_nombres":"Pablo","paciente_ap_mat":"Boggiano","paciente_ap_pat":"Silva","paciente_fecha_nac":"30-08-1972","paciente_comuna":11201,"paciente_direccion":"dirección","paciente_telefono":"teléfono","paciente_tipodoc":"RUN","paciente_ext_paisorigen":"","paciente_pasaporte":"","paciente_sexo":"M","paciente_prevision":"ISAPRE","fecha_muestra":"06-05-2020","tecnica_muestra":"RT-PCR","tipo_muestra":"AAAA"}]'];
-    //
-    // $array = array(
-    //   'raw' => array('codigo_muestra_cliente' => 105,
-    //                  'rut_responsable' => '17144896-4',
-    //                  'cod_deis' => '02-100',
-    //                  'rut_medico' => '1839330-1',
-    //                  'paciente_run' => 10729604,
-    //                  'paciente_dv' => 2,
-    //                  'paciente_nombres' => 'Pablo',
-    //                  'paciente_ap_mat' => 'Boggiano',
-    //                  'paciente_ap_pat' => 'Silva',
-    //                  'paciente_fecha_nac' => '30-08-1972',
-    //                  'paciente_comuna' => 11201,
-    //                  'paciente_direccion' => 'dirección',
-    //                  'paciente_telefono' => 'teléfono',
-    //                  'paciente_tipodoc' => 'RUN',
-    //                  'paciente_ext_paisorigen' => '',
-    //                  'paciente_pasaporte' => '',
-    //                  'paciente_sexo' => 'M',
-    //                  'paciente_prevision' => 'ISAPRE',
-    //                  'fecha_muestra' => '06-05-2020',
-    //                  'tecnica_muestra' => 'RT-PCR',
-    //                  'tipo_muestra' => 'AAAA'
-    //                )
-    // );
-    //
-    // $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/328302d8-0ba3-5611-24fa-a7a2f146241f', [
-    //       'json' => $array,
-    //       'headers'  => [ 'ACCESSKEY' => 'AK026-88QV-000QAKZQA-000000AR5SLP']
-    // ]);
-    //
-    // dd($response->getBody()->getContents());
 
         $establishments = Establishment::orderBy('alias','ASC')->get();
 
@@ -268,7 +224,7 @@ class SuspectCaseController extends Controller
     public function storeAdmission(Request $request)
     {
         // ########## webservice MINSAL ##########
-
+        // 
         // //obtiene proximo id suspect case
         // $NextsuspectCase = SuspectCase::max('id');
         // $NextsuspectCase += 1;
@@ -277,42 +233,56 @@ class SuspectCaseController extends Controller
         // // webservices MINSAL
         // if (env('APP_ENV') == 'local') {
         //   $client = new \GuzzleHttp\Client();
+        //
+        //   if($request->gender == "female"){
+        //     $genero = "F";
+        //   }else{$genero = "M";}
+        //
+        //   // dd($request->commune);
+        //   $comuna = Commune::where('name',$request->commune)->get();
+        //   $commune_code_deis = $comuna->first()->code_deis;
+        //
         //   $array = array(
         //
         //     //10.314.055-2 - Jorge Patricio Moscoso Coppa
+        //     //15637637 123456
         //     //Nro. de registro -	44151 - clave: 123456
         //     'raw' => array('codigo_muestra_cliente' => $NextsuspectCase,
-        //                    'rut_responsable' => '10314055-2',
+        //                    'rut_responsable' => Auth::user()->run . "-" . Auth::user()->dv, //se va a enviar rut de enfermo del servicio
         //                    'cod_deis' => '02-100',//$suspectCase->establishment->deis,
-        //                    'rut_medico' => $request->run_medic,
+        //                    'rut_medico' => '13214157-6',//$request->run_medic,
         //                    'paciente_run' => $request->run,
         //                    'paciente_dv' => $request->dv,
         //                    'paciente_nombres' => $request->name,
         //                    'paciente_ap_mat' => $request->fathers_family,
         //                    'paciente_ap_pat' => $request->mothers_family,
         //                    'paciente_fecha_nac' => $request->birthday,
-        //                    'paciente_comuna' => 11201,
-        //                    'paciente_direccion' => $request->address,
+        //                    'paciente_comuna' => $commune_code_deis,
+        //                    'paciente_direccion' => $request->address . " " . $request->number,
         //                    'paciente_telefono' => $request->telephone,
         //                    'paciente_tipodoc' => 'RUN',
         //                    'paciente_ext_paisorigen' => '',
         //                    'paciente_pasaporte' => $request->other_identification,
-        //                    'paciente_sexo' => 'M',
-        //                    'paciente_prevision' => 'ISAPRE',
-        //                    'fecha_muestra' => '06-05-2020',
-        //                    'tecnica_muestra' => 'RT-PCR',
-        //                    'tipo_muestra' => 'AAAA'
+        //                    'paciente_sexo' => $genero,
+        //                    'paciente_prevision' => 'FONASA', //fijo por el momento
+        //                    'fecha_muestra' => $request->sample_at,
+        //                    'tecnica_muestra' => 'RT-PCR', //fijo
+        //                    'tipo_muestra' => $request->sample_type
         //                  )
         //   );
-        //
-        //   print_r($array);
         //
         //   $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/328302d8-0ba3-5611-24fa-a7a2f146241f', [
         //         'json' => $array,
         //         'headers'  => [ 'ACCESSKEY' => env('TOKEN_WS_MINSAL')]
         //   ]);
         //
-        //   dd(json_decode($response->getBody()->getContents(), true));
+        //   //respuesta de servidor
+        //   $array = json_decode($response->getBody()->getContents(), true);
+        //   dd($array);
+        //   if(var_export($response->getStatusCode(), true) == 200){
+        //     session()->flash('warning', 'No se registró muestra - Error webservice minsal: <h3>' . $array['error'] . '</h3>');
+        //     return redirect()->back();
+        //   }
         // }
         //
         // dd("");
