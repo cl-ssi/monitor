@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Laboratory;
+use App\Commune;
 use Illuminate\Http\Request;
 
 class LaboratoryController extends Controller
@@ -14,7 +15,8 @@ class LaboratoryController extends Controller
      */
     public function index()
     {
-        //
+        $laboratories = Laboratory::All();
+        return view('lab.index', compact('laboratories'));
     }
 
     /**
@@ -24,7 +26,8 @@ class LaboratoryController extends Controller
      */
     public function create()
     {
-        //
+        $communes = Commune::All();
+        return view('lab.create', compact('communes'));
     }
 
     /**
@@ -35,7 +38,10 @@ class LaboratoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $laboratory = new Laboratory($request->All());
+        $laboratory->save();
+        session()->flash('success', 'Se creo laboratorio exitosamente');
+        return redirect()->route('lab.index');
     }
 
     /**
@@ -57,7 +63,8 @@ class LaboratoryController extends Controller
      */
     public function edit(Laboratory $laboratory)
     {
-        //
+        $communes = Commune::All();
+        return view('lab.edit', compact('laboratory','communes'));
     }
 
     /**
@@ -69,7 +76,10 @@ class LaboratoryController extends Controller
      */
     public function update(Request $request, Laboratory $laboratory)
     {
-        //
+        $laboratory->fill($request->all());
+        $laboratory->save();
+        session()->flash('success', 'Se modificó el laboratorio exitosamente');
+        return redirect()->route('lab.index');
     }
 
     /**

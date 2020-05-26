@@ -72,6 +72,11 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
 Route::resource('epp','EppController')->middleware('auth');
 
 Route::prefix('lab')->name('lab.')->group(function () {
+    Route::get('/', 'LaboratoryController@index')->name('index');
+    Route::get('/create', 'LaboratoryController@create')->name('create');
+    Route::post('/store', 'LaboratoryController@store')->name('store');
+    Route::get('/{laboratory}/edit', 'LaboratoryController@edit')->name('edit');
+    Route::put('update/{laboratory}', 'LaboratoryController@update')->name('update');    
     Route::get('login/{access_token}','SuspectCaseController@login')->name('login');
     Route::get('results','SuspectCaseController@result')->name('result');
     Route::get('print/{suspect_case}','SuspectCaseController@print')->middleware('auth')->name('print');
@@ -154,6 +159,8 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
     Route::get('/', 'ResidenceController@home')->name('home');
     Route::get('/users', 'ResidenceController@users')->name('users');
     Route::post('/users', 'ResidenceController@usersStore')->name('users.store');
+    //Route::get('/{user}/edit', 'ResidenceController@usersEdit')->name('users.edit');
+    Route::delete('/{user}', 'ResidenceController@usersDestroy')->name('users.destroy');
 
     Route::prefix('residences')->name('residences.')->group(function () {
         Route::get('/create', 'ResidenceController@create')->name('create');
@@ -161,7 +168,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
         Route::post('/', 'ResidenceController@store')->name('store');
         Route::get('/{residence}/edit', 'ResidenceController@edit')->name('edit');
         Route::put('update/{residence}', 'ResidenceController@update')->name('update');
-        // Route::delete('/{residence}', 'ResidenceController@destroy')->name('destroy');
+        Route::delete('/{residence}', 'ResidenceController@destroy')->name('destroy');
     });
 
     Route::prefix('rooms')->name('rooms.')->group(function () {

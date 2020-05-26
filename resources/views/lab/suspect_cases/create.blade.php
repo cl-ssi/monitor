@@ -92,7 +92,7 @@
             <select name="establishment_id" id="for_establishment_id" class="form-control" required>
                 <option value=""></option>
                 @foreach($establishments as $establishment)
-                    <option value="{{ $establishment->id }}">{{ $establishment->name }}</option>
+                    <option value="{{ $establishment->id }}">{{ $establishment->alias }}</option>
                 @endforeach
             </select>
         </fieldset>
@@ -180,17 +180,19 @@
                 name="sent_isp_at">
         </fieldset>
 
+        @endcan
+
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_external_laboratory">Laboratorio externo</label>
             <select name="external_laboratory" id="for_external_laboratory" class="form-control">
                 <option value=""></option>
-                <option value="Hospital Lucio Córdova">Hospital Lucio Córdova</option>
-                <option value="Centro Oncologico del Norte">Centro Oncologico del Norte</option>
-                <option value="Instituto de Salud Pública">Instituto de Salud Pública</option>
-                <option value="Barnafi Krause">Barnafi Krause</option>
-                <option value="Laboratorio Médico Bioclinic">Laboratorio Médico Bioclinic</option>
+                @foreach($external_labs as $external_lab)
+                <option value="{{ $external_lab->name }}">{{ $external_lab->name }}</option>
+                @endforeach
             </select>
         </fieldset>
+
+        @can('SuspectCase: tecnologo')
 
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_file">Archivo</label>

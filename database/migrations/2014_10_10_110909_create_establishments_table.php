@@ -22,7 +22,7 @@ class CreateEstablishmentsTable extends Migration
       });
 
       Schema::create('communes', function (Blueprint $table) {
-          $table->increments('id');
+          $table->id('id');
           $table->string('name');
           $table->string('code_deis');
           $table->unsignedInteger('region_id');
@@ -34,10 +34,8 @@ class CreateEstablishmentsTable extends Migration
       });
 
       Schema::create('establishments', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id('id');
             $table->string('name');
-            // $table->enum('type',['HOSPITAL','CESFAM','CECOSF','PSR','CGR','SAPU','COSAM','PRAIS']);
-            // $table->string('deis');
             $table->string('alias');
             $table->string('type');
             $table->string('old_code_deis');

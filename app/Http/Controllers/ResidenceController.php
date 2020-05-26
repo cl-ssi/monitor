@@ -6,6 +6,7 @@ use App\SanitaryResidence\Residence;
 use App\SanitaryResidence\ResidenceUser;
 use Illuminate\Http\Request;
 use App\User;
+use App\Log;
 
 class ResidenceController extends Controller
 {
@@ -15,7 +16,7 @@ class ResidenceController extends Controller
     }
 
     public function users()
-    {
+    {        
         $users = User::all();
         $residences = Residence::all();
         $users_with_residences = User::has('residences')->get();
@@ -28,6 +29,19 @@ class ResidenceController extends Controller
         $residence_user->save();
 
         return redirect()->back();
+    }
+
+
+    public function usersDestroy(ResidenceUser $residenceuser)
+    {
+        //dd($residenceuser);
+        $residenceuser->delete();
+        
+
+        session()->flash('success', 'Permisos Eliminados exitosamente');
+        //return redirect()->route('sanitary_residences.residences.index');
+        return redirect()->back();
+        
     }
 
     /**
@@ -110,6 +124,14 @@ class ResidenceController extends Controller
      */
     public function destroy(Residence $residence)
     {
-        //
+        $log = new Log();
+        $log->old = clone $residence;
+        $log->new = $residence->setAttribute('patient','delete');
+        $log->save();
+
+        $residence->delete();
+
+        session()->flash('success', 'Residencia Sanitaria Eliminada exitosamente');
+        return redirect()->route('sanitary_residences.residences.index');
     }
 }
