@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Commune extends Model
+class Region extends Model
 {
   /**
    * The attributes that are mass assignable.
@@ -13,15 +13,11 @@ class Commune extends Model
    * @var array
    */
   protected $fillable = [
-      'id','name','code_deis','region_id'
+      'id','name'
   ];
 
-  public function region() {
-      return $this->belongsTo('\App\Region');
-  }
-
-  public function establishments() {
-  		return $this->hasMany('\App\Establishment');
+  public function communes() {
+  		return $this->hasMany('\App\Commune');
   }
 
   public function demographics() {

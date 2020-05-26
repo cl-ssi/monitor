@@ -35,7 +35,7 @@
     </div>
     <div class="col-5">
         @if(Auth::user()->laboratory)
-        <h3>Tu Laboraotrio: {{ Auth::user()->laboratory->name }}</h3>
+        <h3>Tu Laboratorio: {{ Auth::user()->laboratory->name }}</h3>
         @else
         <h3 class="text-danger">Usuario no tiene laboratorio asignado</h3>
         @endif
@@ -49,7 +49,8 @@
 <table class="table table-sm table-bordered table-responsive" id="tabla_casos">
     <thead>
         <tr>
-            <th>°</th>
+            <th nowrap>° Monitor</th>
+            <th nowrap>° Minsal</th>
             <th></th>
             <th>Fecha muestra</th>
             <th>Establecimiento</th>
@@ -65,6 +66,7 @@
         @foreach($suspectCases as $case)
         <tr class="row_{{$case->covid19}} {{ ($case->pscr_sars_cov_2 == 'positive')?'table-danger':''}}">
             <td class="text-center">{{ $case->id }}</td>
+            <td class="text-center">{{ $case->minsal_ws_id }}</td>
             <td>
                 @if(Auth::user()->laboratory)
                     @can('SuspectCase: reception')

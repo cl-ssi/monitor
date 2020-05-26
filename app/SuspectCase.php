@@ -26,7 +26,7 @@ class SuspectCase extends Model
         'gestation', 'gestation_week', 'close_contact',
         'notification_at', 'notification_mechanism',
         'discharged_at','discharge_test',
-        'observation',
+        'observation', 'minsal_ws_id',
         'patient_id', 'laboratory_id', 'establishment_id'
     ];
 

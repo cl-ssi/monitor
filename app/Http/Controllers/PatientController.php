@@ -6,6 +6,8 @@ use App\SuspectCase;
 use App\Patient;
 use App\Demographic;
 use App\Log;
+use App\Region;
+use App\Commune;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -74,7 +76,9 @@ class PatientController extends Controller
      */
     public function edit(Patient $patient)
     {
-        return view('patients.edit',compact('patient'));
+      $regions = Region::orderBy('id','ASC')->get();
+      $communes = Commune::orderBy('id','ASC')->get();
+      return view('patients.edit',compact('patient', 'regions', 'communes'));
     }
 
     /**
@@ -98,8 +102,15 @@ class PatientController extends Controller
         $logDemographic = new Log();
         if($patient->demographic) {
             $logDemographic->old = clone $patient->demographic;
+
+            $region = Region::where('id',$request->region_id)->get();
+            $commune = Commune::where('id',$request->commune_id)->get();
+
             $patient->demographic->fill($request->all());
+            $patient->demographic->region = $region->first()->name;
+            $patient->demographic->commune = $commune->first()->name;
             $patient->demographic->save();
+
             $logDemographic->new = $patient->demographic;
             $logDemographic->save();
         }
@@ -110,8 +121,12 @@ class PatientController extends Controller
               $request->email != null | $request->telephone != null | $request->number != null |
               $request->region != null | $request->commune != null) {
 
+                $region = Region::where('id',$request->region_id)->get();
+                $commune = Commune::where('id',$request->commune_id)->get();
                 $demographic = new Demographic($request->All());
                 $demographic->patient_id = $patient->id;
+                $demographic->region = $region->first()->name;
+                $demographic->commune = $commune->first()->name;
                 $demographic->save();
 
                 $logDemographic->new = $demographic;
