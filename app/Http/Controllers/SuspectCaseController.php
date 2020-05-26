@@ -37,44 +37,64 @@ class SuspectCaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(request $request)
+    public function index(request $request, Laboratory $laboratory)
     {
-      if ($request->get('positivos') == "on") {
-        $positivos = "positive";
-      }else{$positivos = NULL;}
+        //$lab_id = $request->input('lab_id');
 
-      if ($request->get('negativos') == "on") {
-        $negativos = "negative";
-      }else{$negativos = NULL;}
+        if ($request->get('positivos') == "on") {
+            $positivos = "positive";
+        } else {$positivos = NULL;}
 
-      if ($request->get('pendientes') == "on") {
-        $pendientes = "pending";
-      }else{$pendientes = NULL;}
+        if ($request->get('negativos') == "on") {
+            $negativos = "negative";
+        } else {$negativos = NULL;}
 
-      if ($request->get('rechazados') == "on") {
-        $rechazados = "rejected";
-      }else{$rechazados = NULL;}
+        if ($request->get('pendientes') == "on") {
+            $pendientes = "pending";
+        } else{$pendientes = NULL;}
 
-      if ($request->get('indeterminados') == "on") {
-        $indeterminados = "undetermined";
-      }else{$indeterminados = NULL;}
+        if ($request->get('rechazados') == "on") {
+            $rechazados = "rejected";
+        } else{$rechazados = NULL;}
 
-      $text = $request->get('text');
+        if ($request->get('indeterminados') == "on") {
+            $indeterminados = "undetermined";
+        }else{$indeterminados = NULL;}
 
-      $suspectCasesTotal = SuspectCase::whereNotNull('laboratory_id')->latest('id')->get();
+        $text = $request->get('text');
 
-      $suspectCases = SuspectCase::latest('id')
-                                  ->whereHas('patient', function($q) use ($text){
-                                          $q->Where('name', 'LIKE', '%'.$text.'%')
-                                            ->orWhere('fathers_family','LIKE','%'.$text.'%')
-                                            ->orWhere('mothers_family','LIKE','%'.$text.'%')
-                                            ->orWhere('run','LIKE','%'.$text.'%');
-                                  })
-                                  ->whereNotNull('laboratory_id')
-                                  ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
-                                  ->paginate(200);//->appends(request()->query());
+        if($laboratory->id) {
+            //$laboratory = Laboratory::find($lab->id);
+            $suspectCasesTotal = SuspectCase::where('laboratory_id',$laboratory->id)->latest('id')->get();
 
-        return view('lab.suspect_cases.index', compact('suspectCases','request','suspectCasesTotal'));
+            $suspectCases = SuspectCase::latest('id')
+                                      ->where('laboratory_id',$laboratory->id)
+                                      ->whereHas('patient', function($q) use ($text){
+                                              $q->Where('name', 'LIKE', '%'.$text.'%')
+                                                ->orWhere('fathers_family','LIKE','%'.$text.'%')
+                                                ->orWhere('mothers_family','LIKE','%'.$text.'%')
+                                                ->orWhere('run','LIKE','%'.$text.'%');
+                                      })
+                                      ->whereNotNull('laboratory_id')
+                                      ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
+                                      ->paginate(200);//->appends(request()->query());
+        }
+        else {
+            $laboratory = null;
+            $suspectCasesTotal = SuspectCase::whereNotNull('laboratory_id')->latest('id')->get();
+
+            $suspectCases = SuspectCase::latest('id')
+                                      ->whereHas('patient', function($q) use ($text){
+                                              $q->Where('name', 'LIKE', '%'.$text.'%')
+                                                ->orWhere('fathers_family','LIKE','%'.$text.'%')
+                                                ->orWhere('mothers_family','LIKE','%'.$text.'%')
+                                                ->orWhere('run','LIKE','%'.$text.'%');
+                                      })
+                                      ->whereNotNull('laboratory_id')
+                                      ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
+                                      ->paginate(200);//->appends(request()->query());
+        }
+        return view('lab.suspect_cases.index', compact('suspectCases','request','suspectCasesTotal','laboratory'));
     }
 
     /**
@@ -205,15 +225,8 @@ class SuspectCaseController extends Controller
         $log->new = $suspectCase;
         $log->save();
 
-        switch($suspectCase->laboratory_id) {
-            case(1): $ruta = 'lab.suspect_cases.hetg'; break;
-            case(2): $ruta = 'lab.suspect_cases.unap'; break;
-            case(3): $ruta = 'lab.suspect_cases.bioclinic'; break;
-            default: $ruta = 'lab.suspect_cases.index'; break;
-        }
-
         session()->flash('success', 'Se ha creado el caso número: <h3>' . $suspectCase->id . '</h3>');
-        return redirect()->route($ruta);
+        return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
     }
 
 
@@ -405,9 +418,6 @@ class SuspectCaseController extends Controller
         $log->old = clone $suspectCase;
 
         $suspectCase->fill($request->all());
-        // $suspectCase->gestation = $request->gestation;
-        // $suspectCase->close_contact = $request->has('close_contact') ? 1 : 0;
-        // $suspectCase->discharge_test = $request->has('discharge_test') ? 1 : 0;
 
         $suspectCase->epidemiological_week = Carbon::createFromDate(
             $suspectCase->sample_at->format('Y-m-d'))->add(1, 'days')->weekOfYear;
@@ -486,6 +496,7 @@ class SuspectCaseController extends Controller
         return redirect()->back();
     }
 
+
     /**
      * Search suspectCase by ID.
      *
@@ -502,204 +513,39 @@ class SuspectCaseController extends Controller
         }
     }
 
-    public function report()
-    {
-        $patients = Patient::whereHas('suspectCases', function ($q) { $q->where('pscr_sars_cov_2','positive'); })->with('suspectCases')->with('demographic')->get();
-
-        $patients_other_region = $patients->where('demographic.region','<>','Tarapacá')->whereNotNull('demographic');
-
-        $hospitalizado_basico = Patient::whereHas('suspectCases', function ($q) { $q->where('status','Hospitalizado Básico'); })->whereHas('suspectCases', function ($q) { $q->where('pscr_sars_cov_2','positive'); })->with('suspectCases')->with('demographic')->get();
-
-        $hospitalizado_critico = Patient::whereHas('suspectCases', function ($q) { $q->where('status','Hospitalizado Crítico'); })->whereHas('suspectCases', function ($q) { $q->where('pscr_sars_cov_2','positive'); })->with('suspectCases')->with('demographic')->get();
-
-        $patients = $patients->whereNotIn('demographic.region',
-                    [
-                    'Arica y Parinacota',
-                    'Antofagasta',
-                    'Atacama',
-                    'Coquimbo',
-                    'Valparaíso',
-                    'Región del Libertador Gral. Bernardo O’Higgins',
-                    'Región del Maule',
-                    'Región del Biobío',
-                    'Región de la Araucanía',
-                    'Región de Los Ríos',
-                    'Región de Los Lagos',
-                    'Región Aisén del Gral. Carlos Ibáñez del Campo',
-                    'Región de Magallanes y de la Antártica Chilena',
-                    'Región Metropolitana de Santiago',
-                    'Región de Ñuble']);
-
-
-        $cases = SuspectCase::with('Patient')->get();
-        $cases = $cases->where('discharge_test', '<>', 1)->whereNotIn('patient.demographic.region',
-                        [
-                        'Arica y Parinacota',
-                        'Antofagasta',
-                        'Atacama',
-                        'Coquimbo',
-                        'Valparaíso',
-                        'Región del Libertador Gral. Bernardo O’Higgins',
-                        'Región del Maule',
-                        'Región del Biobío',
-                        'Región de la Araucanía',
-                        'Región de Los Ríos',
-                        'Región de Los Lagos',
-                        'Región Aisén del Gral. Carlos Ibáñez del Campo',
-                        'Región de Magallanes y de la Antártica Chilena',
-                        'Región Metropolitana de Santiago',
-                        'Región de Ñuble']);
-        $cases_other_region = SuspectCase::All();
-        $cases_other_region = $cases_other_region->whereIn('patient.demographic.region',
-                        [
-                        'Arica y Parinacota',
-                        'Antofagasta',
-                        'Atacama',
-                        'Coquimbo',
-                        'Valparaíso',
-                        'Región del Libertador Gral. Bernardo O’Higgins',
-                        'Región del Maule',
-                        'Región del Biobío',
-                        'Región de la Araucanía',
-                        'Región de Los Ríos',
-                        'Región de Los Lagos',
-                        'Región Aisén del Gral. Carlos Ibáñez del Campo',
-                        'Región de Magallanes y de la Antártica Chilena',
-                        'Región Metropolitana de Santiago',
-                        'Región de Ñuble']);
-        //
-        // $totales_dia = DB::table('suspect_cases')
-        //     ->select('sample_at', DB::raw('count(*) as total'))
-        //     ->where('pscr_sars_cov_2', 'positive')
-        //     ->groupBy('sample_at')
-        //     ->orderBy('sample_at')
-        //     ->get();
-
-
-        // $begin = new \DateTime($totales_dia->first()->sample_at);
-        // $end   = new \DateTime($totales_dia->last()->sample_at);
-
-        $begin = SuspectCase::where('pscr_sars_cov_2','positive')->orderBy('sample_at')->first()->sample_at;
-        $end   = SuspectCase::where('pscr_sars_cov_2','positive')->orderByDesc('sample_at')->first()->sample_at;
-
-        for ($i = $begin; $i <= $end; $i->modify('+1 day')) {
-            $evolucion['Region'][$i->format("Y-m-d")] = 0;
-            $evolucion['Alto Hospicio'][$i->format("Y-m-d")] = 0;
-            $evolucion['Iquique'][$i->format("Y-m-d")] = 0;
-            $evolucion['Pica'][$i->format("Y-m-d")] = 0;
-            $evolucion['Pozo Almonte'][$i->format("Y-m-d")] = 0;
-            $evolucion['Huara'][$i->format("Y-m-d")] = 0;
-            $evolucion['Camiña'][$i->format("Y-m-d")] = 0;
-        }
-
-        foreach($patients as $patient) {
-            $evolucion['Region'][$patient->suspectCases->where('pscr_sars_cov_2','positive')->first()->sample_at->format('Y-m-d')] += 1;
-            // if($patient->demographic) {
-            //     $evolucion[$patient->demographic->commune][$patient->suspectCases->where('pscr_sars_cov_2','positive')->first()->sample_at->format('Y-m-d')] += 1;
-            // }
-        }
-
-
-        // foreach ($totales_dia as $dia) {
-        //     list($fecha, $hora) = explode(' ', $dia->sample_at);
-        //     $evolucion[$fecha] = $dia->total;
-        // }
-
-        // echo '<pre>';
-        // print_r($evolucion);
-        // die();
-
-
-        foreach ($evolucion as $nombre_comuna => $comuna) {
-            $acumulado = 0;
-            foreach($comuna as  $dia => $valor) {
-                $acumulado += $valor;
-                $evo[$nombre_comuna][$dia] = $acumulado;
-            }
-        }
-        $evolucion = $evo;
-        // echo '<pre>';
-        // print_r($hospitalizado_critico->toArray());
-        // die();
-        return view('lab.suspect_cases.report', compact('patients', 'patients_other_region', 'hospitalizado_critico', 'hospitalizado_basico', 'cases', 'cases_other_region', 'evolucion'));
-    }
 
     public function historical_report(Request $request)
     {
         if($request->has('date')){
-          $date = $request->get('date');
-        }else{
-          $date = Carbon::now();
+            $date = $request->get('date');
+        } else {
+            $date = Carbon::now();
         }
 
         $reportBackup = ReportBackup::whereDate('created_at',$date)->get();
+
         if($reportBackup->count() <> 0){
-          if($reportBackup->first()->id <= 10){
-            $html = json_decode($reportBackup->first()->data, true);
-          }else{
-            $html = $reportBackup->first()->data;
-          }
+            if($reportBackup->first()->id <= 10){
+                $html = json_decode($reportBackup->first()->data, true);
+            }else{
+                $html = $reportBackup->first()->data;
+            }
 
-          $begin = strpos($html, '<main class="py-4 container">')+29;
-          $v1 = substr($html, $begin, 999999);
-          $end   = strpos($v1, '</main>')-7;
-          $main = substr($v1, 0, $end);
+            $begin = strpos($html, '<main class="py-4 container">')+29;
+            $v1 = substr($html, $begin, 999999);
+            $end   = strpos($v1, '</main>')-7;
+            $main = substr($v1, 0, $end);
 
-          $begin = strpos($html, '<head>')+6;
-          $v1 = substr($html, $begin, 999999);
-          $end   = strpos($v1, '</head>');
-          $head = substr($v1, 0, $end);
+            $begin = strpos($html, '<head>')+6;
+            $v1 = substr($html, $begin, 999999);
+            $end   = strpos($v1, '</head>');
+            $head = substr($v1, 0, $end);
         }else{
-          $head="";
-          $main="";
+            $head="";
+            $main="";
         }
 
         return view('lab.suspect_cases.reports.historical_report', compact('head','main','date'));
-
-        // $cases_data = collect();
-        // if($reportBackup->first() != null){
-        //   $cases_data = collect(json_decode($reportBackup->first()->data, true));
-        // }
-        //
-        // $cases = $cases_data->whereNotIn('patient.demographic.region',
-        //                 [
-        //                     'Arica y Parinacota',
-        //                    'Antofagasta',
-        //                    'Atacama',
-        //                    'Coquimbo',
-        //                    'Valparaíso',
-        //                    'Región del Libertador Gral. Bernardo O’Higgins',
-        //                    'Región del Maule',
-        //                    'Región del Biobío',
-        //                    'Región de la Araucanía',
-        //                    'Región de Los Ríos',
-        //                    'Región de Los Lagos',
-        //                    'Región Aisén del Gral. Carlos Ibáñez del Campo',
-        //                    'Región de Magallanes y de la Antártica Chilena',
-        //                    'Región Metropolitana de Santiago',
-        //                    'Región de Ñuble'])
-        //                    ->whereNotIn('id',[1192,1008]);
-        //                       // /->orWhereNull('patient.demographic.region')
-        // //$cases_other_region = SuspectCase::All();
-        // $cases_other_region = $cases_data->whereIn('patient.demographic.region',
-        //                 [
-        //                 'Arica y Parinacota',
-        //                    'Antofagasta',
-        //                    'Atacama',
-        //                    'Coquimbo',
-        //                    'Valparaíso',
-        //                    'Región del Libertador Gral. Bernardo O’Higgins',
-        //                    'Región del Maule',
-        //                    'Región del Biobío',
-        //                    'Región de la Araucanía',
-        //                    'Región de Los Ríos',
-        //                    'Región de Los Lagos',
-        //                    'Región Aisén del Gral. Carlos Ibáñez del Campo',
-        //                    'Región de Magallanes y de la Antártica Chilena',
-        //                    'Región Metropolitana de Santiago',
-        //                    'Región de Ñuble']);
-        //
-        // return view('lab.suspect_cases.reports.historical_report', compact('cases', 'cases_other_region', 'date'));
     }
 
     public function diary_lab_report(Request $request)
@@ -870,128 +716,6 @@ class SuspectCaseController extends Controller
 
         $pdf = \PDF::loadView('lab.results.result', compact('case'));
         return $pdf->stream();
-    }
-
-
-    public function hetg(Request $request)
-    {
-      if ($request->get('positivos') == "on") {
-        $positivos = "positive";
-      }else{$positivos = NULL;}
-
-      if ($request->get('negativos') == "on") {
-        $negativos = "negative";
-      }else{$negativos = NULL;}
-
-      if ($request->get('pendientes') == "on") {
-        $pendientes = "pending";
-      }else{$pendientes = NULL;}
-
-      if ($request->get('rechazados') == "on") {
-        $rechazados = "rejected";
-      }else{$rechazados = NULL;}
-
-      if ($request->get('indeterminados') == "on") {
-        $indeterminados = "undetermined";
-      }else{$indeterminados = NULL;}
-
-      $text = $request->get('text');
-
-      $suspectCasesTotal = SuspectCase::where('laboratory_id',1)->get();
-
-      $suspectCases = SuspectCase::latest('id')
-                                  ->where('laboratory_id',1)
-                                  ->whereHas('patient', function($q) use ($text){
-                                          $q->Where('name', 'LIKE', '%'.$text.'%')
-                                            ->orWhere('fathers_family','LIKE','%'.$text.'%')
-                                            ->orWhere('mothers_family','LIKE','%'.$text.'%')
-                                            ->orWhere('run','LIKE','%'.$text.'%');
-                                  })
-                                  ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
-                                  ->paginate(200);//->appends(request()->query());
-
-        return view('lab.suspect_cases.hetg', compact('suspectCases','request','suspectCasesTotal'));
-    }
-
-    public function unap(Request $request)
-    {
-        if ($request->get('positivos') == "on") {
-          $positivos = "positive";
-        }else{$positivos = NULL;}
-
-        if ($request->get('negativos') == "on") {
-          $negativos = "negative";
-        }else{$negativos = NULL;}
-
-        if ($request->get('pendientes') == "on") {
-          $pendientes = "pending";
-        }else{$pendientes = NULL;}
-
-        if ($request->get('rechazados') == "on") {
-          $rechazados = "rejected";
-        }else{$rechazados = NULL;}
-
-        if ($request->get('indeterminados') == "on") {
-          $indeterminados = "undetermined";
-        }else{$indeterminados = NULL;}
-
-        $text = $request->get('text');
-
-        $suspectCasesTotal = SuspectCase::where('laboratory_id',2)->get();
-
-        $suspectCases = SuspectCase::latest('id')
-                                    ->where('laboratory_id',2)
-                                    ->whereHas('patient', function($q) use ($text){
-                                            $q->Where('name', 'LIKE', '%'.$text.'%')
-                                              ->orWhere('fathers_family','LIKE','%'.$text.'%')
-                                              ->orWhere('mothers_family','LIKE','%'.$text.'%')
-                                              ->orWhere('run','LIKE','%'.$text.'%');
-                                    })
-                                    ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
-                                    ->paginate(200);//->appends(request()->query());
-
-        return view('lab.suspect_cases.unap', compact('suspectCases','request','suspectCasesTotal'));
-        // return view('lab.suspect_cases.unap', ['suspectCases' => $suspectCases, 'request' => $request]);
-    }
-
-    public function bioclinic(Request $request)
-    {
-      if ($request->get('positivos') == "on") {
-        $positivos = "positive";
-      }else{$positivos = NULL;}
-
-      if ($request->get('negativos') == "on") {
-        $negativos = "negative";
-      }else{$negativos = NULL;}
-
-      if ($request->get('pendientes') == "on") {
-        $pendientes = "pending";
-      }else{$pendientes = NULL;}
-
-      if ($request->get('rechazados') == "on") {
-        $rechazados = "rejected";
-      }else{$rechazados = NULL;}
-
-      if ($request->get('indeterminados') == "on") {
-        $indeterminados = "undetermined";
-      }else{$indeterminados = NULL;}
-
-      $text = $request->get('text');
-
-      $suspectCasesTotal = SuspectCase::where('laboratory_id',3)->get();
-
-      $suspectCases = SuspectCase::latest('id')
-                                  ->where('laboratory_id',3)
-                                  ->whereHas('patient', function($q) use ($text){
-                                          $q->Where('name', 'LIKE', '%'.$text.'%')
-                                            ->orWhere('fathers_family','LIKE','%'.$text.'%')
-                                            ->orWhere('mothers_family','LIKE','%'.$text.'%')
-                                            ->orWhere('run','LIKE','%'.$text.'%');
-                                  })
-                                  ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
-                                  ->paginate(200);//->appends(request()->query());
-
-        return view('lab.suspect_cases.bioclinic', compact('suspectCases','request','suspectCasesTotal'));
     }
 
 
