@@ -3,7 +3,7 @@
 use App\Region;
 use Illuminate\Database\Seeder;
 
-class RegionsSeeder extends Seeder
+class RegionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
