@@ -1005,7 +1005,7 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.reception_inbox', compact('suspectCases'));
     }
 
-    public function exportExcel($cod_lab = mull){
+    public function exportExcel($cod_lab = null){
         return Excel::download(new SuspectCasesExport($cod_lab), 'lista-examenes.xlsx');
     }
 
