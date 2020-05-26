@@ -4011,6 +4011,9 @@ class EstablishmentSeeder extends Seeder
       Establishment::Create(['name'=>'Centro de Diálisis Chillán Viejo','alias'=>'Centro de Diálisis Chillán Viejo','type'=>'Centro de Diálisis','old_code_deis' => '17-909','new_code_deis' => '200820','service'=>'SEREMI Del Ñuble','dependency'=>'Privado','commune_id'=>198]);
       Establishment::Create(['name'=>'Urodial Ltda.','alias'=>'Urodial Ltda.','type'=>'Centro de Diálisis','old_code_deis' => '15-934','new_code_deis' => '200821','service'=>'SEREMI Del Libertador Gral. B. OHiggins','dependency'=>'Privado','commune_id'=>140]);
       Establishment::Create(['name'=>'Intermédica División Diálisis Ltda. Sucursal Longaví','alias'=>'Intermédica División Diálisis Ltda. Sucursal Longaví','type'=>'Centro de Diálisis','old_code_deis' => 'Pendiente','new_code_deis' => '200822','service'=>'SEREMI Del Maule','dependency'=>'Privado','commune_id'=>176]);
+      Establishment::Create(['name'=>'Posta de Salud Rural Huara','alias'=>'Posta de Salud Rural Huara','type'=>'Posta de Salud Rural (PSR)','old_code_deis' => '102401','new_code_deis' => '102401','service'=>'Servicio de Salud Iquique','dependency'=>'Servicio de Salud','commune_id'=>9]);
+      Establishment::Create(['name'=>'Centro de Salud Policia de Investigaciones','alias'=>'Centro de Salud Policia de Investigaciones','type'=>'Dirección de Servicio de Salud','old_code_deis' => 'Pendiente','new_code_deis' => 'Pendiente','service'=>'Servicio de Salud Iquique','dependency'=>'Servicio de Salud','commune_id'=>5]);
+      Establishment::Create(['name'=>'Otros','alias'=>'Otros','type'=>'Dirección de Servicio de Salud','old_code_deis' => 'Pendiente','new_code_deis' => 'Pendiente','service'=>'Servicio de Salud Iquique','dependency'=>'Servicio de Salud','commune_id'=>5]);
 
     }
 }
