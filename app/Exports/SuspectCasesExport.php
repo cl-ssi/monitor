@@ -67,7 +67,7 @@ class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping, W
         return [
             $suspectCase->id,
             Date::dateTimeToExcel($suspectCase->sample_at),
-            $suspectCase->origin,
+            $suspectCase->establishment->alias,
             ($suspectCase->patient)?$suspectCase->patient->fullName:'',
             ($suspectCase->patient)?$suspectCase->patient->Identifier:'',
             $suspectCase->age,
