@@ -297,12 +297,17 @@
 
     <fieldset class="form-group col-12 col-md-3">
         <label for="regiones">Región *</label>
-        <select class="form-control" name="region" id="regiones"></select>
+        <select class="form-control" name="region_id" id="regiones">
+          <option>Seleccione Región</option>
+          @foreach ($regions as $key => $region)
+            <option value="{{$region->id}}">{{$region->name}}</option>
+          @endforeach
+        </select>
     </fieldset>
 
     <fieldset class="form-group col-12 col-md-3">
         <label for="comunas">Comuna *</label>
-        <select class="form-control" name="commune" id="comunas" required></select>
+        <select class="form-control" name="commune_id" id="comunas" required></select>
     </fieldset>
 
     <fieldset class="form-group col-6 col-md-2">
