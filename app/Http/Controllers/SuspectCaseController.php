@@ -12,6 +12,7 @@ use App\File;
 use App\User;
 use App\Region;
 use App\Commune;
+use App\Laboratory;
 use App\Establishment;
 use App\ReportBackup;
 use App\SampleOrigin;
@@ -86,9 +87,14 @@ class SuspectCaseController extends Controller
      */
     public function create()
     {
+        $external_labs = Laboratory::where('external',1)->orderBy('name')->get();
+        $establishments = Establishment::orderBy('name','ASC')->get();
+
+        /* FIX codigo duro */
         $establishments = Establishment::whereIn('commune_id',[5,6,7,8,9,10,11])->orderBy('name','ASC')->get();
+
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
-        return view('lab.suspect_cases.create',compact('sampleOrigins','establishments'));
+        return view('lab.suspect_cases.create',compact('sampleOrigins','establishments','external_labs'));
     }
 
     /**
@@ -420,9 +426,17 @@ class SuspectCaseController extends Controller
      */
     public function edit(SuspectCase $suspectCase)
     {
+        $external_labs = Laboratory::where('external',1)->orderBy('name')->get();
+        $local_labs = Laboratory::where('external',0)->orderBy('name')->get();
+
+
+        $establishments = Establishment::orderBy('alias','ASC')->get();
+        /* FIX codigo duro */
         $establishments = Establishment::whereIn('commune_id',[5,6,7,8,9,10,11])->orderBy('name','ASC')->get();
+
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
-        return view('lab.suspect_cases.edit', compact('suspectCase','sampleOrigins','establishments'));
+        return view('lab.suspect_cases.edit', compact('suspectCase','sampleOrigins',
+            'establishments','external_labs','local_labs'));
     }
 
     /**

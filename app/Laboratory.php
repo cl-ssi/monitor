@@ -12,7 +12,7 @@ class Laboratory extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name', 'external', 'commune_id'
     ];
 
     public function users() {

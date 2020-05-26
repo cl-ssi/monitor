@@ -129,20 +129,24 @@
             </select>
         </fieldset>
 
+        @endcan
+
         <fieldset class="form-group col-1 col-md-2">
             <label for="for_dumy"></label>
             <p></p>
         </fieldset>
 
-
         <fieldset class="form-group col-4 col-md-3">
             <label for="for_laboratory_id">Laboratorio local</label>
             <select name="laboratory_id" id="for_laboratory_id" class="form-control">
-                <option value="1" {{ ($suspectCase->laboratory_id == 1)?'selected':'' }}>HETG</option>
-                <option value="2" {{ ($suspectCase->laboratory_id == 2)?'selected':'' }}>UNAP</option>
-                <option value="3" {{ ($suspectCase->laboratory_id == 3)?'selected':'' }}>BIOCLINIC</option>
+                <option value=""></option>
+                @foreach($local_labs as $local_lab)
+                <option value="{{ $local_lab->id }}"  {{ ($suspectCase->laboratory_id == $local_lab->id)?'selected':'' }}>{{ $local_lab->name }}</option>
+                @endforeach
             </select>
         </fieldset>
+
+        @can('SuspectCase: tecnologo')
 
     </div>
 
@@ -177,11 +181,9 @@
             <label for="for_external_laboratory">Laboratorio externo</label>
             <select name="external_laboratory" id="for_external_laboratory" class="form-control">
                 <option value=""></option>
-                <option value="Hospital Lucio Córdova" {{ ($suspectCase->external_laboratory == 'Hospital Lucio Córdova')?'selected':'' }}>Hospital Lucio Córdova</option>
-                <option value="Centro Oncologico del Norte" {{ ($suspectCase->external_laboratory == 'Centro Oncologico del Norte')?'selected':'' }}>Centro Oncologico del Norte</option>
-                <option value="Instituto de Salud Pública" {{ ($suspectCase->external_laboratory == 'Instituto de Salud Pública')?'selected':'' }}>Instituto de Salud Pública</option>
-                <option value="Barnafi Krause" {{ ($suspectCase->external_laboratory == 'Barnafi Krause')?'selected':'' }}>Barnafi Krause</option>
-                <option value="Laboratorio Médico Bioclinic" {{ ($suspectCase->external_laboratory == 'Laboratorio Médico Bioclinic')?'selected':'' }}>Laboratorio Médico Bioclinic</option>
+                @foreach($external_labs as $external_lab)
+                <option value="{{ $external_lab->name }}"  {{ ($suspectCase->external_laboratory == $external_lab->name)?'selected':'' }}>{{ $external_lab->name }}</option>
+                @endforeach
             </select>
         </fieldset>
 

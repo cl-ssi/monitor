@@ -15,9 +15,9 @@
 
     <div class="form-row">
 
-      <fieldset class="form-group col">
+      <fieldset class="form-group col-2">
           <label for="for_run">Run</label>
-          <input type="text" class="form-control" name="run" id="for_run" value="{{ $user->run }}">
+          <input type="number" class="form-control" name="run" id="for_run" value="{{ $user->run }}">
       </fieldset>
 
       <fieldset class="form-group col-1">
@@ -37,17 +37,13 @@
               required value="{{ $user->email }}">
       </fieldset>
 
-    </div>
-
-    <div class="form-row">
-
-        <fieldset class="form-group col">
+        <fieldset class="form-group col-2">
             <label for="for_laboratory_id">Laboratorio</label>
             <select name="laboratory_id" id="for_laboratory_id" class="form-control">
                 <option value=""></option>
-                <option value="1" {{ ($user->laboratory_id == 1)?'selected':'' }}>HETG</option>
-                <option value="2" {{ ($user->laboratory_id == 2)?'selected':'' }}>UNAP</option>
-                <option value="3" {{ ($user->laboratory_id == 3)?'selected':'' }}>BIOCLINIC</option>
+                @foreach($laboratories as $lab)
+                <option value="{{ $lab->id }}" {{ ($user->laboratory_id == $lab->id)?'selected':'' }}>{{ $lab->name }}</option>
+                @endforeach
             </select>
         </fieldset>
 
