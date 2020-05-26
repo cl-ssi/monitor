@@ -61,7 +61,7 @@ class CreateSuspectCasesTable extends Migration
 
             $table->boolean('discharge_test')->nullable();
 
-            $table->bigInteger('minsal_ws_id')->unsigned();
+            $table->unsignedBigInteger('minsal_ws_id')->nullable();
 
             $table->unsignedBigInteger('patient_id');
             $table->unsignedBigInteger('laboratory_id')->nullable();

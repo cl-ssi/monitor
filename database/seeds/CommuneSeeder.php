@@ -3,7 +3,7 @@
 use App\Commune;
 use Illuminate\Database\Seeder;
 
-class CommunesSeeder extends Seeder
+class CommuneSeeder extends Seeder
 {
     /**
      * Run the database seeds.

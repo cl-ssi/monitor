@@ -252,7 +252,7 @@ class SuspectCaseController extends Controller
         //obtiene proximo id suspect case
         $NextsuspectCase = SuspectCase::max('id');
         $NextsuspectCase += 1;
-        $NextsuspectCase = 11;
+        $NextsuspectCase = 12;
 
         // webservices MINSAL
         if (env('APP_ENV') == 'local') {
