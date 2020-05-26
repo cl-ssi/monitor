@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\SuspectCase;
+use App\Establishment;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -67,7 +68,7 @@ class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping, W
         return [
             $suspectCase->id,
             Date::dateTimeToExcel($suspectCase->sample_at),
-            $suspectCase->establishment->alias,
+            ($suspectCase->establishment)?$suspectCase->establishment->alias.' - ': '',
             ($suspectCase->patient)?$suspectCase->patient->fullName:'',
             ($suspectCase->patient)?$suspectCase->patient->Identifier:'',
             $suspectCase->age,
