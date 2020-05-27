@@ -168,58 +168,15 @@
                 </tr>
             </thead>
             <tbody>
+
                 @foreach($communes as $commune)
                 <tr>
                     <td>{{ $commune->name }}</td>
                     <td class="text-center">
-                        {{ $$commune->name = $patients->where('demographic.commune_id',$commune->id)->count() }}
+                        {{ $commune->count = $patients->where('demographic.commune_id',$commune->id)->count() }}
                     </td>
                 </tr>
                 @endforeach
-
-                <!-- <tr>
-                    <td>Camiña</td>
-                    <td class="text-center">
-                        {{ $camiña = $patients->where('demographic.commune','Camiña')->count() }}
-                    </td>
-
-                </tr>
-
-                <tr>
-                    <td>Colchane</td>
-                    <td class="text-center">
-                        {{ $colchane = $patients->where('demographic.commune','Colchane')->count() }}
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Huara</td>
-                    <td class="text-center">
-                        {{ $huara = $patients->where('demographic.commune','Huara')->count() }}
-                    </td>
-
-                </tr>
-
-                <tr>
-                    <td>Iquique</td>
-                    <td class="text-center">
-                        {{ $iquique = $patients->where('demographic.commune','Iquique')->count() }}
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Pica</td>
-                    <td class="text-center">
-                        {{ $pica = $patients->where('demographic.commune','Pica')->count() }}
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Pozo Almonte</td>
-                    <td class="text-center">
-                        {{ $pozo_almonte = $patients->where('demographic.commune','Pozo Almonte')->count() }}
-                    </td>
-                </tr> -->
 
                 <tr>
                     <td>Sin registro</td>
@@ -243,61 +200,19 @@
             <tbody>
                 @foreach($communes as $commune)
                 <tr>
-                    <td>Alto Hospicio ($commune->population*)</td>
+                    <td>{{ $commune->name }} ({{ $commune->population }}*)</td>
                     <td class="text-right">
-                        {{ number_format($$commune->name / $commune->population * 100000 ,2) }}
+                        {{ number_format($commune->count / $commune->population * 100000 ,2) }}
                     </td>
                 </tr>
                 @endforeach
-                {{--
-                <!-- <tr>
-                    <td>Alto Hospicio (129.999*)</td>
-                    <td class="text-right">
-                        {{ number_format($alto_hospicio / 129999 * 100000 ,2) }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>Camiña (1.375*)</td>
-                    <td class="text-right">
-                        {{ number_format($camiña / 1375 * 100000 ,2) }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>Colchane (1.583*)</td>
-                    <td class="text-right">
-                        {{ number_format($colchane / 1583 * 100000 ,2) }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>Huara (3.000*)</td>
-                    <td class="text-right">
-                        {{ number_format($huara / 3000 * 100000 ,2) }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>Iquique (223.463*)</td>
-                    <td class="text-right">
-                        {{ number_format($iquique / 223463 * 100000 ,2) }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>Pica (5.958*)</td>
-                    <td class="text-right">
-                        {{ number_format($pica / 5958 * 100000 ,2) }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>Pozo Almonte (17.395*)</td>
-                    <td class="text-right">
-                        {{ number_format($pozo_almonte / 17395 * 100000 ,2) }}
-                    </td>
-                </tr>
+
                 <tr>
                     <th>Región Tarapacá (382.773*)</th>
                     <th class="text-right">
-                        {{ number_format($region / 382773 * 100000 ,2) }}
+                        {{ number_format($region / $communes->sum('population') * 100000 ,2) }}
                     </th>
-                </tr> --> --}}
+                </tr>
             </tbody>
         </table>
 

@@ -68,27 +68,9 @@
                         </li>
                         @endcan
 
-                        @canany(['Lab: menu'])
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-vial"></i>
-                                Lab
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-                                <a class="dropdown-item" href="{{ route('lab.exams.covid19.index') }}">Covid19</a>
-
-                            </div>
-                        </li>
-                        @endcan
 
 
                         @canany(['SuspectCase: list','SuspectCase: admission'])
-                        <!-- <li class="nav-item">
-                            <a class="nav-link" href="{{ route('lab.suspect_cases.index') }}">
-                                Casos sospechosos
-                            </a>
-                        </li> -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-lungs-virus"></i>
@@ -123,6 +105,20 @@
                                 @can('Patient: tracing')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing') }}">Seguimiento de casos</a>
                                 @endcan
+
+                            </div>
+                        </li>
+                        @endcan
+
+                        @canany(['Lab: menu'])
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-vial"></i>
+                                Lab
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                                <a class="dropdown-item" href="{{ route('lab.exams.covid19.index') }}">Examenes externos</a>
 
                             </div>
                         </li>
