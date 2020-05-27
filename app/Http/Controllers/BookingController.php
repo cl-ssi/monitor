@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\SanitaryResidence\Residence;
 use App\SanitaryResidence\Booking;
 use App\SanitaryResidence\Room;
+use App\SanitaryResidence\VitalSign;
 use App\Patient;
 use App\Log;
 use App\SuspectCase;
@@ -146,4 +147,17 @@ class BookingController extends Controller
         $residences = Residence::all();
         return view('sanitary_residences.bookings.excel.excelall', compact('residences','bookings'));
     }
+
+
+    public function excelvitalsign()
+    {   $bookings = Booking::where('status','Residencia Sanitaria')
+        ->whereHas('patient', function ($q) {
+            $q->where('status','Residencia Sanitaria');
+        })->get();        
+        $vitalsigns = VitalSign::orderBy('booking_id','ASC')->orderBy('patient_id','ASC')->orderBy('created_at', 'DESC')->get();
+
+        return view('sanitary_residences.bookings.excel.excelvitalsign',compact('bookings','vitalsigns'));
+    }
+
+    
 }
