@@ -11,6 +11,7 @@ use App\SanitaryResidence\Residence;
 use App\SanitaryResidence\Booking;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Region;
 
 class ReportBackup extends Command
 {
@@ -57,36 +58,19 @@ class ReportBackup extends Command
         })->with('suspectCases')->with('demographic')->get();
 
         $patients = $patients->whereNotIn('demographic.region',
-                    [
-                    'Arica y Parinacota',
-                    'Antofagasta',
-                    'Atacama',
-                    'Coquimbo',
-                    'Valparaíso',
-                    'Región del Libertador Gral. Bernardo O’Higgins',
-                    'Región del Maule',
-                    'Región del Biobío',
-                    'Región de la Araucanía',
-                    'Región de Los Ríos',
-                    'Región de Los Lagos',
-                    'Región Aisén del Gral. Carlos Ibáñez del Campo',
-                    'Región de Magallanes y de la Antártica Chilena',
-                    'Región Metropolitana de Santiago',
-                    'Región de Ñuble']);
+                    [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
 
         /* Calculo de gráfico de evolución */
         $begin = SuspectCase::where('pscr_sars_cov_2','positive')->orderBy('sample_at')->first()->sample_at;
         $end   = SuspectCase::where('pscr_sars_cov_2','positive')->orderByDesc('sample_at')->first()->sample_at;
 
+        $comunas = Region::find(1)->communes;
+
         for ($i = $begin; $i <= $end; $i->modify('+1 day')) {
             $casos['Region'][$i->format("Y-m-d")] = 0;
-            $casos['Alto Hospicio'][$i->format("Y-m-d")] = 0;
-            $casos['Iquique'][$i->format("Y-m-d")] = 0;
-            $casos['Pica'][$i->format("Y-m-d")] = 0;
-            $casos['Pozo Almonte'][$i->format("Y-m-d")] = 0;
-            $casos['Huara'][$i->format("Y-m-d")] = 0;
-            $casos['Camiña'][$i->format("Y-m-d")] = 0;
-            $casos['Colchane'][$i->format("Y-m-d")] = 0;
+            foreach($comunas as $comuna) {
+                $casos[$comuna->name][$i->format("Y-m-d")] = 0;
+            }
         }
 
         foreach($patients as $patient) {

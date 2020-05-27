@@ -12,6 +12,7 @@ use App\SanitaryResidence\Booking;
 use Carbon\Carbon;
 use App\Lab\Exam\Covid19;
 use App\Laboratory;
+use App\Region;
 
 class SuspectCaseReportController extends Controller
 {
@@ -22,42 +23,27 @@ class SuspectCaseReportController extends Controller
                     })->get();
         $residences = Residence::all();
 
+        $comunas = env('COMUNAS');
+        $comunas = array(5,6,7,8,9,10,11);
 
         $patients = Patient::whereHas('suspectCases', function ($q) {
             $q->where('pscr_sars_cov_2','positive');
         })->with('suspectCases')->with('demographic')->get();
 
-        $patients = $patients->whereNotIn('demographic.region',
-                    [
-                    'Arica y Parinacota',
-                    'Antofagasta',
-                    'Atacama',
-                    'Coquimbo',
-                    'Valparaíso',
-                    'Región del Libertador Gral. Bernardo O’Higgins',
-                    'Región del Maule',
-                    'Región del Biobío',
-                    'Región de la Araucanía',
-                    'Región de Los Ríos',
-                    'Región de Los Lagos',
-                    'Región Aisén del Gral. Carlos Ibáñez del Campo',
-                    'Región de Magallanes y de la Antártica Chilena',
-                    'Región Metropolitana de Santiago',
-                    'Región de Ñuble']);
+        $patients = $patients->whereNotIn('demographic.region_id',
+                    [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
 
         /* Calculo de gráfico de evolución */
         $begin = SuspectCase::where('pscr_sars_cov_2','positive')->orderBy('sample_at')->first()->sample_at;
         $end   = SuspectCase::where('pscr_sars_cov_2','positive')->orderByDesc('sample_at')->first()->sample_at;
 
+        $communes = Region::find(1)->communes;
+
         for ($i = $begin; $i <= $end; $i->modify('+1 day')) {
             $casos['Region'][$i->format("Y-m-d")] = 0;
-            $casos['Alto Hospicio'][$i->format("Y-m-d")] = 0;
-            $casos['Iquique'][$i->format("Y-m-d")] = 0;
-            $casos['Pica'][$i->format("Y-m-d")] = 0;
-            $casos['Pozo Almonte'][$i->format("Y-m-d")] = 0;
-            $casos['Huara'][$i->format("Y-m-d")] = 0;
-            $casos['Camiña'][$i->format("Y-m-d")] = 0;
-            $casos['Colchane'][$i->format("Y-m-d")] = 0;
+            foreach($communes as $commune) {
+                $casos[$commune->name][$i->format("Y-m-d")] = 0;
+            }
         }
 
         foreach($patients as $patient) {
@@ -90,7 +76,7 @@ class SuspectCaseReportController extends Controller
 
         //echo '<pre>'; print_r($patients->where('status','Hospitalizado UCI')->count()); die();
         //echo '<pre>'; print_r($evolucion); die();
-        return view('lab.suspect_cases.reports.positives', compact('patients','evolucion','ventilator','residences','bookings','exams'));
+        return view('lab.suspect_cases.reports.positives', compact('patients','evolucion','ventilator','residences','bookings','exams','communes'));
 
     }
 
@@ -102,22 +88,7 @@ class SuspectCaseReportController extends Controller
     {
         $patients = Patient::whereHas('suspectCases', function ($q) { $q->where('pscr_sars_cov_2','positive'); })->get();
         $patients = $patients->whereNotIn('demographic.region',
-                    [
-                    'Arica y Parinacota',
-                    'Antofagasta',
-                    'Atacama',
-                    'Coquimbo',
-                    'Valparaíso',
-                    'Región del Libertador Gral. Bernardo O’Higgins',
-                    'Región del Maule',
-                    'Región del Biobío',
-                    'Región de la Araucanía',
-                    'Región de Los Ríos',
-                    'Región de Los Lagos',
-                    'Región Aisén del Gral. Carlos Ibáñez del Campo',
-                    'Región de Magallanes y de la Antártica Chilena',
-                    'Región Metropolitana de Santiago',
-                    'Región de Ñuble']);
+                    [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
 
         $max_cases = 0;
         foreach ($patients as $patient) {
@@ -176,22 +147,7 @@ class SuspectCaseReportController extends Controller
         })->with('suspectCases')->with('demographic')->get();
 
         $patients = $patients->whereNotIn('demographic.region',
-                    [
-                    'Arica y Parinacota',
-                    'Antofagasta',
-                    'Atacama',
-                    'Coquimbo',
-                    'Valparaíso',
-                    'Región del Libertador Gral. Bernardo O’Higgins',
-                    'Región del Maule',
-                    'Región del Biobío',
-                    'Región de la Araucanía',
-                    'Región de Los Ríos',
-                    'Región de Los Lagos',
-                    'Región Aisén del Gral. Carlos Ibáñez del Campo',
-                    'Región de Magallanes y de la Antártica Chilena',
-                    'Región Metropolitana de Santiago',
-                    'Región de Ñuble']);
+                    [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
 
         if($request->input('residence')) {
             $bookings = Booking::where('status','Residencia Sanitaria')
