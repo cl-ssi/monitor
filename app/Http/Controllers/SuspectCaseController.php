@@ -427,7 +427,7 @@ class SuspectCaseController extends Controller
         $log->save();
 
 
-        session()->flash('success', 'Se ha creado el caso número: <h3>' . $suspectCase->id . '</h3><br /> ' . $ws_response);
+        session()->flash('success', 'Se ha creado el caso número: <h3>' . $suspectCase->id );
         return redirect()->back();
     }
 
