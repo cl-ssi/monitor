@@ -380,6 +380,7 @@
 </form>
 @endcan
 
+
 @can('Admin')
 <table class="table table-sm small text-muted mt-3">
     <thead>
