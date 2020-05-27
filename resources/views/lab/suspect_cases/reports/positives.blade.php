@@ -168,14 +168,16 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach($communes as $commune)
                 <tr>
-                    <td>Alto Hospicio</td>
+                    <td>{{ $commune->name }}</td>
                     <td class="text-center">
-                        {{ $alto_hospicio = $patients->where('demographic.commune','Alto Hospicio')->count() }}
+                        {{ $$commune->name = $patients->where('demographic.commune_id',$commune->id)->count() }}
                     </td>
                 </tr>
+                @endforeach
 
-                <tr>
+                <!-- <tr>
                     <td>Camiña</td>
                     <td class="text-center">
                         {{ $camiña = $patients->where('demographic.commune','Camiña')->count() }}
@@ -217,7 +219,7 @@
                     <td class="text-center">
                         {{ $pozo_almonte = $patients->where('demographic.commune','Pozo Almonte')->count() }}
                     </td>
-                </tr>
+                </tr> -->
 
                 <tr>
                     <td>Sin registro</td>
@@ -239,7 +241,16 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach($communes as $commune)
                 <tr>
+                    <td>Alto Hospicio ($commune->population*)</td>
+                    <td class="text-right">
+                        {{ number_format($$commune->name / $commune->population * 100000 ,2) }}
+                    </td>
+                </tr>
+                @endforeach
+                {{--
+                <!-- <tr>
                     <td>Alto Hospicio (129.999*)</td>
                     <td class="text-right">
                         {{ number_format($alto_hospicio / 129999 * 100000 ,2) }}
@@ -286,7 +297,7 @@
                     <th class="text-right">
                         {{ number_format($region / 382773 * 100000 ,2) }}
                     </th>
-                </tr>
+                </tr> --> --}}
             </tbody>
         </table>
 
