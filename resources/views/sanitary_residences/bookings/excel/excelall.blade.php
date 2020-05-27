@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Listado de Habitaciones')
+@section('title', 'Excel Booking')
 
 @section('content')
 
@@ -63,7 +63,8 @@
             <td nowrap>{{$booking->room->floor}}</td>
             <td nowrap>{{$booking->room->number}}</td>
             <td nowrap>{{ ($booking->patient->demographic)?$booking->patient->demographic->commune:'' }}</td>
-            <td nowrap>{{ $booking->patient->suspectCases->last()->origin }}</td>
+            
+            <td nowrap>{{ $booking->patient->suspectCases->last()->establishment?$booking->patient->suspectCases->last()->establishment->alias.' - '.$booking->patient->suspectCases->last()->origin: ''}}</td>
             <td nowrap> {{$booking->doctor}} </td>
             <td nowrap>{{$booking->patient->identifier}}</td>
             <td nowrap>{{$booking->patient->fathers_family}} {{$booking->patient->mothers_family}}</td>

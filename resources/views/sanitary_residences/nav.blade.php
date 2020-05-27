@@ -30,7 +30,13 @@
 
     <li class="nav-item">
         <a class="nav-link"  href="{{ route('sanitary_residences.bookings.excelall')  }}">
-            <i class="fas fa-file-excel"></i> Reporte
+            <i class="fas fa-file-excel"></i> Reporte Booking
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link"  href="{{ route('sanitary_residences.bookings.excelvitalsign')  }}">
+            <i class="fas fa-file-excel"></i> Reporte Signos Vitales
         </a>
     </li>
 
