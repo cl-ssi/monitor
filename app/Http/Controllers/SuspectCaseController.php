@@ -219,6 +219,9 @@ class SuspectCaseController extends Controller
         $suspectCase = new SuspectCase($request->All());
         $suspectCase->epidemiological_week = Carbon::createFromDate($suspectCase->sample_at->format('Y-m-d'))->add(1, 'days')->weekOfYear;
         $suspectCase->laboratory_id = Auth::user()->laboratory_id;
+        $suspectCase->receptor_id = Auth::id();
+        $suspectCase->reception_at = date('Y-m-d H:i:s');
+        
         if(!$request->input('pscr_sars_cov_2')) {
             $suspectCase->pscr_sars_cov_2 = 'pending';
         }
