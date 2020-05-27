@@ -208,7 +208,7 @@
                 @endforeach
 
                 <tr>
-                    <th>Región ($communes->sum('population')*)</th>
+                    <th>Región ({{ $communes->sum('population') }}*)</th>
                     <th class="text-right">
                         {{ number_format($region / $communes->sum('population') * 100000 ,2) }}
                     </th>
