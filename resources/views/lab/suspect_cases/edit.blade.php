@@ -380,6 +380,39 @@
 </form>
 @endcan
 
+<h4 class="mt-4">Otros Examenes realizados</h4>
+
+<table class="table table-sm table-bordered small mb-4 mt-4">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Establecimiento</th>
+            <th>Fecha muestra</th>
+            <th>Fecha resultado</th>
+            <th>Resultado</th>
+            <th>Epivigila</th>
+            <th>Observacion</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($suspectCase->patient->suspectCases->where('id','<>',$suspectCase->id) as $case)
+        <tr>
+            <td>
+                <a href="{{ route('lab.suspect_cases.edit', $case )}}">
+                {{ $case->id }}
+                </a>
+            </td>
+            <td>{{ ($case->establishment) ? $case->establishment->alias : '' }}</td>
+            <td>{{ $case->sample_at }}</td>
+            <td>{{ $case->pscr_sars_cov_2_at }}</td>
+            <td>{{ $case->covid19 }}</td>
+            <td>{{ $case->epivigila }}</td>
+            <td>{{ $case->observation }}</td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+
 @can('Admin')
 <table class="table table-sm small text-muted mt-3">
     <thead>

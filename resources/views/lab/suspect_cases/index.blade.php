@@ -47,6 +47,18 @@
 </table>
 
 <a type="button" class="btn btn-success" href="{{ route('lab.suspect_cases.export', 'all') }}">Descargar <i class="far fa-file-excel"></i></a>
+@if($laboratory)
+<a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.minsal',$laboratory) }}">
+    Reporte MINSAL
+</a>
+<a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.seremi',$laboratory) }}">
+    Reporte SEREMI
+</a>
+<a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.report.estadistico_diario_covid19',$laboratory) }}">
+    Reporte estadistico diario
+</a>
+@endif
+
 
 <div align="right">
 <form method="get" action="{{ route('lab.suspect_cases.index',$laboratory) }}">

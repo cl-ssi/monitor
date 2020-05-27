@@ -11,6 +11,7 @@ use App\SanitaryResidence\Residence;
 use App\SanitaryResidence\Booking;
 use Carbon\Carbon;
 use App\Lab\Exam\Covid19;
+use App\Laboratory;
 
 class SuspectCaseReportController extends Controller
 {
@@ -132,30 +133,19 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     /*                  REPORTE MINSAL                   */
     /*****************************************************/
-    public function report_minsal($lab = null)
+    public function report_minsal(Laboratory $laboratory)
     {
-        switch ($lab) {
-            case 'hetg':
-                $cod_lab = 1;
-                break;
-            case 'unap':
-                $cod_lab = 2;
-                break;
-            default:
-                $cod_lab = 1;
-                break;
-        }
         $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $to = date("Y-m-d 20:59:59");
 
         $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
 
-        $cases = SuspectCase::where('laboratory_id',$cod_lab)
+        $cases = SuspectCase::where('laboratory_id',$laboratory->id)
                 ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
                 ->whereNull('external_laboratory')
                 ->get()
                 ->sortByDesc('pscr_sars_cov_2_at');
-        return view('lab.suspect_cases.reports.minsal', compact('cases', 'cod_lab','externos'));
+        return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory','externos'));
     }
 
 
@@ -163,21 +153,11 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     /*                  REPORTE SEREMI                   */
     /*****************************************************/
-    public function report_seremi($lab = null)
+    public function report_seremi(Laboratory $laboratory)
     {
-        switch ($lab) {
-            case 'hetg':
-                $cod_lab = 1;
-                break;
-            case 'unap':
-                $cod_lab = 2;
-                break;
-            default:
-                $cod_lab = 1;
-                break;
-        }
-        $cases = SuspectCase::where('laboratory_id',$cod_lab)->get()->sortDesc();
-        return view('lab.suspect_cases.reports.seremi', compact('cases', 'cod_lab'));
+
+        $cases = SuspectCase::where('laboratory_id',$laboratory->id)->get()->sortDesc();
+        return view('lab.suspect_cases.reports.seremi', compact('cases', 'laboratory'));
     }
 
 

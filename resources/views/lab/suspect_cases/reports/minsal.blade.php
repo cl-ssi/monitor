@@ -5,7 +5,7 @@
 @section('content')
 
 <!-- <a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a> -->
-<a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.exportMinsal', ['lab' => $cod_lab]) }}">Descargar <i class="far fa-file-excel"></i></a>
+<a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.exportMinsal', $laboratory) }}">Descargar <i class="far fa-file-excel"></i></a>
 
 <table class="table table-sm table-bordered table-responsive small text-uppercase" id="tabla_casos">
     <thead>
@@ -40,7 +40,7 @@
             <td nowrap>{{ ($case->pscr_sars_cov_2_at) ? $case->pscr_sars_cov_2_at->format('d-m-Y') : '' }}</td>
             <td nowrap>{{ strtoupper($case->establishment)?$case->establishment->alias.' - '.$case->origin: '' }}</td>
             <td nowrap>TARAPACÁ</td>
-            <td nowrap class="text-uppercase">{{ last(request()->segments()) }}</td>
+            <td nowrap class="text-uppercase">{{ $laboratory->name }}</td>
             <td nowrap>TARAPACÁ</td>
             <td nowrap>{{ ($case->patient->demographic)?$case->patient->demographic->telephone:'' }}</td>
             <td nowrap>{{ ($case->patient->demographic)?$case->patient->demographic->email:'' }}</td>
