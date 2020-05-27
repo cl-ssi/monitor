@@ -296,6 +296,8 @@
                 id="for_observation" value="{{ $suspectCase->observation }}">
         </fieldset>
 
+        @cannot('SuspectCase: tecnologo')
+
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_paho_flu">PAHO FLU</label>
             <input type="number" class="form-control" name="paho_flu" id="for_paho_flu"
@@ -313,12 +315,15 @@
             <input type="number" class="form-control" id="for_epivigila"
                 name="epivigila" value="{{ $suspectCase->epivigila }}">
         </fieldset>
+
+        @endcan
     </div>
 
     <hr>
 
 @endcan
 
+    @cannot('SuspectCase: tecnologo')
     <h4>Entrega de resultados a paciente</h4>
 
     <div class="form-row">
@@ -358,7 +363,7 @@
         </fieldset>
 
     </div>
-
+@endcan
 
     <button type="submit" class="btn btn-primary">Guardar</button>
 
