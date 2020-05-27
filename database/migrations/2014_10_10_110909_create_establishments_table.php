@@ -25,6 +25,7 @@ class CreateEstablishmentsTable extends Migration
           $table->id('id');
           $table->string('name');
           $table->string('code_deis');
+          $table->unsignedBigInteger('population')->nullable();;
           $table->unsignedBigInteger('region_id');
 
           $table->foreign('region_id')->references('id')->on('regions');
