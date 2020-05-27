@@ -16,7 +16,7 @@ class LaboratoryController extends Controller
     public function index()
     {
         $laboratories = Laboratory::All();
-        return view('lab.index', compact('laboratories'));
+        return view('parameters.lab.index', compact('laboratories'));
     }
 
     /**
@@ -27,7 +27,7 @@ class LaboratoryController extends Controller
     public function create()
     {
         $communes = Commune::All();
-        return view('lab.create', compact('communes'));
+        return view('parameters.lab.create', compact('communes'));
     }
 
     /**
@@ -41,7 +41,7 @@ class LaboratoryController extends Controller
         $laboratory = new Laboratory($request->All());
         $laboratory->save();
         session()->flash('success', 'Se creo laboratorio exitosamente');
-        return redirect()->route('lab.index');
+        return redirect()->route('parameters.lab');
     }
 
     /**
@@ -64,7 +64,7 @@ class LaboratoryController extends Controller
     public function edit(Laboratory $laboratory)
     {
         $communes = Commune::All();
-        return view('lab.edit', compact('laboratory','communes'));
+        return view('parameters.lab.edit', compact('laboratory','communes'));
     }
 
     /**
@@ -79,7 +79,7 @@ class LaboratoryController extends Controller
         $laboratory->fill($request->all());
         $laboratory->save();
         session()->flash('success', 'Se modificó el laboratorio exitosamente');
-        return redirect()->route('lab.index');
+        return redirect()->route('parameters.lab');
     }
 
     /**

@@ -7,7 +7,7 @@
 
 <h3 class="mb-3">Crear Laboratorio</h3>
 
-<form method="POST" class="form-horizontal" action="{{ route('lab.store') }}">
+<form method="POST" class="form-horizontal" action="{{ route('parameters.lab.store') }}">
     @csrf
     @method('POST')
     <div class="form-row">
@@ -18,8 +18,8 @@
 
 
         <fieldset class="form-group col">
-            <label for="for_commune">Comuna</label>            
-            <select class="form-control" name="commune" id="for_commune" required>
+            <label for="for_commune_id">Comuna</label>            
+            <select class="form-control" name="commune_id" id="for_commune_id" required>
                 <option value="">Seleccione Comuna</option>
                 @foreach($communes as $commune)
                 <option value="{{ $commune->id }}">{{ $commune->name }}</option>
@@ -44,7 +44,7 @@
 
     <button type="submit" class="btn btn-primary">Guardar</button>
 
-    <a class="btn btn-outline-secondary" href="{{ route('lab.index') }}">Cancelar</a>
+    <a class="btn btn-outline-secondary" href="{{ route('parameters.lab') }}">Cancelar</a>
 
 </form>
 

@@ -72,11 +72,11 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
 Route::resource('epp','EppController')->middleware('auth');
 
 Route::prefix('lab')->name('lab.')->group(function () {
-    Route::get('/', 'LaboratoryController@index')->name('index');
-    Route::get('/create', 'LaboratoryController@create')->name('create');
-    Route::post('/store', 'LaboratoryController@store')->name('store');
-    Route::get('/{laboratory}/edit', 'LaboratoryController@edit')->name('edit');
-    Route::put('update/{laboratory}', 'LaboratoryController@update')->name('update');    
+    //Route::get('/', 'LaboratoryController@index')->name('index');
+    //Route::get('/create', 'LaboratoryController@create')->name('create');
+    //Route::post('/store', 'LaboratoryController@store')->name('store');
+    //Route::get('/{laboratory}/edit', 'LaboratoryController@edit')->name('edit');
+    //Route::put('update/{laboratory}', 'LaboratoryController@update')->name('update');
     Route::get('login/{access_token}','SuspectCaseController@login')->name('login');
     Route::get('results','SuspectCaseController@result')->name('result');
     Route::get('print/{suspect_case}','SuspectCaseController@print')->middleware('auth')->name('print');
@@ -153,6 +153,11 @@ Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(functi
     Route::resource('permissions','Parameters\PermissionController');
     Route::get('/ventilators/edit', 'VentilatorController@edit')->name('ventilators.edit');
     Route::put('/ventilators', 'VentilatorController@update')->name('ventilators.update');
+    Route::get('/lab', 'LaboratoryController@index')->name('lab');
+    Route::get('/lab/create', 'LaboratoryController@create')->name('lab.create');
+    Route::post('/lab/store', 'LaboratoryController@store')->name('lab.store');
+    Route::get('/lab/{laboratory}/edit', 'LaboratoryController@edit')->name('lab.edit');
+    Route::put('/lab/update/{laboratory}', 'LaboratoryController@update')->name('lab.update');
 });
 
 Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('auth')->group(function () {

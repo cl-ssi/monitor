@@ -38,7 +38,7 @@
             <td nowrap>{{ $case->sample_at->format('d-m-Y') }}</td>
             <td nowrap>{{ ($case->created_at)? $case->created_at->format('d-m-Y'): '' }}</td>
             <td nowrap>{{ ($case->pscr_sars_cov_2_at) ? $case->pscr_sars_cov_2_at->format('d-m-Y') : '' }}</td>
-            <td nowrap>{{ strtoupper($case->origin) }}</td>
+            <td nowrap>{{ strtoupper($case->establishment)?$case->establishment->alias.' - '.$case->origin: '' }}</td>
             <td nowrap>TARAPACÁ</td>
             <td nowrap class="text-uppercase">{{ last(request()->segments()) }}</td>
             <td nowrap>TARAPACÁ</td>
