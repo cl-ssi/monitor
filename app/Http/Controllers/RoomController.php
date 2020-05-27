@@ -15,7 +15,8 @@ class RoomController extends Controller
      */
     public function index()
     {
-        $rooms = Room::all();
+        //$rooms = Room::all();
+        $rooms = Room::orderBy('residence_id','ASC')->get();
         return view('sanitary_residences.rooms.index', compact('rooms'));
     }
 
@@ -41,6 +42,7 @@ class RoomController extends Controller
         $room = new Room($request->All());
         $room->save();
 
+        session()->flash('success', 'Se creo la habitación exitosamente');
         return redirect()->route('sanitary_residences.rooms.index');
     }
 
@@ -63,7 +65,8 @@ class RoomController extends Controller
      */
     public function edit(Room $room)
     {
-        //
+        $residences = Residence::All();
+        return view('sanitary_residences.rooms.edit', compact('room','residences'));
     }
 
     /**
@@ -75,7 +78,10 @@ class RoomController extends Controller
      */
     public function update(Request $request, Room $room)
     {
-        //
+        $room->fill($request->all());
+        $room->save();
+        session()->flash('success', 'Se modificó la habitación exitosamente');
+        return redirect()->route('sanitary_residences.rooms.index');
     }
 
     /**
