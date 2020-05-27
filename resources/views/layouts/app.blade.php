@@ -107,7 +107,7 @@
 
                                 @can('SuspectCase: list')
                                 @php
-                                $labs = App\Laboratory::where('external',0)->orderBy('name')->get();
+                                $labs = App\Laboratory::where('external',0)->get();
                                 @endphp
 
                                 @foreach($labs as $lab)

@@ -9,15 +9,16 @@ use Maatwebsite\Excel\Concerns\{FromCollection, WithHeadings, WithMapping,
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use Carbon\Carbon;
+use App\Laboratory;
 
 class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapping, WithColumnFormatting, ShouldAutoSize
 {
     private $cod_lab;
     private $nombre_lab;
 
-    public function __construct($cod_lab, $nombre_lab) {
-          $this->cod_lab = $cod_lab;
-          $this->nombre_lab = $nombre_lab;
+    public function __construct(Laboratory $laboratory) {
+          $this->cod_lab = $laboratory->id;
+          $this->nombre_lab = $laboratory->name;
     }
 
     /**
@@ -104,7 +105,7 @@ class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
             Date::dateTimeToExcel($suspectCase->pscr_sars_cov_2_at),
             //strtoupper($suspectCase->origin),
             ($suspectCase->establishment)?$suspectCase->establishment->alias.' - '.$suspectCase->origin: '',
-            
+
             'TARAPACÁ',
             $this->nombre_lab,
             'TARAPACÁ',
