@@ -11,7 +11,7 @@
         <table class="table table-sm table-bordered">
             <thead>
                 <tr class="table-active">
-                    <th>Casos Tarapacá</th>
+                    <th>Casos de la Región</th>
                     <th>Hom</th>
                     <th>Muj</th>
                     <th>Total</th>
@@ -208,7 +208,7 @@
                 @endforeach
 
                 <tr>
-                    <th>Región Tarapacá (382.773*)</th>
+                    <th>Región ($communes->sum('population')*)</th>
                     <th class="text-right">
                         {{ number_format($region / $communes->sum('population') * 100000 ,2) }}
                     </th>
@@ -456,7 +456,7 @@
                 gridlines:{count: {{ count($evolucion['Region']) }} },
                 textPosition: '50',
             },
-            chartArea: {'width': '85%', 'height': '80%'},
+            chartArea: {'width': '80%', 'height': '80%'},
 
         };
         var chart = new google.visualization.LineChart(document.getElementById('evolution'));
