@@ -165,7 +165,7 @@
                                 @endcan
 
                                 @can('Report: other')
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.index') }}">Reporte</a>
+                                <!--a class="dropdown-item" href="{{ route('lab.suspect_cases.report.index') }}">Reporte</a-->
                                 @endcan
 
                                 @can('Report: historical')
