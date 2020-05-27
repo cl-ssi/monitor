@@ -4,7 +4,8 @@
 
 @section('content')
 
-<a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.exportSeremi', ['lab' => $cod_lab]) }}">Descargar <i class="far fa-file-excel"></i></a>
+
+<a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.exportSeremi', $laboratory) }}">Descargar <i class="far fa-file-excel"></i></a>
 
 <table class="table table-sm table-bordered table-responsive small" id="tabla_casos">
     <thead>
