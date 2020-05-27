@@ -4,7 +4,8 @@
 
 @section('content')
 
-<a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.exportSeremi', ['lab' => $cod_lab]) }}">Descargar <i class="far fa-file-excel"></i></a>
+
+<a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.exportSeremi', $laboratory) }}">Descargar <i class="far fa-file-excel"></i></a>
 
 <table class="table table-sm table-bordered table-responsive small" id="tabla_casos">
     <thead>
@@ -28,7 +29,7 @@
             <td>{{ $case->id }}</td>
             <td nowrap>{{ $case->patient->fullName }}</td>
             <td nowrap class="text-right">{{ $case->patient->identifier}}</td>
-            <td nowrap class="text-uppercase">{{ $case->origin }}</td>
+            <td nowrap class="text-uppercase">{{ strtoupper($case->establishment)?$case->establishment->alias.' - '.$case->origin: '' }}</td>
             <td nowrap>{{ $case->age }}</td>
             <td nowrap>{{ ($case->gestation == 1 )?'X':'' }}</td>
             <td nowrap>{{ $case->sample_type }}</td>
