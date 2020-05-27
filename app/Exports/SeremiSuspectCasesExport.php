@@ -49,7 +49,7 @@ class SeremiSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
             $suspectCase->id,
             $suspectCase->patient->fullName,
             $suspectCase->patient->Identifier,
-            strtoupper($suspectCase->origin),
+            ($suspectCase->establishment)?strtoupper($suspectCase->establishment->alias.' - '.$suspectCase->origin): '',
             $suspectCase->age,
             $suspectCase->gestation,
             $suspectCase->sample_type,
