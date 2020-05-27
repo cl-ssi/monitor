@@ -180,8 +180,8 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
         Route::get('/', 'RoomController@index')->name('index');
         Route::get('/create', 'RoomController@create')->name('create');
         Route::post('/', 'RoomController@store')->name('store');
-        // Route::get('/{room}/edit', 'RoomController@edit')->name('edit');
-        // Route::put('/{room}', 'RoomController@update')->name('update');
+        Route::get('/{room}/edit', 'RoomController@edit')->name('edit');
+        Route::put('/{room}', 'RoomController@update')->name('update');
         // Route::delete('/{room}', 'RoomController@destroy')->name('destroy');
     });
 
