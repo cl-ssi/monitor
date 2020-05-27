@@ -29,7 +29,7 @@
             <td>{{ $case->id }}</td>
             <td nowrap>{{ $case->patient->fullName }}</td>
             <td nowrap class="text-right">{{ $case->patient->identifier}}</td>
-            <td nowrap class="text-uppercase">{{ $case->establishment)?$case->establishment->alias.' - '.$case->origin: '' }}</td>
+            <td nowrap class="text-uppercase">{{ strtoupper($case->establishment)?$case->establishment->alias.' - '.$case->origin: '' }}</td>
             <td nowrap>{{ $case->age }}</td>
             <td nowrap>{{ ($case->gestation == 1 )?'X':'' }}</td>
             <td nowrap>{{ $case->sample_type }}</td>
