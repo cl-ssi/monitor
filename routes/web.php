@@ -126,14 +126,14 @@ Route::prefix('lab')->name('lab.')->group(function () {
             // Route::get('case_chart','SuspectCaseController@case_chart')->name('case_chart')->middleware('auth');
             Route::match(['get','post'],'case_chart','SuspectCaseReportController@case_chart')->middleware('auth')->name('case_chart');
             Route::match(['get','post'],'exams_with_result','SuspectCaseReportController@exams_with_result')->middleware('auth','can:Report: exams with result')->name('exams_with_result');
-            Route::get('/minsal/{lab}','SuspectCaseReportController@report_minsal')->name('minsal')->middleware('auth');
-            Route::get('/seremi/{lab}','SuspectCaseReportController@report_seremi')->name('seremi')->middleware('auth');
+            Route::get('/minsal/{laboratory}','SuspectCaseReportController@report_minsal')->name('minsal')->middleware('auth');
+            Route::get('/seremi/{laboratory}','SuspectCaseReportController@report_seremi')->name('seremi')->middleware('auth');
         });
         Route::prefix('report')->name('report.')->group(function () {
             Route::get('/','SuspectCaseReportController@positives')->name('index')->middleware('auth','can:Report: other');
             Route::get('historical_report','SuspectCaseController@historical_report')->name('historical_report')->middleware('auth','can:Report: historical');
-            Route::get('/minsal-export/{lab}','SuspectCaseController@exportMinsalExcel')->name('exportMinsal')->middleware('auth');
-            Route::get('/seremi-export/{lab}','SuspectCaseController@exportSeremiExcel')->name('exportSeremi')->middleware('auth');
+            Route::get('/minsal-export/{laboratory}','SuspectCaseController@exportMinsalExcel')->name('exportMinsal')->middleware('auth');
+            Route::get('/seremi-export/{laboratory}','SuspectCaseController@exportSeremiExcel')->name('exportSeremi')->middleware('auth');
             Route::get('diary_lab_report','SuspectCaseController@diary_lab_report')->name('diary_lab_report')->middleware('auth');
             Route::get('estadistico_diario_covid19','SuspectCaseController@estadistico_diario_covid19')->name('estadistico_diario_covid19')->middleware('auth');
         });
