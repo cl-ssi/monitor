@@ -371,7 +371,9 @@ class SuspectCaseController extends Controller
         /* Marcar como pendiente el resultado, no viene en el form */
         $suspectCase->pscr_sars_cov_2 = 'pending';
         $suspectCase->sample_at = $request->input('sample_at').' '.date('H:i:s');
-        $suspectCase->minsal_ws_id = $minsal_ws_id;
+
+
+        //$suspectCase->minsal_ws_id = $minsal_ws_id;
 
         $patient->suspectCases()->save($suspectCase);
 
