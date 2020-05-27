@@ -22,7 +22,7 @@ class CreateDemographicsTable extends Migration
             $table->string('department')->nullable();
             $table->string('nationality')->nullable();
 
-            $table->unsignedBigInteger('region_id');
+            $table->unsignedBigInteger('region_id')->nullable();
             $table->string('region')->nullable();
             // $table->enum('region',['Arica y Parinacota',
             //                        'Tarapacá',
@@ -41,7 +41,7 @@ class CreateDemographicsTable extends Migration
             //                        'Región Metropolitana de Santiago',
             //                        'Región de Ñuble']);
 
-            $table->unsignedBigInteger('commune_id');
+            $table->unsignedBigInteger('commune_id')->nullable();
             $table->string('commune')->nullable();
             // $table->enum('commune',['Arica', 'Camarones', 'Putre', 'General Lagos','Iquique', 'Alto Hospicio', 'Pozo Almonte', 'Camiña',
             //                         'Colchane', 'Huara', 'Pica','Antofagasta', 'Mejillones', 'Sierra Gorda', 'Taltal', 'Calama', 'Ollagüe',
