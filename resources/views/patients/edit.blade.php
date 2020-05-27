@@ -156,7 +156,7 @@
                     {{ $case->id }}
                     </a>
                 </td>
-                <td>{{ ($case->establishment) ? $case->establishment->name : '' }}</td>
+                <td>{{ $case->establishment?$case->establishment->alias.' - '.$case->origin: '' }}</td>
                 <td>{{ $case->sample_at }}</td>
                 <td>{{ $case->pscr_sars_cov_2_at }}</td>
                 <td>{{ $case->covid19 }}</td>
