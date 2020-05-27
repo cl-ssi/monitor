@@ -23,8 +23,7 @@ class SuspectCaseReportController extends Controller
                     })->get();
         $residences = Residence::all();
 
-        $comunas = env('COMUNAS');
-        $comunas = array(5,6,7,8,9,10,11);
+        //$comunas = env('COMUNAS');
 
         $patients = Patient::whereHas('suspectCases', function ($q) {
             $q->where('pscr_sars_cov_2','positive');
@@ -37,7 +36,7 @@ class SuspectCaseReportController extends Controller
         $begin = SuspectCase::where('pscr_sars_cov_2','positive')->orderBy('sample_at')->first()->sample_at;
         $end   = SuspectCase::where('pscr_sars_cov_2','positive')->orderByDesc('sample_at')->first()->sample_at;
 
-        $communes = Region::find(1)->communes;
+        $communes = Region::find(env('REGION'))->communes;
 
         for ($i = $begin; $i <= $end; $i->modify('+1 day')) {
             $casos['Region'][$i->format("Y-m-d")] = 0;
