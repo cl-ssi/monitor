@@ -86,6 +86,14 @@ class BookingController extends Controller
         return view('sanitary_residences.bookings.show', compact('booking', 'patients', 'rooms'));
     }
 
+
+    public function showRelease(Booking $booking)
+    {
+        $patients = Patient::orderBy('name')->get();
+        $rooms = Room::All();
+        return view('sanitary_residences.bookings.showrelease', compact('booking', 'patients', 'rooms'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
