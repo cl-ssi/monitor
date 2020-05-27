@@ -76,7 +76,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
     Route::get('/create', 'LaboratoryController@create')->name('create');
     Route::post('/store', 'LaboratoryController@store')->name('store');
     Route::get('/{laboratory}/edit', 'LaboratoryController@edit')->name('edit');
-    Route::put('update/{laboratory}', 'LaboratoryController@update')->name('update');    
+    Route::put('update/{laboratory}', 'LaboratoryController@update')->name('update');
     Route::get('login/{access_token}','SuspectCaseController@login')->name('login');
     Route::get('results','SuspectCaseController@result')->name('result');
     Route::get('print/{suspect_case}','SuspectCaseController@print')->middleware('auth')->name('print');
@@ -108,7 +108,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('download/{file}','SuspectCaseController@download')->name('download')->middleware('auth');
         Route::get('file/{file}','SuspectCaseController@fileDelete')->name('fileDelete')->middleware('auth','can:SuspectCase: file delete');
 
-        Route::get('/','SuspectCaseController@index')->name('index')->middleware('auth','can:SuspectCase: list');
+        Route::get('/index/{laboratory?}','SuspectCaseController@index')->name('index')->middleware('auth','can:SuspectCase: list');
 
         Route::get('/exportSuspectCases/{lab}','SuspectCaseController@exportExcel')->name('export')->middleware('auth');
 
