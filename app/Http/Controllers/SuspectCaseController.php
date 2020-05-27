@@ -3,17 +3,20 @@
 namespace App\Http\Controllers;
 
 use GuzzleHttp\Client;
+
 use App\SuspectCase;
 use App\Patient;
 use App\Demographic;
-use App\Establishment;
 use App\Log;
 use App\File;
 use App\User;
-use App\Laboratory;
+use App\Region;
 use App\Commune;
+use App\Laboratory;
+use App\Establishment;
 use App\ReportBackup;
 use App\SampleOrigin;
+use App\Country;
 use Carbon\Carbon;
 use App\Mail\NewPositive;
 use Illuminate\Support\Facades\Mail;
@@ -106,6 +109,10 @@ class SuspectCaseController extends Controller
     {
         $external_labs = Laboratory::where('external',1)->orderBy('name')->get();
         $establishments = Establishment::orderBy('name','ASC')->get();
+
+        /* FIX codigo duro */
+        $establishments = Establishment::whereIn('commune_id',[5,6,7,8,9,10,11])->orderBy('name','ASC')->get();
+
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
         return view('lab.suspect_cases.create',compact('sampleOrigins','establishments','external_labs'));
     }
@@ -149,15 +156,39 @@ class SuspectCaseController extends Controller
     //   // $array = json_decode($response_json, true);
     //   // dd($array);
 
-        $establishments = Establishment::orderBy('alias','ASC')->get();
+        $regions = Region::orderBy('id','ASC')->get();
+        $communes = Commune::orderBy('id','ASC')->get();
+        $establishments = Establishment::whereIn('commune_id',[5,6,7,8,9,10,11])->orderBy('name','ASC')->get();
 
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
-        return view('lab.suspect_cases.admission',compact('sampleOrigins','establishments'));
+        return view('lab.suspect_cases.admission',compact('sampleOrigins','regions', 'communes','establishments'));
     }
 
 
     public function reception(Request $request, SuspectCase $suspectCase)
     {
+        ########## webservice MINSAL ##########
+        if (env('MINSAL_WS_BOOLEAN') == 1) {
+            $client = new \GuzzleHttp\Client();
+
+            $minsal_ws_id = $suspectCase->minsal_ws_id;
+            if($minsal_ws_id == NULL){
+              session()->flash('info', 'No se puede recepcionar la muestra '. $suspectCase->id . ', ya que no se ha subido a sistema MINSAL.' );
+              return redirect()->back();
+            }
+
+            $response = $client->request('POST', 'https://tomademuestras.openagora.cl/ws/27f9298d-ead4-1746-8356-cc054f245118', [
+                'form_params' => ['parametros' => '{"id_muestra":"' . $minsal_ws_id .'"}'],
+                'headers'  => [ 'ACCESSKEY' => 'AK026-88QV-000QAKZQA-000000AR5SLP']
+            ]);
+            $response_json = $response->getBody()->getContents();
+            $array = json_decode($response_json, true);
+            dd($array);
+        }
+
+
+
+        //recepciona en sistema
         $suspectCase->laboratory_id = Auth::user()->laboratory->id;
         $suspectCase->receptor_id = Auth::id();
         $suspectCase->reception_at = date('Y-m-d H:i:s');
@@ -238,70 +269,79 @@ class SuspectCaseController extends Controller
      */
     public function storeAdmission(Request $request)
     {
-        // ########## webservice MINSAL ##########
-        //
-        // //obtiene proximo id suspect case
-        // $NextsuspectCase = SuspectCase::max('id');
-        // $NextsuspectCase += 1;
-        // // dd($NextsuspectCase);
-        //
-        // // webservices MINSAL
-        // if (env('APP_ENV') == 'local') {
-        //   $client = new \GuzzleHttp\Client();
-        //
-        //   if($request->gender == "female"){
-        //     $genero = "F";
-        //   }else{$genero = "M";}
-        //
-        //   // dd($request->commune);
-        //   $comuna = Commune::where('name',$request->commune)->get();
-        //   $commune_code_deis = $comuna->first()->code_deis;
-        //
-        //   $array = array(
-        //
-        //     //10.314.055-2 - Jorge Patricio Moscoso Coppa
-        //     //15637637 123456
-        //     //Nro. de registro -	44151 - clave: 123456
-        //     'raw' => array('codigo_muestra_cliente' => $NextsuspectCase,
-        //                    'rut_responsable' => Auth::user()->run . "-" . Auth::user()->dv, //se va a enviar rut de enfermo del servicio
-        //                    'cod_deis' => '02-100',//$suspectCase->establishment->deis,
-        //                    'rut_medico' => '13214157-6',//$request->run_medic,
-        //                    'paciente_run' => $request->run,
-        //                    'paciente_dv' => $request->dv,
-        //                    'paciente_nombres' => $request->name,
-        //                    'paciente_ap_mat' => $request->fathers_family,
-        //                    'paciente_ap_pat' => $request->mothers_family,
-        //                    'paciente_fecha_nac' => $request->birthday,
-        //                    'paciente_comuna' => $commune_code_deis,
-        //                    'paciente_direccion' => $request->address . " " . $request->number,
-        //                    'paciente_telefono' => $request->telephone,
-        //                    'paciente_tipodoc' => 'RUN',
-        //                    'paciente_ext_paisorigen' => '',
-        //                    'paciente_pasaporte' => $request->other_identification,
-        //                    'paciente_sexo' => $genero,
-        //                    'paciente_prevision' => 'FONASA', //fijo por el momento
-        //                    'fecha_muestra' => $request->sample_at,
-        //                    'tecnica_muestra' => 'RT-PCR', //fijo
-        //                    'tipo_muestra' => $request->sample_type
-        //                  )
-        //   );
-        //
-        //   $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/328302d8-0ba3-5611-24fa-a7a2f146241f', [
-        //         'json' => $array,
-        //         'headers'  => [ 'ACCESSKEY' => env('TOKEN_WS_MINSAL')]
-        //   ]);
-        //
-        //   //respuesta de servidor
-        //   $array = json_decode($response->getBody()->getContents(), true);
-        //   dd($array);
-        //   if(var_export($response->getStatusCode(), true) == 200){
-        //     session()->flash('warning', 'No se registró muestra - Error webservice minsal: <h3>' . $array['error'] . '</h3>');
-        //     return redirect()->back();
-        //   }
-        // }
-        //
-        // dd("");
+        ########## webservice MINSAL ##########
+        if (env('MINSAL_WS_BOOLEAN') == 1) {
+            //obtiene proximo id suspect case
+            $NextsuspectCase = SuspectCase::max('id');
+            $NextsuspectCase += 1;
+            $NextsuspectCase = 14;
 
+            // webservices MINSAL
+            if (env('APP_ENV') == 'local') {
+              $client = new \GuzzleHttp\Client();
+
+              if($request->gender == "female"){
+                $genero = "F";
+              }else{$genero = "M";}
+
+              $comuna = Commune::where('id',$request->commune_id)->get();
+              $commune_code_deis = $comuna->first()->code_deis;
+
+              $paciente_ext_paisorigen = '';
+              if ($request->run == "") {
+                $paciente_tipodoc = "PASAPORTE";
+                $country = Country::where('name',$request->nationality)->get();
+                $paciente_ext_paisorigen = $country->first()->id_minsal;
+              }else{$paciente_tipodoc = "RUN";}
+
+              $array = array(
+
+                //15637637 123456 - rut asociado a admin
+                //Nro. de registro -	44151 - clave: 123456
+                'raw' => array('codigo_muestra_cliente' => $NextsuspectCase,
+                               'rut_responsable' => '15637637-K', //Auth::user()->run . "-" . Auth::user()->dv, //se va a enviar rut de enfermo del servicio
+                               'cod_deis' => '02-100', //$request->establishment_id
+                               'rut_medico' => '15637637-K',//$request->run_medic,
+                               'paciente_run' => $request->run,
+                               'paciente_dv' => $request->dv,
+                               'paciente_nombres' => $request->name,
+                               'paciente_ap_mat' => $request->fathers_family,
+                               'paciente_ap_pat' => $request->mothers_family,
+                               'paciente_fecha_nac' => $request->birthday,
+                               'paciente_comuna' => $commune_code_deis,
+                               'paciente_direccion' => $request->address . " " . $request->number,
+                               'paciente_telefono' => $request->telephone,
+                               'paciente_tipodoc' => $paciente_tipodoc,
+                               'paciente_ext_paisorigen' => $paciente_ext_paisorigen,
+                               'paciente_pasaporte' => $request->other_identification,
+                               'paciente_sexo' => $genero,
+                               'paciente_prevision' => 'FONASA', //fijo por el momento
+                               'fecha_muestra' => $request->sample_at,
+                               'tecnica_muestra' => 'RT-PCR', //fijo
+                               'tipo_muestra' => $request->sample_type
+                             )
+              );
+
+              $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/328302d8-0ba3-5611-24fa-a7a2f146241f', [
+                    'json' => $array,
+                    'headers'  => [ 'ACCESSKEY' => env('MINSAL_WS_TOKEN')]
+              ]);
+
+              //respuesta de servidor
+              $ws_response = "";
+              $minsal_ws_id = NULL;
+              if(var_export($response->getStatusCode(), true) == 200){
+                $array = json_decode($response->getBody()->getContents(), true);
+                if(array_key_exists('error', $array)){
+                  session()->flash('warning', 'No se registró muestra - Error webservice minsal: <h3>' . $array['error'] . '</h3>');
+                  return redirect()->back();
+                }else{
+                  $minsal_ws_id = $array[0]['id_muestra'];
+                  $ws_response = "Se ha creado muestra " . $minsal_ws_id ." en MINSAL";
+                }
+              }
+            }
+        }
 
 
 
@@ -320,21 +360,25 @@ class SuspectCaseController extends Controller
         // $suspectCase->close_contact = $request->has('close_contact') ? 1 : 0;
         // $suspectCase->discharge_test = $request->has('discharge_test') ? 1 : 0;
 
-        $suspectCase->epidemiological_week = Carbon::createFromDate(
-            $suspectCase->sample_at->format('Y-m-d'))->add(1, 'days')->weekOfYear;
-
+        $suspectCase->epidemiological_week = Carbon::createFromDate($suspectCase->sample_at->format('Y-m-d'))->add(1, 'days')->weekOfYear;
         $suspectCase->laboratory_id = Auth::user()->laboratory_id;
 
         /* Marcar como pendiente el resultado, no viene en el form */
         $suspectCase->pscr_sars_cov_2 = 'pending';
-
         $suspectCase->sample_at = $request->input('sample_at').' '.date('H:i:s');
+        $suspectCase->minsal_ws_id = $minsal_ws_id;
 
         $patient->suspectCases()->save($suspectCase);
 
+
+
+        $region = Region::where('id',$request->region_id)->get();
+        $commune = Commune::where('id',$request->commune_id)->get();
         if($patient->demographic) {
             //$logDemographic->old = clone $patient->demographic;
             $patient->demographic->fill($request->all());
+            $patient->demographic->region = $region->first()->name;
+            $patient->demographic->commune = $commune->first()->name;
             $patient->demographic->save();
             //$logDemographic->new = $patient->demographic;
             //$logDemographic->save();
@@ -342,6 +386,8 @@ class SuspectCaseController extends Controller
         else {
             $demographic = new Demographic($request->All());
             $demographic->patient_id = $patient->id;
+            $demographic->region = $region->first()->name;
+            $demographic->commune = $commune->first()->name;
             $demographic->save();
 
             // $logDemographic->new = $demographic;
@@ -374,7 +420,7 @@ class SuspectCaseController extends Controller
         $log->save();
 
 
-        session()->flash('success', 'Se ha creado el caso número: <h3>' . $suspectCase->id . '</h3>');
+        session()->flash('success', 'Se ha creado el caso número: <h3>' . $suspectCase->id . '</h3><br /> ' . $ws_response);
         return redirect()->back();
     }
 
@@ -399,7 +445,12 @@ class SuspectCaseController extends Controller
     {
         $external_labs = Laboratory::where('external',1)->orderBy('name')->get();
         $local_labs = Laboratory::where('external',0)->orderBy('name')->get();
+
+
         $establishments = Establishment::orderBy('alias','ASC')->get();
+        /* FIX codigo duro */
+        $establishments = Establishment::whereIn('commune_id',[5,6,7,8,9,10,11])->orderBy('name','ASC')->get();
+
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
         return view('lab.suspect_cases.edit', compact('suspectCase','sampleOrigins',
             'establishments','external_labs','local_labs'));

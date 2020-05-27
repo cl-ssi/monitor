@@ -9,6 +9,7 @@
     @csrf
     @method('POST')
     <div class="form-row">
+
         <fieldset class="form-group col-10 col-md-2">
             <label for="for_run">Run SIN DIGITO VERIF.</label>
             <input type="hidden" class="form-control" id="for_id" name="id">
@@ -25,6 +26,15 @@
             <input type="text" class="form-control" id="for_other_identification"
                 placeholder="Extranjeros sin run" name="other_identification">
         </fieldset>
+
+        {{-- <fieldset class="form-group col-6 col-md-2">
+            <label for="for_country_id">País</label>
+            <select name="country_id" id="for_country_id" class="form-control" readonly>
+              @foreach ($countries as $key => $countrie)
+                <option value="{{$countrie->id}}" {{ ($countrie->id == 41)?'selected':'' }}>{{$countrie->name}}</option>
+              @endforeach
+            </select>
+        </fieldset> --}}
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_gender">Genero</label>
@@ -51,13 +61,13 @@
                 style="text-transform: uppercase;" required>
         </fieldset>
 
-        <fieldset class="form-group col-12 col-md-3">
+        <fieldset class="form-group col-12 col-md-4">
             <label for="for_fathers_family">Apellido Paterno *</label>
             <input type="text" class="form-control" id="for_fathers_family"
                 name="fathers_family" style="text-transform: uppercase;" required>
         </fieldset>
 
-        <fieldset class="form-group col-12 col-md-3">
+        <fieldset class="form-group col-12 col-md-4">
             <label for="for_mothers_family">Apellido Materno *</label>
             <input type="text" class="form-control" id="for_mothers_family"
                 name="mothers_family" style="text-transform: uppercase;" required>
@@ -96,7 +106,7 @@
         <fieldset class="form-group col-6 col-md-3">
             <label for="for_establishment_id">Establecimiento *</label>
             <select name="establishment_id" id="for_establishment_id" class="form-control" required>
-                <option value=""></option>
+                <option value="">Seleccionar Establecimiento</option>
                 @foreach($establishments as $establishment)
                     <option value="{{ $establishment->id }}">{{ $establishment->alias }}</option>
                 @endforeach
@@ -296,113 +306,37 @@ $('input[name=other_identification]').change(function() {
 <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
 <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
-var RegionesYcomunas = {
-
-	"regiones": [{
-			"NombreRegion": "Arica y Parinacota",
-			"comunas": ["Arica", "Camarones", "Putre", "General Lagos"]
-	},
-		{
-			"NombreRegion": "Tarapacá",
-			"comunas": ["Iquique", "Alto Hospicio", "Pozo Almonte", "Camiña", "Colchane", "Huara", "Pica"]
-	},
-		{
-			"NombreRegion": "Antofagasta",
-			"comunas": ["Antofagasta", "Mejillones", "Sierra Gorda", "Taltal", "Calama", "Ollagüe", "San Pedro de Atacama", "Tocopilla", "María Elena"]
-	},
-		{
-			"NombreRegion": "Atacama",
-			"comunas": ["Copiapó", "Caldera", "Tierra Amarilla", "Chañaral", "Diego de Almagro", "Vallenar", "Alto del Carmen", "Freirina", "Huasco"]
-	},
-		{
-			"NombreRegion": "Coquimbo",
-			"comunas": ["La Serena", "Coquimbo", "Andacollo", "La Higuera", "Paiguano", "Vicuña", "Illapel", "Canela", "Los Vilos", "Salamanca", "Ovalle", "Combarbalá", "Monte Patria", "Punitaqui", "Río Hurtado"]
-	},
-		{
-			"NombreRegion": "Valparaíso",
-			"comunas": ["Valparaíso", "Casablanca", "Concón", "Juan Fernández", "Puchuncaví", "Quintero", "Viña del Mar", "Isla de Pascua", "Los Andes", "Calle Larga", "Rinconada", "San Esteban", "La Ligua", "Cabildo", "Papudo", "Petorca", "Zapallar", "Quillota", "Calera", "Hijuelas", "La Cruz", "Nogales", "San Antonio", "Algarrobo", "Cartagena", "El Quisco", "El Tabo", "Santo Domingo", "San Felipe", "Catemu", "Llaillay", "Panquehue", "Putaendo", "Santa María", "Quilpué", "Limache", "Olmué", "Villa Alemana"]
-	},
-		{
-			"NombreRegion": "Región del Libertador Gral. Bernardo O’Higgins",
-			"comunas": ["Rancagua", "Codegua", "Coinco", "Coltauco", "Doñihue", "Graneros", "Las Cabras", "Machalí", "Malloa", "Mostazal", "Olivar", "Peumo", "Pichidegua", "Quinta de Tilcoco", "Rengo", "Requínoa", "San Vicente", "Pichilemu", "La Estrella", "Litueche", "Marchihue", "Navidad", "Paredones", "San Fernando", "Chépica", "Chimbarongo", "Lolol", "Nancagua", "Palmilla", "Peralillo", "Placilla", "Pumanque", "Santa Cruz"]
-	},
-		{
-			"NombreRegion": "Región del Maule",
-			"comunas": ["Talca", "ConsVtución", "Curepto", "Empedrado", "Maule", "Pelarco", "Pencahue", "Río Claro", "San Clemente", "San Rafael", "Cauquenes", "Chanco", "Pelluhue", "Curicó", "Hualañé", "Licantén", "Molina", "Rauco", "Romeral", "Sagrada Familia", "Teno", "Vichuquén", "Linares", "Colbún", "Longaví", "Parral", "ReVro", "San Javier", "Villa Alegre", "Yerbas Buenas"]
-	},
-		{
-			"NombreRegion": "Región del Biobío",
-			"comunas": ["Concepción", "Coronel", "Chiguayante", "Florida", "Hualqui", "Lota", "Penco", "San Pedro de la Paz", "Santa Juana", "Talcahuano", "Tomé", "Hualpén", "Lebu", "Arauco", "Cañete", "Contulmo", "Curanilahue", "Los Álamos", "Tirúa", "Los Ángeles", "Antuco", "Cabrero", "Laja", "Mulchén", "Nacimiento", "Negrete", "Quilaco", "Quilleco", "San Rosendo", "Santa Bárbara", "Tucapel", "Yumbel", "Alto Biobío", "Treguaco"]
-	},
-		{
-			"NombreRegion": "Región de la Araucanía",
-			"comunas": ["Temuco", "Carahue", "Cunco", "Curarrehue", "Freire", "Galvarino", "Gorbea", "Lautaro", "Loncoche", "Melipeuco", "Nueva Imperial", "Padre las Casas", "Perquenco", "Pitrufquén", "Pucón", "Saavedra", "Teodoro Schmidt", "Toltén", "Vilcún", "Villarrica", "Cholchol", "Angol", "Collipulli", "Curacautín", "Ercilla", "Lonquimay", "Los Sauces", "Lumaco", "Purén", "Renaico", "Traiguén", "Victoria", ]
-	},
-		{
-			"NombreRegion": "Región de Los Ríos",
-			"comunas": ["Valdivia", "Corral", "Lanco", "Los Lagos", "Máfil", "Mariquina", "Paillaco", "Panguipulli", "La Unión", "Futrono", "Lago Ranco", "Río Bueno"]
-	},
-		{
-			"NombreRegion": "Región de Los Lagos",
-			"comunas": ["Puerto Montt", "Calbuco", "Cochamó", "Fresia", "FruVllar", "Los Muermos", "Llanquihue", "Maullín", "Puerto Varas", "Castro", "Ancud", "Chonchi", "Curaco de Vélez", "Dalcahue", "Puqueldón", "Queilén", "Quellón", "Quemchi", "Quinchao", "Osorno", "Puerto Octay", "Purranque", "Puyehue", "Río Negro", "San Juan de la Costa", "San Pablo", "Chaitén", "Futaleufú", "Hualaihué", "Palena"]
-	},
-		{
-			"NombreRegion": "Región Aisén del Gral. Carlos Ibáñez del Campo",
-			"comunas": ["Coihaique", "Lago Verde", "Aisén", "Cisnes", "Guaitecas", "Cochrane", "O’Higgins", "Tortel", "Chile Chico", "Río Ibáñez"]
-	},
-		{
-			"NombreRegion": "Región de Magallanes y de la AntárVca Chilena",
-			"comunas": ["Punta Arenas", "Laguna Blanca", "Río Verde", "San Gregorio", "Cabo de Hornos (Ex Navarino)", "AntárVca", "Porvenir", "Primavera", "Timaukel", "Natales", "Torres del Paine"]
-	},
-		{
-			"NombreRegion": "Región Metropolitana de Santiago",
-			"comunas": ["Cerrillos", "Cerro Navia", "Conchalí", "El Bosque", "Estación Central", "Huechuraba", "Independencia", "La Cisterna", "La Florida", "La Granja", "La Pintana", "La Reina", "Las Condes", "Lo Barnechea", "Lo Espejo", "Lo Prado", "Macul", "Maipú", "Ñuñoa", "Pedro Aguirre Cerda", "Peñalolén", "Providencia", "Pudahuel", "Quilicura", "Quinta Normal", "Recoleta", "Renca", "San Joaquín", "San Miguel", "San Ramón", "Vitacura", "Puente Alto", "Pirque", "San José de Maipo", "Colina", "Lampa", "TilVl", "San Bernardo", "Buin", "Calera de Tango", "Paine", "Melipilla", "Alhué", "Curacaví", "María Pinto", "San Pedro", "Talagante", "El Monte", "Isla de Maipo", "Padre Hurtado", "Peñaflor"]
-	},
-		{
-			"NombreRegion": "Región de Ñuble",
-			"comunas": ["Cobquecura","Coelemu","Ninhue","Portezuelo","Quirihue","Ránquil","Trehuaco","Bulnes","Chillán Viejo","Chillán","El Carmen","Pemuco","Pinto","Quillón","San Ignacio","Yunga","Coihueco","Ñiquén","San Carlos","San Fabián","San Nicolás"]
-	}]
-
-
-}
-
 
 jQuery(document).ready(function () {
-
-	var iRegion = 0;
-	var htmlRegion = '<option value="">Seleccione región</option>';
-	var htmlComunas = '<option value="">Seleccione comuna</option>';
-
-
-	jQuery.each(RegionesYcomunas.regiones, function () {
-    htmlRegion = htmlRegion + '<option value="' + RegionesYcomunas.regiones[iRegion].NombreRegion + '">' + RegionesYcomunas.regiones[iRegion].NombreRegion + '</option>';
-		iRegion++;
-	});
-  jQuery('#regiones').html(htmlRegion);
-	jQuery('#comunas').html(htmlComunas);
-  //si existe demographic
-
 
   // caso cuando se cambie manualmente
 	jQuery('#regiones').change(function () {
 		var iRegiones = 0;
 		var valorRegion = jQuery(this).val();
-		var htmlComuna = '<option value="sin-comuna">Seleccione comuna</option><option value="sin-comuna">--</option>';
-		jQuery.each(RegionesYcomunas.regiones, function () {
-			if (RegionesYcomunas.regiones[iRegiones].NombreRegion == valorRegion) {
-				var iComunas = 0;
-				jQuery.each(RegionesYcomunas.regiones[iRegiones].comunas, function () {
-					htmlComuna = htmlComuna + '<option value="' + RegionesYcomunas.regiones[iRegiones].comunas[iComunas] + '">' + RegionesYcomunas.regiones[iRegiones].comunas[iComunas] + '</option>';
-					iComunas++;
-				});
-			}
-			iRegiones++;
-		});
+		var htmlComuna = '<option value="">Seleccione comuna</option><option value="sin-comuna">--</option>';
+    @foreach ($communes as $key => $commune)
+      if (valorRegion == '{{$commune->region_id}}') {
+        htmlComuna = htmlComuna + '<option value="' + '{{$commune->id}}' + '">' + '{{$commune->name}}' + '</option>';
+      }
+    @endforeach
 		jQuery('#comunas').html(htmlComuna);
 	});
 
-  //obtener coordenadas
+  //obtener coordenadas y establecimientos
   jQuery('#comunas').change(function () {
+
+    //primero se obtienen establecimientos
+    // var valorCommune = jQuery(this).val();
+    // var htmlEstablishment = '<option value="">Seleccione establecimiento</option><option value="sin-comuna">--</option>';
+    // @foreach ($establishments as $key => $establishment)
+    //   if (valorCommune == '{{$establishment->commune_id}}') {
+    //     htmlEstablishment = htmlEstablishment + '<option value="' + '{{$establishment->id}}' + '">' + '{{$establishment->name}}' + '</option>';
+    //   }
+    // @endforeach
+    // jQuery('#for_establishment_id').html(htmlEstablishment);
+
+
+    //coordenadas
     // Instantiate a map and platform object:
     var platform = new H.service.Platform({
       'apikey': '5mKawERqnzL1KMnNIt4n42gAV8eLomjQPKf5S5AAcZg'
@@ -410,8 +344,8 @@ jQuery(document).ready(function () {
 
     var address = jQuery('#for_address').val();
     var number = jQuery('#for_number').val();
-    var regiones = jQuery('#regiones').val();
-    var comunas = jQuery('#comunas').val();
+    var regiones = $("#regiones option:selected").html();
+    var comunas = $("#comunas option:selected").html();
 
     if (address != "" && number != "" && regiones != "Seleccione región" && comunas != "Seleccione comuna") {
       // Create the parameters for the geocoding request:
@@ -445,6 +379,16 @@ jQuery(document).ready(function () {
     }
 
   });
+
+  // jQuery('#for_run').click(function () {
+  //   $("#for_country_id").val(41);
+  //   $('#for_country_id').attr('readonly', true);
+  // });
+  //
+  // jQuery('#for_other_identification').click(function () {
+  //   $("#for_country_id").val(1);
+  //   $('#for_country_id').attr('readonly', false);
+  // });
 
 });
 </script>
