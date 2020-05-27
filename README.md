@@ -49,3 +49,6 @@
 ## Otros comandos
 - $ git pull ( Descarga las actualizaciones del sistema)
 - $ php artisan migrate:fresh --seed  ( Restaura al base de datos al punto de partida )
+
+## Si presenta algún error en archivos Seeder
+- $ composer dump-autoload
