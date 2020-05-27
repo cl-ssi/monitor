@@ -102,7 +102,9 @@ class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
             Date::dateTimeToExcel($suspectCase->sample_at),
             Date::dateTimeToExcel($suspectCase->created_at),
             Date::dateTimeToExcel($suspectCase->pscr_sars_cov_2_at),
-            strtoupper($suspectCase->origin),
+            //strtoupper($suspectCase->origin),
+            ($suspectCase->establishment)?$suspectCase->establishment->alias.' - '.$suspectCase->origin: '',
+            
             'TARAPACÁ',
             $this->nombre_lab,
             'TARAPACÁ',
