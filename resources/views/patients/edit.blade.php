@@ -182,7 +182,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($patient->logs as $log)
+        @foreach($patient->logs->sortByDesc('created_at') as $log)
         <tr>
             <td>{{ $log->model_type }}</td>
             <td>{{ $log->created_at }}</td>
