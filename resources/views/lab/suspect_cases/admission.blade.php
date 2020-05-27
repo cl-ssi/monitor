@@ -205,7 +205,6 @@
                 id="for_observation">
         </fieldset>
 
-        @cannot('SuspectCase: tecnologo')
         <fieldset class="form-group col-md-2">
             <label for="for_paho_flu">PAHO FLU</label>
             <input type="number" class="form-control" name="paho_flu"
@@ -224,7 +223,6 @@
             <input type="number" class="form-control" id="for_epivigila"
                 name="epivigila" required>
         </fieldset>
-        @endcan
 
     </div>
 
