@@ -188,6 +188,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
     Route::prefix('bookings')->name('bookings.')->group(function () {
 
         Route::get('/excelall','BookingController@excelall')->name('excelall');
+        Route::get('/excelvitalsign','BookingController@excelvitalsign')->name('excelvitalsign');
         Route::get('/excel/{booking}','BookingController@excel')->name('excel');
         Route::get('/residence/{residence}', 'BookingController@index')->name('index');
         Route::get('/create', 'BookingController@create')->name('create');
