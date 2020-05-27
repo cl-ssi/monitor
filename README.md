@@ -31,9 +31,9 @@
 #### Opción 2. MySql editar
 - Configurar en .env los campos de base de datos, empiezan con DB_
 
-### Agregar el cert.pem para integración con webservice de minsal
+### (Opcional) Agregar el cert.pem para integración con webservice de minsal
 - Descargar https://curl.haxx.se/ca/cacert.pem
-- En php.ini y agregar la ruta al archivo cacert.pem en la opción: curl.cainfo = "C:\ruta\cacert.pem"
+- En php.ini y agregar la ruta al archivo cacert.pem en la opción: curl.cainfo = "C:\\\\ruta\\\\cacert.pem"
 
 ### Ejecutar los siguientes comandos
 - $ php artisan migrate --seed   ( Para cargar la base de datos )
@@ -44,3 +44,8 @@
 - http://localhost:8000
 - usuario: sistemas.ssi@redsalud.gob.cl
 - clave: admin
+
+
+## Otros comandos
+- $ git pull ( Descarga las actualizaciones del sistema)
+- $ php artisan migrate:fresh --seed  ( Restaura al base de datos al punto de partida )
