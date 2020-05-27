@@ -46,6 +46,7 @@ class CreateSuspectCasesTable extends Migration
             $table->boolean('gestation',2)->nullable();
             $table->smallInteger('gestation_week')->nullable();
             $table->boolean('close_contact')->nullable();
+            $table->boolean('functionary')->nullable();
 
             $table->datetime('notification_at')->nullable();
             $table->string('notification_mechanism')->nullable();

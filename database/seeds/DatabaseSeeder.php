@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ResidenceSeeder::class);
         $this->call(RoomSeeder::class);
         $this->call(VentilatorSeeder::class);
-        if(env('APP_ENV') == 'local') {
+        if(env('APP_ENV') == 'testing') {
             $this->call(PatientSeeder::class);
             $this->call(DemographicSeeder::class);
             $this->call(SuspectCaseSeeder::class);
