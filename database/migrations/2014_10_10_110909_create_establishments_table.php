@@ -14,7 +14,7 @@ class CreateEstablishmentsTable extends Migration
     public function up()
     {
       Schema::create('regions', function (Blueprint $table) {
-          $table->increments('id');
+          $table->id('id');
           $table->string('name');
 
           $table->timestamps();
@@ -25,7 +25,7 @@ class CreateEstablishmentsTable extends Migration
           $table->id('id');
           $table->string('name');
           $table->string('code_deis');
-          $table->unsignedInteger('region_id');
+          $table->unsignedBigInteger('region_id');
 
           $table->foreign('region_id')->references('id')->on('regions');
 
@@ -45,7 +45,7 @@ class CreateEstablishmentsTable extends Migration
             // $table->string('commune');
             // $table->string('commune_code_deis');
 
-            $table->unsignedInteger('commune_id');
+            $table->unsignedBigInteger('commune_id');
 
             $table->foreign('commune_id')->references('id')->on('communes');
 
