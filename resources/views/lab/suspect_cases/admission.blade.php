@@ -166,14 +166,14 @@
             </select>
         </fieldset>
 
-        {{-- <fieldset class="form-group col-4 col-md-2">
+        {{-- <!--fieldset class="form-group col-4 col-md-2">
             <label for="for_discharge_test">Test de salida</label>
             <select name="discharge_test" id="for_discharge_test" class="form-control">
                 <option value=""></option>
                 <option value="0">No</option>
                 <option value="1">Si</option>
             </select>
-        </fieldset> --}}
+        </fieldset--> --}}
 
 
         <!--fieldset class="form-group col-8 col-md-4">
@@ -205,6 +205,7 @@
                 id="for_observation">
         </fieldset>
 
+        @cannot('SuspectCase: tecnologo')
         <fieldset class="form-group col-md-2">
             <label for="for_paho_flu">PAHO FLU</label>
             <input type="number" class="form-control" name="paho_flu"
@@ -223,7 +224,7 @@
             <input type="number" class="form-control" id="for_epivigila"
                 name="epivigila" required>
         </fieldset>
-
+        @endcan
 
     </div>
 

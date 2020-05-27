@@ -95,27 +95,33 @@
                                 Casos
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                @can('Patient: tracing')
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing') }}">Seguimiento de casos</a>
-                                <div class="dropdown-divider"></div>
-                                @endcan
-
-                                @can('SuspectCase: list')
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.hetg') }}?text=&pendientes=on">Laboratorio HETG</a>
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.unap') }}?text=&pendientes=on">Laboratorio UNAP</a>
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.bioclinic') }}?text=&pendientes=on">Laboratorio BIOCLINIC</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.index') }}?text=&pendientes=on">Todos los exámenes</a>
-                                @endcan
-
-                                <div class="dropdown-divider"></div>
-
                                 @can('SuspectCase: admission')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.admission') }}">Agregar nuevo caso</a>
                                 @endcan
 
                                 @can('SuspectCase: reception')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reception_inbox') }}">Recepcionar muestras</a>
+                                @endcan
+
+                                <div class="dropdown-divider"></div>
+
+                                @can('SuspectCase: list')
+                                @php
+                                $labs = App\Laboratory::where('external',0)->orderBy('name')->get();
+                                @endphp
+
+                                @foreach($labs as $lab)
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.index',$lab) }}?&text=&pendientes=on">Laboratorio {{ $lab->name }}</a>
+                                @endforeach
+
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.index') }}?text=&pendientes=on">Todos los exámenes</a>
+                                @endcan
+
+                                <div class="dropdown-divider"></div>
+
+                                @can('Patient: tracing')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing') }}">Seguimiento de casos</a>
                                 @endcan
 
                             </div>
