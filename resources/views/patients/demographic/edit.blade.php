@@ -302,13 +302,19 @@
 
     <fieldset class="form-group col-12 col-md-3">
         <label for="regiones">Región</label>
-        <select class="form-control" name="region" id="regiones"
-            value="{{ $patient->demographic->region }}"></select>
+        {{-- <select class="form-control" name="region" id="regiones"
+            value="{{ $patient->demographic->region }}"></select> --}}
+        <select class="form-control" name="region_id" id="regiones">
+          <option>Seleccione Región</option>
+          @foreach ($regions as $key => $region)
+            <option value="{{$region->id}}" {{($region->id == $patient->demographic->region_id)?'selected':''}}>{{$region->name}}</option>
+          @endforeach
+        </select>
     </fieldset>
 
     <fieldset class="form-group col-12 col-md-3">
         <label for="for_commune">Comuna</label>
-        <select class="form-control" name="commune" id="comunas"
+        <select class="form-control" name="commune_id" id="comunas"
             value="{{ $patient->demographic->comunas }}"></select>
     </fieldset>
 

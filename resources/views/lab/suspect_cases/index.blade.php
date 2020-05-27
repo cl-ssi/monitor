@@ -88,7 +88,8 @@
 <table class="table table-sm table-bordered" id="tabla_casos">
     <thead>
         <tr>
-            <th>°</th>
+            <th nowrap>° Monitor</th>
+            <th nowrap>° Minsal</th>
             <th>Fecha muestra</th>
             <th>Origen</th>
             <th>Nombre</th>
@@ -114,6 +115,7 @@
                 <a href="{{ route('lab.suspect_cases.edit', $case) }}" class="btn_edit"><i class="fas fa-edit"></i></a>
                 @endcan
             </td>
+            <td class="text-center">{{ $case->minsal_ws_id }}</td>
             <td nowrap class="small">{{ (isset($case->sample_at))? $case->sample_at->format('Y-m-d'):'' }}</td>
             <td>
                 {{ ($case->establishment) ? $case->establishment->alias . ' - ': '' }}

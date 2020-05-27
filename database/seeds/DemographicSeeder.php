@@ -25,6 +25,8 @@ class DemographicSeeder extends Seeder
             'longitude' => -70.141050,
             'telephone2' => null,
             'email' => 'norma@fabiola.com',
+            'region_id' => 1,
+            'commune_id' => 5,
             'patient_id' => 1 //Famoso Horacio
         ]);
 
@@ -41,7 +43,9 @@ class DemographicSeeder extends Seeder
             'longitude' => -70.152800,
             'telephone2' => null,
             'email' => 'email@email.com',
-            'patient_id' => 47 //Famoso Horacio
+            'region_id' => 1,
+            'commune_id' => 5,
+            'patient_id' => 2 //Famoso Horacio
         ]);
     }
 }
