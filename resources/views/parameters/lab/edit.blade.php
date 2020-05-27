@@ -18,8 +18,8 @@
         </fieldset>
 
         <fieldset class="form-group col">
-            <label for="for_commune">Comuna</label>            
-            <select class="form-control" name="commune" id="for_commune" required>
+            <label for="for_commune_id">Comuna</label>            
+            <select class="form-control" name="commune_id" id="for_commune_id" required>
                 <option value="">Seleccione Comuna</option>
                 @foreach($communes as $commune)
                 <option value="{{ $commune->id }}" {{($laboratory->commune_id == $commune->id) ? 'selected': ''}}>{{ $commune->name }}</option>
