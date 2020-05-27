@@ -51,7 +51,7 @@ class SuspectCase extends Model
     }
 
     public function establishment() {
-        return $this->belongsTo('App\Establishment',);
+        return $this->belongsTo('App\Establishment');
     }
 
     function getCovid19Attribute(){
