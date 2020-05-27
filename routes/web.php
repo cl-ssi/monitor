@@ -108,7 +108,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('download/{file}','SuspectCaseController@download')->name('download')->middleware('auth');
         Route::get('file/{file}','SuspectCaseController@fileDelete')->name('fileDelete')->middleware('auth','can:SuspectCase: file delete');
 
-        Route::get('/','SuspectCaseController@index')->name('index')->middleware('auth','can:SuspectCase: list');
+        Route::get('/index/{laboratory?}','SuspectCaseController@index')->name('index')->middleware('auth','can:SuspectCase: list');
 
         Route::get('/exportSuspectCases/{lab}','SuspectCaseController@exportExcel')->name('export')->middleware('auth');
 

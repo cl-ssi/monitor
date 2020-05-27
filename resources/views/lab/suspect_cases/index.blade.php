@@ -4,7 +4,13 @@
 
 @section('content')
 
-<h3 class="mb-3"><i class="fas fa-lungs-virus"></i> Listado de todos los exámenes</h3>
+<h3 class="mb-3"><i class="fas fa-lungs-virus"></i>
+    @if($laboratory)
+        Examenes del laboratorio {{ $laboratory->name }}
+    @else
+        Listado de todos los exámenes
+    @endif
+</h3>
 
 <div class="row">
     @can('SuspectCase: create')
@@ -43,15 +49,15 @@
 <a type="button" class="btn btn-success" href="{{ route('lab.suspect_cases.export', 'all') }}">Descargar <i class="far fa-file-excel"></i></a>
 
 <div align="right">
-<form method="get" action="{{ route('lab.suspect_cases.index') }}">
+<form method="get" action="{{ route('lab.suspect_cases.index',$laboratory) }}">
 
-  <input type="checkbox" name="positivos" id="chk_positivos" v="Positivos" {{ ($request->positivos)?'checked':'' }} /> Positivos
-  <input type="checkbox" name="negativos" id="chk_negativos" v="Negativos" {{ ($request->negativos)?'checked':'' }} /> Negativos
-  <input type="checkbox" name="pendientes" id="chk_pendientes" v="Pendientes" {{ ($request->pendientes)?'checked':'' }} /> Pendientes
-  <input type="checkbox" name="rechazados" id="chk_rechazados" v="Rechazados" {{ ($request->rechazados)?'checked':'' }} /> Rechazados
-  <input type="checkbox" name="indeterminados" id="chk_indeterminados" v="Indeterminados" {{ ($request->indeterminados)?'checked':'' }} /> Indeterminados
+    <input type="checkbox" name="positivos" id="chk_positivos" v="Positivos" {{ ($request->positivos)?'checked':'' }} /> Positivos
+    <input type="checkbox" name="negativos" id="chk_negativos" v="Negativos" {{ ($request->negativos)?'checked':'' }} /> Negativos
+    <input type="checkbox" name="pendientes" id="chk_pendientes" v="Pendientes" {{ ($request->pendientes)?'checked':'' }} /> Pendientes
+    <input type="checkbox" name="rechazados" id="chk_rechazados" v="Rechazados" {{ ($request->rechazados)?'checked':'' }} /> Rechazados
+    <input type="checkbox" name="indeterminados" id="chk_indeterminados" v="Indeterminados" {{ ($request->indeterminados)?'checked':'' }} /> Indeterminados
 
-  <div class="input-group mb-3 col-12 col-sm-5">
+    <div class="input-group mb-3 col-12 col-sm-5">
     <div class="input-group-prepend">
         <span class="input-group-text">Búsqueda</span>
     </div>
