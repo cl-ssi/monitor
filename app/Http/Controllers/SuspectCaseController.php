@@ -271,89 +271,90 @@ class SuspectCaseController extends Controller
     {
         ########## webservice MINSAL ##########
         // verificar que esté activida la opción para webservice minsal
-        $minsal_ws_id = NULL;
-        if (env('WS_MINSAL')) {
+        // if (env('APP_ENV') == 'local') {
+            $minsal_ws_id = NULL;
+            if (env('WS_MINSAL')) {
 
-            //verificar que la dependencia del establecimiento sea municipal o del servicio de salud
-            $establishment = Establishment::where('id',$request->establishment_id)->get();
-            $dependency = $establishment->first()->dependency;
-            if ($dependency == "Municipal" || $dependency == "Servicio de Salud") {
+                //verificar que la dependencia del establecimiento sea municipal o del servicio de salud
+                $establishment = Establishment::where('id',$request->establishment_id)->get();
+                $dependency = $establishment->first()->dependency;
+                if ($dependency == "Municipal" || $dependency == "Servicio de Salud") {
 
-                //verificar que el laboratorio vinculado a usuario esté autorizado para envío de webservice
-                if (Auth::user()->laboratory->minsal_ws) {
-                    //obtiene proximo id suspect case
-                    $NextsuspectCase = SuspectCase::max('id');
-                    $NextsuspectCase += 1;
-                    // $NextsuspectCase = 14;
+                    //verificar que el laboratorio vinculado a usuario esté autorizado para envío de webservice
+                    if (Auth::user()->laboratory->minsal_ws) {
+                        //obtiene proximo id suspect case
+                        $NextsuspectCase = SuspectCase::max('id');
+                        $NextsuspectCase += 1;
+                        // $NextsuspectCase = 14;
 
-                    // webservices MINSAL
-                    if (env('APP_ENV') == 'local') {
-                      $client = new \GuzzleHttp\Client();
+                        // webservices MINSAL
 
-                      if($request->gender == "female"){
-                        $genero = "F";
-                      }else{$genero = "M";}
+                          $client = new \GuzzleHttp\Client();
 
-                      $comuna = Commune::where('id',$request->commune_id)->get();
-                      $commune_code_deis = $comuna->first()->code_deis;
+                          if($request->gender == "female"){
+                            $genero = "F";
+                          }else{$genero = "M";}
 
-                      $paciente_ext_paisorigen = '';
-                      if ($request->run == "") {
-                        $paciente_tipodoc = "PASAPORTE";
-                        $country = Country::where('name',$request->nationality)->get();
-                        $paciente_ext_paisorigen = $country->first()->id_minsal;
-                      }else{$paciente_tipodoc = "RUN";}
+                          $comuna = Commune::where('id',$request->commune_id)->get();
+                          $commune_code_deis = $comuna->first()->code_deis;
 
-                      $array = array(
+                          $paciente_ext_paisorigen = '';
+                          if ($request->run == "") {
+                            $paciente_tipodoc = "PASAPORTE";
+                            $country = Country::where('name',$request->nationality)->get();
+                            $paciente_ext_paisorigen = $country->first()->id_minsal;
+                          }else{$paciente_tipodoc = "RUN";}
 
-                        'raw' => array('codigo_muestra_cliente' => $NextsuspectCase,
-                                       'rut_responsable' => '15980951-K', //Claudia Caronna //Auth::user()->run . "-" . Auth::user()->dv, //se va a enviar rut de enfermo del servicio
-                                       'cod_deis' => '02-100', //$request->establishment_id
-                                       'rut_medico' => '16350555-K', //Pedro Valjalo
-                                       'paciente_run' => $request->run,
-                                       'paciente_dv' => $request->dv,
-                                       'paciente_nombres' => $request->name,
-                                       'paciente_ap_mat' => $request->fathers_family,
-                                       'paciente_ap_pat' => $request->mothers_family,
-                                       'paciente_fecha_nac' => $request->birthday,
-                                       'paciente_comuna' => $commune_code_deis,
-                                       'paciente_direccion' => $request->address . " " . $request->number,
-                                       'paciente_telefono' => $request->telephone,
-                                       'paciente_tipodoc' => $paciente_tipodoc,
-                                       'paciente_ext_paisorigen' => $paciente_ext_paisorigen,
-                                       'paciente_pasaporte' => $request->other_identification,
-                                       'paciente_sexo' => $genero,
-                                       'paciente_prevision' => 'FONASA', //fijo por el momento
-                                       'fecha_muestra' => $request->sample_at,
-                                       'tecnica_muestra' => 'RT-PCR', //fijo
-                                       'tipo_muestra' => $request->sample_type
-                                     )
-                      );
+                          $array = array(
 
-                      dd("llegò");
+                            'raw' => array('codigo_muestra_cliente' => $NextsuspectCase,
+                                           'rut_responsable' => '15980951-K', //Claudia Caronna //Auth::user()->run . "-" . Auth::user()->dv, //se va a enviar rut de enfermo del servicio
+                                           'cod_deis' => '02-100', //$request->establishment_id
+                                           'rut_medico' => '16350555-K', //Pedro Valjalo
+                                           'paciente_run' => $request->run,
+                                           'paciente_dv' => $request->dv,
+                                           'paciente_nombres' => $request->name,
+                                           'paciente_ap_mat' => $request->fathers_family,
+                                           'paciente_ap_pat' => $request->mothers_family,
+                                           'paciente_fecha_nac' => $request->birthday,
+                                           'paciente_comuna' => $commune_code_deis,
+                                           'paciente_direccion' => $request->address . " " . $request->number,
+                                           'paciente_telefono' => $request->telephone,
+                                           'paciente_tipodoc' => $paciente_tipodoc,
+                                           'paciente_ext_paisorigen' => $paciente_ext_paisorigen,
+                                           'paciente_pasaporte' => $request->other_identification,
+                                           'paciente_sexo' => $genero,
+                                           'paciente_prevision' => 'FONASA', //fijo por el momento
+                                           'fecha_muestra' => $request->sample_at,
+                                           'tecnica_muestra' => 'RT-PCR', //fijo
+                                           'tipo_muestra' => $request->sample_type
+                                         )
+                          );
 
-                      $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/328302d8-0ba3-5611-24fa-a7a2f146241f', [
-                            'json' => $array,
-                            'headers'  => [ 'ACCESSKEY' => env('TOKEN_WS_MINSAL')]
-                      ]);
+                          dd("llegò");
 
-                      //respuesta de servidor
-                      $ws_response = "";
-                      $minsal_ws_id = NULL;
-                      if(var_export($response->getStatusCode(), true) == 200){
-                        $array = json_decode($response->getBody()->getContents(), true);
-                        if(array_key_exists('error', $array)){
-                          session()->flash('warning', 'No se registró muestra - Error webservice minsal: <h3>' . $array['error'] . '</h3>');
-                          return redirect()->back();
-                        }else{
-                          $minsal_ws_id = $array[0]['id_muestra'];
-                          $ws_response = "Se ha creado muestra " . $minsal_ws_id ." en MINSAL";
+                          $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/328302d8-0ba3-5611-24fa-a7a2f146241f', [
+                                'json' => $array,
+                                'headers'  => [ 'ACCESSKEY' => env('TOKEN_WS_MINSAL')]
+                          ]);
+
+                          //respuesta de servidor
+                          $ws_response = "";
+                          $minsal_ws_id = NULL;
+                          if(var_export($response->getStatusCode(), true) == 200){
+                            $array = json_decode($response->getBody()->getContents(), true);
+                            if(array_key_exists('error', $array)){
+                              session()->flash('warning', 'No se registró muestra - Error webservice minsal: <h3>' . $array['error'] . '</h3>');
+                              return redirect()->back();
+                            }else{
+                              $minsal_ws_id = $array[0]['id_muestra'];
+                              $ws_response = "Se ha creado muestra " . $minsal_ws_id ." en MINSAL";
+                            }
+                          }
                         }
-                      }
                     }
                 }
-            }
-        }
+        // }
 
 
 
@@ -490,11 +491,11 @@ class SuspectCaseController extends Controller
         // dd($request->all(),$request->file('forfile')[0]);
 
         //######## webservice minsal ############
-        // verificar que esté activida la opción para webservice minsal
-        if (env('WS_MINSAL')) {
+        // webservices MINSAL
+        // if (env('APP_ENV') == 'local') {
 
-            // webservices MINSAL
-            if (env('APP_ENV') == 'local') {
+            // verificar que esté activida la opción para webservice minsal
+            if (env('WS_MINSAL')) {
 
                 //se verifica que se cambia el estado
                 if($request->pscr_sars_cov_2 != 'pending'){
@@ -542,7 +543,7 @@ class SuspectCaseController extends Controller
                     }
                 }
             }
-        }
+        // }
 
         $log = new Log();
         $log->old = clone $suspectCase;
