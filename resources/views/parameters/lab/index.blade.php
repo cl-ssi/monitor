@@ -14,6 +14,7 @@
         <tr>
             <th>Nombre</th>
             <th>Externo</th>
+            <th>Webservice Minsal</th>
             <th>Comuna</th>
             <th>Editar</th>
         </tr>
@@ -24,7 +25,14 @@
             <td>{{ $laboratory->name }}</td>
             <td>
                 @if ($laboratory->external == 1 )
-                Sí                
+                Sí
+                @else
+                No
+                @endif
+            </td>
+            <td>
+                @if ($laboratory->minsal_ws == 1 )
+                Sí
                 @else
                 No
                 @endif

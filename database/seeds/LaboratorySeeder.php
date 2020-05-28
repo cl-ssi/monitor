@@ -15,18 +15,21 @@ class LaboratorySeeder extends Seeder
         $lab = new Laboratory();
         $lab->name = 'HETG';
         $lab->external = 0;
+        $lab->minsal_ws = 1;
         $lab->commune_id = 5;
         $lab->save();
 
         $lab = new Laboratory();
         $lab->name = 'UNAP';
         $lab->external = 0;
+        $lab->minsal_ws = 1;
         $lab->commune_id = 5;
         $lab->save();
 
         $lab = new Laboratory();
         $lab->name = 'Hospital Lucio Córdova';
         $lab->external = 1;
+        $lab->minsal_ws = 0;
         $lab->commune_id = 119;
         $lab->save();
     }

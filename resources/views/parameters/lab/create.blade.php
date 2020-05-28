@@ -18,7 +18,7 @@
 
 
         <fieldset class="form-group col">
-            <label for="for_commune_id">Comuna</label>            
+            <label for="for_commune_id">Comuna</label>
             <select class="form-control" name="commune_id" id="for_commune_id" required>
                 <option value="">Seleccione Comuna</option>
                 @foreach($communes as $commune)
@@ -35,7 +35,16 @@
             <select class="form-control" name="external" id="for_external" required>
                 <option value="">Seleccione Opción</option>
                 <option value="1">Sí</option>
-                <option value="2">No</option>
+                <option value="0">No</option>
+            </select>
+        </fieldset>
+
+        <fieldset class="form-group col-2">
+            <label for="for_minsal_ws">Webservice Minsal</label>
+            <select class="form-control" name="minsal_ws" id="for_minsal_ws" required>
+                <option value="">Seleccione Opción</option>
+                <option value="1">Sí</option>
+                <option value="0">No</option>
             </select>
         </fieldset>
 
