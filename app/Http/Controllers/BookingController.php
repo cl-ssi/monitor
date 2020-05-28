@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\SanitaryResidence\Residence;
 use App\SanitaryResidence\Booking;
 use App\SanitaryResidence\Room;
+use App\SanitaryResidence\VitalSign;
 use App\Patient;
 use App\Log;
 use App\SuspectCase;
@@ -85,6 +86,14 @@ class BookingController extends Controller
         return view('sanitary_residences.bookings.show', compact('booking', 'patients', 'rooms'));
     }
 
+
+    public function showRelease(Booking $booking)
+    {
+        $patients = Patient::orderBy('name')->get();
+        $rooms = Room::All();
+        return view('sanitary_residences.bookings.showrelease', compact('booking', 'patients', 'rooms'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -146,4 +155,17 @@ class BookingController extends Controller
         $residences = Residence::all();
         return view('sanitary_residences.bookings.excel.excelall', compact('residences','bookings'));
     }
+
+
+    public function excelvitalsign()
+    {   $bookings = Booking::where('status','Residencia Sanitaria')
+        ->whereHas('patient', function ($q) {
+            $q->where('status','Residencia Sanitaria');
+        })->get();        
+        $vitalsigns = VitalSign::orderBy('booking_id','ASC')->orderBy('patient_id','ASC')->orderBy('created_at', 'DESC')->get();
+
+        return view('sanitary_residences.bookings.excel.excelvitalsign',compact('bookings','vitalsigns'));
+    }
+
+    
 }

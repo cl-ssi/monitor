@@ -48,21 +48,22 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($users_with_residences as $user)
-        @foreach($user->residences as $residence)
+        
+        @foreach($residenceUsers as $residenceUser)
         <tr>
-            <td>{{ $user->name }}</td>
-            <td>{{ $residence->name }}</td>
+        
+            <td>{{ $residenceUser->user->name }}</td>
+            <td>{{ $residenceUser->residence->name }}</td>
             <td>
-                <form method="POST" class="form-horizontal" action="#">
+                <form method="POST" class="form-horizontal" action="{{ route('sanitary_residences.users.destroy',$residenceUser) }}">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger float-left" onclick="return confirm('¿Está seguro que desea eliminar los permisos del usuario: {{ $user->name }} para la residencia sanitaria: {{ $residence->name }}  ')"><i class="fas fa-trash-alt"></i></button>
-                </form>
+                    <button type="submit" class="btn btn-danger float-left" onclick="return confirm('¿Está seguro que desea eliminar los permisos del usuario: {{ $residenceUser->user->name }} para la residencia sanitaria: {{ $residenceUser->residence->name }}? ' )"><i class="fas fa-trash-alt"></i></button>
+                </form>                
             </td>
         </tr>
         @endforeach
-        @endforeach
+        
     </tbody>
 </table>
 
