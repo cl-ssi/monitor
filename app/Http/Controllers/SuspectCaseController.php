@@ -331,8 +331,6 @@ class SuspectCaseController extends Controller
                                          )
                           );
 
-                          dd("llegò");
-
                           $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/328302d8-0ba3-5611-24fa-a7a2f146241f', [
                                 'json' => $array,
                                 'headers'  => [ 'ACCESSKEY' => env('TOKEN_WS_MINSAL')]
