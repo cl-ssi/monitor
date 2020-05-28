@@ -269,6 +269,7 @@ class SuspectCaseController extends Controller
      */
     public function storeAdmission(Request $request)
     {
+        dd(env('WS_MINSAL'), env('APP_ENV'), Auth::user()->laboratory->minsal_ws);
         ########## webservice MINSAL ##########
         // verificar que esté activida la opción para webservice minsal
         $minsal_ws_id = NULL;
