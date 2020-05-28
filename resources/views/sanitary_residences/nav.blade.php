@@ -23,7 +23,7 @@
 
     <li class="nav-item">
         <a class="nav-link" href="{{ route('sanitary_residences.users') }}">
-            <i class="fas fa-home"></i> Usuarios
+            <i class="fas fa-users-cog"></i> Usuarios
         </a>
     </li>
     @endcan

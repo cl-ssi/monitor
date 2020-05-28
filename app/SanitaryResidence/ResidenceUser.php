@@ -16,4 +16,12 @@ class ResidenceUser extends Model
     ];
 
     protected $table = 'residence_user';
+
+    public function user() {
+        return $this->belongsTo('App\User');
+    }
+
+    public function residence() {
+        return $this->belongsTo('App\SanitaryResidence\Residence');
+    }
 }
