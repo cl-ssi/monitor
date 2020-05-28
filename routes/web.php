@@ -165,7 +165,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
     Route::get('/users', 'ResidenceController@users')->name('users');
     Route::post('/users', 'ResidenceController@usersStore')->name('users.store');
     //Route::get('/{user}/edit', 'ResidenceController@usersEdit')->name('users.edit');
-    Route::delete('/{user}', 'ResidenceController@usersDestroy')->name('users.destroy');
+    Route::delete('/{residenceUser}', 'ResidenceController@usersDestroy')->name('users.destroy');
 
     Route::prefix('residences')->name('residences.')->group(function () {
         Route::get('/create', 'ResidenceController@create')->name('create');
@@ -188,12 +188,14 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
     Route::prefix('bookings')->name('bookings.')->group(function () {
 
         Route::get('/excelall','BookingController@excelall')->name('excelall');
+        Route::get('/excelvitalsign','BookingController@excelvitalsign')->name('excelvitalsign');
         Route::get('/excel/{booking}','BookingController@excel')->name('excel');
         Route::get('/residence/{residence}', 'BookingController@index')->name('index');
         Route::get('/create', 'BookingController@create')->name('create');
         Route::get('/{booking}', 'BookingController@show')->name('show');
         Route::post('/', 'BookingController@store')->name('store');
         Route::get('/{booking}', 'BookingController@show')->name('show');
+        Route::get('/{booking}/release', 'BookingController@showRelease')->name('showrelease');
         // Route::get('/{booking}/edit', 'BookingController@edit')->name('edit');
         Route::put('/{booking}', 'BookingController@update')->name('update');
         // Route::delete('/{booking}', 'BookingController@destroy')->name('destroy');

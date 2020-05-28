@@ -112,7 +112,8 @@ class SuspectCaseController extends Controller
         $establishments = Establishment::orderBy('name','ASC')->get();
 
         /* FIX codigo duro */
-        $establishments = Establishment::whereIn('commune_id',[5,6,7,8,9,10,11])->orderBy('name','ASC')->get();
+        $env_communes = array_map('trim',explode(",",env('COMUNAS')));
+        $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
 
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
         return view('lab.suspect_cases.create',compact('sampleOrigins','establishments','external_labs'));
@@ -140,7 +141,8 @@ class SuspectCaseController extends Controller
 
         $regions = Region::orderBy('id','ASC')->get();
         $communes = Commune::orderBy('id','ASC')->get();
-        $establishments = Establishment::whereIn('commune_id',[5,6,7,8,9,10,11])->orderBy('name','ASC')->get();
+        $env_communes = array_map('trim',explode(",",env('COMUNAS')));
+        $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
 
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
         return view('lab.suspect_cases.admission',compact('sampleOrigins','regions', 'communes','establishments'));
@@ -458,7 +460,8 @@ class SuspectCaseController extends Controller
 
         $establishments = Establishment::orderBy('alias','ASC')->get();
         /* FIX codigo duro */
-        $establishments = Establishment::whereIn('commune_id',[5,6,7,8,9,10,11])->orderBy('name','ASC')->get();
+        $env_communes = array_map('trim',explode(",",env('COMUNAS')));
+        $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
 
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
         return view('lab.suspect_cases.edit', compact('suspectCase','sampleOrigins',

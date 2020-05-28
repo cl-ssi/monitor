@@ -78,7 +78,7 @@
         @foreach($bookings as $booking)
         @if($booking->real_to and $booking->room->residence->id==$residence->id)
         <tr>
-            <td>{{ $booking->patient->fullName }}</td>
+            <td><a href="{{ route('sanitary_residences.bookings.showrelease',$booking) }}"> {{ $booking->patient->fullName }} </a></td>
             <td>{{ $booking->status }}</td>
             <td>{{ $booking->released_cause }}</td>
             <td>{{ $booking->room->residence->name }}</td>

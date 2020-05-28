@@ -156,7 +156,7 @@
                     {{ $case->id }}
                     </a>
                 </td>
-                <td>{{ ($case->establishment) ? $case->establishment->name : '' }}</td>
+                <td>{{ $case->establishment?$case->establishment->alias.' - '.$case->origin: '' }}</td>
                 <td>{{ $case->sample_at }}</td>
                 <td>{{ $case->pscr_sars_cov_2_at }}</td>
                 <td>{{ $case->covid19 }}</td>
@@ -182,7 +182,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($patient->logs as $log)
+        @foreach($patient->logs->sortByDesc('created_at') as $log)
         <tr>
             <td>{{ $log->model_type }}</td>
             <td>{{ $log->created_at }}</td>
