@@ -165,7 +165,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
     Route::get('/users', 'ResidenceController@users')->name('users');
     Route::post('/users', 'ResidenceController@usersStore')->name('users.store');
     //Route::get('/{user}/edit', 'ResidenceController@usersEdit')->name('users.edit');
-    Route::delete('/{user}', 'ResidenceController@usersDestroy')->name('users.destroy');
+    Route::delete('/{residenceUser}', 'ResidenceController@usersDestroy')->name('users.destroy');
 
     Route::prefix('residences')->name('residences.')->group(function () {
         Route::get('/create', 'ResidenceController@create')->name('create');
