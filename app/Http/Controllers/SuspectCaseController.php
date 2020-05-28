@@ -271,6 +271,7 @@ class SuspectCaseController extends Controller
     {
         ########## webservice MINSAL ##########
         // verificar que esté activida la opción para webservice minsal
+        $minsal_ws_id = NULL;
         if (env('WS_MINSAL')) {
 
             //verificar que la dependencia del establecimiento sea municipal o del servicio de salud
@@ -430,8 +431,12 @@ class SuspectCaseController extends Controller
         $log->new = $suspectCase;
         $log->save();
 
+        if ($minsal_ws_id == NULL) {
+            session()->flash('success', 'Se ha creado el caso número: <h3>' . $suspectCase->id . '</h3>');
+        }else {
+            session()->flash('success', 'Se ha creado el caso número: <h3>' . $suspectCase->id . '</h3> <br /> Número caso Minsal: ' . $minsal_ws_id);
+        }
 
-        session()->flash('success', 'Se ha creado el caso número: <h3>' . $suspectCase->id . '</h3> <br /> Número caso Minsal: ' . $minsal_ws_id);
         return redirect()->back();
     }
 
