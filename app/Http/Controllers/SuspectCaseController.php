@@ -269,7 +269,6 @@ class SuspectCaseController extends Controller
      */
     public function storeAdmission(Request $request)
     {
-        dd(env('WS_MINSAL'), env('APP_ENV'), Auth::user()->laboratory->minsal_ws);
         ########## webservice MINSAL ##########
         // verificar que esté activida la opción para webservice minsal
         $minsal_ws_id = NULL;
@@ -330,6 +329,8 @@ class SuspectCaseController extends Controller
                                        'tipo_muestra' => $request->sample_type
                                      )
                       );
+
+                      dd("llegò");
 
                       $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/328302d8-0ba3-5611-24fa-a7a2f146241f', [
                             'json' => $array,
