@@ -281,7 +281,14 @@ class SuspectCaseController extends Controller
                 if ($dependency == "Municipal" || $dependency == "Servicio de Salud") {
 
                     //verificar que el laboratorio vinculado a usuario esté autorizado para envío de webservice
-                    if (Auth::user()->laboratory->minsal_ws) {
+                    if (Auth::user()->laboratory) {
+                        if (Auth::user()->laborator->minsal_ws) {
+                            include
+                        }
+                    }else{
+                        include
+                    }
+
                         //obtiene proximo id suspect case
                         $NextsuspectCase = SuspectCase::max('id');
                         $NextsuspectCase += 1;
@@ -349,12 +356,12 @@ class SuspectCaseController extends Controller
                               $ws_response = "Se ha creado muestra " . $minsal_ws_id ." en MINSAL";
                             }
                           }
-                        }
+                        // }
                     }
                 }
         // }
 
-
+        exit:
 
         //########### guarda en base de datos ##########3
         if ($request->id == null) {
