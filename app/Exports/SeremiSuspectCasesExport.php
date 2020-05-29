@@ -14,9 +14,9 @@ class SeremiSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
     private $cod_lab;
     private $nombre_lab;
 
-    public function __construct(Laboratory $laboratory) {
-          $this->cod_lab = $laboratory->id;
-          $this->nombre_lab = $laboratory->name;
+    public function __construct($cod_lab, $nombre_lab) {
+          $this->cod_lab = $cod_lab;
+          $this->nombre_lab = $nombre_lab;
     }
 
     /**
