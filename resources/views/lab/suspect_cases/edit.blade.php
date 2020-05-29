@@ -425,7 +425,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($suspectCase->logs as $log)
+        @foreach($suspectCase->logs->sortByDesc('created_at') as $log)
         <tr>
             <td>{{ $log->model_type }}</td>
             <td>{{ $log->created_at }}</td>
