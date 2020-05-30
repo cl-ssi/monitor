@@ -60,15 +60,17 @@
 
     <div class="form-row">
         <fieldset class="form-group col-12 col-md-4">
-            <label for="for_name">Nombres</label>
+            <label for="for_name">Nombres*</label>
             <input type="text" class="form-control" id="for_name" name="name"
-                value="{{ $patient->name }}" style="text-transform: uppercase;">
+                value="{{ $patient->name }}" style="text-transform: uppercase;"
+                required>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-4">
-            <label for="for_fathers_family">Apellido Paterno</label>
+            <label for="for_fathers_family">Apellido Paterno*</label>
             <input type="text" class="form-control" id="for_fathers_family"
-                name="fathers_family" value="{{ $patient->fathers_family }}" style="text-transform: uppercase;">
+                name="fathers_family" value="{{ $patient->fathers_family }}" style="text-transform: uppercase;"
+                required>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-4">
