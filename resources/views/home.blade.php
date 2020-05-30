@@ -20,14 +20,14 @@
 
                 </div>
                 <div class="card-footer text-muted text-center">
-                    Sistema desarrollado por el área de Informática del
+                    {{ env('INFO_HOME','Configurar variable INFO_HOME en .env') }}
+                    <hr>
+                    Sistema desarrollado por el Área de Informática del
                     Servicio de Salud de Iquique
                     <a href="mailto:sistemas.ssi@redsalud.gob.cl">
                         sistemas.ssi@redsalud.gob.cl
                     </a>
-                    <hr>
-                    Whatsapp desarrollador: +56 9 82598059 <br>
-                    <a href="mailto:alvaro.torres@redsalud.gob.cl">alvaro.torres@redsalud.gob.cl</a>
+
                 </div>
             </div>
         </div>

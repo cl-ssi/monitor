@@ -23,7 +23,7 @@ class SuspectCase extends Model
         'result_ifd_at', 'result_ifd', 'subtype',
         'pscr_sars_cov_2_at', 'pscr_sars_cov_2', 'sample_type', 'validator_id',
         'sent_isp_at', 'external_laboratory', 'paho_flu', 'epivigila',
-        'gestation', 'gestation_week', 'close_contact',
+        'gestation', 'gestation_week', 'close_contact', 'functionary',
         'notification_at', 'notification_mechanism',
         'discharged_at','discharge_test',
         'observation', 'minsal_ws_id',

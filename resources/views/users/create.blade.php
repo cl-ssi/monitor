@@ -3,43 +3,41 @@
 @section('title', 'Nuevo Usuario')
 
 @section('content')
-<h3 class="mb-3">Nuevo Usuario</h3>
 
+@include('parameters.nav')
+
+<h3 class="mb-3">Nuevo Usuario</h3>
 
 <form method="POST" class="form-horizontal" action="{{ route('users.store') }}">
     @csrf
     @method('POST')
 
     <div class="form-row">
-      <fieldset class="form-group col-2">
-          <label for="for_run">Run</label>
-          <input type="number" class="form-control" name="run" id="for_run">
-      </fieldset>
-
-      <fieldset class="form-group col-1">
-          <label for="for_dv">Dv</label>
-          <input type="text" class="form-control" name="dv" id="for_dv">
-      </fieldset>
-
-      <fieldset class="form-group col">
-          <label for="for_name">Nombre y Apellido</label>
-          <input type="text" class="form-control" name="name" id="for_name"
-              required>
-      </fieldset>
-
-      <fieldset class="form-group col">
-          <label for="for_email">Email</label>
-          <input type="text" class="form-control" name="email" id="for_email"
-              required>
-      </fieldset>
-
-        <fieldset class="form-group col">
-            <label for="for_password">Clave</label>
-            <input type="password" class="form-control" name="password" id="for_password"
+        <fieldset class="form-group col-8 col-md-2">
+            <label for="for_run">Run *</label>
+            <input type="number" class="form-control" name="run" id="for_run"
                 required>
         </fieldset>
 
-        <fieldset class="form-group col-2">
+        <fieldset class="form-group col-4 col-md-1">
+            <label for="for_dv">DV *</label>
+            <input type="text" class="form-control" name="dv" id="for_dv"
+                required>
+        </fieldset>
+
+        <fieldset class="form-group col-12 col-md-3">
+            <label for="for_name">Nombre y Apellido *</label>
+            <input type="text" class="form-control" name="name" id="for_name"
+                required>
+        </fieldset>
+
+        <fieldset class="form-group col-12 col-md-3">
+            <label for="for_email">Email *</label>
+            <input type="text" class="form-control" name="email" id="for_email"
+                required>
+        </fieldset>
+
+        <fieldset class="form-group col-12 col-md-3">
             <label for="for_laboratory_id">Laboratorio</label>
             <select name="laboratory_id" id="for_laboratory_id" class="form-control">
                 <option value=""></option>
@@ -47,8 +45,14 @@
                 <option value="{{ $lab->id }}">{{ $lab->name }}</option>
                 @endforeach
             </select>
+            <small id="laboratoryHelp" class="form-text text-muted">Sólo para ingresos en laboratorio</small>
         </fieldset>
 
+        <fieldset class="form-group col-12 col-md-2">
+            <label for="for_password">Clave *</label>
+            <input type="password" class="form-control" name="password" id="for_password"
+                required>
+        </fieldset>
 
     </div>
 
@@ -62,7 +66,7 @@
     </div>
     @endforeach
 
-    <button type="submit" class="btn btn-primary">Guardar</button>
+    <button type="submit" class="btn btn-primary mt-3">Guardar</button>
 
 
 </form>

@@ -89,7 +89,6 @@
     <thead>
         <tr>
             <th nowrap>° Monitor</th>
-            <th nowrap>° Minsal</th>
             <th>Fecha muestra</th>
             <th>Origen</th>
             <th>Nombre</th>
@@ -114,8 +113,8 @@
                 @can('SuspectCase: edit')
                 <a href="{{ route('lab.suspect_cases.edit', $case) }}" class="btn_edit"><i class="fas fa-edit"></i></a>
                 @endcan
+                <small>{{ $case->minsal_ws_id }}</small>
             </td>
-            <td class="text-center">{{ $case->minsal_ws_id }}</td>
             <td nowrap class="small">{{ (isset($case->sample_at))? $case->sample_at->format('Y-m-d'):'' }}</td>
             <td>
                 {{ ($case->establishment) ? $case->establishment->alias . ' - ': '' }}

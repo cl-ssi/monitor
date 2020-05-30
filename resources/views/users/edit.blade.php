@@ -8,36 +8,37 @@
 
 <h3 class="mb-3">Editar Usuario</h3>
 
-
 <form method="POST" class="form-horizontal" action="{{ route('users.update',$user) }}">
     @csrf
     @method('PUT')
 
     <div class="form-row">
 
-      <fieldset class="form-group col-2">
-          <label for="for_run">Run</label>
-          <input type="number" class="form-control" name="run" id="for_run" value="{{ $user->run }}">
-      </fieldset>
+        <fieldset class="form-group col-8 col-md-2">
+            <label for="for_run">Run</label>
+            <input type="number" class="form-control" name="run" id="for_run"
+                value="{{ $user->run }}" required>
+        </fieldset>
 
-      <fieldset class="form-group col-1">
-          <label for="for_dv">Dv</label>
-          <input type="text" class="form-control" name="dv" id="for_dv" value="{{ $user->dv }}">
-      </fieldset>
+        <fieldset class="form-group col-4 col-md-1">
+            <label for="for_dv">Dv</label>
+            <input type="text" class="form-control" name="dv" id="for_dv"
+                value="{{ $user->dv }}" required>
+        </fieldset>
 
-      <fieldset class="form-group col">
-          <label for="for_name">Nombre</label>
-          <input type="text" class="form-control" name="name" id="for_name"
-              required value="{{ $user->name }}">
-      </fieldset>
+        <fieldset class="form-group col-12 col-md-3">
+            <label for="for_name">Nombre y Apellido</label>
+            <input type="text" class="form-control" name="name" id="for_name"
+                value="{{ $user->name }}" required>
+        </fieldset>
 
-      <fieldset class="form-group col">
-          <label for="for_email">Email</label>
-          <input type="text" class="form-control" name="email" id="for_email"
-              required value="{{ $user->email }}">
-      </fieldset>
+        <fieldset class="form-group col-12 col-md-3">
+            <label for="for_email">Email</label>
+            <input type="text" class="form-control" name="email" id="for_email"
+                value="{{ $user->email }}" required>
+        </fieldset>
 
-        <fieldset class="form-group col-2">
+        <fieldset class="form-group col-12 col-md-3">
             <label for="for_laboratory_id">Laboratorio</label>
             <select name="laboratory_id" id="for_laboratory_id" class="form-control">
                 <option value=""></option>
@@ -59,7 +60,7 @@
     </div>
     @endforeach
 
-    <button type="submit" class="btn btn-primary">Guardar</button>
+    <button type="submit" class="btn btn-primary mt-3">Guardar</button>
 
 
 </form>

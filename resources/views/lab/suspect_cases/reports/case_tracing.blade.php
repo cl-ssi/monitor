@@ -97,6 +97,9 @@
                     @if($patient->suspectCases->first()->close_contact == "1")
                         <i class="fas fa-user-friends" title="Contacto Estrecho"></i>
                     @endif
+                    @if($patient->suspectCases->first()->functionary == "1")
+                        <i class="fas fa-user-nurse" title="Funcionario de Salud"></i>
+                    @endif
                 </td>
                 <td nowrap>{{ $patient->identifier }}</td>
                 <td nowrap>{{ $patient->suspectCases->last()->age }}</td>

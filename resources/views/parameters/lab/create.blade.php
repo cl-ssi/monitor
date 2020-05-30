@@ -11,13 +11,13 @@
     @csrf
     @method('POST')
     <div class="form-row">
-        <fieldset class="form-group col-4">
+
+        <fieldset class="form-group col-6 col-md-4">
             <label for="for_name">Nombre</label>
             <input type="text" class="form-control" name="name" id="for_name" required placeholder="" autocomplete="off">
         </fieldset>
 
-
-        <fieldset class="form-group col">
+        <fieldset class="form-group col-6 col-md-4">
             <label for="for_commune_id">Comuna</label>
             <select class="form-control" name="commune_id" id="for_commune_id" required>
                 <option value="">Seleccione Comuna</option>
@@ -27,10 +27,7 @@
             </select>
         </fieldset>
 
-    </div>
-
-    <div class="form-row">
-        <fieldset class="form-group col-2">
+        <fieldset class="form-group col-3 col-md-2">
             <label for="for_external">Externo </label>
             <select class="form-control" name="external" id="for_external" required>
                 <option value="">Seleccione Opción</option>
