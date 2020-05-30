@@ -1,12 +1,12 @@
 <div class="form-row">
 
-    <fieldset class="form-group col-10 col-md-2">
+    <fieldset class="form-group col-8 col-md-2">
         <label for="for_run">Run</label>
         <input type="text" class="form-control" readonly disabled
             value="{{ $suspectCase->patient->run }}">
     </fieldset>
 
-    <fieldset class="form-group col-2 col-md-1">
+    <fieldset class="form-group col-4 col-md-1">
         <label for="for_dv">DV</label>
         <input type="text" class="form-control" readonly disabled
             value="{{ $suspectCase->patient->dv }}">

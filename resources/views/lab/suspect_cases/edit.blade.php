@@ -27,13 +27,13 @@
 
     <div class="form-row">
 
-        <fieldset class="form-group col-6 col-md-2">
+        <fieldset class="form-group col-5 col-md-2">
             <label for="for_sample_at">Fecha Muestra</label>
             <input type="date" class="form-control" id="for_sample_at"
                 name="sample_at" value="{{ (isset($suspectCase->sample_at))? $suspectCase->sample_at->format('Y-m-d'):'' }}">
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-3">
+        <fieldset class="form-group col-7 col-md-3">
             <label for="for_sample_type">Tipo de Muestra</label>
             <select name="sample_type" id="for_sample_type" class="form-control">
                 <option value=""></option>
@@ -44,7 +44,7 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-3">
+        <fieldset class="form-group col-12 col-md-3">
             <label for="for_establishment_id">Establecimiento</label>
             <select name="establishment_id" id="for_establishment_id" class="form-control">
                 <option value=""></option>
@@ -54,7 +54,7 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-3">
+        <fieldset class="form-group col-12 col-md-3">
             <label for="for_origin">Estab. Detalle (Opcional)</label>
             <select name="origin" id="for_origin" class="form-control">
                 <option value=""></option>
@@ -74,9 +74,10 @@
 
     </div>
 
-@can('SuspectCase: tecnologo')
 
     <div class="form-row">
+
+        @can('SuspectCase: tecnologo')
 
         <fieldset class="form-group col-6 col-md-2 alert-warning">
             <label for="for_result_ifd_at">Fecha Resultado IFD</label>
@@ -149,7 +150,7 @@
             <p></p>
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-3">
+        <fieldset class="form-group col-5 col-md-3">
             <label for="for_laboratory_id">Laboratorio local</label>
             <select name="laboratory_id" id="for_laboratory_id" class="form-control">
                 <option value=""></option>
@@ -159,9 +160,11 @@
             </select>
         </fieldset>
 
-        @can('SuspectCase: tecnologo')
+
 
     </div>
+
+    @can('SuspectCase: tecnologo')
 
     <div class="form-row">
 
@@ -233,7 +236,16 @@
 
     <div class="form-row">
 
-        <fieldset class="form-group col-4 col-md-1">
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_functionary">Funcionario de Salud</label>
+            <select name="functionary" id="for_functionary" class="form-control">
+                <option value=""></option>
+                <option value="0" {{ ($suspectCase->functionary === '0') ? 'selected' : '' }}>No</option>
+                <option value="1" {{ ($suspectCase->functionary == '1') ? 'selected' : '' }}>Si</option>
+            </select>
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-1">
             <label for="for_symptoms">Sintomas</label>
             <select name="symptoms" id="for_symptoms" class="form-control">
                 <option value=""></option>
@@ -242,7 +254,7 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-2 col-md-1">
+        <fieldset class="form-group col-6 col-md-1">
             <label for="for_gestation">Gestante *</label>
             <select name="gestation" id="for_gestation" class="form-control" required>
                 <option value=""></option>
@@ -276,7 +288,7 @@
         </fieldset> --}}
 
 
-        <fieldset class="form-group col-8 col-md-4">
+        <fieldset class="form-group col-6 col-md-4">
             <label for="for_status">Estado</label>
             <p>
                 <strong>{{ $suspectCase->patient->status }}</strong>
@@ -303,7 +315,7 @@
                 value="{{ $suspectCase->paho_flu }}">
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-2">
+        <fieldset class="form-group col-6 col-md-2">
             <label for="for_run_medic">Run Médico Solicitante *</label>
             <input type="text" class="form-control" name="run_medic" id="for_run_medic"
                 value="{{ $suspectCase->run_medic }}">
@@ -312,7 +324,7 @@
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_epivigila">Epivigila *</label>
             <input type="number" class="form-control" id="for_epivigila"
-                name="epivigila" value="{{ $suspectCase->epivigila }}">
+                name="epivigila" min="0" value="{{ $suspectCase->epivigila }}">
         </fieldset>
 
     </div>
