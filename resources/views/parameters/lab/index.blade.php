@@ -22,13 +22,7 @@
     @foreach($laboratories as $laboratory)
         <tr>
             <td>{{ $laboratory->name }}</td>
-            <td>
-                @if ($laboratory->external == 1 )
-                Sí                
-                @else
-                No
-                @endif
-            </td>
+            <td>{{ ($laboratory->external == 1)? 'Si':'No' }}</td>
             <td>{{ $laboratory->commune->name }}</td>
             <td>
             <a href="{{ route('parameters.lab.edit', $laboratory) }}" class="btn btn-secondary float-left"><i class="fas fa-edit"></i></a>
