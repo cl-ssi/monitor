@@ -53,7 +53,7 @@
 
     <div class="col-12 col-md-4 p-2">
         <strong>Procedencia: </strong>
-        {{ $booking->patient->suspectCases->last()->origin }}
+        {{ ($booking->patient->suspectCases)? $booking->patient->suspectCases->last()->origin:'' }}
     </div>
 
 </div>
@@ -102,7 +102,7 @@
 
     <div class="col-12 col-md-4 p-2">
         <strong>Resultado: </strong>
-        {{ $booking->patient->suspectCases->last()->covid19 }}
+        {{ $booking->patient->suspectCases? $booking->patient->suspectCases->last()->covid19:'' }}
     </div>
 
 </div>
