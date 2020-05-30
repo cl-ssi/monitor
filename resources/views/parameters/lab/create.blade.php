@@ -18,7 +18,7 @@
 
 
         <fieldset class="form-group col">
-            <label for="for_commune_id">Comuna</label>            
+            <label for="for_commune_id">Comuna</label>
             <select class="form-control" name="commune_id" id="for_commune_id" required>
                 <option value="">Seleccione Comuna</option>
                 @foreach($communes as $commune)
@@ -34,8 +34,8 @@
             <label for="for_external">Externo </label>
             <select class="form-control" name="external" id="for_external" required>
                 <option value="">Seleccione Opción</option>
+                <option value="0">No</option>
                 <option value="1">Sí</option>
-                <option value="2">No</option>
             </select>
         </fieldset>
 
