@@ -53,7 +53,7 @@
 
     <div class="col-12 col-md-4 p-2">
         <strong>Procedencia: </strong>
-        {{ ($booking->patient->suspectCases)? $booking->patient->suspectCases->last()->origin:'' }}
+        {{ ($booking->patient->suspectCases->last())? $booking->patient->suspectCases->last()->origin:'' }}
     </div>
 
 </div>
@@ -92,17 +92,17 @@
 
     <div class="col-6 col-md-3 p-2">
         <strong>Fecha Muestra: </strong>
-        {{ ($booking->patient->suspectCases->last()->sample_at)? $booking->patient->suspectCases->last()->sample_at->format('d-m-Y'):''  }}
+        {{ ($booking->patient->suspectCases->last())? $booking->patient->suspectCases->last()->sample_at->format('d-m-Y'):''  }}
     </div>
 
     <div class="col-6 col-md-5 p-2">
         <strong>Fecha Resultado: </strong>
-        {{ ($booking->patient->suspectCases->last()->pscr_sars_cov_2_at)? $booking->patient->suspectCases->last()->pscr_sars_cov_2_at->format('d-m-Y'):''  }}
+        {{ ($booking->patient->suspectCases->last())? $booking->patient->suspectCases->last()->pscr_sars_cov_2_at->format('d-m-Y'):''  }}
     </div>
 
     <div class="col-12 col-md-4 p-2">
         <strong>Resultado: </strong>
-        {{ $booking->patient->suspectCases? $booking->patient->suspectCases->last()->covid19:'' }}
+        {{ $booking->patient->suspectCases->last()? $booking->patient->suspectCases->last()->covid19:'' }}
     </div>
 
 </div>
