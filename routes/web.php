@@ -71,6 +71,14 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
 
 Route::resource('epp','EppController')->middleware('auth');
 
+
+Route::prefix('food')->name('food.')->middleware('auth')->group(function () {
+    Route::get('/', 'FoodBasketController@index')->name('index');
+    Route::get('/create', 'FoodBasketController@create')->name('create');
+});
+
+
+
 Route::prefix('lab')->name('lab.')->group(function () {
     //Route::get('/', 'LaboratoryController@index')->name('index');
     //Route::get('/create', 'LaboratoryController@create')->name('create');
