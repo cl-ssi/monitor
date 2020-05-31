@@ -75,6 +75,9 @@ Route::resource('epp','EppController')->middleware('auth');
 Route::prefix('food')->name('food.')->middleware('auth')->group(function () {
     Route::get('/', 'FoodBasketController@index')->name('index');
     Route::get('/create', 'FoodBasketController@create')->name('create');
+    Route::get('/georeferencing', 'FoodBasketController@georeferencing')->name('georeferencing');
+    Route::post('/store', 'FoodBasketController@store')->name('store');
+
 });
 
 
