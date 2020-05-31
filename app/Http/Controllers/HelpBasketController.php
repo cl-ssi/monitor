@@ -105,7 +105,7 @@ class HelpBasketController extends Controller
     {
         //
         $helpBasket->fill($request->all());
-        $helpBasket = auth()->user()->id;
+        $helpBasket->user_id = auth()->user()->id;
         $helpBasket->save();
         session()->flash('success', 'Se actualizo los datos exitosamente');
         return redirect()->route('help_basket.index');
