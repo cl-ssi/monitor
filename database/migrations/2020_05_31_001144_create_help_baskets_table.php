@@ -33,13 +33,15 @@ class CreateHelpBasketsTable extends Migration
             $table->decimal('longitude', 11, 8)->nullable();
 
             $table->unsignedBigInteger('commune_id')->nullable();
-
-
-            $table->foreign('commune_id')->references('id')->on('communes');
+            $table->unsignedBigInteger('user_id')->nullable();
+            
             
 
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('commune_id')->references('id')->on('communes');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
