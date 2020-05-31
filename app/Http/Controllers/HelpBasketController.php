@@ -63,6 +63,7 @@ class HelpBasketController extends Controller
     {
         //
         $helpbaket = new HelpBasket($request->All());
+        $helpbaket->user_id = auth()->user()->id;
         $helpbaket->save();
 
         session()->flash('success', 'Se recepcionó la canasta exitosamente');
@@ -104,6 +105,7 @@ class HelpBasketController extends Controller
     {
         //
         $helpBasket->fill($request->all());
+        $helpBasket = auth()->user()->id;
         $helpBasket->save();
         session()->flash('success', 'Se actualizo los datos exitosamente');
         return redirect()->route('help_basket.index');
