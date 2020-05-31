@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Food\FoodBasket;
 use Illuminate\Http\Request;
 
+use App\Region;
+use App\Commune;
+
 class FoodBasketController extends Controller
 {
     /**
@@ -15,8 +18,14 @@ class FoodBasketController extends Controller
     public function index()
     {
         //
+        $foodbaskets = FoodBasket::all();
+        return view('food.index',compact('foodbaskets'));
+    }
 
-        return view('food.index');
+    public function georeferencing()
+    {
+        //
+        return view('food.georeferencing');
     }
 
     /**
@@ -27,7 +36,10 @@ class FoodBasketController extends Controller
     public function create()
     {
         //
-        return view('food.create');
+        dd(env('REGION'));
+        //$communes = Commune::where('region_id',1)->orderBy('name')->get();
+        //$communes = Commune::where('region_id',[env('REGION')])->orderBy('name')->get();
+        return view('food.create', compact('regions','communes'));
     }
 
     /**
@@ -39,6 +51,12 @@ class FoodBasketController extends Controller
     public function store(Request $request)
     {
         //
+        $foodbasket = new FoodBasket($request->All());
+        $foodbasket->save();
+
+        session()->flash('success', 'Se recepcionó la canasta exitosamente');
+        return redirect()->route('food.index');
+
     }
 
     /**
