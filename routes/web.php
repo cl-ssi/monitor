@@ -72,11 +72,14 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
 Route::resource('epp','EppController')->middleware('auth');
 
 
-Route::prefix('food')->name('food.')->middleware('auth')->group(function () {
-    Route::get('/', 'FoodBasketController@index')->name('index');
-    Route::get('/create', 'FoodBasketController@create')->name('create');
-    Route::get('/georeferencing', 'FoodBasketController@georeferencing')->name('georeferencing');
-    Route::post('/store', 'FoodBasketController@store')->name('store');
+Route::prefix('help_basket')->name('help_basket.')->middleware('auth')->group(function () {
+    Route::get('/', 'HelpBasketController@index')->name('index');
+    Route::get('/create', 'HelpBasketController@create')->name('create');
+    Route::get('/georeferencing', 'HelpBasketController@georeferencing')->name('georeferencing');
+    Route::post('/store', 'HelpBasketController@store')->name('store');
+    Route::get('/{helpBasket}/edit', 'HelpBasketController@edit')->name('edit');
+    Route::put('{helpBasket}', 'HelpBasketController@update')->name('update');
+    Route::delete('/{helpBasket}', 'HelpBasketController@Destroy')->name('destroy');
 
 });
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Food;
+namespace App\Basket;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
-class FoodBasket extends Model
+class HelpBasket extends Model
 {
     use SoftDeletes;
     //
