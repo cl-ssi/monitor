@@ -2,10 +2,10 @@
 
 @section('title', 'Agregar Datos Receptor Canasta Familiar')
 @section('content')
-@include('food.nav')
+@include('help_basket.nav')
 <h3 class="mb-3">Agregar Datos Receptor Canasta Familiar</h3>
 
-<form method="POST" class="form-horizontal" action="{{ route('food.store')  }}">
+<form method="POST" class="form-horizontal" action="{{ route('help_basket.store')  }}">
     @csrf
     @method('POST')
 

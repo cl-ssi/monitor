@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFoodBasketsTable extends Migration
+class CreateHelpBasketsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateFoodBasketsTable extends Migration
      */
     public function up()
     {
-        Schema::create('food_baskets', function (Blueprint $table) {
+        Schema::create('help_baskets', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('run')->nullable();
+            $table->integer('run')->unique()->nullable();
             $table->char('dv',1)->nullable();
 
             $table->string('other_identification')->nullable();
@@ -50,6 +50,6 @@ class CreateFoodBasketsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('food_baskets');
+        Schema::dropIfExists('help_baskets');
     }
 }

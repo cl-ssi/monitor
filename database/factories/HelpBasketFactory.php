@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Food\FoodBasket;
+use App\Basket\HelpBasket;
 use Faker\Generator as Faker;
 
-$factory->define(FoodBasket::class, function (Faker $faker) {
+$factory->define(HelpBasket::class, function (Faker $faker) {
     return [
         //
     ];
