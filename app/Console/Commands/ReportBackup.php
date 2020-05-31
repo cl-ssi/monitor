@@ -52,6 +52,7 @@ class ReportBackup extends Command
                     })->get();
         $residences = Residence::all();
 
+        //$comunas = env('COMUNAS');
 
         $patients = Patient::whereHas('suspectCases', function ($q) {
             $q->where('pscr_sars_cov_2','positive');
@@ -64,12 +65,12 @@ class ReportBackup extends Command
         $begin = SuspectCase::where('pscr_sars_cov_2','positive')->orderBy('sample_at')->first()->sample_at;
         $end   = SuspectCase::where('pscr_sars_cov_2','positive')->orderByDesc('sample_at')->first()->sample_at;
 
-        $comunas = Region::find(1)->communes;
+        $communes = Region::find(env('REGION'))->communes;
 
         for ($i = $begin; $i <= $end; $i->modify('+1 day')) {
             $casos['Region'][$i->format("Y-m-d")] = 0;
-            foreach($comunas as $comuna) {
-                $casos[$comuna->name][$i->format("Y-m-d")] = 0;
+            foreach($communes as $commune) {
+                $casos[$commune->name][$i->format("Y-m-d")] = 0;
             }
         }
 
