@@ -28,11 +28,10 @@
     <style media="screen">
         .navbar-custom {
             background-color:
-                @switch(App::environment())
-                    @case('local') #CE9DD9; @break
-                    @case('testing') #B5EAD7; @break
-                    @case('production') #FFFFFF; @break
-                @endswitch
+                @switch(App::environment()) @case('local') #CE9DD9;
+            @break @case('testing') #B5EAD7;
+            @break @case('production') #FFFFFF;
+            @break @endswitch
         }
     </style>
 </head>
@@ -142,11 +141,20 @@
                         </li>
                         @endcan
 
-                        @can('SanitaryResidence: user')
+                        @canany(['SanitaryResidence: user', 'SanitaryResidence: admin'])
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('sanitary_residences.home') }}">
                                 <i class="fas fa-hotel"></i>
                                 Residencias
+                            </a>
+                        </li>
+                        @endcan
+
+                        @can('Basket:')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('help_basket.index')  }}">
+                                <i class="fas fa-shopping-basket"></i>
+                                Canasta Fam.
                             </a>
                         </li>
                         @endcan
@@ -204,9 +212,9 @@
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 @can('Admin')
-                                    <a class="nav-link" href="{{ route('parameters.index') }}">
-                                        <i class="fas fa-cog fa-fw"></i> Configuracion
-                                    </a>
+                                <a class="nav-link" href="{{ route('parameters.index') }}">
+                                    <i class="fas fa-cog fa-fw"></i> Configuracion
+                                </a>
                                 @endcan
 
                                 <a class="dropdown-item" href="{{ route('users.password.show_form') }}">
