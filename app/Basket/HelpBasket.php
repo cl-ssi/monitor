@@ -14,6 +14,7 @@ class HelpBasket extends Model
         'name','fathers_family','mothers_family',
         'street_type','address','number','department',
         'latitude','longitude',
+        'photo',
         'commune_id'
     ];
 
