@@ -112,6 +112,22 @@
         </fieldset>
     </div>
 
+    @if($helpBasket->photo)
+    Cédula Cargada
+    <br>
+    <img src="{{ Storage::url($helpBasket->photo) }}" width="300" height="200" />
+    @endif
+    <div class="form-row">
+    <fieldset class="form-group col-12 col-md-3">
+            <label for="for_photo">Cargar Nueva Foto Cédula de Identidad</label>
+            <div class="custom-file">
+                <input type="file" name="photo" class="custom-file-input" id="customFileLang" lang="es" value="{{$helpBasket->photo}}" >
+                <label class="custom-file-label" for="customFileLang">Seleccionar Nueva Foto Cédula</label>
+            </div>
+        </fieldset>
+    </div>
+
+
 
 
 
