@@ -6,7 +6,7 @@
         <div class="col-md-12">
             <div class="card bg-light">
                 <div class="card-header text-center">
-                    <h4>Bienvenido al sistema de monitoreo del Servicio de Salud</h4>
+                    <h4>Bienvenido al sistema de monitoreo del {{ env('SERVICIO','Configurar variable SERVICIO en .env') }}</h4>
                 </div>
 
                 <div class="card-body text-center" style="background-color: #F0F0F0;">
