@@ -19,7 +19,8 @@
             <th>Nombre Completo</th>
             <th>Dirección</th>
             <th>Comuna</th>
-            <th>Editar</th>
+            <th>Entregado el</th>
+            <th>Editar</th>            
             <th>Eliminar</th>
         </tr>
     </thead>
@@ -29,8 +30,9 @@
         <tr>
             <td>{{$helpBasket->identifier}}</td>
             <td>{{$helpBasket->fullName}}</td>
-            <td>{{$helpBasket->address}}</td>
+            <td>{{$helpBasket->address}} {{$helpBasket->number}} {{$helpBasket->department}} </td>
             <td>{{$helpBasket->commune->name}}</td>
+            <td>{{$helpBasket->updated_at->format('d-m-Y H:i')}}</td>
             <td>
                 <a href="{{ route('help_basket.edit', $helpBasket) }}" class="btn btn-secondary float-left"><i class="fas fa-edit"></i></a>
             </td>

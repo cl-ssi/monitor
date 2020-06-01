@@ -118,7 +118,8 @@
     <hr>
 
 
-    <button type="submit" class="btn btn-primary">Guardar</button>
+    <button type="submit" class="btn btn-primary">Actualizar</button>
+    <a class="btn btn-outline-secondary" href="{{ route('help_basket.index')  }}">Cancelar</a>
 
 </form>
 
