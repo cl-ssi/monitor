@@ -5,7 +5,7 @@
 @include('help_basket.nav')
 <h3 class="mb-3">Agregar Datos Receptor Canasta Familiar</h3>
 
-<form method="POST" class="form-horizontal" action="{{ route('help_basket.store')  }}">
+<form method="POST" class="form-horizontal" action="{{ route('help_basket.store')  }}" enctype="multipart/form-data">
     @csrf
     @method('POST')
 
@@ -45,12 +45,12 @@
 
         <fieldset class="form-group col-md-2">
             <label for="for_fathers_family">Apellido Paterno *</label>
-            <input type="text" class="form-control" name="fathers_family" id="for_fathers_family" required>
+            <input type="text" class="form-control" name="fathers_family" id="for_fathers_family" required autocomplete="off">
         </fieldset>
 
         <fieldset class="form-group col-md-2">
             <label for="for_mothers_family">Apellido Materno</label>
-            <input type="text" class="form-control" name="mothers_family" id="for_mothers_family">
+            <input type="text" class="form-control" name="mothers_family" id="for_mothers_family" autocomplete="off">
         </fieldset>
     </div>
 
@@ -110,12 +110,23 @@
     </div>
 
 
+    <div class="form-row">
+    <fieldset class="form-group col-12 col-md-3">
+            <label for="for_photo">Foto Cédula de Identidad</label>
+            <div class="custom-file">
+                <input type="file" name="photo" class="custom-file-input" id="customFileLang" lang="es">
+                <label class="custom-file-label" for="customFileLang">Seleccionar Foto Cédula</label>
+            </div>
+        </fieldset>
+    </div>
+
 
 
     <hr>
 
 
     <button type="submit" class="btn btn-primary">Guardar</button>
+    <a class="btn btn-outline-secondary" href="{{ route('help_basket.index')  }}">Cancelar</a>
 
 </form>
 

@@ -37,7 +37,7 @@ class HelpBasketController extends Controller
 
 
 
-        return view('help_basket.georeferencing',compact('helpbaskets','data'));
+        return view('help_basket.georeferencing', compact('helpbaskets', 'data'));
     }
 
     /**
@@ -49,7 +49,9 @@ class HelpBasketController extends Controller
     {
         //
         //$communes = Commune::where('region_id', 1)->orderBy('name')->get();
+
         $communes = Commune::where('region_id',[env('REGION')])->orderBy('name')->get();
+        //$communes = Commune::where('region_id',[config('app.REGION')])->orderBy('name')->get();
         return view('help_basket.create', compact('communes'));
     }
 
@@ -62,12 +64,38 @@ class HelpBasketController extends Controller
     public function store(Request $request)
     {
         //
-        $helpbaket = new HelpBasket($request->All());
-        $helpbaket->user_id = auth()->user()->id;
-        $helpbaket->save();
+        $integrityrun = HelpBasket::whereNotNull('run')->where('run', $request->run)->exists();
+        $integrityaddress = HelpBasket::where('address', $request->address)->where('number', $request->number)->where('department', $request->department)->exists();
+        //dd($integrityrun);
+        if ($integrityrun!=null) 
+        {
+            session()->flash('danger', 'A este RUN ya se le entrego canasta familiar. Vuelva a ingresar datos');
+            return redirect()->route('help_basket.create');            
+        }
+        else 
+        {
+            if($integrityaddress)
+            {   
+                //dd($integrityaddress->address);
+                session()->flash('danger', 'Ya fue entregado anteriormente a esta dirección');
+                return redirect()->route('help_basket.create');
+            }
+            else
+            {
+            $helpbaket = new HelpBasket($request->All());            
+            $helpbaket->user_id = auth()->user()->id;
+            $storage = $helpbaket->run;
+            $storage += $helpbaket->other_identification; 
 
-        session()->flash('success', 'Se recepcionó la canasta exitosamente');
-        return redirect()->route('help_basket.index');
+            if ($request->file('photo')) {
+                $ext = $request->file('photo')->extension();
+                $helpbaket->photo = $request->file('photo')->storeAs('help_baskets',$storage.'.'.$ext);                
+            }
+            $helpbaket->save();
+            session()->flash('success', 'Se recepcionó la canasta exitosamente');
+            return redirect()->route('help_basket.index');
+            }
+            }
     }
 
     /**
@@ -90,7 +118,8 @@ class HelpBasketController extends Controller
     public function edit(HelpBasket $helpBasket)
     {
         //
-        $communes = Commune::where('region_id', 1)->orderBy('name')->get();
+        //$communes = Commune::where('region_id', 1)->orderBy('name')->get();
+        $communes = Commune::where('region_id', [env('REGION')])->orderBy('name')->get();
         return view('help_basket.edit', compact('helpBasket', 'communes'));
     }
 
@@ -104,6 +133,7 @@ class HelpBasketController extends Controller
     public function update(Request $request, HelpBasket $helpBasket)
     {
         //
+        
         $helpBasket->fill($request->all());
         $helpBasket->user_id = auth()->user()->id;
         $helpBasket->save();
@@ -121,7 +151,7 @@ class HelpBasketController extends Controller
     {
         //
         $helpBasket->delete();
-        session()->flash('success', 'Entrega de Canaste Eliminada Exitosamente');        
+        session()->flash('success', 'Entrega de Canaste Eliminada Exitosamente');
         return redirect()->route('help_basket.index');
     }
 }
