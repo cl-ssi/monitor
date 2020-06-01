@@ -137,7 +137,11 @@ class BookingController extends Controller
      */
     public function destroy(Booking $booking)
     {
-        //
+        
+        $booking->delete();
+        session()->flash('success', 'Booking eliminado exitosamente');
+        //return redirect()->route('sanitary_residences.bookings');
+        return view('sanitary_residences.home');
     }
 
     public function excel(Booking $booking)
