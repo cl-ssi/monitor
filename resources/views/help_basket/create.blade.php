@@ -12,12 +12,12 @@
     <div class="form-row">
         <fieldset class="form-group col-md-2">
             <label for="for_run">Run (sin digito)</label>
-            <input type="number" class="form-control" name="run" autocomplete="off" id="for_run">
+            <input type="number" class="form-control" name="run" autocomplete="off" id="for_run" style="text-transform: uppercase;">
         </fieldset>
 
         <fieldset class="form-group col-md-1">
             <label for="for_dv">Digito</label>
-            <input type="text" class="form-control" name="dv" id="for_dv">
+            <input type="text" class="form-control" name="dv" id="for_dv" style="text-transform: uppercase;">
         </fieldset>
 
         <fieldset class="form-group col- col-md-1">
@@ -40,17 +40,17 @@
 
         <fieldset class="form-group col-md-3">
             <label for="for_name">Nombre *</label>
-            <input type="text" class="form-control" name="name" id="for_name" required autocomplete="off">
+            <input type="text" class="form-control" name="name" id="for_name" style="text-transform: uppercase;" required autocomplete="off">
         </fieldset>
 
         <fieldset class="form-group col-md-2">
             <label for="for_fathers_family">Apellido Paterno *</label>
-            <input type="text" class="form-control" name="fathers_family" id="for_fathers_family" required autocomplete="off">
+            <input type="text" class="form-control" name="fathers_family" id="for_fathers_family" style="text-transform: uppercase;" required autocomplete="off">
         </fieldset>
 
         <fieldset class="form-group col-md-2">
             <label for="for_mothers_family">Apellido Materno</label>
-            <input type="text" class="form-control" name="mothers_family" id="for_mothers_family" autocomplete="off">
+            <input type="text" class="form-control" name="mothers_family" id="for_mothers_family" style="text-transform: uppercase;" autocomplete="off">
         </fieldset>
     </div>
 
@@ -68,18 +68,18 @@
 
         <fieldset class="form-group col-12 col-md-4">
             <label for="for_address">Dirección *</label>
-            <input type="text" class="form-control" name="address" id="for_address" required autocomplete="off">
+            <input type="text" class="form-control" name="address" id="for_address" style="text-transform: uppercase;" required autocomplete="off">
         </fieldset>
 
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_number">Número</label>
-            <input type="text" class="form-control" name="number" id="for_number" autocomplete="off">
+            <input type="text" class="form-control" name="number" id="for_number" style="text-transform: uppercase;" autocomplete="off">
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-1">
             <label for="for_department">Depto.</label>
-            <input type="text" class="form-control" name="department" id="for_department">
+            <input type="text" class="form-control" name="department" id="for_department" style="text-transform: uppercase;">
         </fieldset>
     </div>
 
