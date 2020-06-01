@@ -4,8 +4,6 @@
 
 @section('content')
 
-@include('parameters.nav')
-
 <h3 class="mb-3">Cambiar clave</h3>
 
 <form method="POST" class="form-horizontal" action="{{ route('users.password.update') }}">
