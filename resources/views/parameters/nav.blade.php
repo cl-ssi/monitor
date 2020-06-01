@@ -11,4 +11,12 @@
         <a class="nav-link" href="{{ route('parameters.lab') }}">
             <i class="fas fa-vial"></i> Laboratorios</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('lab.sample_origins.index') }}">
+            <i class="fas fa-house-damage"></i> Origenes muestra</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('parameters.ventilators.edit') }}">
+            <i class="fas fa-fan"></i> Ventiladores</a>
+    </li>
 </ul>
