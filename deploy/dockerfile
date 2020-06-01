@@ -38,6 +38,6 @@ RUN chmod -R 0777 ./storage
 
 RUN chmod +x ./deploy/run
 
-ENTRYPOINT ["./deploy/run"]
+CMD ["./deploy/run"]
 
 EXPOSE 80
