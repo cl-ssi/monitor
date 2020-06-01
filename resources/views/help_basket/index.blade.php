@@ -29,7 +29,7 @@
         <tr>
             <td>{{$helpBasket->identifier}}</td>
             <td>{{$helpBasket->fullName}}</td>
-            <td>{{$helpBasket->address}}</td>
+            <td>{{$helpBasket->address}} {{$helpBasket->number}} {{$helpBasket->department}} </td>
             <td>{{$helpBasket->commune->name}}</td>
             <td>
                 <a href="{{ route('help_basket.edit', $helpBasket) }}" class="btn btn-secondary float-left"><i class="fas fa-edit"></i></a>
