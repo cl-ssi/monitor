@@ -82,7 +82,7 @@
 
     <div class="form-row">
 
-        <fieldset class="form-group col-3 col-md-2">
+        <fieldset class="form-group col-5 col-md-2">
             <label for="for_sample_at">Fecha Muestra *</label>
             <input type="date" class="form-control" id="for_sample_at"
                 name="sample_at" required min="{{ date('Y-m-d', strtotime("-2 week")) }}" max="{{ date('Y-m-d') }}">
