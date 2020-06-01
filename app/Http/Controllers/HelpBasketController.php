@@ -17,7 +17,7 @@ class HelpBasketController extends Controller
     public function index()
     {
         //
-        $helpbaskets = HelpBasket::all();
+        $helpbaskets = HelpBasket::orderByDesc('updated_at')->get();;
         return view('help_basket.index', compact('helpbaskets'));
     }
 
