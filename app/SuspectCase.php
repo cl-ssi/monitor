@@ -6,6 +6,7 @@ use Patient;
 use File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
 
 class SuspectCase extends Model
 {
@@ -78,6 +79,16 @@ class SuspectCase extends Model
             case 2: return 'UNAP'; break;
             case 3: return 'BIOCLINIC'; break;
         }
+    }
+
+    function getAgePatientAttribute(){
+        if ($this->patient->birthday){
+            $age = Carbon::parse($this->patient->birthday)->age;
+            if ($age == 0)
+                $age = Carbon::parse($this->patient->birthday)->diff(Carbon::now())->format('%mM %dd');
+            return $age;
+        }
+        else return null;
     }
 
     public function scopeSearch($query, $search)
