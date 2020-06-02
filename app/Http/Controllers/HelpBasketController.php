@@ -49,9 +49,9 @@ class HelpBasketController extends Controller
     public function create()
     {
         //
-        $communes = Commune::where('region_id', 1)->orderBy('name')->get();
+        //$communes = Commune::where('region_id', 1)->orderBy('name')->get();
 
-        //$communes = Commune::where('region_id',[env('REGION')])->orderBy('name')->get();
+        $communes = Commune::where('region_id',[env('REGION')])->orderBy('name')->get();
         //$communes = Commune::where('region_id',[config('app.REGION')])->orderBy('name')->get();
         return view('help_basket.create', compact('communes'));
     }
@@ -113,8 +113,8 @@ class HelpBasketController extends Controller
     public function edit(HelpBasket $helpBasket)
     {
         //
-        $communes = Commune::where('region_id', 1)->orderBy('name')->get();
-        //$communes = Commune::where('region_id', [env('REGION')])->orderBy('name')->get();
+        //$communes = Commune::where('region_id', 1)->orderBy('name')->get();
+        $communes = Commune::where('region_id', [env('REGION')])->orderBy('name')->get();
         return view('help_basket.edit', compact('helpBasket', 'communes'));
     }
 
