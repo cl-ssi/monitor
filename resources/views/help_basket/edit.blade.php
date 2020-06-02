@@ -5,7 +5,7 @@
 @include('help_basket.nav')
 <h3 class="mb-3">Actualizar Datos Receptor Canasta Familiar</h3>
 
-<form method="POST" class="form-horizontal" action="{{ route('help_basket.update',$helpBasket)  }}">
+<form method="POST" class="form-horizontal" action="{{ route('help_basket.update',$helpBasket)  }}" enctype="multipart/form-data" name="for_update" >
     @csrf
     @method('PUT')
 
@@ -15,7 +15,7 @@
             <input type="number" class="form-control" name="run" autocomplete="off" id="for_run" value ="{{$helpBasket->run}}">
         </fieldset>
 
-        <fieldset class="form-group col-md-1">
+        <fieldset class="form-group col-2 col-md-1">
             <label for="for_dv">Digito</label>
             <input type="text" class="form-control" name="dv" id="for_dv" value ="{{$helpBasket->dv}}">
         </fieldset>
@@ -114,14 +114,14 @@
 
     @if($helpBasket->photo)
     Cédula Cargada
-    <br>
-    <img src="{{ Storage::url($helpBasket->photo) }}" width="300" height="200" />
+    <br>    
+    <img src="{{ route('help_basket.download', $helpBasket->photo)  }}" width="300" height="200" />
     @endif
     <div class="form-row">
     <fieldset class="form-group col-12 col-md-3">
             <label for="for_photo">Cargar Nueva Foto Cédula de Identidad</label>
             <div class="custom-file">
-                <input type="file" name="photo" class="custom-file-input" id="customFileLang" lang="es" value="{{$helpBasket->photo}}" >
+                <input type="file" name="photo" class="custom-file-input" id="customFileLang" lang="es" >
                 <label class="custom-file-label" for="customFileLang">Seleccionar Nueva Foto Cédula</label>
             </div>
         </fieldset>
@@ -212,5 +212,4 @@
 
     });
 </script>
-
 @endsection
