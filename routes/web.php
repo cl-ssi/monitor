@@ -81,6 +81,7 @@ Route::prefix('help_basket')->name('help_basket.')->middleware('auth')->group(fu
     Route::put('{helpBasket}', 'HelpBasketController@update')->name('update');
     Route::delete('/{helpBasket}', 'HelpBasketController@Destroy')->name('destroy');
     Route::get('/download/{storage}/{file?}', 'HelpBasketController@download')->name('download');
+    Route::get('/excel','HelpBasketController@excel')->name('excel');
 
 });
 

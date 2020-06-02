@@ -33,27 +33,27 @@
 
         @if($room->bookings->first())
 
-        @foreach($room->bookings as $booking)
-        @if ($booking->status == 'Residencia Sanitaria' and $booking->patient->status == 'Residencia Sanitaria')
-        <li>
-            <a href="{{ route('sanitary_residences.bookings.show',$booking) }}">
-                {{ $booking->patient->fullName }}
-            </a>
-            <br>
-            ({{ $booking->patient->age }} AÑOS)
-            <!-- <a href="{{ route('sanitary_residences.bookings.excel', $booking) }}">
+            @foreach($room->bookings as $booking)
+                @if ($booking->status == 'Residencia Sanitaria' and $booking->patient->status == 'Residencia Sanitaria')
+                <li>
+                    <a href="{{ route('sanitary_residences.bookings.show',$booking) }}">
+                    {{ $booking->patient->fullName }}
+                    </a>
+                    <br>
+                    ({{ $booking->patient->age }} AÑOS)
+                    <!-- <a href="{{ route('sanitary_residences.bookings.excel', $booking) }}">
                         <i class="fas fa-file-excel"></i>
                         </a> -->
-            @can('SanitaryResidence: admin')
-            <form method="POST" class="form-horizontal" action="{{ route('sanitary_residences.bookings.destroy', $booking) }}">
-                @csrf
-                @method('DELETE')                
-                <button type="submit" class="btn" onclick="return confirm('¿Está seguro que desea ELIMINAR el Booking del paciente {{ $booking->patient->fullName }} para la habitación {{$room->number}}? ' )"><i class="fas fa-trash-alt"></i></button>
-            </form>
-            @endcan
-        </li>
-        @endif
-        @endforeach
+                    @can('SanitaryResidence: admin')
+                    <form method="POST" class="form-horizontal" action="{{ route('sanitary_residences.bookings.destroy', $booking) }}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn" onclick="return confirm('¿Está seguro que desea ELIMINAR el Booking del paciente {{ $booking->patient->fullName }} para la habitación {{$room->number}}? ' )"><i class="fas fa-trash-alt"></i></button>
+                     </form>
+                    @endcan
+                </li>
+                 @endif
+            @endforeach
 
         @endif
 

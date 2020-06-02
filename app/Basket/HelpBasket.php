@@ -14,12 +14,17 @@ class HelpBasket extends Model
         'name','fathers_family','mothers_family',
         'street_type','address','number','department',
         'latitude','longitude',
-        'photo',
+        'photo', 'photoid',
+        'observations',
         'commune_id'
     ];
 
     public function commune() {
         return $this->belongsTo('App\Commune');
+    }
+
+    public function user() {
+        return $this->belongsTo('App\User');
     }
 
     function getFullNameAttribute(){
