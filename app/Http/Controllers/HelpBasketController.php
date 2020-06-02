@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Basket\HelpBasket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 use App\Commune;
 
@@ -67,35 +68,41 @@ class HelpBasketController extends Controller
         $integrityrun = HelpBasket::whereNotNull('run')->where('run', $request->run)->exists();
         $integrityaddress = HelpBasket::where('address', $request->address)->where('number', $request->number)->where('department', $request->department)->exists();
         //dd($integrityrun);
-        if ($integrityrun!=null) 
-        {
+        if ($integrityrun != null) {
             session()->flash('danger', 'A este RUN ya se le entrego canasta familiar. Vuelva a ingresar datos');
-            return redirect()->route('help_basket.create');            
-        }
-        else 
-        {
-            if($integrityaddress)
-            {   
+            return redirect()->route('help_basket.create');
+        } else {
+            if ($integrityaddress) {
                 //dd($integrityaddress->address);
                 session()->flash('danger', 'Ya fue entregado anteriormente a esta dirección');
                 return redirect()->route('help_basket.create');
-            }
-            else
-            {
-            $helpbaket = new HelpBasket($request->All());            
-            $helpbaket->user_id = auth()->user()->id;
-            $storage = $helpbaket->run;
-            $storage += $helpbaket->other_identification; 
+            } else {
+                $helpbaket = new HelpBasket($request->All());
+                $helpbaket->user_id = auth()->user()->id;
+                
 
-            if ($request->file('photo')) {
-                $ext = $request->file('photo')->extension();
-                $helpbaket->photo = $request->file('photo')->storeAs('help_baskets',$storage.'.'.$ext);                
+                if ($request->file('photo')) {
+                    $storage = $helpbaket->run;
+                    $storage += $helpbaket->other_identification;
+                    //$storage = $storage.'_id';
+                    $ext = $request->file('photo')->extension();
+                    $helpbaket->photo = $request->file('photo')->storeAs('help_baskets', $storage . '.' . $ext);
+                }
+
+                if ($request->file('photoid')) {
+                    $storage = $helpbaket->run;
+                    $storage += $helpbaket->other_identification;
+                    $storage = $storage.'_id';
+                    $ext = $request->file('photoid')->extension();
+                    $helpbaket->photoid = $request->file('photoid')->storeAs('help_baskets', $storage . '.' . $ext);
+                }
+
+
+                $helpbaket->save();
+                session()->flash('success', 'Se recepcionó la canasta exitosamente');
+                return redirect()->route('help_basket.index');
             }
-            $helpbaket->save();
-            session()->flash('success', 'Se recepcionó la canasta exitosamente');
-            return redirect()->route('help_basket.index');
-            }
-            }
+        }
     }
 
     /**
@@ -133,9 +140,25 @@ class HelpBasketController extends Controller
     public function update(Request $request, HelpBasket $helpBasket)
     {
         //
-        
+        //dd($request->file('photo'));
         $helpBasket->fill($request->all());
         $helpBasket->user_id = auth()->user()->id;
+        
+        if ($request->file('photo')) {
+            $storage = $helpBasket->run;
+            $storage += $helpBasket->other_identification;
+            $ext = $request->file('photo')->extension();            
+            $helpBasket->photo = $request->file('photo')->storeAs('help_baskets', $storage . '.' . $ext);
+        }
+
+        if ($request->file('photoid')) {
+            $storage = $helpBasket->run;
+            $storage += $helpBasket->other_identification;
+            $storage = $storage.'_id';
+            $ext = $request->file('photoid')->extension();            
+            $helpBasket->photoid = $request->file('photoid')->storeAs('help_baskets', $storage . '.' . $ext);
+        }
+
         $helpBasket->save();
         session()->flash('success', 'Se actualizo los datos exitosamente');
         return redirect()->route('help_basket.index');
@@ -154,4 +177,20 @@ class HelpBasketController extends Controller
         session()->flash('success', 'Entrega de Canaste Eliminada Exitosamente');
         return redirect()->route('help_basket.index');
     }
+
+
+
+
+    public function download($storage, $file)
+    {
+        return Storage::download($storage . '/' . $file, 'resultado.pdf');
+    }
+
+    public function excel()
+    {
+        $helpbaskets = HelpBasket::orderByDesc('updated_at')->get();;
+        return view('help_basket.excel', compact('helpbaskets'));
+    }
+
+
 }

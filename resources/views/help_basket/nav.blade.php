@@ -10,4 +10,10 @@
             <i class="fas fa-globe"></i> Georreferencia
         </a>
     </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('help_basket.excel')  }}">
+            <i class="fas fa-file-excel"></i> Reporte Canastas
+        </a>
+    </li>
 </ul>

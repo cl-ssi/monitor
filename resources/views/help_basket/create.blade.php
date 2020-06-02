@@ -12,12 +12,12 @@
     <div class="form-row">
         <fieldset class="form-group col-md-2">
             <label for="for_run">Run (sin digito)</label>
-            <input type="number" class="form-control" name="run" autocomplete="off" id="for_run">
+            <input type="number" class="form-control" name="run" autocomplete="off" id="for_run" style="text-transform: uppercase;">
         </fieldset>
 
-        <fieldset class="form-group col-md-1">
+        <fieldset class="form-group col-2 col-md-1">
             <label for="for_dv">Digito</label>
-            <input type="text" class="form-control" name="dv" id="for_dv">
+            <input type="text" class="form-control" name="dv" id="for_dv" style="text-transform: uppercase;">
         </fieldset>
 
         <fieldset class="form-group col- col-md-1">
@@ -40,17 +40,17 @@
 
         <fieldset class="form-group col-md-3">
             <label for="for_name">Nombre *</label>
-            <input type="text" class="form-control" name="name" id="for_name" required autocomplete="off">
+            <input type="text" class="form-control" name="name" id="for_name" style="text-transform: uppercase;" required autocomplete="off">
         </fieldset>
 
         <fieldset class="form-group col-md-2">
             <label for="for_fathers_family">Apellido Paterno *</label>
-            <input type="text" class="form-control" name="fathers_family" id="for_fathers_family" required autocomplete="off">
+            <input type="text" class="form-control" name="fathers_family" id="for_fathers_family" style="text-transform: uppercase;" required autocomplete="off">
         </fieldset>
 
         <fieldset class="form-group col-md-2">
             <label for="for_mothers_family">Apellido Materno</label>
-            <input type="text" class="form-control" name="mothers_family" id="for_mothers_family" autocomplete="off">
+            <input type="text" class="form-control" name="mothers_family" id="for_mothers_family" style="text-transform: uppercase;" autocomplete="off">
         </fieldset>
     </div>
 
@@ -68,18 +68,18 @@
 
         <fieldset class="form-group col-12 col-md-4">
             <label for="for_address">Dirección *</label>
-            <input type="text" class="form-control" name="address" id="for_address" required autocomplete="off">
+            <input type="text" class="form-control geo" name="address" id="for_address" style="text-transform: uppercase;" required autocomplete="off">
         </fieldset>
 
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_number">Número</label>
-            <input type="text" class="form-control" name="number" id="for_number" autocomplete="off">
+            <input type="text" class="form-control geo" name="number" id="for_number" style="text-transform: uppercase;" autocomplete="off">
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-1">
             <label for="for_department">Depto.</label>
-            <input type="text" class="form-control" name="department" id="for_department">
+            <input type="text" class="form-control" name="department" id="for_department" style="text-transform: uppercase;">
         </fieldset>
     </div>
 
@@ -88,7 +88,7 @@
 
         <fieldset class="form-group col-12 col-md-3">
             <label for="comunas">Comuna *</label>
-            <select class="form-control" name="commune_id" id="comunas" required>
+            <select class="form-control geo" name="commune_id" id="comunas" required>
                 <option value="">Seleccione la comuna</option>
                 @foreach ($communes as $key => $commune)
                 <option value="{{$commune->id}}">{{$commune->name}}</option>
@@ -109,14 +109,31 @@
         </fieldset>
     </div>
 
-
     <div class="form-row">
-    <fieldset class="form-group col-12 col-md-3">
-            <label for="for_photo">Foto Cédula de Identidad</label>
+        <fieldset class="form-group col-12 col-md-3">
+            <label for="for_photoid">Foto Cédula de Identidad</label>
             <div class="custom-file">
-                <input type="file" name="photo" class="custom-file-input" id="customFileLang" lang="es">
+                <input type="file" name="photoid" class="custom-file-input" id="customFileLang" lang="es">
                 <label class="custom-file-label" for="customFileLang">Seleccionar Foto Cédula</label>
             </div>
+        </fieldset>
+    </div>
+
+
+    <div class="form-row">
+        <fieldset class="form-group col-12 col-md-3">
+            <label for="for_photo">Foto Frontal</label>
+            <div class="custom-file">
+                <input type="file" name="photo" class="custom-file-input" id="customFileLang" lang="es">
+                <label class="custom-file-label" for="customFileLang">Seleccionar Foto Frontal</label>
+            </div>
+        </fieldset>
+    </div>
+
+    <div class="form-row">
+        <fieldset class="form-group col-12 col-md-5">
+            <label for="for_observations">Observaciones</label>
+            <textarea type="textarea" class="form-control" rows="4" name="observations" id="for_observations"> </textarea>
         </fieldset>
     </div>
 
@@ -153,7 +170,7 @@
 
         //GEO
         //obtener coordenadas
-        jQuery('#comunas').change(function() {
+        jQuery('.geo').change(function() {
             // Instantiate a map and platform object:
             var platform = new H.service.Platform({
                 'apikey': '5mKawERqnzL1KMnNIt4n42gAV8eLomjQPKf5S5AAcZg'

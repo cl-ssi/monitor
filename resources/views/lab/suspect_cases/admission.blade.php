@@ -316,32 +316,21 @@ $('input[name=other_identification]').change(function() {
 
 jQuery(document).ready(function () {
 
-  // caso cuando se cambie manualmente
+    /* caso cuando se cambie manualmente */
 	jQuery('#regiones').change(function () {
 		var iRegiones = 0;
 		var valorRegion = jQuery(this).val();
 		var htmlComuna = '<option value="">Seleccione comuna</option><option value="sin-comuna">--</option>';
-    @foreach ($communes as $key => $commune)
-      if (valorRegion == '{{$commune->region_id}}') {
-        htmlComuna = htmlComuna + '<option value="' + '{{$commune->id}}' + '">' + '{{$commune->name}}' + '</option>';
-      }
-    @endforeach
+        @foreach ($communes as $key => $commune)
+            if (valorRegion == '{{$commune->region_id}}') {
+                htmlComuna = htmlComuna + '<option value="' + '{{$commune->id}}' + '">' + '{{$commune->name}}' + '</option>';
+            }
+        @endforeach
 		jQuery('#comunas').html(htmlComuna);
 	});
 
-  //obtener coordenadas y establecimientos
-  jQuery('#comunas').change(function () {
-
-    //primero se obtienen establecimientos
-    // var valorCommune = jQuery(this).val();
-    // var htmlEstablishment = '<option value="">Seleccione establecimiento</option><option value="sin-comuna">--</option>';
-    // @foreach ($establishments as $key => $establishment)
-    //   if (valorCommune == '{{$establishment->commune_id}}') {
-    //     htmlEstablishment = htmlEstablishment + '<option value="' + '{{$establishment->id}}' + '">' + '{{$establishment->name}}' + '</option>';
-    //   }
-    // @endforeach
-    // jQuery('#for_establishment_id').html(htmlEstablishment);
-
+    //obtener coordenadas y establecimientos
+    jQuery('#comunas').change(function () {
 
     //coordenadas
     // Instantiate a map and platform object:
