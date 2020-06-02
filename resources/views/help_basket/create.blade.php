@@ -15,7 +15,7 @@
             <input type="number" class="form-control" name="run" autocomplete="off" id="for_run" style="text-transform: uppercase;">
         </fieldset>
 
-        <fieldset class="form-group col-md-1">
+        <fieldset class="form-group col-2 col-md-1">
             <label for="for_dv">Digito</label>
             <input type="text" class="form-control" name="dv" id="for_dv" style="text-transform: uppercase;">
         </fieldset>
