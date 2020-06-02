@@ -21,7 +21,7 @@ class BookingController extends Controller
     public function index(Residence $residence)
     {
         $rooms = $rooms = Room::where('residence_id',$residence->id)->orderBy('floor')->orderBy('number')->get();
-        $bookings = Booking::All();
+        $bookings = Booking::whereNull('real_to');
         return view('sanitary_residences.bookings.index', compact('residence','bookings', 'rooms'));
     }
 
