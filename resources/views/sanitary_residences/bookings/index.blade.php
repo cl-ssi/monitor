@@ -34,7 +34,7 @@
         @if($room->bookings->first())
 
             @foreach($room->bookings as $booking)
-                @if ($booking->status == 'Residencia Sanitaria' and $booking->patient->status == 'Residencia Sanitaria')
+                @if ($booking->status == 'Residencia Sanitaria' and $booking->patient->status == 'Residencia Sanitaria' and $booking->real_to == null)
                 <li>
                     <a href="{{ route('sanitary_residences.bookings.show',$booking) }}">
                     {{ $booking->patient->fullName }}
