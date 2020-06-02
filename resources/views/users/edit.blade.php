@@ -95,15 +95,9 @@
 
 @section('custom_js')
 
-<!-- Latest compiled and minified CSS -->
-<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css"> -->
+<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-select.min.css') }}">
 
-<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-select.min.css') }}"> 
-
-<!-- Latest compiled and minified JavaScript -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script> -->
 <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
-
 <script src="{{ asset('js/defaults-es_CL.min.js') }}"></script>
 
 @endsection
