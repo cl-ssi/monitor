@@ -88,9 +88,9 @@
 @endsection
 
 @section('custom_js')
+<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-select.min.css') }}">
+
 <script src='{{asset("js/jquery.rut.chileno.js")}}'></script>
-
-
 <script type="text/javascript">
     jQuery(document).ready(function($) {
         //obtiene digito verificador
@@ -98,16 +98,9 @@
             var str = $("#for_run").val();
             $('#for_dv').val($.rut.dv(str));
         });
-
-<<<<<<< HEAD
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
-
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
-
-=======
     });
 </script>
->>>>>>> d1e1b2abb01875d882687d1f5af98a1cf277e99a
+<script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
+<script src="{{ asset('js/defaults-es_CL.min.js') }}"></script>
+
 @endsection
