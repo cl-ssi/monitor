@@ -15,26 +15,26 @@
 <table class="table table-sm table-bordered" id="tabla_basket">
     <thead>
         <tr>
-            <th>Run o (ID)</th>
-            <th>Nombre Completo</th>
-            <th>Dirección</th>
-            <th>Comuna</th>
-            <th>Entregado Por</th>
-            <th>Entregado el</th>
-            <th>Observaciones</th>
+            <th nowrap>Run o (ID)</th>
+            <th nowrap>Nombre Completo</th>
+            <th nowrap>Dirección</th>
+            <th nowrap>Comuna</th>
+            <th nowrap>Entregado Por</th>
+            <th nowrap>Entregado el</th>
+            <th nowrap>Observaciones</th>
         </tr>
     </thead>
 
     <tbody>
         @foreach($helpbaskets as $helpBasket)
         <tr>
-            <td>{{$helpBasket->identifier}}</td>
-            <td>{{$helpBasket->fullName}}</td>
-            <td>{{$helpBasket->address}} {{$helpBasket->number}} {{$helpBasket->department}} </td>
-            <td>{{$helpBasket->commune->name}}</td>
-            <td>{{$helpBasket->user->name}}</td>
-            <td>{{$helpBasket->updated_at->format('d-m-Y H:i')}}</td>
-            <td>{{$helpBasket->observations}}</td>
+            <td nowrap>{{$helpBasket->identifier}}</td>
+            <td nowrap>{{$helpBasket->fullName}}</td>
+            <td nowrap>{{$helpBasket->address}} {{$helpBasket->number}} {{$helpBasket->department}} </td>
+            <td nowrap>{{$helpBasket->commune->name}}</td>
+            <td nowrap>{{$helpBasket->user->name}}</td>
+            <td nowrap>{{$helpBasket->updated_at->format('d-m-Y H:i')}}</td>
+            <td nowrap>{{$helpBasket->observations}}</td>
         </tr>
         @endforeach
     </tbody>
