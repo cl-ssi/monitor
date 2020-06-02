@@ -40,17 +40,17 @@
 
         <fieldset class="form-group col-md-3">
             <label for="for_name">Nombre *</label>
-            <input type="text" class="form-control" name="name" id="for_name" required autocomplete="off" value ="{{$helpBasket->name}}">
+            <input type="text" class="form-control" name="name" id="for_name" required autocomplete="off" value ="{{$helpBasket->name}}" style="text-transform: uppercase;">
         </fieldset>
 
         <fieldset class="form-group col-md-2">
             <label for="for_fathers_family">Apellido Paterno *</label>
-            <input type="text" class="form-control" name="fathers_family" id="for_fathers_family" required value ="{{$helpBasket->fathers_family}}">
+            <input type="text" class="form-control" name="fathers_family" id="for_fathers_family" required value ="{{$helpBasket->fathers_family}}" style="text-transform: uppercase;">
         </fieldset>
 
         <fieldset class="form-group col-md-2">
             <label for="for_mothers_family">Apellido Materno</label>
-            <input type="text" class="form-control" name="mothers_family" id="for_mothers_family" value ="{{$helpBasket->mothers_family}}">
+            <input type="text" class="form-control" name="mothers_family" id="for_mothers_family" value ="{{$helpBasket->mothers_family}}" style="text-transform: uppercase;">
         </fieldset>
     </div>
 
@@ -58,7 +58,7 @@
     <div class="form-row">
         <fieldset class="form-group col-12 col-md-2">
             <label for="for_street_type">Vía de residencia</label>
-            <select name="street_type" id="for_street_type" class="form-control">                
+            <select name="street_type" id="for_street_type" class="form-control" class="geo">  
                 <option value="Calle" {{ ($helpBasket->street_type == 'Calle')?'selected':'' }}>Calle</option>
                 <option value="Pasaje" {{ ($helpBasket->street_type == 'Pasaje')?'selected':'' }}>Pasaje</option>
                 <option value="Avenida" {{ ($helpBasket->street_type == 'Avenida')?'selected':'' }}>Avenida</option>
@@ -71,13 +71,13 @@
 
         <fieldset class="form-group col-12 col-md-4">
             <label for="for_address">Dirección *</label>
-            <input type="text" class="form-control" name="address" id="for_address" required autocomplete="off" value ="{{$helpBasket->address}}">
+            <input type="text" class="form-control geo" name="address" id="for_address" required autocomplete="off" value ="{{$helpBasket->address}}" style="text-transform: uppercase;">
         </fieldset>
 
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_number">Número</label>
-            <input type="text" class="form-control" name="number" id="for_number" autocomplete="off" value ="{{$helpBasket->number}}">
+            <input type="text" class="form-control geo" name="number" id="for_number" autocomplete="off" value ="{{$helpBasket->number}}">
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-1">
@@ -91,7 +91,7 @@
 
         <fieldset class="form-group col-12 col-md-3">
             <label for="comunas">Comuna *</label>
-            <select class="form-control" name="commune_id" id="comunas" required>                
+            <select class="form-control geo" name="commune_id" id="comunas" required>
             <option value="">Seleccione Comuna</option>
                 @foreach($communes as $commune)
                 <option value="{{ $commune->id }}" {{($helpBasket->commune_id == $commune->id) ? 'selected': ''}}>{{ $commune->name }}</option>
@@ -162,7 +162,7 @@
 
         //GEO
         //obtener coordenadas
-        jQuery('#comunas').change(function() {
+        jQuery('.geo').change(function() {
             // Instantiate a map and platform object:
             var platform = new H.service.Platform({
                 'apikey': '5mKawERqnzL1KMnNIt4n42gAV8eLomjQPKf5S5AAcZg'
