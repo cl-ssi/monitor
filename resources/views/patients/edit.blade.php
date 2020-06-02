@@ -53,7 +53,7 @@
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_birthday">Fecha Nacimiento</label>
-            <input type="date" class="form-control" id="for_birthday"
+            <input type="date" class="form-control" id="for_birthday" required
                 name="birthday" value="{{ ($patient->birthday)?$patient->birthday->format('Y-m-d'):'' }}">
         </fieldset>
     </div>
@@ -256,7 +256,7 @@ jQuery(document).ready(function () {
 	});
 
   //obtener coordenadas
-  jQuery('#comunas').change(function () {
+  jQuery('.geo').change(function () {
     // Instantiate a map and platform object:
     var platform = new H.service.Platform({
       'apikey': '5mKawERqnzL1KMnNIt4n42gAV8eLomjQPKf5S5AAcZg'

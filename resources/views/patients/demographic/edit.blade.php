@@ -10,13 +10,13 @@
         </select>
     </fieldset>
 
-    <fieldset class="form-group col-12 col-md-4">
+    <fieldset class="form-group col-12 col-md-4 geo">
         <label for="for_address">Dirección</label>
         <input type="text" class="form-control" name="address" id="for_address"
             value="{{ $patient->demographic->address }}">
     </fieldset>
 
-    <fieldset class="form-group col-6 col-md-2">
+    <fieldset class="form-group col-6 col-md-2 geo">
         <label for="for_number">Número</label>
         <input type="text" class="form-control" name="number" id="for_number"
             value="{{ $patient->demographic->number }}">
@@ -313,7 +313,7 @@
     </fieldset>
 
     <fieldset class="form-group col-12 col-md-3">
-        <label for="for_commune">Comuna</label>
+        <label for="for_commune geo">Comuna</label>
         <select class="form-control" name="commune_id" id="comunas"
             value="{{ $patient->demographic->comunas }}"></select>
     </fieldset>
@@ -321,13 +321,13 @@
     <fieldset class="form-group col-6 col-md-2">
         <label for="for_latitude">Latitud</label>
         <input type="number" class="form-control" step="00.00000001" id="for_latitude"
-            name="latitude" value="{{ $patient->demographic->latitude }}">
+            name="latitude" value="{{ $patient->demographic->latitude }}" readonly>
     </fieldset>
 
     <fieldset class="form-group col-6 col-md-2">
         <label for="for_longitude">Longitud</label>
         <input type="number" step="00.00000001" class="form-control" id="for_longitude"
-            name="longitude" value="{{ $patient->demographic->longitude }}">
+            name="longitude" value="{{ $patient->demographic->longitude }}" readonly>
     </fieldset>
 
 </div>
