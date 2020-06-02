@@ -68,13 +68,13 @@
 
         <fieldset class="form-group col-12 col-md-4">
             <label for="for_address">Dirección *</label>
-            <input type="text" class="form-control" name="address" id="for_address" style="text-transform: uppercase;" required autocomplete="off">
+            <input type="text" class="form-control geo" name="address" id="for_address" style="text-transform: uppercase;" required autocomplete="off">
         </fieldset>
 
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_number">Número</label>
-            <input type="text" class="form-control" name="number" id="for_number" style="text-transform: uppercase;" autocomplete="off">
+            <input type="text" class="form-control geo" name="number" id="for_number" style="text-transform: uppercase;" autocomplete="off">
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-1">
@@ -88,7 +88,7 @@
 
         <fieldset class="form-group col-12 col-md-3">
             <label for="comunas">Comuna *</label>
-            <select class="form-control" name="commune_id" id="comunas" required>
+            <select class="form-control geo" name="commune_id" id="comunas" required>
                 <option value="">Seleccione la comuna</option>
                 @foreach ($communes as $key => $commune)
                 <option value="{{$commune->id}}">{{$commune->name}}</option>
@@ -153,7 +153,7 @@
 
         //GEO
         //obtener coordenadas
-        jQuery('#comunas').change(function() {
+        jQuery('.geo').change(function() {
             // Instantiate a map and platform object:
             var platform = new H.service.Platform({
                 'apikey': '5mKawERqnzL1KMnNIt4n42gAV8eLomjQPKf5S5AAcZg'
