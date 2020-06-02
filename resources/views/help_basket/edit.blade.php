@@ -123,7 +123,7 @@
             <label for="for_photoid">Cargar Nueva Foto Cédula</label>
             <div class="custom-file">
                 <input type="file" name="photoid" class="custom-file-input" id="customFileLang" lang="es" >
-                <label class="custom-file-label" for="customFileLang">Seleccionar Nueva Foto Cédula</label>
+                <label class="custom-file-label" for="customFileLang">Seleccionar Foto Cédula</label>
             </div>
         </fieldset>
     </div>
@@ -141,7 +141,7 @@
             <label for="for_photo">Cargar Nueva Foto Frontal</label>
             <div class="custom-file">
                 <input type="file" name="photo" class="custom-file-input" id="customFileLang" lang="es" >
-                <label class="custom-file-label" for="customFileLang">Seleccionar Nueva Foto Cédula</label>
+                <label class="custom-file-label" for="customFileLang">Seleccionar Foto Frontal</label>
             </div>
         </fieldset>
     </div>
