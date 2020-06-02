@@ -11,12 +11,12 @@
     </fieldset>
 
 
-    <fieldset class="form-group col-12 col-md-4">
+    <fieldset class="form-group col-12 col-md-4 geo">
         <label for="for_address">Dirección *</label>
         <input type="text" class="form-control" name="address" id="for_address" required>
     </fieldset>
 
-    <fieldset class="form-group col-6 col-md-2">
+    <fieldset class="form-group col-6 col-md-2 geo">
         <label for="for_number">Número</label>
         <input type="text" class="form-control" name="number" id="for_number">
     </fieldset>
@@ -307,17 +307,17 @@
 
     <fieldset class="form-group col-12 col-md-3">
         <label for="comunas">Comuna *</label>
-        <select class="form-control" name="commune_id" id="comunas" required></select>
+        <select class="form-control geo" name="commune_id" id="comunas" required></select>
     </fieldset>
 
     <fieldset class="form-group col-6 col-md-2">
         <label for="for_latitude">Latitud</label>
-        <input type="number" step="00.00000001" class="form-control" name="latitude" id="for_latitude">
+        <input type="number" step="00.00000001" class="form-control" name="latitude" id="for_latitude" readonly>
     </fieldset>
 
     <fieldset class="form-group col-6 col-md-2">
         <label for="for_longitude">Longitud</label>
-        <input type="number" step="00.00000001" class="form-control" name="longitude" id="for_longitude">
+        <input type="number" step="00.00000001" class="form-control" name="longitude" id="for_longitude" readonly>
     </fieldset>
 
 </div>
