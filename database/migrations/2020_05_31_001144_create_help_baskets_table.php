@@ -33,6 +33,8 @@ class CreateHelpBasketsTable extends Migration
             $table->decimal('longitude', 11, 8)->nullable();
 
             $table->string('photo')->nullable();
+            $table->string('photoid')->nullable();
+            $table->text('observations')->nullable();
 
             $table->unsignedBigInteger('commune_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();

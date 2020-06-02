@@ -19,6 +19,7 @@
             <th>Nombre Completo</th>
             <th>Dirección</th>
             <th>Comuna</th>
+            <th>Entregado Por</th>
             <th>Entregado el</th>
             <th>Editar</th>            
             <th>Eliminar</th>
@@ -32,16 +33,21 @@
             <td>{{$helpBasket->fullName}}</td>
             <td>{{$helpBasket->address}} {{$helpBasket->number}} {{$helpBasket->department}} </td>
             <td>{{$helpBasket->commune->name}}</td>
+            <td>{{$helpBasket->user->name}}</td>
             <td>{{$helpBasket->updated_at->format('d-m-Y H:i')}}</td>
             <td>
+                @if($helpBasket->user_id == Auth::id())
                 <a href="{{ route('help_basket.edit', $helpBasket) }}" class="btn btn-secondary float-left"><i class="fas fa-edit"></i></a>
+                @endif
             </td>
             <td>
-                <form method="POST" class="form-horizontal" action="{{ route('help_basket.destroy',$helpBasket) }}">
+                @if($helpBasket->user_id == Auth::id())
+                    <form method="POST" class="form-horizontal" action="{{ route('help_basket.destroy',$helpBasket) }}">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger float-left" onclick="return confirm('¿Está seguro que desea eliminar la entrega de canasta a : {{$helpBasket->fullName}}? ' )"><i class="fas fa-trash-alt"></i></button>
-                </form>
+                    </form>
+                @endif
             </td>
         </tr>
         @endforeach

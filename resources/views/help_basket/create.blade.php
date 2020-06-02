@@ -109,14 +109,31 @@
         </fieldset>
     </div>
 
-
     <div class="form-row">
-    <fieldset class="form-group col-12 col-md-3">
-            <label for="for_photo">Foto Cédula de Identidad</label>
+        <fieldset class="form-group col-12 col-md-3">
+            <label for="for_photoid">Foto Cédula de Identidad</label>
             <div class="custom-file">
-                <input type="file" name="photo" class="custom-file-input" id="customFileLang" lang="es">
+                <input type="file" name="photoid" class="custom-file-input" id="customFileLang" lang="es">
                 <label class="custom-file-label" for="customFileLang">Seleccionar Foto Cédula</label>
             </div>
+        </fieldset>
+    </div>
+
+
+    <div class="form-row">
+        <fieldset class="form-group col-12 col-md-3">
+            <label for="for_photo">Foto Frontal</label>
+            <div class="custom-file">
+                <input type="file" name="photo" class="custom-file-input" id="customFileLang" lang="es">
+                <label class="custom-file-label" for="customFileLang">Seleccionar Foto Frontal</label>
+            </div>
+        </fieldset>
+    </div>
+
+    <div class="form-row">
+        <fieldset class="form-group col-12 col-md-5">
+            <label for="for_observations">Observaciones</label>
+            <textarea type="textarea" class="form-control" rows="4" name="observations" id="for_observations"> </textarea>
         </fieldset>
     </div>
 
