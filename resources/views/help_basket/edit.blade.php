@@ -111,19 +111,46 @@
             <input type="number" step="00.00000001" class="form-control" name="longitude" id="for_longitude" readonly value ="{{$helpBasket->longitude}}">
         </fieldset>
     </div>
+    <hr>
+
+    @if($helpBasket->photoid)
+    Foto Cédula
+    <br>    
+    <img src="{{ route('help_basket.download', $helpBasket->photoid)  }}" width="300" height="200" />
+    @endif
+    <div class="form-row">
+        <fieldset class="form-group col-12 col-md-3">
+            <label for="for_photoid">Cargar Nueva Foto Cédula</label>
+            <div class="custom-file">
+                <input type="file" name="photoid" class="custom-file-input" id="customFileLang" lang="es" >
+                <label class="custom-file-label" for="customFileLang">Seleccionar Foto Cédula</label>
+            </div>
+        </fieldset>
+    </div>
+    <hr>
+
+
 
     @if($helpBasket->photo)
-    Cédula Cargada
+    Foto Frontal
     <br>    
     <img src="{{ route('help_basket.download', $helpBasket->photo)  }}" width="300" height="200" />
     @endif
     <div class="form-row">
-    <fieldset class="form-group col-12 col-md-3">
-            <label for="for_photo">Cargar Nueva Foto Cédula de Identidad</label>
+        <fieldset class="form-group col-12 col-md-3">
+            <label for="for_photo">Cargar Nueva Foto Frontal</label>
             <div class="custom-file">
                 <input type="file" name="photo" class="custom-file-input" id="customFileLang" lang="es" >
-                <label class="custom-file-label" for="customFileLang">Seleccionar Nueva Foto Cédula</label>
+                <label class="custom-file-label" for="customFileLang">Seleccionar Foto Frontal</label>
             </div>
+        </fieldset>
+    </div>
+
+
+    <div class="form-row">
+        <fieldset class="form-group col-12 col-md-5">
+            <label for="for_observations">Observaciones</label>
+            <textarea type="textarea" class="form-control" rows="4" name="observations" id="for_observations">{{$helpBasket->observations}} </textarea>
         </fieldset>
     </div>
 

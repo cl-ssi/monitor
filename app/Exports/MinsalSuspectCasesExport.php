@@ -93,18 +93,11 @@ class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
           $commune = '';
         }
 
-        if ($suspectCase->patient->birthday){
-            $age = Carbon::parse($suspectCase->patient->birthday)->age;
-            if ($age == 0)
-                $age = Carbon::parse($suspectCase->patient->birthday)->diff(Carbon::now())->format('%mM %dd');
-        }
-        else $age = null ;
-
         return [
             $suspectCase->patient->runExport,
             strtoupper($suspectCase->patient->fullName),
             strtoupper($suspectCase->patient->GenderEsp),
-            $age,
+            $suspectCase->agePatient,
             strtoupper($suspectCase->sample_type),
             strtoupper($suspectCase->Covid19),
             Date::dateTimeToExcel($suspectCase->sample_at),
