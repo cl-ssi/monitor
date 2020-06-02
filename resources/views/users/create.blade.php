@@ -16,7 +16,7 @@
         <fieldset class="form-group col-8 col-md-2">
             <label for="for_run">Run *</label>
             <input type="number" class="form-control" name="run" id="for_run"
-                required>
+                required autocomplete="off">
         </fieldset>
 
         <fieldset class="form-group col-4 col-md-1">
@@ -28,13 +28,13 @@
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_name">Nombre y Apellido *</label>
             <input type="text" class="form-control" name="name" id="for_name"
-                required>
+                required autocomplete="off">
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_email">Email *</label>
             <input type="text" class="form-control" name="email" id="for_email"
-                required>
+                required autocomplete="off">
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-3">
@@ -76,5 +76,17 @@
 @endsection
 
 @section('custom_js')
+<script src='{{asset("js/jquery.rut.chileno.js")}}'></script>
 
+
+<script type="text/javascript">
+    jQuery(document).ready(function($) {
+        //obtiene digito verificador
+        $('input[name=run]').keyup(function(e) {
+            var str = $("#for_run").val();
+            $('#for_dv').val($.rut.dv(str));
+        });
+
+    });
+</script>
 @endsection

@@ -80,6 +80,7 @@ Route::prefix('help_basket')->name('help_basket.')->middleware('auth')->group(fu
     Route::get('/{helpBasket}/edit', 'HelpBasketController@edit')->name('edit');
     Route::put('{helpBasket}', 'HelpBasketController@update')->name('update');
     Route::delete('/{helpBasket}', 'HelpBasketController@Destroy')->name('destroy');
+    Route::get('/download/{storage}/{file?}', 'HelpBasketController@download')->name('download');
 
 });
 
@@ -204,6 +205,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
         Route::get('/excelall','BookingController@excelall')->name('excelall');
         Route::get('/excelvitalsign','BookingController@excelvitalsign')->name('excelvitalsign');
         Route::get('/excel/{booking}','BookingController@excel')->name('excel');
+        Route::delete('/{booking}', 'BookingController@destroy')->name('destroy');
         Route::get('/residence/{residence}', 'BookingController@index')->name('index');
         Route::get('/create', 'BookingController@create')->name('create');
         Route::get('/{booking}', 'BookingController@show')->name('show');
@@ -212,7 +214,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
         Route::get('/{booking}/release', 'BookingController@showRelease')->name('showrelease');
         // Route::get('/{booking}/edit', 'BookingController@edit')->name('edit');
         Route::put('/{booking}', 'BookingController@update')->name('update');
-        // Route::delete('/{booking}', 'BookingController@destroy')->name('destroy');
+        //Route::delete('/destroy/{id}', 'BookingController@destroy')->name('destroy');
     });
 
 
