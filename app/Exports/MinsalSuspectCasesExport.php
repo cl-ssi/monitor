@@ -97,7 +97,7 @@ class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
             $suspectCase->patient->runExport,
             strtoupper($suspectCase->patient->fullName),
             strtoupper($suspectCase->patient->GenderEsp),
-            $suspectCase->patient->age,
+            $suspectCase->agePatient,
             strtoupper($suspectCase->sample_type),
             strtoupper($suspectCase->Covid19),
             Date::dateTimeToExcel($suspectCase->sample_at),
