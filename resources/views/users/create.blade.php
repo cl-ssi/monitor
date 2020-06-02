@@ -48,6 +48,18 @@
             <small id="laboratoryHelp" class="form-text text-muted">Sólo para ingresos en laboratorio</small>
         </fieldset>
 
+        <fieldset class="form-group col-6 col-md-6">
+            <label for="for_establishment_id">Establecimiento *</label>
+            <select name="establishment_id[]" id="for_establishment_id" class="form-control selectpicker" data-live-search="true" multiple="" data-size="10" title="Seleccione..." multiple data-actions-box="true" required>
+                @foreach($establishments as $establishment)
+                    <option value="{{ $establishment->id }}">{{ $establishment->alias }}</option>
+                @endforeach
+            </select>
+        </fieldset>
+    </div>
+
+    <div class="form-row">
+
         <fieldset class="form-group col-12 col-md-2">
             <label for="for_password">Clave *</label>
             <input type="password" class="form-control" name="password" id="for_password"
@@ -76,5 +88,11 @@
 @endsection
 
 @section('custom_js')
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 
 @endsection
