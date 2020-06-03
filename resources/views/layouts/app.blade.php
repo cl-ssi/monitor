@@ -195,6 +195,10 @@
 
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.diary_lab_report') }}">Cantidad de muestras y exámenes</a>
 
+                                @can('Report: positives demographics')
+                                    <a class="dropdown-item" href="{{ route('patients.exportPositives') }}">Reporte de positivos con dirección</a>
+                                @endcan
+
                             </div>
                         </li>
                         @endcan

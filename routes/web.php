@@ -67,6 +67,7 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
     Route::put('/{patient}', 'PatientController@update')->name('update')->middleware('can:Patient: edit');
     Route::delete('/{patient}', 'PatientController@destroy')->name('destroy')->middleware('can:Patient: delete');
     Route::get('/export', 'PatientController@export')->name('export');
+    Route::get('/exportPositives', 'PatientController@exportPositives')->name('exportPositives');
 });
 
 Route::resource('epp','EppController')->middleware('auth');
