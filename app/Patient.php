@@ -2,12 +2,18 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 //use Illuminate\Foundation\Auth\User as Authenticatable;
 //use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
+/**
+ * Patient
+ *
+ * @mixin Builder
+ */
 class Patient extends Model //Authenticatable
 {
     //use Notifiable;

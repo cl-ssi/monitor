@@ -2,12 +2,18 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Patient;
 use File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
+/**
+ * SuspectCase
+ *
+ * @mixin Builder
+ */
 class SuspectCase extends Model
 {
     use SoftDeletes;

@@ -270,4 +270,65 @@ class PatientController extends Controller
         };
         return response()->stream($callback, 200, $headers);
     }
+
+    public function exportPositives(){
+        $headers = array(
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=pacientes_covid_positivo.csv",
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        );
+
+        $filas = Patient::where(function($query){
+            $query->select('pscr_sars_cov_2')
+                ->from('suspect_cases')
+                ->whereColumn('patient_id', 'patients.id');
+        }, 'positive')->get();
+
+        $columnas = array(
+            'ID',
+            'RUN',
+            'DV',
+            'Otro Doc',
+            'Nombre',
+            'Apellido Paterno',
+            'Apellido Materno',
+            'Genero',
+            'Fecha Nacimiento',
+            'Coumuna',
+            'Direccion',
+            'Latitud',
+            'Longitud'
+        );
+
+        $callback = function() use ($filas, $columnas)
+        {
+            $file = fopen('php://output', 'w');
+            fputs($file, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
+            fputcsv($file, $columnas,';');
+
+            foreach($filas as $fila) {
+                fputcsv($file, array(
+                    $fila->id,
+                    $fila->run,
+                    $fila->dv,
+                    $fila->other_identification,
+                    $fila->name,
+                    $fila->fathers_family,
+                    $fila->mothers_family,
+                    $fila->gender,
+                    ($fila->birthday)?$fila->birthday->format('d-m-Y'):'',
+                    ($fila->demographic)?$fila->demographic->commune:'',
+                    ($fila->demographic)?$fila->demographic->address.' '.$fila->demographic->number:'',
+                    ($fila->demographic)?$fila->demographic->latitude:'',
+                    ($fila->demographic)?$fila->demographic->longitude:''
+
+                ),';');
+            }
+            fclose($file);
+        };
+        return response()->stream($callback, 200, $headers);
+
+    }
 }
