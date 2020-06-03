@@ -87,6 +87,10 @@ class SuspectCase extends Model
         }
     }
 
+    /**
+     * Retorna edad del paciente calculado desde modelo paciente
+     * @return int|string|null
+     */
     function getAgePatientAttribute(){
         if ($this->patient->birthday){
             $age = Carbon::parse($this->patient->birthday)->age;
