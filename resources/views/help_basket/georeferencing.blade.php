@@ -82,7 +82,7 @@ var defaultLayers = platform.createDefaultLayers();
 // initialize a map - this map is centered over Europe
 var map = new H.Map(document.getElementById('map'),
   defaultLayers.vector.normal.map,{
-  center: {lat: {{ env('LATITUD') }}, lng: {{ env('LONGITUD') }} }
+  center: {lat: {{ env('LATITUD') }}, lng: {{ env('LONGITUD') }} },
   
   zoom: 12.7,
   pixelRatio: window.devicePixelRatio || 1
