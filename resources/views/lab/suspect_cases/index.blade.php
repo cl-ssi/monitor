@@ -110,7 +110,7 @@
             <td class="text-center">
                 {{ $case->id }}<br>
                 <small>{{ $case->laboratory->name }}</small>
-                @can('SuspectCase: edit')
+                @canany(['SuspectCase: edit','SuspectCase: tecnologo'])
                 <a href="{{ route('lab.suspect_cases.edit', $case) }}" class="btn_edit"><i class="fas fa-edit"></i></a>
                 @endcan
                 <small>{{ $case->minsal_ws_id }}</small>
