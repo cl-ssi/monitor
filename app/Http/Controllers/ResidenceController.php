@@ -16,12 +16,12 @@ class ResidenceController extends Controller
     }
 
     public function users()
-    {   
-        $residences = Residence::all();     
+    {
+        $residences = Residence::all();
         $users = User::orderBy('name')->get();
-        $residenceUsers = ResidenceUser::orderBy('residence_id')->get();        
+        $residenceUsers = ResidenceUser::orderBy('residence_id')->get();
         return view('sanitary_residences.users',compact('residenceUsers','users','residences'));
-        
+
     }
 
     public function usersStore(Request $request)
@@ -35,14 +35,14 @@ class ResidenceController extends Controller
 
     public function usersDestroy(ResidenceUser $residenceUser)
     {
-        
+
         $residenceUser->delete();
-        
+
 
         session()->flash('success', 'Permisos Eliminados exitosamente');
         //return redirect()->route('sanitary_residences.residences.index');
         return redirect()->back();
-        
+
     }
 
     /**
@@ -134,5 +134,12 @@ class ResidenceController extends Controller
 
         session()->flash('success', 'Residencia Sanitaria Eliminada exitosamente');
         return redirect()->route('sanitary_residences.residences.index');
+    }
+
+    public function report(){
+        $residences = Residence::all();
+
+
+
     }
 }
