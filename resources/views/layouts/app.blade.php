@@ -86,6 +86,12 @@
 
                                 <div class="dropdown-divider"></div>
 
+                                @can('SuspectCase: own')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.ownIndex') }}?text=&pendientes=on">Mis exámenes</a>
+                                @endcan
+
+                                <div class="dropdown-divider"></div>
+
                                 @can('SuspectCase: list')
                                 @php
                                 $labs = App\Laboratory::where('external',0)->get();
@@ -188,6 +194,10 @@
                                 @endcan
 
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.diary_lab_report') }}">Cantidad de muestras y exámenes</a>
+
+                                @can('Report: positives demographics')
+                                    <a class="dropdown-item" href="{{ route('patients.exportPositives') }}">Reporte de positivos con dirección</a>
+                                @endcan
 
                             </div>
                         </li>

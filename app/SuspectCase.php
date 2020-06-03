@@ -2,12 +2,18 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Patient;
 use File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
+/**
+ * SuspectCase
+ *
+ * @mixin Builder
+ */
 class SuspectCase extends Model
 {
     use SoftDeletes;
@@ -81,6 +87,10 @@ class SuspectCase extends Model
         }
     }
 
+    /**
+     * Retorna edad del paciente calculado desde modelo paciente
+     * @return int|string|null
+     */
     function getAgePatientAttribute(){
         if ($this->patient->birthday){
             $age = Carbon::parse($this->patient->birthday)->age;

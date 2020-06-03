@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Basket\HelpBasket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Image;
 
 use App\Commune;
 
@@ -21,6 +22,7 @@ class HelpBasketController extends Controller
         $helpbaskets = HelpBasket::orderByDesc('updated_at')->get();;
         return view('help_basket.index', compact('helpbaskets'));
     }
+
 
     public function georeferencing()
     {
@@ -79,22 +81,30 @@ class HelpBasketController extends Controller
             } else {
                 $helpbaket = new HelpBasket($request->All());
                 $helpbaket->user_id = auth()->user()->id;
-                
-
-                if ($request->file('photo')) {
-                    $storage = $helpbaket->run;
-                    $storage += $helpbaket->other_identification;
-                    //$storage = $storage.'_id';
-                    $ext = $request->file('photo')->extension();
-                    $helpbaket->photo = $request->file('photo')->storeAs('help_baskets', $storage . '.' . $ext);
-                }
 
                 if ($request->file('photoid')) {
                     $storage = $helpbaket->run;
                     $storage += $helpbaket->other_identification;
-                    $storage = $storage.'_id';
+                    $storage = $storage . '_id';
                     $ext = $request->file('photoid')->extension();
-                    $helpbaket->photoid = $request->file('photoid')->storeAs('help_baskets', $storage . '.' . $ext);
+                    $imageName = $storage . "." . $ext;
+                    //genera la imagen 300 a 200
+                    $image = Image::make($request->file('photoid'))->resize(300, 200);
+                    Storage::disk('local')->put('help_baskets/' . $imageName, (string) $image->encode());
+                    $helpbaket->photoid = 'help_baskets/' . $imageName;
+                }
+
+
+                if ($request->file('photo')) {
+                    $storage = $helpbaket->run;
+                    $storage += $helpbaket->other_identification;
+                    // //$storage = $storage.'_id';
+                    $ext = $request->file('photo')->extension();
+                    $imageName = $storage . "." . $ext;
+                    //genera la imagen 300 a 200
+                    $image = Image::make($request->file('photo'))->resize(300, 200);
+                    $location = Storage::disk('local')->put('help_baskets/' . $imageName, (string) $image->encode());
+                    $helpbaket->photo = 'help_baskets/' . $imageName;
                 }
 
 
@@ -143,20 +153,29 @@ class HelpBasketController extends Controller
         //dd($request->file('photo'));
         $helpBasket->fill($request->all());
         $helpBasket->user_id = auth()->user()->id;
-        
+
         if ($request->file('photo')) {
             $storage = $helpBasket->run;
             $storage += $helpBasket->other_identification;
-            $ext = $request->file('photo')->extension();            
-            $helpBasket->photo = $request->file('photo')->storeAs('help_baskets', $storage . '.' . $ext);
+            $ext = $request->file('photo')->extension();
+            $imageName = $storage . "." . $ext;
+            $image = Image::make($request->file('photo'))->resize(300, 200);
+            Storage::disk('local')->put('help_baskets/' . $imageName, (string) $image->encode());
+            $helpBasket->photo = 'help_baskets/' . $imageName;
+            //$helpBasket->photo = $request->file('photo')->storeAs('help_baskets', $storage . '.' . $ext);
+
         }
 
         if ($request->file('photoid')) {
             $storage = $helpBasket->run;
             $storage += $helpBasket->other_identification;
-            $storage = $storage.'_id';
-            $ext = $request->file('photoid')->extension();            
-            $helpBasket->photoid = $request->file('photoid')->storeAs('help_baskets', $storage . '.' . $ext);
+            $storage = $storage . '_id';
+            $ext = $request->file('photoid')->extension();
+            //$helpBasket->photoid = $request->file('photoid')->storeAs('help_baskets', $storage . '.' . $ext);
+            $imageName = $storage . "." . $ext;
+            $image = Image::make($request->file('photoid'))->resize(300, 200);
+            Storage::disk('local')->put('help_baskets/' . $imageName, (string) $image->encode());
+            $helpBasket->photoid = 'help_baskets/' . $imageName;
         }
 
         $helpBasket->save();
@@ -183,7 +202,7 @@ class HelpBasketController extends Controller
 
     public function download($storage, $file)
     {
-        return Storage::download($storage . '/' . $file, 'resultado.pdf');
+        return Storage::download($storage . '/' . $file);
     }
 
     public function excel()
@@ -191,6 +210,4 @@ class HelpBasketController extends Controller
         $helpbaskets = HelpBasket::orderByDesc('updated_at')->get();;
         return view('help_basket.excel', compact('helpbaskets'));
     }
-
-
 }

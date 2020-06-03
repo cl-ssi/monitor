@@ -25,12 +25,7 @@ class SuspectCaseReportController extends Controller
 
         //$comunas = env('COMUNAS');
 
-        $patients = Patient::whereHas('suspectCases', function ($q) {
-            $q->where('pscr_sars_cov_2','positive');
-        })->with('suspectCases')->with('demographic')->get();
-
-        $region_not = array_diff( [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], [env('REGION')] );
-        $patients = $patients->whereNotIn('demographic.region_id', $region_not);
+        $patients = Patient::positivesList();
 
         /* Calculo de gráfico de evolución */
         $begin = SuspectCase::where('pscr_sars_cov_2','positive')->orderBy('sample_at')->first()->sample_at;
@@ -78,6 +73,7 @@ class SuspectCaseReportController extends Controller
         return view('lab.suspect_cases.reports.positives', compact('patients','evolucion','ventilator','residences','bookings','exams','communes'));
 
     }
+
 
 
     /*****************************************************/
@@ -141,12 +137,7 @@ class SuspectCaseReportController extends Controller
 
     public function countPositives(Request $request)
     {
-        $patients = Patient::whereHas('suspectCases', function ($q) {
-            $q->where('pscr_sars_cov_2','positive');
-        })->with('suspectCases')->with('demographic')->get();
-
-        $region_not = array_diff( [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], [env('REGION')] );
-        $patients = $patients->whereNotIn('demographic.region_id', $region_not);
+        $patients = Patient::positivesList();
 
         if($request->input('residence')) {
             $bookings = Booking::where('status','Residencia Sanitaria')
