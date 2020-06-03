@@ -9,18 +9,6 @@
 
 <hr>
 
-@if(!$suspectCase->reception_at)
-    <h1 class="text-danger">Examen no recepcionado</h1>
-
-    @if(Auth::user()->laboratory)
-    <form method="POST" class="form-inline mb-3" action="{{ route('lab.suspect_cases.reception', $suspectCase) }}">
-        @csrf
-        @method('POST')
-        <button type="submit" class="btn btn-primary"><i class="fas fa-inbox"></i> Recepcionar </button>
-    </form>
-    @endif
-@endif
-
 <form method="POST" class="form-horizontal" action="{{ route('lab.suspect_cases.update', $suspectCase) }}" enctype="multipart/form-data">
     @csrf
     @method('PUT')
@@ -219,11 +207,17 @@
             @endif
         </fieldset>
 
-        <div>
+        @if(!$suspectCase->reception_at)
+            <h2 class="text-danger">Examen no recepcionado</h2>
 
-        </div>
-
-
+            @if(Auth::user()->laboratory)
+            <form method="POST" class="form-inline mb-3" action="{{ route('lab.suspect_cases.reception', $suspectCase) }}">
+                @csrf
+                @method('POST')
+                <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-inbox"></i> Recepcionar </button>
+            </form>
+            @endif
+        @endif
     </div>
 
     <hr>
@@ -451,14 +445,18 @@
 
 @section('custom_js')
 <script>
-  $(document).ready(function(){
-      $("#forfile").change(function(){
-        @if($suspectCase->files->count() != 0)
-          document.getElementById("forfile").value = "";
-          alert("Solo se permite adjuntar un archivo.");
-        @endif
-      });
-  });
-</script>
+    $(document).ready(function(){
+        $("#forfile").change(function(){
+            @if($suspectCase->files->count() != 0)
+                document.getElementById("forfile").value = "";
+                alert("Solo se permite adjuntar un archivo.");
+            @endif
+        });
+    });
 
+    $('input[type="file"]').change(function(e){
+        var fileName = e.target.files[0].name;
+        $('.custom-file-label').html(fileName);
+    });
+</script>
 @endsection
