@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 //use Illuminate\Foundation\Auth\User as Authenticatable;
 //use Illuminate\Notifications\Notifiable;
@@ -132,4 +133,18 @@ class Patient extends Model //Authenticatable
         return $this->morphMany('App\Log','model')->where('diferences','<>',"[]");
     }
 
+    /**
+     * Retorna pacientes positivos con dirección
+     * @return Patient[]|Builder[]|Collection
+     */
+    static function positivesList(){
+        $patients = Patient::whereHas('suspectCases', function ($q) {
+            $q->where('pscr_sars_cov_2','positive');
+        })->with('suspectCases')->with('demographic')->get();
+
+        $region_not = array_diff( [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], [env('REGION')] );
+        $patients = $patients->whereNotIn('demographic.region_id', $region_not);
+
+        return $patients;
+    }
 }

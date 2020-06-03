@@ -8,8 +8,8 @@ use App\Demographic;
 use App\Log;
 use App\Region;
 use App\Commune;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class PatientController extends Controller
 {
@@ -271,6 +271,10 @@ class PatientController extends Controller
         return response()->stream($callback, 200, $headers);
     }
 
+    /**
+     * Descarga archivo csv de pacientes covid positivos con georeferencia.
+     * @return StreamedResponse
+     */
     public function exportPositives(){
         $headers = array(
             "Content-type" => "text/csv",
@@ -280,11 +284,7 @@ class PatientController extends Controller
             "Expires" => "0"
         );
 
-        $filas = Patient::where(function($query){
-            $query->select('pscr_sars_cov_2')
-                ->from('suspect_cases')
-                ->whereColumn('patient_id', 'patients.id');
-        }, 'positive')->get();
+        $filas = Patient::positivesList();
 
         $columnas = array(
             'ID',
