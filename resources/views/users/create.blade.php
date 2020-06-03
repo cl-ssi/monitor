@@ -48,6 +48,18 @@
             <small id="laboratoryHelp" class="form-text text-muted">Sólo para ingresos en laboratorio</small>
         </fieldset>
 
+        <fieldset class="form-group col-6 col-md-6">
+            <label for="for_establishment_id">Establecimiento *</label>
+            <select name="establishment_id[]" id="for_establishment_id" class="form-control selectpicker" data-live-search="true" multiple="" data-size="10" title="Seleccione..." multiple data-actions-box="true" required>
+                @foreach($establishments as $establishment)
+                    <option value="{{ $establishment->id }}">{{ $establishment->alias }}</option>
+                @endforeach
+            </select>
+        </fieldset>
+    </div>
+
+    <div class="form-row">
+
         <fieldset class="form-group col-12 col-md-2">
             <label for="for_password">Clave *</label>
             <input type="password" class="form-control" name="password" id="for_password"
@@ -76,9 +88,9 @@
 @endsection
 
 @section('custom_js')
+<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-select.min.css') }}">
+
 <script src='{{asset("js/jquery.rut.chileno.js")}}'></script>
-
-
 <script type="text/javascript">
     jQuery(document).ready(function($) {
         //obtiene digito verificador
@@ -86,7 +98,9 @@
             var str = $("#for_run").val();
             $('#for_dv').val($.rut.dv(str));
         });
-
     });
 </script>
+<script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
+<script src="{{ asset('js/defaults-es_CL.min.js') }}"></script>
+
 @endsection

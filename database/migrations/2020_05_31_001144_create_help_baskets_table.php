@@ -40,8 +40,8 @@ class CreateHelpBasketsTable extends Migration
 
             $table->unsignedBigInteger('commune_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
-            
-            
+
+
 
             $table->timestamps();
             $table->softDeletes();

@@ -18,9 +18,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'run', 'dv', 'name', 'email', 'password','laboratory_id'
+        'run', 'dv', 'name', 'email', 'password','laboratory_id', 'establishment_id'
     ];
-
 
     public function logs() {
         return $this->morphMany('App\Log','model');
@@ -42,12 +41,20 @@ class User extends Authenticatable
     }
 
     /**
+    * The establishment that belong to the user.
+    */
+    public function establishments() {
+        return $this->belongsToMany('App\Establishment');
+    }
+
+
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token'
     ];
 
     /**
@@ -58,4 +65,5 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
 }
