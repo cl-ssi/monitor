@@ -29,7 +29,7 @@ class Patient extends Model //Authenticatable
      */
     protected $fillable = [
         'id', 'run', 'dv', 'other_identification', 'name', 'fathers_family',
-        'mothers_family', 'gender', 'birthday', 'status'
+        'mothers_family', 'gender', 'birthday', 'status', 'deceased_at'
     ];
 
     /**
@@ -45,6 +45,8 @@ class Patient extends Model //Authenticatable
     protected $casts = [
         'birthday'  => 'date:Y-m-d'
     ];
+
+    protected $dates = [ 'deceased_at'];
 
 
     public function suspectCases() {
