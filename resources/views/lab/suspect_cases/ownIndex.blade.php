@@ -36,12 +36,12 @@
     </thead>
     <tbody>
         <tr class="text-center">
-            <td>{{ $suspectCasesTotal->count() }}</td>
-            <th class="text-danger">{{ $suspectCasesTotal->where('pscr_sars_cov_2','positive')->count() }}</th>
-            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','negative')->count() }}</td>
-            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','pending')->count() }}</td>
-            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','rejected')->count() }}</td>
-            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','undetermined')->count() }}</td>
+            <td>{{ $suspectCasesTotal->whereIn('establishment_id', $establishment_selected)->count() }}</td>
+            <th class="text-danger">{{ $suspectCasesTotal->where('pscr_sars_cov_2','positive')->whereIn('establishment_id', $establishment_selected)->count() }}</th>
+            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','negative')->whereIn('establishment_id', $establishment_selected)->count() }}</td>
+            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','pending')->whereIn('establishment_id', $establishment_selected)->count() }}</td>
+            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','rejected')->whereIn('establishment_id', $establishment_selected)->count() }}</td>
+            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','undetermined')->whereIn('establishment_id', $establishment_selected)->count() }}</td>
         </tr>
     </tbody>
 </table>

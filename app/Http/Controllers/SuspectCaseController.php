@@ -170,7 +170,7 @@ class SuspectCaseController extends Controller
                                       ->whereIn('establishment_id', $establishment_selected)
                                       ->paginate(200);//->appends(request()->query());
         }
-        return view('lab.suspect_cases.ownIndex', compact('suspectCases','request','suspectCasesTotal','laboratory'));
+        return view('lab.suspect_cases.ownIndex', compact('suspectCases','request','suspectCasesTotal','laboratory', 'establishment_selected'));
     }
 
     /**
