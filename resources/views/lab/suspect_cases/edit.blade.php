@@ -73,7 +73,7 @@
 
         @can('SuspectCase: tecnologo')
 
-        <fieldset class="form-group col-6 col-md-2 alert-warning">
+        <fieldset class="form-group col-6 col-md-3 alert-warning">
             <label for="for_result_ifd_at">Fecha Resultado IFD</label>
             <input type="date" class="form-control" id="for_result_ifd_at"
                 name="result_ifd_at" value="{{( isset($suspectCase->result_ifd_at))?  $suspectCase->result_ifd_at->format('Y-m-d'):'' }}">
@@ -162,7 +162,7 @@
 
     <div class="form-row">
 
-        <fieldset class="form-group col-6 col-md-2 alert-danger">
+        <fieldset class="form-group col-6 col-md-3 alert-danger">
             <label for="for_pscr_sars_cov_2_at">Fecha Resultado PCR</label>
             <input type="date" class="form-control" id="for_pscr_sars_cov_2_at"
                 name="pscr_sars_cov_2_at" value="{{ isset($suspectCase->pscr_sars_cov_2_at)? $suspectCase->pscr_sars_cov_2_at->format('Y-m-d'):'' }}"
