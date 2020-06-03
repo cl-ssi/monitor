@@ -27,10 +27,10 @@
 
     <div class="form-row">
 
-        <fieldset class="form-group col-5 col-md-2">
+        <fieldset class="form-group col-5 col-md-3">
             <label for="for_sample_at">Fecha Muestra</label>
-            <input type="date" class="form-control" id="for_sample_at"
-                name="sample_at" value="{{ (isset($suspectCase->sample_at))? $suspectCase->sample_at->format('Y-m-d'):'' }}">
+            <input type="datetime-local" class="form-control" id="for_sample_at"
+                name="sample_at" value="{{ $suspectCase->sample_at->format('Y-m-d\TH:i:s') }}">
         </fieldset>
 
         <fieldset class="form-group col-7 col-md-3">
@@ -64,12 +64,6 @@
                     </option>
                 @endforeach
             </select>
-        </fieldset>
-
-        <fieldset class="form-group col-4 col-md-1">
-            <label for="for_age">Edad</label>
-            <input type="number" class="form-control" id="for_age" name="age"
-                value="{{ $suspectCase->age }}">
         </fieldset>
 
     </div>
