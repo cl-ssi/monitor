@@ -436,23 +436,29 @@ class SuspectCaseController extends Controller
 
         $suspectCase = new SuspectCase($request->All());
 
-        // $suspectCase->gestation = $request->has('gestation') ? 1 : 0;
-        // $suspectCase->close_contact = $request->has('close_contact') ? 1 : 0;
-        // $suspectCase->discharge_test = $request->has('discharge_test') ? 1 : 0;
+        /* Calcula la semana epidemiológica */
+        $suspectCase->epidemiological_week = Carbon::createFromDate($suspectCase->sample_at->format('Y-m-d'))
+                                                    ->add(1, 'days')->weekOfYear;
 
-        $suspectCase->epidemiological_week = Carbon::createFromDate($suspectCase->sample_at->format('Y-m-d'))->add(1, 'days')->weekOfYear;
-        $suspectCase->laboratory_id = Auth::user()->laboratory_id;
-
-        /* Marcar como pendiente el resultado, no viene en el form */
+        /* Marca como pendiente el resultado, no viene en el form */
         $suspectCase->pscr_sars_cov_2 = 'pending';
-        $suspectCase->sample_at = $request->input('sample_at').' '.date('H:i:s');
 
+        /* Si viene la fecha de nacimiento entonces calcula la edad y la almaceno en suspectCase */
+        if($request->input('birthday')) {
+            $suspectCase->age = $patient->age;
+        }
+
+        /* Si se crea el caso por alguien con laboratorio asignado */
+        /* La muestra se recepciona inmediatamente */
+        if(Auth::user()->laboratory_id) {
+            $suspectCase->laboratory_id = Auth::user()->laboratory_id;
+            $suspectCase->reception_at = date('Y-m-d H:i:s');
+            $suspectCase->receptor_id = Auth::id();
+        }
 
         //$suspectCase->minsal_ws_id = $minsal_ws_id;
 
         $patient->suspectCases()->save($suspectCase);
-
-
 
         $region = Region::where('id',$request->region_id)->get();
         $commune = Commune::where('id',$request->commune_id)->get();
@@ -476,31 +482,11 @@ class SuspectCaseController extends Controller
             // $logDemographic->save();
         }
 
-        //guarda archivos
-        // if ($request->hasFile('forfile')) {
-        //     foreach ($request->file('forfile') as $file) {
-        //         $filename = $file->getClientOriginalName();
-        //         $fileModel = new File;
-        //         $fileModel->file = $file->store('files');
-        //         $fileModel->name = $filename;
-        //         $fileModel->suspect_case_id = $suspectCase->id;
-        //         $fileModel->save();
-        //     }
-        // }
-
-        if (env('APP_ENV') == 'production') {
-            if ($suspectCase->pscr_sars_cov_2 == 'positive') {
-                $emails  = explode(',', env('EMAILS_ALERT'));
-                $emails_bcc  = explode(',', env('EMAILS_ALERT_BCC'));
-                Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($suspectCase));
-            }
-        }
 
         $log = new Log();
         //$log->old = $suspectCase;
         $log->new = $suspectCase;
         $log->save();
-
 
         session()->flash('success', 'Se ha creado el caso número: <h3>' . $suspectCase->id );
         return redirect()->back();
