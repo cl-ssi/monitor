@@ -31,7 +31,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $laboratories = Laboratory::where('external',0)->orderBy('name')->get();
+        $laboratories = Laboratory::orderBy('name')->get();
         $permissions = Permission::OrderBy('name')->get();
 
         $env_communes = array_map('trim',explode(",",env('COMUNAS')));
@@ -94,7 +94,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $laboratories = Laboratory::where('external',0)->orderBy('name')->get();
+        $laboratories = Laboratory::orderBy('name')->get();
         $permissions = Permission::OrderBy('name')->get();
 
         $env_communes = array_map('trim',explode(",",env('COMUNAS')));
@@ -133,7 +133,7 @@ class UserController extends Controller
 
         $establishment_selected = array();
         foreach($establishments_user as $key => $establishment_user){
-          $establishment_selected[$key] = intval($establishment_user->establishment_id);
+            $establishment_selected[$key] = intval($establishment_user->establishment_id);
         }
 
         /* ------------------------------------------------------------------ */
