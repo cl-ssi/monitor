@@ -86,6 +86,12 @@
 
                                 <div class="dropdown-divider"></div>
 
+                                @can('SuspectCase: own')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.ownIndex') }}?text=&pendientes=on">Mis exámenes</a>
+                                @endcan
+
+                                <div class="dropdown-divider"></div>
+
                                 @can('SuspectCase: list')
                                 @php
                                 $labs = App\Laboratory::where('external',0)->get();

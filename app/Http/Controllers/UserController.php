@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Laboratory;
+use App\Establishment;
+use App\EstablishmentUser;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -31,7 +33,11 @@ class UserController extends Controller
     {
         $laboratories = Laboratory::where('external',0)->orderBy('name')->get();
         $permissions = Permission::OrderBy('name')->get();
-        return view('users.create', compact('permissions','laboratories'));
+
+        $env_communes = array_map('trim',explode(",",env('COMUNAS')));
+        $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
+
+        return view('users.create', compact('permissions','laboratories', 'establishments'));
     }
 
     /**
@@ -42,9 +48,25 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = new User($request->All());
+        $user = new User();
+        $user->run = $request->input('run');
+        $user->dv = $request->input('dv');
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->laboratory_id = $request->input('laboratory_id');
         $user->password = bcrypt($request->input('password'));
+
         $user->save();
+
+        $user_est = new User($request->All());
+
+        foreach ($user_est->establishment_id as $key => $id) {
+            $establishment_user = new EstablishmentUser();
+
+            $establishment_user->establishment_id = $id;
+            $establishment_user->user_id = $user->id;
+            $establishment_user->save();
+        }
 
         $user->syncPermissions(
             is_array($request->input('permissions')) ? $request->input('permissions') : array()
@@ -74,7 +96,18 @@ class UserController extends Controller
     {
         $laboratories = Laboratory::where('external',0)->orderBy('name')->get();
         $permissions = Permission::OrderBy('name')->get();
-        return view('users.edit', compact('user','permissions','laboratories'));
+
+        $env_communes = array_map('trim',explode(",",env('COMUNAS')));
+        $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
+
+        $establishments_user = EstablishmentUser::where('user_id', $user->id)->get();
+
+        $establishment_selected = array();
+        foreach($establishments_user as $key => $establishment_user){
+          $establishment_selected[$key] = $establishment_user->establishment_id;
+        }
+
+        return view('users.edit', compact('user','permissions','laboratories', 'establishments', 'establishment_selected', 'establishments_user'));
     }
 
     /**
@@ -86,8 +119,45 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $user->fill($request->all());
+        // $user->fill($request->all());
+        $user->run = $request->input('run');
+        $user->dv = $request->input('dv');
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->laboratory_id = $request->input('laboratory_id');
+        $user->password = bcrypt($request->input('password'));
         $user->save();
+
+        /* ESTABLECIMIENTOS ACTUALES */
+        $establishments_user = EstablishmentUser::where('user_id', $user->id)->get();
+
+        $establishment_selected = array();
+        foreach($establishments_user as $key => $establishment_user){
+          $establishment_selected[$key] = intval($establishment_user->establishment_id);
+        }
+
+        /* ------------------------------------------------------------------ */
+
+        /* ESTABLECIMIENTOS EDIT */
+        $user_est = new User($request->All());
+        $new_establishment_user = array();
+        foreach ($user_est->establishment_id as $key => $id) {
+            $new_establishment_user[$key] = intval($id);
+        }
+
+        /* CONSULTO SI LOS ARRAY SON IGUALES */
+        $arraysAreEqual = ($establishment_selected == $new_establishment_user);
+        if($arraysAreEqual == false){
+            EstablishmentUser::where('user_id', $user->id)->delete();
+
+            foreach ($new_establishment_user as $key => $id) {
+                $establishment_user = new EstablishmentUser();
+
+                $establishment_user->establishment_id = $id;
+                $establishment_user->user_id = $user->id;
+                $establishment_user->save();
+            }
+        }
 
         $user->syncPermissions(
             is_array($request->input('permissions')) ? $request->input('permissions') : array()
