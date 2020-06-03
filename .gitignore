@@ -10,7 +10,7 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-.idea/
+.idea
 composer.json
 composer.lock
 .gitignore
