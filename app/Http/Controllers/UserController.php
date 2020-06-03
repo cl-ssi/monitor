@@ -104,7 +104,7 @@ class UserController extends Controller
 
         $establishment_selected = array();
         foreach($establishments_user as $key => $establishment_user){
-          $establishment_selected[$key] = $establishment_user->establishment_id;
+            $establishment_selected[$key] = $establishment_user->establishment_id;
         }
 
         return view('users.edit', compact('user','permissions','laboratories', 'establishments', 'establishment_selected', 'establishments_user'));
@@ -125,7 +125,7 @@ class UserController extends Controller
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->laboratory_id = $request->input('laboratory_id');
-        $user->password = bcrypt($request->input('password'));
+        //$user->password = bcrypt($request->input('password'));
         $user->save();
 
         /* ESTABLECIMIENTOS ACTUALES */
