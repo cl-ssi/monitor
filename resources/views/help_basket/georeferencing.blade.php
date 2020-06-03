@@ -19,78 +19,88 @@
 <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
 
 <script type="text/javascript">
-    // Inicialiar comunicación 
-    var platform = new H.service.Platform({
-        'apikey': '5mKawERqnzL1KMnNIt4n42gAV8eLomjQPKf5S5AAcZg'
-    });
+$( document ).ready(function() {
+    
 
-    var defaultLayers = platform.createDefaultLayers();
+        /**
+ * Creates a new marker and adds it to a group
+ * @param {H.map.Group} group       The group holding the new marker
+ * @param {H.geo.Point} coordinate  The location of the marker
+ * @param {String} html             Data associated with the marker
+ */
+function addMarkerToGroup(group, coordinate, html) {
+  var marker = new H.map.Marker(coordinate);
+  // add custom data to the marker
+  marker.setData(html);
+  group.addObject(marker);
+}
 
-    //Step 2: initialize a map - this map is centered over Europe
-    var map = new H.Map(document.getElementById('map'),
-        defaultLayers.vector.normal.map, {
-            center: {
-                lat: {{ env('LATITUD') }},
-                lng: {{ env('LONGITUD') }}
-            },
-            zoom: 12.7,
-            pixelRatio: window.devicePixelRatio || 1
-        });
-    // add a resize listener to make sure that the map occupies the whole container
-    window.addEventListener('resize', () => map.getViewPort().resize());
+/**
+ * Add two markers showing the position of Liverpool and Manchester City football clubs.
+ * Clicking on a marker opens an infobubble which holds HTML content related to the marker.
+ * @param  {H.Map} map      A HERE Map instance within the application
+ */
+function addInfoBubble(map) {
+  var group = new H.map.Group();
 
-    //Step 3: make the map interactive
-    // MapEvents enables the event system
-    // Behavior implements default interactions for pan/zoom (also on mobile touch environments)
-    var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
-
-    // Create the default UI components
-    var ui = H.ui.UI.createDefault(map, defaultLayers);
-
-
-
-
-    // Create a marker using the previously instantiated icon:
-    //var marker = new H.map.Marker({ lat: '-20.22123000', lng: '-70.15085000' }, { icon: iconBlue });
-
-
-
-    var svgMarkupGreen = '<svg width="10" height="10" ' +
+  map.addObject(group);
+  var svgMarkupRed = '<svg width="10" height="10" ' +
         'xmlns="http://www.w3.org/2000/svg">' +
-        '<rect stroke="white" fill="green" x="1" y="1" width="22" ' +
+        '<rect stroke="white" fill="red" x="1" y="1" width="22" ' +
         'height="22" /><text x="12" y="18" font-size="12pt" ' +
         'font-family="Arial" font-weight="bold" text-anchor="middle" ' +
         'fill="white"></text></svg>';
-    var iconGreen = new H.map.Icon(svgMarkupGreen);
 
-    @foreach($helpbaskets as $helpbasket)
-    var latitude;
-    var longitude;
-    latitude ='{{$helpbasket->latitude}}';
-    longitude ='{{$helpbasket->longitude}}';
-    var marker = new H.map.Marker({ lat: latitude, lng: longitude}, { icon: iconGreen }  );
-    
-    map.addObject(marker);
-    
-    var content = "";
-    
-    content = content + "<b>{{$helpbasket->fullName}}</b><br/> {{$helpbasket->identifier}}<br/> Entregado el: {{$helpbasket->created_at}}";
+  // add 'tap' event listener, that opens info bubble, to the group
+  group.addEventListener('tap', function (evt) {
+    // event target is the marker itself, group is a parent event target
+    // for all objects that it contains
+    var bubble =  new H.ui.InfoBubble(evt.target.getGeometry(), {
+      // read custom data
+      content: evt.target.getData()
+    });
+    // show info bubble
+    ui.addBubble(bubble);
+  }, false);
+  @foreach($helpbaskets as $helpbasket)
+  addMarkerToGroup(group, {lat:{{$helpbasket->latitude}}, lng:{{$helpbasket->longitude}}, svgMarkupRed}  ,
+  "<b>{{$helpbasket->fullName}}</b><br/> {{$helpbasket->identifier}}<br/> Entregado el: {{$helpbasket->created_at}}");  
+  @endforeach
+}
 
-    var bubble;
-    marker.addEventListener('pointerenter', function(evt) {
-        bubble = new H.ui.InfoBubble({
-            lat: latitude,
-            lng: longitude
-        }, {
-            content: content
-        });
-        ui.addBubble(bubble);
-    }, false);
-    marker.addEventListener('pointerleave', function(evt) {
-        bubble.close();
-    }, false);
+/**
+ * Boilerplate map initialization code starts below:
+ */
 
-    @endforeach
+// initialize communication with the platform
+// In your own code, replace variable window.apikey with your own apikey
+var platform = new H.service.Platform({
+    'apikey': '5mKawERqnzL1KMnNIt4n42gAV8eLomjQPKf5S5AAcZg'
+});
+var defaultLayers = platform.createDefaultLayers();
+
+// initialize a map - this map is centered over Europe
+var map = new H.Map(document.getElementById('map'),
+  defaultLayers.vector.normal.map,{
+  center: {lat: {{ env('LATITUD') }}, lng: -{{ env('LONGITUD') }} },
+  
+  zoom: 12.7,
+  pixelRatio: window.devicePixelRatio || 1
+});
+// add a resize listener to make sure that the map occupies the whole container
+window.addEventListener('resize', () => map.getViewPort().resize());
+
+// MapEvents enables the event system
+// Behavior implements default interactions for pan/zoom (also on mobile touch environments)
+var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+
+// create default UI with layers provided by the platform
+var ui = H.ui.UI.createDefault(map, defaultLayers);
+
+// Now use the map as required...
+addInfoBubble(map);
+
+});    
 </script>
 
 @endsection

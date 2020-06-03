@@ -15,7 +15,8 @@ class CreateHelpBasketsTable extends Migration
     {
         Schema::create('help_baskets', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('run')->unique()->nullable();
+            //se pone ahora nullable por si se borra con soft deleted hay error
+            $table->integer('run')->nullable();
             $table->char('dv',1)->nullable();
 
             $table->string('other_identification')->nullable();
@@ -28,6 +29,8 @@ class CreateHelpBasketsTable extends Migration
             $table->string('address')->nullable();
             $table->string('number')->nullable();
             $table->string('department')->nullable();
+
+            $table->string('telephone')->nullable();
 
             $table->decimal('latitude', 11, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
