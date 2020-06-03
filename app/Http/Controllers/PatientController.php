@@ -296,7 +296,7 @@ class PatientController extends Controller
             'Apellido Materno',
             'Genero',
             'Fecha Nacimiento',
-            'Coumuna',
+            'Comuna',
             'Direccion',
             'Latitud',
             'Longitud'
