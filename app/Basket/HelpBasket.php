@@ -13,6 +13,7 @@ class HelpBasket extends Model
         'run','dv','other_identification',
         'name','fathers_family','mothers_family',
         'street_type','address','number','department',
+        'telephone',
         'latitude','longitude',
         'photo', 'photoid',
         'observations',

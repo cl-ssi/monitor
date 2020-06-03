@@ -29,6 +29,8 @@ class CreateHelpBasketsTable extends Migration
             $table->string('number')->nullable();
             $table->string('department')->nullable();
 
+            $table->string('telephone')->nullable();
+
             $table->decimal('latitude', 11, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
 
