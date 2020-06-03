@@ -15,7 +15,7 @@ class CreateHelpBasketsTable extends Migration
     {
         Schema::create('help_baskets', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('run')->unique()->nullable();
+            $table->integer('run')->nullable();
             $table->char('dv',1)->nullable();
 
             $table->string('other_identification')->nullable();
