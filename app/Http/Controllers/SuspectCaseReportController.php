@@ -17,7 +17,7 @@ use App\Region;
 class SuspectCaseReportController extends Controller
 {
     public function positives() {
-        $bookings = Booking::where('status','Residencia Sanitaria')
+        $bookings = Booking::where('status','Residencia Sanitaria')->whereNull('real_to')
                     ->whereHas('patient', function ($q) {
                         $q->where('status','Residencia Sanitaria');
                     })->get();

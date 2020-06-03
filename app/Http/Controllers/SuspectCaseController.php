@@ -10,6 +10,7 @@ use App\Demographic;
 use App\Log;
 use App\File;
 use App\User;
+use App\EstablishmentUser;
 use App\Region;
 use App\Commune;
 use App\Laboratory;
@@ -98,6 +99,78 @@ class SuspectCaseController extends Controller
                                       ->paginate(200);//->appends(request()->query());
         }
         return view('lab.suspect_cases.index', compact('suspectCases','request','suspectCasesTotal','laboratory'));
+    }
+
+    public function ownIndex(request $request, Laboratory $laboratory){
+        //$lab_id = $request->input('lab_id');
+
+
+        /*                      Establishment del usuario                     */
+        $establishments_user = EstablishmentUser::where('user_id', Auth::user()->id)->get();
+
+        $establishment_selected = array();
+        foreach($establishments_user as $key => $establishment_user){
+          $establishment_selected[$key] = $establishment_user->establishment_id;
+        }
+        $establishments = implode (", ", $establishment_selected);
+        /* ------------------------------------------------------------------ */
+
+        if ($request->get('positivos') == "on") {
+            $positivos = "positive";
+        } else {$positivos = NULL;}
+
+        if ($request->get('negativos') == "on") {
+            $negativos = "negative";
+        } else {$negativos = NULL;}
+
+        if ($request->get('pendientes') == "on") {
+            $pendientes = "pending";
+        } else{$pendientes = NULL;}
+
+        if ($request->get('rechazados') == "on") {
+            $rechazados = "rejected";
+        } else{$rechazados = NULL;}
+
+        if ($request->get('indeterminados') == "on") {
+            $indeterminados = "undetermined";
+        }else{$indeterminados = NULL;}
+
+        $text = $request->get('text');
+
+        if($laboratory->id) {
+            //$laboratory = Laboratory::find($lab->id);
+            $suspectCasesTotal = SuspectCase::where('laboratory_id',$laboratory->id)->latest('id')->get();
+
+            $suspectCases = SuspectCase::latest('id')
+                                      ->where('laboratory_id',$laboratory->id)
+                                      ->whereHas('patient', function($q) use ($text){
+                                              $q->Where('name', 'LIKE', '%'.$text.'%')
+                                                ->orWhere('fathers_family','LIKE','%'.$text.'%')
+                                                ->orWhere('mothers_family','LIKE','%'.$text.'%')
+                                                ->orWhere('run','LIKE','%'.$text.'%');
+                                      })
+                                      ->whereNotNull('laboratory_id')
+                                      ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
+                                      ->whereIn('establishment_id', $establishment_selected)
+                                      ->paginate(200);//->appends(request()->query());
+        }
+        else {
+            $laboratory = null;
+            $suspectCasesTotal = SuspectCase::whereNotNull('laboratory_id')->latest('id')->get();
+
+            $suspectCases = SuspectCase::latest('id')
+                                      ->whereHas('patient', function($q) use ($text){
+                                              $q->Where('name', 'LIKE', '%'.$text.'%')
+                                                ->orWhere('fathers_family','LIKE','%'.$text.'%')
+                                                ->orWhere('mothers_family','LIKE','%'.$text.'%')
+                                                ->orWhere('run','LIKE','%'.$text.'%');
+                                      })
+                                      ->whereNotNull('laboratory_id')
+                                      ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
+                                      ->whereIn('establishment_id', $establishment_selected)
+                                      ->paginate(200);//->appends(request()->query());
+        }
+        return view('lab.suspect_cases.ownIndex', compact('suspectCases','request','suspectCasesTotal','laboratory', 'establishment_selected'));
     }
 
     /**
