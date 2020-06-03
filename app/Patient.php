@@ -134,7 +134,7 @@ class Patient extends Model //Authenticatable
     }
 
     /**
-     * Retorna pacientes positivos con dirección
+     * Retorna pacientes positivos con dirección en REGION
      * @return Patient[]|Builder[]|Collection
      */
     static function positivesList(){
