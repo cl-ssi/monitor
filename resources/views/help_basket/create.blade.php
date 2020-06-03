@@ -86,7 +86,7 @@
 
     <div class="form-row">
 
-        <fieldset class="form-group col-12 col-md-3">
+        <fieldset class="form-group col-8 col-md-3">
             <label for="comunas">Comuna *</label>
             <select class="form-control geo" name="commune_id" id="comunas" required>
                 <option value="">Seleccione la comuna</option>
@@ -94,6 +94,11 @@
                 <option value="{{$commune->id}}">{{$commune->name}}</option>
                 @endforeach
             </select>
+        </fieldset>
+
+        <fieldset class="form-group col-4 col-md-3">
+            <label for="for_department">Telefono.</label>
+            <input type="text" class="form-control" name="telephone" id="for_telephone">
         </fieldset>
     </div>
 
@@ -113,7 +118,7 @@
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_photoid">Foto Cédula de Identidad</label>
             <div class="custom-file">
-                <input type="file" name="photoid" class="custom-file-input" id="customFileLang" lang="es">
+                <input type="file" name="photoid" class="custom-file-input size" id="customFileLang" lang="es" accept="image/*">
                 <label class="custom-file-label" for="customFileLang">Seleccionar Foto Cédula</label>
             </div>
         </fieldset>
@@ -124,7 +129,7 @@
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_photo">Foto Frontal</label>
             <div class="custom-file">
-                <input type="file" name="photo" class="custom-file-input" id="customFileLang" lang="es">
+                <input type="file" name="photo" class="custom-file-input size" id="customFileLang" lang="es" accept="image/*">
                 <label class="custom-file-label" for="customFileLang">Seleccionar Foto Frontal</label>
             </div>
         </fieldset>
@@ -216,6 +221,17 @@
             }
 
         });
+    
+
+    
+    /*$('.size').bind('change', function() {
+            alert('El tamaño es: ' + this.files[0].size/1024/1024 + "MB");
+    });*/
+    
+
+
+
+
 
 
     });

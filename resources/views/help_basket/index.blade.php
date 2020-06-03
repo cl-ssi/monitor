@@ -19,6 +19,7 @@
             <th>Nombre Completo</th>
             <th>Dirección</th>
             <th>Comuna</th>
+            <th>Fono</th>
             <th>Entregado Por</th>
             <th>Entregado el</th>
             <th>Editar</th>            
@@ -33,6 +34,7 @@
             <td>{{$helpBasket->fullName}}</td>
             <td>{{$helpBasket->address}} {{$helpBasket->number}} {{$helpBasket->department}} </td>
             <td>{{$helpBasket->commune->name}}</td>
+            <td>{{$helpBasket->telephone}}</td>
             <td>{{$helpBasket->user->name}}</td>
             <td>{{$helpBasket->updated_at->format('d-m-Y H:i')}}</td>
             <td>
