@@ -17,36 +17,37 @@
 
     <a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a>
 
+    <div class="table-responsive">
+        <table class="table table-sm table-bordered" id="tabla_basket">
+            <thead>
+                <tr>
+                    <th nowrap>Run o (ID)</th>
+                    <th nowrap>Nombre Completo</th>
+                    <th nowrap>Dirección</th>
+                    <th nowrap>Comuna</th>
+                    <th nowrap>Fono</th>
+                    <th nowrap>Entregado Por</th>
+                    <th nowrap>Entregado el</th>
+                    <th nowrap>Observaciones</th>
+                </tr>
+            </thead>
 
-    <table class="table table-sm table-bordered" id="tabla_basket">
-        <thead>
-            <tr>
-                <th nowrap>Run o (ID)</th>
-                <th nowrap>Nombre Completo</th>
-                <th nowrap>Dirección</th>
-                <th nowrap>Comuna</th>
-                <th nowrap>Fono</th>
-                <th nowrap>Entregado Por</th>
-                <th nowrap>Entregado el</th>
-                <th nowrap>Observaciones</th>
-            </tr>
-        </thead>
-
-    <tbody>
-        @foreach($helpbaskets as $helpBasket)
-        <tr>
-            <td nowrap>{{$helpBasket->identifier}}</td>
-            <td nowrap>{{$helpBasket->fullName}}</td>
-            <td nowrap>{{$helpBasket->address}} {{$helpBasket->number}} {{$helpBasket->department}} </td>
-            <td nowrap>{{$helpBasket->commune->name}}</td>
-            <td nowrap>{{$helpBasket->telephone}}</td>
-            <td nowrap>{{$helpBasket->user->name}}</td>
-            <td nowrap>{{$helpBasket->updated_at->format('d-m-Y H:i')}}</td>
-            <td nowrap>{{$helpBasket->observations}}</td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+            <tbody>
+                @foreach($helpbaskets as $helpBasket)
+                <tr>
+                    <td nowrap>{{$helpBasket->identifier}}</td>
+                    <td nowrap>{{$helpBasket->fullName}}</td>
+                    <td nowrap>{{$helpBasket->address}} {{$helpBasket->number}} {{$helpBasket->department}} </td>
+                    <td nowrap>{{$helpBasket->commune->name}}</td>
+                    <td nowrap>{{$helpBasket->telephone}}</td>
+                    <td nowrap>{{$helpBasket->user->name}}</td>
+                    <td nowrap>{{$helpBasket->updated_at->format('d-m-Y H:i')}}</td>
+                    <td nowrap>{{$helpBasket->observations}}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 
 @endsection
 
