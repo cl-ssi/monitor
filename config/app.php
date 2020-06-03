@@ -163,7 +163,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         //para poder hacer resize de imagen
-        Intervention\Image\ImageServiceProvider::class,
+        //Intervention\Image\ImageServiceProvider::class,
         
 
         /*
@@ -234,7 +234,7 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         //para poder hacer resize de imagen
-        'Image' => Intervention\Image\Facades\Image::class,
+        //'Image' => Intervention\Image\Facades\Image::class,
 
     ],
 
