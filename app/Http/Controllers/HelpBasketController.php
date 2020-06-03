@@ -88,6 +88,7 @@ class HelpBasketController extends Controller
                     $storage = $storage . '_id';
                     $ext = $request->file('photoid')->extension();
                     $imageName = $storage . "." . $ext;
+                    //genera la imagen 300 a 200
                     $image = Image::make($request->file('photoid'))->resize(300, 200);
                     Storage::disk('local')->put('help_baskets/' . $imageName, (string) $image->encode());
                     $helpbaket->photoid = 'help_baskets/' . $imageName;
@@ -100,6 +101,7 @@ class HelpBasketController extends Controller
                     // //$storage = $storage.'_id';
                     $ext = $request->file('photo')->extension();
                     $imageName = $storage . "." . $ext;
+                    //genera la imagen 300 a 200
                     $image = Image::make($request->file('photo'))->resize(300, 200);
                     $location = Storage::disk('local')->put('help_baskets/' . $imageName, (string) $image->encode());
                     $helpbaket->photo = 'help_baskets/' . $imageName;
