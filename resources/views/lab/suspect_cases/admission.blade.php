@@ -49,7 +49,7 @@
         <fieldset class="form-group col-6 col-md-3">
             <label for="for_birthday">Fecha Nacimiento</label>
             <input type="date" class="form-control" id="for_birthday"
-                name="birthday">
+                name="birthday" required>
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-1">

@@ -14,6 +14,9 @@
         <tr>
             <th>Nombre</th>
             <th>Externo</th>
+            <th>Webservice Minsal</th>
+            <th>Token Webservice</th>
+            <th>PDF automático</th>
             <th>Comuna</th>
             <th>Editar</th>
         </tr>
@@ -23,6 +26,9 @@
         <tr>
             <td>{{ $laboratory->name }}</td>
             <td>{{ ($laboratory->external == 1)? 'Si':'No' }}</td>
+            <td>{{ ($laboratory->minsal_ws == 1)? 'Si':'No' }}</td>
+            <td>{{ $laboratory->token_ws }}</td>
+            <td>{{ ($laboratory->pdf_generate == 1)? 'Si':'No' }}</td>
             <td>{{ $laboratory->commune->name }}</td>
             <td>
             <a href="{{ route('parameters.lab.edit', $laboratory) }}" class="btn btn-secondary float-left"><i class="fas fa-edit"></i></a>

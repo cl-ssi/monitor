@@ -18,6 +18,7 @@ use App\Establishment;
 use App\ReportBackup;
 use App\SampleOrigin;
 use App\Country;
+use App\WSMinsal;
 use Carbon\Carbon;
 use App\Mail\NewPositive;
 use Illuminate\Support\Facades\Mail;
@@ -27,6 +28,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\SuspectCasesExport;
 use App\Exports\HetgSuspectCasesExport;
@@ -210,25 +212,6 @@ class SuspectCaseController extends Controller
     //   // $response_json = $response->getBody()->getContents();
     //   // $array = json_decode($response_json, true);
     //   // dd($array);
-    //
-    //
-    //   // //guarda información
-    //   // $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/a3772090-34dd-d3e3-658e-c75b6ebd211a', [
-    //   //     'multipart' => [
-    //   //         [
-    //   //             'name'     => 'upfile',
-    //   //             'contents' => fopen('C:\Users\sick_\Desktop\pdf.pdf', 'r')
-    //   //         ],
-    //   //         [
-    //   //             'name'     => 'parametros',
-    //   //             'contents' => '{"id_muestra":"43","resultado":"Positivo"}'
-    //   //         ]
-    //   //     ],
-    //   //     'headers'  => [ 'ACCESSKEY' => 'AK026-88QV-000QAJ3JQ-0000004IX2NE']
-    //   // ]);
-    //   // $response_json = $response->getBody()->getContents();
-    //   // $array = json_decode($response_json, true);
-    //   // dd($array);
 
         $regions = Region::orderBy('id','ASC')->get();
         $communes = Commune::orderBy('id','ASC')->get();
@@ -242,25 +225,20 @@ class SuspectCaseController extends Controller
 
     public function reception(Request $request, SuspectCase $suspectCase)
     {
-        ########## webservice MINSAL ##########
-        // if (env('MINSAL_WS_BOOLEAN') == 1) {
-        //     $client = new \GuzzleHttp\Client();
-        //
-        //     $minsal_ws_id = $suspectCase->minsal_ws_id;
-        //     if($minsal_ws_id == NULL){
-        //       session()->flash('info', 'No se puede recepcionar la muestra '. $suspectCase->id . ', ya que no se ha subido a sistema MINSAL.' );
-        //       return redirect()->back();
+        // ########## webservice MINSAL ##########
+        // // verificar que esté activida la opción para webservice minsal
+        // if (env('WS_MINSAL')) {
+        //     if (Auth::user()->laboratory->minsal_ws) {
+        //         $minsal_ws_id = $suspectCase->minsal_ws_id;
+        //         if($minsal_ws_id != NULL){
+        //             $response = WSMinsal::recepciona_muestra($minsal_ws_id);
+        //             if($response['status'] == 0){
+        //                 session()->flash('warning', 'No se recepcionó muestra - Error webservice minsal: <h3>' . $response['msg'] . '</h3>');
+        //                 return redirect()->back();
+        //             }
+        //         }
         //     }
-        //
-        //     $response = $client->request('POST', 'https://tomademuestras.openagora.cl/ws/27f9298d-ead4-1746-8356-cc054f245118', [
-        //         'form_params' => ['parametros' => '{"id_muestra":"' . $minsal_ws_id .'"}'],
-        //         'headers'  => [ 'ACCESSKEY' => 'AK026-88QV-000QAKZQA-000000AR5SLP']
-        //     ]);
-        //     $response_json = $response->getBody()->getContents();
-        //     $array = json_decode($response_json, true);
-        //     dd($array);
         // }
-
 
 
         //recepciona en sistema
@@ -349,79 +327,54 @@ class SuspectCaseController extends Controller
      */
     public function storeAdmission(Request $request)
     {
-        ########## webservice MINSAL ##########
-        // if (env('MINSAL_WS_BOOLEAN') == 1) {
-        //     //obtiene proximo id suspect case
-        //     $NextsuspectCase = SuspectCase::max('id');
-        //     $NextsuspectCase += 1;
-        //     $NextsuspectCase = 14;
+        // ########## webservice MINSAL ##########
+        // $minsal_ws_id = NULL;
+        // if (env('WS_MINSAL')) {
         //
-        //     // webservices MINSAL
-        //     if (env('APP_ENV') == 'local') {
-        //       $client = new \GuzzleHttp\Client();
+        //     //verificar que la dependencia del establecimiento sea municipal o del servicio de salud
+        //     $establishment = Establishment::where('id',$request->establishment_id)->get();
+        //     $dependency = $establishment->first()->dependency;
+        //     if ($dependency == "Municipal" || $dependency == "Servicio de Salud") {
         //
-        //       if($request->gender == "female"){
-        //         $genero = "F";
-        //       }else{$genero = "M";}
-        //
-        //       $comuna = Commune::where('id',$request->commune_id)->get();
-        //       $commune_code_deis = $comuna->first()->code_deis;
-        //
-        //       $paciente_ext_paisorigen = '';
-        //       if ($request->run == "") {
-        //         $paciente_tipodoc = "PASAPORTE";
-        //         $country = Country::where('name',$request->nationality)->get();
-        //         $paciente_ext_paisorigen = $country->first()->id_minsal;
-        //       }else{$paciente_tipodoc = "RUN";}
-        //
-        //       $array = array(
-        //
-        //         //15637637 123456 - rut asociado a admin
-        //         //Nro. de registro -	44151 - clave: 123456
-        //         'raw' => array('codigo_muestra_cliente' => $NextsuspectCase,
-        //                        'rut_responsable' => '15637637-K', //Auth::user()->run . "-" . Auth::user()->dv, //se va a enviar rut de enfermo del servicio
-        //                        'cod_deis' => '02-100', //$request->establishment_id
-        //                        'rut_medico' => '15637637-K',//$request->run_medic,
-        //                        'paciente_run' => $request->run,
-        //                        'paciente_dv' => $request->dv,
-        //                        'paciente_nombres' => $request->name,
-        //                        'paciente_ap_mat' => $request->fathers_family,
-        //                        'paciente_ap_pat' => $request->mothers_family,
-        //                        'paciente_fecha_nac' => $request->birthday,
-        //                        'paciente_comuna' => $commune_code_deis,
-        //                        'paciente_direccion' => $request->address . " " . $request->number,
-        //                        'paciente_telefono' => $request->telephone,
-        //                        'paciente_tipodoc' => $paciente_tipodoc,
-        //                        'paciente_ext_paisorigen' => $paciente_ext_paisorigen,
-        //                        'paciente_pasaporte' => $request->other_identification,
-        //                        'paciente_sexo' => $genero,
-        //                        'paciente_prevision' => 'FONASA', //fijo por el momento
-        //                        'fecha_muestra' => $request->sample_at,
-        //                        'tecnica_muestra' => 'RT-PCR', //fijo
-        //                        'tipo_muestra' => $request->sample_type
-        //                      )
-        //       );
-        //
-        //       $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/328302d8-0ba3-5611-24fa-a7a2f146241f', [
-        //             'json' => $array,
-        //             'headers'  => [ 'ACCESSKEY' => env('MINSAL_WS_TOKEN')]
-        //       ]);
-        //
-        //       //respuesta de servidor
-        //       $ws_response = "";
-        //       $minsal_ws_id = NULL;
-        //       if(var_export($response->getStatusCode(), true) == 200){
-        //         $array = json_decode($response->getBody()->getContents(), true);
-        //         if(array_key_exists('error', $array)){
-        //           session()->flash('warning', 'No se registró muestra - Error webservice minsal: <h3>' . $array['error'] . '</h3>');
-        //           return redirect()->back();
+        //         // verificar que el laboratorio vinculado a usuario esté autorizado para envío de webservice
+        //         if (Auth::user()->laboratory) {
+        //             if (Auth::user()->laboratory->minsal_ws) {
+        //                 $response = WSMinsal::crea_muestra($request);
+        //             }
         //         }else{
-        //           $minsal_ws_id = $array[0]['id_muestra'];
-        //           $ws_response = "Se ha creado muestra " . $minsal_ws_id ." en MINSAL";
+        //             $response = WSMinsal::crea_muestra($request);
         //         }
-        //       }
+        //
+        //         //respuesta ws crear muestra
+        //         if($response['status'] == 0){
+        //             session()->flash('warning', 'No se registró muestra - Error webservice minsal: <h3>' . $response['msg'] . '</h3>');
+        //             return redirect()->back();
+        //         }else{
+        //             $minsal_ws_id = $response['msg'];
+        //             if (Auth::user()->laboratory) {
+        //                 if (Auth::user()->laboratory->minsal_ws) {
+        //                     $response2 = WSMinsal::recepciona_muestra($minsal_ws_id);
+        //                 }
+        //             }
+        //         }
+        //
+        //         //respuesta ws de recepción
+        //         if (Auth::user()->laboratory) {
+        //             if (Auth::user()->laboratory->minsal_ws) {
+        //                 if($response2['status'] == 0){
+        //                     session()->flash('warning', 'No se recepcionó muestra - Error webservice minsal: <h3>' . $response2['msg'] . '</h3>');
+        //                     return redirect()->back();
+        //                 }
+        //             }
+        //         }
         //     }
         // }
+
+
+
+
+
+
 
 
 
@@ -456,7 +409,7 @@ class SuspectCaseController extends Controller
             $suspectCase->receptor_id = Auth::id();
         }
 
-        //$suspectCase->minsal_ws_id = $minsal_ws_id;
+        // $suspectCase->minsal_ws_id = $minsal_ws_id;
 
         $patient->suspectCases()->save($suspectCase);
 
@@ -488,7 +441,14 @@ class SuspectCaseController extends Controller
         $log->new = $suspectCase;
         $log->save();
 
-        session()->flash('success', 'Se ha creado el caso número: <h3>' . $suspectCase->id );
+        // if ($minsal_ws_id == NULL) {
+        //     session()->flash('success', 'Se ha creado el caso número: <h3>' . $suspectCase->id . '</h3>');
+        // }else {
+        //     session()->flash('success', 'Se ha creado el caso número: <h3>' . $suspectCase->id . '</h3> <br /> Número caso Minsal: ' . $minsal_ws_id);
+        // }
+
+        session()->flash('success', 'Se ha creado el caso número: <h3>' . $suspectCase->id . '</h3>');
+
         return redirect()->back();
     }
 
@@ -534,6 +494,34 @@ class SuspectCaseController extends Controller
      */
     public function update(Request $request, SuspectCase $suspectCase)
     {
+        // // dd(Input::all());
+        // // dd($request->forfile[0]);
+        // // dd($request->forfile[0]->getPath(), $request->file('forfile')[0]->getRealPath(), $request->forfile[0]->getClientOriginalName());
+        // // dd($request->all(),$request->file('forfile')[0]);
+        //
+        // //######## webservice minsal ############
+        // // webservices MINSAL
+        // // if (env('APP_ENV') == 'local') {
+        //
+        //     // verificar que esté activida la opción para webservice minsal
+        //     if (env('WS_MINSAL')) {
+        //
+        //         //se verifica que se cambia el estado
+        //         if($request->pscr_sars_cov_2 != 'pending'){
+        //
+        //             //si tiene un codigo minsal
+        //             if ($suspectCase->minsal_ws_id != NULL) {
+        //
+        //                 $response = WSMinsal::resultado_muestra($request, $suspectCase->minsal_ws_id);
+        //                 if($response['status'] == 0){
+        //                     session()->flash('warning', 'No se envió resultado muestra - Error webservice minsal: <h3>' . $response['msg'] . '</h3>');
+        //                     return redirect()->back();
+        //                 }
+        //             }
+        //         }
+        //     }
+        // // }
+
         $log = new Log();
         $log->old = clone $suspectCase;
 
