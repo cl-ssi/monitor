@@ -67,7 +67,7 @@ class SuspectCase extends Model
             case 'positive': return 'Positivo'; break;
             case 'negative': return 'Negativo'; break;
             case 'undetermined': return 'Indeterminado'; break;
-            case 'rejected': return 'Rechazado'; break;
+            case 'rejected': return 'Muestra no apta'; break;
         }
     }
 
