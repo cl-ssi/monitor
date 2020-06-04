@@ -80,7 +80,6 @@ class WSMinsal extends Model
             $response = ['status' => 1, 'msg' => $array[0]['id_muestra']];
 
         } catch (RequestException $e) {
-            dd($e->getResponse());
             $response = $e->getResponse();
             $responseBodyAsString = $response->getBody()->getContents();
             $decode = json_decode($responseBodyAsString);
@@ -94,7 +93,7 @@ class WSMinsal extends Model
 
     public static function recepciona_muestra(SuspectCase $SuspectCase) {
 
-        $minsal_ws_id = $SuspectCase->minsal_ws_id;
+        $minsal_ws_id = 99999999;//$SuspectCase->minsal_ws_id;
         $response = [];
         $client = new \GuzzleHttp\Client();
         $array = array('raw' => array('id_muestra' => $minsal_ws_id));
@@ -107,7 +106,6 @@ class WSMinsal extends Model
              $response = ['status' => 1, 'msg' => 'OK'];
 
         } catch (RequestException $e) {
-            dd($e->getResponse());
             $response = $e->getResponse();
             $responseBodyAsString = $response->getBody()->getContents();
             $decode = json_decode($responseBodyAsString);
@@ -181,7 +179,6 @@ class WSMinsal extends Model
             $response = ['status' => 1, 'msg' => 'OK'];
 
         } catch (RequestException $e) {
-            dd($e->getResponse());
             $response = $e->getResponse();
             $responseBodyAsString = $response->getBody()->getContents();
             $decode = json_decode($responseBodyAsString);
