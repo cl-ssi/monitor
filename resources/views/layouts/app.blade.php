@@ -86,9 +86,15 @@
 
                                 <div class="dropdown-divider"></div>
 
+                                @can('SuspectCase: own')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.ownIndex') }}?text=&pendientes=on">Mis exámenes</a>
+                                @endcan
+
+                                <div class="dropdown-divider"></div>
+
                                 @can('SuspectCase: list')
                                 @php
-                                    $labs = App\Laboratory::where('external',0)->get();
+                                $labs = App\Laboratory::where('external',0)->get();
                                 @endphp
 
                                 @foreach($labs as $lab)
@@ -97,10 +103,6 @@
 
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.index') }}?text=&pendientes=on">Todos los exámenes</a>
-                                @endcan
-
-                                @can('SuspectCase: own')
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.ownIndex') }}?text=&pendientes=on">Mis exámenes</a>
                                 @endcan
 
                                 <div class="dropdown-divider"></div>
@@ -122,7 +124,9 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
                                 <a class="dropdown-item" href="{{ route('lab.exams.covid19.index') }}">Examenes externos</a>
-
+                                @can('Inmuno Test: list')
+                                <a class="dropdown-item" href="{{ route('lab.inmuno_tests.index') }}">Inmunoglobulinas</a>
+                                @endcan
                             </div>
                         </li>
                         @endcan
