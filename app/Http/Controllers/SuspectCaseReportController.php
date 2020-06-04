@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use App\Lab\Exam\Covid19;
 use App\Laboratory;
 use App\Region;
+use App\WSMinsal;
 
 class SuspectCaseReportController extends Controller
 {
@@ -115,6 +116,51 @@ class SuspectCaseReportController extends Controller
     }
 
 
+    /*****************************************************/
+    /*                    WS - Minsal                    */
+    /*****************************************************/
+    public function ws_minsal(Laboratory $laboratory)
+    {
+        $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+        $to = date("Y-m-d 20:59:59");
+
+        $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
+
+        $cases = SuspectCase::where('laboratory_id',$laboratory->id)
+                ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
+                ->whereNull('external_laboratory')
+                ->whereNULL('minsal_ws_id')
+                ->get()
+                ->sortByDesc('pscr_sars_cov_2_at');
+
+                // $cases = SuspectCase::where('id',13784)->get();
+                // dd($cases);
+
+        foreach ($cases as $key => $case) {
+            if ($case->patient->demographic && $case->files) {
+                $response = WSMinsal::crea_muestra($case);
+                if ($response['status'] == 0) {
+                    session()->flash('info', 'Error al subir muestra ' . $case->id . ' a MINSAL. ' . $response['msg']);
+                    return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory','externos'));
+                }else{
+                    $response = WSMinsal::recepciona_muestra($case);
+                    if ($response['status'] == 0) {
+                        session()->flash('info', 'Error al recepcionar muestra ' . $case->id . ' en MINSAL. ' . $response['msg']);
+                        return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory','externos'));
+                    }else{
+                        $response = WSMinsal::resultado_muestra($case);
+                        if ($response['status'] == 0) {
+                            session()->flash('info', 'Error al subir resultado de muestra ' . $case->id . ' en MINSAL. ' . $response['msg']);
+                            return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory','externos'));
+                        }
+                    }
+                }
+            }
+        }
+
+        session()->flash('success', 'Se ha subido la información a sistema MINSAL.');
+        return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory','externos'));
+    }
 
     /*****************************************************/
     /*                  REPORTE SEREMI                   */
