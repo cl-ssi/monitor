@@ -127,14 +127,6 @@ class WSMinsal extends Model
             }
         }
 
-        switch($this->pscr_sars_cov_2) {
-            case 'pending': return 'Pendiente'; break;
-            case 'positive': return 'Positivo'; break;
-            case 'negative': return 'Negativo'; break;
-            case 'undetermined': return 'Indeterminado'; break;
-            case 'rejected': return 'Rechazado'; break;
-        }
-
         $resultado = $suspectCase->covid19;
 
         $client = new \GuzzleHttp\Client();
