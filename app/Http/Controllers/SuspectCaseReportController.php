@@ -129,27 +129,19 @@ class SuspectCaseReportController extends Controller
         $cases = SuspectCase::where('laboratory_id',$laboratory->id)
                 ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
                 ->whereNull('external_laboratory')
-                // ->where('id',13786)
+                ->whereNotNull('minsal_ws_id')
                 ->get()
                 ->sortByDesc('pscr_sars_cov_2_at');
 
         foreach ($cases as $key => $case) {
             $response = WSMinsal::crea_muestra($case);
-        }
-
-        foreach ($cases as $key => $case) {
             $response = WSMinsal::recepciona_muestra($case->minsal_ws_id);
-        }
-
-        foreach ($cases as $key => $case) {
             $response = WSMinsal::resultado_muestra($case);
         }
 
         session()->flash('success', 'Se ha subido la información a sistema MINSAL.');
         return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory','externos'));
     }
-
-
 
     /*****************************************************/
     /*                  REPORTE SEREMI                   */
