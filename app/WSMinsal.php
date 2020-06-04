@@ -93,7 +93,6 @@ class WSMinsal extends Model
 
     public static function recepciona_muestra(SuspectCase $SuspectCase) {
 
-        $minsal_ws_id = 99999999;//$SuspectCase->minsal_ws_id;
         $response = [];
         $client = new \GuzzleHttp\Client();
         $array = array('raw' => array('id_muestra' => $minsal_ws_id));
