@@ -29,7 +29,7 @@ class Patient extends Model //Authenticatable
      */
     protected $fillable = [
         'id', 'run', 'dv', 'other_identification', 'name', 'fathers_family',
-        'mothers_family', 'gender', 'birthday', 'status'
+        'mothers_family', 'gender', 'birthday', 'status', 'deceased_at'
     ];
 
     /**
@@ -45,6 +45,8 @@ class Patient extends Model //Authenticatable
     protected $casts = [
         'birthday'  => 'date:Y-m-d'
     ];
+
+    protected $dates = [ 'deceased_at'];
 
 
     public function suspectCases() {
@@ -134,7 +136,7 @@ class Patient extends Model //Authenticatable
     }
 
     /**
-     * Retorna pacientes positivos con dirección
+     * Retorna pacientes positivos con dirección en COMUNA
      * @return Patient[]|Builder[]|Collection
      */
     static function positivesList(){
@@ -142,8 +144,16 @@ class Patient extends Model //Authenticatable
             $q->where('pscr_sars_cov_2','positive');
         })->with('suspectCases')->with('demographic')->get();
 
-        $region_not = array_diff( [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], [env('REGION')] );
-        $patients = $patients->whereNotIn('demographic.region_id', $region_not);
+        $communesAll = Commune::all('id');
+
+        foreach ($communesAll as $commune){
+            $communesAllArray[] = $commune->id;
+        }
+
+        $communes = array_map('trim',explode(",",env('COMUNAS')));
+        $commune_not = array_diff( $communesAllArray, $communes );
+
+        $patients = $patients->whereNotIn('demographic.commune_id', $commune_not);
 
         return $patients;
     }

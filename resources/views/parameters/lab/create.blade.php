@@ -28,7 +28,7 @@
         </fieldset>
 
         <fieldset class="form-group col-3 col-md-2">
-            <label for="for_external">Externo </label>
+            <label for="for_external">Externo</label>
             <select class="form-control" name="external" id="for_external" required>
                 <option value="">Seleccione Opción</option>
                 <option value="0">No</option>
