@@ -133,7 +133,8 @@ class SuspectCaseReportController extends Controller
                 ->get()
                 ->sortByDesc('pscr_sars_cov_2_at');
 
-                // $cases = SuspectCase::where('id',100)->get();
+                // $cases = SuspectCase::where('id',13784)->get();
+                // dd($cases);
 
         foreach ($cases as $key => $case) {
             $response = WSMinsal::crea_muestra($case);
