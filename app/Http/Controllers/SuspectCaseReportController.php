@@ -159,7 +159,7 @@ class SuspectCaseReportController extends Controller
         }
 
         session()->flash('success', 'Se ha subido la información a sistema MINSAL.');
-        return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory','externos'));
+        return redirect()->back();
     }
 
     /*****************************************************/
