@@ -138,17 +138,17 @@ class SuspectCaseReportController extends Controller
         foreach ($cases as $key => $case) {
             $response = WSMinsal::crea_muestra($case);
             if ($response['status'] == 0) {
-                session()->flash('info', 'Error al subir información a MINSAL. ' . $response['msg']);
+                session()->flash('info', 'Error al subir muestra ' . $case->id . ' a MINSAL. ' . $response['msg']);
                 return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory','externos'));
             }else{
                 $response = WSMinsal::recepciona_muestra($case);
                 if ($response['status'] == 0) {
-                    session()->flash('info', 'Error al recepcionar muestra en MINSAL. ' . $response['msg']);
+                    session()->flash('info', 'Error al recepcionar muestra ' . $case->id . ' en MINSAL. ' . $response['msg']);
                     return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory','externos'));
                 }else{
                     $response = WSMinsal::resultado_muestra($case);
                     if ($response['status'] == 0) {
-                        session()->flash('info', 'Error al subir resultado en MINSAL. ' . $response['msg']);
+                        session()->flash('info', 'Error al subir resultado de muestra ' . $case->id . ' en MINSAL. ' . $response['msg']);
                         return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory','externos'));
                     }
                 }
