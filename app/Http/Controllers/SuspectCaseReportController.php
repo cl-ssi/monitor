@@ -135,7 +135,7 @@ class SuspectCaseReportController extends Controller
 
         foreach ($cases as $key => $case) {
             $response = WSMinsal::crea_muestra($case);
-            $response = WSMinsal::recepciona_muestra($case->minsal_ws_id);
+            $response = WSMinsal::recepciona_muestra($case);
             $response = WSMinsal::resultado_muestra($case);
         }
 
