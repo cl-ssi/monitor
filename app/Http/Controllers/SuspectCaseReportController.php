@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use App\Lab\Exam\Covid19;
 use App\Laboratory;
 use App\Region;
+use App\WSMinsal;
 
 class SuspectCaseReportController extends Controller
 {
@@ -115,6 +116,40 @@ class SuspectCaseReportController extends Controller
                 ->whereNull('external_laboratory')
                 ->get()
                 ->sortByDesc('pscr_sars_cov_2_at');
+        return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory','externos'));
+    }
+
+
+    /*****************************************************/
+    /*                    WS - Minsal                    */
+    /*****************************************************/
+    public function ws_minsal(Laboratory $laboratory)
+    {
+        $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+        $to = date("Y-m-d 20:59:59");
+
+        $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
+
+        $cases = SuspectCase::where('laboratory_id',$laboratory->id)
+                ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
+                ->whereNull('external_laboratory')
+                ->where('id',13786)
+                ->get()
+                ->sortByDesc('pscr_sars_cov_2_at');
+
+        foreach ($cases as $key => $case) {
+            $response = WSMinsal::crea_muestra($case);
+        }
+
+        foreach ($cases as $key => $case) {
+            $response = WSMinsal::recepciona_muestra($case->minsal_ws_id);
+        }
+
+        foreach ($cases as $key => $case) {
+            $response = WSMinsal::resultado_muestra($case);
+        }
+
+        session()->flash('success', 'Se ha subido la información a sistema MINSAL.');
         return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory','externos'));
     }
 

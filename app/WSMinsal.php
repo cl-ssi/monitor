@@ -7,23 +7,18 @@ use Illuminate\Http\Request;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7;
-// use GuzzleHttp\Exception\ClientErrorResponseException;
-
-// use Illuminate\Support\Facades\Storage;
-// use Illuminate\Http\UploadedFile;
-// use Illuminate\Support\Facades\Auth;
-// use Illuminate\Support\Facades\Http;
-// use Illuminate\Support\Facades\DB;
-// use Illuminate\Support\Facades\Input;
 
 use App\SuspectCase;
 use App\Commune;
 use App\Country;
 
+use App\File;
+use Illuminate\Support\Facades\Storage;
+
 class WSMinsal extends Model
 {
-    public static function crea_muestra(Request $request) {
+
+    public static function crea_muestra(SuspectCase $SuspectCase) {
 
         $response = [];
         $client = new \GuzzleHttp\Client();
@@ -33,17 +28,17 @@ class WSMinsal extends Model
         // $NextsuspectCase = 27;
 
         // webservices MINSAL
-          if($request->gender == "female"){
+          if($SuspectCase->gender == "female"){
             $genero = "F";
           }else{$genero = "M";}
 
-          $comuna = Commune::where('id',$request->commune_id)->get();
+          $comuna = Commune::where('id',$SuspectCase->patient->demographic->commune_id)->get();
           $commune_code_deis = $comuna->first()->code_deis;
 
           $paciente_ext_paisorigen = '';
-          if ($request->run == "") {
+          if ($SuspectCase->patient->run == "") {
             $paciente_tipodoc = "PASAPORTE";
-            $country = Country::where('name',$request->nationality)->get();
+            $country = Country::where('name',$SuspectCase->patient->demographic->nationality)->get();
             $paciente_ext_paisorigen = $country->first()->id_minsal;
           }else{$paciente_tipodoc = "RUN";}
 
@@ -52,23 +47,23 @@ class WSMinsal extends Model
                            'rut_responsable' => '15980951-K', //Claudia Caronna //Auth::user()->run . "-" . Auth::user()->dv, //se va a enviar rut de enfermo del servicio
                            'cod_deis' => '02-100', //$request->establishment_id
                            'rut_medico' => '16350555-K', //Pedro Valjalo
-                           'paciente_run' => $request->run,
-                           'paciente_dv' => $request->dv,
-                           'paciente_nombres' => $request->name,
-                           'paciente_ap_mat' => $request->fathers_family,
-                           'paciente_ap_pat' => $request->mothers_family,
-                           'paciente_fecha_nac' => $request->birthday,
+                           'paciente_run' => $SuspectCase->patient->run,
+                           'paciente_dv' => $SuspectCase->patient->dv,
+                           'paciente_nombres' => $SuspectCase->patient->name,
+                           'paciente_ap_mat' => $SuspectCase->patient->fathers_family,
+                           'paciente_ap_pat' => $SuspectCase->patient->mothers_family,
+                           'paciente_fecha_nac' => $SuspectCase->patient->birthday,
                            'paciente_comuna' => $commune_code_deis,
-                           'paciente_direccion' => $request->address . " " . $request->number,
-                           'paciente_telefono' => $request->telephone,
+                           'paciente_direccion' => $SuspectCase->patient->demographic->address . " " . $SuspectCase->patient->demographic->number,
+                           'paciente_telefono' => $SuspectCase->patient->demographic->telephone,
                            'paciente_tipodoc' => $paciente_tipodoc,
                            'paciente_ext_paisorigen' => $paciente_ext_paisorigen,
-                           'paciente_pasaporte' => $request->other_identification,
+                           'paciente_pasaporte' => $SuspectCase->patient->other_identification,
                            'paciente_sexo' => $genero,
                            'paciente_prevision' => 'FONASA', //fijo por el momento
-                           'fecha_muestra' => $request->sample_at,
+                           'fecha_muestra' => $SuspectCase->sample_at,
                            'tecnica_muestra' => 'RT-PCR', //fijo
-                           'tipo_muestra' => $request->sample_type
+                           'tipo_muestra' => $SuspectCase->sample_type
                          )
           );
 
@@ -80,6 +75,8 @@ class WSMinsal extends Model
             ]);
 
             $array = json_decode($response->getBody()->getContents(), true);
+            $SuspectCase->minsal_ws_id = $array[0]['id_muestra'];
+            $SuspectCase->save();
             $response = ['status' => 1, 'msg' => $array[0]['id_muestra']];
 
         } catch (RequestException $e) {
@@ -118,51 +115,65 @@ class WSMinsal extends Model
 
 
 
-    public static function resultado_muestra(Request $request, $minsal_ws_id) {
-        // $response = [];
-        // $client = new \GuzzleHttp\Client();
-        // $array = array('raw' => array('id_muestra' => $minsal_ws_id));
-        //
-        // try {
-        //     $response = $client->request('POST', 'https://tomademuestras.api.openagora.org/27f9298d-ead4-1746-8356-cc054f245118', [
-        //           'json' => $array,
-        //           'headers'  => [ 'ACCESSKEY' => env('TOKEN_WS_MINSAL')]
-        //     ]);
-        //      $response = ['status' => 1, 'msg' => 'OK'];
-        //
-        // } catch (RequestException $e) {
-        //     $response = $e->getResponse();
-        //     $responseBodyAsString = $response->getBody()->getContents();
-        //     $decode = json_decode($responseBodyAsString);
-        //     $response = ['status' => 0, 'msg' => $decode->error];
-        // }
+    public static function resultado_muestra(SuspectCase $SuspectCase) {
 
-        $result = "";
-        if($request->pscr_sars_cov_2 == "positive"){$result = "Positivo";}
-        if($request->pscr_sars_cov_2 == "negative"){$result = "Negativo";}
-        if($request->pscr_sars_cov_2 == "rejected"){$result = "Rechazado";}
-        if($request->pscr_sars_cov_2 == "undetermined"){$result = "Indeterminado";}
+        $pdf = NULL;
+        if ($SuspectCase->laboratory) {
+            if ($SuspectCase->laboratory->pdf_generate) {
+                $case = $SuspectCase;
+                $pdf = \PDF::loadView('lab.results.result', compact('case'));
+            }
+        }
+
+        $resultado = NULL;
+        if ($SuspectCase->pscr_sars_cov_2 == "positive") {
+            $resultado = "Positivo";
+        }
+        if ($SuspectCase->pscr_sars_cov_2 == "negative") {
+            $resultado = "Negativo";
+        }
+        if ($SuspectCase->pscr_sars_cov_2 == "rejected") {
+            $resultado = "Muestra no apta";
+        }
+        if ($SuspectCase->pscr_sars_cov_2 == "undetermined") {
+            $resultado = "Indeterminado";
+        }
 
         //guarda información
         $client = new \GuzzleHttp\Client();
 
-        // dd($request);
         try {
-            $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/a3772090-34dd-d3e3-658e-c75b6ebd211a', [
-                'multipart' => [
-                    [
-                        'name'     => 'upfile',
-                        // 'contents' => fopen('C:\Users\sick_\Desktop\pdf.pdf', 'r')
-                        'contents' => fopen('' . $request->file('forfile')[0] . '', 'r'),
-                        'filename' => $request->forfile[0]->getClientOriginalName()
+            if ($pdf == NULL) {
+                $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/a3772090-34dd-d3e3-658e-c75b6ebd211a', [
+                    'multipart' => [
+                        [
+                            'name'     => 'upfile',
+                            'contents' => Storage::get($SuspectCase->files->first()->file),
+                            'filename' => $SuspectCase->files->first()->name
+                        ],
+                        [
+                            'name'     => 'parametros',
+                            'contents' => '{"id_muestra":"' . $SuspectCase->minsal_ws_id .'","resultado":"' . $resultado .'"}'
+                        ]
                     ],
-                    [
-                        'name'     => 'parametros',
-                        'contents' => '{"id_muestra":"' . $minsal_ws_id .'","resultado":"' . $result .'"}'
-                    ]
-                ],
-                'headers'  => [ 'ACCESSKEY' => env('TOKEN_WS_MINSAL')]
-            ]);
+                    'headers'  => [ 'ACCESSKEY' => env('TOKEN_WS_MINSAL')]
+                ]);
+            }else{
+                $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/a3772090-34dd-d3e3-658e-c75b6ebd211a', [
+                    'multipart' => [
+                        [
+                            'name'     => 'upfile',
+                            'contents' => $pdf->output(),
+                            'filename' => 'Resultado.pdf'
+                        ],
+                        [
+                            'name'     => 'parametros',
+                            'contents' => '{"id_muestra":"' . $SuspectCase->minsal_ws_id .'","resultado":"' . $resultado .'"}'
+                        ]
+                    ],
+                    'headers'  => [ 'ACCESSKEY' => env('TOKEN_WS_MINSAL')]
+                ]);
+            }
             $response = ['status' => 1, 'msg' => 'OK'];
 
         } catch (RequestException $e) {
@@ -171,18 +182,6 @@ class WSMinsal extends Model
             $decode = json_decode($responseBodyAsString);
             $response = ['status' => 0, 'msg' => $decode->error];
         }
-
-
-        // if(var_export($response->getStatusCode(), true) == 201){
-        //   $array = json_decode($response->getBody()->getContents(), true);
-        //   if(array_key_exists('errorXXXXX', $array)){
-        //     session()->flash('warning', 'No se registró resultado - Error webservice minsal: <h3>' . $array['errorXXXXX'] . '</h3>');
-        //     return redirect()->back();
-        //   }else{
-        //     $server_response = $array[0]['mensaje'];
-        //     // dd($server_response);
-        //   }
-        // }
 
         return $response;
     }

@@ -49,6 +49,21 @@
             </select>
         </fieldset>
 
+        <fieldset class="form-group col-4">
+            <label for="for_token_ws">Token</label>
+            <input type="text" class="form-control" name="token_ws" id="for_token_ws" 
+                placeholder="" autocomplete="off" value ="{{$laboratory->token_ws}}">
+        </fieldset>
+
+        <fieldset class="form-group col-2">
+            <label for="for_pdf_generate">PDF Automático</label>
+            <select class="form-control" name="pdf_generate" id="for_pdf_generate" required>
+                <option value="">Seleccione Opción</option>
+                <option value="1" {{ ($laboratory->pdf_generate == '1')?'selected':'' }} >Sí</option>
+                <option value="0" {{ ($laboratory->pdf_generate == '0')?'selected':'' }}>No</option>
+            </select>
+        </fieldset>
+
     </div>
 
 

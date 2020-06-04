@@ -48,6 +48,20 @@
             </select>
         </fieldset>
 
+        <fieldset class="form-group col-4">
+            <label for="for_token_ws">Token</label>
+            <input type="text" class="form-control" name="token_ws" id="for_token_ws" placeholder="" autocomplete="off">
+        </fieldset>
+
+        <fieldset class="form-group col-2">
+            <label for="for_pdf_generate">PDF Automático</label>
+            <select class="form-control" name="pdf_generate" id="for_pdf_generate" required>
+                <option value="">Seleccione Opción</option>
+                <option value="1">Sí</option>
+                <option value="0">No</option>
+            </select>
+        </fieldset>
+
     </div>
 
 

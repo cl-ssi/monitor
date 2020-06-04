@@ -15,6 +15,8 @@
             <th>Nombre</th>
             <th>Externo</th>
             <th>Webservice Minsal</th>
+            <th>Token Webservice</th>
+            <th>PDF automático</th>
             <th>Comuna</th>
             <th>Editar</th>
         </tr>
@@ -32,6 +34,14 @@
             </td>
             <td>
                 @if ($laboratory->minsal_ws == 1 )
+                Sí
+                @else
+                No
+                @endif
+            </td>
+            <td>{{ $laboratory->token_ws }}</td>
+            <td>
+                @if ($laboratory->pdf_generate == 1 )
                 Sí
                 @else
                 No

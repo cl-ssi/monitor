@@ -16,6 +16,8 @@ class LaboratorySeeder extends Seeder
         $lab->name = 'HETG';
         $lab->external = 0;
         $lab->minsal_ws = 1;
+        $lab->token_ws = "AK026-88QV-000QAQQCI-000000B8EJTK";
+        $lab->pdf_generate = 0;
         $lab->commune_id = 5;
         $lab->save();
 
@@ -23,6 +25,8 @@ class LaboratorySeeder extends Seeder
         $lab->name = 'UNAP';
         $lab->external = 0;
         $lab->minsal_ws = 1;
+        $lab->token_ws = "AK026-88QV-000QAQQCI-000000B8EJTK";
+        $lab->pdf_generate = 1;
         $lab->commune_id = 5;
         $lab->save();
 
@@ -30,6 +34,8 @@ class LaboratorySeeder extends Seeder
         $lab->name = 'Hospital Lucio Córdova';
         $lab->external = 1;
         $lab->minsal_ws = 0;
+        $lab->token_ws = NULL;
+        $lab->pdf_generate = 0;
         $lab->commune_id = 119;
         $lab->save();
     }

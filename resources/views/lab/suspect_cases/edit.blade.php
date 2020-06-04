@@ -204,7 +204,7 @@
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_file">Archivo</label>
             <div class="custom-file">
-                <input type="file" name="forfile[]" class="custom-file-input" id="forfile" lang="es" multiple>
+                <input type="file" name="forfile[]" class="custom-file-input" id="forfile" lang="es" multiple {{ ($suspectCase->laboratory->pdf_generate != 1)?'required':'' }}>
                 <label class="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
             </div>
             @if($suspectCase->files != null)
