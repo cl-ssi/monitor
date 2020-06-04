@@ -9,6 +9,18 @@
 
 <hr>
 
+@if(!$suspectCase->reception_at)
+    <h2 class="text-danger">Examen no recepcionado</h2>
+
+    @if(Auth::user()->laboratory)
+    <form method="POST" class="form-inline" action="{{ route('lab.suspect_cases.reception', $suspectCase) }}">
+        @csrf
+        @method('POST')
+        <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-inbox"></i></button>
+    </form>
+    @endif
+@endif
+
 <form method="POST" class="form-horizontal" action="{{ route('lab.suspect_cases.update', $suspectCase) }}" enctype="multipart/form-data">
     @csrf
     @method('PUT')
@@ -206,18 +218,6 @@
                 @endforeach
             @endif
         </fieldset>
-
-        @if(!$suspectCase->reception_at)
-            <h2 class="text-danger">Examen no recepcionado</h2>
-
-            @if(Auth::user()->laboratory)
-            <form method="POST" class="form-inline mb-3" action="{{ route('lab.suspect_cases.reception', $suspectCase) }}">
-                @csrf
-                @method('POST')
-                <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-inbox"></i> Recepcionar </button>
-            </form>
-            @endif
-        @endif
     </div>
 
     <hr>
