@@ -71,7 +71,7 @@ class WSMinsal extends Model
         try {
             $response = $client->request('POST', 'https://tomademuestras.api.openagora.org/328302d8-0ba3-5611-24fa-a7a2f146241f', [
                   'json' => $array,
-                  'headers'  => [ 'ACCESSKEY' => env('TOKEN_WS_MINSAL')]
+                  'headers'  => [ 'ACCESSKEY' => $SuspectCase->laboratory->token_ws]
             ]);
 
             $array = json_decode($response->getBody()->getContents(), true);
@@ -92,7 +92,9 @@ class WSMinsal extends Model
 
 
 
-    public static function recepciona_muestra($minsal_ws_id) {
+    public static function recepciona_muestra(SuspectCase $SuspectCase) {
+
+        $minsal_ws_id = $SuspectCase->minsal_ws_id;
         $response = [];
         $client = new \GuzzleHttp\Client();
         $array = array('raw' => array('id_muestra' => $minsal_ws_id));
@@ -100,7 +102,7 @@ class WSMinsal extends Model
         try {
             $response = $client->request('POST', 'https://tomademuestras.api.openagora.org/27f9298d-ead4-1746-8356-cc054f245118', [
                   'json' => $array,
-                  'headers'  => [ 'ACCESSKEY' => env('TOKEN_WS_MINSAL')]
+                  'headers'  => [ 'ACCESSKEY' => $SuspectCase->laboratory->token_ws]
             ]);
              $response = ['status' => 1, 'msg' => 'OK'];
 
@@ -173,7 +175,7 @@ class WSMinsal extends Model
                             'contents' => '{"id_muestra":"' . $SuspectCase->minsal_ws_id .'","resultado":"' . $resultado .'"}'
                         ]
                     ],
-                    'headers'  => [ 'ACCESSKEY' => env('TOKEN_WS_MINSAL')]
+                    'headers'  => [ 'ACCESSKEY' => $SuspectCase->laboratory->token_ws]
                 ]);
             }
             $response = ['status' => 1, 'msg' => 'OK'];
