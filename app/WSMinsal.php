@@ -160,7 +160,7 @@ class WSMinsal extends Model
                             'contents' => '{"id_muestra":"' . $SuspectCase->minsal_ws_id .'","resultado":"' . $resultado .'"}'
                         ]
                     ],
-                    'headers'  => [ 'ACCESSKEY' => env('TOKEN_WS_MINSAL')]
+                    'headers'  => [ 'ACCESSKEY' => $SuspectCase->laboratory->token_ws]
                 ]);
             }else{
                 $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/a3772090-34dd-d3e3-658e-c75b6ebd211a', [
