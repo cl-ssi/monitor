@@ -12,7 +12,7 @@
         <span class="input-group-text">Búsqueda</span>
     </div>
 
-    <input class="form-control" type="number" name="search" autocomplete="off" id="for_search" style="text-transform: uppercase;" placeholder="RUN (sin dígito verificador) o OTRA IDENTIFICACION" required>
+    <input class="form-control" type="number" name="search" autocomplete="off" id="for_search" style="text-transform: uppercase;" placeholder="RUN (sin dígito verificador) o OTRA IDENTIFICACION" value="{{$request->search}}" required>
 
     <input class="form-control" type="text" name="dv" id="for_dv" style="text-transform: uppercase;" placeholder="DV" readonly hidden>
 
@@ -36,7 +36,7 @@
 @else
 @foreach($patients as $patient)
     <div class="form-row">
-        <fieldset class="form-group col-md-2">
+        <fieldset class="form-group col-md-4">
             <label for="for_register_at">Nombre</label>
             <input type="text" class="form-control" name="register_at" id="for_register_at" value="{{ $patient->name }}" style="text-transform: uppercase;" readonly>
         </fieldset>

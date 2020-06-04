@@ -13,11 +13,18 @@ class InmunoTestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index(request $request){
+        $search = $request->input('search');
         $inmunoTests = InmunoTest::latest()
+        ->whereHas('patient', function($q) use ($search){
+                $q->Where('name', 'LIKE', '%'.$search.'%')
+                  ->orWhere('fathers_family','LIKE','%'.$search.'%')
+                  ->orWhere('mothers_family','LIKE','%'.$search.'%')
+                  ->orWhere('run','LIKE','%'.$search.'%')
+                  ->orWhere('other_identification','LIKE','%'.$search.'%');
+                })
           ->paginate(200);
-        return view('inmuno_tests.index', compact('inmunoTests'));
+        return view('inmuno_tests.index', compact('inmunoTests', 'request'));
     }
 
     /**
@@ -41,7 +48,7 @@ class InmunoTestController extends Controller
                       ->with('suspectCases')
                       ->get();
 
-        return view('inmuno_tests.create', compact('patients', 's'));
+        return view('inmuno_tests.create', compact('patients', 's', 'request'));
     }
 
     /**
