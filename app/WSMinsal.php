@@ -23,8 +23,8 @@ class WSMinsal extends Model
         $response = [];
         $client = new \GuzzleHttp\Client();
         //obtiene proximo id suspect case
-        $NextsuspectCase = SuspectCase::max('id');
-        $NextsuspectCase += 1;
+        // $NextsuspectCase = SuspectCase::max('id');
+        // $NextsuspectCase += 1;
         // $NextsuspectCase = 27;
 
         // webservices MINSAL
@@ -80,6 +80,7 @@ class WSMinsal extends Model
             $response = ['status' => 1, 'msg' => $array[0]['id_muestra']];
 
         } catch (RequestException $e) {
+            dd($e->getResponse());
             $response = $e->getResponse();
             $responseBodyAsString = $response->getBody()->getContents();
             $decode = json_decode($responseBodyAsString);
@@ -104,6 +105,7 @@ class WSMinsal extends Model
              $response = ['status' => 1, 'msg' => 'OK'];
 
         } catch (RequestException $e) {
+            dd($e->getResponse());
             $response = $e->getResponse();
             $responseBodyAsString = $response->getBody()->getContents();
             $decode = json_decode($responseBodyAsString);
@@ -177,6 +179,7 @@ class WSMinsal extends Model
             $response = ['status' => 1, 'msg' => 'OK'];
 
         } catch (RequestException $e) {
+            dd($e->getResponse());
             $response = $e->getResponse();
             $responseBodyAsString = $response->getBody()->getContents();
             $decode = json_decode($responseBodyAsString);
