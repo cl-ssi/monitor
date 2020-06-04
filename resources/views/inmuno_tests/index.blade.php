@@ -13,6 +13,22 @@
 </div>
 @endcan
 
+<div align="right">
+<form method="get" action="{{ route('lab.inmuno_tests.index') }}">
+    <div class="input-group mb-3 col-sm-8">
+    <div class="input-group-prepend">
+        <span class="input-group-text">Búsqueda</span>
+    </div>
+
+    <input class="form-control" type="text" name="search" value="{{$request->search}}" placeholder="RUN (sin dígito verificador) o OTRA IDENTIFICACION / NOMBRE">
+    <div class="input-group-append">
+        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
+    </div>
+  </div>
+
+</form>
+</div>
+
 <table class="table table-sm small table-bordered">
     <thead>
         <tr class="text-center">
