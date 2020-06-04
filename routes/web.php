@@ -115,9 +115,10 @@ Route::prefix('lab')->name('lab.')->group(function () {
         // Route::get('/hetg','SuspectCaseController@hetg')->name('hetg')->middleware('auth');
         // Route::get('/unap','SuspectCaseController@unap')->name('unap')->middleware('auth');
         // Route::get('/bioclinic','SuspectCaseController@bioclinic')->name('bioclinic')->middleware('auth');
+        Route::post('reception/{suspect_case}','SuspectCaseController@reception')->name('reception')->middleware('auth','can:SuspectCase: reception');
 
         Route::get('reception_inbox','SuspectCaseController@reception_inbox')->name('reception_inbox')->middleware('auth','can:SuspectCase: reception');
-        Route::post('reception/{suspectCase}','SuspectCaseController@reception')->name('reception')->middleware('auth','can:SuspectCase: reception');
+
 
         Route::post('/search_id','SuspectCaseController@search_id')->name('search_id')->middleware('auth');
         //Route::get('stat', 'SuspectCaseController@stat')->name('stat');
