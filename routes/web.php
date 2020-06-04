@@ -165,6 +165,11 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::put('/{sampleOrigin}', 'SampleOriginController@update')->name('update');
         //Route::delete('/{sample_origins}', 'SampleOriginController@destroy')->name('destroy');
     });
+    Route::prefix('inmuno_tests')->name('inmuno_tests.')->group(function () {
+        Route::get('/', 'InmunoTestController@index')->name('index')->middleware('auth');;
+        Route::get('/create/{search}', 'InmunoTestController@create')->name('create')->middleware('auth');;
+        Route::post('/', 'InmunoTestController@store')->name('store')->middleware('auth');;
+    });
 });
 
 Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(function(){
