@@ -18,6 +18,7 @@ class CreateInmunoTestsTable extends Migration
             $table->datetime('register_at')->nullable();
             $table->enum('igg_value',['positive', 'negative', 'weak']);
             $table->enum('igm_value',['positive', 'negative', 'weak']);
+            $table->enum('control',['yes', 'no']);
             $table->foreignId('patient_id');
             $table->foreignId('user_id');
 
