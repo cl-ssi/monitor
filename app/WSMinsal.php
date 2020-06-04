@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -11,9 +12,8 @@ use GuzzleHttp\Exception\RequestException;
 use App\SuspectCase;
 use App\Commune;
 use App\Country;
-
 use App\File;
-use Illuminate\Support\Facades\Storage;
+
 
 class WSMinsal extends Model
 {
