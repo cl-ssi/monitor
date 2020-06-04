@@ -133,10 +133,26 @@ class SuspectCaseReportController extends Controller
                 ->get()
                 ->sortByDesc('pscr_sars_cov_2_at');
 
+                // $cases = SuspectCase::where('id',100)->get();
+
         foreach ($cases as $key => $case) {
             $response = WSMinsal::crea_muestra($case);
-            $response = WSMinsal::recepciona_muestra($case);
-            $response = WSMinsal::resultado_muestra($case);
+            if ($response['status'] == 0) {
+                session()->flash('info', 'Error al subir información a MINSAL. ' . $response['msg']);
+                return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory','externos'));
+            }else{
+                $response = WSMinsal::recepciona_muestra($case);
+                if ($response['status'] == 0) {
+                    session()->flash('info', 'Error al recepcionar muestra en MINSAL. ' . $response['msg']);
+                    return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory','externos'));
+                }else{
+                    $response = WSMinsal::resultado_muestra($case);
+                    if ($response['status'] == 0) {
+                        session()->flash('info', 'Error al subir resultado en MINSAL. ' . $response['msg']);
+                        return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory','externos'));
+                    }
+                }
+            }
         }
 
         session()->flash('success', 'Se ha subido la información a sistema MINSAL.');
