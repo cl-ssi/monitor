@@ -3,9 +3,13 @@
 namespace App\SanitaryResidence;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Residence extends Model
 {
+    use SoftDeletes;
+
+
     /**
      * The attributes that are mass assignable.
      *
