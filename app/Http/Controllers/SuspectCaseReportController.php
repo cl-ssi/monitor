@@ -129,9 +129,9 @@ class SuspectCaseReportController extends Controller
         $cases = SuspectCase::where('laboratory_id',$laboratory->id)
                 ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
                 ->whereNull('external_laboratory')
-                // ->whereNotNull('minsal_ws_id')
+                ->whereNULL('minsal_ws_id')
                 ->get()
-                ->sortByDesc('pscr_sars_cov_2_at');
+                ->sortByDesc('pscr_sars_cov_2_at');dd($cases);
 
         foreach ($cases as $key => $case) {
             $response = WSMinsal::crea_muestra($case);
