@@ -129,7 +129,7 @@ class SuspectCaseReportController extends Controller
         $cases = SuspectCase::where('laboratory_id',$laboratory->id)
                 ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
                 ->whereNull('external_laboratory')
-                ->where('id',13786)
+                // ->where('id',13786)
                 ->get()
                 ->sortByDesc('pscr_sars_cov_2_at');
 
