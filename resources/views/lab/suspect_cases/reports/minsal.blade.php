@@ -35,7 +35,7 @@
             <td nowrap>{{ $case->patient->runExport }}</td>
             <td nowrap>{{ $case->patient->fullName }}</td>
             <td nowrap>{{ strtoupper($case->patient->genderEsp) }}</td>
-            <td nowrap>{{ $case->age }}</td>
+            <td nowrap>{{ $case->agePatient }}</td>
             <td nowrap>{{ ($case->sample_type)? $case->sample_type: '' }}</td>
             <td nowrap>{{ $case->covid19 }}</td>
             <td nowrap>{{ $case->sample_at->format('d-m-Y') }}</td>
@@ -57,7 +57,7 @@
             <td nowrap>{{ $case->runExport }}</td>
             <td nowrap>{{ $case->fullName }}</td>
             <td nowrap>{{ strtoupper($case->gender) }}</td>
-            <td nowrap>{{ $case->age }}</td>
+            <td nowrap>{{ $case->agePatient }}</td>
             <td nowrap>{{ $case->sample_type }}</td>
             <td nowrap>{{ $case->result }}</td>
             <td nowrap>{{ $case->sample_at->format('d-m-Y') }}</td>

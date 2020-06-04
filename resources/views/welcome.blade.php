@@ -48,6 +48,15 @@
                 font-size: 84px;
             }
 
+            .servicio {
+                color: #636b6f;
+                padding: 0 25px;
+                font-size: 28px;
+                letter-spacing: .1rem;
+                text-decoration: none;
+                text-transform: uppercase;
+            }
+
             .links > a {
                 color: #636b6f;
                 padding: 0 25px;
@@ -77,11 +86,14 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Servicio de Salud Iquique
+                    Monitor Esmeralda
+                </div>
+
+                <div class="servicio m-b-md">
+                    {{ env('SERVICIO','Configurar variable SERVICIO en .env') }}
                 </div>
 
                 <div class="links">
-                    <a href="https://www.saludiquique.cl">Servicio de Salud Iquique</a>
                     <a href="https://www.minsal.cl">Minsal</a>
                     <a href="https://www.gob.cl/coronavirus/casosconfirmados/">Coronavirus Casos Confirmados</a>
                 </div>

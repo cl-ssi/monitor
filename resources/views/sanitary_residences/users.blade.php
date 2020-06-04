@@ -59,7 +59,7 @@
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger float-left" onclick="return confirm('¿Está seguro que desea eliminar los permisos del usuario: {{ $residenceUser->user->name }} para la residencia sanitaria: {{ $residenceUser->residence->name }}? ' )"><i class="fas fa-trash-alt"></i></button>
-                </form>                
+                </form>
             </td>
         </tr>
         @endforeach

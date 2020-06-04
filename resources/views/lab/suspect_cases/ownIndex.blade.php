@@ -4,7 +4,13 @@
 
 @section('content')
 
-<h3 class="mb-3"><i class="fas fa-lungs-virus"></i> Listado de exámenes de Laboratorio Bioclinic</h3>
+<h3 class="mb-3"><i class="fas fa-lungs-virus"></i>
+    @if($laboratory)
+        Examenes del laboratorio {{ $laboratory->name }}
+    @else
+        Listado de todos los exámenes
+    @endif
+</h3>
 
 <div class="row">
     @can('SuspectCase: create')
@@ -14,9 +20,7 @@
         </a>
     </div>
     @endcan
-    {{-- <div class="col-7 col-sm-4" role="alert">
-        <input class="form-control" id="inputSearch" type="text" placeholder="Buscar">
-    </div> --}}
+
 </div>
 
 <table class="table table-sm table-bordered">
@@ -32,39 +36,40 @@
     </thead>
     <tbody>
         <tr class="text-center">
-            <td>{{ $suspectCasesTotal->count() }}</td>
-            <th class="text-danger">{{ $suspectCasesTotal->where('pscr_sars_cov_2','positive')->count() }}</th>
-            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','negative')->count() }}</td>
-            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','pending')->count() }}</td>
-            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','rejected')->count() }}</td>
-            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','undetermined')->count() }}</td>
+            <td>{{ $suspectCasesTotal->whereIn('establishment_id', $establishment_selected)->count() }}</td>
+            <th class="text-danger">{{ $suspectCasesTotal->where('pscr_sars_cov_2','positive')->whereIn('establishment_id', $establishment_selected)->count() }}</th>
+            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','negative')->whereIn('establishment_id', $establishment_selected)->count() }}</td>
+            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','pending')->whereIn('establishment_id', $establishment_selected)->count() }}</td>
+            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','rejected')->whereIn('establishment_id', $establishment_selected)->count() }}</td>
+            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','undetermined')->whereIn('establishment_id', $establishment_selected)->count() }}</td>
         </tr>
     </tbody>
 </table>
 
-<a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.export', 'bioclinic') }}">Descargar <i class="far fa-file-excel"></i></a>
-<a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.minsal','bioclinic') }}">
+<a type="button" class="btn btn-success" href="{{ route('lab.suspect_cases.export', 'all') }}">Descargar <i class="far fa-file-excel"></i></a>
+@if($laboratory)
+<a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.minsal',$laboratory) }}">
     Reporte MINSAL
 </a>
-<a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.seremi','bioclinic') }}">
+<a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.seremi',$laboratory) }}">
     Reporte SEREMI
 </a>
-<a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.report.estadistico_diario_covid19','bioclinic') }}">
+<a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.report.estadistico_diario_covid19',$laboratory) }}">
     Reporte estadistico diario
 </a>
-
+@endif
 
 
 <div align="right">
-<form method="get" action="{{ route('lab.suspect_cases.bioclinic') }}">
+<form method="get" action="{{ route('lab.suspect_cases.ownIndex',$laboratory) }}">
 
-  <input type="checkbox" name="positivos" id="chk_positivos" v="Positivos" {{ ($request->positivos)?'checked':'' }} /> Positivos
-  <input type="checkbox" name="negativos" id="chk_negativos" v="Negativos" {{ ($request->negativos)?'checked':'' }} /> Negativos
-  <input type="checkbox" name="pendientes" id="chk_pendientes" v="Pendientes" {{ ($request->pendientes)?'checked':'' }} /> Pendientes
-  <input type="checkbox" name="rechazados" id="chk_rechazados" v="Rechazados" {{ ($request->rechazados)?'checked':'' }} /> Rechazados
-  <input type="checkbox" name="indeterminados" id="chk_indeterminados" v="Indeterminados" {{ ($request->indeterminados)?'checked':'' }} /> Indeterminados
+    <input type="checkbox" name="positivos" id="chk_positivos" v="Positivos" {{ ($request->positivos)?'checked':'' }} /> Positivos
+    <input type="checkbox" name="negativos" id="chk_negativos" v="Negativos" {{ ($request->negativos)?'checked':'' }} /> Negativos
+    <input type="checkbox" name="pendientes" id="chk_pendientes" v="Pendientes" {{ ($request->pendientes)?'checked':'' }} /> Pendientes
+    <input type="checkbox" name="rechazados" id="chk_rechazados" v="Rechazados" {{ ($request->rechazados)?'checked':'' }} /> Rechazados
+    <input type="checkbox" name="indeterminados" id="chk_indeterminados" v="Indeterminados" {{ ($request->indeterminados)?'checked':'' }} /> Indeterminados
 
-  <div class="input-group mb-3 col-12 col-sm-5">
+    <div class="input-group mb-3 col-12 col-sm-5">
     <div class="input-group-prepend">
         <span class="input-group-text">Búsqueda</span>
     </div>
@@ -83,7 +88,7 @@
 <table class="table table-sm table-bordered" id="tabla_casos">
     <thead>
         <tr>
-            <th>°</th>
+            <th nowrap>° Monitor</th>
             <th>Fecha muestra</th>
             <th>Origen</th>
             <th>Nombre</th>
@@ -92,6 +97,7 @@
             <th>Sexo</th>
             <th class="alert-danger">PCR SARS-Cov2</th>
             <th>Resultado IFD</th>
+            <th>Ext. Lab</th>
             <th>Epivigila</th>
             <th>PAHO FLU</th>
             <th>Estado</th>
@@ -104,17 +110,22 @@
             <td class="text-center">
                 {{ $case->id }}<br>
                 <small>{{ $case->laboratory->name }}</small>
-                @can('SuspectCase: edit')
+                @canany(['SuspectCase: edit','SuspectCase: tecnologo'])
                 <a href="{{ route('lab.suspect_cases.edit', $case) }}" class="btn_edit"><i class="fas fa-edit"></i></a>
                 @endcan
+                <small>{{ $case->minsal_ws_id }}</small>
             </td>
             <td nowrap class="small">{{ (isset($case->sample_at))? $case->sample_at->format('Y-m-d'):'' }}</td>
-            <td>{{ $case->origin }}</td>
+            <td>
+                {{ ($case->establishment) ? $case->establishment->alias . ' - ': '' }}
+                {{ $case->origin }}
+            </td>
             <td>
                 @if($case->patient)
                 <a class="link" href="{{ route('patients.edit', $case->patient) }}">
                     {{ $case->patient->fullName }}
                     @if($case->gestation == "1") <img align="center" src="{{ asset('images/pregnant.png') }}" width="24"> @endif
+                    @if($case->close_contact == "1") <img align="center" src="{{ asset('images/contact.png') }}" width="24"> @endif
                  </a>
                  @endif
             </td>
@@ -138,6 +149,7 @@
                 @endif
             </td>
             <td class="{{ ($case->result_ifd <> 'Negativo' AND $case->result_ifd <> 'No solicitado')?'text-danger':''}}">{{ $case->result_ifd }} {{ $case->subtype }}</td>
+            <td>{{ $case->external_laboratory }}</td>
             <td>{{ $case->epivigila }}</td>
             <td>{{ $case->paho_flu }}</td>
             <td>{{ $case->patient->status }}</td>
@@ -191,7 +203,7 @@ function exportF(elem) {
     var html_no_links = html.replace(/<a[^>]*>|<\/a>/g, "");//remove if u want links in your table
     var url = 'data:application/vnd.ms-excel,' + escape(html_no_links); // Set your html table into url
     elem.setAttribute("href", url);
-    elem.setAttribute("download", "casos_sospecha_laboratorio_bioclinic.xls"); // Choose the file name
+    elem.setAttribute("download", "casos_sospecha.xls"); // Choose the file name
     return false;
 }
 </script>

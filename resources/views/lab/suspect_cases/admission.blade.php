@@ -10,13 +10,13 @@
     @method('POST')
     <div class="form-row">
 
-        <fieldset class="form-group col-10 col-md-2">
+        <fieldset class="form-group col-8 col-md-2">
             <label for="for_run">Run SIN DIGITO VERIF.</label>
             <input type="hidden" class="form-control" id="for_id" name="id">
             <input type="number" class="form-control" id="for_run" name="run">
         </fieldset>
 
-        <fieldset class="form-group col-2 col-md-1">
+        <fieldset class="form-group col-4 col-md-1">
             <label for="for_dv">Digito</label>
             <input type="text" class="form-control" id="for_dv" name="dv" readonly>
         </fieldset>
@@ -52,6 +52,12 @@
                 name="birthday" required>
         </fieldset>
 
+        <fieldset class="form-group col-6 col-md-1">
+            <label for="for_age">Edad</label>
+            <input type="number" class="form-control" id="for_age" min="0" name="age">
+        </fieldset>
+
+
     </div>
 
     <div class="form-row">
@@ -82,13 +88,13 @@
 
     <div class="form-row">
 
-        <fieldset class="form-group col-6 col-md-2">
+        <fieldset class="form-group col-5 col-md-3">
             <label for="for_sample_at">Fecha Muestra *</label>
-            <input type="date" class="form-control" id="for_sample_at"
-                name="sample_at" required min="{{ date('Y-m-d', strtotime("-2 week")) }}" max="{{ date('Y-m-d') }}">
+            <input type="datetime-local" class="form-control" id="for_sample_at"
+                name="sample_at" value="{{ date('Y-m-d\TH:i:s') }}" required min="{{ date('Y-m-d\TH:i:s', strtotime("-2 week")) }}" max="{{ date('Y-m-d\TH:i:s') }}">
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-3">
+        <fieldset class="form-group col-7 col-md-3">
             <label for="for_sample_type">Tipo de Muestra *</label>
             <select name="sample_type" id="for_sample_type" class="form-control" required>
                 <option value=""></option>
@@ -103,7 +109,7 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-3">
+        <fieldset class="form-group col-12 col-md-3">
             <label for="for_establishment_id">Establecimiento *</label>
             <select name="establishment_id" id="for_establishment_id" class="form-control" required>
                 <option value="">Seleccionar Establecimiento</option>
@@ -113,7 +119,7 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-3">
+        <fieldset class="form-group col-12 col-md-3">
             <label for="for_origin">Estab. Detalle (Opcional)</label>
             <select name="origin" id="for_origin" class="form-control">
                 <option value=""></option>
@@ -123,17 +129,20 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-1">
-            <label for="for_age">Edad</label>
-            <input type="number" class="form-control" id="for_age" name="age">
-        </fieldset>
-
-
     </div>
 
     <div class="form-row">
 
-        <fieldset class="form-group col-4 col-md-1">
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_functionary">Funcionario de Salud</label>
+            <select name="functionary" id="for_functionary" class="form-control">
+                <option value=""></option>
+                <option value="0">No</option>
+                <option value="1">Si</option>
+            </select>
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-1">
             <label for="for_symptoms">Sintomas</label>
             <select name="symptoms" id="for_symptoms" class="form-control">
                 <option value=""></option>
@@ -157,8 +166,8 @@
                 id="for_gestation_week">
         </fieldset>
 
-        <fieldset class="form-group col-4 col-md-2">
-            <label for="for_close_contact">Contacto directo</label>
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_close_contact">Contacto estrecho</label>
             <select name="close_contact" id="for_close_contact" class="form-control">
                 <option value=""></option>
                 <option value="0">No</option>
@@ -199,13 +208,13 @@
 
     <div class="form-row">
 
-        <fieldset class="form-group col-md-6">
+        <fieldset class="form-group col-12 col-md-6">
             <label for="for_observation">Observación</label>
             <input type="text" class="form-control" name="observation"
                 id="for_observation">
         </fieldset>
 
-        <fieldset class="form-group col-md-2">
+        <fieldset class="form-group col-6 col-md-2">
             <label for="for_paho_flu">PAHO FLU</label>
             <input type="number" class="form-control" name="paho_flu"
                 id="for_paho_flu">
@@ -218,10 +227,10 @@
         </fieldset>
 
 
-        <fieldset class="form-group col-md-2">
+        <fieldset class="form-group col-6 col-md-2">
             <label for="for_epivigila">Epivigila *</label>
             <input type="number" class="form-control" id="for_epivigila"
-                name="epivigila" required>
+                name="epivigila" min="0" required>
         </fieldset>
 
     </div>
@@ -307,32 +316,21 @@ $('input[name=other_identification]').change(function() {
 
 jQuery(document).ready(function () {
 
-  // caso cuando se cambie manualmente
+    /* caso cuando se cambie manualmente */
 	jQuery('#regiones').change(function () {
 		var iRegiones = 0;
 		var valorRegion = jQuery(this).val();
 		var htmlComuna = '<option value="">Seleccione comuna</option><option value="sin-comuna">--</option>';
-    @foreach ($communes as $key => $commune)
-      if (valorRegion == '{{$commune->region_id}}') {
-        htmlComuna = htmlComuna + '<option value="' + '{{$commune->id}}' + '">' + '{{$commune->name}}' + '</option>';
-      }
-    @endforeach
+        @foreach ($communes as $key => $commune)
+            if (valorRegion == '{{$commune->region_id}}') {
+                htmlComuna = htmlComuna + '<option value="' + '{{$commune->id}}' + '">' + '{{$commune->name}}' + '</option>';
+            }
+        @endforeach
 		jQuery('#comunas').html(htmlComuna);
 	});
 
-  //obtener coordenadas y establecimientos
-  jQuery('#comunas').change(function () {
-
-    //primero se obtienen establecimientos
-    // var valorCommune = jQuery(this).val();
-    // var htmlEstablishment = '<option value="">Seleccione establecimiento</option><option value="sin-comuna">--</option>';
-    // @foreach ($establishments as $key => $establishment)
-    //   if (valorCommune == '{{$establishment->commune_id}}') {
-    //     htmlEstablishment = htmlEstablishment + '<option value="' + '{{$establishment->id}}' + '">' + '{{$establishment->name}}' + '</option>';
-    //   }
-    // @endforeach
-    // jQuery('#for_establishment_id').html(htmlEstablishment);
-
+    //obtener coordenadas y establecimientos
+    jQuery('#comunas').change(function () {
 
     //coordenadas
     // Instantiate a map and platform object:

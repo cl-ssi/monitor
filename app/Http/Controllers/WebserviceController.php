@@ -71,7 +71,8 @@ class WebserviceController extends Controller
             }
 
             // echo '<pre>';
-            // print_r($result);
+            //print_r($result);
+            //dd($result);
 
             return isset($user) ? json_encode($user) : json_encode($error);
         }

@@ -2,12 +2,19 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 //use Illuminate\Foundation\Auth\User as Authenticatable;
 //use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
+/**
+ * Patient
+ *
+ * @mixin Builder
+ */
 class Patient extends Model //Authenticatable
 {
     //use Notifiable;
@@ -22,7 +29,7 @@ class Patient extends Model //Authenticatable
      */
     protected $fillable = [
         'id', 'run', 'dv', 'other_identification', 'name', 'fathers_family',
-        'mothers_family', 'gender', 'birthday', 'status'
+        'mothers_family', 'gender', 'birthday', 'status', 'deceased_at'
     ];
 
     /**
@@ -38,6 +45,8 @@ class Patient extends Model //Authenticatable
     protected $casts = [
         'birthday'  => 'date:Y-m-d'
     ];
+
+    protected $dates = [ 'deceased_at'];
 
 
     public function suspectCases() {
@@ -126,4 +135,26 @@ class Patient extends Model //Authenticatable
         return $this->morphMany('App\Log','model')->where('diferences','<>',"[]");
     }
 
+    /**
+     * Retorna pacientes positivos con dirección en COMUNA
+     * @return Patient[]|Builder[]|Collection
+     */
+    static function positivesList(){
+        $patients = Patient::whereHas('suspectCases', function ($q) {
+            $q->where('pscr_sars_cov_2','positive');
+        })->with('suspectCases')->with('demographic')->get();
+
+        $communesAll = Commune::all('id');
+
+        foreach ($communesAll as $commune){
+            $communesAllArray[] = $commune->id;
+        }
+
+        $communes = array_map('trim',explode(",",env('COMUNAS')));
+        $commune_not = array_diff( $communesAllArray, $communes );
+
+        $patients = $patients->whereNotIn('demographic.commune_id', $commune_not);
+
+        return $patients;
+    }
 }

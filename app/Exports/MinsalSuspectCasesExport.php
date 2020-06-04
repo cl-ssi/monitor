@@ -16,10 +16,10 @@ class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
     private $cod_lab;
     private $nombre_lab;
 
-    public function __construct(Laboratory $laboratory) {
-          $this->cod_lab = $laboratory->id;
-          $this->nombre_lab = $laboratory->name;
-    }
+    public function __construct($cod_lab, $nombre_lab) {
+        $this->cod_lab = $cod_lab;
+        $this->nombre_lab = $nombre_lab;
+  }
 
     /**
     * @return \Illuminate\Support\Collection
@@ -97,7 +97,7 @@ class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
             $suspectCase->patient->runExport,
             strtoupper($suspectCase->patient->fullName),
             strtoupper($suspectCase->patient->GenderEsp),
-            $suspectCase->age,
+            $suspectCase->agePatient,
             strtoupper($suspectCase->sample_type),
             strtoupper($suspectCase->Covid19),
             Date::dateTimeToExcel($suspectCase->sample_at),

@@ -2,11 +2,18 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Patient;
 use File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
 
+/**
+ * SuspectCase
+ *
+ * @mixin Builder
+ */
 class SuspectCase extends Model
 {
     use SoftDeletes;
@@ -23,7 +30,7 @@ class SuspectCase extends Model
         'result_ifd_at', 'result_ifd', 'subtype',
         'pscr_sars_cov_2_at', 'pscr_sars_cov_2', 'sample_type', 'validator_id',
         'sent_isp_at', 'external_laboratory', 'paho_flu', 'epivigila',
-        'gestation', 'gestation_week', 'close_contact',
+        'gestation', 'gestation_week', 'close_contact', 'functionary',
         'notification_at', 'notification_mechanism',
         'discharged_at','discharge_test',
         'observation', 'minsal_ws_id',
@@ -78,6 +85,20 @@ class SuspectCase extends Model
             case 2: return 'UNAP'; break;
             case 3: return 'BIOCLINIC'; break;
         }
+    }
+
+    /**
+     * Retorna edad del paciente calculado desde modelo paciente
+     * @return int|string|null
+     */
+    function getAgePatientAttribute(){
+        if ($this->patient->birthday){
+            $age = Carbon::parse($this->patient->birthday)->age;
+            if ($age == 0)
+                $age = Carbon::parse($this->patient->birthday)->diff(Carbon::now())->format('%mM %dd');
+            return $age;
+        }
+        else return null;
     }
 
     public function scopeSearch($query, $search)
