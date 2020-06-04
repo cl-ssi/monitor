@@ -6,9 +6,13 @@
 
 <!-- <a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a> -->
 <a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.exportMinsal', $laboratory) }}">Descargar <i class="far fa-file-excel"></i></a>
+@can('Admin')
+<a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.ws_minsal', $laboratory) }}">Minsal <i class="fas fa-upload"></i></a>
+@endcan
 
 <table class="table table-sm table-bordered table-responsive small text-uppercase" id="tabla_casos">
     <thead>
+        <th>WS_ID</th>
         <th nowrap>RUN</th>
         <th nowrap>Nombre</th>
         <th nowrap>Sexo</th>
@@ -29,6 +33,7 @@
     <tbody>
         @foreach ($cases as $case)
         <tr>
+            <td>{{ $case->minsal_ws_id }}</td>
             <td nowrap>{{ $case->patient->runExport }}</td>
             <td nowrap>{{ $case->patient->fullName }}</td>
             <td nowrap>{{ strtoupper($case->patient->genderEsp) }}</td>
@@ -51,6 +56,7 @@
         @endforeach
         @foreach($externos as $case)
         <tr>
+            <td></td>
             <td nowrap>{{ $case->runExport }}</td>
             <td nowrap>{{ $case->fullName }}</td>
             <td nowrap>{{ strtoupper($case->gender) }}</td>
