@@ -15,7 +15,9 @@ class InmunoTestController extends Controller
      */
     public function index()
     {
-        return view('inmuno_tests.index');
+        $inmunoTests = InmunoTest::latest()
+          ->paginate(200);
+        return view('inmuno_tests.index', compact('inmunoTests'));
     }
 
     /**
@@ -75,7 +77,7 @@ class InmunoTestController extends Controller
      */
     public function edit(InmunoTest $inmunoTest)
     {
-        //
+        return view('inmuno_tests.edit', compact('inmunoTest'));
     }
 
     /**
@@ -87,7 +89,11 @@ class InmunoTestController extends Controller
      */
     public function update(Request $request, InmunoTest $inmunoTest)
     {
-        //
+        $inmunoTest->fill($request->all());
+        $inmunoTest->save();
+
+        session()->flash('success', 'Se actualizo los datos exitosamente');
+        return redirect()->route('lab.inmuno_tests.index');
     }
 
     /**

@@ -166,9 +166,11 @@ Route::prefix('lab')->name('lab.')->group(function () {
         //Route::delete('/{sample_origins}', 'SampleOriginController@destroy')->name('destroy');
     });
     Route::prefix('inmuno_tests')->name('inmuno_tests.')->group(function () {
-        Route::get('/', 'InmunoTestController@index')->name('index')->middleware('auth');;
-        Route::get('/create/{search}', 'InmunoTestController@create')->name('create')->middleware('auth');;
-        Route::post('/', 'InmunoTestController@store')->name('store')->middleware('auth');;
+        Route::get('/', 'InmunoTestController@index')->name('index')->middleware('auth');
+        Route::get('/create/{search}', 'InmunoTestController@create')->name('create')->middleware('auth');
+        Route::get('/{inmunoTest}/edit', 'InmunoTestController@edit')->name('edit')->middleware('auth');
+        Route::post('/', 'InmunoTestController@store')->name('store')->middleware('auth');
+        Route::put('/update/{inmunoTest}', 'InmunoTestController@update')->name('update')->middleware('auth');
     });
 });
 

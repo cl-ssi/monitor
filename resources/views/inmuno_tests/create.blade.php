@@ -12,9 +12,9 @@
         <span class="input-group-text">Búsqueda</span>
     </div>
 
-    <input class="form-control" type="number" name="search" autocomplete="off" id="for_search" style="text-transform: uppercase;" placeholder="RUN o OTRA IDENTIFICACION" required>
+    <input class="form-control" type="number" name="search" autocomplete="off" id="for_search" style="text-transform: uppercase;" placeholder="RUN (sin dígito verificador) o OTRA IDENTIFICACION" required>
 
-    <input class="form-control" type="text" name="dv" id="for_dv" style="text-transform: uppercase;" placeholder="DV" readonly>
+    <input class="form-control" type="text" name="dv" id="for_dv" style="text-transform: uppercase;" placeholder="DV" readonly hidden>
 
     <div class="input-group-append">
         <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
@@ -91,12 +91,12 @@
   @csrf
   @method('POST')
   <div class="form-row">
-    <fieldset class="form-group col-md-4">
+    <fieldset class="form-group col-md-3">
         <label for="for_register_at">Fecha de Examen</label>
         <input type="datetime-local" class="form-control" name="register_at" id="for_register_at" value="">
     </fieldset>
 
-    <fieldset class="form-group col-md-4">
+    <fieldset class="form-group col-md-3">
         <label for="for_register_at">IgG Valor</label>
         <select class="form-control selectpicker" name="igg_value" id="for_igg_value" title="Seleccione..." required>
             <option value="positive">Positivo</option>
@@ -105,12 +105,20 @@
         </select>
     </fieldset>
 
-    <fieldset class="form-group col-md-4">
+    <fieldset class="form-group col-md-3">
         <label for="for_register_at">IgM Valor</label>
         <select class="form-control selectpicker" name="igm_value" id="for_igm_value" title="Seleccione..." required>
             <option value="positive">Positivo</option>
             <option value="negative">Negativo</option>
             <option value="weak">Débil</option>
+        </select>
+    </fieldset>
+
+    <fieldset class="form-group col-md-3">
+        <label for="for_control">Control</label>
+        <select class="form-control selectpicker" name="control" id="for_control" title="Seleccione..." required>
+            <option value="yes">Si</option>
+            <option value="no">No</option>
         </select>
     </fieldset>
 
