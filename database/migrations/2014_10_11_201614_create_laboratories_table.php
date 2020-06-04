@@ -18,6 +18,8 @@ class CreateLaboratoriesTable extends Migration
             $table->string('name');
             $table->boolean('external')->default(0);
             $table->boolean('minsal_ws')->default(0);
+            $table->string('token_ws')->nullable();
+            $table->boolean('pdf_generate')->default(0);
             $table->unsignedBigInteger('commune_id')->nullable();
             $table->timestamps();
 
