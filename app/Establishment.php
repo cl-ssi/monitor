@@ -26,6 +26,13 @@ class Establishment extends Model
       return $this->hasMany('App\SuspectCase');
   }
 
+  /**
+  * The user that belong to the establishment.
+  */
+  public function users() {
+      return $this->belongsToMany(User::class, 'esatblishment_user');
+  }
+
   use SoftDeletes;
 
   /**

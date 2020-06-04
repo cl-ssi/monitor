@@ -67,9 +67,26 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
     Route::put('/{patient}', 'PatientController@update')->name('update')->middleware('can:Patient: edit');
     Route::delete('/{patient}', 'PatientController@destroy')->name('destroy')->middleware('can:Patient: delete');
     Route::get('/export', 'PatientController@export')->name('export');
+    Route::get('/exportPositives', 'PatientController@exportPositives')->name('exportPositives');
 });
 
 Route::resource('epp','EppController')->middleware('auth');
+
+
+Route::prefix('help_basket')->name('help_basket.')->middleware('auth')->group(function () {
+    Route::get('/', 'HelpBasketController@index')->name('index');
+    Route::get('/create', 'HelpBasketController@create')->name('create');
+    Route::get('/georeferencing', 'HelpBasketController@georeferencing')->name('georeferencing');
+    Route::post('/store', 'HelpBasketController@store')->name('store');
+    Route::get('/{helpBasket}/edit', 'HelpBasketController@edit')->name('edit');
+    Route::put('{helpBasket}', 'HelpBasketController@update')->name('update');
+    Route::delete('/{helpBasket}', 'HelpBasketController@Destroy')->name('destroy');
+    Route::get('/download/{storage}/{file?}', 'HelpBasketController@download')->name('download');
+    Route::get('/excel','HelpBasketController@excel')->name('excel');
+
+});
+
+
 
 Route::prefix('lab')->name('lab.')->group(function () {
     //Route::get('/', 'LaboratoryController@index')->name('index');
@@ -95,9 +112,9 @@ Route::prefix('lab')->name('lab.')->group(function () {
         });
     });
     Route::prefix('suspect_cases')->name('suspect_cases.')->group(function () {
-        Route::get('/hetg','SuspectCaseController@hetg')->name('hetg')->middleware('auth');
-        Route::get('/unap','SuspectCaseController@unap')->name('unap')->middleware('auth');
-        Route::get('/bioclinic','SuspectCaseController@bioclinic')->name('bioclinic')->middleware('auth');
+        // Route::get('/hetg','SuspectCaseController@hetg')->name('hetg')->middleware('auth');
+        // Route::get('/unap','SuspectCaseController@unap')->name('unap')->middleware('auth');
+        // Route::get('/bioclinic','SuspectCaseController@bioclinic')->name('bioclinic')->middleware('auth');
 
         Route::get('reception_inbox','SuspectCaseController@reception_inbox')->name('reception_inbox')->middleware('auth','can:SuspectCase: reception');
         Route::post('reception/{suspectCase}','SuspectCaseController@reception')->name('reception')->middleware('auth','can:SuspectCase: reception');
@@ -109,6 +126,8 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('file/{file}','SuspectCaseController@fileDelete')->name('fileDelete')->middleware('auth','can:SuspectCase: file delete');
 
         Route::get('/index/{laboratory?}','SuspectCaseController@index')->name('index')->middleware('auth','can:SuspectCase: list');
+
+        Route::get('/ownIndex/{laboratory?}','SuspectCaseController@ownIndex')->name('ownIndex')->middleware('auth','can:SuspectCase: own');
 
         Route::get('/exportSuspectCases/{lab}','SuspectCaseController@exportExcel')->name('export')->middleware('auth');
 
@@ -191,6 +210,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
         Route::get('/excelall','BookingController@excelall')->name('excelall');
         Route::get('/excelvitalsign','BookingController@excelvitalsign')->name('excelvitalsign');
         Route::get('/excel/{booking}','BookingController@excel')->name('excel');
+        Route::delete('/{booking}', 'BookingController@destroy')->name('destroy');
         Route::get('/residence/{residence}', 'BookingController@index')->name('index');
         Route::get('/create', 'BookingController@create')->name('create');
         Route::get('/{booking}', 'BookingController@show')->name('show');
@@ -199,7 +219,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
         Route::get('/{booking}/release', 'BookingController@showRelease')->name('showrelease');
         // Route::get('/{booking}/edit', 'BookingController@edit')->name('edit');
         Route::put('/{booking}', 'BookingController@update')->name('update');
-        // Route::delete('/{booking}', 'BookingController@destroy')->name('destroy');
+        //Route::delete('/destroy/{id}', 'BookingController@destroy')->name('destroy');
     });
 
 

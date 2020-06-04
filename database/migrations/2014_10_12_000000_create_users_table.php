@@ -24,11 +24,11 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
 
             $table->unsignedBigInteger('laboratory_id')->nullable()->default(NULL);
-            $table->unsignedBigInteger('establishment_id')->nullable()->default(NULL);
+            // $table->unsignedBigInteger('establishment_id')->nullable()->default(NULL);
             $table->timestamps();
 
             $table->foreign('laboratory_id')->references('id')->on('laboratories');
-            $table->foreign('establishment_id')->references('id')->on('establishments');
+            // $table->foreign('establishment_id')->references('id')->on('establishments');
         });
     }
 

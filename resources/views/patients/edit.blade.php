@@ -53,22 +53,24 @@
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_birthday">Fecha Nacimiento</label>
-            <input type="date" class="form-control" id="for_birthday"
+            <input type="date" class="form-control" id="for_birthday" required
                 name="birthday" value="{{ ($patient->birthday)?$patient->birthday->format('Y-m-d'):'' }}">
         </fieldset>
     </div>
 
     <div class="form-row">
         <fieldset class="form-group col-12 col-md-4">
-            <label for="for_name">Nombres</label>
+            <label for="for_name">Nombres*</label>
             <input type="text" class="form-control" id="for_name" name="name"
-                value="{{ $patient->name }}" style="text-transform: uppercase;">
+                value="{{ $patient->name }}" style="text-transform: uppercase;"
+                required>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-4">
-            <label for="for_fathers_family">Apellido Paterno</label>
+            <label for="for_fathers_family">Apellido Paterno*</label>
             <input type="text" class="form-control" id="for_fathers_family"
-                name="fathers_family" value="{{ $patient->fathers_family }}" style="text-transform: uppercase;">
+                name="fathers_family" value="{{ $patient->fathers_family }}" style="text-transform: uppercase;"
+                required>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-4">
@@ -106,6 +108,12 @@
                 <option value="Hospitalizado UCI" {{ ($patient->status == 'Hospitalizado UCI')?'selected':'' }}>Hospitalizado UCI</option>
                 <option value="Residencia Sanitaria" {{ ($patient->status == 'Residencia Sanitaria')?'selected':'' }}>Residencia Sanitaria</option>
             </select>
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_deceased_at">Fallecido</label>
+            <input type="date" class="form-control" name="deceased_at" id="for_deceased_at"
+                value="{{ ($patient->deceased_at) ? $patient->deceased_at->format('Y-m-d') : '' }}">
         </fieldset>
 
     </div>
@@ -254,7 +262,7 @@ jQuery(document).ready(function () {
 	});
 
   //obtener coordenadas
-  jQuery('#comunas').change(function () {
+  jQuery('.geo').change(function () {
     // Instantiate a map and platform object:
     var platform = new H.service.Platform({
       'apikey': '5mKawERqnzL1KMnNIt4n42gAV8eLomjQPKf5S5AAcZg'

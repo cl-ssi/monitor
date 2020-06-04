@@ -28,11 +28,10 @@
     <style media="screen">
         .navbar-custom {
             background-color:
-                @switch(App::environment())
-                    @case('local') #CE9DD9; @break
-                    @case('testing') #B5EAD7; @break
-                    @case('production') #FFFFFF; @break
-                @endswitch
+                @switch(App::environment()) @case('local') #CE9DD9;
+            @break @case('testing') #B5EAD7;
+            @break @case('production') #FFFFFF;
+            @break @endswitch
         }
     </style>
 </head>
@@ -89,7 +88,7 @@
 
                                 @can('SuspectCase: list')
                                 @php
-                                $labs = App\Laboratory::where('external',0)->get();
+                                    $labs = App\Laboratory::where('external',0)->get();
                                 @endphp
 
                                 @foreach($labs as $lab)
@@ -98,6 +97,10 @@
 
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.index') }}?text=&pendientes=on">Todos los exámenes</a>
+                                @endcan
+
+                                @can('SuspectCase: own')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.ownIndex') }}?text=&pendientes=on">Mis exámenes</a>
                                 @endcan
 
                                 <div class="dropdown-divider"></div>
@@ -142,7 +145,7 @@
                         </li>
                         @endcan
 
-                        @can('SanitaryResidence: user')
+                        @canany(['SanitaryResidence: user', 'SanitaryResidence: admin'])
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('sanitary_residences.home') }}">
                                 <i class="fas fa-hotel"></i>
@@ -151,6 +154,14 @@
                         </li>
                         @endcan
 
+                        @can('Basket:')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('help_basket.index')  }}">
+                                <i class="fas fa-shopping-basket"></i>
+                                Canasta
+                            </a>
+                        </li>
+                        @endcan
 
 
                         @canany(['Report: positives','Report: other','Report: historical'])
@@ -182,6 +193,10 @@
 
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.diary_lab_report') }}">Cantidad de muestras y exámenes</a>
 
+                                @can('Report: positives demographics')
+                                    <a class="dropdown-item" href="{{ route('patients.exportPositives') }}">Reporte de positivos con dirección</a>
+                                @endcan
+
                             </div>
                         </li>
                         @endcan
@@ -204,9 +219,9 @@
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 @can('Admin')
-                                    <a class="nav-link" href="{{ route('parameters.index') }}">
-                                        <i class="fas fa-cog fa-fw"></i> Configuracion
-                                    </a>
+                                <a class="nav-link" href="{{ route('parameters.index') }}">
+                                    <i class="fas fa-cog fa-fw"></i> Configuracion
+                                </a>
                                 @endcan
 
                                 <a class="dropdown-item" href="{{ route('users.password.show_form') }}">

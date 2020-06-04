@@ -20,7 +20,7 @@ class BookingController extends Controller
      */
     public function index(Residence $residence)
     {
-        $rooms = $rooms = Room::where('residence_id',$residence->id)->orderBy('floor')->get();
+        $rooms = $rooms = Room::where('residence_id',$residence->id)->orderBy('floor')->orderBy('number')->get();
         $bookings = Booking::All();
         return view('sanitary_residences.bookings.index', compact('residence','bookings', 'rooms'));
     }
@@ -137,7 +137,11 @@ class BookingController extends Controller
      */
     public function destroy(Booking $booking)
     {
-        //
+        
+        $booking->delete();
+        session()->flash('success', 'Booking eliminado exitosamente');
+        //return redirect()->route('sanitary_residences.bookings');
+        return view('sanitary_residences.home');
     }
 
     public function excel(Booking $booking)
