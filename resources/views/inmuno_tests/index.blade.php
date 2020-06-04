@@ -54,7 +54,7 @@
             <td class="text-center">{{ $inmunoTest->id }}</td>
             <td class="text-right">{{ $inmunoTest->register_at->format('d-m-Y H:i:s') }}</td>
             <td class="text-right">{{ $inmunoTest->patient->identifier }}</td>
-            <td class="text-right">{{ $inmunoTest->patient->fullName }}</td>
+            <td class="text-right"><a class="link" href="{{ route('patients.edit', $inmunoTest->patient) }}">{{ $inmunoTest->patient->fullName }}</a></td>
             <td class="text-right">{{ $inmunoTest->patient->birthday->age }}</td>
             <td class="text-right">{{ strtoupper($inmunoTest->patient->gender[0]) }}</td>
             <td class="text-right">{{ strtoupper($inmunoTest->IgValue) }}</td>
@@ -62,7 +62,7 @@
             <td class="text-right">{{ strtoupper($inmunoTest->ControlValue) }}</td>
             <td class="text-right">{{ $inmunoTest->created_at->format('d-m-Y H:i:s') }}</td>
             @can('Inmuno Test: edit')
-            <td> <a href="{{ route('lab.inmuno_tests.edit', $inmunoTest) }}">Editar</a></td>
+            <td> <a href="{{ route('lab.inmuno_tests.edit', $inmunoTest) }}"><span><i class="far fa-edit"></i></span> Editar</a></td>
             @endcan
         </tr>
       @endforeach
