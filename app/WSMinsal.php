@@ -83,7 +83,7 @@ class WSMinsal extends Model
             $response = $e->getResponse();
             $responseBodyAsString = $response->getBody()->getContents();
             $decode = json_decode($responseBodyAsString);
-            dd($decode);
+            // dd($decode);
             $response = ['status' => 0, 'msg' => $decode->error];
         }
 
@@ -110,7 +110,7 @@ class WSMinsal extends Model
             $response = $e->getResponse();
             $responseBodyAsString = $response->getBody()->getContents();
             $decode = json_decode($responseBodyAsString);
-            dd("2".$decode);
+            // dd("2".$decode);
             $response = ['status' => 0, 'msg' => $decode->error];
         }
 
@@ -184,7 +184,7 @@ class WSMinsal extends Model
             $response = $e->getResponse();
             $responseBodyAsString = $response->getBody()->getContents();
             $decode = json_decode($responseBodyAsString);
-            dd("3".$decode);
+            // dd("3".$decode);
             $response = ['status' => 0, 'msg' => $decode->error];
         }
 
