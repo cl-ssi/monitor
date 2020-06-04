@@ -4,8 +4,12 @@ namespace App\SanitaryResidence;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class Residence extends Model
 {
+
+
+
     /**
      * The attributes that are mass assignable.
      *

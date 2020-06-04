@@ -180,7 +180,7 @@ function exportF(elem) {
     var html_no_links = html.replace(/<a[^>]*>|<\/a>/g, "");//remove if u want links in your table
     var url = 'data:application/vnd.ms-excel,' + escape(html_no_links); // Set your html table into url
     elem.setAttribute("href", url);
-    elem.setAttribute("download", "reporte_minsal.xls"); // Choose the file name
+    elem.setAttribute("download", "seguimiento.xls"); // Choose the file name
     return false;
 }
 

@@ -110,6 +110,12 @@
             </select>
         </fieldset>
 
+        <fieldset class="form-group col-6 col-md-2">
+            <label for="for_deceased_at">Fallecido</label>
+            <input type="date" class="form-control" name="deceased_at" id="for_deceased_at"
+                value="{{ ($patient->deceased_at) ? $patient->deceased_at->format('Y-m-d') : '' }}">
+        </fieldset>
+
     </div>
 
     <button type="submit" class="btn btn-primary">Guardar</button>

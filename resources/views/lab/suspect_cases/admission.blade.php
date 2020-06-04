@@ -52,6 +52,12 @@
                 name="birthday">
         </fieldset>
 
+        <fieldset class="form-group col-6 col-md-1">
+            <label for="for_age">Edad</label>
+            <input type="number" class="form-control" id="for_age" min="0" name="age">
+        </fieldset>
+
+
     </div>
 
     <div class="form-row">
@@ -82,10 +88,10 @@
 
     <div class="form-row">
 
-        <fieldset class="form-group col-5 col-md-2">
+        <fieldset class="form-group col-5 col-md-3">
             <label for="for_sample_at">Fecha Muestra *</label>
-            <input type="date" class="form-control" id="for_sample_at"
-                name="sample_at" required min="{{ date('Y-m-d', strtotime("-2 week")) }}" max="{{ date('Y-m-d') }}">
+            <input type="datetime-local" class="form-control" id="for_sample_at"
+                name="sample_at" value="{{ date('Y-m-d\TH:i:s') }}" required min="{{ date('Y-m-d\TH:i:s', strtotime("-2 week")) }}" max="{{ date('Y-m-d\TH:i:s') }}">
         </fieldset>
 
         <fieldset class="form-group col-7 col-md-3">
@@ -122,12 +128,6 @@
                 @endforeach
             </select>
         </fieldset>
-
-        <fieldset class="form-group col-6 col-md-1">
-            <label for="for_age">Edad</label>
-            <input type="number" class="form-control" id="for_age" name="age">
-        </fieldset>
-
 
     </div>
 

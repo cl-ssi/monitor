@@ -10,7 +10,7 @@
 #### Configurar
 
 - Agregar todos los programas al PATH
-- En php.ini habilitar (descomentar) extención gd2, mbstring, pdo_sqlite y no me acuerdo cual mas
+- En php.ini habilitar (descomentar) extención gd2, mbstring, pdo_sqlite, fileinfo y no me acuerdo cual mas
 
 ### Ejecutar en interprete de comandos
 
