@@ -43,7 +43,7 @@ class WSMinsal extends Model
           }else{$paciente_tipodoc = "RUN";}
 
           $array = array(
-            'raw' => array('codigo_muestra_cliente' => $NextsuspectCase,
+            'raw' => array('codigo_muestra_cliente' => $SuspectCase->id,
                            'rut_responsable' => '15980951-K', //Claudia Caronna //Auth::user()->run . "-" . Auth::user()->dv, //se va a enviar rut de enfermo del servicio
                            'cod_deis' => '02-100', //$request->establishment_id
                            'rut_medico' => '16350555-K', //Pedro Valjalo
