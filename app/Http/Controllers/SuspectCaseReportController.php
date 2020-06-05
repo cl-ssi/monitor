@@ -18,14 +18,6 @@ use App\WSMinsal;
 class SuspectCaseReportController extends Controller
 {
     public function positives() {
-        $bookings = Booking::where('status','Residencia Sanitaria')->whereNull('real_to')
-                    ->whereHas('patient', function ($q) {
-                        $q->where('status','Residencia Sanitaria');
-                    })->get();
-        $residences = Residence::all();
-
-        //$comunas = env('COMUNAS');
-
         $patients = Patient::positivesList();
 
         /* Calculo de gráfico de evolución */
@@ -71,7 +63,7 @@ class SuspectCaseReportController extends Controller
 
         //echo '<pre>'; print_r($patients->where('status','Hospitalizado UCI')->count()); die();
         //echo '<pre>'; print_r($evolucion); die();
-        return view('lab.suspect_cases.reports.positives', compact('patients','evolucion','ventilator','residences','bookings','exams','communes'));
+        return view('lab.suspect_cases.reports.positives', compact('patients','evolucion','ventilator','exams','communes'));
 
     }
 
