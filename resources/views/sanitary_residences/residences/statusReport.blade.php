@@ -4,7 +4,7 @@
 
 @section('content')
 
-@include('sanitary_residences.nav')
+<h3 class="mb-3">Estado de residencias</h3>
 
 <table class="table table-sm table-bordered table-responsive small" id="tabla_estado_residencias">
     <thead>
