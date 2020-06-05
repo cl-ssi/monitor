@@ -77,7 +77,7 @@
             <label for="for_result_ifd_at">Fecha Resultado IFD</label>
             <input type="datetime-local" class="form-control" id="for_result_ifd_at"
                 name="result_ifd_at" value="{{( isset($suspectCase->result_ifd_at))?  $suspectCase->result_ifd_at->format('Y-m-d\TH:i:s'):'' }}"
-                min="{{ date('Y-m-d\TH:i:s', strtotime("-4 week")) }}" max="{{ date('Y-m-d\TH:i:s') }}">
+                >
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2 alert-warning">
