@@ -13,6 +13,7 @@
 <table class="table table-sm table-bordered table-responsive small text-uppercase" id="tabla_casos">
     <thead>
         <th>WS_ID</th>
+        <th>ID</th>
         <th nowrap>RUN</th>
         <th nowrap>Nombre</th>
         <th nowrap>Sexo</th>
@@ -34,6 +35,7 @@
         @foreach ($cases as $case)
         <tr>
             <td>{{ $case->minsal_ws_id }}</td>
+            <td>{{ $case->id }}</td>
             <td nowrap>{{ $case->patient->runExport }}</td>
             <td nowrap>{{ $case->patient->fullName }}</td>
             <td nowrap>{{ strtoupper($case->patient->genderEsp) }}</td>
@@ -56,6 +58,7 @@
         @endforeach
         @foreach($externos as $case)
         <tr>
+            <td></td>
             <td></td>
             <td nowrap>{{ $case->runExport }}</td>
             <td nowrap>{{ $case->fullName }}</td>

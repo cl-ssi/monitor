@@ -117,7 +117,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         // Route::get('/bioclinic','SuspectCaseController@bioclinic')->name('bioclinic')->middleware('auth');
 
         Route::get('reception_inbox','SuspectCaseController@reception_inbox')->name('reception_inbox')->middleware('auth','can:SuspectCase: reception');
-        Route::post('reception/{suspectCase}','SuspectCaseController@reception')->name('reception')->middleware('auth','can:SuspectCase: reception');
+        Route::post('reception/{suspect_case}','SuspectCaseController@reception')->name('reception')->middleware('auth','can:SuspectCase: reception');
 
         Route::post('/search_id','SuspectCaseController@search_id')->name('search_id')->middleware('auth');
         //Route::get('stat', 'SuspectCaseController@stat')->name('stat');
@@ -165,6 +165,13 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/{sampleOrigin}/edit', 'SampleOriginController@edit')->name('edit');
         Route::put('/{sampleOrigin}', 'SampleOriginController@update')->name('update');
         //Route::delete('/{sample_origins}', 'SampleOriginController@destroy')->name('destroy');
+    });
+    Route::prefix('inmuno_tests')->name('inmuno_tests.')->group(function () {
+        Route::get('/', 'InmunoTestController@index')->name('index')->middleware('auth');
+        Route::get('/create/{search}', 'InmunoTestController@create')->name('create')->middleware('auth');
+        Route::get('/{inmunoTest}/edit', 'InmunoTestController@edit')->name('edit')->middleware('auth');
+        Route::post('/', 'InmunoTestController@store')->name('store')->middleware('auth');
+        Route::put('/update/{inmunoTest}', 'InmunoTestController@update')->name('update')->middleware('auth');
     });
 });
 

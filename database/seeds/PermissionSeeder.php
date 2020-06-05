@@ -48,6 +48,10 @@ class PermissionSeeder extends Seeder
 
         $permission = Permission::create(['name' => 'Epp: list']);
 
+        $permission = Permission::create(['name' => 'Inmuno Test: list']);
+        $permission = Permission::create(['name' => 'Inmuno Test: create']);
+        $permission = Permission::create(['name' => 'Inmuno Test: edit']);
+
 
 
 
