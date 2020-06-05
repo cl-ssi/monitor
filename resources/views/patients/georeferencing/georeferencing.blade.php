@@ -24,7 +24,7 @@ $( document ).ready(function() {
 
 // Instantiate a map and platform object:
 var platform = new H.service.Platform({
-    'apikey': '5mKawERqnzL1KMnNIt4n42gAV8eLomjQPKf5S5AAcZg'
+    'apikey': 'eeTd1O_J1jwWpgIP9dTFmg3_4iGzSzsb9Xb5SChizLM'
 });
 
 // Retrieve the target element for the map:
@@ -140,7 +140,7 @@ var scalebar = ui.getControl('scalebar');
 
       // Error
       geocoder.geocode(geocodingParams, onResult, function(e) {
-        alert(e);
+        console.log(e);
       });
 
       //panTheMap(map);

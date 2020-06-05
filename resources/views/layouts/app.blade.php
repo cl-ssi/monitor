@@ -168,7 +168,7 @@
                         @endcan
 
 
-                        @canany(['Report: positives','Report: other','Report: historical'])
+                        @canany(['Report: positives','Report: other','Report: historical','Report: exams with result','Report: gestants','Report: positives demographics','Report: residences'])
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-clipboard"></i>
@@ -201,7 +201,7 @@
                                     <a class="dropdown-item" href="{{ route('patients.exportPositives') }}">Reporte de positivos con dirección</a>
                                 @endcan
 
-                                @can('Report: positives')
+                                @can('Report: residences')
                                     <a class="dropdown-item" href="{{ route('sanitary_residences.residences.statusReport') }}">Reporte de residencias</a>
                                 @endcan
 
