@@ -83,12 +83,12 @@
     </thead>
     <tbody class="small">
         @foreach($bookings as $booking)
-        @if($booking->real_to and $booking->room->residence->id==$residence->id)
+        @if($booking->real_to and $booking->room and $booking->room->residence and $booking->room->residence = $residence)
         <tr>
             <td><a href="{{ route('sanitary_residences.bookings.showrelease',$booking) }}"> {{ $booking->patient->fullName }} </a></td>
             <td>{{ $booking->status }}</td>
             <td>{{ $booking->released_cause }}</td>
-            <td>{{ $booking->room->residence->name }}</td>
+            <td> {{ $booking->room->residence->name }}</td>
             <td>{{ $booking->room->number }}</td>
             <td>{{ $booking->from }}</td>
             <td>{{ $booking->real_to }}</td>
