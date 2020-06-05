@@ -57,7 +57,7 @@
         var html_no_links = html.replace(/<a[^>]*>|<\/a>/g, ""); //remove if u want links in your table
         var url = 'data:application/vnd.ms-excel,' + escape(html_no_links); // Set your html table into url
         elem.setAttribute("href", url);
-        elem.setAttribute("download", "residencia_sanitaria.xls"); // Choose the file name
+        elem.setAttribute("download", "residencia_sanitaria_consolidado.xls"); // Choose the file name
         return false;
     }
 </script>
