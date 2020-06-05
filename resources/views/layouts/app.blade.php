@@ -201,6 +201,10 @@
                                     <a class="dropdown-item" href="{{ route('patients.exportPositives') }}">Reporte de positivos con dirección</a>
                                 @endcan
 
+                                @can('Report: positives')
+                                    <a class="dropdown-item" href="{{ route('sanitary_residences.residences.statusReport') }}">Reporte de residencias</a>
+                                @endcan
+
                             </div>
                         </li>
                         @endcan

@@ -138,14 +138,9 @@ class ResidenceController extends Controller
     }
 
     /**
-     * Reporte de residencias
+     * Reporte de estado de residencias
      */
-    public function report(){
-//        $bookings = Booking::where('status', 'Residencia Sanitaria')->whereNull('real_to')
-//                    ->whereHas('patient', function($q){
-//                        $q->where('status', 'Residencia Sanitaria');
-//                    })->get();
-
+    public function statusReport(){
         $dataArray = array();
         $residences = Residence::all();
         foreach ($residences as $residence){
@@ -157,7 +152,11 @@ class ResidenceController extends Controller
             foreach ($rooms as $room){
                 $bookings = $room->bookings();
 
-                $counterPatientsByRoom = $bookings->where('status', 'Residencia Sanitaria')->whereNull('real_to')->count();
+                $counterPatientsByRoom = $bookings->where('status', 'Residencia Sanitaria')->whereNull('real_to')
+                                        ->whereHas('patient', function($q){
+                                            $q->where('status', 'Residencia Sanitaria');
+                                        })->get()->count();
+
                 $counterPatientsByResidence = $counterPatientsByResidence + $counterPatientsByRoom;
 
                 if($counterPatientsByRoom > 0){
@@ -176,7 +175,29 @@ class ResidenceController extends Controller
             );
 
         }
-        dump($dataArray);
+
+        $totalRooms = 0;
+        $totalOccupiedRooms = 0;
+        $totalPatients = 0;
+        $totalAvailableRooms = 0;
+
+        foreach ($dataArray as $residence){
+            $totalRooms = $totalRooms + $residence['totalRooms'];
+            $totalOccupiedRooms = $totalOccupiedRooms + $residence['occupiedRooms'];
+            $totalPatients = $totalPatients + $residence['patients'];
+            $totalAvailableRooms = $totalAvailableRooms + $residence['availableRooms'];
+        }
+
+        array_push(
+            $dataArray, array(
+                'residenceName' => 'Total',
+                'totalRooms' => $totalRooms,
+                'occupiedRooms' => $totalOccupiedRooms,
+                'patients' => $totalPatients,
+                'availableRooms' => $totalAvailableRooms)
+        );
+
+        return view('sanitary_residences.residences.statusReport', compact('dataArray'));
 
     }
 }
