@@ -196,7 +196,7 @@
             @foreach($patient->inmunoTests as $inmunoTest)
             <tr>
                 <td>
-                    <a href="{{ route('lab.suspect_cases.edit', $case )}}">
+                    <a href="{{ route('lab.inmuno_tests.edit', $inmunoTest )}}">
                     {{ $inmunoTest->id }}
                     </a>
                 </td>
