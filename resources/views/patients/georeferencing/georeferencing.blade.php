@@ -140,7 +140,7 @@ var scalebar = ui.getControl('scalebar');
 
       // Error
       geocoder.geocode(geocodingParams, onResult, function(e) {
-        alert(e);
+        console.log(e);
       });
 
       //panTheMap(map);
