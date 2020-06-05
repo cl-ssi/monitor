@@ -24,7 +24,7 @@ class InmunoTestController extends Controller
                   ->orWhere('other_identification','LIKE','%'.$search.'%');
                 })
           ->paginate(200);
-        return view('inmuno_tests.index', compact('inmunoTests', 'request'));
+        return view('lab.inmuno_tests.index', compact('inmunoTests', 'request'));
     }
 
     /**
@@ -48,7 +48,7 @@ class InmunoTestController extends Controller
                       ->with('suspectCases')
                       ->get();
 
-        return view('inmuno_tests.create', compact('patients', 's', 'request'));
+        return view('lab.inmuno_tests.create', compact('patients', 's', 'request'));
     }
 
     /**
@@ -84,7 +84,7 @@ class InmunoTestController extends Controller
      */
     public function edit(InmunoTest $inmunoTest)
     {
-        return view('inmuno_tests.edit', compact('inmunoTest'));
+        return view('lab.inmuno_tests.edit', compact('inmunoTest'));
     }
 
     /**

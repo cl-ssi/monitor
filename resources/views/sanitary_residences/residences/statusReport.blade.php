@@ -6,9 +6,7 @@
 
 <h3 class="mb-3">Estado de residencias</h3>
 
-@can('SanitaryResidence: admin')
 <a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a>
-@endcan
 
 <div class="table-responsive">
     <table class="table table-sm table-bordered table-responsive small" id="tabla_estado_residencias">
@@ -62,4 +60,3 @@
     }
 </script>
 @endsection
-

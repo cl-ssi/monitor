@@ -225,26 +225,10 @@ class SuspectCaseController extends Controller
 
     public function reception(Request $request, SuspectCase $suspectCase)
     {
-        // ########## webservice MINSAL ##########
-        // // verificar que esté activida la opción para webservice minsal
-        // if (env('WS_MINSAL')) {
-        //     if (Auth::user()->laboratory->minsal_ws) {
-        //         $minsal_ws_id = $suspectCase->minsal_ws_id;
-        //         if($minsal_ws_id != NULL){
-        //             $response = WSMinsal::recepciona_muestra($minsal_ws_id);
-        //             if($response['status'] == 0){
-        //                 session()->flash('warning', 'No se recepcionó muestra - Error webservice minsal: <h3>' . $response['msg'] . '</h3>');
-        //                 return redirect()->back();
-        //             }
-        //         }
-        //     }
-        // }
-
-
-        //recepciona en sistema
+        /* Recepciona en sistema */
         $suspectCase->laboratory_id = Auth::user()->laboratory->id;
-        $suspectCase->receptor_id = Auth::id();
-        $suspectCase->reception_at = date('Y-m-d H:i:s');
+        $suspectCase->receptor_id   = Auth::id();
+        $suspectCase->reception_at  = date('Y-m-d H:i:s');
         $suspectCase->save();
 
         session()->flash('info', 'Se ha recepcionada la muestra: '
@@ -253,6 +237,8 @@ class SuspectCaseController extends Controller
 
         return redirect()->back();
     }
+
+
     /**
      * Store a newly created resource in storage.
      *
@@ -327,58 +313,7 @@ class SuspectCaseController extends Controller
      */
     public function storeAdmission(Request $request)
     {
-        // ########## webservice MINSAL ##########
-        // $minsal_ws_id = NULL;
-        // if (env('WS_MINSAL')) {
-        //
-        //     //verificar que la dependencia del establecimiento sea municipal o del servicio de salud
-        //     $establishment = Establishment::where('id',$request->establishment_id)->get();
-        //     $dependency = $establishment->first()->dependency;
-        //     if ($dependency == "Municipal" || $dependency == "Servicio de Salud") {
-        //
-        //         // verificar que el laboratorio vinculado a usuario esté autorizado para envío de webservice
-        //         if (Auth::user()->laboratory) {
-        //             if (Auth::user()->laboratory->minsal_ws) {
-        //                 $response = WSMinsal::crea_muestra($request);
-        //             }
-        //         }else{
-        //             $response = WSMinsal::crea_muestra($request);
-        //         }
-        //
-        //         //respuesta ws crear muestra
-        //         if($response['status'] == 0){
-        //             session()->flash('warning', 'No se registró muestra - Error webservice minsal: <h3>' . $response['msg'] . '</h3>');
-        //             return redirect()->back();
-        //         }else{
-        //             $minsal_ws_id = $response['msg'];
-        //             if (Auth::user()->laboratory) {
-        //                 if (Auth::user()->laboratory->minsal_ws) {
-        //                     $response2 = WSMinsal::recepciona_muestra($minsal_ws_id);
-        //                 }
-        //             }
-        //         }
-        //
-        //         //respuesta ws de recepción
-        //         if (Auth::user()->laboratory) {
-        //             if (Auth::user()->laboratory->minsal_ws) {
-        //                 if($response2['status'] == 0){
-        //                     session()->flash('warning', 'No se recepcionó muestra - Error webservice minsal: <h3>' . $response2['msg'] . '</h3>');
-        //                     return redirect()->back();
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-
-
-
-
-
-
-
-
-
-        //########### guarda en base de datos ##########3
+        /* Si existe el paciente lo actualiza, si no, crea uno nuevo */
         if ($request->id == null) {
             $patient = new Patient($request->All());
         } else {
@@ -405,12 +340,11 @@ class SuspectCaseController extends Controller
         /* La muestra se recepciona inmediatamente */
         if(Auth::user()->laboratory_id) {
             $suspectCase->laboratory_id = Auth::user()->laboratory_id;
-            $suspectCase->reception_at = date('Y-m-d H:i:s');
-            $suspectCase->receptor_id = Auth::id();
+            $suspectCase->reception_at  = date('Y-m-d H:i:s');
+            $suspectCase->receptor_id   = Auth::id();
         }
 
-        // $suspectCase->minsal_ws_id = $minsal_ws_id;
-
+        /* Guarda el caso sospecha */
         $patient->suspectCases()->save($suspectCase);
 
         $region = Region::where('id',$request->region_id)->get();
@@ -435,17 +369,11 @@ class SuspectCaseController extends Controller
             // $logDemographic->save();
         }
 
-
+        /* Log de cambios en caso sospecha */
         $log = new Log();
         //$log->old = $suspectCase;
         $log->new = $suspectCase;
         $log->save();
-
-        // if ($minsal_ws_id == NULL) {
-        //     session()->flash('success', 'Se ha creado el caso número: <h3>' . $suspectCase->id . '</h3>');
-        // }else {
-        //     session()->flash('success', 'Se ha creado el caso número: <h3>' . $suspectCase->id . '</h3> <br /> Número caso Minsal: ' . $minsal_ws_id);
-        // }
 
         session()->flash('success', 'Se ha creado el caso número: <h3>' . $suspectCase->id . '</h3>');
 
@@ -475,14 +403,17 @@ class SuspectCaseController extends Controller
         $local_labs = Laboratory::where('external',0)->orderBy('name')->get();
 
 
-        $establishments = Establishment::orderBy('alias','ASC')->get();
-        /* FIX codigo duro */
+        //$establishments = Establishment::orderBy('alias','ASC')->get();
+
         $env_communes = array_map('trim',explode(",",env('COMUNAS')));
-        $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
+        $establishments = Establishment::whereIn('commune_id',$env_communes)
+                                        ->orderBy('name','ASC')->get();
 
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
-        return view('lab.suspect_cases.edit', compact('suspectCase','sampleOrigins',
-            'establishments','external_labs','local_labs'));
+
+        return view('lab.suspect_cases.edit',
+            compact('suspectCase','external_labs','local_labs','establishments','sampleOrigins')
+        );
     }
 
     /**
@@ -494,34 +425,6 @@ class SuspectCaseController extends Controller
      */
     public function update(Request $request, SuspectCase $suspectCase)
     {
-        // // dd(Input::all());
-        // // dd($request->forfile[0]);
-        // // dd($request->forfile[0]->getPath(), $request->file('forfile')[0]->getRealPath(), $request->forfile[0]->getClientOriginalName());
-        // // dd($request->all(),$request->file('forfile')[0]);
-        //
-        // //######## webservice minsal ############
-        // // webservices MINSAL
-        // // if (env('APP_ENV') == 'local') {
-        //
-        //     // verificar que esté activida la opción para webservice minsal
-        //     if (env('WS_MINSAL')) {
-        //
-        //         //se verifica que se cambia el estado
-        //         if($request->pscr_sars_cov_2 != 'pending'){
-        //
-        //             //si tiene un codigo minsal
-        //             if ($suspectCase->minsal_ws_id != NULL) {
-        //
-        //                 $response = WSMinsal::resultado_muestra($request, $suspectCase->minsal_ws_id);
-        //                 if($response['status'] == 0){
-        //                     session()->flash('warning', 'No se envió resultado muestra - Error webservice minsal: <h3>' . $response['msg'] . '</h3>');
-        //                     return redirect()->back();
-        //                 }
-        //             }
-        //         }
-        //     }
-        // // }
-
         $log = new Log();
         $log->old = clone $suspectCase;
 
@@ -533,14 +436,14 @@ class SuspectCaseController extends Controller
         /* Setar el validador */
         if ($log->old->pscr_sars_cov_2 == 'pending' and $suspectCase->pscr_sars_cov_2 != 'pending') {
             $suspectCase->validator_id = Auth::id();
-            if($request->input('pscr_sars_cov_2_at')) {
-                $suspectCase->pscr_sars_cov_2_at = $request->input('pscr_sars_cov_2_at').' '.date('H:i:s');
-            }
+            // if($request->input('pscr_sars_cov_2_at')) {
+            //     $suspectCase->pscr_sars_cov_2_at = $request->input('pscr_sars_cov_2_at').' '.date('H:i:s');
+            // }
         }
 
         $suspectCase->save();
 
-        //guarda archivos
+        /* guarda archivos FIX: pendiente traspasar a sólo un archivo */
         if ($request->hasFile('forfile')) {
             foreach ($request->file('forfile') as $file) {
                 $filename = $file->getClientOriginalName();
