@@ -2,8 +2,14 @@
 
 namespace App\SanitaryResidence;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Room
+ *
+ * @mixin Builder
+ */
 class Room extends Model
 {
     /**

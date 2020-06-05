@@ -193,6 +193,8 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
     Route::post('/users', 'ResidenceController@usersStore')->name('users.store');
     //Route::get('/{user}/edit', 'ResidenceController@usersEdit')->name('users.edit');
     Route::delete('/{residenceUser}', 'ResidenceController@usersDestroy')->name('users.destroy');
+    Route::get('/report', 'ResidenceController@report')->name('report');
+
 
     Route::prefix('residences')->name('residences.')->group(function () {
         Route::get('/create', 'ResidenceController@create')->name('create');
@@ -201,6 +203,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
         Route::get('/{residence}/edit', 'ResidenceController@edit')->name('edit');
         Route::put('update/{residence}', 'ResidenceController@update')->name('update');
         Route::delete('/{residence}', 'ResidenceController@destroy')->name('destroy');
+
     });
 
     Route::prefix('rooms')->name('rooms.')->group(function () {
