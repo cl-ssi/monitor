@@ -167,7 +167,6 @@
             <label for="for_pscr_sars_cov_2_at">Fecha Resultado PCR</label>
             <input type="datetime-local" class="form-control" id="for_pscr_sars_cov_2_at"
                 name="pscr_sars_cov_2_at" value="{{ isset($suspectCase->pscr_sars_cov_2_at)? $suspectCase->pscr_sars_cov_2_at->format('Y-m-d\TH:i:s'):'' }}"
-                min="{{ date('Y-m-d\TH:i:s', strtotime("-4 week")) }}" max="{{ date('Y-m-d\TH:i:s') }}"
                 @if(($suspectCase->pscr_sars_cov_2_at AND auth()->user()->cannot('SuspectCase: tecnologo edit'))) disabled @endif>
         </fieldset>
 
