@@ -26,6 +26,13 @@
             <i class="fas fa-users-cog"></i> Usuarios
         </a>
     </li>
+    
+
+    <li class="nav-item">
+        <a class="nav-link"  href="{{ route('sanitary_residences.residences.statusReport') }}">
+            <i class="fas fa-file-excel"></i> Consolidado Booking
+        </a>
+    </li>
     @endcan
 
     <li class="nav-item">
