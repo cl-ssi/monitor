@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\SanitaryResidence\Booking;
 use App\SanitaryResidence\Residence;
 use App\SanitaryResidence\ResidenceUser;
 use Illuminate\Http\Request;
@@ -16,12 +17,12 @@ class ResidenceController extends Controller
     }
 
     public function users()
-    {   
-        $residences = Residence::all();     
+    {
+        $residences = Residence::all();
         $users = User::orderBy('name')->get();
-        $residenceUsers = ResidenceUser::orderBy('residence_id')->get();        
+        $residenceUsers = ResidenceUser::orderBy('residence_id')->get();
         return view('sanitary_residences.users',compact('residenceUsers','users','residences'));
-        
+
     }
 
     public function usersStore(Request $request)
@@ -35,14 +36,14 @@ class ResidenceController extends Controller
 
     public function usersDestroy(ResidenceUser $residenceUser)
     {
-        
+
         $residenceUser->delete();
-        
+
 
         session()->flash('success', 'Permisos Eliminados exitosamente');
         //return redirect()->route('sanitary_residences.residences.index');
         return redirect()->back();
-        
+
     }
 
     /**
@@ -134,5 +135,48 @@ class ResidenceController extends Controller
 
         session()->flash('success', 'Residencia Sanitaria Eliminada exitosamente');
         return redirect()->route('sanitary_residences.residences.index');
+    }
+
+    /**
+     * Reporte de residencias
+     */
+    public function report(){
+//        $bookings = Booking::where('status', 'Residencia Sanitaria')->whereNull('real_to')
+//                    ->whereHas('patient', function($q){
+//                        $q->where('status', 'Residencia Sanitaria');
+//                    })->get();
+
+        $dataArray = array();
+        $residences = Residence::all();
+        foreach ($residences as $residence){
+            $counterTotalRoomsByResidence = $residence->rooms()->count();
+            $counterPatientsByResidence = 0;
+            $counterOccupiedRoomsByResidence = 0;
+
+            $rooms = $residence->rooms;
+            foreach ($rooms as $room){
+                $bookings = $room->bookings();
+
+                $counterPatientsByRoom = $bookings->where('status', 'Residencia Sanitaria')->whereNull('real_to')->count();
+                $counterPatientsByResidence = $counterPatientsByResidence + $counterPatientsByRoom;
+
+                if($counterPatientsByRoom > 0){
+                    $counterOccupiedRoomsByResidence = $counterOccupiedRoomsByResidence + 1;
+                }
+
+            }
+
+            array_push(
+                $dataArray, array(
+                    'residenceName' => $residence->name,
+                    'totalRooms' => $counterTotalRoomsByResidence,
+                    'occupiedRooms' => $counterOccupiedRoomsByResidence,
+                    'patients' => $counterPatientsByResidence,
+                    'availableRooms' => $counterTotalRoomsByResidence - $counterOccupiedRoomsByResidence)
+            );
+
+        }
+        dump($dataArray);
+
     }
 }

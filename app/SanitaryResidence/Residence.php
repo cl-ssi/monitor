@@ -2,14 +2,16 @@
 
 namespace App\SanitaryResidence;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-
+/**
+ * Residence
+ *
+ * @mixin Builder
+ */
 class Residence extends Model
 {
-
-
-
     /**
      * The attributes that are mass assignable.
      *
