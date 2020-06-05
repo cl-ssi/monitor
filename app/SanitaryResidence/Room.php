@@ -4,6 +4,7 @@ namespace App\SanitaryResidence;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Room
@@ -12,6 +13,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Room extends Model
 {
+
+    use SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
