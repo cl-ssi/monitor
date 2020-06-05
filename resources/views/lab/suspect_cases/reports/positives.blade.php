@@ -216,26 +216,6 @@
             </tbody>
         </table>
 
-        <table class="table table-sm table-bordered">
-            <thead>
-                <tr class="table-active">
-                    <th colspan="2">
-                        Residencias sanitarias
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($residences as $residence)
-                <tr>
-                    <td>{{ $residence->name }}</td>
-                    <td class="text-right">
-                        {{ $bookings->where('room.residence_id',$residence->id)->count() }}
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-
     </div>
 
 
