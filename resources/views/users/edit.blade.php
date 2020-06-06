@@ -11,59 +11,66 @@
 <form method="POST" class="form-horizontal" action="{{ route('users.update',$user) }}">
     @csrf
     @method('PUT')
+    <div class="card mb-3">
+        <div class="card-body">
 
-    <div class="form-row">
+            <div class="form-row">
 
-        <fieldset class="form-group col-8 col-md-2">
-            <label for="for_run">Run</label>
-            <input type="number" class="form-control" name="run" id="for_run"
-                value="{{ $user->run }}" required>
-        </fieldset>
+                <fieldset class="form-group col-8 col-md-2">
+                    <label for="for_run">Run</label>
+                    <input type="number" class="form-control" name="run" id="for_run"
+                        value="{{ $user->run }}" required>
+                </fieldset>
 
-        <fieldset class="form-group col-4 col-md-1">
-            <label for="for_dv">Dv</label>
-            <input type="text" class="form-control" name="dv" id="for_dv"
-                value="{{ $user->dv }}" required>
-        </fieldset>
+                <fieldset class="form-group col-4 col-md-1">
+                    <label for="for_dv">Dv</label>
+                    <input type="text" class="form-control" name="dv" id="for_dv"
+                        value="{{ $user->dv }}" required>
+                </fieldset>
 
-        <fieldset class="form-group col-12 col-md-3">
-            <label for="for_name">Nombre y Apellido</label>
-            <input type="text" class="form-control" name="name" id="for_name"
-                value="{{ $user->name }}" required>
-        </fieldset>
+                <fieldset class="form-group col-12 col-md-3">
+                    <label for="for_name">Nombre y Apellido</label>
+                    <input type="text" class="form-control" name="name" id="for_name"
+                        value="{{ $user->name }}" required>
+                </fieldset>
 
-        <fieldset class="form-group col-12 col-md-3">
-            <label for="for_email">Email</label>
-            <input type="text" class="form-control" name="email" id="for_email"
-                value="{{ $user->email }}" required>
-        </fieldset>
+                <fieldset class="form-group col-12 col-md-3">
+                    <label for="for_email">Email</label>
+                    <input type="text" class="form-control" name="email" id="for_email"
+                        value="{{ $user->email }}" required>
+                </fieldset>
 
-        <fieldset class="form-group col-12 col-md-3">
-            <label for="for_laboratory_id">Laboratorio</label>
-            <select name="laboratory_id" id="for_laboratory_id" class="form-control">
-                <option value=""></option>
-                @foreach($laboratories as $lab)
-                <option value="{{ $lab->id }}" {{ ($user->laboratory_id == $lab->id)?'selected':'' }}>{{ $lab->name }}</option>
-                @endforeach
-            </select>
-        </fieldset>
+                <fieldset class="form-group col-12 col-md-3">
+                    <label for="for_laboratory_id">Laboratorio</label>
+                    <select name="laboratory_id" id="for_laboratory_id" class="form-control">
+                        <option value=""></option>
+                        @foreach($laboratories as $lab)
+                        <option value="{{ $lab->id }}" {{ ($user->laboratory_id == $lab->id)?'selected':'' }}>{{ $lab->name }}</option>
+                        @endforeach
+                    </select>
+                </fieldset>
 
+            </div>
+
+            <div class="form-row">
+
+                <fieldset class="form-group col-6 col-md-6">
+                    <label for="for_establishment_id">Establecimiento *</label>
+                    <select name="establishment_id[]" id="for_establishment_id" class="form-control selectpicker" data-live-search="true" multiple="" data-size="10" title="Seleccione..." multiple data-actions-box="true" required>
+
+                            @foreach($establishments as $establishment)
+                                <option value="{{ $establishment->id }}" @if(in_array($establishment->id, $establishment_selected)) selected="selected" @endif>{{ $establishment->alias }}</option>
+                            @endforeach
+
+                    </select>
+                </fieldset>
+            </div>
+            
+        </div>
     </div>
 
-    <div class="form-row">
-
-        <fieldset class="form-group col-6 col-md-6">
-            <label for="for_establishment_id">Establecimiento *</label>
-            <select name="establishment_id[]" id="for_establishment_id" class="form-control selectpicker" data-live-search="true" multiple="" data-size="10" title="Seleccione..." multiple data-actions-box="true" required>
-
-                    @foreach($establishments as $establishment)
-                        <option value="{{ $establishment->id }}" @if(in_array($establishment->id, $establishment_selected)) selected="selected" @endif>{{ $establishment->alias }}</option>
-                    @endforeach
-
-            </select>
-        </fieldset>
-    </div>
     <hr>
+
     <div class="form-row">
         <div class="col">
             <h5>Roles:</h5>
