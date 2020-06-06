@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use App\SuspectCase;
 use App\Patient;
@@ -14,6 +16,7 @@ use App\Lab\Exam\Covid19;
 use App\Laboratory;
 use App\Region;
 use App\WSMinsal;
+use Illuminate\View\View;
 
 class SuspectCaseReportController extends Controller
 {
@@ -272,5 +275,62 @@ class SuspectCaseReportController extends Controller
         }
     }
 
+    /**
+     * Obtiene suspectsCases positivos con datos de demographics por
+     * rango de fecha
+     * @param Request $request
+     * @return Application|Factory|View
+     */
+    public function positivesByDateRange(Request $request){
+
+        if($from = $request->has('from')){
+            $from = $request->get('from'). ' 00:00:00';
+            $to = $request->get('to'). ' 23:59:59';
+        }else{
+            $from = Carbon::now()->firstOfMonth();
+            $to = Carbon::now()->lastOfMonth();
+        }
+
+        $suspectCases = SuspectCase::whereBetween('pscr_sars_cov_2_at', [$from, $to])
+            ->where('pscr_sars_cov_2', 'positive')->get();
+
+        $dataArray = array();
+        foreach ($suspectCases as $suspectCase) {
+            $patient = $suspectCase->patient()->first();
+            $demographic = $patient->demographic;
+
+            if($patient->gender == 'male')
+                $gender = 'Masculino';
+            elseif ($patient->gender = 'female')
+                $gender = 'Femenino';
+            elseif ($patient->gender == 'other')
+                $gender = 'Otro';
+            elseif ($patient->gender ?? 'unknown')
+                $gender = 'Desconocido';
+            else
+                $gender = '';
+
+            array_push($dataArray, array(
+                'ID' => $patient->id,
+                'RUN' => $patient->run . '-' . $patient->dv,
+                'NAME' => $patient->name . ' ' . $patient->fathers_family . ' ' . $patient->mothers_family,
+                'GENDER' => $gender,
+                'AGE' => $patient->age,
+                'STATE' => $patient->status,
+                'EPIVIGILA' => $suspectCase->epivigila,
+                'COVID19' => $suspectCase->pscr_sars_cov_2_at,
+                'COMMUNE' => $demographic == null ? '' : $demographic->commune,
+                'STREET_TYPE' => $demographic == null ? '' : $demographic->street_type,
+                'ADDRESS' => $demographic == null ? '' : $demographic->address,
+                'NUMBER' => $demographic == null ? '' : $demographic->number,
+                'DEPARTMENT' => $demographic == null ? '' : $demographic->department,
+                'TELEPHONE' => $demographic == null ? '' : $demographic->telephone,
+                'LATITUDE' => $demographic == null ? '' : $demographic->latitude,
+                'LONGITUDE' => $demographic == null ? '' : $demographic->longitude,
+                'ID_DEMOGRAPHIC' => $demographic == null ? '' : $demographic->id
+            ));
+        }
+        return view('lab.suspect_cases.reports.positivesByDateRange', compact('dataArray', 'from', 'to'));
+    }
 
 }
