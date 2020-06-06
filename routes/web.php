@@ -147,6 +147,8 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::match(['get','post'],'exams_with_result','SuspectCaseReportController@exams_with_result')->middleware('auth','can:Report: exams with result')->name('exams_with_result');
             Route::get('/minsal/{laboratory}','SuspectCaseReportController@report_minsal')->name('minsal')->middleware('auth');
             Route::get('/seremi/{laboratory}','SuspectCaseReportController@report_seremi')->name('seremi')->middleware('auth');
+            Route::get('/positivesByDateRange','SuspectCaseReportController@positivesByDateRange')->name('positivesByDateRange')->middleware('auth');
+
         });
         Route::prefix('report')->name('report.')->group(function () {
             Route::get('/','SuspectCaseReportController@positives')->name('index')->middleware('auth','can:Report: other');
