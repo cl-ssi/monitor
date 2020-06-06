@@ -58,14 +58,14 @@
     <div class="form-row">
         <fieldset class="form-group col-12 col-md-2">
             <label for="for_street_type">Vía de residencia</label>
-            <select name="street_type" id="for_street_type" class="form-control" class="geo">  
+            <select name="street_type" id="for_street_type" class="form-control" class="geo">
                 <option value="Calle" {{ ($helpBasket->street_type == 'Calle')?'selected':'' }}>Calle</option>
                 <option value="Pasaje" {{ ($helpBasket->street_type == 'Pasaje')?'selected':'' }}>Pasaje</option>
                 <option value="Avenida" {{ ($helpBasket->street_type == 'Avenida')?'selected':'' }}>Avenida</option>
                 <option value="Camino" {{ ($helpBasket->street_type == 'Camino')?'selected':'' }}>Camino</option>
 
 
-                
+
             </select>
         </fieldset>
 
@@ -121,7 +121,7 @@
 
     @if($helpBasket->photoid)
     Foto Cédula
-    <br>    
+    <br>
     <img src="{{ route('help_basket.download', $helpBasket->photoid)  }}" width="300" height="200" />
     @endif
     <div class="form-row">
@@ -139,7 +139,7 @@
 
     @if($helpBasket->photo)
     Foto Frontal
-    <br>    
+    <br>
     <img src="{{ route('help_basket.download', $helpBasket->photo)  }}" width="300" height="200" />
     @endif
     <div class="form-row">
@@ -198,7 +198,7 @@
         jQuery('.geo').change(function() {
             // Instantiate a map and platform object:
             var platform = new H.service.Platform({
-                'apikey': '5mKawERqnzL1KMnNIt4n42gAV8eLomjQPKf5S5AAcZg'
+                'apikey': '{{ env('API_KEY_HERE') }}'
             });
 
             var address = jQuery('#for_address').val();

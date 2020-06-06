@@ -1,8 +1,9 @@
 <div class="form-row">
 
     <fieldset class="form-group col-12 col-md-2">
-        <label for="for_street_type">Vía de residencia</label>
-        <select name="street_type" id="for_street_type" class="form-control">
+        <label for="for_street_type">Vía de residencia *</label>
+        <select name="street_type" id="for_street_type" class="form-control" required>
+            <option value=""></option>
             <option value="Calle">Calle</option>
             <option value="Pasaje">Pasaje</option>
             <option value="Avenida">Avenida</option>

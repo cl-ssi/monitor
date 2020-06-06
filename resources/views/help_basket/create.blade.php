@@ -178,7 +178,7 @@
         jQuery('.geo').change(function() {
             // Instantiate a map and platform object:
             var platform = new H.service.Platform({
-                'apikey': '5mKawERqnzL1KMnNIt4n42gAV8eLomjQPKf5S5AAcZg'
+                'apikey': '{{ env('API_KEY_HERE') }}'
             });
 
             var address = jQuery('#for_address').val();
@@ -221,13 +221,13 @@
             }
 
         });
-    
 
-    
+
+
     /*$('.size').bind('change', function() {
             alert('El tamaño es: ' + this.files[0].size/1024/1024 + "MB");
     });*/
-    
+
 
 
 
