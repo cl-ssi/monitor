@@ -287,8 +287,8 @@ class SuspectCaseReportController extends Controller
             $from = $request->get('from'). ' 00:00:00';
             $to = $request->get('to'). ' 23:59:59';
         }else{
-            $from = Carbon::now()->firstOfMonth();
-            $to = Carbon::now()->lastOfMonth();
+            $from = Carbon::yesterday();
+            $to = Carbon::now();
         }
 
         $suspectCases = SuspectCase::whereBetween('pscr_sars_cov_2_at', [$from, $to])
