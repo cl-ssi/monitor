@@ -205,6 +205,10 @@
                                     <a class="dropdown-item" href="{{ route('sanitary_residences.residences.statusReport') }}">Reporte de residencias</a>
                                 @endcan
 
+                                @can('Report: positives by range')
+                                    <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.positivesByDateRange') }}">Reporte de positivos por fecha</a>
+                                @endcan
+
                             </div>
                         </li>
                         @endcan
