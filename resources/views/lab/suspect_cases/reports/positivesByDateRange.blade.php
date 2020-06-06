@@ -52,25 +52,25 @@
         </thead>
 
         <tbody>
-        @foreach($dataArray as $key => $suspectCase)
+        @foreach($suspectCases->reverse() as $key => $suspectCase)
                 <tr>
                     <td>{{ ++$key }}</td>
-                    <td nowrap>{{$suspectCase['ID']}}</td>
-                    <td nowrap>{{$suspectCase['RUN']}}</td>
-                    <td nowrap>{{$suspectCase['NAME']}}</td>
-                    <td nowrap>{{$suspectCase['GENDER'] }}</td>
-                    <td nowrap>{{$suspectCase['AGE'] }}</td>
-                    <td nowrap>{{$suspectCase['STATE'] }}</td>
-                    <td nowrap>{{$suspectCase['EPIVIGILA'] }}</td>
-                    <td nowrap>{{$suspectCase['COVID19'] }}</td>
-                    <td nowrap>{{$suspectCase['COMMUNE'] }}</td>
-                    <td nowrap>{{$suspectCase['STREET_TYPE'] }}</td>
-                    <td nowrap>{{$suspectCase['ADDRESS'] }}</td>
-                    <td nowrap>{{$suspectCase['NUMBER'] }}</td>
-                    <td nowrap>{{$suspectCase['DEPARTMENT'] }}</td>
-                    <td nowrap>{{$suspectCase['TELEPHONE'] }}</td>
-                    <td nowrap>{{$suspectCase['LATITUDE'] }}</td>
-                    <td nowrap>{{$suspectCase['LONGITUDE'] }}</td>
+                    <td nowrap>{{ $suspectCase->id }}</td>
+                    <td nowrap>{{ $suspectCase->patient->identifier }}</td>
+                    <td nowrap class="text-uppercase">{{ $suspectCase->patient->fullName }}</td>
+                    <td nowrap>{{ $suspectCase->patient->genderEsp }}</td>
+                    <td nowrap>{{ $suspectCase->patient->age }}</td>
+                    <td nowrap>{{ $suspectCase->patient->status }}</td>
+                    <td nowrap>{{ $suspectCase->epivigila }}</td>
+                    <td nowrap>{{ $suspectCase->pscr_sars_cov_2_at }}</td>
+                    <td nowrap>{{ ($suspectCase->patient->demographic)? $suspectCase->patient->demographic->commune : '' }}</td>
+                    <td nowrap>{{ ($suspectCase->patient->demographic)? $suspectCase->patient->demographic->street_type : '' }}</td>
+                    <td nowrap class="text-uppercase">{{ ($suspectCase->patient->demographic)? $suspectCase->patient->demographic->address : '' }}</td>
+                    <td nowrap>{{ ($suspectCase->patient->demographic)? $suspectCase->patient->demographic->number : '' }}</td>
+                    <td nowrap>{{ ($suspectCase->patient->demographic)? $suspectCase->patient->demographic->department : '' }}</td>
+                    <td nowrap>{{ ($suspectCase->patient->demographic)? $suspectCase->patient->demographic->telephone : '' }}</td>
+                    <td nowrap>{{ ($suspectCase->patient->demographic)? $suspectCase->patient->demographic->latitude : '' }}</td>
+                    <td nowrap>{{ ($suspectCase->patient->demographic)? $suspectCase->patient->demographic->longitude : '' }}</td>
                 </tr>
         @endforeach
         </tbody>

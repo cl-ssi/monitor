@@ -292,45 +292,9 @@ class SuspectCaseReportController extends Controller
         }
 
         $suspectCases = SuspectCase::whereBetween('pscr_sars_cov_2_at', [$from, $to])
-            ->where('pscr_sars_cov_2', 'positive')->get();
+            ->where('pscr_sars_cov_2', 'positive')->orderBy('pscr_sars_cov_2_at')->get();
 
-        $dataArray = array();
-        foreach ($suspectCases as $suspectCase) {
-            $patient = $suspectCase->patient()->first();
-            $demographic = $patient->demographic;
-
-            if($patient->gender == 'male')
-                $gender = 'Masculino';
-            elseif ($patient->gender = 'female')
-                $gender = 'Femenino';
-            elseif ($patient->gender == 'other')
-                $gender = 'Otro';
-            elseif ($patient->gender ?? 'unknown')
-                $gender = 'Desconocido';
-            else
-                $gender = '';
-
-            array_push($dataArray, array(
-                'ID' => $patient->id,
-                'RUN' => $patient->run . '-' . $patient->dv,
-                'NAME' => $patient->name . ' ' . $patient->fathers_family . ' ' . $patient->mothers_family,
-                'GENDER' => $gender,
-                'AGE' => $patient->age,
-                'STATE' => $patient->status,
-                'EPIVIGILA' => $suspectCase->epivigila,
-                'COVID19' => $suspectCase->pscr_sars_cov_2_at,
-                'COMMUNE' => $demographic == null ? '' : $demographic->commune,
-                'STREET_TYPE' => $demographic == null ? '' : $demographic->street_type,
-                'ADDRESS' => $demographic == null ? '' : $demographic->address,
-                'NUMBER' => $demographic == null ? '' : $demographic->number,
-                'DEPARTMENT' => $demographic == null ? '' : $demographic->department,
-                'TELEPHONE' => $demographic == null ? '' : $demographic->telephone,
-                'LATITUDE' => $demographic == null ? '' : $demographic->latitude,
-                'LONGITUDE' => $demographic == null ? '' : $demographic->longitude,
-                'ID_DEMOGRAPHIC' => $demographic == null ? '' : $demographic->id
-            ));
-        }
-        return view('lab.suspect_cases.reports.positivesByDateRange', compact('dataArray', 'from', 'to'));
+        return view('lab.suspect_cases.reports.positivesByDateRange', compact('suspectCases', 'from', 'to'));
     }
 
 }
