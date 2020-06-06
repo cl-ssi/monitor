@@ -24,7 +24,7 @@
     </div>
 
     <div class="form-group ml-3">
-        <a class="btn btn-outline-success" id="downloadLink" onclick="exportF(this)">Descargar en excel</a>
+        <a class="btn btn-outline-success" id="downloadLink" onclick="download_table_as_csv('tabla_positivos_por_fecha');">Descargar en excel</a>
     </div>
 </form>
 
@@ -81,17 +81,36 @@
 
 
 @section('custom_js')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
 <script type="text/javascript">
-    function exportF(elem) {
-        var table = document.getElementById("tabla_positivos_por_fecha");
-        var html = table.outerHTML;
-        var html_no_links = html.replace(/<a[^>]*>|<\/a>/g, ""); //remove if u want links in your table
-        var url = 'data:application/vnd.ms-excel,' + escape(html_no_links); // Set your html table into url
-        elem.setAttribute("href", url);
-        elem.setAttribute("download", "positivos_por_fecha.xls"); // Choose the file name
-        return false;
+// Quick and simple export target #table_id into a csv
+function download_table_as_csv(table_id) {
+    // Select rows from table_id
+    var rows = document.querySelectorAll('table#' + table_id + ' tr');
+    // Construct csv
+    var csv = [];
+    for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll('td, th');
+        for (var j = 0; j < cols.length; j++) {
+            // Clean innertext to remove multiple spaces and jumpline (break csv)
+            var data = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, '').replace(/(\s\s)/gm, ' ')
+            // Escape double-quote with double-double-quote (see https://stackoverflow.com/questions/17808511/properly-escape-a-double-quote-in-csv)
+            data = data.replace(/"/g, '""');
+            // Push escaped string
+            row.push('"' + data + '"');
+        }
+        csv.push(row.join(';'));
     }
+    var csv_string = csv.join('\n');
+    // Download it
+    var filename = 'export_' + table_id + '_' + new Date().toLocaleDateString() + '.csv';
+    var link = document.createElement('a');
+    link.style.display = 'none';
+    link.setAttribute('target', '_blank');
+    link.setAttribute('href', 'data:text/csv;charset=utf-8,%EF%BB%BF' + encodeURIComponent(csv_string));
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
 </script>
 @endsection
