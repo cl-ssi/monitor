@@ -6,8 +6,7 @@
 
 <h3 class="mb-3">Casos positivos por rango de fechas</h3>
 
-<form class="form-inline" method="get" action="{{ route('lab.suspect_cases.reports.positivesByDateRange') }}">
-    @csrf
+<form method="get" class="form-inline mb-3" action="{{ route('lab.suspect_cases.reports.positivesByDateRange') }}">
     <div class="form-group ml-3">
         <label for="for_from">Desde</label>
         <input type="date" class="form-control mx-sm-3" id="for_from" name="from"
@@ -21,15 +20,19 @@
     </div>
 
     <div class="form-group">
-        <button type="submit" name="btn_buscar" class="btn btn-primary">Buscar</button>
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </div>
+
+    <div class="form-group ml-3">
+        <a class="btn btn-outline-success" id="downloadLink" onclick="exportF(this)">Descargar en excel</a>
     </div>
 </form>
-<br />
-<a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a>
+
 
 <div class="table-responsive">
     <table class="table table-sm table-bordered table-responsive small" id="tabla_positivos_por_fecha">
         <thead>
+            <td>°</td>
             <th nowrap>id</th>
             <th nowrap>Run</th>
             <th nowrap>Nombre</th>
@@ -49,8 +52,9 @@
         </thead>
 
         <tbody>
-        @foreach($dataArray as $suspectCase)
+        @foreach($dataArray as $key => $suspectCase)
                 <tr>
+                    <td>{{ ++$key }}</td>
                     <td nowrap>{{$suspectCase['ID']}}</td>
                     <td nowrap>{{$suspectCase['RUN']}}</td>
                     <td nowrap>{{$suspectCase['NAME']}}</td>
