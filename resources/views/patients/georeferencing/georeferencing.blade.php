@@ -5,7 +5,9 @@
 @section('content')
 
 <h3 class="mb-3"><i class="fas fa-globe-americas"></i> Georreferenciación</h3>
-
+@if(!env('API_KEY_HERE'))
+    <h3>NO SE HA DEFINIDO LA VARIABLE "API_KEY_HERE" DE HERE.COM EN ARCHIVO .env</h3>
+@else
 <div style="width: 100%; height: 650px" id="mapContainer"></div>
 
 @endsection
@@ -24,7 +26,7 @@ $( document ).ready(function() {
 
 // Instantiate a map and platform object:
 var platform = new H.service.Platform({
-    'apikey': 'eeTd1O_J1jwWpgIP9dTFmg3_4iGzSzsb9Xb5SChizLM'
+    'apikey': '{{ env('API_KEY_HERE') }}'
 });
 
 // Retrieve the target element for the map:
@@ -185,5 +187,5 @@ function panTheMap(map) {
 
 });
 </script>
-
+@endif
 @endsection

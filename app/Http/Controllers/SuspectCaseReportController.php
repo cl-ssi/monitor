@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use App\SuspectCase;
 use App\Patient;
@@ -14,6 +16,7 @@ use App\Lab\Exam\Covid19;
 use App\Laboratory;
 use App\Region;
 use App\WSMinsal;
+use Illuminate\View\View;
 
 class SuspectCaseReportController extends Controller
 {
@@ -272,5 +275,26 @@ class SuspectCaseReportController extends Controller
         }
     }
 
+    /**
+     * Obtiene suspectsCases positivos con datos de demographics por
+     * rango de fecha
+     * @param Request $request
+     * @return Application|Factory|View
+     */
+    public function positivesByDateRange(Request $request){
+
+        if($from = $request->has('from')){
+            $from = $request->get('from'). ' 00:00:00';
+            $to = $request->get('to'). ' 23:59:59';
+        }else{
+            $from = Carbon::yesterday();
+            $to = Carbon::now();
+        }
+
+        $suspectCases = SuspectCase::whereBetween('pscr_sars_cov_2_at', [$from, $to])
+            ->where('pscr_sars_cov_2', 'positive')->orderBy('pscr_sars_cov_2_at')->get();
+
+        return view('lab.suspect_cases.reports.positivesByDateRange', compact('suspectCases', 'from', 'to'));
+    }
 
 }
