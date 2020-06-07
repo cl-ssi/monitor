@@ -77,17 +77,28 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     public function case_tracing(Request $request)
     {
-        $patients = Patient::whereHas('suspectCases', function ($q) { $q->where('pscr_sars_cov_2','positive'); })->get();
+        $patients = Patient::
+            whereHas('suspectCases', function ($q) {
+              $q->where('pscr_sars_cov_2','positive');
+            })
+            ->with('inmunoTests')
+            ->get();
         $region_not = array_diff( [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], [env('REGION')] );
         $patients = $patients->whereNotIn('demographic.region_id', $region_not);
 
         $max_cases = 0;
+        $max_cases_inmuno = 0;
         foreach ($patients as $patient) {
-            if($max_cases < $patient->suspectCases->count())
+            if($max_cases < $patient->suspectCases->count()){
                 $max_cases = $patient->suspectCases->count();
+            }
+            if($max_cases_inmuno < $patient->inmunoTests->count()){
+                $max_cases_inmuno = $patient->inmunoTests->count();
+            }
+
         }
 
-        return view('lab.suspect_cases.reports.case_tracing', compact('patients','max_cases'));
+        return view('lab.suspect_cases.reports.case_tracing', compact('patients','max_cases', 'max_cases_inmuno'));
     }
 
 
