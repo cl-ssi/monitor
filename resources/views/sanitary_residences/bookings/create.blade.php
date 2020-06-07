@@ -27,7 +27,7 @@
             <label for="for_room_id">Residencia - Habitación</label>
             <select name="room_id" id="for_room_id" class="form-control">
                 @foreach(Auth::user()->residences as $residence)
-                    @foreach($residence->rooms as $room)
+                    @foreach($residence->rooms->sortBy('number') as $room)
                     <option value="{{ $room->id }}">{{ $room->residence->name }} - Habitación {{ $room->number }}</option>
                     @endforeach
                 @endforeach
