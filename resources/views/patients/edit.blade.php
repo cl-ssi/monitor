@@ -179,7 +179,7 @@
 
 @can('Inmuno Test: list')
 
-    <h4 class="mt-4">Exmanenes Inmunoglobulinas</h4>
+    <h4 class="mt-4">Examenes Inmunoglobulinas</h4>
 
     <table class="table table-sm table-bordered small mb-4 mt-4">
         <thead>
