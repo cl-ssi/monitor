@@ -86,12 +86,6 @@
 
                                 <div class="dropdown-divider"></div>
 
-                                @can('SuspectCase: own')
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.ownIndex') }}?text=&pendientes=on">Mis exámenes</a>
-                                @endcan
-
-                                <div class="dropdown-divider"></div>
-
                                 @can('SuspectCase: list')
                                 @php
                                 $labs = App\Laboratory::where('external',0)->get();
@@ -102,11 +96,15 @@
                                 @endforeach
 
                                 <div class="dropdown-divider"></div>
+
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.index') }}?text=&pendientes=on">Todos los exámenes</a>
                                 @endcan
 
-                                <div class="dropdown-divider"></div>
+                                @can('SuspectCase: own')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.ownIndex') }}?text=&pendientes=on">Mis exámenes</a>
+                                @endcan
 
+                                
                                 @can('Patient: tracing')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing') }}">Seguimiento de casos</a>
                                 @endcan

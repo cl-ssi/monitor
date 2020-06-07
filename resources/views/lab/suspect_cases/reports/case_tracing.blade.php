@@ -102,7 +102,7 @@
                     @endif
                 </td>
                 <td nowrap>{{ $patient->identifier }}</td>
-                <td nowrap>{{ $patient->suspectCases->last()->age }}</td>
+                <td nowrap>{{ $patient->age }}</td>
                 <td nowrap>{{ strtoupper($patient->sexEsp) }}</td>
                 <td nowrap>{{ ($patient->demographic) ? $patient->demographic->commune : '' }}</td>
                 <td>
