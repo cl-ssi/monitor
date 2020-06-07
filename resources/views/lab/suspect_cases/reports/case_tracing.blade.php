@@ -20,6 +20,10 @@
                 <th colspan="5" nowrap>Covid {{ $i }}</th>
             @endfor
 
+            @for ($i=1; $i <= $max_cases_inmuno; $i++)
+                <th colspan="5" nowrap>Inmunoglobulinas {{ $i }}</th>
+            @endfor
+
             <th colspan="2">IFD</th>
 
             <th colspan="6"></th>
@@ -48,6 +52,14 @@
                 <th nowrap class="table-active">Fecha Resultado</th>
                 <th class="active">Covid</th>
                 <th title='Sintomas'>S</th>
+            @endfor
+
+            @for ($i=1; $i <= $max_cases_inmuno; $i++)
+                <th class="table-active">ID</th>
+                <th nowrap class="table-active">Fecha Examen</th>
+                <th nowrap class="table-active">IgG</th>
+                <th class="active">IgM</th>
+                <th title='Sintomas'>Control</th>
             @endfor
 
             <th nowrap>Fecha IFD</th>
@@ -135,6 +147,32 @@
                 @endforeach
 
                 @for($i = $patient->suspectCases->count(); $i < $max_cases; $i++)
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                @endfor
+
+                @foreach ($patient->inmunoTests as $inmunoTest)
+                    <td>
+                        @can('Inmuno Test: edit')
+                        <a href="{{ route('lab.inmuno_tests.edit', $inmunoTest) }}">
+                        @endcan
+
+                        {{ $inmunoTest->id }}
+
+                        @can('$inmunoTest: edit')
+                        </a>
+                        @endcan
+                    </td>
+                    <td nowrap>{{ $inmunoTest->register_at->format('Y-m-d H:i:s') }}</td>
+                    <td nowrap>{{ strtoupper(($inmunoTest->IgValue) ? $inmunoTest->IgValue : '') }}</td>
+                    <td nowrap>{{ strtoupper(($inmunoTest->ImValue) ? $inmunoTest->ImValue : '') }}</td>
+                    <td nowrap>{{ strtoupper($inmunoTest->ControlValue) }}</td>
+                @endforeach
+
+                @for($i = $patient->inmunoTests->count(); $i < $max_cases_inmuno; $i++)
                     <td></td>
                     <td></td>
                     <td></td>
