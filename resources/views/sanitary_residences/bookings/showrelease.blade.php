@@ -91,17 +91,17 @@
 
     <div class="col-6 col-md-3 p-2">
         <strong>Fecha Muestra: </strong>
-        {{ ($booking->patient->suspectCases->last())? $booking->patient->suspectCases->where('pscr_sars_cov_2', 'positive')->last()->sample_at->format('d-m-Y'):''  }}
+        {{ ($booking->patient->suspectCases->last())? $booking->patient->suspectCases->where('pscr_sars_cov_2', 'positive')->orWhere('pscr_sars_cov_2', 'negative')->last()->sample_at->format('d-m-Y'):''  }}
     </div>
 
     <div class="col-6 col-md-5 p-2">
         <strong>Fecha Resultado: </strong>
-        {{ ($booking->patient->suspectCases->last())? $booking->patient->suspectCases->where('pscr_sars_cov_2', 'positive')->last()->pscr_sars_cov_2_at->format('d-m-Y'):''  }}
+        {{ ($booking->patient->suspectCases->last())? $booking->patient->suspectCases->where('pscr_sars_cov_2', 'positive')->orWhere('pscr_sars_cov_2', 'negative')->last()->pscr_sars_cov_2_at->format('d-m-Y'):''  }}
     </div>
 
     <div class="col-12 col-md-4 p-2">
         <strong>Resultado: </strong>
-        {{ $booking->patient->suspectCases->last()? $booking->patient->suspectCases->where('pscr_sars_cov_2', 'positive')->last()->covid19:'' }}
+        {{ $booking->patient->suspectCases->last()? $booking->patient->suspectCases->where('pscr_sars_cov_2', 'positive')->orWhere('pscr_sars_cov_2', 'negative')->last()->covid19:'' }}
     </div>
 
 </div>
