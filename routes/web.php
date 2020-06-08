@@ -220,6 +220,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
 
     Route::prefix('bookings')->name('bookings.')->group(function () {
 
+        Route::get('/bookingByDate','BookingController@bookingByDate')->name('bookingByDate');
         Route::get('/excelall','BookingController@excelall')->name('excelall');
         Route::get('/excelvitalsign','BookingController@excelvitalsign')->name('excelvitalsign');
         Route::get('/excel/{booking}','BookingController@excel')->name('excel');
@@ -233,6 +234,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
         // Route::get('/{booking}/edit', 'BookingController@edit')->name('edit');
         Route::put('/{booking}', 'BookingController@update')->name('update');
         //Route::delete('/destroy/{id}', 'BookingController@destroy')->name('destroy');
+        
     });
 
 

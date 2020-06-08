@@ -10,6 +10,7 @@ use App\Patient;
 use App\Log;
 use App\SuspectCase;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class BookingController extends Controller
 {
@@ -176,6 +177,33 @@ class BookingController extends Controller
 
         return view('sanitary_residences.bookings.excel.excelvitalsign',compact('bookings','vitalsigns'));
     }
+
+    public function bookingByDate(Request $request){
+
+        if($from = $request->has('from')){
+            $from = $request->get('from'). ' 00:00:00';
+            $to = $request->get('to'). ' 23:59:59';
+        }else{
+            $from = Carbon::yesterday();
+            $to = Carbon::now();
+        }
+
+         $bookings = Booking::whereBetween('from', [$from, $to])
+         ->whereNull('deleted_at')         
+         ->whereHas('room', function ($q) {
+            $q->whereNull('deleted_at');
+        })
+        ->orderBy('from')->get();
+        
+        $residences = Residence::withTrashed()->get();
+        
+        
+
+        return view('sanitary_residences.bookings.excel.excelbydate', compact('residences','bookings', 'from', 'to'));
+    }
+
+
+
 
     
 }
