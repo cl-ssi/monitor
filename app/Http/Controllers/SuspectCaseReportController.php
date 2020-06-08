@@ -185,6 +185,7 @@ class SuspectCaseReportController extends Controller
                 // $cases = SuspectCase::where('id',13784)->get();
                 // dd($cases);
 
+        dd($cases);
         foreach ($cases as $key => $case) {
             if ($case->patient->demographic && $case->files) {
                 $response = WSMinsal::crea_muestra($case);
