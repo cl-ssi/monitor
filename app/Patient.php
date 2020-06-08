@@ -53,6 +53,10 @@ class Patient extends Model //Authenticatable
         return $this->hasMany('App\SuspectCase');
     }
 
+    public function inmunoTests() {
+        return $this->hasMany('App\InmunoTest');
+    }
+
     public function lastExam() {
         return $this->hasOne('App\SuspectCase')
             ->whereIn('pscr_sars_cov_2',['positive','negative','pending'])

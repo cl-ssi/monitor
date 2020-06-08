@@ -177,6 +177,41 @@
 
 @endcan
 
+@can('Inmuno Test: list')
+
+    <h4 class="mt-4">Examenes Inmunoglobulinas</h4>
+
+    <table class="table table-sm table-bordered small mb-4 mt-4">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Fecha Examen</th>
+                <th>IgG</th>
+                <th>IgM</th>
+                <th>Control</th>
+                <th>Fecha de Carga</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($patient->inmunoTests as $inmunoTest)
+            <tr>
+                <td>
+                    <a href="{{ route('lab.inmuno_tests.edit', $inmunoTest )}}">
+                    {{ $inmunoTest->id }}
+                    </a>
+                </td>
+                <td class="text-right">{{ $inmunoTest->register_at->format('d-m-Y H:i:s') }}</td>
+                <td class="text-right">{{ strtoupper($inmunoTest->IgValue) }}</td>
+                <td class="text-right">{{ strtoupper($inmunoTest->ImValue) }}</td>
+                <td class="text-right">{{ strtoupper($inmunoTest->ControlValue) }}</td>
+                <td class="text-right">{{ $inmunoTest->created_at->format('d-m-Y H:i:s') }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+@endcan
+
 @can('Admin')
 
 <h4 class="mt-3">Historial de cambios</h4>
@@ -265,7 +300,7 @@ jQuery(document).ready(function () {
   jQuery('.geo').change(function () {
     // Instantiate a map and platform object:
     var platform = new H.service.Platform({
-      'apikey': '5mKawERqnzL1KMnNIt4n42gAV8eLomjQPKf5S5AAcZg'
+      'apikey': '{{ env('API_KEY_HERE') }}'
     });
 
     var address = jQuery('#for_address').val();
