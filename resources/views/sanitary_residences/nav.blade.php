@@ -1,6 +1,6 @@
 <ul class="nav nav-tabs mb-3 d-print-none">
 
-    @foreach(Auth::user()->residences as $residence)
+    @foreach(Auth::user()->residences->sortBy('residence_id') as $residence)
     <li class="nav-item">
         <a class="nav-link" href="{{ route('sanitary_residences.bookings.index', $residence) }}">
             <i class="fas fa-inbox"></i> {{ $residence->name }}
