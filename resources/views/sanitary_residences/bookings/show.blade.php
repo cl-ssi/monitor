@@ -92,17 +92,17 @@
 
     <div class="col-6 col-md-3 p-2">
         <strong>Fecha Muestra: </strong>
-        {{ ($booking->patient->suspectCases->last())? $booking->patient->suspectCases->last()->sample_at->format('d-m-Y'):''  }}
+        {{ ($booking->patient->suspectCases->where('pscr_sars_cov_2', 'positive')->last())? $booking->patient->suspectCases->where('pscr_sars_cov_2', 'positive')->last()->sample_at->format('d-m-Y'):''  }}
     </div>
 
     <div class="col-6 col-md-5 p-2">
         <strong>Fecha Resultado: </strong>
-        {{ ($booking->patient->suspectCases->last())? $booking->patient->suspectCases->last()->pscr_sars_cov_2_at->format('d-m-Y'):''  }}
+        {{ ($booking->patient->suspectCases->where('pscr_sars_cov_2', 'positive')->last())? $booking->patient->suspectCases->where('pscr_sars_cov_2', 'positive')->last()->pscr_sars_cov_2_at->format('d-m-Y'):''  }}
     </div>
 
     <div class="col-12 col-md-4 p-2">
         <strong>Resultado: </strong>
-        {{ $booking->patient->suspectCases->last()? $booking->patient->suspectCases->last()->covid19:'' }}
+        {{ $booking->patient->suspectCases->where('pscr_sars_cov_2', 'positive')->last()? $booking->patient->suspectCases->where('pscr_sars_cov_2', 'positive')->last()->covid19:'' }}
     </div>
 
 </div>
@@ -127,8 +127,10 @@
         <fieldset class="form-group col-12 col-md-4">
             <label for="for_room_id">Residencia - Habitación</label>
             <select name="room_id" id="for_room_id" class="form-control">
-                @foreach($rooms as $room)
-                <option value="{{ $room->id }}" {{ ($room->id == $booking->room_id)?'selected':'' }}>{{ $room->residence->name }} - Habitación {{ $room->number }}</option>
+                @foreach(Auth::user()->residences as $residence)
+                    @foreach($residence->rooms->sortBy('number') as $room)
+                    <option value="{{ $room->id }}" {{ ($room->id == $booking->room_id)?'selected':'' }}>{{ $room->residence->name }} - Habitación {{ $room->number }}</option>
+                    @endforeach
                 @endforeach
             </select>
         </fieldset>

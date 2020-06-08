@@ -33,7 +33,7 @@ class InmunoTest extends Model
             return 'negativo';
             break;
           case 'weak':
-            return 'débil';
+            return 'debil';
             break;
         }
     }
@@ -47,7 +47,7 @@ class InmunoTest extends Model
             return 'negativo';
             break;
           case 'weak':
-            return 'débil';
+            return 'debil';
             break;
         }
     }

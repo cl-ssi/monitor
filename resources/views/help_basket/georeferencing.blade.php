@@ -20,7 +20,7 @@
 
 <script type="text/javascript">
 $( document ).ready(function() {
-    
+
 
         /**
  * Creates a new marker and adds it to a group
@@ -64,7 +64,7 @@ function addInfoBubble(map) {
   }, false);
   @foreach($helpbaskets as $helpbasket)
   addMarkerToGroup(group, {lat:{{$helpbasket->latitude}}, lng:{{$helpbasket->longitude}}, svgMarkupRed}  ,
-  "<b>{{$helpbasket->fullName}}</b><br/> {{$helpbasket->identifier}}<br/> Entregado el: {{$helpbasket->created_at}}");  
+  "<b>{{$helpbasket->fullName}}</b><br/> {{$helpbasket->identifier}}<br/> Entregado el: {{$helpbasket->created_at}}");
   @endforeach
 }
 
@@ -75,7 +75,7 @@ function addInfoBubble(map) {
 // initialize communication with the platform
 // In your own code, replace variable window.apikey with your own apikey
 var platform = new H.service.Platform({
-    'apikey': '5mKawERqnzL1KMnNIt4n42gAV8eLomjQPKf5S5AAcZg'
+    'apikey': '{{ env('API_KEY_HERE') }}'
 });
 var defaultLayers = platform.createDefaultLayers();
 
@@ -83,7 +83,7 @@ var defaultLayers = platform.createDefaultLayers();
 var map = new H.Map(document.getElementById('map'),
   defaultLayers.vector.normal.map,{
   center: {lat: {{ env('LATITUD') }}, lng: {{ env('LONGITUD') }} },
-  
+
   zoom: 12.7,
   pixelRatio: window.devicePixelRatio || 1
 });
@@ -100,7 +100,7 @@ var ui = H.ui.UI.createDefault(map, defaultLayers);
 // Now use the map as required...
 addInfoBubble(map);
 
-});    
+});
 </script>
 
 @endsection

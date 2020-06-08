@@ -49,7 +49,7 @@
     </thead>
     <tbody>
         
-        @foreach($residenceUsers as $residenceUser)
+        @foreach($residenceUsers->sortBy('user.name')  as $residenceUser)
         <tr>
         
             <td>{{ $residenceUser->user->name }}</td>

@@ -141,13 +141,15 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::prefix('reports')->name('reports.')->group(function () {
             Route::get('/positives','SuspectCaseReportController@positives')->name('positives')->middleware('auth','can:Report: positives');
             Route::get('case_tracing','SuspectCaseReportController@case_tracing')->name('case_tracing')->middleware('auth','can:Patient: tracing');
-            Route::get('/gestants','SuspectCaseReportController@gestants')->name('gestants')->middleware('auth','can:Report: positives');
+            Route::get('/gestants','SuspectCaseReportController@gestants')->name('gestants')->middleware('auth','can:Report: gestants');
             // Route::get('case_chart','SuspectCaseController@case_chart')->name('case_chart')->middleware('auth');
             Route::match(['get','post'],'case_chart','SuspectCaseReportController@case_chart')->middleware('auth')->name('case_chart');
             Route::match(['get','post'],'exams_with_result','SuspectCaseReportController@exams_with_result')->middleware('auth','can:Report: exams with result')->name('exams_with_result');
             Route::get('/minsal/{laboratory}','SuspectCaseReportController@report_minsal')->name('minsal')->middleware('auth');
             Route::get('/minsal_ws/{laboratory}','SuspectCaseReportController@report_minsal_ws')->name('minsal_ws')->middleware('auth');
             Route::get('/seremi/{laboratory}','SuspectCaseReportController@report_seremi')->name('seremi')->middleware('auth');
+            Route::get('/positivesByDateRange','SuspectCaseReportController@positivesByDateRange')->name('positivesByDateRange')->middleware('auth');
+
         });
         Route::prefix('report')->name('report.')->group(function () {
             Route::get('/','SuspectCaseReportController@positives')->name('index')->middleware('auth','can:Report: other');
@@ -194,7 +196,6 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
     Route::post('/users', 'ResidenceController@usersStore')->name('users.store');
     //Route::get('/{user}/edit', 'ResidenceController@usersEdit')->name('users.edit');
     Route::delete('/{residenceUser}', 'ResidenceController@usersDestroy')->name('users.destroy');
-    Route::get('/report', 'ResidenceController@report')->name('report');
 
 
     Route::prefix('residences')->name('residences.')->group(function () {
@@ -204,6 +205,8 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
         Route::get('/{residence}/edit', 'ResidenceController@edit')->name('edit');
         Route::put('update/{residence}', 'ResidenceController@update')->name('update');
         Route::delete('/{residence}', 'ResidenceController@destroy')->name('destroy');
+        Route::get('/statusReport', 'ResidenceController@statusReport')->name('statusReport');
+
 
     });
 
