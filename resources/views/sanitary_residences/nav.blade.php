@@ -33,6 +33,12 @@
             <i class="fas fa-file-excel"></i> Consolidado Booking
         </a>
     </li>
+
+    <li class="nav-item">
+        <a class="nav-link"  href="{{ route('sanitary_residences.bookings.bookingByDate') }}">
+            <i class="fas fa-file-excel"></i> Booking Realizados por Fechas
+        </a>
+    </li>
     @endcan
 
     <li class="nav-item">
