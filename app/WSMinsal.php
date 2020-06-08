@@ -69,7 +69,7 @@ class WSMinsal extends Model
 
 
         try {
-            $response = $client->request('POST', 'https://tomademuestras.api.openagora.org/328302d8-0ba3-5611-24fa-a7a2f146241f', [
+            $response = $client->request('POST', env('WS_CREAR_MUESTRA'), [
                 'json' => $array,
                 'headers'  => [ 'ACCESSKEY' => $suspectCase->laboratory->token_ws]
             ]);
@@ -99,7 +99,7 @@ class WSMinsal extends Model
         $array = array('raw' => array('id_muestra' => $minsal_ws_id));
 
         try {
-            $response = $client->request('POST', 'https://tomademuestras.api.openagora.org/27f9298d-ead4-1746-8356-cc054f245118', [
+            $response = $client->request('POST', env('WS_RECEPCIONA_MUESTRA'), [
                   'json' => $array,
                   'headers'  => [ 'ACCESSKEY' => $suspectCase->laboratory->token_ws]
             ]);
@@ -133,7 +133,7 @@ class WSMinsal extends Model
 
         try {
             if ($pdf == NULL) {
-                $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/a3772090-34dd-d3e3-658e-c75b6ebd211a', [
+                $response = $client->request('POST', env('WS_RESULTADO_MUESTRA'), [
                     'multipart' => [
                         [
                             'name'     => 'upfile',
@@ -148,7 +148,7 @@ class WSMinsal extends Model
                     'headers'  => [ 'ACCESSKEY' => $suspectCase->laboratory->token_ws]
                 ]);
             }else{
-                $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/a3772090-34dd-d3e3-658e-c75b6ebd211a', [
+                $response = $client->request('POST', env('WS_RESULTADO_MUESTRA'), [
                     'multipart' => [
                         [
                             'name'     => 'upfile',
