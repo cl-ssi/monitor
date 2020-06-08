@@ -6,9 +6,9 @@
 
 <!-- <a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a> -->
 <a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.exportMinsal', $laboratory) }}">Descargar <i class="far fa-file-excel"></i></a>
-@can('Admin')
+{{-- @can('Admin')
 <a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.ws_minsal', $laboratory) }}">Minsal <i class="fas fa-upload"></i></a>
-@endcan
+@endcan --}}
 
 <table class="table table-sm table-bordered table-responsive small text-uppercase" id="tabla_casos">
     <thead>
