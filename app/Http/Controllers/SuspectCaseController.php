@@ -765,4 +765,14 @@ class SuspectCaseController extends Controller
 
         return Excel::download(new SeremiSuspectCasesExport($cod_lab, $nombre_lab), 'reporte-seremi.xlsx');
     }
+
+    public function notificationForm()
+    {
+//        $suspectCases = SuspectCase::whereNull('laboratory_id')
+//            ->search($request->input('search'))
+//            ->latest()
+//            ->paginate(200);
+
+        return view('lab.suspect_cases.notification_form');
+    }
 }
