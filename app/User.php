@@ -47,6 +47,10 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Establishment');
     }
 
+    public function suspectCases() {
+        return $this->hasMany('App\SuspectCase');
+    }
+
 
     /**
      * The attributes that should be hidden for arrays.

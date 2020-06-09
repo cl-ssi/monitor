@@ -203,4 +203,38 @@ class UserController extends Controller
         // TODO: Mostrar error si la clave antigua no coincide
         return redirect()->route('home');
     }
+
+
+    /**
+     * Show form for restore password.
+     *
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function passwordRestore(User $user)
+    {
+        return view('users.restore', compact('user'));
+    }
+
+    /**
+     * Set random password to user
+     *
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function passwordStore(Request $request, User $user)
+    {
+        if($request->input('password')) {
+            $password = $request->input('password');
+            $user->password = bcrypt($request->input('password'));
+        }
+        else {
+            $password = substr(str_shuffle(MD5(microtime())), 0, 6);
+            $user->password = bcrypt($password);
+        }
+        $user->save();
+
+        session()->flash('info', 'Password: '. $password);
+        return redirect()->back();
+    }
 }
