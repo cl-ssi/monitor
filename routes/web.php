@@ -39,6 +39,8 @@ Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
     Route::prefix('password')->name('password.')->group(function () {
         Route::get('/', 'UserController@showPasswordForm')->name('show_form');
         Route::put('/', 'UserController@updatePassword')->name('update');
+        Route::get('/{user}/restore', 'UserController@passwordRestore')->name('restore');
+        Route::put('/{user}', 'UserController@passwordStore')->name('store');
     });
     Route::get('/', 'UserController@index')->name('index')->middleware('can:Admin');
     Route::get('/create', 'UserController@create')->name('create')->middleware('can:Admin');
