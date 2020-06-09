@@ -8,7 +8,7 @@
 
 </main><main class="">
 
-<a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a>
+<a class="btn btn-outline-success btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.case_tracing_export') }}">Descargar en excel</a>
 
 <table class="table table-sm table-bordered table-responsive small" id="tabla_casos">
     <thead>
@@ -57,9 +57,9 @@
             @for ($i=1; $i <= $max_cases_inmuno; $i++)
                 <th class="table-active">ID</th>
                 <th nowrap class="table-active">Fecha Examen</th>
-                <th nowrap class="table-active">IgG</th>
+                <th>IgG</th>
                 <th class="active">IgM</th>
-                <th title='Sintomas'>Control</th>
+                <th>Control</th>
             @endfor
 
             <th nowrap>Fecha IFD</th>
