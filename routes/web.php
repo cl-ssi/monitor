@@ -39,6 +39,8 @@ Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
     Route::prefix('password')->name('password.')->group(function () {
         Route::get('/', 'UserController@showPasswordForm')->name('show_form');
         Route::put('/', 'UserController@updatePassword')->name('update');
+        Route::get('/{user}/restore', 'UserController@passwordRestore')->name('restore');
+        Route::put('/{user}', 'UserController@passwordStore')->name('store');
     });
     Route::get('/', 'UserController@index')->name('index')->middleware('can:Admin');
     Route::get('/create', 'UserController@create')->name('create')->middleware('can:Admin');
@@ -147,6 +149,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::match(['get','post'],'case_chart','SuspectCaseReportController@case_chart')->middleware('auth')->name('case_chart');
             Route::match(['get','post'],'exams_with_result','SuspectCaseReportController@exams_with_result')->middleware('auth','can:Report: exams with result')->name('exams_with_result');
             Route::get('/minsal/{laboratory}','SuspectCaseReportController@report_minsal')->name('minsal')->middleware('auth');
+            Route::get('/minsal_ws/{laboratory}','SuspectCaseReportController@report_minsal_ws')->name('minsal_ws')->middleware('auth');
             Route::get('/seremi/{laboratory}','SuspectCaseReportController@report_seremi')->name('seremi')->middleware('auth');
             Route::get('/positivesByDateRange','SuspectCaseReportController@positivesByDateRange')->name('positivesByDateRange')->middleware('auth');
 
@@ -221,6 +224,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
 
     Route::prefix('bookings')->name('bookings.')->group(function () {
 
+        Route::get('/bookingByDate','BookingController@bookingByDate')->name('bookingByDate');
         Route::get('/excelall','BookingController@excelall')->name('excelall');
         Route::get('/excelvitalsign','BookingController@excelvitalsign')->name('excelvitalsign');
         Route::get('/excel/{booking}','BookingController@excel')->name('excel');
@@ -234,6 +238,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
         // Route::get('/{booking}/edit', 'BookingController@edit')->name('edit');
         Route::put('/{booking}', 'BookingController@update')->name('update');
         //Route::delete('/destroy/{id}', 'BookingController@destroy')->name('destroy');
+        
     });
 
 

@@ -44,14 +44,14 @@ class WSMinsal extends Model
         $array = array(
             'raw' => array(
                 'codigo_muestra_cliente' => $suspectCase->id,
-                'rut_responsable' => '15980951-K', //Claudia Caronna //Auth::user()->run . "-" . Auth::user()->dv, //se va a enviar rut de enfermo del servicio
-                'cod_deis' => '02-100', //$request->establishment_id
-                'rut_medico' => '16350555-K', //Pedro Valjalo
+                'rut_responsable' => $suspectCase->user->run;//'15980951-K', //Claudia Caronna //Auth::user()->run . "-" . Auth::user()->dv, //se va a enviar rut de enfermo del servicio
+                'cod_deis' => $suspectCase->laboratory->cod_deis, //'102100', //$request->establishment_id
+                'rut_medico' => $suspectCase->run_medic, //'16350555-K', //Pedro Valjalo
                 'paciente_run' => $suspectCase->patient->run,
                 'paciente_dv' => $suspectCase->patient->dv,
                 'paciente_nombres' => $suspectCase->patient->name,
-                'paciente_ap_mat' => $suspectCase->patient->fathers_family,
-                'paciente_ap_pat' => $suspectCase->patient->mothers_family,
+                'paciente_ap_pat' => $suspectCase->patient->fathers_family,
+                'paciente_ap_mat' => $suspectCase->patient->mothers_family,
                 'paciente_fecha_nac' => $suspectCase->patient->birthday,
                 'paciente_comuna' => $commune_code_deis,
                 'paciente_direccion' => $suspectCase->patient->demographic->address . " " . $suspectCase->patient->demographic->number,
@@ -69,7 +69,7 @@ class WSMinsal extends Model
 
 
         try {
-            $response = $client->request('POST', 'https://tomademuestras.api.openagora.org/328302d8-0ba3-5611-24fa-a7a2f146241f', [
+            $response = $client->request('POST', env('WS_CREAR_MUESTRA'), [
                 'json' => $array,
                 'headers'  => [ 'ACCESSKEY' => $suspectCase->laboratory->token_ws]
             ]);
@@ -99,7 +99,7 @@ class WSMinsal extends Model
         $array = array('raw' => array('id_muestra' => $minsal_ws_id));
 
         try {
-            $response = $client->request('POST', 'https://tomademuestras.api.openagora.org/27f9298d-ead4-1746-8356-cc054f245118', [
+            $response = $client->request('POST', env('WS_RECEPCIONA_MUESTRA'), [
                   'json' => $array,
                   'headers'  => [ 'ACCESSKEY' => $suspectCase->laboratory->token_ws]
             ]);
@@ -133,7 +133,7 @@ class WSMinsal extends Model
 
         try {
             if ($pdf == NULL) {
-                $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/a3772090-34dd-d3e3-658e-c75b6ebd211a', [
+                $response = $client->request('POST', env('WS_RESULTADO_MUESTRA'), [
                     'multipart' => [
                         [
                             'name'     => 'upfile',
@@ -148,7 +148,7 @@ class WSMinsal extends Model
                     'headers'  => [ 'ACCESSKEY' => $suspectCase->laboratory->token_ws]
                 ]);
             }else{
-                $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/a3772090-34dd-d3e3-658e-c75b6ebd211a', [
+                $response = $client->request('POST', env('WS_RESULTADO_MUESTRA'), [
                     'multipart' => [
                         [
                             'name'     => 'upfile',
