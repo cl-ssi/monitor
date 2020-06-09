@@ -8,6 +8,8 @@
 
 </main><main class="">
 
+<a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a>
+
 <a class="btn btn-outline-success btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.case_tracing_export') }}">Descargar en excel</a>
 
 <table class="table table-sm table-bordered table-responsive small" id="tabla_casos">
@@ -91,6 +93,7 @@
                 @case ('Alta') alert-success @break
                 @case ('Fallecido') alert-danger @break
                 @case ('Hospitalizado UCI') alert-warning @break
+                @case ('Hospitalizado UCI (Ventilador)') alert-warning @break
             @endswitch
             ">
                 <td>{{ $ct-- }}</td>
