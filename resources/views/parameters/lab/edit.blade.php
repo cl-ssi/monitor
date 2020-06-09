@@ -62,6 +62,11 @@
             </select>
         </fieldset>
 
+        <fieldset class="form-group col-2">
+            <label for="for_cod_deis">Cod. Deis</label>
+            <input type="text" class="form-control" name="cod_deis" id="for_cod_deis" placeholder="" value="{{$laboratory->cod_deis}}" >
+        </fieldset>
+
     </div>
 
 

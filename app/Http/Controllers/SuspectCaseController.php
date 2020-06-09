@@ -261,6 +261,8 @@ class SuspectCaseController extends Controller
         /* Recepcionar si soy del laboratorio */
         $suspectCase->laboratory_id = Auth::user()->laboratory_id;
         $suspectCase->receptor_id = Auth::id();
+        $suspectCase->user_id = Auth::id();
+        
         $suspectCase->reception_at = date('Y-m-d H:i:s');
 
         if(!$request->input('pscr_sars_cov_2')) {
