@@ -67,7 +67,7 @@ class SuspectCaseReportController extends Controller
         /* Ventiladores */
         $ventilator = Ventilator::first();
 
-        //echo '<pre>'; print_r($patients->where('status','Hospitalizado UCI')->count()); die();
+        //echo '<pre>'; print_r($patients->where('status','Hospitalizado UCI (Ventilador)')->count()); die();
         //echo '<pre>'; print_r($evolucion); die();
         return view('lab.suspect_cases.reports.positives', compact('patients','evolucion','ventilator','exams','communes'));
 
@@ -106,6 +106,7 @@ class SuspectCaseReportController extends Controller
 
     public function case_tracing_export()
     {
+        die('hola');
         $headers = array(
             "Content-type" => "text/csv",
             "Content-Disposition" => "attachment; filename=seguimiento.csv",
@@ -116,10 +117,12 @@ class SuspectCaseReportController extends Controller
 
         $filas = Patient::latest()
             ->whereHas('suspectCases', function ($q) {
-              $q->where('pscr_sars_cov_2','positive');
+                $q->where('pscr_sars_cov_2','positive');
             })
+            ->with('suspectCases')
             ->with('inmunoTests')
             ->get();
+
         $region_not = array_diff( [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], [env('REGION')] );
         $filas = $filas->whereNotIn('demographic.region_id', $region_not);
 
@@ -196,6 +199,8 @@ class SuspectCaseReportController extends Controller
         );
 
         $columnas= array_merge($columnas_paciente, $columnas_covid, $columnas_inmuno, $columnas_cases);
+
+        dd($columnas);
 
         // ------------------------------------------------------------------ //
 
@@ -364,11 +369,17 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     /*                  REPORTE MINSAL                   */
     /*****************************************************/
-    public function report_minsal(Laboratory $laboratory)
+    public function report_minsal(Request $request, Laboratory $laboratory)
     {
-        $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
-        $to = date("Y-m-d 20:59:59");
-
+        
+        if($from = $request->has('from')){
+            $from = $request->get('from'). ' 21:00:00';
+            $to = $request->get('to'). ' 20:59:59';
+        }else{
+            $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+            $to = date("Y-m-d 20:59:59");
+        }
+        
         $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
 
         $cases = SuspectCase::where('laboratory_id',$laboratory->id)
@@ -376,7 +387,7 @@ class SuspectCaseReportController extends Controller
                 ->whereNull('external_laboratory')
                 ->get()
                 ->sortByDesc('pscr_sars_cov_2_at');
-        return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory','externos'));
+        return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory', 'externos', 'from', 'to'));
     }
 
     /*****************************************************/
