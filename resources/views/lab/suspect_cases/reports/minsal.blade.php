@@ -6,9 +6,9 @@
 
 <!-- <a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a> -->
 <a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.exportMinsal', $laboratory) }}">Descargar <i class="far fa-file-excel"></i></a>
-@can('Admin')
+{{-- @can('Admin')
 <a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.ws_minsal', $laboratory) }}">Minsal <i class="fas fa-upload"></i></a>
-@endcan
+@endcan --}}
 
 
 <form method="get" class="form-inline mb-3" action="{{ route('lab.suspect_cases.reports.minsal', $laboratory) }}">
@@ -83,7 +83,7 @@
             <td nowrap>{{ $case->runExport }}</td>
             <td nowrap>{{ $case->fullName }}</td>
             <td nowrap>{{ strtoupper($case->gender) }}</td>
-            <td nowrap>{{ $case->agePatient }}</td>
+            <td nowrap>{{ $case->age }}</td>
             <td nowrap>{{ $case->sample_type }}</td>
             <td nowrap>{{ $case->result }}</td>
             <td nowrap>{{ $case->sample_at->format('d-m-Y') }}</td>

@@ -39,6 +39,8 @@ Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
     Route::prefix('password')->name('password.')->group(function () {
         Route::get('/', 'UserController@showPasswordForm')->name('show_form');
         Route::put('/', 'UserController@updatePassword')->name('update');
+        Route::get('/{user}/restore', 'UserController@passwordRestore')->name('restore');
+        Route::put('/{user}', 'UserController@passwordStore')->name('store');
     });
     Route::get('/', 'UserController@index')->name('index')->middleware('can:Admin');
     Route::get('/create', 'UserController@create')->name('create')->middleware('can:Admin');
@@ -141,12 +143,16 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::prefix('reports')->name('reports.')->group(function () {
             Route::get('/positives','SuspectCaseReportController@positives')->name('positives')->middleware('auth','can:Report: positives');
             Route::get('case_tracing','SuspectCaseReportController@case_tracing')->name('case_tracing')->middleware('auth','can:Patient: tracing');
-            Route::get('/gestants','SuspectCaseReportController@gestants')->name('gestants')->middleware('auth','can:Report: positives');
+            Route::get('case_tracing/export', 'SuspectCaseReportController@case_tracing_export')->name('case_tracing.export');
+            Route::get('/gestants','SuspectCaseReportController@gestants')->name('gestants')->middleware('auth','can:Report: gestants');
             // Route::get('case_chart','SuspectCaseController@case_chart')->name('case_chart')->middleware('auth');
             Route::match(['get','post'],'case_chart','SuspectCaseReportController@case_chart')->middleware('auth')->name('case_chart');
             Route::match(['get','post'],'exams_with_result','SuspectCaseReportController@exams_with_result')->middleware('auth','can:Report: exams with result')->name('exams_with_result');
             Route::get('/minsal/{laboratory}','SuspectCaseReportController@report_minsal')->name('minsal')->middleware('auth');
+            Route::get('/minsal_ws/{laboratory}','SuspectCaseReportController@report_minsal_ws')->name('minsal_ws')->middleware('auth');
             Route::get('/seremi/{laboratory}','SuspectCaseReportController@report_seremi')->name('seremi')->middleware('auth');
+            Route::get('/positivesByDateRange','SuspectCaseReportController@positivesByDateRange')->name('positivesByDateRange')->middleware('auth');
+
         });
         Route::prefix('report')->name('report.')->group(function () {
             Route::get('/','SuspectCaseReportController@positives')->name('index')->middleware('auth','can:Report: other');
@@ -194,6 +200,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
     //Route::get('/{user}/edit', 'ResidenceController@usersEdit')->name('users.edit');
     Route::delete('/{residenceUser}', 'ResidenceController@usersDestroy')->name('users.destroy');
 
+
     Route::prefix('residences')->name('residences.')->group(function () {
         Route::get('/create', 'ResidenceController@create')->name('create');
         Route::get('/', 'ResidenceController@index')->name('index');
@@ -201,6 +208,9 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
         Route::get('/{residence}/edit', 'ResidenceController@edit')->name('edit');
         Route::put('update/{residence}', 'ResidenceController@update')->name('update');
         Route::delete('/{residence}', 'ResidenceController@destroy')->name('destroy');
+        Route::get('/statusReport', 'ResidenceController@statusReport')->name('statusReport');
+
+
     });
 
     Route::prefix('rooms')->name('rooms.')->group(function () {
@@ -214,6 +224,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
 
     Route::prefix('bookings')->name('bookings.')->group(function () {
 
+        Route::get('/bookingByDate','BookingController@bookingByDate')->name('bookingByDate');
         Route::get('/excelall','BookingController@excelall')->name('excelall');
         Route::get('/excelvitalsign','BookingController@excelvitalsign')->name('excelvitalsign');
         Route::get('/excel/{booking}','BookingController@excel')->name('excel');
@@ -227,6 +238,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
         // Route::get('/{booking}/edit', 'BookingController@edit')->name('edit');
         Route::put('/{booking}', 'BookingController@update')->name('update');
         //Route::delete('/destroy/{id}', 'BookingController@destroy')->name('destroy');
+
     });
 
 

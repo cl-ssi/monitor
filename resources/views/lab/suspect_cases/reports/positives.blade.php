@@ -61,14 +61,18 @@
                     <th>Hospitalizados UCI</th>
                     <td class="text-right">{{ $huci = $patients->where('status', 'Hospitalizado UCI')->count() }}</td>
                 </tr>
-                @foreach($patients->where('status', 'Hospitalizado UCI') as $patient)
+                <tr>
+                    <th>Hospitalizado UCI (Ventilador)</th>
+                    <td class="text-right">{{ $huciv = $patients->where('status', 'Hospitalizado UCI (Ventilador)')->count() }}</td>
+                </tr>
+                @foreach($patients->where('status', 'Hospitalizado UCI (Ventilador)') as $patient)
                 <tr>
                     <td colspan="2"> - {{ $patient->genderEsp }} - {{ $patient->age }} - {{ ($patient->demographic) ? $patient->demographic->commune:'' }}</td>
                 </tr>
                 @endforeach
                 <tr>
                     <th>Total</th>
-                    <th class="text-right">{{ $hbasico + $hmedio + $huti + $huci }}</th>
+                    <th class="text-right">{{ $hbasico + $hmedio + $huti + $huci + $huciv }}</th>
                 </tr>
             </tbody>
         </table> -->
@@ -213,26 +217,6 @@
                         {{ number_format($region / $communes->sum('population') * 100000 ,2) }}
                     </th>
                 </tr>
-            </tbody>
-        </table>
-
-        <table class="table table-sm table-bordered">
-            <thead>
-                <tr class="table-active">
-                    <th colspan="2">
-                        Residencias sanitarias
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($residences as $residence)
-                <tr>
-                    <td>{{ $residence->name }}</td>
-                    <td class="text-right">
-                        {{ $bookings->where('room.residence_id',$residence->id)->count() }}
-                    </td>
-                </tr>
-                @endforeach
             </tbody>
         </table>
 

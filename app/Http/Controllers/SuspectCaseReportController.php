@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use App\SuspectCase;
 use App\Patient;
@@ -14,18 +17,13 @@ use App\Lab\Exam\Covid19;
 use App\Laboratory;
 use App\Region;
 use App\WSMinsal;
+use App\Commune;
+use App\Country;
+use Illuminate\View\View;
 
 class SuspectCaseReportController extends Controller
 {
     public function positives() {
-        $bookings = Booking::where('status','Residencia Sanitaria')->whereNull('real_to')
-                    ->whereHas('patient', function ($q) {
-                        $q->where('status','Residencia Sanitaria');
-                    })->get();
-        $residences = Residence::all();
-
-        //$comunas = env('COMUNAS');
-
         $patients = Patient::positivesList();
 
         /* Calculo de gráfico de evolución */
@@ -69,9 +67,9 @@ class SuspectCaseReportController extends Controller
         /* Ventiladores */
         $ventilator = Ventilator::first();
 
-        //echo '<pre>'; print_r($patients->where('status','Hospitalizado UCI')->count()); die();
+        //echo '<pre>'; print_r($patients->where('status','Hospitalizado UCI (Ventilador)')->count()); die();
         //echo '<pre>'; print_r($evolucion); die();
-        return view('lab.suspect_cases.reports.positives', compact('patients','evolucion','ventilator','residences','bookings','exams','communes'));
+        return view('lab.suspect_cases.reports.positives', compact('patients','evolucion','ventilator','exams','communes'));
 
     }
 
@@ -82,17 +80,288 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     public function case_tracing(Request $request)
     {
-        $patients = Patient::whereHas('suspectCases', function ($q) { $q->where('pscr_sars_cov_2','positive'); })->get();
+        $patients = Patient::
+            whereHas('suspectCases', function ($q) {
+              $q->where('pscr_sars_cov_2','positive');
+            })
+            ->with('inmunoTests')
+            ->get();
         $region_not = array_diff( [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], [env('REGION')] );
         $patients = $patients->whereNotIn('demographic.region_id', $region_not);
 
         $max_cases = 0;
+        $max_cases_inmuno = 0;
         foreach ($patients as $patient) {
-            if($max_cases < $patient->suspectCases->count())
+            if($max_cases < $patient->suspectCases->count()){
                 $max_cases = $patient->suspectCases->count();
+            }
+            if($max_cases_inmuno < $patient->inmunoTests->count()){
+                $max_cases_inmuno = $patient->inmunoTests->count();
+            }
+
         }
 
-        return view('lab.suspect_cases.reports.case_tracing', compact('patients','max_cases'));
+        return view('lab.suspect_cases.reports.case_tracing', compact('patients','max_cases', 'max_cases_inmuno'));
+    }
+
+    public function case_tracing_export()
+    {
+        die('hola');
+        $headers = array(
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=seguimiento.csv",
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        );
+
+        $filas = Patient::latest()
+            ->whereHas('suspectCases', function ($q) {
+                $q->where('pscr_sars_cov_2','positive');
+            })
+            ->with('suspectCases')
+            ->with('inmunoTests')
+            ->get();
+
+        $region_not = array_diff( [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], [env('REGION')] );
+        $filas = $filas->whereNotIn('demographic.region_id', $region_not);
+
+        $max_cases = 0;
+        $max_cases_inmuno = 0;
+        foreach ($filas as $patient) {
+            if($max_cases < $patient->suspectCases->count()){
+                $max_cases = $patient->suspectCases->count();
+            }
+            if($max_cases_inmuno < $patient->inmunoTests->count()){
+                $max_cases_inmuno = $patient->inmunoTests->count();
+            }
+        }
+
+        // CONTRUCCION DEL HEADER DEL ARCHIVO //
+
+        $columnas_paciente = array(
+            'Paciente',
+            'Run',
+            'Edad',
+            'Sexo',
+            'Comuna',
+            'Nacionalidad',
+            'Estado',
+        );
+
+        $columnas_covid = array();
+
+        $count_columns_covid = 1;
+        for($i=1; $i <= $max_cases; $i++){
+            $columnas_covid[$count_columns_covid] = 'ID_'.$i;
+            $count_columns_covid++;
+            $columnas_covid[$count_columns_covid] = 'Fecha Muestra_'.$i;
+            $count_columns_covid++;
+            $columnas_covid[$count_columns_covid] = 'Fecha Resultado_'.$i;
+            $count_columns_covid++;
+            $columnas_covid[$count_columns_covid] = 'Covid_'.$i;
+            $count_columns_covid++;
+            $columnas_covid[$count_columns_covid] = 'S_'.$i;
+            $count_columns_covid++;
+        }
+
+        $columnas_inmuno = array();
+
+        $count_columns_inmuno = 1;
+        for($i=1; $i <= $max_cases_inmuno; $i++){
+            $columnas_inmuno[$count_columns_inmuno] = 'ID_I'.$i;
+            $count_columns_inmuno++;
+            $columnas_inmuno[$count_columns_inmuno] = 'Fecha Examen_'.$i;
+            $count_columns_inmuno++;
+            $columnas_inmuno[$count_columns_inmuno] = 'IgG_'.$i;
+            $count_columns_inmuno++;
+            $columnas_inmuno[$count_columns_inmuno] = 'IgM_'.$i;
+            $count_columns_inmuno++;
+            $columnas_inmuno[$count_columns_inmuno] = 'Control_'.$i;
+            $count_columns_inmuno++;
+        }
+
+        $columnas_cases = array(
+            'Fecha IFD',
+            'IFD',
+            'Origen',
+            'S.Epidemiológica',
+            'Epivigila',
+            'PAHO FLU',
+            'Gestante',
+            'Contacto directo',
+            'Fecha envío',
+            'Laboratorio',
+            'Fecha Entrega Resultado',
+            'Mecanismo',
+            'Fecha Alta',
+            'Observación',
+        );
+
+        $columnas= array_merge($columnas_paciente, $columnas_covid, $columnas_inmuno, $columnas_cases);
+
+        dd($columnas);
+
+        // ------------------------------------------------------------------ //
+
+        // $rows = array();
+        //
+        // $i=0;
+        // foreach ($filas as $key_filas => $fila) {
+        //     $rows[$key_filas][$i++] = $fila->fullName;
+        //     $rows[$key_filas][$i++] = $fila->identifier;
+        //     $rows[$key_filas][$i++] = $fila->age;
+        //     $rows[$key_filas][$i++] = $fila->sexEsp;
+        //
+        //     if($fila->demographic){
+        //       $rows[$key_filas][$i++] = $fila->demographic->commune;
+        //       $rows[$key_filas][$i++] = $fila->demographic->nationality;
+        //     }
+        //     else{
+        //       $rows[$key_filas][$i++] = '';
+        //       $rows[$key_filas][$i++] = '';
+        //     }
+        //
+        //     foreach ($fila->SuspectCases as $suspectCase) {
+        //       if($fila->SuspectCases){
+        //           $rows[$key_filas][$i++] = $suspectCase->id;
+        //           $rows[$key_filas][$i++] = $suspectCase->sample_at->format('Y-m-d');
+        //           if($suspectCase->pscr_sars_cov_2_at){
+        //               $rows[$key_filas][$i++] = $suspectCase->pscr_sars_cov_2_at->format('Y-m-d');
+        //           }
+        //           else{
+        //               $rows[$key_filas][$i++] = '';
+        //           }
+        //
+        //           $rows[$key_filas][$i++] = $suspectCase->covid19;
+        //           $rows[$key_filas][$i++] = $suspectCase->symptoms;
+        //       }
+        //       else{
+        //           $rows[$key_filas][$i++] = '';
+        //           $rows[$key_filas][$i++] = '';
+        //           $rows[$key_filas][$i++] = '';
+        //           $rows[$key_filas][$i++] = '';
+        //           $rows[$key_filas][$i++] = '';
+        //       }
+        //     }
+        //
+        //     for($j=$fila->suspectCases->count(); $j < $max_cases; $j++){
+        //         $rows[$key_filas][$i++] = '';
+        //         $rows[$key_filas][$i++] = '';
+        //         $rows[$key_filas][$i++] = '';
+        //         $rows[$key_filas][$i++] = '';
+        //         $rows[$key_filas][$i++] = '';
+        //     }
+        //
+        //     foreach ($fila->inmunoTests as $inmunoTest) {
+        //       if($fila->inmunoTests){
+        //           $rows[$key_filas][$i++] = $inmunoTest->id;
+        //           $rows[$key_filas][$i++] = $inmunoTest->register_at->format('Y-m-d H:i:s');
+        //           $rows[$key_filas][$i++] = $inmunoTest->IgValue;
+        //           $rows[$key_filas][$i++] = $inmunoTest->ImValue;
+        //           $rows[$key_filas][$i++] = $inmunoTest->ControlValue;
+        //       }
+        //       else{
+        //           $rows[$key_filas][$i++] = '';
+        //           $rows[$key_filas][$i++] = '';
+        //           $rows[$key_filas][$i++] = '';
+        //           $rows[$key_filas][$i++] = '';
+        //           $rows[$key_filas][$i++] = '';
+        //       }
+        //     }
+        //
+        //     for($j=$fila->inmunoTests->count(); $j < $max_cases_inmuno; $j++){
+        //         $rows[$key_filas][$i++] = '';
+        //         $rows[$key_filas][$i++] = '';
+        //         $rows[$key_filas][$i++] = '';
+        //         $rows[$key_filas][$i++] = '';
+        //         $rows[$key_filas][$i++] = '';
+        //     }
+        //
+        //     if($fila->result_ifd_at)
+        //         $rows[$key_filas][$i++] = $fila->suspectCases->result_ifd_at->format('Y-m-d');
+        //     else {
+        //         $rows[$key_filas][$i++] = '';
+        //     }
+        //
+        //     $rows[$key_filas][$i++] = $fila->suspectCases->first()->result_ifd;
+        //
+        //     if($fila->suspectCases->first()->establishment)
+        //         $rows[$key_filas][$i++] = $fila->suspectCases->first()->establishment->alias.' - '.$fila->suspectCases->first()->origin;
+        //     else {
+        //         $rows[$key_filas][$i++] = '';
+        //     }
+        //
+        //     $rows[$key_filas][$i++] = $fila->suspectCases->first()->epidemiological_week;
+        //     $rows[$key_filas][$i++] = $fila->suspectCases->first()->epivigila;
+        //     $rows[$key_filas][$i++] = $fila->suspectCases->first()->paho_flu;
+        //
+        //     if($fila->suspectCases->first()->gestation == 1){
+        //         $rows[$key_filas][$i++] = 'Si';
+        //     }
+        //     else {
+        //         $rows[$key_filas][$i++] = '';
+        //     }
+        //
+        //     if($fila->suspectCases->first()->close_contact == 1){
+        //         $rows[$key_filas][$i++] = 'Si';
+        //     }
+        //     else {
+        //         $rows[$key_filas][$i++] = '';
+        //     }
+        //
+        //     if($fila->suspectCases->first()->sent_isp_at)
+        //         $rows[$key_filas][$i++] = $fila->suspectCases->first()->sent_isp_at->format('Y-m-d');
+        //     else {
+        //         $rows[$key_filas][$i++] = '';
+        //     }
+        //
+        //     $rows[$key_filas][$i++] = $fila->suspectCases->first()->procesingLab;
+        //
+        //     if($fila->suspectCases->first()->notification_at)
+        //         $rows[$key_filas][$i++] = $fila->suspectCases->first()->notification_at->format('Y-m-d');
+        //     else {
+        //         $rows[$key_filas][$i++] = '';
+        //     }
+        //
+        //     $rows[$key_filas][$i++] = $fila->suspectCases->first()->notification_mechanism;
+        //
+        //     if($fila->suspectCases->first()->discharged_at)
+        //         $rows[$key_filas][$i++] = $fila->suspectCases->first()->discharged_at->format('Y-m-d');
+        //     else {
+        //         $rows[$key_filas][$i++] = '';
+        //     }
+        //
+        //     $rows[$key_filas][$i++] = $fila->suspectCases->first()->observation;
+        //
+        //     $i++;
+        // }
+
+        // dd($rows[0]);
+
+        // $callback = function() use ($filas, $columnas)
+        // {
+        //     $file = fopen('php://output', 'w');
+        //     fputs($file, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
+        //     fputcsv($file, $columnas,';');
+        //
+        //     foreach($filas as $key => $fila) {
+        //         // dd($row);
+        //         fputcsv($file, ,';');
+        //     }
+        //
+        //     // foreach($filas->SuspectCases as $key => $suspectCase) {
+        //     //     // dd($row);
+        //     //     fputcsv($file, array(
+        //     //       $suspectCase->id,
+        //     //     ),';');
+        //     // }
+        //
+        //     fclose($file);
+        //
+        // };
+        // return response()->stream($callback, 200, $headers);
+        // return Response::stream($callback, 200, $headers);
     }
 
 
@@ -121,6 +390,47 @@ class SuspectCaseReportController extends Controller
         return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory', 'externos', 'from', 'to'));
     }
 
+    /*****************************************************/
+    /*                  REPORTE MINSAL WS                */
+    /*****************************************************/
+    public function report_minsal_ws(Laboratory $laboratory)
+    {
+        $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+        $to = date("Y-m-d 20:59:59");
+
+        // $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
+
+        $cases = SuspectCase::where('laboratory_id',$laboratory->id)
+                ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
+                ->whereNull('external_laboratory')
+                ->whereNULL('minsal_ws_id')
+                ->get()
+                ->sortByDesc('pscr_sars_cov_2_at');
+
+        //obtiene datos que faltan
+        foreach ($cases as $key => $case) {
+
+            $genero = strtoupper($case->gender[0]);
+            $commune_code_deis = Commune::find($case->patient->demographic->commune_id)->code_deis;
+            $paciente_ext_paisorigen = '';
+            if($case->patient->run == "") {
+                $paciente_tipodoc = "PASAPORTE";
+                $country = Country::where('name',$case->patient->demographic->nationality)->get();
+                $paciente_ext_paisorigen = $country->first()->id_minsal;
+            }
+            else {
+                $paciente_tipodoc = "RUN";
+            }
+            $case->genero = $genero;
+            $case->commune_code_deis = $commune_code_deis;
+            $case->paciente_tipodoc = $paciente_tipodoc;
+            $case->paciente_ext_paisorigen = $paciente_ext_paisorigen;
+        }
+
+        // dd($cases->first());
+        return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'laboratory'));//,'externos'));
+    }
+
 
     /*****************************************************/
     /*                    WS - Minsal                    */
@@ -142,30 +452,35 @@ class SuspectCaseReportController extends Controller
                 // $cases = SuspectCase::where('id',13784)->get();
                 // dd($cases);
 
+        // dd($cases);
         foreach ($cases as $key => $case) {
-            if ($case->patient->demographic && $case->files) {
-                $response = WSMinsal::crea_muestra($case);
-                if ($response['status'] == 0) {
-                    session()->flash('info', 'Error al subir muestra ' . $case->id . ' a MINSAL. ' . $response['msg']);
-                    return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory','externos'));
-                }else{
-                    $response = WSMinsal::recepciona_muestra($case);
+            if ($case->run_medic != 0) {
+                if ($case->patient->demographic && $case->files) {
+                    $response = WSMinsal::crea_muestra($case);
                     if ($response['status'] == 0) {
-                        session()->flash('info', 'Error al recepcionar muestra ' . $case->id . ' en MINSAL. ' . $response['msg']);
-                        return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory','externos'));
+                        session()->flash('info', 'Error al subir muestra ' . $case->id . ' a MINSAL. ' . $response['msg']);
+                        // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'laboratory','externos'));
                     }else{
-                        $response = WSMinsal::resultado_muestra($case);
+                        $response = WSMinsal::recepciona_muestra($case);
                         if ($response['status'] == 0) {
-                            session()->flash('info', 'Error al subir resultado de muestra ' . $case->id . ' en MINSAL. ' . $response['msg']);
-                            return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory','externos'));
+                            session()->flash('info', 'Error al recepcionar muestra ' . $case->id . ' en MINSAL. ' . $response['msg']);
+                            // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'laboratory','externos'));
+                        }else{
+                            $response = WSMinsal::resultado_muestra($case);
+                            if ($response['status'] == 0) {
+                                session()->flash('info', 'Error al subir resultado de muestra ' . $case->id . ' en MINSAL. ' . $response['msg']);
+                                // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'laboratory','externos'));
+                            }
                         }
                     }
                 }
+            }else{
+                session()->flash('info', 'No se detectó run de médico registrado en muestra:  ' . $case->id);
             }
         }
 
         session()->flash('success', 'Se ha subido la información a sistema MINSAL.');
-        return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory','externos'));
+        return redirect()->back();
     }
 
     /*****************************************************/
@@ -286,5 +601,26 @@ class SuspectCaseReportController extends Controller
         }
     }
 
+    /**
+     * Obtiene suspectsCases positivos con datos de demographics por
+     * rango de fecha
+     * @param Request $request
+     * @return Application|Factory|View
+     */
+    public function positivesByDateRange(Request $request){
+
+        if($from = $request->has('from')){
+            $from = $request->get('from'). ' 00:00:00';
+            $to = $request->get('to'). ' 23:59:59';
+        }else{
+            $from = Carbon::yesterday();
+            $to = Carbon::now();
+        }
+
+        $suspectCases = SuspectCase::whereBetween('pscr_sars_cov_2_at', [$from, $to])
+            ->where('pscr_sars_cov_2', 'positive')->orderBy('pscr_sars_cov_2_at')->get();
+
+        return view('lab.suspect_cases.reports.positivesByDateRange', compact('suspectCases', 'from', 'to'));
+    }
 
 }

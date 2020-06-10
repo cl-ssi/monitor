@@ -2,9 +2,15 @@
 
 namespace App\SanitaryResidence;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Booking
+ *
+ * @mixin Builder
+ */
 class Booking extends Model
 {
 

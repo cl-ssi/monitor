@@ -2,10 +2,19 @@
 
 namespace App\SanitaryResidence;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Room
+ *
+ * @mixin Builder
+ */
 class Room extends Model
 {
+
+    use SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
