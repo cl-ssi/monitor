@@ -69,6 +69,8 @@ class CreateSuspectCasesTable extends Migration
 
             $table->unsignedBigInteger('establishment_id');
 
+            $table->unsignedBigInteger('user_id');
+
             $table->timestamps();
             $table->softDeletes();
 
@@ -77,6 +79,7 @@ class CreateSuspectCasesTable extends Migration
             $table->foreign('patient_id')->references('id')->on('patients');
             $table->foreign('laboratory_id')->references('id')->on('laboratories');
             $table->foreign('establishment_id')->references('id')->on('establishments');
+            $table->foreign('user_id')->references('id')->on('users');
 
             $table->index('pscr_sars_cov_2');
         });

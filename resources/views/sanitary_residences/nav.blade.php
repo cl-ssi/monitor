@@ -1,6 +1,6 @@
 <ul class="nav nav-tabs mb-3 d-print-none">
 
-    @foreach(Auth::user()->residences as $residence)
+    @foreach(Auth::user()->residences->sortBy('residence_id') as $residence)
     <li class="nav-item">
         <a class="nav-link" href="{{ route('sanitary_residences.bookings.index', $residence) }}">
             <i class="fas fa-inbox"></i> {{ $residence->name }}
@@ -24,6 +24,19 @@
     <li class="nav-item">
         <a class="nav-link" href="{{ route('sanitary_residences.users') }}">
             <i class="fas fa-users-cog"></i> Usuarios
+        </a>
+    </li>
+    
+
+    <li class="nav-item">
+        <a class="nav-link"  href="{{ route('sanitary_residences.residences.statusReport') }}">
+            <i class="fas fa-file-excel"></i> Consolidado Booking
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link"  href="{{ route('sanitary_residences.bookings.bookingByDate') }}">
+            <i class="fas fa-file-excel"></i> Booking Realizados por Fechas
         </a>
     </li>
     @endcan

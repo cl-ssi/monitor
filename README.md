@@ -10,7 +10,7 @@
 #### Configurar
 
 - Agregar todos los programas al PATH
-- En php.ini habilitar (descomentar) extención gd2, mbstring, pdo_sqlite, fileinfo y no me acuerdo cual mas
+- En php.ini habilitar (descomentar) extención gd2, mbstring, pdo_sqlite, fileinfo, ssl y no me acuerdo cual mas.
 
 ### Ejecutar en interprete de comandos
 
@@ -44,6 +44,10 @@
 - http://localhost:8000
 - usuario: sistemas.ssi@redsalud.gob.cl
 - clave: admin
+
+
+## Para consultas e información sobre actualizaciones del sistema
+- http://monitor-esmeralda.slack.com/
 
 
 ## Otros comandos

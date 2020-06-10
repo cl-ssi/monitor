@@ -18,6 +18,7 @@ class LaboratorySeeder extends Seeder
         $lab->minsal_ws = 1;
         $lab->token_ws = "AK026-88QV-000QAQQCI-000000B8EJTK";
         $lab->pdf_generate = 0;
+        $lab->cod_deis = "102100";
         $lab->commune_id = 5;
         $lab->save();
 
@@ -27,6 +28,7 @@ class LaboratorySeeder extends Seeder
         $lab->minsal_ws = 1;
         $lab->token_ws = "AK026-88QV-000QAQQCI-000000B8EJTK";
         $lab->pdf_generate = 1;
+        $lab->cod_deis = "102100";
         $lab->commune_id = 5;
         $lab->save();
 
@@ -36,6 +38,7 @@ class LaboratorySeeder extends Seeder
         $lab->minsal_ws = 0;
         $lab->token_ws = NULL;
         $lab->pdf_generate = 0;
+        $lab->cod_deis = NULL;
         $lab->commune_id = 119;
         $lab->save();
     }

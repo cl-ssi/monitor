@@ -47,7 +47,7 @@
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-3">
-            <label for="for_birthday">Fecha Nacimiento</label>
+            <label for="for_birthday">Fecha Nacimiento *</label>
             <input type="date" class="form-control" id="for_birthday"
                 name="birthday" required>
         </fieldset>
@@ -74,9 +74,9 @@
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-4">
-            <label for="for_mothers_family">Apellido Materno *</label>
+            <label for="for_mothers_family">Apellido Materno</label>
             <input type="text" class="form-control" id="for_mothers_family"
-                name="mothers_family" style="text-transform: uppercase;" required>
+                name="mothers_family" style="text-transform: uppercase;">
         </fieldset>
 
 
@@ -197,6 +197,7 @@
                 <option value="Hospitalizado Medio">Hospitalizado Medio</option>
                 <option value="Hospitalizado UTI">Hospitalizado UTI</option>
                 <option value="Hospitalizado UCI">Hospitalizado UCI</option>
+                <option value="Hospitalizado UCI (Ventilador)">Hospitalizado UCI (Ventilador)</option>
                 <option value="Residencia Sanitaria">Residencia Sanitaria</option>
             </select>
         </fieldset-->
@@ -335,7 +336,7 @@ jQuery(document).ready(function () {
     //coordenadas
     // Instantiate a map and platform object:
     var platform = new H.service.Platform({
-      'apikey': '5mKawERqnzL1KMnNIt4n42gAV8eLomjQPKf5S5AAcZg'
+      'apikey': '{{ env('API_KEY_HERE') }}'
     });
 
     var address = jQuery('#for_address').val();

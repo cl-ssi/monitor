@@ -86,12 +86,6 @@
 
                                 <div class="dropdown-divider"></div>
 
-                                @can('SuspectCase: own')
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.ownIndex') }}?text=&pendientes=on">Mis exámenes</a>
-                                @endcan
-
-                                <div class="dropdown-divider"></div>
-
                                 @can('SuspectCase: list')
                                 @php
                                 $labs = App\Laboratory::where('external',0)->get();
@@ -102,11 +96,15 @@
                                 @endforeach
 
                                 <div class="dropdown-divider"></div>
+
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.index') }}?text=&pendientes=on">Todos los exámenes</a>
                                 @endcan
 
-                                <div class="dropdown-divider"></div>
+                                @can('SuspectCase: own')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.ownIndex') }}?text=&pendientes=on">Mis exámenes</a>
+                                @endcan
 
+                                
                                 @can('Patient: tracing')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing') }}">Seguimiento de casos</a>
                                 @endcan
@@ -127,6 +125,8 @@
                                 @can('Inmuno Test: list')
                                 <a class="dropdown-item" href="{{ route('lab.inmuno_tests.index') }}">Inmunoglobulinas</a>
                                 @endcan
+                                
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.minsal_ws', 1) }}">WS Minsal</a>
                             </div>
                         </li>
                         @endcan
@@ -168,7 +168,7 @@
                         @endcan
 
 
-                        @canany(['Report: positives','Report: other','Report: historical'])
+                        @canany(['Report: positives','Report: other','Report: historical','Report: exams with result','Report: gestants','Report: positives demographics','Report: residences','Report: positives by range'])
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-clipboard"></i>
@@ -199,6 +199,14 @@
 
                                 @can('Report: positives demographics')
                                     <a class="dropdown-item" href="{{ route('patients.exportPositives') }}">Reporte de positivos con dirección</a>
+                                @endcan
+
+                                @can('Report: residences')
+                                    <a class="dropdown-item" href="{{ route('sanitary_residences.residences.statusReport') }}">Reporte de residencias</a>
+                                @endcan
+
+                                @can('Report: positives by range')
+                                    <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.positivesByDateRange') }}">Reporte de positivos por fecha</a>
                                 @endcan
 
                             </div>
