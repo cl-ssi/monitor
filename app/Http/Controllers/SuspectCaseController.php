@@ -624,7 +624,7 @@ class SuspectCaseController extends Controller
             return (object) $suspectCasesByDay;
         });
 
-        $total_muestras_x_lab = DB::table('suspect_cases')
+        $suspectCasesBylabs = DB::table('suspect_cases')
                                   ->select(DB::raw('DATE_FORMAT(pscr_sars_cov_2_at, "%Y-%m-%d") as pscr_sars_cov_2_at'),
                                             DB::raw('(CASE
                                                 			 WHEN external_laboratory IS NULL then (SELECT name FROM laboratories WHERE id = laboratory_id)
@@ -638,19 +638,31 @@ class SuspectCaseController extends Controller
                                   ->orderBy(DB::raw('DATE_FORMAT(pscr_sars_cov_2_at, "%Y-%m-%d")'))
                                   ->get();
 
-        $total_muestras_x_lab_filas = array();
-        $total_muestras_x_lab_columnas = array();
+        $total_muestras_lab = array();
 
-        foreach ($total_muestras_x_lab as $key => $muestra_x_lab) {
-            $total_muestras_x_lab_columnas[$muestra_x_lab->laboratory] = 0;
-            $total_muestras_x_lab_filas[$muestra_x_lab->pscr_sars_cov_2_at][$muestra_x_lab->laboratory]['cantidad'] = $muestra_x_lab->total;
+        // dd($suspectCasesBylabs);
+
+        // INCIALIZAR ARRAY
+        foreach ($periods as $key_period => $period) {
+          foreach ($suspectCasesBylabs as $key_labs => $suspectCasesBylab) {
+            $total_muestras_labs[$key_period]['date'] = $period->format('Y-m-d');
+            $total_muestras_labs[$key_period][$suspectCasesBylab->laboratory] = 0;
+          }
+          $total_muestras_labs[$key_period]['total'] = 0;
         }
 
-        foreach ($total_muestras_x_lab as $key => $muestra_x_lab) {
-            $total_muestras_x_lab_columnas[$muestra_x_lab->laboratory] += $muestra_x_lab->total;
+        foreach ($suspectCasesBylabs as $key_labs => $suspectCaseBylab) {
+          foreach ($periods as $key_period => $period) {
+            if($total_muestras_labs[$key_period]['date'] == $suspectCaseBylab->pscr_sars_cov_2_at){
+                $total_muestras_labs[$key_period][$suspectCaseBylab->laboratory] = $suspectCaseBylab->total;
+                $total_muestras_labs[$key_period]['total'] = $total_muestras_labs[$key_period]['total'] + $suspectCaseBylab->total;
+            }
+          }
         }
 
-        return view('lab.suspect_cases.reports.diary_lab_report', compact('resumeSuspectCases', 'periods_count','total_muestras_x_lab_columnas','total_muestras_x_lab_filas'));
+        // dd($total_muestras_labs);
+
+        return view('lab.suspect_cases.reports.diary_lab_report', compact('resumeSuspectCases', 'periods_count','total_muestras_labs'));
     }
 
     public function estadistico_diario_covid19(Request $request)
