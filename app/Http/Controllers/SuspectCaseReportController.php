@@ -67,7 +67,7 @@ class SuspectCaseReportController extends Controller
         /* Ventiladores */
         $ventilator = Ventilator::first();
 
-        //echo '<pre>'; print_r($patients->where('status','Hospitalizado UCI')->count()); die();
+        //echo '<pre>'; print_r($patients->where('status','Hospitalizado UCI (Ventilador)')->count()); die();
         //echo '<pre>'; print_r($evolucion); die();
         return view('lab.suspect_cases.reports.positives', compact('patients','evolucion','ventilator','exams','communes'));
 
@@ -106,6 +106,7 @@ class SuspectCaseReportController extends Controller
 
     public function case_tracing_export()
     {
+        die('hola');
         $headers = array(
             "Content-type" => "text/csv",
             "Content-Disposition" => "attachment; filename=seguimiento.csv",
@@ -116,10 +117,12 @@ class SuspectCaseReportController extends Controller
 
         $filas = Patient::latest()
             ->whereHas('suspectCases', function ($q) {
-              $q->where('pscr_sars_cov_2','positive');
+                $q->where('pscr_sars_cov_2','positive');
             })
+            ->with('suspectCases')
             ->with('inmunoTests')
             ->get();
+
         $region_not = array_diff( [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], [env('REGION')] );
         $filas = $filas->whereNotIn('demographic.region_id', $region_not);
 
@@ -196,6 +199,8 @@ class SuspectCaseReportController extends Controller
         );
 
         $columnas= array_merge($columnas_paciente, $columnas_covid, $columnas_inmuno, $columnas_cases);
+
+        dd($columnas);
 
         // ------------------------------------------------------------------ //
 
