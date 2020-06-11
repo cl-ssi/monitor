@@ -262,7 +262,7 @@ class SuspectCaseController extends Controller
         $suspectCase->laboratory_id = Auth::user()->laboratory_id;
         $suspectCase->receptor_id = Auth::id();
         $suspectCase->user_id = Auth::id();
-        
+
         $suspectCase->reception_at = date('Y-m-d H:i:s');
 
         if(!$request->input('pscr_sars_cov_2')) {
@@ -768,13 +768,9 @@ class SuspectCaseController extends Controller
         return Excel::download(new SeremiSuspectCasesExport($cod_lab, $nombre_lab), 'reporte-seremi.xlsx');
     }
 
-    public function notificationForm()
+    public function notificationForm(SuspectCase $suspectCase)
     {
-//        $suspectCases = SuspectCase::whereNull('laboratory_id')
-//            ->search($request->input('search'))
-//            ->latest()
-//            ->paginate(200);
-
-        return view('lab.suspect_cases.notification_form');
+        $user = auth()->user();
+        return view('lab.suspect_cases.notification_form', compact('suspectCase', 'user'));
     }
 }
