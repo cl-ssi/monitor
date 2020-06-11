@@ -30,6 +30,7 @@ class ResidenceController extends Controller
         $residence_user = new ResidenceUser($request->All());
         $residence_user->save();
 
+        session()->flash('success', 'Se Asigno al Usuario a la Residencia Sanitaria');
         return redirect()->back();
     }
 
