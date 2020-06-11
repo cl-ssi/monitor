@@ -31,7 +31,7 @@
         <div class="form-group row">
             <label for="for_run" class="col-sm-2 col-form-label">Rut</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_run" value="{{$suspectCase->patient->run . '-' . $suspectCase->patient->dv}}">
+                <input type="text" class="form-control" id="for_run" value="{{$suspectCase->patient->identifier}}">
             </div>
             <label for="for_address" class="col-sm-2 col-form-label">Dirección</label>
             <div class="col-sm-4">
