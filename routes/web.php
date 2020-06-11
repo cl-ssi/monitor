@@ -161,6 +161,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::get('/seremi-export/{laboratory}','SuspectCaseController@exportSeremiExcel')->name('exportSeremi')->middleware('auth');
             Route::get('/ws_minsal/{laboratory}','SuspectCaseReportController@ws_minsal')->name('ws_minsal')->middleware('auth');
             Route::get('diary_lab_report','SuspectCaseController@diary_lab_report')->name('diary_lab_report')->middleware('auth');
+            Route::get('diary_by_lab_report','SuspectCaseController@diary_by_lab_report')->name('diary_by_lab_report')->middleware('auth');
             Route::get('estadistico_diario_covid19','SuspectCaseController@estadistico_diario_covid19')->name('estadistico_diario_covid19')->middleware('auth');
         });
     });

@@ -6,7 +6,7 @@
 
 
 <div class="row">
-  <div class="col-3">
+  <div class="col">
 
     <h5 class="mb-3">Toma de muestras diarias</h5>
 
@@ -14,55 +14,38 @@
       <table class="table table-sm table-bordered text-center table-striped small">
         <thead>
           <tr class="text-center">
-            <th>Día</th>
-            <th>N° Muestras</th>
+            <th rowspan="2">Día</th>
+            <th rowspan="2">N° Muestras</th>
+            <th colspan="5">Resultados</th>
+            <th rowspan="2">Procesados</th>
+          </tr>
+          <tr class="text-center">
+            <th>Positivos</th>
+            <th>Negativos</th>
+            <th>Muestra no apta</th>
+            <th>Indeterminado</th>
+            <th>Pendiente</th>
           </tr>
         </thead>
         <tbody>
-          @foreach($resumeSuspectCases as $resumeSuspectCase)
+          @foreach($cases_by_days as $key => $cases)
           <tr>
-            <td>{{ Carbon\Carbon::parse($resumeSuspectCase->date)->format('Y-m-d') }}</td>
-            <td>{{ $resumeSuspectCase->count }}</td>
+            <td>{{ $key }}</td>
+            <td>{{ $cases['cases'] }}</td>
+            <td>{{ $cases['positive'] }}</td>
+            <td>{{ $cases['negative'] }}</td>
+            <td>{{ $cases['rejected'] }}</td>
+            <td>{{ $cases['undetermined'] }}</td>
+            <td>{{ $cases['pending'] }}</td>
+            <td>{{ $cases['procesing'] }}</td>
           </tr>
           @endforeach
           <tr>
             <td>Total</td>
-            <td>{{ $resumeSuspectCases->sum('count') }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="col-9">
-    <h5 class="mb-3">Exámenes realizados por laboratorios</h5>
-    <div class="table-responsive-sm">
-      <table class="table table-sm table-bordered text-center table-striped small">
-        <thead>
-          <tr class="text-center">
-            @foreach($total_muestras_labs as $total_muestras_lab)
-              @foreach($total_muestras_lab as $nombre_lab => $lab)
-                  <th>@if($nombre_lab == 'date')
-                        Día
-                      @elseif($nombre_lab == 'total')
-                        Total
-                      @else
-                        {{ $nombre_lab }}
-                      @endif
-                  </th>
-              @endforeach
-              @break
+            @foreach($total_cases_by_days as $key => $cases)
+              <td>{{ $cases }}</td>
             @endforeach
           </tr>
-        </thead>
-        <tbody>
-          @foreach($total_muestras_labs as $total_muestras_lab)
-            <tr>
-            @foreach($total_muestras_lab as $nombre_lab => $lab)
-                <td>{{ $lab }}</td>
-            @endforeach
-            </tr>
-          @endforeach
         </tbody>
       </table>
     </div>
