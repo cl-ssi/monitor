@@ -19,6 +19,7 @@ use App\ReportBackup;
 use App\SampleOrigin;
 use App\Country;
 use App\WSMinsal;
+use Carbon\CarbonPeriod;
 use Carbon\Carbon;
 use App\Mail\NewPositive;
 use Illuminate\Support\Facades\Mail;
@@ -200,19 +201,6 @@ class SuspectCaseController extends Controller
      */
     public function admission()
     {
-    //   $client = new \GuzzleHttp\Client();
-    //
-    //   // ****** Webservices openagora ******
-    //
-    //   // //obtener datos
-    //   // $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/41381c1a-8d27-d33b-2e4a-403d757e39cc', [
-    //   //     'form_params' => ['parametros' => '{"id_muestra":"42"}'],
-    //   //     'headers'  => [ 'ACCESSKEY' => 'AK026-88QV-000QAKZQA-000000AR5SLP']
-    //   // ]);
-    //   // $response_json = $response->getBody()->getContents();
-    //   // $array = json_decode($response_json, true);
-    //   // dd($array);
-
         $regions = Region::orderBy('id','ASC')->get();
         $communes = Commune::orderBy('id','ASC')->get();
         $env_communes = array_map('trim',explode(",",env('COMUNAS')));
@@ -262,7 +250,7 @@ class SuspectCaseController extends Controller
         $suspectCase->laboratory_id = Auth::user()->laboratory_id;
         $suspectCase->receptor_id = Auth::id();
         $suspectCase->user_id = Auth::id();
-        
+
         $suspectCase->reception_at = date('Y-m-d H:i:s');
 
         if(!$request->input('pscr_sars_cov_2')) {
@@ -555,68 +543,87 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.reports.historical_report', compact('head','main','date'));
     }
 
+    public function diary_by_lab_report(Request $request)
+    {
+        //FIRST CASE
+        $beginExamDate = SuspectCase::orderBy('sample_at')->first()->sample_at;
+        $laboratories = Laboratory::all();
+
+        $periods = CarbonPeriod::create($beginExamDate, now());
+
+        $periods_count = $periods->count();
+
+        // NUEVO CODIGO
+        foreach ($periods as $key => $period) {
+            foreach ($laboratories as $lab) {
+          		$cases_by_days[$period->format('d-m-Y')]['laboratories'][$lab->name] = 0;
+          	}
+            $cases_by_days[$period->format('d-m-Y')]['cases'] = 0;
+        }
+
+        $suspectCases = SuspectCase::All();
+
+        foreach ($suspectCases as $suspectCase) {
+          $total_cases_by_days['cases'] = 0;
+
+        }
+
+        //CARGA ARRAY CASOS
+        foreach ($suspectCases as $suspectCase) {
+          if($suspectCase->pscr_sars_cov_2_at != null){
+            if($suspectCase->external_laboratory){
+              $cases_by_days[$suspectCase->pscr_sars_cov_2_at->format('d-m-Y')]['laboratories'][$suspectCase->external_laboratory] += 1;
+            }
+            else{
+              $cases_by_days[$suspectCase->pscr_sars_cov_2_at->format('d-m-Y')]['laboratories'][$suspectCase->laboratory->name] += 1;
+            }
+            $cases_by_days[$suspectCase->pscr_sars_cov_2_at->format('d-m-Y')]['cases'] += 1;
+            $total_cases_by_days['cases'] += 1;
+          }
+        }
+        return view('lab.suspect_cases.reports.diary_by_lab_report', compact('cases_by_days', 'total_cases_by_days'));
+    }
+
     public function diary_lab_report(Request $request)
     {
-        // if($request->has('date')){
-        //   $date = $request->get('date');
-        // }else{
-        //   $date = Carbon::now();
-        // }
+        $beginExamDate = SuspectCase::orderBy('sample_at')->first()->sample_at;
+        $laboratories = Laboratory::all();
 
-        // $total_muestras_diarias = DB::table('suspect_cases')
-        //     ->select('sample_at', DB::raw('count(*) as total'))
-        //     ->groupBy('sample_at')
-        //     ->orderBy('sample_at')
-        //     ->get();
-        $total_muestras_diarias = DB::table('suspect_cases')
-            ->select(DB::raw('DATE_FORMAT(sample_at, "%Y-%m-%d") as sample_at'),DB::raw('count(*) as total'))
-            ->groupBy(DB::raw('DATE_FORMAT(sample_at, "%Y-%m-%d")'))
-            ->orderBy(DB::raw('DATE_FORMAT(sample_at, "%Y-%m-%d")'))
-            ->get();
-        // dd($total_muestras_diarias);
+        $periods = CarbonPeriod::create($beginExamDate, now());
 
-        // $total_muestras_x_lab = DB::table('suspect_cases')
-        //                       ->select('pscr_sars_cov_2_at',
-        //                                 DB::raw('(CASE
-        //                                     			 WHEN external_laboratory IS NULL then (SELECT name FROM laboratories WHERE id = laboratory_id)
-        //                                     			 ELSE external_laboratory
-        //                                     		  END) AS laboratory'),
-        //                                 DB::raw('count(*) as total')
-        //                               )
-        //                       ->where('pscr_sars_cov_2', '<>', 'pending' )
-        //                       ->where('pscr_sars_cov_2', '<>', 'rejected' )
-        //                       ->groupBy('external_laboratory', 'laboratory_id', 'pscr_sars_cov_2_at')
-        //                       ->orderBy('pscr_sars_cov_2_at')
-        //                       ->get();
-        $total_muestras_x_lab = DB::table('suspect_cases')
-                              ->select(DB::raw('DATE_FORMAT(pscr_sars_cov_2_at, "%Y-%m-%d") as pscr_sars_cov_2_at'),
-                                        DB::raw('(CASE
-                                            			 WHEN external_laboratory IS NULL then (SELECT name FROM laboratories WHERE id = laboratory_id)
-                                            			 ELSE external_laboratory
-                                            		  END) AS laboratory'),
-                                        DB::raw('count(*) as total')
-                                      )
-                              ->where('pscr_sars_cov_2', '<>', 'pending' )
-                              ->where('pscr_sars_cov_2', '<>', 'rejected' )
-                              ->groupBy('external_laboratory', 'laboratory_id', DB::raw('DATE_FORMAT(pscr_sars_cov_2_at, "%Y-%m-%d")'))
-                              ->orderBy(DB::raw('DATE_FORMAT(pscr_sars_cov_2_at, "%Y-%m-%d")'))
-                              ->get();
-                              // dd($total_muestras_x_lab);
+        $periods_count = $periods->count();
 
-        //dd($total_muestras_x_lab);
-        $total_muestras_x_lab_filas = array();
-        $total_muestras_x_lab_columnas = array();
+        foreach ($periods as $key => $period) {
+            $cases_by_days[$period->format('d-m-Y')]['cases'] = 0;
+            $cases_by_days[$period->format('d-m-Y')]['positive'] = 0;
+            $cases_by_days[$period->format('d-m-Y')]['negative'] = 0;
+            $cases_by_days[$period->format('d-m-Y')]['rejected'] = 0;
+            $cases_by_days[$period->format('d-m-Y')]['undetermined'] = 0;
+            $cases_by_days[$period->format('d-m-Y')]['pending'] = 0;
+            $cases_by_days[$period->format('d-m-Y')]['procesing'] = 0;
 
-        foreach ($total_muestras_x_lab as $key => $muestra_x_lab) {
-          $total_muestras_x_lab_columnas[$muestra_x_lab->laboratory] = 0;
-          $total_muestras_x_lab_filas[$muestra_x_lab->pscr_sars_cov_2_at][$muestra_x_lab->laboratory]['cantidad'] = $muestra_x_lab->total;
         }
 
-        foreach ($total_muestras_x_lab as $key => $muestra_x_lab) {
-          $total_muestras_x_lab_columnas[$muestra_x_lab->laboratory] += $muestra_x_lab->total;
+        $suspectCases = SuspectCase::All();
+
+        foreach ($suspectCases as $suspectCase) {
+          $total_cases_by_days['cases'] = 0;
+          $total_cases_by_days[$suspectCase->pscr_sars_cov_2] = 0;
         }
 
-        return view('lab.suspect_cases.reports.diary_lab_report', compact('total_muestras_diarias','total_muestras_x_lab_columnas','total_muestras_x_lab_filas'));
+        //CARGA ARRAY CASOS
+        foreach ($suspectCases as $suspectCase) {
+          $cases_by_days[$suspectCase->sample_at->format('d-m-Y')]['cases'] += 1;
+          $cases_by_days[$suspectCase->sample_at->format('d-m-Y')][$suspectCase->pscr_sars_cov_2] += 1;
+          if($suspectCase->pscr_sars_cov_2_at != null){
+            $cases_by_days[$suspectCase->pscr_sars_cov_2_at->format('d-m-Y')]['procesing'] += 1;
+          }
+
+          $total_cases_by_days['cases'] += 1;
+          $total_cases_by_days[$suspectCase->pscr_sars_cov_2] += 1;
+        }
+
+        return view('lab.suspect_cases.reports.diary_lab_report', compact('cases_by_days', 'total_cases_by_days'));
     }
 
     public function estadistico_diario_covid19(Request $request)
@@ -766,5 +773,11 @@ class SuspectCaseController extends Controller
         }
 
         return Excel::download(new SeremiSuspectCasesExport($cod_lab, $nombre_lab), 'reporte-seremi.xlsx');
+    }
+
+    public function notificationForm(SuspectCase $suspectCase)
+    {
+        $user = auth()->user();
+        return view('lab.suspect_cases.notification_form', compact('suspectCase', 'user'));
     }
 }

@@ -39,7 +39,7 @@ class VentilatorController extends Controller
                     'Región de Magallanes y de la Antártica Chilena',
                     'Región Metropolitana de Santiago',
                     'Región de Ñuble']);
-        $ct_covid = $patients->where('status', 'Hospitalizado UCI')->count();
+        $ct_covid = $patients->where('status', 'Hospitalizado UCI (Ventilador)')->count();
 
         return view('parameters.ventilators.edit', compact('ventilator','ct_covid'));
     }
