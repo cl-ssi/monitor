@@ -25,8 +25,21 @@
     @csrf
     @method('PUT')
 
+    @can('SuspectCase: reception')
     <div class="form-row">
+        <fieldset class="form-group col-5 col-md-3">
+            <label for="for_laboratory_id">Laboratorio local</label>
+            <select name="laboratory_id" id="for_laboratory_id" class="form-control">
+                <option value=""></option>
+                @foreach($local_labs as $local_lab)
+                <option value="{{ $local_lab->id }}"  {{ ($suspectCase->laboratory_id == $local_lab->id)?'selected':'' }}>{{ $local_lab->name }}</option>
+                @endforeach
+            </select>
+        </fieldset>
+    </div>
+    @endcan
 
+    <div class="form-row">
         <fieldset class="form-group col-5 col-md-3">
             <label for="for_sample_at">Fecha Muestra</label>
             <input type="datetime-local" class="form-control" id="for_sample_at"
@@ -68,16 +81,15 @@
 
     </div>
 
+    <hr>
 
+    @if(auth()->user()->can('SuspectCase: tecnologo'))
     <div class="form-row">
-
-        @can('SuspectCase: tecnologo')
 
         <fieldset class="form-group col-6 col-md-3 alert-warning">
             <label for="for_result_ifd_at">Fecha Resultado IFD</label>
             <input type="datetime-local" class="form-control" id="for_result_ifd_at"
-                name="result_ifd_at" value="{{( isset($suspectCase->result_ifd_at))?  $suspectCase->result_ifd_at->format('Y-m-d\TH:i:s'):'' }}"
-                >
+                name="result_ifd_at" value="{{( isset($suspectCase->result_ifd_at))?  $suspectCase->result_ifd_at->format('Y-m-d\TH:i:s'):'' }}">
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2 alert-warning">
@@ -138,28 +150,7 @@
             </select>
         </fieldset>
 
-        @endcan
-
-        <fieldset class="form-group col-1 col-md-2">
-            <label for="for_dumy"></label>
-            <p></p>
-        </fieldset>
-
-        <fieldset class="form-group col-5 col-md-3">
-            <label for="for_laboratory_id">Laboratorio local</label>
-            <select name="laboratory_id" id="for_laboratory_id" class="form-control">
-                <option value=""></option>
-                @foreach($local_labs as $local_lab)
-                <option value="{{ $local_lab->id }}"  {{ ($suspectCase->laboratory_id == $local_lab->id)?'selected':'' }}>{{ $local_lab->name }}</option>
-                @endforeach
-            </select>
-        </fieldset>
-
-
-
     </div>
-
-    @can('SuspectCase: tecnologo')
 
     <div class="form-row">
 
@@ -221,6 +212,9 @@
         </fieldset>
     </div>
 
+    @else
+        @include('lab.suspect_cases.partials.show_tecnologo',$suspectCase)
+    @endif
     <hr>
 
     <div class="form-row">
@@ -319,8 +313,6 @@
     </div>
 
     <hr>
-
-@endcan
 
 
     <h4>Entrega de resultados a paciente</h4>
