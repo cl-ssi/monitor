@@ -259,7 +259,7 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     public function report_minsal(Request $request, Laboratory $laboratory)
     {
-        
+
         if($from = $request->has('from')){
             $from = $request->get('from'). ' 21:00:00';
             $to = $request->get('to'). ' 20:59:59';
@@ -267,7 +267,7 @@ class SuspectCaseReportController extends Controller
             $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
             $to = date("Y-m-d 20:59:59");
         }
-        
+
         $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
 
         $cases = SuspectCase::where('laboratory_id',$laboratory->id)
@@ -382,6 +382,10 @@ class SuspectCaseReportController extends Controller
     }
 
 
+
+    /*****************************************************/
+    /*                REPORTE GESTANTES                  */
+    /*****************************************************/
     public function gestants() {
         $patients = Patient::whereHas('suspectCases', function ($q) {
             $q->where('gestation',1);
@@ -390,6 +394,9 @@ class SuspectCaseReportController extends Controller
         return view('lab.suspect_cases.reports.gestants', compact('patients'));
     }
 
+    /*****************************************************/
+    /*              CONTADOR DE POSITIVOS                */
+    /*****************************************************/
     public function countPositives(Request $request)
     {
         $patients = Patient::positivesList();
@@ -509,6 +516,23 @@ class SuspectCaseReportController extends Controller
             ->where('pscr_sars_cov_2', 'positive')->orderBy('pscr_sars_cov_2_at')->get();
 
         return view('lab.suspect_cases.reports.positivesByDateRange', compact('suspectCases', 'from', 'to'));
+    }
+
+
+    /*****************************************************/
+    /*            REPORTE SISTEMAS EXPERTOS              */
+    /*****************************************************/
+    public function reporteExpertos()
+    {
+        $from = Carbon::yesterday();
+        $to = Carbon::now();
+
+        $patients = Patient::whereHas('suspectCases', function ($q) use($from,$to)  {
+            $q->whereBetween('pscr_sars_cov_2_at',[$from,$to]);
+        })->with('suspectCases')->get();
+
+        //dd($patients);
+        return response()->json($patients);
     }
 
 }
