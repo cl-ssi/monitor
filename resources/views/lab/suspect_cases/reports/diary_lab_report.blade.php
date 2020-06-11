@@ -40,41 +40,34 @@
       <table class="table table-sm table-bordered text-center table-striped small">
         <thead>
           <tr class="text-center">
-            <th>Día</th>
-            @foreach($total_muestras_x_lab_columnas as $key => $muestra_x_lab_columna)
-            <th>{{$key}}</th>
+            @foreach($total_muestras_labs as $total_muestras_lab)
+              @foreach($total_muestras_lab as $nombre_lab => $lab)
+                  <th>@if($nombre_lab == 'date')
+                        Día
+                      @elseif($nombre_lab == 'total')
+                        Total
+                      @else
+                        {{ $nombre_lab }}
+                      @endif
+                  </th>
+              @endforeach
+              @break
             @endforeach
-            <th><b>Total</b></th>
           </tr>
         </thead>
         <tbody>
-          @foreach($total_muestras_x_lab_filas as $key => $muestra_x_lab_filas)
-          @php $cont = 0; @endphp
-          <tr>
-            <td nowrap>{{Carbon\Carbon::parse($key)->format('Y-m-d')}}</td>
-            @foreach($total_muestras_x_lab_columnas as $key2 => $muestra_x_lab_columna)
-            <td>
-            @foreach ($muestra_x_lab_filas as $key3 => $data)
-              @if($key2 == $key3)
-                {{$data['cantidad']}}
-                @php $cont += $data['cantidad']; @endphp
-              @endif
+          @foreach($total_muestras_labs as $total_muestras_lab)
+            <tr>
+            @foreach($total_muestras_lab as $nombre_lab => $lab)
+                <td>{{ $lab }}</td>
             @endforeach
-            </td>
+            </tr>
           @endforeach
-            <td><b>{{$cont}}</b></td>
-          </tr>
-          @endforeach
-          <tr class="text-center">
-            <td><b>Total</b></td>
-            @foreach($total_muestras_x_lab_columnas as $key => $muestra_x_lab_columna)
-            <td><b>{{$muestra_x_lab_columna}}</b></td>
-            @endforeach
-          </tr>
         </tbody>
       </table>
     </div>
   </div>
+
 </div>
 
 {{-- <br /><hr /> --}}
