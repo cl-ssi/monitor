@@ -42,7 +42,7 @@
         @foreach ($cases as $case)
         <tr>
             {{-- <td>{{ $case->minsal_ws_id }}</td> --}}
-            <td>{{ $case->id }}</td>
+            <td><a href="{{ route('lab.suspect_cases.edit', $case) }}">{{ $case->id }}</a></td>
             <td nowrap>--</td>
             <td nowrap>02-100</td>
             <td nowrap>{{$case->run_medic}}</td>
