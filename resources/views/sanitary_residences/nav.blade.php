@@ -8,14 +8,33 @@
     </li>
     @endforeach
 
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('sanitary_residences.bookings.excelall')  }}">
-            <i class="fas fa-file-excel"></i> Reporte Booking
-        </a>
-    </li>
-
-
+    
     @can('SanitaryResidence: admin')
+
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-file-excel"></i>
+                Reportería
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.excelall') }}">Booking Actuales</a>
+
+                <a class="dropdown-item" href="{{ route('sanitary_residences.residences.statusReport') }}">Consolidado Booking</a>
+                
+                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.bookingByDate') }}">Booking Realizados por Fechas</a>
+                
+            </div>
+        </li>
+
+
+
+
+
+
+
+
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-cogs"></i>
@@ -32,14 +51,17 @@
             </div>
         </li>
 
-        <li class="nav-item">
-        <a class="nav-link" href="{{ route('sanitary_residences.bookings.bookingByDate') }}">
-            <i class="fas fa-file-excel"></i> Booking Realizados por Fechas
-        </a>
-    </li>
+
+
+        
+
+        
     @endcan
 
-    @can('SanitaryResidence: admin')
+    
+
+
+    
     <!-- <li class="nav-item">
         <a class="nav-link" href="{{ route('sanitary_residences.residences.index') }}">
             <i class="fas fa-hotel"></i> Residencias
@@ -70,9 +92,9 @@
             <i class="fas fa-file-excel"></i> Booking Realizados por Fechas
         </a>
     </li>
-    @endcan -->
+    
 
-    <!-- <li class="nav-item">
+     <li class="nav-item">
         <a class="nav-link"  href="{{ route('sanitary_residences.bookings.excelvitalsign')  }}">
             <i class="fas fa-file-excel"></i> Reporte Signos Vitales
         </a>
