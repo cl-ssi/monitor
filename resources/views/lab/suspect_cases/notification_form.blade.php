@@ -6,7 +6,7 @@
 
     <div class="row">
         <div class="col-md-2">
-            <img src="/images/256px_logo_isp.png" class="img-fluid" alt="Instituto de Salud Pública de Chile" width="70%">
+            <img src="{{ asset('/images/256px_logo_isp.png') }}" class="img-fluid" alt="Instituto de Salud Pública de Chile" width="70%">
         </div>
         <div class="col-md-8">
             <h3 class="mb-3">Formulario notificación inmediata y envío de muestras

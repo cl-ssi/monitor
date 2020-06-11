@@ -104,7 +104,7 @@
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.ownIndex') }}?text=&pendientes=on">Mis exámenes</a>
                                 @endcan
 
-                                
+
                                 @can('Patient: tracing')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing') }}">Seguimiento de casos</a>
                                 @endcan
@@ -125,7 +125,7 @@
                                 @can('Inmuno Test: list')
                                 <a class="dropdown-item" href="{{ route('lab.inmuno_tests.index') }}">Inmunoglobulinas</a>
                                 @endcan
-                                
+
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.minsal_ws', 1) }}">WS Minsal</a>
                             </div>
                         </li>
@@ -195,7 +195,8 @@
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.gestants') }}">Gestantes</a>
                                 @endcan
 
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.diary_lab_report') }}">Cantidad de muestras y exámenes</a>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.diary_lab_report') }}">Cantidad de muestras diarias</a>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.diary_by_lab_report') }}">Exámenes realizados por laboratorios</a>
 
                                 @can('Report: positives demographics')
                                     <a class="dropdown-item" href="{{ route('patients.exportPositives') }}">Reporte de positivos con dirección</a>
