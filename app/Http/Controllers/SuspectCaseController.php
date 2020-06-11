@@ -201,19 +201,6 @@ class SuspectCaseController extends Controller
      */
     public function admission()
     {
-    //   $client = new \GuzzleHttp\Client();
-    //
-    //   // ****** Webservices openagora ******
-    //
-    //   // //obtener datos
-    //   // $response = $client->request('POST', 'https://tomademuestras.openagora.org/ws/41381c1a-8d27-d33b-2e4a-403d757e39cc', [
-    //   //     'form_params' => ['parametros' => '{"id_muestra":"42"}'],
-    //   //     'headers'  => [ 'ACCESSKEY' => 'AK026-88QV-000QAKZQA-000000AR5SLP']
-    //   // ]);
-    //   // $response_json = $response->getBody()->getContents();
-    //   // $array = json_decode($response_json, true);
-    //   // dd($array);
-
         $regions = Region::orderBy('id','ASC')->get();
         $communes = Commune::orderBy('id','ASC')->get();
         $env_communes = array_map('trim',explode(",",env('COMUNAS')));
