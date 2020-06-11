@@ -106,6 +106,7 @@
                 <option value="Hospitalizado Medio" {{ ($patient->status == 'Hospitalizado Medio')?'selected':'' }}>Hospitalizado Medio</option>
                 <option value="Hospitalizado UTI" {{ ($patient->status == 'Hospitalizado UTI')?'selected':'' }}>Hospitalizado UTI</option>
                 <option value="Hospitalizado UCI" {{ ($patient->status == 'Hospitalizado UCI')?'selected':'' }}>Hospitalizado UCI</option>
+                <option value="Hospitalizado UCI (Ventilador)" {{ ($patient->status == 'Hospitalizado UCI')?'selected':'' }}>Hospitalizado UCI (Ventilador)</option>
                 <option value="Residencia Sanitaria" {{ ($patient->status == 'Residencia Sanitaria')?'selected':'' }}>Residencia Sanitaria</option>
             </select>
         </fieldset>

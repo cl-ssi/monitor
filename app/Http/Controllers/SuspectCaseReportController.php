@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use App\SuspectCase;
@@ -67,7 +66,7 @@ class SuspectCaseReportController extends Controller
         /* Ventiladores */
         $ventilator = Ventilator::first();
 
-        //echo '<pre>'; print_r($patients->where('status','Hospitalizado UCI')->count()); die();
+        //echo '<pre>'; print_r($patients->where('status','Hospitalizado UCI (Ventilador)')->count()); die();
         //echo '<pre>'; print_r($evolucion); die();
         return view('lab.suspect_cases.reports.positives', compact('patients','evolucion','ventilator','exams','communes'));
 
@@ -106,26 +105,20 @@ class SuspectCaseReportController extends Controller
 
     public function case_tracing_export()
     {
-        $headers = array(
-            "Content-type" => "text/csv",
-            "Content-Disposition" => "attachment; filename=seguimiento.csv",
-            "Pragma" => "no-cache",
-            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
-            "Expires" => "0"
-        );
-
-        $filas = Patient::latest()
+        $patients = Patient::latest()
             ->whereHas('suspectCases', function ($q) {
-              $q->where('pscr_sars_cov_2','positive');
+                $q->where('pscr_sars_cov_2','positive');
             })
+            ->with('suspectCases')
             ->with('inmunoTests')
             ->get();
+
         $region_not = array_diff( [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], [env('REGION')] );
-        $filas = $filas->whereNotIn('demographic.region_id', $region_not);
+        $patients = $patients->whereNotIn('demographic.region_id', $region_not);
 
         $max_cases = 0;
         $max_cases_inmuno = 0;
-        foreach ($filas as $patient) {
+        foreach ($patients as $patient) {
             if($max_cases < $patient->suspectCases->count()){
                 $max_cases = $patient->suspectCases->count();
             }
@@ -134,11 +127,10 @@ class SuspectCaseReportController extends Controller
             }
         }
 
-        // CONTRUCCION DEL HEADER DEL ARCHIVO //
-
+        /* CONTRUCCION DEL HEADER DEL ARCHIVO */
         $columnas_paciente = array(
             'Paciente',
-            'Run',
+            'Identificador',
             'Edad',
             'Sexo',
             'Comuna',
@@ -147,35 +139,21 @@ class SuspectCaseReportController extends Controller
         );
 
         $columnas_covid = array();
-
-        $count_columns_covid = 1;
         for($i=1; $i <= $max_cases; $i++){
-            $columnas_covid[$count_columns_covid] = 'ID_'.$i;
-            $count_columns_covid++;
-            $columnas_covid[$count_columns_covid] = 'Fecha Muestra_'.$i;
-            $count_columns_covid++;
-            $columnas_covid[$count_columns_covid] = 'Fecha Resultado_'.$i;
-            $count_columns_covid++;
-            $columnas_covid[$count_columns_covid] = 'Covid_'.$i;
-            $count_columns_covid++;
-            $columnas_covid[$count_columns_covid] = 'S_'.$i;
-            $count_columns_covid++;
+            $columnas_covid[] = 'PCR '.$i;
+            $columnas_covid[] = 'Fecha Muestra '.$i;
+            $columnas_covid[] = 'Fecha Resultado '.$i;
+            $columnas_covid[] = 'Resultado '.$i;
+            $columnas_covid[] = 'S '.$i;
         }
 
         $columnas_inmuno = array();
-
-        $count_columns_inmuno = 1;
         for($i=1; $i <= $max_cases_inmuno; $i++){
-            $columnas_inmuno[$count_columns_inmuno] = 'ID_I'.$i;
-            $count_columns_inmuno++;
-            $columnas_inmuno[$count_columns_inmuno] = 'Fecha Examen_'.$i;
-            $count_columns_inmuno++;
-            $columnas_inmuno[$count_columns_inmuno] = 'IgG_'.$i;
-            $count_columns_inmuno++;
-            $columnas_inmuno[$count_columns_inmuno] = 'IgM_'.$i;
-            $count_columns_inmuno++;
-            $columnas_inmuno[$count_columns_inmuno] = 'Control_'.$i;
-            $count_columns_inmuno++;
+            $columnas_inmuno[] = 'IgG/IgM '.$i;
+            $columnas_inmuno[] = 'Fecha Test'.$i;
+            $columnas_inmuno[] = 'IgG '.$i;
+            $columnas_inmuno[] = 'IgM '.$i;
+            $columnas_inmuno[] = 'Control '.$i;
         }
 
         $columnas_cases = array(
@@ -197,166 +175,81 @@ class SuspectCaseReportController extends Controller
 
         $columnas= array_merge($columnas_paciente, $columnas_covid, $columnas_inmuno, $columnas_cases);
 
-        // ------------------------------------------------------------------ //
+        foreach ($patients as $key => $patient) {
+            $casos[$key][] = $patient->fullName;
+            $casos[$key][] = $patient->identifier;
+            $casos[$key][] = $patient->age;
+            $casos[$key][] = $patient->genderEsp;
+            $casos[$key][] = ($patient->demographic)?$patient->demographic->commune:'';
+            $casos[$key][] = ($patient->demographic)?$patient->demographic->nationality:'';
+            $casos[$key][] = $patient->status;
+            foreach($patient->suspectCases as $suspectCase) {
+                $casos[$key][] = $suspectCase->id;
+                $casos[$key][] = $suspectCase->sample_at->format('Y-m-d');
+                $casos[$key][] = ($suspectCase->pscr_sars_cov_2_at) ? $suspectCase->pscr_sars_cov_2_at->format('Y-m-d') : '';
+                $casos[$key][] = $suspectCase->covid19;
+                $casos[$key][] = $suspectCase->symptoms;
+            }
+            for($i = $patient->suspectCases->count(); $i < $max_cases; $i++) {
+                $casos[$key][] = '';
+                $casos[$key][] = '';
+                $casos[$key][] = '';
+                $casos[$key][] = '';
+                $casos[$key][] = '';
+            }
+            foreach ($patient->inmunoTests as $inmunoTest) {
+                $casos[$key][] = $inmunoTest->id;
+                $casos[$key][] = ($inmunoTest->register_at)?$inmunoTest->register_at->format('Y-m-d H:i:s'):'';
+                $casos[$key][] = strtoupper(($inmunoTest->IgValue) ? $inmunoTest->IgValue : '');
+                $casos[$key][] = strtoupper(($inmunoTest->ImValue) ? $inmunoTest->ImValue : '');
+                $casos[$key][] = strtoupper($inmunoTest->ControlValue);
+            }
+            for($i = $patient->inmunoTests->count(); $i < $max_cases_inmuno; $i++) {
+                $casos[$key][] = '';
+                $casos[$key][] = '';
+                $casos[$key][] = '';
+                $casos[$key][] = '';
+                $casos[$key][] = '';
+            }
+            $casos[$key][] = ($patient->suspectCases->first()->result_ifd_at) ? $patient->suspectCases->first()->result_ifd_at->format('Y-m-d') : '';
+            $casos[$key][] = $patient->suspectCases->first()->result_ifd;
+            $casos[$key][] = ($patient->suspectCases->first()->establishment) ? $patient->suspectCases->first()->establishment->alias : '';
+            $casos[$key][] = $patient->suspectCases->first()->epidemiological_week;
+            $casos[$key][] = $patient->suspectCases->first()->epivigila;
+            $casos[$key][] = $patient->suspectCases->first()->paho_flu;
+            $casos[$key][] = ($patient->suspectCases->first()->gestation == 1) ? 'Sí' : '';
+            $casos[$key][] = ($patient->suspectCases->first()->close_contact == 1) ? 'Sí':'';
+            $casos[$key][] = ($patient->suspectCases->first()->sent_isp_at) ? $patient->suspectCases->first()->sent_isp_at->format('Y-m-d') : '';
+            $casos[$key][] = $patient->suspectCases->first()->procesingLab ;
+            $casos[$key][] = ($patient->suspectCases->first()->notification_at) ? $patient->suspectCases->first()->notification_at->format('Y-m-d') : '';
+            $casos[$key][] = $patient->suspectCases->first()->notification_mechanism;
+            $casos[$key][] = ($patient->suspectCases->first()->discharged_at) ? $patient->suspectCases->first()->discharged_at->format('Y-m-d') : '';
+            $casos[$key][] = $patient->suspectCases->first()->observation;
+        }
 
-        // $rows = array();
-        //
-        // $i=0;
-        // foreach ($filas as $key_filas => $fila) {
-        //     $rows[$key_filas][$i++] = $fila->fullName;
-        //     $rows[$key_filas][$i++] = $fila->identifier;
-        //     $rows[$key_filas][$i++] = $fila->age;
-        //     $rows[$key_filas][$i++] = $fila->sexEsp;
-        //
-        //     if($fila->demographic){
-        //       $rows[$key_filas][$i++] = $fila->demographic->commune;
-        //       $rows[$key_filas][$i++] = $fila->demographic->nationality;
-        //     }
-        //     else{
-        //       $rows[$key_filas][$i++] = '';
-        //       $rows[$key_filas][$i++] = '';
-        //     }
-        //
-        //     foreach ($fila->SuspectCases as $suspectCase) {
-        //       if($fila->SuspectCases){
-        //           $rows[$key_filas][$i++] = $suspectCase->id;
-        //           $rows[$key_filas][$i++] = $suspectCase->sample_at->format('Y-m-d');
-        //           if($suspectCase->pscr_sars_cov_2_at){
-        //               $rows[$key_filas][$i++] = $suspectCase->pscr_sars_cov_2_at->format('Y-m-d');
-        //           }
-        //           else{
-        //               $rows[$key_filas][$i++] = '';
-        //           }
-        //
-        //           $rows[$key_filas][$i++] = $suspectCase->covid19;
-        //           $rows[$key_filas][$i++] = $suspectCase->symptoms;
-        //       }
-        //       else{
-        //           $rows[$key_filas][$i++] = '';
-        //           $rows[$key_filas][$i++] = '';
-        //           $rows[$key_filas][$i++] = '';
-        //           $rows[$key_filas][$i++] = '';
-        //           $rows[$key_filas][$i++] = '';
-        //       }
-        //     }
-        //
-        //     for($j=$fila->suspectCases->count(); $j < $max_cases; $j++){
-        //         $rows[$key_filas][$i++] = '';
-        //         $rows[$key_filas][$i++] = '';
-        //         $rows[$key_filas][$i++] = '';
-        //         $rows[$key_filas][$i++] = '';
-        //         $rows[$key_filas][$i++] = '';
-        //     }
-        //
-        //     foreach ($fila->inmunoTests as $inmunoTest) {
-        //       if($fila->inmunoTests){
-        //           $rows[$key_filas][$i++] = $inmunoTest->id;
-        //           $rows[$key_filas][$i++] = $inmunoTest->register_at->format('Y-m-d H:i:s');
-        //           $rows[$key_filas][$i++] = $inmunoTest->IgValue;
-        //           $rows[$key_filas][$i++] = $inmunoTest->ImValue;
-        //           $rows[$key_filas][$i++] = $inmunoTest->ControlValue;
-        //       }
-        //       else{
-        //           $rows[$key_filas][$i++] = '';
-        //           $rows[$key_filas][$i++] = '';
-        //           $rows[$key_filas][$i++] = '';
-        //           $rows[$key_filas][$i++] = '';
-        //           $rows[$key_filas][$i++] = '';
-        //       }
-        //     }
-        //
-        //     for($j=$fila->inmunoTests->count(); $j < $max_cases_inmuno; $j++){
-        //         $rows[$key_filas][$i++] = '';
-        //         $rows[$key_filas][$i++] = '';
-        //         $rows[$key_filas][$i++] = '';
-        //         $rows[$key_filas][$i++] = '';
-        //         $rows[$key_filas][$i++] = '';
-        //     }
-        //
-        //     if($fila->result_ifd_at)
-        //         $rows[$key_filas][$i++] = $fila->suspectCases->result_ifd_at->format('Y-m-d');
-        //     else {
-        //         $rows[$key_filas][$i++] = '';
-        //     }
-        //
-        //     $rows[$key_filas][$i++] = $fila->suspectCases->first()->result_ifd;
-        //
-        //     if($fila->suspectCases->first()->establishment)
-        //         $rows[$key_filas][$i++] = $fila->suspectCases->first()->establishment->alias.' - '.$fila->suspectCases->first()->origin;
-        //     else {
-        //         $rows[$key_filas][$i++] = '';
-        //     }
-        //
-        //     $rows[$key_filas][$i++] = $fila->suspectCases->first()->epidemiological_week;
-        //     $rows[$key_filas][$i++] = $fila->suspectCases->first()->epivigila;
-        //     $rows[$key_filas][$i++] = $fila->suspectCases->first()->paho_flu;
-        //
-        //     if($fila->suspectCases->first()->gestation == 1){
-        //         $rows[$key_filas][$i++] = 'Si';
-        //     }
-        //     else {
-        //         $rows[$key_filas][$i++] = '';
-        //     }
-        //
-        //     if($fila->suspectCases->first()->close_contact == 1){
-        //         $rows[$key_filas][$i++] = 'Si';
-        //     }
-        //     else {
-        //         $rows[$key_filas][$i++] = '';
-        //     }
-        //
-        //     if($fila->suspectCases->first()->sent_isp_at)
-        //         $rows[$key_filas][$i++] = $fila->suspectCases->first()->sent_isp_at->format('Y-m-d');
-        //     else {
-        //         $rows[$key_filas][$i++] = '';
-        //     }
-        //
-        //     $rows[$key_filas][$i++] = $fila->suspectCases->first()->procesingLab;
-        //
-        //     if($fila->suspectCases->first()->notification_at)
-        //         $rows[$key_filas][$i++] = $fila->suspectCases->first()->notification_at->format('Y-m-d');
-        //     else {
-        //         $rows[$key_filas][$i++] = '';
-        //     }
-        //
-        //     $rows[$key_filas][$i++] = $fila->suspectCases->first()->notification_mechanism;
-        //
-        //     if($fila->suspectCases->first()->discharged_at)
-        //         $rows[$key_filas][$i++] = $fila->suspectCases->first()->discharged_at->format('Y-m-d');
-        //     else {
-        //         $rows[$key_filas][$i++] = '';
-        //     }
-        //
-        //     $rows[$key_filas][$i++] = $fila->suspectCases->first()->observation;
-        //
-        //     $i++;
-        // }
+        $callback = function() use ($casos, $columnas)
+        {
 
-        // dd($rows[0]);
+            $file = fopen('php://output', 'w');
+            fputs($file, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
 
-        // $callback = function() use ($filas, $columnas)
-        // {
-        //     $file = fopen('php://output', 'w');
-        //     fputs($file, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
-        //     fputcsv($file, $columnas,';');
-        //
-        //     foreach($filas as $key => $fila) {
-        //         // dd($row);
-        //         fputcsv($file, ,';');
-        //     }
-        //
-        //     // foreach($filas->SuspectCases as $key => $suspectCase) {
-        //     //     // dd($row);
-        //     //     fputcsv($file, array(
-        //     //       $suspectCase->id,
-        //     //     ),';');
-        //     // }
-        //
-        //     fclose($file);
-        //
-        // };
-        // return response()->stream($callback, 200, $headers);
-        // return Response::stream($callback, 200, $headers);
+            fputcsv($file, $columnas,';');
+
+            foreach ($casos as $fila) {
+                fputcsv($file, $fila,';');
+            }
+            fclose($file);
+        };
+
+        $headers = array(
+            "Content-type" => "text",
+            "Content-Disposition" => "attachment; filename=seguimiento.csv",
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        );
+
+        return response()->stream($callback, 200, $headers);
     }
 
 
@@ -364,11 +257,17 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     /*                  REPORTE MINSAL                   */
     /*****************************************************/
-    public function report_minsal(Laboratory $laboratory)
+    public function report_minsal(Request $request, Laboratory $laboratory)
     {
-        $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
-        $to = date("Y-m-d 20:59:59");
-
+        
+        if($from = $request->has('from')){
+            $from = $request->get('from'). ' 21:00:00';
+            $to = $request->get('to'). ' 20:59:59';
+        }else{
+            $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+            $to = date("Y-m-d 20:59:59");
+        }
+        
         $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
 
         $cases = SuspectCase::where('laboratory_id',$laboratory->id)
@@ -376,7 +275,7 @@ class SuspectCaseReportController extends Controller
                 ->whereNull('external_laboratory')
                 ->get()
                 ->sortByDesc('pscr_sars_cov_2_at');
-        return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory','externos'));
+        return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory', 'externos', 'from', 'to'));
     }
 
     /*****************************************************/
