@@ -140,7 +140,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/{suspect_case}/edit','SuspectCaseController@edit')->name('edit')->middleware('auth','can:SuspectCase: edit');
         Route::put('/{suspect_case}','SuspectCaseController@update')->name('update')->middleware('auth','can:SuspectCase: edit');
         Route::delete('/{suspect_case}','SuspectCaseController@destroy')->name('destroy')->middleware('auth','can:SuspectCase: delete');
-        Route::get('/notificationForm','SuspectCaseController@notificationForm')->name('notificationForm')->middleware('auth','can:SuspectCase: admission');
+        Route::get('/{suspect_case}/notificationForm','SuspectCaseController@notificationForm')->name('notificationForm')->middleware('auth','can:SuspectCase: admission');
         Route::prefix('reports')->name('reports.')->group(function () {
             Route::get('/positives','SuspectCaseReportController@positives')->name('positives')->middleware('auth','can:Report: positives');
             Route::get('case_tracing','SuspectCaseReportController@case_tracing')->name('case_tracing')->middleware('auth','can:Patient: tracing');
@@ -239,7 +239,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
         // Route::get('/{booking}/edit', 'BookingController@edit')->name('edit');
         Route::put('/{booking}', 'BookingController@update')->name('update');
         //Route::delete('/destroy/{id}', 'BookingController@destroy')->name('destroy');
-        
+
     });
 
 
