@@ -197,6 +197,7 @@
                 <option value="Hospitalizado Medio">Hospitalizado Medio</option>
                 <option value="Hospitalizado UTI">Hospitalizado UTI</option>
                 <option value="Hospitalizado UCI">Hospitalizado UCI</option>
+                <option value="Hospitalizado UCI (Ventilador)">Hospitalizado UCI (Ventilador)</option>
                 <option value="Residencia Sanitaria">Residencia Sanitaria</option>
             </select>
         </fieldset-->
