@@ -10,6 +10,25 @@
 <a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.ws_minsal', $laboratory) }}">Minsal <i class="fas fa-upload"></i></a>
 @endcan --}}
 
+
+<form method="get" class="form-inline mb-3" action="{{ route('lab.suspect_cases.reports.minsal', $laboratory) }}">
+    <div class="form-group ml-3">
+        <label for="for_from">Desde</label>
+        <input type="date" class="form-control mx-sm-3" id="for_from" name="from"
+               value="{{ Carbon\Carbon::parse($from)->format('Y-m-d') }}">
+    </div>
+    <div class="form-group">
+        <label for="for_to">Hasta</label>
+        <input type="date" class="form-control mx-sm-3" id="for_to" name="to"
+               value="{{ Carbon\Carbon::parse($to)->format('Y-m-d') }}">
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
+    </div>
+
+</form>
+
+
 <table class="table table-sm table-bordered table-responsive small text-uppercase" id="tabla_casos">
     <thead>
         <th>WS_ID</th>
@@ -56,6 +75,7 @@
                        {{ ($case->patient->demographic)?$case->patient->demographic->commune:'' }}</td>
         </tr>
         @endforeach
+        
         @foreach($externos as $case)
         <tr>
             <td></td>
@@ -78,6 +98,8 @@
             <td nowrap>{{ $case->address }}</td>
         </tr>
         @endforeach
+        
+        
     </tbody>
 
 
