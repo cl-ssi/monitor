@@ -29,70 +29,70 @@
         </div>
 
         <div class="form-group row">
-            <label for="for_run" class="col-sm-1 col-form-label">Rut</label>
-            <div class="col-sm-5">
-                <input type="text" class="form-control" id="for_run" value="{{$suspectCase->patient->run . '-' . $suspectCase->patient->dv}}">
+            <label for="for_run" class="col-sm-2 col-form-label">Rut</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="for_run" value="{{$suspectCase->patient->identifier}}">
             </div>
-            <label for="for_address" class="col-sm-1 col-form-label">Dirección</label>
-            <div class="col-sm-5">
+            <label for="for_address" class="col-sm-2 col-form-label">Dirección</label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_address" value="{{$suspectCase->patient->demographic->address . ' '.
                                                                                  $suspectCase->patient->demographic->number . ' '.
                                                                                  $suspectCase->patient->demographic->department}}">
             </div>
         </div>
         <div class="form-group row">
-            <label for="for_name" class="col-sm-1 col-form-label">Nombres</label>
-            <div class="col-sm-5">
+            <label for="for_name" class="col-sm-2 col-form-label">Nombres</label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_name" value="{{$suspectCase->patient->name}}">
             </div>
-            <label for="for_region" class="col-sm-1 col-form-label">Región</label>
-            <div class="col-sm-5">
+            <label for="for_region" class="col-sm-2 col-form-label">Región</label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_region" value="{{$suspectCase->patient->demographic->region}}" >
             </div>
         </div>
         <div class="form-group row">
-            <label for="for_fathers_family" class="col-sm-1 col-form-label">Apellido Paterno</label>
-            <div class="col-sm-5">
+            <label for="for_fathers_family" class="col-sm-2 col-form-label">Apellido Paterno</label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_fathers_family" value="{{$suspectCase->patient->fathers_family}}">
             </div>
-            <label for="for_city" class="col-sm-1 col-form-label">Ciudad</label>
-            <div class="col-sm-5">
+            <label for="for_city" class="col-sm-2 col-form-label">Ciudad</label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_city">
             </div>
         </div>
         <div class="form-group row">
-            <label for="for_mothers_family" class="col-sm-1 col-form-label">Apellido Materno</label>
-            <div class="col-sm-5">
+            <label for="for_mothers_family" class="col-sm-2 col-form-label">Apellido Materno</label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_mothers_family" value="{{$suspectCase->patient->mothers_family}}">
             </div>
-            <label for="for_commune" class="col-sm-1 col-form-label">Comuna</label>
-            <div class="col-sm-5">
+            <label for="for_commune" class="col-sm-2 col-form-label">Comuna</label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_commune" value="{{$suspectCase->patient->demographic->commune}}">
             </div>
         </div>
         <div class="form-group row">
-            <label for="for_gender" class="col-sm-1 col-form-label">Sexo</label>
-            <div class="col-sm-5">
+            <label for="for_gender" class="col-sm-2 col-form-label">Sexo</label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_gender" value="{{$suspectCase->patient->sexEsp}}">
             </div>
-            <label for="for_telephone" class="col-sm-1 col-form-label">Teléfono</label>
-            <div class="col-sm-5">
+            <label for="for_telephone" class="col-sm-2 col-form-label">Teléfono</label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_telephone" value="{{$suspectCase->patient->demographic->telephone}}">
             </div>
         </div>
         <div class="form-group row">
-            <label for="for_birthday" class="col-sm-1 col-form-label">Nacimiento</label>
-            <div class="col-sm-5">
+            <label for="for_birthday" class="col-sm-2 col-form-label">Nacimiento</label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_birthday" value="{{Carbon\Carbon::parse($suspectCase->patient->birthday)->format('d/m/Y')}}">
             </div>
-            <label for="for_prevision" class="col-sm-1 col-form-label">Previsión</label>
-            <div class="col-sm-5">
+            <label for="for_prevision" class="col-sm-2 col-form-label">Previsión</label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_prevision" value="{{($suspectCase->patient->booking) ? $suspectCase->patient->booking->prevision : '' }}">
             </div>
         </div>
         <div class="form-group row">
-            <label for="for_age" class="col-sm-1 col-form-label">Edad</label>
-            <div class="col-sm-5">
+            <label for="for_age" class="col-sm-2 col-form-label">Edad</label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_age" value="{{$suspectCase->patient->age}}">
             </div>
 
@@ -107,52 +107,52 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="for_run_medic" class="col-sm-1 col-form-label">Profesional Responsable</label>
-            <div class="col-sm-5">
+            <label for="for_run_medic" class="col-sm-2 col-form-label">Profesional Responsable</label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_run_medic" value="{{$user->run . '-' .$user->dv}}">
             </div>
-            <label for="for_laboratory" class="col-sm-1 col-form-label">Laboratorio</label>
-            <div class="col-sm-5">
+            <label for="for_laboratory" class="col-sm-2 col-form-label">Laboratorio</label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_laboratory">
             </div>
         </div>
         <div class="form-group row">
-            <label for="for_region_origin" class="col-sm-1 col-form-label">Región</label>
-            <div class="col-sm-5">
+            <label for="for_region_origin" class="col-sm-2 col-form-label">Región</label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_region_origin" value="{{$suspectCase->patient->demographic->region}}">
             </div>
-            <label for="for_unit_origin" class="col-sm-1 col-form-label">Unidad</label>
-            <div class="col-sm-5">
+            <label for="for_unit_origin" class="col-sm-2 col-form-label">Unidad</label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_unit_origin" >
             </div>
         </div>
         <div class="form-group row">
-            <label for="for_province_origin" class="col-sm-1 col-form-label">Provincia</label>
-            <div class="col-sm-5">
+            <label for="for_province_origin" class="col-sm-2 col-form-label">Provincia</label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_province_origin">
             </div>
-            <label for="for_email_origin" class="col-sm-1 col-form-label">Correo Electrónico</label>
-            <div class="col-sm-5">
+            <label for="for_email_origin" class="col-sm-2 col-form-label">Correo Electrónico</label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_email_origin">
             </div>
         </div>
         <div class="form-group row">
-            <label for="for_commune_origin" class="col-sm-1 col-form-label">Comuna</label>
-            <div class="col-sm-5">
+            <label for="for_commune_origin" class="col-sm-2 col-form-label">Comuna</label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_commune_origin" value="{{$suspectCase->laboratory->commune->name}}">
             </div>
-            <label for="for_telephone_origin" class="col-sm-1 col-form-label">Fono</label>
-            <div class="col-sm-5">
+            <label for="for_telephone_origin" class="col-sm-2 col-form-label">Fono</label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_telephone_origin">
             </div>
         </div>
         <div class="form-group row">
-            <label for="for_address_origin" class="col-sm-1 col-form-label">Dirección</label>
-            <div class="col-sm-5">
+            <label for="for_address_origin" class="col-sm-2 col-form-label">Dirección</label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_address_origin">
             </div>
-            <label for="for_fax_origin" class="col-sm-1 col-form-label">Fax</label>
-            <div class="col-sm-5">
+            <label for="for_fax_origin" class="col-sm-2 col-form-label">Fax</label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_fax_origin">
             </div>
         </div>
