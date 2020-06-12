@@ -89,7 +89,7 @@
                 @endif
             </td>
             <td nowrap class="small">@date($case->sample_at)</td>
-            <td>{{ ($case->establishment) ? $case->establishment->name : '' }}</td>
+            <td>{{ ($case->establishment) ? $case->establishment->alias : '' }}</td>
             <td>
                 @if($case->patient)
                 <a class="link" href="{{ route('patients.edit', $case->patient) }}">
