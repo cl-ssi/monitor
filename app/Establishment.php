@@ -2,9 +2,15 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * SuspectCase
+ *
+ * @mixin Builder
+ */
 class Establishment extends Model
 {
   /**
