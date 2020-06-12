@@ -109,6 +109,8 @@
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing') }}">Seguimiento de casos</a>
                                 @endcan
 
+                                <a class="dropdown-item" href="{{ route('comentarios.index') }}">Comentarios</a>
+
                             </div>
                         </li>
                         @endcan

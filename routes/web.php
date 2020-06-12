@@ -13,6 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+//http://localhost/comentarios
+Route::get('comentarios', 'ComentarioController@index')->name('comentarios.index');
+Route::get('comentarios/create', 'ComentarioController@create')->name('comentarios.create');
+Route::post('comentarios', 'ComentarioController@store')->name('comentarios.store');
+
+
+
 Route::get('encuesta', 'EncuestaController@index')->name('encuesta.index');
 Route::get('encuesta/create', 'EncuestaController@create')->name('encuesta.create');
 Route::post('encuesta', 'EncuestaController@store')->name('encuesta.store');
