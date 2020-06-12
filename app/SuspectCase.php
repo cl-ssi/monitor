@@ -84,12 +84,10 @@ class SuspectCase extends Model
     function getProcesingLabAttribute() {
         if($this->external_laboratory) {
             return $this->external_laboratory;
+        }elseif ($this->laboratory){
+            return $this->laboratory->name;
         }
-        switch($this->laboratory_id) {
-            case 1: return 'HETG'; break;
-            case 2: return 'UNAP'; break;
-            case 3: return 'BIOCLINIC'; break;
-        }
+        else return '';
     }
 
     /**

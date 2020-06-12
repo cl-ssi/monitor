@@ -2,8 +2,14 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Laboratory
+ *
+ * @mixin Builder
+ */
 class Laboratory extends Model
 {
     /**
