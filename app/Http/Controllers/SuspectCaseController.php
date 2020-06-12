@@ -366,7 +366,9 @@ class SuspectCaseController extends Controller
         $log->new = $suspectCase;
         $log->save();
 
-        session()->flash('success', 'Se ha creado el caso número: <h3>' . $suspectCase->id . '</h3>');
+        session()->flash('success', 'Se ha creado el caso número: <h3>'
+            . $suspectCase->id. ' <a href="' . route('lab.suspect_cases.notificationForm',$suspectCase)
+            . '">Imprimir Formulario</a></h3>');
 
         return redirect()->back();
     }
