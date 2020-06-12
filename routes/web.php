@@ -202,6 +202,13 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
     //Route::get('/{user}/edit', 'ResidenceController@usersEdit')->name('users.edit');
     Route::delete('/{residenceUser}', 'ResidenceController@usersDestroy')->name('users.destroy');
 
+    Route::prefix('admission')->name('admission.')->group(function () {
+    Route::get('/create/{patient}', 'AdmissionSurveyController@create')->name('create');
+    Route::get('/', 'AdmissionSurveyController@index')->name('index');
+    Route::post('/', 'AdmissionSurveyController@store')->name('store');
+
+    });
+
 
     Route::prefix('residences')->name('residences.')->group(function () {
         Route::get('/create', 'ResidenceController@create')->name('create');
