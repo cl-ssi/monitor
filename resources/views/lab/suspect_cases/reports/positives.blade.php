@@ -88,12 +88,12 @@
             <tbody>
                 <tr>
                     <td style="color: red;">Covid-19+</td>
-                    <th class="text-center">{{ $huci }}</th>
+                    <th class="text-center">{{ $huciv }}</th>
                     <td>No Covid-19</td>
                     <th class="text-center">{{ $ventilator->no_covid }}</th>
                     <td>Disponibles</td>
                     <th class="text-center">
-                        {{ $ventilator->total - $huci - $ventilator->no_covid }}
+                        {{ $ventilator->total - $huciv - $ventilator->no_covid }}
                     </th>
                 </tr>
             </tbody>
