@@ -738,16 +738,22 @@ class SuspectCaseController extends Controller
 
     public function reception_inbox(Request $request)
     {
+        $selectedEstablishment = $request->input('establishment_id');
+
         $suspectCases = SuspectCase::whereNull('laboratory_id')
             ->search($request->input('search'))
-//            ->where('establishment_id', $request->input('establishment_id'))
+            ->where(function($q) use($selectedEstablishment){
+                if($selectedEstablishment){
+                    $q->where('establishment_id', $selectedEstablishment);
+                }
+            })
             ->latest()
             ->paginate(200);
 
         $env_communes = array_map('trim',explode(",",env('COMUNAS')));
         $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
 
-        return view('lab.suspect_cases.reception_inbox', compact('suspectCases', 'establishments'));
+        return view('lab.suspect_cases.reception_inbox', compact('suspectCases', 'establishments', 'selectedEstablishment'));
     }
 
     public function exportExcel($cod_lab = null){

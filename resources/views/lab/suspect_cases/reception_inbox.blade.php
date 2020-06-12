@@ -44,9 +44,9 @@
     <div class="col-3"></div>
     <div class="col-3">
         <select name="establishment_id" id="for_establishment_id" class="form-control">
-            <option value="">Seleccione Establecimiento</option>
+            <option value=""> Seleccione Establecimiento</option>
             @foreach($establishments as $establishment)
-                <option value="{{ $establishment->id }}">{{ $establishment->alias }}</option>
+                <option value="{{ $establishment->id }}" {{($establishment->id == $selectedEstablishment) ? 'selected' : '' }}>{{ $establishment->alias }}</option>
             @endforeach
         </select>
     </div>
@@ -62,7 +62,6 @@
     <thead>
         <tr>
             <th nowrap>° Monitor</th>
-            <th nowrap>° Minsal</th>
             <th></th>
             <th>Fecha muestra</th>
             <th>Establecimiento</th>
@@ -78,14 +77,13 @@
         @foreach($suspectCases as $case)
         <tr class="row_{{$case->covid19}} {{ ($case->pscr_sars_cov_2 == 'positive')?'table-danger':''}}">
             <td class="text-center">{{ $case->id }}</td>
-            <td class="text-center">{{ $case->minsal_ws_id }}</td>
             <td>
                 @if(Auth::user()->laboratory)
                     @can('SuspectCase: reception')
                         <form method="POST" class="form-inline" action="{{ route('lab.suspect_cases.reception', $case) }}">
                             @csrf
                             @method('POST')
-                            <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-inbox"></i></button>
+                            <button type="submit" class="btn btn-sm btn-primary" title="Recepcionar"><i class="fas fa-inbox"></i></button>
                         </form>
                     @endcan
                 @endif
