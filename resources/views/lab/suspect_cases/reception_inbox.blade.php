@@ -5,6 +5,7 @@
 @section('content')
 
 <h3 class="mb-3"><i class="fas fa-lungs-virus"></i> Bandeja de recepción</h3>
+<form method="GET" action="{{ route('lab.suspect_cases.reception_inbox') }}">
 
 <div class="row">
     <div class="col-3">
@@ -22,7 +23,6 @@
         </table>
     </div>
     <div class="col-3">
-        <form method="GET" class="form-inline" action="{{ route('lab.suspect_cases.reception_inbox') }}">
 
             <div class="input-group mb-3">
                 <input type="text" class="form-control" placeholder="ID examen" name="search" id="for_search">
@@ -31,7 +31,6 @@
                 </div>
             </div>
 
-        </form>
     </div>
     <div class="col-5">
         @if(Auth::user()->laboratory)
@@ -41,6 +40,19 @@
         @endif
     </div>
 </div>
+<div class="form-group row">
+    <div class="col-3"></div>
+    <div class="col-3">
+        <select name="establishment_id" id="for_establishment_id" class="form-control">
+            <option value="">Seleccione Establecimiento</option>
+            @foreach($establishments as $establishment)
+                <option value="{{ $establishment->id }}">{{ $establishment->alias }}</option>
+            @endforeach
+        </select>
+    </div>
+</div>
+</form>
+
 
 
 
