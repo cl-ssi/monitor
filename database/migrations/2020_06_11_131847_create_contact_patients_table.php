@@ -16,7 +16,7 @@ class CreateContactPatientsTable extends Migration
         Schema::create('contact_patients', function (Blueprint $table) {
             $table->id();
             $table->foreignId('patient_id');
-            $table->foreignId('patient_contact_id');
+            $table->foreignId('contact_id');
             $table->longText('comment');
             $table->enum('relationship',['father', 'mother', 'brother', 'sister']);
 
@@ -26,8 +26,10 @@ class CreateContactPatientsTable extends Migration
             $table->timestamps();
 
             $table->foreign('patient_id')->references('id')->on('patients');
-            $table->foreign('patient_contact_id')->references('id')->on('patients');
+            $table->foreign('contact_id')->references('id')->on('patients');
             $table->foreign('user_id')->references('id')->on('users');
+
+            // $table->primary(array('patient_id', 'contact_id'));
         });
     }
 

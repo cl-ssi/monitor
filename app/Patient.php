@@ -58,12 +58,8 @@ class Patient extends Model //Authenticatable
     }
 
     public function contactPatient() {
-        return $this->hasMany('App\contactPatient', '');
+        return $this->hasMany('App\ContactPatient');
     }
-
-    // public function Patient() {
-    //     return $this->hasMany('App\contactPatient', 'patient_id');
-    // }
 
     public function lastExam() {
         return $this->hasOne('App\SuspectCase')
