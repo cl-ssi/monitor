@@ -29,7 +29,7 @@
       @foreach($array as $key => $celda)
         <tr>
             <td nowrap>{{$key}}</td>
-            <td nowrap>Iquique</td>
+            <td nowrap>{{$celda['commune']}}</td>
             <td nowrap>{{$celda['muestras_en_espera']}}</td>
             <td nowrap>{{$celda['muestras_recibidas']}}</td>
             <td nowrap>{{$celda['muestras_procesadas']}}</td>

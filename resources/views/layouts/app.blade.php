@@ -69,7 +69,7 @@
 
 
 
-                        @canany(['SuspectCase: list','SuspectCase: admission'])
+                        @canany(['SuspectCase: admission','SuspectCase: reception','SuspectCase: own','SuspectCase: list','Patient: tracing'])
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-lungs-virus"></i>

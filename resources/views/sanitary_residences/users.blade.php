@@ -15,7 +15,8 @@
     <div class="form-row">
         <fieldset class="form-group col">
             <label for="for_residence_id">Residencias</label>
-            <select name="residence_id" id="for_residence_id" class="form-control">
+            <select name="residence_id" id="for_residence_id" class="form-control" required>
+                <option value="">Seleccionar Residencia</option>
                 @foreach($residences as $res)
                 <option value="{{ $res->id }}">{{ $res->name }}</option>
                 @endforeach
@@ -24,7 +25,8 @@
 
         <fieldset class="form-group col">
             <label for="for_user_id">Usuarios</label>
-            <select name="user_id" id="for_user_id" class="form-control">
+            <select name="user_id" id="for_user_id" class="form-control" required>
+                <option value="">Seleccionar Usuario</option>
                 @foreach($users as $user)
                 <option value="{{ $user->id }}">{{ $user->name }}</option>
                 @endforeach
@@ -48,10 +50,10 @@
         </tr>
     </thead>
     <tbody>
-        
-        @foreach($residenceUsers->sortBy('user.name')  as $residenceUser)
+
+        @foreach($residenceUsers->sortBy('user.name') as $residenceUser)
         <tr>
-        
+
             <td>{{ $residenceUser->user->name }}</td>
             <td>{{ $residenceUser->residence->name }}</td>
             <td>
@@ -63,7 +65,7 @@
             </td>
         </tr>
         @endforeach
-        
+
     </tbody>
 </table>
 

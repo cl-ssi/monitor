@@ -11,7 +11,7 @@
 <a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a>
 
 @foreach(Auth::user()->residences as $residence)
-<h3> {{ $residence->name }} {{ $bookings->where('room.residence_id',$residence->id)->count() }} </h3>
+<h6> {{ $residence->name }} {{ $bookings->where('room.residence_id',$residence->id)->count() }} </h6>
 
 @endforeach
 
