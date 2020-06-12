@@ -13,15 +13,11 @@ class ContactPatient extends Model
     use softDeletes;
 
     protected $fillable = [
-        'patient_id', 'patient_contact_id', 'comment', 'relationship','user_id'
+        'patient_id', 'contact_id', 'comment', 'relationship','user_id'
     ];
 
-    public function patient() {
-        return $this->belongsTo('App\Patient', 'patient_id');
-    }
-
     public function contact_patient() {
-        return $this->belongsTo('App\Patient', 'patient_contact_id');
+        return $this->belongsTo('App\Patient', 'contact_id');
     }
 
     public function user() {

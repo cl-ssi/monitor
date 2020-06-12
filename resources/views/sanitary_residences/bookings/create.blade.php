@@ -16,11 +16,19 @@
 
         <fieldset class="form-group col-12 col-md-6">
             <label for="for_patient_id">Paciente</label>
+            @if($request->input('paciente'))
+            <select name="patient_id" id="for_patient_id" class="form-control" readonly> 
+                @foreach($patients as $patient)
+                <option value="{{ $patient->id }}" {{ ($patient->id == $request->input('paciente'))?'selected':'' }}>{{ $patient->fullName }}</option>
+                @endforeach                
+            </select>
+            @else
             <select name="patient_id" id="for_patient_id" class="form-control">
                 @foreach($patients as $patient)
                 <option value="{{ $patient->id }}">{{ $patient->fullName }}</option>
                 @endforeach
             </select>
+            @endif
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-4">

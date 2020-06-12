@@ -118,9 +118,6 @@ Route::prefix('lab')->name('lab.')->group(function () {
         });
     });
     Route::prefix('suspect_cases')->name('suspect_cases.')->group(function () {
-        // Route::get('/hetg','SuspectCaseController@hetg')->name('hetg')->middleware('auth');
-        // Route::get('/unap','SuspectCaseController@unap')->name('unap')->middleware('auth');
-        // Route::get('/bioclinic','SuspectCaseController@bioclinic')->name('bioclinic')->middleware('auth');
 
         Route::get('reception_inbox','SuspectCaseController@reception_inbox')->name('reception_inbox')->middleware('auth','can:SuspectCase: reception');
         Route::post('reception/{suspect_case}','SuspectCaseController@reception')->name('reception')->middleware('auth','can:SuspectCase: reception');
@@ -205,6 +202,13 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
     Route::post('/users', 'ResidenceController@usersStore')->name('users.store');
     //Route::get('/{user}/edit', 'ResidenceController@usersEdit')->name('users.edit');
     Route::delete('/{residenceUser}', 'ResidenceController@usersDestroy')->name('users.destroy');
+
+    Route::prefix('admission')->name('admission.')->group(function () {
+    Route::get('/create/{patient}', 'AdmissionSurveyController@create')->name('create');
+    Route::get('/', 'AdmissionSurveyController@index')->name('index');
+    Route::post('/', 'AdmissionSurveyController@store')->name('store');
+
+    });
 
 
     Route::prefix('residences')->name('residences.')->group(function () {
