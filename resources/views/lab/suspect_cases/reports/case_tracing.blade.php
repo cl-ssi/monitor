@@ -8,7 +8,8 @@
 
 </main><main class="">
 
-<a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a>
+<!--a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a-->
+<a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" href="{{ route('lab.suspect_cases.reports.case_tracing.export') }}" >Descargar en excel</a>
 
 <table class="table table-sm table-bordered table-responsive small" id="tabla_casos">
     <thead>
@@ -208,6 +209,7 @@
         @endforeach
     </tbody>
 </table>
+
 
 @endsection
 
