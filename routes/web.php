@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('encuesta', 'EncuestaController@index')->name('encuesta.index');
+Route::get('encuesta/create', 'EncuestaController@create')->name('encuesta.create');
+Route::post('encuesta', 'EncuestaController@store')->name('encuesta.store');
+
+
 Route::get('/', function () {
     return view('welcome');
 });
