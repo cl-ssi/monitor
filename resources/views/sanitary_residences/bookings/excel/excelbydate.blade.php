@@ -27,7 +27,7 @@
     </div>
 
     <div class="form-group ml-3">
-        <a class="btn btn-outline-success" id="downloadLink" onclick="download_table_as_csv('tabla_positivos_por_fecha');">Descargar en excel</a>
+        <a class="btn btn-outline-success" id="downloadLink" onclick="exportF(this)">Descargar en excel</a>
     </div>
 </form>
 
