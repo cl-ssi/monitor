@@ -213,6 +213,52 @@
 
 @endcan
 
+<hr>
+
+<h4 class="mt-3">Contactos</h4>
+
+<a class="btn btn-primary btn-sm disabled" href="{{ route('patients.contacts.create', ['search'=>'search_false', 'id' => $patient->id]) }}">
+    <i class="fas fa-plus"></i> Nuevo Contacto
+</a>
+
+<table class="table table-sm table-bordered small mb-4 mt-4">
+    <thead>
+        <tr class="text-center">
+            <th>Run o Identificación</th>
+            <th>Nombre Paciente</th>
+            <th>Parentesco</th>
+            <th>Observación</th>
+            <th>Fecha de carga</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+      @foreach($patient->contactPatient as $contact)
+      <tr>
+          <td class="text-right">{{ $contact->contact_patient->identifier }}</td>
+          <td class="text-right">
+            @can('Patient: edit')
+              <a href="{{ route('patients.edit', $contact->patient_contact_id) }}">
+            @endcan
+            {{ $contact->contact_patient->fullName }}
+            @can('Patient: edit')
+              </a>
+            @endcan
+          </td>
+          <td class="text-right">{{ $contact->relationship }}</td>
+          <td class="text-right">{{ $contact->comment }}</td>
+          <td class="text-right">{{ $contact->created_at->format('d-m-Y') }}</td>
+          <td>
+              <a class="btn btn-danger btn-sm disabled" href="">
+                  <i class="far fa-trash-alt"></i>
+              </a>
+          </td>
+      </tr>
+      @endforeach
+    </tbody>
+</table>
+
+<hr>
 @can('Admin')
 
 <h4 class="mt-3">Historial de cambios</h4>

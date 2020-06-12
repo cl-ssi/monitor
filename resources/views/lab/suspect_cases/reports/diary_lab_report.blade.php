@@ -43,7 +43,7 @@
           <tr>
             <td>Total</td>
             @foreach($total_cases_by_days as $key => $cases)
-              <td>{{ $cases }}</td>
+              <td>{{ number_format($cases, 0, ',', '.') }}</td>
             @endforeach
           </tr>
         </tbody>

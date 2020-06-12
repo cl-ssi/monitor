@@ -645,6 +645,7 @@ class SuspectCaseController extends Controller
           $array[$case->laboratory->name]['muestras_positivas'] = 0;
           $array[$case->laboratory->name]['muestras_procesadas_acumulados'] = 0;
           $array[$case->laboratory->name]['muestras_procesadas_positivo'] = 0;
+          $array[$case->laboratory->name]['commune'] = '';
         }
 
         foreach ($cases as $key => $case) {
@@ -669,6 +670,7 @@ class SuspectCaseController extends Controller
                                                                                          ->where('laboratory_id',$case->laboratory_id)
                                                                                          ->where('pscr_sars_cov_2','positive')
                                                                                          ->count();
+          $array[$case->laboratory->name]['commune'] = $case->laboratory->commune->name;
         }
 
         //dd($array);
