@@ -40,6 +40,11 @@ class Demographic extends Model
         return $this->belongsTo('App\Commune');
     }
 
+
+    function getFullAddressAttribute(){
+        return mb_strtoupper($this->address . ' ' . $this->number . ' ' . $this->department);
+    }
+
     use SoftDeletes;
 
     /**

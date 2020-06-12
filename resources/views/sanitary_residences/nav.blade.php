@@ -8,6 +8,12 @@
     </li>
     @endforeach
 
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('sanitary_residences.admission.index') }}">        
+            <i class="fas fa-clipboard-check"></i> Aprobados
+        </a>
+    </li>
+
     
     @can('SanitaryResidence: admin')
 
