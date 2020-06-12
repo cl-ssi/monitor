@@ -106,7 +106,9 @@ alvaro {{ $id_patient }}
                   <select class="form-control selectpicker" name="relationship" id="for_relationship" title="Seleccione..." required>
                       <option value="father">Padre</option>
                       <option value="mother">Madre</option>
+                      <option value="brother">hijo/a</option>
                       <option value="brother">Hermano/a</option>
+                      <option value="contact">Contacto/a</option>
                   </select>
               </fieldset>
 
@@ -115,7 +117,7 @@ alvaro {{ $id_patient }}
               </fieldset>
 
               <fieldset class="form-group col-md-4" hidden>
-                  <input type="text" class="form-control" name="patient_contact_id" id="for_patient_contact_id" value="{{ $patient->id }}">
+                  <input type="text" class="form-control" name="contact_id" id="for_contact_id" value="{{ $patient->id }}">
               </fieldset>
 
               <fieldset class="form-group col-md-4" hidden>

@@ -4,6 +4,7 @@
 
 @section('content')
 <h3 class="mb-3">Editar Paciente</h3>
+<!-- <a class="btn btn-primary mb-3" href="{{ route('sanitary_residences.admission.create', $patient) }}">Evaluación para Residencia Sanitaria</a> -->
 
 <form method="POST" class="form-horizontal" action="{{ route('patients.update',$patient) }}">
     @csrf
@@ -238,7 +239,7 @@
           <td class="text-right">{{ $contact->contact_patient->identifier }}</td>
           <td class="text-right">
             @can('Patient: edit')
-              <a href="{{ route('patients.edit', $contact->patient_contact_id) }}">
+              <a href="{{ route('patients.edit', $contact->contact_id) }}">
             @endcan
             {{ $contact->contact_patient->fullName }}
             @can('Patient: edit')
