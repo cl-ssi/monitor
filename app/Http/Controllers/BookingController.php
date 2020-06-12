@@ -38,11 +38,11 @@ class BookingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(request $request)
     {
         //
         $patients = Patient::orderBy('name')->get();
-        return view('sanitary_residences.bookings.create', compact('patients'));
+        return view('sanitary_residences.bookings.create', compact('patients','request'));
     }
 
     /**

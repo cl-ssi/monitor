@@ -4,6 +4,7 @@
 
 @section('content')
 <h3 class="mb-3">Editar Paciente</h3>
+<!-- <a class="btn btn-primary mb-3" href="{{ route('sanitary_residences.admission.create', $patient) }}">Evaluación para Residencia Sanitaria</a> -->
 
 <form method="POST" class="form-horizontal" action="{{ route('patients.update',$patient) }}">
     @csrf
