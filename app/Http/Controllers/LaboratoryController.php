@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Laboratory;
 use App\Commune;
+use App\User;
 use Illuminate\Http\Request;
 
 class LaboratoryController extends Controller
@@ -27,6 +28,8 @@ class LaboratoryController extends Controller
     public function create()
     {
         $communes = Commune::All();
+//        $users = User::All();
+//        return view('parameters.lab.create', compact('communes', 'users'));
         return view('parameters.lab.create', compact('communes'));
     }
 
@@ -38,6 +41,8 @@ class LaboratoryController extends Controller
      */
     public function store(Request $request)
     {
+//        dd($request->All());
+
         $laboratory = new Laboratory($request->All());
         $laboratory->save();
         session()->flash('success', 'Se creo laboratorio exitosamente');
