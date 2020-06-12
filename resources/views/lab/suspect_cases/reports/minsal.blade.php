@@ -65,9 +65,9 @@
             <td nowrap>{{ ($case->created_at)? $case->created_at->format('d-m-Y'): '' }}</td>
             <td nowrap>{{ ($case->pscr_sars_cov_2_at) ? $case->pscr_sars_cov_2_at->format('d-m-Y') : '' }}</td>
             <td nowrap>{{ strtoupper($case->establishment)?$case->establishment->alias.' - '.$case->origin: '' }}</td>
-            <td nowrap>TARAPACÁ</td>
+            <td nowrap>{{($case->establishment) ? $case->establishment->commune->region->name : ''}}</td>
             <td nowrap class="text-uppercase">{{ $laboratory->name }}</td>
-            <td nowrap>TARAPACÁ</td>
+            <td nowrap>{{($case->laboratory) ? $case->laboratory->commune->region->name : ''}}</td>
             <td nowrap>{{ ($case->patient->demographic)?$case->patient->demographic->telephone:'' }}</td>
             <td nowrap>{{ ($case->patient->demographic)?$case->patient->demographic->email:'' }}</td>
             <td nowrap>{{ ($case->patient->demographic)?$case->patient->demographic->address:'' }}
@@ -75,7 +75,7 @@
                        {{ ($case->patient->demographic)?$case->patient->demographic->commune:'' }}</td>
         </tr>
         @endforeach
-        
+
         @foreach($externos as $case)
         <tr>
             <td></td>
@@ -92,14 +92,14 @@
             <td nowrap>{{ strtoupper($case->origin) }}</td>
             <td nowrap>{{ strtoupper($case->origin_commune) }}</td>
             <td nowrap class="text-uppercase">{{ last(request()->segments()) }}</td>
-            <td nowrap>TARAPACÁ</td>
+            <td nowrap>{{($case->laboratory) ? $case->laboratory->commune->region->name : ''}}</td>
             <td nowrap>{{ $case->telephone }}</td>
             <td nowrap>{{ $case->email }}</td>
             <td nowrap>{{ $case->address }}</td>
         </tr>
         @endforeach
-        
-        
+
+
     </tbody>
 
 
