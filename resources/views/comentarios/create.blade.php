@@ -5,6 +5,31 @@
 @section('content')
 <h3 class="mb-3">Nuevo Comentario</h3>
 
+<form method="POST" class="form-horizontal" action="{{ route('') }}">
+    @csrf
+    @method('PUT')
+
+    <div class="form-row">
+
+
+        <fieldset class="form-group col">
+            <label for="for_nombe"></label>
+            <input type="text" class="form-control" name="nombe" id="for_nombe"
+                required placeholder="">
+        </fieldset>
+
+
+        <fieldset class="form-group col">
+            <label for="for_paises">listas</label>
+            <select name="paises" id="for_paises" class="form-control">
+                <option value=""></option>
+            </select>
+        </fieldset>
+
+
+    </div>
+
+</form>
 
 
 <form method="POST" class="form-horizontal" action="{{ route('comentarios.store') }}">

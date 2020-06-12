@@ -14,6 +14,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+Route::prefix('comentarios')->name('comentarios.')->group(function () {
+    Route::get('/', 'comentarioController@index')->name('index');
+    Route::get('/create', 'comentarioController@create')->name('create');
+    Route::post('/', 'comentarioController@store')->name('store');
+    Route::get('/{comentario}/edit', 'comentarioController@edit')->name('edit');
+    Route::put('/{comentario}', 'comentarioController@update')->name('update');
+    Route::delete('/{comentario}', 'comentarioController@destroy')->name('destroy');
+});
+
 //http://localhost/comentarios
 Route::get('comentarios', 'ComentarioController@index')->name('comentarios.index');
 Route::get('comentarios/create', 'ComentarioController@create')->name('comentarios.create');

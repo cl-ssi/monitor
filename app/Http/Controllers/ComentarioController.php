@@ -37,6 +37,7 @@ class ComentarioController extends Controller
      */
     public function store(Request $request)
     {
+        
         // $com = new Comentario();
         // $com->fecha = $request->input('fecha');
         // $com->texto = $request->input('texto');

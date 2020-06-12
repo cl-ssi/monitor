@@ -35,7 +35,8 @@ class SuspectCase extends Model
         'discharged_at','discharge_test',
         'observation', 'minsal_ws_id',
         'patient_id', 'laboratory_id', 'establishment_id',
-        'user_id'
+        'user_id',
+        'paso_intermedio', 'fecha_del_paso_intermedio','usuario_intermedio'
     ];
 
     public function patient() {

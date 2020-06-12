@@ -71,6 +71,8 @@ class CreateSuspectCasesTable extends Migration
 
             $table->unsignedBigInteger('user_id');
 
+            $table->string('paso_intermedio')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
 
