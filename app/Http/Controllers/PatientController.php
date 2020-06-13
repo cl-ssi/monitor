@@ -50,10 +50,10 @@ class PatientController extends Controller
         $patient = new Patient($request->All());
         $patient->save();
 
-        $log = new Log();
+        //$log = new Log();
         //$log->old = $patient;
-        $log->new = $patient;
-        $log->save();
+        //$log->new = $patient;
+        //$log->save();
 
         return redirect()->route('patients.index');
     }
@@ -92,24 +92,24 @@ class PatientController extends Controller
      */
     public function update(Request $request, Patient $patient)
     {
-        $logPatient = new Log();
-        $logPatient->old = clone $patient;
+        //$logPatient = new Log();
+        //$logPatient->old = clone $patient;
 
         $patient->fill($request->all());
         $patient->save();
 
-        $logPatient->new = $patient;
-        $logPatient->save();
+        //$logPatient->new = $patient;
+        //$logPatient->save();
 
-        $logDemographic = new Log();
+        //$logDemographic = new Log();
         if($patient->demographic) {
-            $logDemographic->old = clone $patient->demographic;
+            //$logDemographic->old = clone $patient->demographic;
 
             $patient->demographic->fill($request->all());
             $patient->demographic->save();
 
-            $logDemographic->new = $patient->demographic;
-            $logDemographic->save();
+            //$logDemographic->new = $patient->demographic;
+            //$logDemographic->save();
         }
         else {
 
@@ -122,8 +122,8 @@ class PatientController extends Controller
                 $demographic->patient_id = $patient->id;
                 $demographic->save();
 
-                $logDemographic->new = $demographic;
-                $logDemographic->save();
+                //$logDemographic->new = $demographic;
+                //$logDemographic->save();
             }
         }
         //$logDemographic->save();
@@ -139,10 +139,10 @@ class PatientController extends Controller
      */
     public function destroy(Patient $patient)
     {
-        $log = new Log();
-        $log->old = clone $patient;
-        $log->new = $patient->setAttribute('patient','delete');
-        $log->save();
+        //$log = new Log();
+        //$log->old = clone $patient;
+        //$log->new = $patient->setAttribute('patient','delete');
+        //$log->save();
 
         $patient->delete();
 
