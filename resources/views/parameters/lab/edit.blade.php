@@ -73,11 +73,11 @@
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-4">
-            <label for="for_user_id">Director</label>
-            <select class="form-control" name="user_id" id="for_user_id" required>
+            <label for="for_director_id">Director</label>
+            <select class="form-control" name="director_id" id="for_director_id" required>
                 <option value="">Seleccione Director</option>
                 @foreach($users as $user)
-                    <option value="{{ $user->id }}" {{($user->id == $laboratory->user_id) ? 'selected' : ''}} >{{ $user->name }}</option>
+                    <option value="{{ $user->id }}" {{($user->id == $laboratory->director_id) ? 'selected' : ''}} >{{ $user->name }}</option>
                 @endforeach
             </select>
         </fieldset>
