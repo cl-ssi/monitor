@@ -77,10 +77,10 @@ class PatientController extends Controller
      */
     public function edit(Patient $patient)
     {
-      // dd($patient);
-      $regions = Region::orderBy('id','ASC')->get();
-      $communes = Commune::orderBy('id','ASC')->get();
-      return view('patients.edit',compact('patient', 'regions', 'communes'));
+        // dd($patient);
+        $regions = Region::orderBy('id','ASC')->get();
+        $communes = Commune::orderBy('id','ASC')->get();
+        return view('patients.edit',compact('patient', 'regions', 'communes'));
     }
 
     /**

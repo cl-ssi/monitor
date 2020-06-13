@@ -9,16 +9,18 @@ use Illuminate\Database\Eloquent\Model;
 //use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * Patient
  *
  * @mixin Builder
  */
-class Patient extends Model //Authenticatable
+class Patient extends Model implements Auditable //Authenticatable
 {
     //use Notifiable;
     use SoftDeletes;
+    use \OwenIt\Auditing\Auditable;
 
     //protected $guard = 'patient';
 
