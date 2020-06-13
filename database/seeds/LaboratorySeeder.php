@@ -14,6 +14,7 @@ class LaboratorySeeder extends Seeder
     {
         $lab = new Laboratory();
         $lab->name = 'HETG';
+        $lab->alias = 'HETG';
         $lab->external = 0;
         $lab->minsal_ws = 1;
         $lab->token_ws = "AK026-88QV-000QAQQCI-000000B8EJTK";
@@ -24,6 +25,7 @@ class LaboratorySeeder extends Seeder
 
         $lab = new Laboratory();
         $lab->name = 'UNAP';
+        $lab->alias = 'UNAP';
         $lab->external = 0;
         $lab->minsal_ws = 1;
         $lab->token_ws = "AK026-88QV-000QAQQCI-000000B8EJTK";
@@ -34,6 +36,7 @@ class LaboratorySeeder extends Seeder
 
         $lab = new Laboratory();
         $lab->name = 'Hospital Lucio Córdova';
+        $lab->alias = 'Hospital Lucio Córdova';
         $lab->external = 1;
         $lab->minsal_ws = 0;
         $lab->token_ws = NULL;
