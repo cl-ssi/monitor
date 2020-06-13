@@ -288,7 +288,7 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     public function report_minsal_ws(Laboratory $laboratory)
     {
-        $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+        $from = '2020-06-01 00:00';//date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $to = date("Y-m-d 20:59:59");
 
         // $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
@@ -300,25 +300,25 @@ class SuspectCaseReportController extends Controller
                 ->get()
                 ->sortByDesc('pscr_sars_cov_2_at');
 
-        //obtiene datos que faltan
-        foreach ($cases as $key => $case) {
-
-            $genero = strtoupper($case->gender[0]);
-            $commune_code_deis = Commune::find($case->patient->demographic->commune_id)->code_deis;
-            $paciente_ext_paisorigen = '';
-            if($case->patient->run == "") {
-                $paciente_tipodoc = "PASAPORTE";
-                $country = Country::where('name',$case->patient->demographic->nationality)->get();
-                $paciente_ext_paisorigen = $country->first()->id_minsal;
-            }
-            else {
-                $paciente_tipodoc = "RUN";
-            }
-            $case->genero = $genero;
-            $case->commune_code_deis = $commune_code_deis;
-            $case->paciente_tipodoc = $paciente_tipodoc;
-            $case->paciente_ext_paisorigen = $paciente_ext_paisorigen;
-        }
+        // //obtiene datos que faltan
+        // foreach ($cases as $key => $case) {
+        //
+        //     $genero = strtoupper($case->gender[0]);
+        //     //$commune_code_deis = Commune::find($case->patient->demographic->commune_id)->code_deis;
+        //     $paciente_ext_paisorigen = '';
+        //     if($case->patient->run == "") {
+        //         $paciente_tipodoc = "PASAPORTE";
+        //         $country = Country::where('name',$case->patient->demographic->nationality)->get();
+        //         $paciente_ext_paisorigen = $country->first()->id_minsal;
+        //     }
+        //     else {
+        //         $paciente_tipodoc = "RUN";
+        //     }
+        //     $case->genero = $genero;
+        //     $case->commune_code_deis = $case->patient->commune;
+        //     $case->paciente_tipodoc = $paciente_tipodoc;
+        //     $case->paciente_ext_paisorigen = $paciente_ext_paisorigen;
+        // }
 
         // dd($cases->first());
         return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'laboratory'));//,'externos'));
@@ -330,7 +330,7 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     public function ws_minsal(Laboratory $laboratory)
     {
-        $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+        $from = '2020-06-01 00:00';//date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $to = date("Y-m-d 20:59:59");
 
         $externos = Covid19::whereBetween('result_at', [$from, $to])->get();

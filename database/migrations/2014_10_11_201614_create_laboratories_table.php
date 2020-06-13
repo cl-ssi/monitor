@@ -16,7 +16,7 @@ class CreateLaboratoriesTable extends Migration
         Schema::create('laboratories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('alias');
+            $table->string('alias')->nullable();
             $table->boolean('external')->default(0);
             $table->boolean('minsal_ws')->default(0);
             $table->string('token_ws')->nullable();
