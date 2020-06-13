@@ -189,8 +189,8 @@
         </tr>
         <tr>
             <td>¿Usted requiere salir para trabajar pese a estar en cuarentena?</td>
-            <td class="text-center"><input name="water" type="radio" value="1"></td>
-            <td class="text-center"><input name="water" type="radio" value="0"></td>
+            <td class="text-center"><input name="out" type="radio" value="1"></td>
+            <td class="text-center"><input name="out" type="radio" value="0"></td>
         </tr>
         <tr>
             <td>¿Tiene red de apoyo para brindar ?</td>
