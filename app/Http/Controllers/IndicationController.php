@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\SanitaryResidence\Indication;
-use App\Log;
+// use App\Log;
 
 use Illuminate\Http\Request;
 
@@ -51,8 +51,8 @@ class IndicationController extends Controller
             session()->flash('success', 'Se modificó la información.');
         }
 
-        $logPatient = new Log();
-        $logPatient->old = clone $indication;
+        // $logPatient = new Log();
+        // $logPatient->old = clone $indication;
 
         return redirect()->back();
     }

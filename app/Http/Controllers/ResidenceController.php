@@ -7,7 +7,7 @@ use App\SanitaryResidence\Residence;
 use App\SanitaryResidence\ResidenceUser;
 use Illuminate\Http\Request;
 use App\User;
-use App\Log;
+//use App\Log;
 
 class ResidenceController extends Controller
 {
@@ -127,10 +127,10 @@ class ResidenceController extends Controller
      */
     public function destroy(Residence $residence)
     {
-        $log = new Log();
-        $log->old = clone $residence;
-        $log->new = $residence->setAttribute('patient','delete');
-        $log->save();
+        // $log = new Log();
+        // $log->old = clone $residence;
+        // $log->new = $residence->setAttribute('patient','delete');
+        // $log->save();
 
         $residence->delete();
 
