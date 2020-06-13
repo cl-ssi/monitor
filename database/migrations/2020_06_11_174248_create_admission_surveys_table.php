@@ -14,14 +14,33 @@ class CreateAdmissionSurveysTable extends Migration
     public function up()
     {
         Schema::create('admission_surveys', function (Blueprint $table) {
-            $table->id();
-            $table->integer('people')->nullable();
-            $table->integer('rooms')->nullable();
-            $table->boolean('residency')->nullable();
+            //IDENTIFICACIÓN DE PACIENTE
+            $table->id();            
+            $table->string('contactnumber')->nullable();                        
+            $table->text('morbid_history')->nullable();
             $table->text('observations')->nullable();
 
+            //aislar a la persona
+            $table->boolean('isolate')->nullable();
+
+            //CONDICIONES DE HABITABILIDAD
+            $table->integer('people')->nullable();
+            $table->integer('rooms')->nullable();
+            $table->integer('bathrooms')->nullable();
 
 
+            //Criterios de Inclusión-Exclusión
+
+            $table->boolean('respiratory')->nullable();
+            $table->boolean('basicactivities')->nullable();
+            $table->boolean('drugs')->nullable();
+            $table->boolean('chronic')->nullable();
+            $table->boolean('healthnow')->nullable();
+            
+
+
+            //pregunta más importante
+            $table->boolean('residency')->nullable();
             $table->unsignedBigInteger('patient_id');
             $table->unsignedBigInteger('user_id');
 

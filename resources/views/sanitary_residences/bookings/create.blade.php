@@ -52,6 +52,7 @@
                 <option value="Fonasa D">Fonasa D</option>
                 <option value="Fonasa E">Fonasa E</option>
                 <option value="ISAPRE">ISAPRE</option>
+                <option value="OTRO">OTRO</option>
             </select>
         </fieldset>
 

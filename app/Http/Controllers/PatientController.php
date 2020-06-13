@@ -94,7 +94,7 @@ class PatientController extends Controller
     {
         $logPatient = new Log();
         $logPatient->old = clone $patient;
-
+        
         $patient->fill($request->all());
         $patient->save();
 
