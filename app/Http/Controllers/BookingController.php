@@ -7,7 +7,7 @@ use App\SanitaryResidence\Booking;
 use App\SanitaryResidence\Room;
 use App\SanitaryResidence\VitalSign;
 use App\Patient;
-use App\Log;
+//use App\Log;
 use App\SuspectCase;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -121,8 +121,8 @@ class BookingController extends Controller
      */
     public function update(Request $request, Booking $booking)
     {
-        $logPatient = new Log();
-        $logPatient->old = clone $booking;
+        // $logPatient = new Log();
+        // $logPatient->old = clone $booking;
 
         $booking->fill($request->all());
         $booking->save();

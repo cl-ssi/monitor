@@ -4,11 +4,12 @@ namespace App\SanitaryResidence;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
-class Indication extends Model
+use OwenIt\Auditing\Contracts\Auditable;
+class Indication extends Model implements Auditable //Authenticatable
 {
     //
     use SoftDeletes;
+    use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
         'content', 'user_id', 'booking_id', 'patient_id',
