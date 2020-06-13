@@ -28,4 +28,8 @@ class Laboratory extends Model
     public function commune() {
         return $this->belongsTo('App\Commune');
     }
+
+    public function director() {
+        return $this->belongsTo('App\User');
+    }
 }
