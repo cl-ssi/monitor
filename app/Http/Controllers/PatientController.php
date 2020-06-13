@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\SuspectCase;
 use App\Patient;
 use App\Demographic;
-use App\Log;
+//use App\Log;
 use App\Region;
 use App\Commune;
 use Illuminate\Http\Request;
