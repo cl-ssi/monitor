@@ -28,8 +28,8 @@
     </fieldset>
 
     <fieldset class="form-group col-12 col-md-3">
-        <label for="for_town">Población/Villa</label>
-        <input type="text" class="form-control" name="town" id="for_town">
+        <label for="for_suburb">Población/Villa</label>
+        <input type="text" class="form-control" name="suburb" id="for_suburb">
     </fieldset>
 </div>
 
