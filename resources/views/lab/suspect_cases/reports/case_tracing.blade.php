@@ -118,7 +118,7 @@
                 <td nowrap>{{ $patient->identifier }}</td>
                 <td nowrap>{{ $patient->age }}</td>
                 <td nowrap>{{ strtoupper($patient->sexEsp) }}</td>
-                <td nowrap>{{ ($patient->demographic AND $patient->demographic->commune) ? $patient->demographic->commune->name : '' }}</td>
+                <td nowrap>{{ (isset($patient->demographic) AND isset($patient->demographic->commune)) ? $patient->demographic->commune->name : '' }}</td>
                 <td>
                     @if($patient->demographic AND $patient->demographic->nationality != "Chile")
                             {{ $patient->demographic->nationality }}
