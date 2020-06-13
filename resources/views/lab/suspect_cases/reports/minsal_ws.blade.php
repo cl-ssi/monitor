@@ -12,9 +12,9 @@
 
 <table class="table table-sm table-bordered table-responsive small text-uppercase" id="tabla_casos">
     <thead>
-        {{-- <th>WS_ID</th> --}}
-        <th nowrap>Cod. muestra cliente</th>
+        <th nowrap>ID muestra</th>
         <th nowrap>Run responsable</th>
+        <th nowrap>Nombre responsable</th>
         <th nowrap>Cod DEIS</th>
         <th nowrap>Run médico</th>
         <th nowrap>Run paciente</th>
@@ -26,7 +26,8 @@
         <th nowrap>Dirección</th>
         <th nowrap>Teléfono</th>
         <th nowrap>Tipo Doc.</th>
-        <th nowrap>Cod. País origen</th>
+        <th nowrap>País origen</th>
+        <th nowrap>Cod. País</th>
         <th nowrap>Pasaporte</th>
         <th nowrap>Género</th>
         <th nowrap>Previsión</th>
@@ -43,21 +44,27 @@
         <tr>
             {{-- <td>{{ $case->minsal_ws_id }}</td> --}}
             <td><a href="{{ route('lab.suspect_cases.edit', $case) }}">{{ $case->id }}</a></td>
-            <td nowrap>--</td>
+            <td nowrap>{{ ($case->user) ? $case->user->run : '' }}</td>
+            <td nowrap>{{ ($case->user) ? $case->user->name : '' }} </td>
             <td nowrap>02-100</td>
-            <td nowrap>{{$case->run_medic}}</td>
+            <td nowrap>{{ $case->run_medic }}</td>
             <td nowrap>{{ $case->patient->runExport }}</td>
             <td nowrap>{{ $case->patient->name }}</td>
             <td nowrap>{{ $case->patient->fathers_family }}</td>
             <td nowrap>{{ $case->patient->mothers_family }}</td>
-            <td nowrap>{{ strtoupper($case->patient->birthday) }}</td>
-            <td nowrap>{{ $case->commune_code_deis }}</td>
-            <td nowrap>{{ $case->patient->demographic->address . " " . $case->patient->demographic->number }}</td>
-            <td nowrap>{{ $case->patient->demographic->telephone }}</td>
-            <td nowrap>{{ $case->paciente_tipodoc }}</td>
-            <td nowrap>{{ $case->paciente_ext_paisorigen }}</td>
+            <td nowrap>{{ $case->patient->birthday }}</td>
+            <td nowrap>{{ ($case->patient->demographic) ? $case->patient->demographic->commune->code_deis : '' }}</td>
+            <td nowrap>{{ ($case->patient->demographic) ? $case->patient->demographic->address . " " . $case->patient->demographic->number : '' }}</td>
+            <td nowrap>{{ ($case->patient->demographic) ? $case->patient->demographic->telephone : '' }}</td>
+            <td nowrap>{{ ($case->patient->run) ? 'RUN':'OTRO ID' }}</td>
+            <td nowrap>{{ ($case->patient->demographic) ? $case->patient->demographic->nationality : '' }}</td>
+            <td nowrap>
+                @if($case->patient->demographic)
+                {{ App\Country::where('name', $case->patient->demographic->nationality)->first()->id_minsal }}
+                @endif
+            </td>
             <td nowrap>{{ $case->patient->other_identification }}</td>
-            <td nowrap>{{ $case->genero }}</td>
+            <td nowrap>{{ $case->gender[0] }}</td>
             <td nowrap>FONASA</td>
             <td nowrap>{{ $case->sample_at }}</td>
             <td nowrap>RT-PCR</td>
