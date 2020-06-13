@@ -407,6 +407,9 @@ $patient = $suspectCase->patient;
 </table>
 
 @can('Admin')
+
+@include('partials.audit', ['audits' => $suspectCase->audits] )
+
 <table class="table table-sm small text-muted mt-3">
     <thead>
         <tr>
