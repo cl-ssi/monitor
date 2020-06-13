@@ -7,7 +7,6 @@ use GuzzleHttp\Client;
 use App\SuspectCase;
 use App\Patient;
 use App\Demographic;
-use App\Log;
 use App\File;
 use App\User;
 use App\EstablishmentUser;
@@ -18,7 +17,6 @@ use App\Establishment;
 use App\ReportBackup;
 use App\SampleOrigin;
 use App\Country;
-use App\WSMinsal;
 use Carbon\CarbonPeriod;
 use Carbon\Carbon;
 use App\Mail\NewPositive;
@@ -113,7 +111,7 @@ class SuspectCaseController extends Controller
 
         $establishment_selected = array();
         foreach($establishments_user as $key => $establishment_user){
-          $establishment_selected[$key] = $establishment_user->establishment_id;
+            $establishment_selected[$key] = $establishment_user->establishment_id;
         }
         $establishments = implode (", ", $establishment_selected);
         /* ------------------------------------------------------------------ */
@@ -285,10 +283,10 @@ class SuspectCaseController extends Controller
             }
         }
 
-        $log = new Log();
+        //$log = new Log();
         //$log->old = $suspectCase;
-        $log->new = $suspectCase;
-        $log->save();
+        //$log->new = $suspectCase;
+        //$log->save();
 
         session()->flash('success', 'Se ha creado el caso número: <h3>' . $suspectCase->id . '</h3>');
         return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
@@ -349,10 +347,10 @@ class SuspectCaseController extends Controller
         }
 
         /* Log de cambios en caso sospecha */
-        $log = new Log();
+        //$log = new Log();
         //$log->old = $suspectCase;
-        $log->new = $suspectCase;
-        $log->save();
+        //$log->new = $suspectCase;
+        //$log->save();
 
         session()->flash('success', 'Se ha creado el caso número: <h3>'
             . $suspectCase->id. ' <a href="' . route('lab.suspect_cases.notificationForm',$suspectCase)
@@ -406,8 +404,7 @@ class SuspectCaseController extends Controller
      */
     public function update(Request $request, SuspectCase $suspectCase)
     {
-        $log = new Log();
-        $log->old = clone $suspectCase;
+        $old_pcr = $suspectCase->pscr_sars_cov_2;
 
         $suspectCase->fill($request->all());
 
@@ -415,11 +412,8 @@ class SuspectCaseController extends Controller
             $suspectCase->sample_at->format('Y-m-d'))->add(1, 'days')->weekOfYear;
 
         /* Setar el validador */
-        if ($log->old->pscr_sars_cov_2 == 'pending' and $suspectCase->pscr_sars_cov_2 != 'pending') {
+        if ($old_pcr == 'pending' and $suspectCase->pscr_sars_cov_2 != 'pending') {
             $suspectCase->validator_id = Auth::id();
-            // if($request->input('pscr_sars_cov_2_at')) {
-            //     $suspectCase->pscr_sars_cov_2_at = $request->input('pscr_sars_cov_2_at').' '.date('H:i:s');
-            // }
         }
 
         $suspectCase->save();
@@ -438,15 +432,16 @@ class SuspectCaseController extends Controller
 
 
         if (env('APP_ENV') == 'production') {
-            if ($log->old->pscr_sars_cov_2 == 'pending' and $suspectCase->pscr_sars_cov_2 == 'positive') {
+            if ($old_pcr == 'pending' and $suspectCase->pscr_sars_cov_2 == 'positive') {
                 $emails  = explode(',', env('EMAILS_ALERT'));
                 $emails_bcc  = explode(',', env('EMAILS_ALERT_BCC'));
                 Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($suspectCase));
             }
+            /* TODO: Si el resultado es negativo y el usuario tiene email, enviar resultado al usuario */
         }
 
-        $log->new = $suspectCase;
-        $log->save();
+        //$log->new = $suspectCase;
+        //$log->save();
 
         return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
     }
@@ -459,10 +454,10 @@ class SuspectCaseController extends Controller
      */
     public function destroy(SuspectCase $suspectCase)
     {
-        $log = new Log();
-        $log->old = clone $suspectCase;
-        $log->new = $suspectCase->setAttribute('suspect_case', 'delete');
-        $log->save();
+        //$log = new Log();
+        //$log->old = clone $suspectCase;
+        //$log->new = $suspectCase->setAttribute('suspect_case', 'delete');
+        //$log->save();
 
         $suspectCase->delete();
 
@@ -476,6 +471,7 @@ class SuspectCaseController extends Controller
         // $log->new =  $file->setAttribute('suspect_case', 'delete');
         // $log->save();
 
+        /* TODO: implementar auditable en file delete  */
         Storage::delete($file->file);
         $file->delete();
 
