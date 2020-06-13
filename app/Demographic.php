@@ -5,14 +5,17 @@ namespace App;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * Demographic
  *
  * @mixin Builder
  */
-class Demographic extends Model
+class Demographic extends Model implements Auditable
 {
+    use \OwenIt\Auditing\Auditable;
+    
     /**
      * The attributes that are mass assignable.
      *

@@ -18,7 +18,7 @@ class CreateContactPatientsTable extends Migration
             $table->foreignId('patient_id');
             $table->foreignId('contact_id');
             $table->longText('comment');
-            $table->enum('relationship',['father', 'mother', 'brother', 'sister']);
+            $table->enum('relationship',['father', 'mother', 'brother', 'sister', 'son']);
 
             $table->foreignId('user_id');
 
