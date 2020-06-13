@@ -288,7 +288,7 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     public function report_minsal_ws(Laboratory $laboratory)
     {
-        $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+        $from = '2020-06-01 00:00';//date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $to = date("Y-m-d 20:59:59");
 
         // $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
@@ -330,7 +330,7 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     public function ws_minsal(Laboratory $laboratory)
     {
-        $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+        $from = '2020-06-01 00:00';//date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $to = date("Y-m-d 20:59:59");
 
         $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
