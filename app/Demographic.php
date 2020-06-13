@@ -19,9 +19,10 @@ class Demographic extends Model
      * @var array
      */
     protected $fillable = [
-        'street_type','address','number','department','region_id', 'region', 'commune_id', 'commune','town',
-        'telephone','latitude','longitude','telephone2','email','patient_id',
-        'nationality'
+        'street_type','address','number','department','suburb',
+        'region_id','commune_id','city','nationality',
+        'latitude','longitude',
+        'telephone','telephone2','email','patient_id'
     ];
 
     public function patient() {

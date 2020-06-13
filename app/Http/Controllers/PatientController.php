@@ -77,10 +77,10 @@ class PatientController extends Controller
      */
     public function edit(Patient $patient)
     {
-      // dd($patient);
-      $regions = Region::orderBy('id','ASC')->get();
-      $communes = Commune::orderBy('id','ASC')->get();
-      return view('patients.edit',compact('patient', 'regions', 'communes'));
+        // dd($patient);
+        $regions = Region::orderBy('id','ASC')->get();
+        $communes = Commune::orderBy('id','ASC')->get();
+        return view('patients.edit',compact('patient', 'regions', 'communes'));
     }
 
     /**
@@ -94,7 +94,7 @@ class PatientController extends Controller
     {
         $logPatient = new Log();
         $logPatient->old = clone $patient;
-
+        
         $patient->fill($request->all());
         $patient->save();
 

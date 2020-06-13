@@ -338,26 +338,14 @@ class SuspectCaseController extends Controller
         /* Guarda el caso sospecha */
         $patient->suspectCases()->save($suspectCase);
 
-        $region = Region::where('id',$request->region_id)->get();
-        $commune = Commune::where('id',$request->commune_id)->get();
         if($patient->demographic) {
-            //$logDemographic->old = clone $patient->demographic;
             $patient->demographic->fill($request->all());
-            $patient->demographic->region = $region->first()->name;
-            $patient->demographic->commune = $commune->first()->name;
             $patient->demographic->save();
-            //$logDemographic->new = $patient->demographic;
-            //$logDemographic->save();
         }
         else {
             $demographic = new Demographic($request->All());
             $demographic->patient_id = $patient->id;
-            $demographic->region = $region->first()->name;
-            $demographic->commune = $commune->first()->name;
             $demographic->save();
-
-            // $logDemographic->new = $demographic;
-            // $logDemographic->save();
         }
 
         /* Log de cambios en caso sospecha */
