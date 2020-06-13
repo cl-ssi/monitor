@@ -23,11 +23,11 @@ class CreateLaboratoriesTable extends Migration
             $table->boolean('pdf_generate')->default(0);
             $table->string('cod_deis')->nullable();
             $table->foreignId('commune_id')->nullable();
-            $table->foreignId('director_id')->nullable();
+            //$table->foreignId('director_id')->nullable();
             $table->timestamps();
 
             $table->foreign('commune_id')->references('id')->on('communes');
-            $table->foreign('director_id')->references('id')->on('users');
+            //$table->foreign('director_id')->references('id')->on('users');
 
         });
     }

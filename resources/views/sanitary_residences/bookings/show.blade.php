@@ -63,8 +63,8 @@
     <div class="col-12 col-md-12 p-2">
         <strong>Dirección: </strong>
         {{ ($booking->patient->demographic)?$booking->patient->demographic->address:'' }}
-        {{ ($booking->patient->demographic)?$booking->patient->demographic->number:'' }}
-        {{ ($booking->patient->demographic)?$booking->patient->demographic->commune:'' }}
+        {{ ($booking->patient->demographic)?$booking->patient->demographic->number:'' }} -
+        {{ ($booking->patient->demographic)?$booking->patient->demographic->commune->name:'' }}
     </div>
 
 </div>
@@ -168,9 +168,19 @@
             <input type="number" class="form-control" name="length_of_stay" id="for_length_of_stay" value="{{$booking->length_of_stay}}">
         </fieldset>
 
-        <fieldset class="form-group col-7 col-md-4">
+        <!-- <fieldset class="form-group col-7 col-md-4">
             <label for="for_entry_criteria">Criterio de Ingreso</label>
             <input type="text" class="form-control" name="entry_criteria" id="for_entry_criteria" value="{{$booking->entry_criteria}}">
+        </fieldset> -->
+
+        <fieldset class="form-group col-7 col-md-4">
+            <label for="for_prevision">Criterio de Ingreso</label>
+            <select name="entry_criteria" id="for_entry_criteria" class="form-control" required>
+                <option value="">Seleccione Condición</option>
+                <option value="PCR +" {{ ($booking->entry_criteria == 'PCR +')?'selected':'' }}>PCR +</option>
+                <option value="Otro" {{ ($booking->entry_criteria == 'Otro')?'selected':'' }}>Otro</option>
+                <option value="Contacto Estrecho" {{ ($booking->entry_criteria == 'Contacto Estrecho')?'selected':'' }} >Contacto Estrecho</option>                
+            </select>
         </fieldset>
 
     </div>
