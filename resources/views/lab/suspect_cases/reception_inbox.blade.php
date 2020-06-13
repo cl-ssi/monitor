@@ -5,6 +5,7 @@
 @section('content')
 
 <h3 class="mb-3"><i class="fas fa-lungs-virus"></i> Bandeja de recepción</h3>
+<form method="GET" action="{{ route('lab.suspect_cases.reception_inbox') }}">
 
 <div class="row">
     <div class="col-3">
@@ -22,7 +23,6 @@
         </table>
     </div>
     <div class="col-3">
-        <form method="GET" class="form-inline" action="{{ route('lab.suspect_cases.reception_inbox') }}">
 
             <div class="input-group mb-3">
                 <input type="text" class="form-control" placeholder="ID examen" name="search" id="for_search">
@@ -31,7 +31,6 @@
                 </div>
             </div>
 
-        </form>
     </div>
     <div class="col-5">
         @if(Auth::user()->laboratory)
@@ -41,6 +40,23 @@
         @endif
     </div>
 </div>
+<div class="form-group row">
+    <div class="col-3">
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="Filtrar por Nombre" id="texto">
+            </div>
+    </div>
+    <div class="col-3">
+        <select name="establishment_id" id="for_establishment_id" class="form-control">
+            <option value=""> Seleccione Establecimiento</option>
+            @foreach($establishments as $establishment)
+                <option value="{{ $establishment->id }}" {{($establishment->id == $selectedEstablishment) ? 'selected' : '' }}>{{ $establishment->alias }}</option>
+            @endforeach
+        </select>
+    </div>
+</div>
+</form>
+
 
 
 
@@ -50,7 +66,6 @@
     <thead>
         <tr>
             <th nowrap>° Monitor</th>
-            <th nowrap>° Minsal</th>
             <th></th>
             <th>Fecha muestra</th>
             <th>Establecimiento</th>
@@ -66,20 +81,19 @@
         @foreach($suspectCases as $case)
         <tr class="row_{{$case->covid19}} {{ ($case->pscr_sars_cov_2 == 'positive')?'table-danger':''}}">
             <td class="text-center">{{ $case->id }}</td>
-            <td class="text-center">{{ $case->minsal_ws_id }}</td>
             <td>
                 @if(Auth::user()->laboratory)
                     @can('SuspectCase: reception')
                         <form method="POST" class="form-inline" action="{{ route('lab.suspect_cases.reception', $case) }}">
                             @csrf
                             @method('POST')
-                            <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-inbox"></i></button>
+                            <button type="submit" class="btn btn-sm btn-primary" title="Recepcionar"><i class="fas fa-inbox"></i></button>
                         </form>
                     @endcan
                 @endif
             </td>
             <td nowrap class="small">@date($case->sample_at)</td>
-            <td>{{ ($case->establishment) ? $case->establishment->name : '' }}</td>
+            <td>{{ ($case->establishment) ? $case->establishment->alias : '' }}</td>
             <td>
                 @if($case->patient)
                 <a class="link" href="{{ route('patients.edit', $case->patient) }}">
@@ -123,4 +137,19 @@ function exportF(elem) {
     return false;
 }
 </script>
+
+<script>
+    
+$(document).ready(function(){
+  $("#texto").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#tableCases tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+    
+</script>
+
+
 @endsection

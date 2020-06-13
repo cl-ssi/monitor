@@ -11,6 +11,7 @@
         <div class="col-md-8">
             <h3 class="mb-3">Formulario notificación inmediata y envío de muestras
                 a confirmación IRA grave y 2019-nCoV </h3>
+            <h4 class="mb3">Número de ingreso: {{$suspectCase->id}}</h4>
         </div>
         <div class="col-md-2"></div>
     </div>

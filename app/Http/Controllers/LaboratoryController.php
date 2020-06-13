@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Laboratory;
 use App\Commune;
+use App\User;
 use Illuminate\Http\Request;
 
 class LaboratoryController extends Controller
@@ -27,7 +28,8 @@ class LaboratoryController extends Controller
     public function create()
     {
         $communes = Commune::All();
-        return view('parameters.lab.create', compact('communes'));
+        $users = User::All();
+        return view('parameters.lab.create', compact('communes', 'users'));
     }
 
     /**
@@ -64,7 +66,8 @@ class LaboratoryController extends Controller
     public function edit(Laboratory $laboratory)
     {
         $communes = Commune::All();
-        return view('parameters.lab.edit', compact('laboratory','communes'));
+        $users = User::All();
+        return view('parameters.lab.edit', compact('laboratory','communes', 'users'));
     }
 
     /**

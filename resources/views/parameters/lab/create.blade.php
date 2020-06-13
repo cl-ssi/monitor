@@ -18,6 +18,11 @@
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-4">
+            <label for="for_alias">Alias</label>
+            <input type="text" class="form-control" name="alias" id="for_alias" required placeholder="" autocomplete="off">
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-4">
             <label for="for_commune_id">Comuna</label>
             <select class="form-control" name="commune_id" id="for_commune_id" required>
                 <option value="">Seleccione Comuna</option>
@@ -62,6 +67,16 @@
         <fieldset class="form-group col-2">
             <label for="for_cod_deis">Cod. Deis</label>
             <input type="text" class="form-control" name="cod_deis" id="for_cod_deis" placeholder="" >
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-4">
+            <label for="for_director_id">Director</label>
+            <select class="form-control" name="director_id" id="for_director_id" required>
+                <option value="">Seleccione Director</option>
+                @foreach($users as $user)
+                    <option value="{{ $user->id}}">{{ $user->name}}</option>
+                @endforeach
+            </select>
         </fieldset>
 
     </div>

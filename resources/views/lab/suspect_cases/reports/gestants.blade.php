@@ -30,7 +30,7 @@
             </td>
             <td>{{ $patient->identifier }}</td>
             <td>{{ $patient->age }}</td>
-            <td>{{ ($patient->demographic) ? $patient->demographic->commune : '' }}</td>
+            <td>{{ ($patient->demographic AND $patient->demographic->commune) ? $patient->demographic->commune->name : '' }}</td>
             <td>{{ ($patient->demographic) ? $patient->demographic->nationality : '' }}</td>
             <td>{{ $patient->status }}</td>
             <td>
