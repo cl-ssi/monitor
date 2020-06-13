@@ -145,6 +145,7 @@
                 <option value="Fonasa D" {{ ($booking->prevision == 'Fonasa D')?'selected':'' }}>Fonasa D</option>
                 <option value="Fonasa E" {{ ($booking->prevision == 'Fonasa E')?'selected':'' }}>Fonasa E</option>
                 <option value="ISAPRE" {{ ($booking->prevision == 'ISAPRE')?'selected':'' }}>ISAPRE</option>
+                <option value="ISAPRE" {{ ($booking->prevision == 'OTRO')?'selected':'' }}>ISAPRE</option>
             </select>
         </fieldset>
 

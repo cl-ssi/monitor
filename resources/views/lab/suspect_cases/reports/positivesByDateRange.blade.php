@@ -63,7 +63,7 @@
                     <td nowrap>{{ $suspectCase->patient->status }}</td>
                     <td nowrap>{{ $suspectCase->epivigila }}</td>
                     <td nowrap>{{ $suspectCase->pscr_sars_cov_2_at }}</td>
-                    <td nowrap>{{ ($suspectCase->patient->demographic)? $suspectCase->patient->demographic->commune : '' }}</td>
+                    <td nowrap>{{ ($suspectCase->patient->demographic AND $suspectCase->patient->demographic->commune)? $suspectCase->patient->demographic->commune->name : '' }}</td>
                     <td nowrap>{{ ($suspectCase->patient->demographic)? $suspectCase->patient->demographic->street_type : '' }}</td>
                     <td nowrap class="text-uppercase">{{ ($suspectCase->patient->demographic)? $suspectCase->patient->demographic->address : '' }}</td>
                     <td nowrap>{{ ($suspectCase->patient->demographic)? $suspectCase->patient->demographic->number : '' }}</td>
