@@ -22,12 +22,12 @@ class CreateLaboratoriesTable extends Migration
             $table->string('token_ws')->nullable();
             $table->boolean('pdf_generate')->default(0);
             $table->string('cod_deis')->nullable();
-            $table->unsignedBigInteger('commune_id')->nullable();
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreignId('commune_id')->nullable();
+            $table->foreignId('director_id')->nullable();
             $table->timestamps();
 
             $table->foreign('commune_id')->references('id')->on('communes');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('director_id')->references('id')->on('users');
 
         });
     }
