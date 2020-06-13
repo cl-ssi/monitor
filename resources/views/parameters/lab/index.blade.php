@@ -13,12 +13,14 @@
     <thead>
         <tr>
             <th>Nombre</th>
+            <th>Alias</th>
             <th>Externo</th>
             <th>Webservice Minsal</th>
             <th>Token Webservice</th>
             <th>PDF automático</th>
             <th>Cod. Deis</th>
             <th>Comuna</th>
+            <th>Director</th>
             <th>Editar</th>
         </tr>
     </thead>
@@ -26,12 +28,14 @@
     @foreach($laboratories as $laboratory)
         <tr>
             <td>{{ $laboratory->name }}</td>
+            <td>{{ $laboratory->alias }}</td>
             <td>{{ ($laboratory->external == 1)? 'Si':'No' }}</td>
             <td>{{ ($laboratory->minsal_ws == 1)? 'Si':'No' }}</td>
             <td>{{ $laboratory->token_ws }}</td>
             <td>{{ ($laboratory->pdf_generate == 1)? 'Si':'No' }}</td>
             <td>{{ $laboratory->cod_deis }}</td>
             <td>{{ $laboratory->commune->name }}</td>
+            <td>{{ ($laboratory->director) ? $laboratory->director->name : '' }}</td>
             <td>
             <a href="{{ route('parameters.lab.edit', $laboratory) }}" class="btn btn-secondary float-left"><i class="fas fa-edit"></i></a>
             </td>
