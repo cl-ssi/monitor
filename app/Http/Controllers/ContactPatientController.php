@@ -51,10 +51,28 @@ class ContactPatientController extends Controller
      */
     public function store(Request $request)
     {
-        $id = $request->get('patient_id');
+        // GUARDAR RELACION PACIENTE
         $contactPatient = new ContactPatient($request->All());
         $contactPatient->save();
 
+        // GUARDAR RELACION INVERSA PACIENTE
+        $patient_id = $request->get('contact_id');
+        $contact_id = $request->get('patient_id');
+        $relationship = $request->get('relationship');
+
+        $patient = Patient::where('id', $request->get('patient_id'))->first();
+
+        $inverse_relationship = $this->inverse_realtionship($relationship, $patient);
+
+        $contactPatient = new ContactPatient($request->All());
+        $contactPatient->patient_id = $patient_id;
+        $contactPatient->contact_id = $contact_id;
+        $contactPatient->relationship = $inverse_relationship;
+        $contactPatient->comment = $request->get('comment');
+
+        $contactPatient->save();
+
+        $id = $request->get('patient_id');
         return redirect()->route('patients.edit', $id);
     }
 
@@ -101,5 +119,17 @@ class ContactPatientController extends Controller
     public function destroy(ContactPatient $contactPatient)
     {
         //
+    }
+
+    public function inverse_realtionship($relationship, $patient){
+        if($patient->gender == 'male'){
+          switch ($relationship) {
+              case "son":
+                  return 'father';
+                  break;
+          }
+
+        }
+        // return $relationship.' hola';
     }
 }
