@@ -60,7 +60,7 @@
             </td>
             <td>{{ $patient->sexEsp }}</td>
             <td nowrap>{{ ($patient->birthday)?$patient->birthday->format('d-m-Y'):'' }}</td>
-            <td nowrap>{{ ($patient->demographic)?$patient->demographic->commune:'' }}</td>
+            <td nowrap>{{ (($patient->demographic) && ($patient->demographic->comune))?$patient->demographic->commune:'' }}</td>
             <td>
                 {{ ($patient->demographic)?$patient->demographic->address:'' }}
                 {{ ($patient->demographic)?$patient->demographic->number:'' }}

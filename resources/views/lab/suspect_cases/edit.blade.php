@@ -4,8 +4,10 @@
 
 @section('content')
 <h3 class="mb-3">Editar sospecha {{ $suspectCase->id }}</h3>
-
-@include('patients.show',$suspectCase)
+@php
+$patient = $suspectCase->patient;
+@endphp
+@include('patients.show',$patient)
 
 <hr>
 
