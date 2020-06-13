@@ -62,8 +62,8 @@
     <div class="col-12 col-md-12 p-2">
         <strong>Dirección: </strong>
         {{ ($booking->patient->demographic)?$booking->patient->demographic->address:'' }}
-        {{ ($booking->patient->demographic)?$booking->patient->demographic->number:'' }}
-        {{ ($booking->patient->demographic)?$booking->patient->demographic->commune:'' }}
+        {{ ($booking->patient->demographic)?$booking->patient->demographic->number:'' }} - 
+        {{ ($booking->patient->demographic)?$booking->patient->demographic->commune->name:'' }}
     </div>
 
 </div>

@@ -41,7 +41,7 @@
 
         <fieldset class="form-group col-3 col-md-3">
             <label for="for_address">Comuna</label>
-            <input type="text" class="form-control" name="address" id="for_address" required placeholder="" autocomplete="off" value="{{ ($patient->demographic)?$patient->demographic->commune:'' }}" readonly>
+            <input type="text" class="form-control" name="address" id="for_address" required placeholder="" autocomplete="off" value="{{ ($patient->demographic->commune)?$patient->demographic->commune->name:'' }}" readonly>
         </fieldset>
     </div>
 

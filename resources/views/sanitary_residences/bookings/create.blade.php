@@ -44,7 +44,8 @@
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_prevision">Previsión</label>
-            <select name="prevision" id="for_prevision" class="form-control">
+            <select name="prevision" id="for_prevision" class="form-control" required>
+                <option value="">Seleccionar Previsión</option>
                 <option value="Sin Previsión">Sin Previsión</option>
                 <option value="Fonasa A">Fonasa A</option>
                 <option value="Fonasa B">Fonasa B</option>
@@ -75,9 +76,18 @@
             <input type="number" class="form-control" name="length_of_stay" id="for_length_of_stay">
         </fieldset>
 
-        <fieldset class="form-group col-7 col-md-4">
+        <!-- <fieldset class="form-group col-7 col-md-4">
             <label for="for_entry_criteria">Criterio de Ingreso</label>
             <input type="text" class="form-control" name="entry_criteria" id="for_entry_criteria">
+        </fieldset> -->
+        <fieldset class="form-group col-7 col-md-4">
+            <label for="for_prevision">Criterio de Ingreso</label>
+            <select name="entry_criteria" id="for_entry_criteria" class="form-control" required>
+                <option value="">Seleccione Condición</option>
+                <option value="PCR +">PCR +</option>
+                <option value="Otro">Otro</option>
+                <option value="Contacto Estrecho">Contacto Estrecho</option>                
+            </select>
         </fieldset>
 
     </div>

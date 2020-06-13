@@ -259,6 +259,34 @@
     </tbody>
 </table>
 
+
+@can('Developer')
+<hr>
+<h4 class="mt-3">Evaluación Residencia Sanitaria </h4>
+
+<a class="btn btn-primary btn-sm" href="{{ route('sanitary_residences.admission.create', $patient) }}">
+    <i class="fas fa-plus"></i> Nuevo Contacto
+</a>
+
+<table class="table table-sm table-bordered small mb-4 mt-4">
+    <thead>
+        <tr class="text-center">
+            <th>Fecha Encuesta</th>            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+      @foreach($patient->admissionSurvey as $admission)
+      <tr>
+          <td class="text-center">{{ $admission->created_at }}</td>          
+      </tr>
+      @endforeach
+    </tbody>
+</table>
+@endcan('Developer')
+
+
+
 <hr>
 
 @can('Admin')

@@ -202,7 +202,7 @@ class SuspectCaseController extends Controller
         $regions = Region::orderBy('id','ASC')->get();
         $communes = Commune::orderBy('id','ASC')->get();
         $env_communes = array_map('trim',explode(",",env('COMUNAS')));
-        $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
+        $establishments = Establishment::whereIn('commune_id',$env_communes)->where('name','<>','Otros')->orderBy('name','ASC')->get();
 
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
         return view('lab.suspect_cases.admission',compact('sampleOrigins','regions', 'communes','establishments'));
