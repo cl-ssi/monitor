@@ -129,8 +129,9 @@
         <fieldset class="form-group col-4 col-md-4">
             <label for="for_name">¿Cuantos Baños Tiene en la casa?</label>
             <input type="number" class="form-control" name="bathrooms" id="for_bathrooms" required placeholder="" autocomplete="off">
-        </fieldset>        
+        </fieldset> 
     </div>
+    
     <div class="form-check">
         <h5 class="mb-6">¿ES POSIBLE AISLAR AL PACIENTE? (Seguir con la encuesta si el paciente no puede aislarse correctamente)</h5>
         <input class="form-check-input" type="radio" name="isolate" id="exampleRadios1" value="1" required>
@@ -181,6 +182,32 @@
             <td class="text-center"><input name="healthnow" id="for_healthnow" type="radio" value="1"></td>
             <td class="text-center"><input name="healthnow" id="for_healthnow" type="radio" value="0"></td>
         </tr>
+        <tr>
+            <td>¿Posee agua en su domicilio?</td>
+            <td class="text-center"><input name="water" type="radio" value="1"></td>
+            <td class="text-center"><input name="water" type="radio" value="0"></td>
+        </tr>
+        <tr>
+            <td>¿Usted requiere salir para trabajar pese a estar en cuarentena?</td>
+            <td class="text-center"><input name="water" type="radio" value="1"></td>
+            <td class="text-center"><input name="water" type="radio" value="0"></td>
+        </tr>
+        <tr>
+            <td>¿Tiene red de apoyo para brindar ?</td>
+            <td class="text-center"><input name="support" type="radio" value="1"></td>
+            <td class="text-center"><input name="support" type="radio" value="0"></td>
+        </tr>
+        <tr>
+            <td>¿Tiene personas de riesgos médico en su hogar?</td>
+            <td class="text-center"><input name="risk" type="radio" value="1"></td>
+            <td class="text-center"><input name="risk" type="radio" value="0"></td>
+        </tr>
+        <tr>
+            <td>¿Hay personas mayores de 60 años en su hogar?</td>
+            <td class="text-center"><input name="old" type="radio" value="1"></td>
+            <td class="text-center"><input name="old" type="radio" value="0"></td>
+        </tr>
+
 
     </tbody>
 

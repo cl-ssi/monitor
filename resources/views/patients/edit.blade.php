@@ -265,7 +265,7 @@
 <h4 class="mt-3">Evaluación Residencia Sanitaria </h4>
 
 <a class="btn btn-primary btn-sm" href="{{ route('sanitary_residences.admission.create', $patient) }}">
-    <i class="fas fa-plus"></i> Nuevo Contacto
+    <i class="fas fa-plus"></i> Nueva Encuesta
 </a>
 
 <table class="table table-sm table-bordered small mb-4 mt-4">
