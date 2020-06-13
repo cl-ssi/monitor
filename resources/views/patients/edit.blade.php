@@ -263,7 +263,7 @@
 
 @can('Admin')
 
-@include('partials.audit', ['audits' => $patient->audits->merge($patient->demographic->audits)] )
+@include('partials.audit', ['audits' => $patient->audits] )
 
 <table class="table table-sm small text-muted mt-3">
     <thead>
