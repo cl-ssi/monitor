@@ -18,7 +18,7 @@ class Laboratory extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'external', 'minsal_ws', 'token_ws', 'pdf_generate', 'cod_deis',  'commune_id'
+        'name', 'external', 'minsal_ws', 'token_ws', 'pdf_generate', 'cod_deis',  'commune_id', 'alias', 'user_id'
     ];
 
     public function users() {

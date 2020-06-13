@@ -28,9 +28,8 @@ class LaboratoryController extends Controller
     public function create()
     {
         $communes = Commune::All();
-//        $users = User::All();
-//        return view('parameters.lab.create', compact('communes', 'users'));
-        return view('parameters.lab.create', compact('communes'));
+        $users = User::All();
+        return view('parameters.lab.create', compact('communes', 'users'));
     }
 
     /**
@@ -41,8 +40,6 @@ class LaboratoryController extends Controller
      */
     public function store(Request $request)
     {
-//        dd($request->All());
-
         $laboratory = new Laboratory($request->All());
         $laboratory->save();
         session()->flash('success', 'Se creo laboratorio exitosamente');
@@ -69,7 +66,8 @@ class LaboratoryController extends Controller
     public function edit(Laboratory $laboratory)
     {
         $communes = Commune::All();
-        return view('parameters.lab.edit', compact('laboratory','communes'));
+        $users = User::All();
+        return view('parameters.lab.edit', compact('laboratory','communes', 'users'));
     }
 
     /**
