@@ -41,7 +41,11 @@
     </div>
 </div>
 <div class="form-group row">
-    <div class="col-3"></div>
+    <div class="col-3">
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="Filtrar por Nombre" id="texto">
+            </div>
+    </div>
     <div class="col-3">
         <select name="establishment_id" id="for_establishment_id" class="form-control">
             <option value=""> Seleccione Establecimiento</option>
@@ -133,4 +137,19 @@ function exportF(elem) {
     return false;
 }
 </script>
+
+<script>
+    
+$(document).ready(function(){
+  $("#texto").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#tableCases tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+    
+</script>
+
+
 @endsection
