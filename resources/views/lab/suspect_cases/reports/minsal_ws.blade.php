@@ -41,7 +41,9 @@
 
     <tbody>
         @foreach ($cases as $case)
-        <tr>
+        @if($case->run_medic == '0') <tr style="background-color:#FF0000"> 
+        @else <tr> @endif
+
             {{-- <td>{{ $case->minsal_ws_id }}</td> --}}
             <td><a href="{{ route('lab.suspect_cases.edit', $case) }}">{{ $case->id }}</a></td>
             <td nowrap>{{ ($case->user) ? $case->user->run : '' }}</td>
@@ -59,7 +61,7 @@
             <td nowrap>{{ ($case->patient->run) ? 'RUN':'OTRO ID' }}</td>
             <td nowrap>{{ ($case->patient->demographic) ? $case->patient->demographic->nationality : '' }}</td>
             <td nowrap>
-                @if($case->patient->demographic)
+                @if($case->patient->demographic && $case->patient->demographic->nationality)
                 {{ App\Country::where('name', $case->patient->demographic->nationality)->first()->id_minsal }}
                 @endif
             </td>
