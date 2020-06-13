@@ -271,14 +271,18 @@
 <table class="table table-sm table-bordered small mb-4 mt-4">
     <thead>
         <tr class="text-center">
-            <th>Fecha Encuesta</th>            
+            <th>Fecha Encuesta</th>
+            <th>Resultado</th>
+            <th>Encuesta Realizada por</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
       @foreach($patient->admissionSurvey as $admission)
       <tr>
-          <td class="text-center">{{ $admission->created_at }}</td>          
+          <td class="text-center">{{ $admission->created_at }}</td>
+          <td class="text-center">{{ $admission->result }}</td>
+          <td class="text-center">{{ $admission->user->name }}</td>
       </tr>
       @endforeach
     </tbody>
