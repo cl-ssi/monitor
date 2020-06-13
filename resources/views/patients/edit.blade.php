@@ -263,6 +263,35 @@
 @can('Admin')
 
 <h4 class="mt-3">Historial de cambios</h4>
+
+<table class="table table-sm small text-muted mt-3">
+    <thead>
+        <tr>
+            <th>Evento</th>
+            <th>URL</th>
+            <th>IP</th>
+            <th>Fecha</th>
+            <th>Usuario</th>
+            <th>Old</th>
+            <th>New</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($patient->audits as $audit)
+        <tr>
+            <td>{{ $audit->auditable_type }}</td>
+            <td>{{ $audit->event }}</td>
+            <td>{{ $audit->url }}</td>
+            <td>{{ $audit->ip_address }}</td>
+            <td>{{ $audit->created_at }}</td>
+            <td>{{ $audit->user->name }}</td>
+            <td>{-- $audit->old_values --}</td>
+            <td>{-- $audit->new_values --}</td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+
 <table class="table table-sm small text-muted mt-3">
     <thead>
         <tr>
