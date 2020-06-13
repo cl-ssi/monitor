@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\SanitaryResidence\Evolution;
-use App\Log;
+// use App\Log;
 
 use Illuminate\Http\Request;
 
@@ -52,8 +52,8 @@ class EvolutionController extends Controller
             session()->flash('success', 'Se modificó la información.');
         }
 
-        $logPatient = new Log();
-        $logPatient->old = clone $evolution;
+        // $logPatient = new Log();
+        // $logPatient->old = clone $evolution;
 
         return redirect()->back();
     }

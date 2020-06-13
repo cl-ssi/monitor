@@ -5,16 +5,18 @@ namespace App\SanitaryResidence;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * Booking
  *
  * @mixin Builder
  */
-class Booking extends Model
+class Booking extends Model implements Auditable //Authenticatable
 {
 
     use SoftDeletes;
+    use \OwenIt\Auditing\Auditable;
 
     /**
      * The attributes that are mass assignable.
