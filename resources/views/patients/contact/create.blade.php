@@ -86,7 +86,7 @@ alvaro {{ $id_patient }}
         </fieldset>
     </div>
     <hr>
-@endforeach
+
 
 <div class="card mb-3">
     <div class="card-body">
@@ -103,12 +103,64 @@ alvaro {{ $id_patient }}
 
               <fieldset class="form-group col-md-6">
                   <label for="for_register_at">Parentesco</label>
-                  <select class="form-control selectpicker" name="relationship" id="for_relationship" title="Seleccione..." required>
-                      <option value="father">Padre</option>
-                      <option value="mother">Madre</option>
-                      <option value="brother">hijo/a</option>
-                      <option value="brother">Hermano/a</option>
-                      <option value="contact">Contacto/a</option>
+                  <select class="form-control selectpicker" name="relationship" id="for_relationship" title="Seleccione..." data-live-search="true" data-size="5" required>
+                      @if($patient->sexEsp == 'FEMENINO')
+                        <option value="grandmother">Abuela</option>
+                        <!-- <option value="grandfather">Abuelo</option> -->
+                        <option value="sister in law">Cuñada</option>
+                        <!-- <option value="brother in law">Cuñado</option> -->
+                        <option value="sister">Hermana</option>
+                        <!-- <option value="brother">Hermano</option> -->
+                        <option value="daughter">Hija</option>
+                        <!-- <option value="son">Hijo</option> -->
+                        <option value="mother">Madre</option>
+                        <!-- <option value="father">Padre</option> -->
+                        <option value="cousin">Primo/a</option>
+                        <option value="niece">Sobrina</option>
+                        <!-- <option value="nephew">Sobrino</option> -->
+                        <option value="mother in law">Suegra</option>
+                        <!-- <option value="father in law">Suegro</option> -->
+                        <option value="aunt">Tía</option>
+                        <!-- <option value="uncle">Tío</option> -->
+                        <option value="daughter in law">Nuera</option>
+                        <!-- <option value="son in law">Yerno</option> -->
+                        <option value="contact">Contacto/a</option>
+                      @else
+                        <!-- <option value="grandmother">Abuela</option> -->
+                        <option value="grandfather">Abuelo</option>
+                        <!-- <option value="sister in law">Cuñada</option> -->
+                        <option value="brother in law">Cuñado</option>
+                        <!-- <option value="sister">Hermana</option> -->
+                        <option value="brother">Hermano</option>
+                        <!-- <option value="daughter">Hija</option> -->
+                        <option value="son">Hijo</option>
+                        <!-- <option value="mother">Madre</option> -->
+                        <option value="father">Padre</option>
+                        <option value="cousin">Primo/a</option>
+                        <!-- <option value="niece">Sobrina</option> -->
+                        <option value="nephew">Sobrino</option>
+                        <!-- <option value="mother in law">Suegra</option> -->
+                        <option value="father in law">Suegro</option>
+                        <!-- <option value="aunt">Tía</option> -->
+                        <option value="uncle">Tío</option>
+                        <!-- <option value="daughter in law">Nuera</option> -->
+                        <option value="son in law">Yerno</option>
+                        <option value="contact">Contacto/a</option>
+                      @endif
+                      <!--
+                      abuelo/a
+                      cuñado/a
+                      hermano
+                      hijo/a
+                      madre
+                      padre
+                      primo/a
+                      sobrino/a
+                      suegro/a
+                      tio/a
+                      yerno/nuera
+                      -->
+
                   </select>
               </fieldset>
 
@@ -130,6 +182,7 @@ alvaro {{ $id_patient }}
         </form>
     </div>
 </div>
+@endforeach
 @endif
 
 @endsection

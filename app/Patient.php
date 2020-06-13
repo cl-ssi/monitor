@@ -18,9 +18,9 @@ use OwenIt\Auditing\Contracts\Auditable;
  */
 class Patient extends Model implements Auditable //Authenticatable
 {
-    //use Notifiable;
-    use SoftDeletes;
     use \OwenIt\Auditing\Auditable;
+    use SoftDeletes;
+    //use Notifiable;
 
     //protected $guard = 'patient';
 
