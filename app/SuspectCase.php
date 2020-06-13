@@ -8,15 +8,17 @@ use File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * SuspectCase
  *
  * @mixin Builder
  */
-class SuspectCase extends Model
+class SuspectCase extends Model implements Auditable
 {
     use SoftDeletes;
+    use \OwenIt\Auditing\Auditable;
 
     /**
      * The attributes that are mass assignable.
