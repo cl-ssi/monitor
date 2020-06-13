@@ -16,15 +16,19 @@ class CreateLaboratoriesTable extends Migration
         Schema::create('laboratories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('alias');
             $table->boolean('external')->default(0);
             $table->boolean('minsal_ws')->default(0);
             $table->string('token_ws')->nullable();
             $table->boolean('pdf_generate')->default(0);
             $table->string('cod_deis')->nullable();
-            $table->unsignedBigInteger('commune_id')->nullable();
+            $table->foreignId('commune_id')->nullable();
+            $table->foreignId('director_id')->nullable();
             $table->timestamps();
 
             $table->foreign('commune_id')->references('id')->on('communes');
+            $table->foreign('director_id')->references('id')->on('users');
+
         });
     }
 

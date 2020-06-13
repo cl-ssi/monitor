@@ -3,7 +3,7 @@
 @section('title', 'Editar Ventiladores')
 
 @section('content')
-<h3 class="mb-3">Ventiladores del Hospital ETG</h3>
+<h3 class="mb-3">Ventiladores</h3>
 
 <form method="POST" class="form-horizontal" action="{{ route('parameters.ventilators.update') }}">
     @csrf

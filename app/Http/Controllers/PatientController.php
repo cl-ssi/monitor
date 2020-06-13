@@ -77,10 +77,10 @@ class PatientController extends Controller
      */
     public function edit(Patient $patient)
     {
-      // dd($patient);
-      $regions = Region::orderBy('id','ASC')->get();
-      $communes = Commune::orderBy('id','ASC')->get();
-      return view('patients.edit',compact('patient', 'regions', 'communes'));
+        // dd($patient);
+        $regions = Region::orderBy('id','ASC')->get();
+        $communes = Commune::orderBy('id','ASC')->get();
+        return view('patients.edit',compact('patient', 'regions', 'communes'));
     }
 
     /**
@@ -105,12 +105,7 @@ class PatientController extends Controller
         if($patient->demographic) {
             $logDemographic->old = clone $patient->demographic;
 
-            $region = Region::where('id',$request->region_id)->get();
-            $commune = Commune::where('id',$request->commune_id)->get();
-
             $patient->demographic->fill($request->all());
-            $patient->demographic->region = $region->first()->name;
-            $patient->demographic->commune = $commune->first()->name;
             $patient->demographic->save();
 
             $logDemographic->new = $patient->demographic;
@@ -118,22 +113,18 @@ class PatientController extends Controller
         }
         else {
 
-          if ($request->address != null | $request->address != null | $request->deparment != null |
-              $request->town != null | $request->latitude != null | $request->longitude != null |
-              $request->email != null | $request->telephone != null | $request->number != null |
-              $request->region != null | $request->commune != null) {
+            if ($request->address != null | $request->address != null | $request->deparment != null |
+                    $request->town != null | $request->latitude != null | $request->longitude != null |
+                    $request->email != null | $request->telephone != null | $request->number != null |
+                    $request->region != null | $request->commune != null) {
 
-                $region = Region::where('id',$request->region_id)->get();
-                $commune = Commune::where('id',$request->commune_id)->get();
                 $demographic = new Demographic($request->All());
                 $demographic->patient_id = $patient->id;
-                $demographic->region = $region->first()->name;
-                $demographic->commune = $commune->first()->name;
                 $demographic->save();
 
                 $logDemographic->new = $demographic;
                 $logDemographic->save();
-              }
+            }
         }
         //$logDemographic->save();
 

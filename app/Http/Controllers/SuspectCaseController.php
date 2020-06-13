@@ -338,26 +338,14 @@ class SuspectCaseController extends Controller
         /* Guarda el caso sospecha */
         $patient->suspectCases()->save($suspectCase);
 
-        $region = Region::where('id',$request->region_id)->get();
-        $commune = Commune::where('id',$request->commune_id)->get();
         if($patient->demographic) {
-            //$logDemographic->old = clone $patient->demographic;
             $patient->demographic->fill($request->all());
-            $patient->demographic->region = $region->first()->name;
-            $patient->demographic->commune = $commune->first()->name;
             $patient->demographic->save();
-            //$logDemographic->new = $patient->demographic;
-            //$logDemographic->save();
         }
         else {
             $demographic = new Demographic($request->All());
             $demographic->patient_id = $patient->id;
-            $demographic->region = $region->first()->name;
-            $demographic->commune = $commune->first()->name;
             $demographic->save();
-
-            // $logDemographic->new = $demographic;
-            // $logDemographic->save();
         }
 
         /* Log de cambios en caso sospecha */
@@ -740,12 +728,22 @@ class SuspectCaseController extends Controller
 
     public function reception_inbox(Request $request)
     {
+        $selectedEstablishment = $request->input('establishment_id');
+
         $suspectCases = SuspectCase::whereNull('laboratory_id')
             ->search($request->input('search'))
+            ->where(function($q) use($selectedEstablishment){
+                if($selectedEstablishment){
+                    $q->where('establishment_id', $selectedEstablishment);
+                }
+            })
             ->latest()
             ->paginate(200);
 
-        return view('lab.suspect_cases.reception_inbox', compact('suspectCases'));
+        $env_communes = array_map('trim',explode(",",env('COMUNAS')));
+        $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
+
+        return view('lab.suspect_cases.reception_inbox', compact('suspectCases', 'establishments', 'selectedEstablishment'));
     }
 
     public function exportExcel($cod_lab = null){

@@ -2,8 +2,14 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Laboratory
+ *
+ * @mixin Builder
+ */
 class Laboratory extends Model
 {
     /**
@@ -12,7 +18,7 @@ class Laboratory extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'external', 'minsal_ws', 'token_ws', 'pdf_generate', 'cod_deis',  'commune_id'
+        'name', 'external', 'minsal_ws', 'token_ws', 'pdf_generate', 'cod_deis',  'commune_id', 'alias', 'director_id'
     ];
 
     public function users() {
@@ -21,5 +27,9 @@ class Laboratory extends Model
 
     public function commune() {
         return $this->belongsTo('App\Commune');
+    }
+
+    public function director() {
+        return $this->belongsTo('App\User');
     }
 }
