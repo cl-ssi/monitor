@@ -574,7 +574,6 @@ class SuspectCaseController extends Controller
     public function diary_lab_report(Request $request)
     {
         $beginExamDate = SuspectCase::orderBy('sample_at')->first()->sample_at;
-        $laboratories = Laboratory::all();
 
         $periods = CarbonPeriod::create($beginExamDate, now());
 
@@ -582,8 +581,8 @@ class SuspectCaseController extends Controller
 
         foreach ($periods as $key => $period) {
             $cases_by_days[$period->format('d-m-Y')]['cases'] = 0;
-            $cases_by_days[$period->format('d-m-Y')]['positive'] = 0;
             $cases_by_days[$period->format('d-m-Y')]['negative'] = 0;
+            $cases_by_days[$period->format('d-m-Y')]['positive'] = 0;
             $cases_by_days[$period->format('d-m-Y')]['rejected'] = 0;
             $cases_by_days[$period->format('d-m-Y')]['undetermined'] = 0;
             $cases_by_days[$period->format('d-m-Y')]['pending'] = 0;
@@ -591,17 +590,22 @@ class SuspectCaseController extends Controller
 
         }
 
-        $suspectCases = SuspectCase::All();
+        $suspectCases = SuspectCase::whereNotNull('laboratory_id')->get();
 
         foreach ($suspectCases as $suspectCase) {
           $total_cases_by_days['cases'] = 0;
           $total_cases_by_days[$suspectCase->pscr_sars_cov_2] = 0;
         }
 
+
+
         //CARGA ARRAY CASOS
         foreach ($suspectCases as $suspectCase) {
+
           $cases_by_days[$suspectCase->sample_at->format('d-m-Y')]['cases'] += 1;
-          $cases_by_days[$suspectCase->sample_at->format('d-m-Y')][$suspectCase->pscr_sars_cov_2] += 1;
+          if($suspectCase->reception_at != null){
+            $cases_by_days[$suspectCase->sample_at->format('d-m-Y')][$suspectCase->pscr_sars_cov_2] += 1;
+          }
           if($suspectCase->pscr_sars_cov_2_at != null){
             $cases_by_days[$suspectCase->pscr_sars_cov_2_at->format('d-m-Y')]['procesing'] += 1;
           }
