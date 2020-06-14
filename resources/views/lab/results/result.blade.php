@@ -64,10 +64,11 @@
 <body>
     <div class="row">
         <div class="cabecera" style="padding-top: 22px;">
-            <img src="https://i.saludiquique.cl/images/SSI_RGB_200.png" width="150" alt="logo servicio">
+            <!-- <img src="images/SSI_RGB_200.png" width="150" alt="logo servicio"> -->
+            <img src="{{ public_path('images/SS_RGB_200.png')}} " width="150" alt="logo servicio">
         </div>
         <div class="cabecera" style="padding-left: 10px;">
-            <h1>SERVICIO DE SALUD IQUIQUE / UNAP</h1>
+            <h1>{{ $case->laboratory->name }}</h1>
             <h2 style="line-height: 1px;">LABORATORIO DE BIOLOGÍA MOLECULAR</h2>
         </div>
 
@@ -139,7 +140,7 @@
             <tr>
                 <td>
                     <div class="firma">
-                        <img src="images/firma_user_59.png" width="140" alt="Firma Director Técnico">
+                        <img src="images/firma_user_{{ $case->laboratory->director->id}}.png" width="140" alt="Firma Director Técnico">
                     </div>
                 </td>
 
@@ -152,7 +153,7 @@
             </tr>
             <tr>
                 <td class="firma">
-                    DR. JUAN MORENO SAAVEDRA
+                    {{ $case->laboratory->director->name}}
                     <br>
                     DIRECTOR TÉCNICO LABORATORIO
                 </td>
