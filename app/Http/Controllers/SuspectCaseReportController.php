@@ -185,7 +185,7 @@ class SuspectCaseReportController extends Controller
             $casos[$key][] = $patient->identifier;
             $casos[$key][] = $patient->age;
             $casos[$key][] = $patient->genderEsp;
-            $casos[$key][] = ($patient->demographic)?$patient->demographic->commune:'';
+            $casos[$key][] = ($patient->demographic AND $patient->demographic->commune)?$patient->demographic->commune->name:'';
             $casos[$key][] = ($patient->demographic)?$patient->demographic->nationality:'';
             $casos[$key][] = $patient->status;
             foreach($patient->suspectCases as $suspectCase) {
