@@ -8,11 +8,20 @@
 
 
 <div class="row">
-    <div class="col-12 col-md-12 font-weight-bold p-2">
+    <div class="col-9 col-md-9 font-weight-bold p-2">
         @canany(['Patient: edit','Patient: demographic edit'])
         <a href="{{ route('patients.edit', $booking->patient) }}"><h4>{{ $booking->patient->fullName }}</h4></a>
         @endcan
     </div>
+    @can('SanitaryResidence: admin')
+        <div class="col-3 col-md-3 font-weight-bold p-2">
+            <form method="POST" class="form-horizontal" action="{{ route('sanitary_residences.bookings.destroy', $booking) }}">        
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger" onclick="return confirm('¿Está seguro que desea ELIMINAR el Booking del paciente {{ $booking->patient->fullName }} para la habitación {{$booking->room->number}} de la Residencia {{$booking->room->residence->name}}? ' )">Eliminar Booking</button>
+            </form>        
+        </div>
+    @endcan
 </div>
 
 <div class="row">
@@ -63,8 +72,8 @@
     <div class="col-12 col-md-12 p-2">
         <strong>Dirección: </strong>
         {{ ($booking->patient->demographic)?$booking->patient->demographic->address:'' }}
-        {{ ($booking->patient->demographic)?$booking->patient->demographic->number:'' }}
-        {{ ($booking->patient->demographic)?$booking->patient->demographic->commune:'' }}
+        {{ ($booking->patient->demographic)?$booking->patient->demographic->number:'' }} -
+        {{ ($booking->patient->demographic)?$booking->patient->demographic->commune->name:'' }}
     </div>
 
 </div>
@@ -168,9 +177,19 @@
             <input type="number" class="form-control" name="length_of_stay" id="for_length_of_stay" value="{{$booking->length_of_stay}}">
         </fieldset>
 
-        <fieldset class="form-group col-7 col-md-4">
+        <!-- <fieldset class="form-group col-7 col-md-4">
             <label for="for_entry_criteria">Criterio de Ingreso</label>
             <input type="text" class="form-control" name="entry_criteria" id="for_entry_criteria" value="{{$booking->entry_criteria}}">
+        </fieldset> -->
+
+        <fieldset class="form-group col-7 col-md-4">
+            <label for="for_prevision">Criterio de Ingreso</label>
+            <select name="entry_criteria" id="for_entry_criteria" class="form-control" required>
+                <option value="">Seleccione Condición</option>
+                <option value="PCR +" {{ ($booking->entry_criteria == 'PCR +')?'selected':'' }}>PCR +</option>
+                <option value="Otro" {{ ($booking->entry_criteria == 'Otro')?'selected':'' }}>Otro</option>
+                <option value="Contacto Estrecho" {{ ($booking->entry_criteria == 'Contacto Estrecho')?'selected':'' }} >Contacto Estrecho</option>                
+            </select>
         </fieldset>
 
     </div>

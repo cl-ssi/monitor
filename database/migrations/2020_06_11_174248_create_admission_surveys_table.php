@@ -15,7 +15,8 @@ class CreateAdmissionSurveysTable extends Migration
     {
         Schema::create('admission_surveys', function (Blueprint $table) {
             //IDENTIFICACIÓN DE PACIENTE
-            $table->id();            
+            $table->id(); 
+            $table->string('prevision')->nullable();           
             $table->string('contactnumber')->nullable();                        
             $table->text('morbid_history')->nullable();
             $table->text('observations')->nullable();
