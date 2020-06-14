@@ -87,7 +87,7 @@ class SuspectCase extends Model implements Auditable
         if($this->external_laboratory) {
             return $this->external_laboratory;
         }elseif ($this->laboratory){
-            return $this->laboratory->name;
+            return $this->laboratory->alias;
         }
         else return '';
     }

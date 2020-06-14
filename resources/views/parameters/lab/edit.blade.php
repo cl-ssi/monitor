@@ -20,7 +20,8 @@
 
         <fieldset class="form-group col-6 col-md-4">
             <label for="for_alias">Alias</label>
-            <input type="text" class="form-control" name="alias" id="for_alias" required placeholder="" autocomplete="off" value ="{{$laboratory->alias}}">
+            <input type="text" class="form-control" name="alias" id="for_alias" required
+                placeholder="" autocomplete="off" value ="{{$laboratory->alias}}">
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-4">
