@@ -27,9 +27,9 @@
     @endif
 
 
-    <div class="border text-center small m-2" style="width:{{$residence->width}}px; height: {{$residence->height}}px;">
+    <div class="border text-center small m-2" style="width:{{$residence->width}}px; height: {{$residence->height}}px;border-width:20px">
         Habitación {{ $room->number }}
-        <hr>
+        <hr style="height:2px;border-width:0;color:gray;background-color:gray">
 
         @if($room->bookings->first())
 
@@ -40,17 +40,11 @@
                 {{ $booking->patient->fullName }}
             </a>
             <br>
-            ({{ $booking->patient->age }} AÑOS)
-            <!-- <a href="{{ route('sanitary_residences.bookings.excel', $booking) }}">
-                        <i class="fas fa-file-excel"></i>
-                        </a> -->
-            @can('SanitaryResidence: admin')
-            <form method="POST" class="form-horizontal" action="{{ route('sanitary_residences.bookings.destroy', $booking) }}">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn" onclick="return confirm('¿Está seguro que desea ELIMINAR el Booking del paciente {{ $booking->patient->fullName }} para la habitación {{$room->number}}? ' )"><i class="fas fa-trash-alt"></i></button>
-            </form>
-            @endcan
+            ({{ $booking->patient->age }} AÑOS) ({{ $booking->days }} DÍAS EN R.S.)
+            <br>
+            <hr
+            
+            
         </li>
         @endif
         @endforeach

@@ -8,11 +8,20 @@
 
 
 <div class="row">
-    <div class="col-12 col-md-12 font-weight-bold p-2">
+    <div class="col-9 col-md-9 font-weight-bold p-2">
         @canany(['Patient: edit','Patient: demographic edit'])
         <a href="{{ route('patients.edit', $booking->patient) }}"><h4>{{ $booking->patient->fullName }}</h4></a>
         @endcan
     </div>
+    @can('SanitaryResidence: admin')
+        <div class="col-3 col-md-3 font-weight-bold p-2">
+            <form method="POST" class="form-horizontal" action="{{ route('sanitary_residences.bookings.destroy', $booking) }}">        
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger" onclick="return confirm('¿Está seguro que desea ELIMINAR el Booking del paciente {{ $booking->patient->fullName }} para la habitación {{$booking->room->number}} de la Residencia {{$booking->room->residence->name}}? ' )">Eliminar Booking</button>
+            </form>        
+        </div>
+    @endcan
 </div>
 
 <div class="row">
