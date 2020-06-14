@@ -41,9 +41,9 @@ class SuspectCaseReportController extends Controller
 
         foreach($patients as $patient) {
             $casos['Region'][$patient->suspectCases->where('pscr_sars_cov_2','positive')->first()->sample_at->format('Y-m-d')] += 1;
-            // if(isset($patient->demographic) and isset($patient->demographic->commune)) {
-            //     $casos[$patient->demographic->commune->name][$patient->suspectCases->where('pscr_sars_cov_2','positive')->first()->sample_at->format('Y-m-d')] += 1;
-            // }
+            if($patient->demographic AND $patient->demographic->commune) {
+                $casos[$patient->demographic->commune->name][$patient->suspectCases->where('pscr_sars_cov_2','positive')->first()->sample_at->format('Y-m-d')] += 1;
+            }
 
             if($patient->demographic != NULL && $patient->demographic->commune != NULL) {
                 $casos[$patient->demographic->commune->name][$patient->suspectCases->where('pscr_sars_cov_2','positive')->first()->sample_at->format('Y-m-d')] += 1;
