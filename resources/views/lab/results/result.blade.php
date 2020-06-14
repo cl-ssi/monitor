@@ -64,11 +64,10 @@
 <body>
     <div class="row">
         <div class="cabecera" style="padding-top: 22px;">
-            <!-- <img src="images/SSI_RGB_200.png" width="150" alt="logo servicio"> -->
-            <img src="{{ public_path('images/SS_RGB_200.png')}} " width="150" alt="logo servicio">
+            <img src="images/SS_RGB_200.png" width="150" alt="logo servicio">
         </div>
         <div class="cabecera" style="padding-left: 10px;">
-            <h1>{{ $case->laboratory->name }}</h1>
+            <h1>{{$case->laboratory->name}}</h1>
             <h2 style="line-height: 1px;">LABORATORIO DE BIOLOGÍA MOLECULAR</h2>
         </div>
 
