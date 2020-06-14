@@ -30,7 +30,7 @@
             <td>{{ $vitalsign->observations }}</td>
             <td nowrap>{{ $vitalsign->user->name }}</td>
             <td>
-                @if($vitalsign->created_at->diff(now())->days < 1 and  $vitalsign->user->id == Auth::id())
+                @if($vitalsign->updated_at->diff(now())->days < 1 and  $vitalsign->user->id == Auth::id())
                 <button type="submit" class="btn btn-outline-secondary btn-sm" id="btn_{{$vitalsign->id}}">
     				<i class="fas fa-edit"></i>
     			</button>
