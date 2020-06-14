@@ -40,9 +40,12 @@
                 {{ $booking->patient->fullName }}
             </a>
             <br>
-            ({{ $booking->patient->age }} AÑOS) ({{ $booking->days }} DÍAS EN R.S.)
+            ({{ $booking->patient->age }} AÑOS) 
+            <span class="{{ ($booking->days < 14)? 'text-success':'text-danger' }}">
+                ({{ $booking->days }} DÍAS EN R.S.) 
+            </span>
             <br>
-            <hr
+            <hr>
             
             
         </li>
