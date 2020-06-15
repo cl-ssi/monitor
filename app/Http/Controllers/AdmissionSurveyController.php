@@ -18,11 +18,11 @@ class AdmissionSurveyController extends Controller
         //
         //$admissions = AdmissionSurvey::All();
         
-        //$admissions = AdmissionSurvey::where('residency',1);
+        //$admissions = AdmissionSurvey::where('residency',true)->get();
         //$admissions = AdmissionSurvey::where('residency',1);
         $admissions = AdmissionSurvey::where('residency',true)->
             whereHas('patient', function($q){
-            $q->where('status', 'Esperando Residencia Sanitaria');
+            $q->where('status', 'Aprobado Residencia Sanitaria');
         })->get();
         return view('sanitary_residences.admission.index', compact('admissions'));
     }
@@ -58,7 +58,7 @@ class AdmissionSurveyController extends Controller
         
         
         $admission->save();
-        session()->flash('success', 'Se Añadió a la bandeja de "Aprobados" de Residencia Sanitaria');        
+        session()->flash('success', 'Encuesta Realizada Esperando Visto Bueno en caso que sea necesario');
         return redirect()->route('patients.index');
     }
 
@@ -79,9 +79,10 @@ class AdmissionSurveyController extends Controller
      * @param  \App\SanitaryResidence\AdmissionSurvey  $admissionSurvey
      * @return \Illuminate\Http\Response
      */
-    public function edit(AdmissionSurvey $admissionSurvey)
+    public function edit(AdmissionSurvey $admission)
     {
         //
+        return view('sanitary_residences.admission.edit',compact('admission'));
     }
 
     /**
@@ -91,9 +92,19 @@ class AdmissionSurveyController extends Controller
      * @param  \App\SanitaryResidence\AdmissionSurvey  $admissionSurvey
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, AdmissionSurvey $admissionSurvey)
+    public function update(Request $request, AdmissionSurvey $admission)
     {
         //
+        $admission->fill($request->all());
+        if($request->residency==1)
+        {
+        $admission->patient->status = 'Aprobado Residencia Sanitaria';
+        $admission->patient->save();
+        }        
+        
+        $admission->save();
+        session()->flash('success', 'Cambios realizados ');
+        return redirect()->route('patients.index');
     }
 
     /**

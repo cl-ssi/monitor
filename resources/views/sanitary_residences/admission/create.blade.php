@@ -134,19 +134,21 @@
     
     <div class="form-check">
         <h5 class="mb-6">¿ES POSIBLE AISLAR AL PACIENTE? (Seguir con la encuesta si el paciente no puede aislarse correctamente)</h5>
-        <input class="form-check-input" type="radio" name="isolate" id="exampleRadios1" value="1" required>
+        <input class="form-check-input" type="radio" name="isolate" id="yes" value="1" required>
         <label class="form-check-label" for="exampleRadios1">
             SÍ
         </label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="radio" name="isolate" id="exampleRadios2" value="0">
+        <input class="form-check-input" type="radio" name="isolate" id="no" value="0">
         <label class="form-check-label" for="exampleRadios2">
             NO
         </label>
     </div>
 
     <hr>
+
+    <div id="agetext">
     <h5 class="mb-6">Criterios de Inclusión/Exclusión</h5>
     <table class="table table-sm table-bordered">
     <thead>
@@ -189,13 +191,13 @@
         </tr>
         <tr>
             <td>¿Usted requiere salir para trabajar pese a estar en cuarentena?</td>
-            <td class="text-center"><input name="out" type="radio" value="1"></td>
-            <td class="text-center"><input name="out" type="radio" value="0"></td>
+            <td class="text-center"><input name="work" type="radio" value="1"></td>
+            <td class="text-center"><input name="work" type="radio" value="0"></td>
         </tr>
         <tr>
             <td>¿Tiene red de apoyo para que le traigan alimento?</td>
-            <td class="text-center"><input name="support" type="radio" value="1"></td>
-            <td class="text-center"><input name="support" type="radio" value="0"></td>
+            <td class="text-center"><input name="food" type="radio" value="1"></td>
+            <td class="text-center"><input name="food" type="radio" value="0"></td>
         </tr>
         <tr>
             <td>¿Tiene personas de riesgos médico en su hogar?</td>
@@ -220,21 +222,9 @@
     
 
     <hr>
-    <div class="form-check">
-        <h5 class="mb-6">¿CALIFICA RESIDENCIA?</h5>
-        <input class="form-check-input" type="radio" name="residency" id="exampleRadios1" value="1" required>
-        <label class="form-check-label" for="exampleRadios1">
-            SÍ
-        </label>
-    </div>
-    <div class="form-check">
-        <input class="form-check-input" type="radio" name="residency" id="exampleRadios2" value="0">
-        <label class="form-check-label" for="exampleRadios2">
-            NO
-        </label>
-    </div>
+    
 
-
+    </div>
 
 
 
@@ -248,5 +238,30 @@
 @endsection
 
 @section('custom_js')
+<script type="text/javascript">
+$(document).ready(function(){
+//     $("#agetext").hide();
+//     // $("input[name=isolate]").click(function() 
+//     // {
+//     //     if ( $("#yes").attr('checked'))
+//     //         $("#agetext").hide();
+//     //     if ( $("#no").attr('checked'))
+//     //         $("#agetext").show();
+//     // });
+
+//     $("#yes").click(function() 
+//     {
+//         if ( $("#yes").attr('checked'))
+//             $("#agetext").show();
+//     });
+
+//    $("#no").click(function() 
+//     {
+//         if ( $("#no").attr('checked'))
+//             $("#agetext").hide();
+//     });
+});
+</script>
+
 
 @endsection

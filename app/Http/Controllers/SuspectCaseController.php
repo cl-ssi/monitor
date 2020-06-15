@@ -233,6 +233,7 @@ class SuspectCaseController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request);
         if ($request->id == null) {
             $patient = new Patient($request->All());
         } else {
@@ -248,6 +249,7 @@ class SuspectCaseController extends Controller
         $suspectCase->laboratory_id = Auth::user()->laboratory_id;
         $suspectCase->receptor_id = Auth::id();
         $suspectCase->user_id = Auth::id();
+        $suspectCase->run_medic = $request->run_medic_s_dv . "-" . $request->run_medic_dv;
 
         $suspectCase->reception_at = date('Y-m-d H:i:s');
 
@@ -301,6 +303,7 @@ class SuspectCaseController extends Controller
      */
     public function storeAdmission(Request $request)
     {
+
         /* Si existe el paciente lo actualiza, si no, crea uno nuevo */
         if ($request->id == null) {
             $patient = new Patient($request->All());
@@ -312,6 +315,7 @@ class SuspectCaseController extends Controller
 
         $suspectCase = new SuspectCase($request->All());
         $suspectCase->user_id = Auth::id();
+        $suspectCase->run_medic = $request->run_medic_s_dv . "-" . $request->run_medic_dv;
 
         /* Calcula la semana epidemiológica */
         $suspectCase->epidemiological_week = Carbon::createFromDate($suspectCase->sample_at->format('Y-m-d'))

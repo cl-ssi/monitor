@@ -36,7 +36,7 @@ class Establishment extends Model
   * The user that belong to the establishment.
   */
   public function users() {
-      return $this->belongsToMany(User::class, 'esatblishment_user');
+      return $this->belongsToMany('App\User');
   }
 
   use SoftDeletes;
