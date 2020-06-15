@@ -29,75 +29,98 @@ class ContactPatient extends Model
             case "grandfather":
                 return 'Abuelo';
                 break;
+            case "grandmother":
+                return 'Abuela';
+                break;
+
+            case "coworker":
+                return 'Compañero/a de trabajo';
+                break;
+
+            case "sister in law":
+                return 'Cuñada';
+                break;
             case "brother in law":
                 return 'Cuñado';
+                break;
+
+            case "wife":
+                return 'Esposa';
                 break;
             case "husband":
                 return 'Esposo';
                 break;
+
+            case "sister":
+                return 'Hermana';
+                break;
             case "brother":
                 return 'Hermano';
+                break;
+
+            case "daughter":
+                return 'Hija';
                 break;
             case "son":
                 return 'Hijo';
                 break;
-            case "grandchild":
-                return 'Nieto/a';
+
+            case "mother":
+                return 'Madre';
                 break;
             case "father":
                 return 'Padre';
                 break;
+
             case "cousin":
                 return 'Primo/a';
+                break;
+
+            case "niece":
+                return 'Sobrina';
                 break;
             case "nephew":
                 return 'Sobrino';
                 break;
+
+            case "mother in law":
+                return 'Suegra';
+                break;
             case "father in law":
                 return 'Suegro';
-                break;
-            case "uncle":
-                return 'Tío';
-                break;
-            case "son in law":
-                return 'Yerno';
-                break;
-            case "other":
-                return 'Otro';
                 break;
 
-            case "grandmother":
-                return 'Abuela';
-                break;
-            case "sister in law":
-                return 'Cuñada';
-                break;
-            case "wife":
-                return 'Esposa';
-                break;
-            case "Sister":
-                return 'Hermana';
-                break;
-            case "daughter":
-                return 'Hija';
-                break;
-            case "mother":
-                return 'Madre';
-                break;
-            case "niece":
-                return '';
-                break;
-            case "father in law":
-                return 'Suegro';
+            case "aunt":
+                return 'Tía';
                 break;
             case "uncle":
                 return 'Tío';
                 break;
+
+            case "grandchild":
+                return 'Nieto/a';
+                break;
+
+            case "daughter in law":
+                return 'Nuera';
+                break;
             case "son in law":
                 return 'Yerno';
                 break;
+
+            case "girlfriend":
+                return 'Pareja';
+                break;
+            case "boyfriend":
+                return 'Pareja';
+                break;
+
+            case "neighbour":
+                return 'Vecino/a';
+                break;
+
             case "other":
-                return 'Otro';
+                return 'Otro Parentesco u Relación';
                 break;
         }
     }
