@@ -225,6 +225,8 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
     Route::get('/create/{patient}', 'AdmissionSurveyController@create')->name('create');
     Route::get('/', 'AdmissionSurveyController@index')->name('index');
     Route::post('/', 'AdmissionSurveyController@store')->name('store');
+    Route::get('/{admission}/edit', 'AdmissionSurveyController@edit')->name('edit');
+    Route::put('update/{admission}', 'AdmissionSurveyController@update')->name('update');
 
     });
 
