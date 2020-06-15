@@ -140,7 +140,7 @@
         <div class="form-group row">
             <label for="for_commune_origin" class="col-sm-2 col-form-label">Comuna</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_commune_origin" value="{{$suspectCase->laboratory->commune->name}}">
+                <input type="text" class="form-control" id="for_commune_origin" value="{{$suspectCase->establishment->commune->name}}">
             </div>
             <label for="for_telephone_origin" class="col-sm-2 col-form-label">Fono</label>
             <div class="col-sm-4">
