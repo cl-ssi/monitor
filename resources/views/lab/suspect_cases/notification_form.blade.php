@@ -120,7 +120,7 @@
         <div class="form-group row">
             <label for="for_region_origin" class="col-sm-2 col-form-label">Región</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_region_origin" value="{{$suspectCase->patient->demographic->region}}">
+                <input type="text" class="form-control" id="for_region_origin" value="{{$suspectCase->patient->demographic->region->name}}">
             </div>
             <label for="for_unit_origin" class="col-sm-2 col-form-label">Unidad</label>
             <div class="col-sm-4">
