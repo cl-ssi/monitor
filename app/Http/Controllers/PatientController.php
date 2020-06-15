@@ -146,6 +146,8 @@ class PatientController extends Controller
 
         $patient->delete();
 
+        session()->flash('success', 'Paciente Eliminado exitosamente');
+
         return redirect()->route('patients.index');
     }
 
