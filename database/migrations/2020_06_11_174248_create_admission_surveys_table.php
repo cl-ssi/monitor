@@ -37,6 +37,12 @@ class CreateAdmissionSurveysTable extends Migration
             $table->boolean('drugs')->nullable();
             $table->boolean('chronic')->nullable();
             $table->boolean('healthnow')->nullable();
+            $table->boolean('water')->nullable();
+            $table->boolean('work')->nullable();
+            $table->boolean('food')->nullable();
+            $table->boolean('risk')->nullable();
+            $table->boolean('old')->nullable();
+
             
 
 

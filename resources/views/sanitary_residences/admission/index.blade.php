@@ -31,7 +31,7 @@
             <td>{{$admission->created_at}}</td>
             
             <td>
-                <a href="{{ route('sanitary_residences.bookings.create')}}?paciente={{$admission->patient->id}}" class="btn btn-secondary float-left"><i class="fa fa-bed"></i></a>
+                <a href="{{ route('sanitary_residences.bookings.create')}}?paciente={{$admission->patient->id}}&morbid_history={{$admission->morbid_history}}&observations={{$admission->observations}}" class="btn btn-secondary float-left"><i class="fa fa-bed"></i></a>
             </td>
         </tr>
         @endforeach
