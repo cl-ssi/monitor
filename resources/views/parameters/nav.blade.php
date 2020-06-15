@@ -20,5 +20,10 @@
         <a class="nav-link" href="{{ route('parameters.ventilators.edit') }}">
             <i class="fas fa-fan"></i> Ventiladores</a>
     </li>
+    
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('parameters.statu') }}">
+            <i class="fas fa-exchange-alt"></i> Estados</a>
+    </li>
 </ul>
 @endcan
