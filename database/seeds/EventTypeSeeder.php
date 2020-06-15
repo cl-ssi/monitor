@@ -13,6 +13,7 @@ class EventTypeSeeder extends Seeder
     public function run()
     {
         EventType::create(['name' => 'Control telefónico']);
+        EventType::create(['name' => 'Derivación a toma de muestra']);
         EventType::create(['name' => 'Entrega de ayuda']);
         EventType::create(['name' => 'Entrega de insumos']);
         EventType::create(['name' => 'Licencia médica']);

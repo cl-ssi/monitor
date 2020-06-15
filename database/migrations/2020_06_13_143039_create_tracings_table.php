@@ -19,8 +19,12 @@ class CreateTracingsTable extends Migration
             $table->foreignId('patient_id');
             $table->boolean('index')->nullable();
 
+            $table->boolean('functionary')->nullable();
+
             $table->datetime('next_control_at')->nullable();
             $table->unsignedSmallInteger('status')->nullable();
+
+            $table->string('category')->nullable();
 
             $table->string('responsible_family_member')->nullable();
 
