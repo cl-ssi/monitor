@@ -193,7 +193,7 @@
             <td class="text-center"><input name="out" type="radio" value="0"></td>
         </tr>
         <tr>
-            <td>¿Tiene red de apoyo para brindar ?</td>
+            <td>¿Tiene red de apoyo para que le traigan alimento?</td>
             <td class="text-center"><input name="support" type="radio" value="1"></td>
             <td class="text-center"><input name="support" type="radio" value="0"></td>
         </tr>
