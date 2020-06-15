@@ -5,6 +5,7 @@ namespace App\SanitaryResidence;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
 use OwenIt\Auditing\Contracts\Auditable;
 
 /**
@@ -32,12 +33,27 @@ class Booking extends Model implements Auditable //Authenticatable
         'status', 'real_to'
     ];
 
+
+
     /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
     protected $dates = ['from','to','deleted_at'];
+
+
+    public function getDaysAttribute() {
+        if ($this->from)
+            {   
+                $date = Carbon::parse($this->from);
+                $now = Carbon::now();
+                $days = $date->diffInDays($now);
+                return $days;
+            }
+            
+        else return null;
+    }
 
 
     public function patient() {
