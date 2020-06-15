@@ -17,8 +17,8 @@ class Tracing extends Model  implements Auditable
      * @var array
      */
     protected $fillable = [
-        'patient_id','index',
-        'next_control_at','status',
+        'patient_id','index','functionary',
+        'next_control_at','status','category',
         'responsible_family_member',
         'prevision','establishment_id',
         'gestation','gestation_week',

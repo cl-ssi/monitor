@@ -153,6 +153,7 @@ class TracingController extends Controller
                     $symptom = null;
             }
             $tracing->symptoms = $symptom;
+            $tracing->functionary = $case->functionary;
             $tracing->gestation = $case->gestation;
             $tracing->gestation_week = $case->gestation_week;
             $tracing->next_control_at = $case->pscr_sars_cov_2_at->add(1,'day');
@@ -166,7 +167,7 @@ class TracingController extends Controller
                 AND $patient->status != 'Hospitalizado UCI'
                 AND $patient->status != 'Residencia Sanitaria')
 
-                if($tracing->quarantine_end_at < Carbon::now()->sub(7,'days')) {
+                if($tracing->quarantine_end_at < Carbon::now()->sub(1,'days')) {
                     $tracing->status = 0;
                 }
                 else {
