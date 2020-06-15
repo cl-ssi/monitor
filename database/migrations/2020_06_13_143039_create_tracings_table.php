@@ -17,17 +17,18 @@ class CreateTracingsTable extends Migration
             $table->id();
 
             $table->foreignId('patient_id');
-
             $table->boolean('index')->nullable();
 
             $table->datetime('next_control_at')->nullable();
-
             $table->unsignedSmallInteger('status')->nullable();
 
             $table->string('responsible_family_member')->nullable();
 
             $table->string('prevision')->nullable();
             $table->foreignId('establishment_id')->nullable();
+
+            $table->boolean('gestation',2)->nullable();
+            $table->smallInteger('gestation_week')->nullable();
 
             $table->boolean('symptoms')->nullable();
             $table->datetime('symptoms_start_at')->nullable();
@@ -40,12 +41,9 @@ class CreateTracingsTable extends Migration
             $table->text('common_use_drugs')->nullable();
             $table->text('morbid_history')->nullable();
             $table->text('family_history')->nullable();
-            $table->boolean('gestation',2)->nullable();
-            $table->smallInteger('gestation_week')->nullable();
 
             $table->text('indications')->nullable();
-
-            $table->string('observation')->nullable();
+            $table->string('observations')->nullable();
 
             $table->boolean('help_basket')->nullable();
             $table->boolean('psychological_intervention')->nullable();

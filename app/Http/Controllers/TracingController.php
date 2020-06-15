@@ -158,6 +158,7 @@ class TracingController extends Controller
             $tracing->next_control_at = $case->pscr_sars_cov_2_at->add(1,'day');
             $tracing->quarantine_start_at = $case->pscr_sars_cov_2_at;
             $tracing->quarantine_end_at = $case->pscr_sars_cov_2_at->add(14,'days');
+            $tracing->observations = $case->observation;
             if($patient->status != 'Hospitalizado UCI (Ventilador)'
                 AND $patient->status != 'Hospitalizado Básico'
                 AND $patient->status != 'Hospitalizado Medio'

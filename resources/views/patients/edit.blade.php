@@ -147,10 +147,13 @@
 
 <hr>
 
-@include('patients.tracing.partials.show')
+<div class="card">
+    <div class="card-body">
+    @include('patients.tracing.partials.show')
 
-@can('SuspectCase: list')
-
+    @can('SuspectCase: list')
+    </div>
+</div>
     <h4 class="mt-4">Examenes PCR</h4>
 
     <table class="table table-sm table-bordered small mb-4 mt-4">
