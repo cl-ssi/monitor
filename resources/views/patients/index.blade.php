@@ -74,7 +74,8 @@
     </tbody>
 </table>
 
-{{ $patients->links() }}
+{{ $patients->appends(request()->query())->links() }}
+
 
 @endsection
 
