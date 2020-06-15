@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class Event extends Model Simplements Auditable
+class Event extends Model implements Auditable
 {
     use SoftDeletes;
     use \OwenIt\Auditing\Auditable;
@@ -17,7 +17,7 @@ class Event extends Model Simplements Auditable
      * @var array
      */
     protected $fillable = [
-        'event_at','event_type_id','details','user_id'
+        'event_at','event_type_id','details','tracing_id','user_id'
     ];
 
     /**
@@ -34,6 +34,12 @@ class Event extends Model Simplements Auditable
     }
 
     public function type() {
-        return $this->belongsTo('App\Tracing\EventType');
+        return $this->belongsTo('App\Tracing\EventType','event_type_id');
     }
+
+    public function user() {
+        return $this->belongsTo('App\User');
+    }
+
+    protected $table = 'tracing_events';
 }

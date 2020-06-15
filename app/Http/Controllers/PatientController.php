@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\SuspectCase;
 use App\Patient;
 use App\Demographic;
-//use App\Log;
 use App\Region;
 use App\Commune;
+use App\Establishment;
+use App\Tracing\EventType;
+
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -80,7 +82,10 @@ class PatientController extends Controller
         // dd($patient);
         $regions = Region::orderBy('id','ASC')->get();
         $communes = Commune::orderBy('id','ASC')->get();
-        return view('patients.edit',compact('patient', 'regions', 'communes'));
+        $event_types = EventType::all();
+        $env_communes = array_map('trim',explode(",",env('COMUNAS')));
+        $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
+        return view('patients.edit',compact('patient', 'regions', 'communes','event_types','establishments'));
     }
 
     /**

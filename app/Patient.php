@@ -63,6 +63,10 @@ class Patient extends Model implements Auditable //Authenticatable
         return $this->hasMany('App\ContactPatient');
     }
 
+    public function tracing() {
+        return $this->hasOne('App\Tracing\Tracing');
+    }
+
     public function lastExam() {
         return $this->hasOne('App\SuspectCase')
             ->whereIn('pscr_sars_cov_2',['positive','negative','pending'])

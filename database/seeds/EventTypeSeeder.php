@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Tracing\EventType;
 
 class EventTypeSeeder extends Seeder
 {
@@ -11,6 +12,12 @@ class EventTypeSeeder extends Seeder
      */
     public function run()
     {
-        //
+        EventType::create(['name' => 'Control telefónico']);
+        EventType::create(['name' => 'Entrega de ayuda']);
+        EventType::create(['name' => 'Entrega de insumos']);
+        EventType::create(['name' => 'Licencia médica']);
+        EventType::create(['name' => 'Solicitar traslado hospital']);
+        EventType::create(['name' => 'Solicitar traslado residencia']);
+        EventType::create(['name' => 'Visita domiciliaria']);
     }
 }
