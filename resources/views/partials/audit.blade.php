@@ -12,7 +12,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($audits as $audit)
+        @foreach($audits->sortByDesc('updated_at') as $audit)
         <tr>
             <td>{{ $audit->ip_address }}</td>
             <td>{{ $audit->url }}</td>
