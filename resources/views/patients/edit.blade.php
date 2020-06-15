@@ -290,17 +290,22 @@
     <thead>
         <tr class="text-center">
             <th>Fecha Encuesta</th>
-            <th>Resultado</th>
             <th>Encuesta Realizada por</th>
-            <th></th>
+            <th>¿Es Posible Aislar al Paciente?</th>            
+            <th>Resultado</th>
+            <th>Visto Bueno</th>
         </tr>
     </thead>
     <tbody>
       @foreach($patient->admissionSurvey as $admission)
       <tr>
-          <td class="text-center">{{ $admission->created_at }}</td>
-          <td class="text-center">{{ $admission->result }}</td>
-          <td class="text-center">{{ $admission->user->name }}</td>
+          <td class="text-center align-middle">{{ $admission->created_at }}</td>
+          <td class="text-center align-middle">{{ $admission->user->name }}</td>
+          <td class="text-center align-middle">{{ $admission->isolate_text }}</td>          
+          <td class="text-center align-middle">{!! $admission->result !!}</td>
+          <td class="text-center align-middle"><a class="btn btn-success btn-sm" href="{{ route('sanitary_residences.admission.edit', $admission) }}">
+    <i class="fas fa-poll-h"></i> Revisar Encuesta
+</a></td>
       </tr>
       @endforeach
     </tbody>
