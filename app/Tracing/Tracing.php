@@ -17,7 +17,8 @@ class Tracing extends Model  implements Auditable
      * @var array
      */
     protected $fillable = [
-        'next_control_at',
+        'patient_id',
+        'next_control_at','status',
         'prevision', 'establishment_id',
         'symptoms','symptoms_start_at','symptoms_end_at',
         'quarantine_start_at','quarantine_end_at',
@@ -32,7 +33,7 @@ class Tracing extends Model  implements Auditable
      * @var array
      */
     protected $dates = [
-        'symptoms_start_at','symptoms_end_at','quarantine_start_at','quarantine_end_at'
+        'next_control_at','symptoms_start_at','symptoms_end_at','quarantine_start_at','quarantine_end_at'
     ];
 
     public function events() {

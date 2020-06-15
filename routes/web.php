@@ -74,6 +74,24 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
         Route::get('/create/{search}/{id}', 'ContactPatientController@create')->name('create')->middleware('auth');
         Route::post('/', 'ContactPatientController@store')->name('store')->middleware('auth');
     });
+
+    Route::prefix('tracings')->name('tracings.')->middleware('auth')->group(function () {
+        Route::get('/communes', 'TracingController@indexByCommune')->name('communes');
+        Route::get('/establishments', 'TracingController@indexByEstablishment')->name('establishments');
+
+        Route::get('/create', 'TracingController@create')->name('create');
+        Route::post('/', 'TracingController@store')->name('store');
+        Route::get('/{tracing}/edit', 'TracingController@edit')->name('edit');
+        Route::put('/{tracing}', 'TracingController@update')->name('update');
+        Route::delete('/{tracing}', 'TracingController@destroy')->name('destroy');
+
+        Route::get('/migrate', 'TracingController@migrate')->name('migrate');
+        Route::prefix('events')->name('events.')->group(function () {
+            Route::post('/', 'EventController@store')->name('store');
+            Route::put('/{event}', 'EventController@update')->name('update');
+            Route::delete('/{event}', 'EventController@destroy')->name('destroy');
+        });
+    });
 });
 
 Route::resource('epp','EppController')->middleware('auth');

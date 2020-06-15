@@ -16,10 +16,18 @@ class CreateTracingsTable extends Migration
         Schema::create('tracings', function (Blueprint $table) {
             $table->id();
 
+            $table->foreignId('patient_id');
+
+            $table->boolean('index')->nullable();
+
             $table->datetime('next_control_at')->nullable();
 
-            $table->string('prevision');
-            $table->foreignId('establishment_id');
+            $table->unsignedSmallInteger('status')->nullable();
+
+            $table->string('responsible_family_member')->nullable();
+
+            $table->string('prevision')->nullable();
+            $table->foreignId('establishment_id')->nullable();
 
             $table->boolean('symptoms')->nullable();
             $table->datetime('symptoms_start_at')->nullable();
@@ -32,20 +40,24 @@ class CreateTracingsTable extends Migration
             $table->text('common_use_drugs')->nullable();
             $table->text('morbid_history')->nullable();
             $table->text('family_history')->nullable();
+            $table->boolean('gestation',2)->nullable();
+            $table->smallInteger('gestation_week')->nullable();
 
             $table->text('indications')->nullable();
 
-            $table->string('responsible_family_member')->nullable();
-
             $table->string('observation')->nullable();
 
-            $table->string('status')->nullable();
+            $table->boolean('help_basket')->nullable();
+            $table->boolean('psychological_intervention')->nullable();
+            $table->boolean('requires_hospitalization')->nullable();
+            $table->boolean('requires_licence')->nullable();
 
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->nullable();
 
             $table->timestamps();
             $table->softDeletes();
 
+            $table->foreign('patient_id')->references('id')->on('patients');
             $table->foreign('establishment_id')->references('id')->on('establishments');
             $table->foreign('user_id')->references('id')->on('users');
         });

@@ -21,4 +21,6 @@ class EventType extends Model
     public function events() {
         return $this->hasMany('App\Tracing\Event');
     }
+
+    protected $table = 'tracing_event_types';
 }
