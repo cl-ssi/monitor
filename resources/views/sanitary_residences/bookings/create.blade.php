@@ -148,7 +148,9 @@
     <div class="form-row">
         <fieldset class="form-group col-12">
             <label for="for_morbid_history">Antecedentes Mórbidos</label>
-            <textarea class="form-control" id="for_morbid_history" rows="2" name="morbid_history"></textarea>
+            <textarea class="form-control" id="for_morbid_history" rows="2" name="morbid_history">@if($request->input('morbid_history')){{$request->input('morbid_history')}}@endif
+            
+            </textarea>
         </fieldset>
     </div>
 
@@ -160,7 +162,7 @@
 
         <fieldset class="form-group col-12 col-md-5">
             <label for="for_observations">Observaciones</label>
-            <textarea type="textarea" class="form-control" rows="4" name="observations" id="for_observations"> </textarea>
+            <textarea type="textarea" class="form-control" rows="4" name="observations" id="for_observations">@if($request->input('observations')){{$request->input('observations')}}@endif </textarea>
         </fieldset>
     </div>
 
