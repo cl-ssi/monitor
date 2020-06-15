@@ -209,7 +209,7 @@
 
     <div class="form-row">
 
-        <fieldset class="form-group col-12 col-md-6">
+        <fieldset class="form-group col-12 col-md-4">
             <label for="for_observation">Observación</label>
             <input type="text" class="form-control" name="observation"
                 id="for_observation">
@@ -221,12 +221,21 @@
                 id="for_paho_flu">
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
+        {{-- <fieldset class="form-group col-6 col-md-2">
             <label for="for_run_medic">Run Médico Solicitante *</label>
             <input type="text" class="form-control" name="run_medic" id="for_run_medic"
                 required placeholder="Ej: 12345678-9">
+        </fieldset> --}}
+
+        <fieldset class="form-group col-8 col-md-2">
+            <label for="for_run_medic_s_dv">Run Médico SIN DV</label>
+            <input type="number" class="form-control" id="for_run_medic_s_dv" name="run_medic_s_dv">
         </fieldset>
 
+        <fieldset class="form-group col-4 col-md-1">
+            <label for="for_run_medic_dv">DV</label>
+            <input type="text" class="form-control" id="for_run_medic_dv" name="run_medic_dv" readonly>
+        </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_epivigila">Epivigila *</label>
@@ -256,6 +265,11 @@ jQuery(document).ready(function($){
     $('input[name=run]').keyup(function(e) {
         var str = $("#for_run").val();
         $('#for_dv').val($.rut.dv(str));
+    });
+
+    $('input[name=run_medic_s_dv]').keyup(function(e) {
+        var str = $("#for_run_medic_s_dv").val();
+        $('#for_run_medic_dv').val($.rut.dv(str));
     });
 
 $('input[name=run]').change(function() {
