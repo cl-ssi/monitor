@@ -16,12 +16,16 @@
             <label for="for_status">Estado</label>
             <select name="status" id="for_status" class="form-control">
                 <option value=""></option>
-                <option value="Hospitalizado Básico">Hospitalizado Básico</option>
-                <option value="Hospitalizado Crítico">Hospitalizado Crítico</option>
                 <option value="Alta">Alta</option>
-                <option value="Fallecido">Fallecido</option>
                 <option value="Ambulatorio">Ambulatorio (domiciliario)</option>
-                <option value="Residencia Sanitaria">Residencia Sanitaria</option>
+                <option value="Fallecido">Fallecido</option>
+                <option value="Fugado">Fugado</option>
+                <option value="Hospitalizado Básico">Hospitalizado Básico</option>
+                <option value="Hospitalizado Medio">Hospitalizado Medio</option>
+                <option value="Hospitalizado UTI">Hospitalizado UTI</option>
+                <option value="Hospitalizado UCI">Hospitalizado UCI</option>
+                <option value="Hospitalizado UCI (Ventilador)">Hospitalizado UCI (Ventilador)</option>
+                <option value="Residencia Sanitaria">Residencia Sanitaria</option>                
             </select>
         </fieldset>
 

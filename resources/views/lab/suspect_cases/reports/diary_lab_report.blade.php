@@ -20,8 +20,8 @@
             <th rowspan="2">Procesados</th>
           </tr>
           <tr class="text-center">
-            <th>Positivos</th>
             <th>Negativos</th>
+            <th>Positivos</th>
             <th>Muestra no apta</th>
             <th>Indeterminado</th>
             <th>Pendiente</th>
@@ -32,8 +32,8 @@
           <tr>
             <td>{{ $key }}</td>
             <td>{{ $cases['cases'] }}</td>
-            <td>{{ $cases['positive'] }}</td>
             <td>{{ $cases['negative'] }}</td>
+            <td>{{ $cases['positive'] }}</td>
             <td>{{ $cases['rejected'] }}</td>
             <td>{{ $cases['undetermined'] }}</td>
             <td>{{ $cases['pending'] }}</td>

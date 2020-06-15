@@ -25,22 +25,56 @@ class ContactPatientController extends Controller
      */
     public function create(Request $request, $search, $id)
     {
+        //BANDERAS DE BUSQUEDA
         $id_patient = $id;
         $s = $search;
+        $message = '';
+
+        //BUSQUEDA DE PACIENTE
+        $patients = Patient::where('id', $id)
+                    ->with('demographic')
+                    ->with('suspectCases')
+                    ->get();
+
+        //BUSQUEDA DE CONTACTO
         if($request->input('search') != null){
           $run = $request->input('search');
         }
         else {
           $run = '';
         }
-
-        $patients = Patient::where('run', $run)
+        $contacts = Patient::where('run', $run)
                     ->orWhere('other_identification', $run)
                     ->with('demographic')
                     ->with('suspectCases')
                     ->get();
+        $message = 'new contact';
 
-        return view('patients.contact.create', compact('patients', 's', 'id_patient','request'));
+        if($contacts->isEmpty()){
+          $message = 'dont exist';
+        }
+
+        foreach ($contacts as $key => $contact) {
+          if($contact->id == $id){
+            $message = 'same patient';
+          }
+        }
+
+        if($search == 'search_true'){
+          //CONTACTO EXISTENTE
+          $contactPatients = ContactPatient::where('patient_id', $id_patient)->get();
+          foreach ($contactPatients as $key => $contactPatient) {
+            foreach ($contacts as $key => $contact) {
+              if($contactPatient->contact_id == $contact->id){
+                  $message = 'contact already registered';
+              }
+            }
+
+          }
+        }
+
+
+        return view('patients.contact.create', compact('patients', 'contacts','s', 'id_patient','request', 'message'));
     }
 
     /**
@@ -67,8 +101,9 @@ class ContactPatientController extends Controller
         $contactPatient = new ContactPatient($request->All());
         $contactPatient->patient_id = $patient_id;
         $contactPatient->contact_id = $contact_id;
-        $contactPatient->relationship = $inverse_relationship;
+        $contactPatient->relationship = $relationship;
         $contactPatient->comment = $request->get('comment');
+        $contactPatient->index = NULL;
 
         $contactPatient->save();
 
