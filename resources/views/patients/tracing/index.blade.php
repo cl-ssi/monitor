@@ -12,10 +12,10 @@
             <th>Nombre</th>
             <th>Comuna</th>
             <th>Establecimiento</th>
-            <th></th>
             <th>Inicio Cuarentena</th>
             <th>Fin de Cuarentena</th>
             <th>Dias transcurridos</th>
+            <th>Ultimo evento</th>
         </tr>
     </thead>
     <tbody>
@@ -31,7 +31,7 @@
         @endif
         <tr>
             <td>
-                <a href="{{ route('patients.edit',$patient)}}">
+                <a href="{{ route('patients.edit',$patient)}}" target="_blank">
                 {{ $patient->id }}
                 </a>
             </td>
@@ -39,10 +39,10 @@
             <td>{{ ($patient->demographic AND $patient->demographic->commune) ?
                     $patient->demographic->commune->name : '' }}</td>
             <td>{{ ($patient->tracing->establishment) ? $patient->tracing->establishment->alias : '' }}</td>
-            <td nowrap></td>
             <td nowrap>{{ $patient->tracing->quarantine_start_at->format('Y-m-d') }}</td>
             <td nowrap>{{ $patient->tracing->quarantine_end_at->format('Y-m-d') }}</td>
             <td>{{ $patient->tracing->quarantine_start_at->diffInDays(Carbon\Carbon::now()) }}</td>
+            <td nowrap>{{ ($patient->tracing->events->last()) ? $patient->tracing->events->last()->event_at->format('Y-m-d') : '' }}</td>
         </tr>
         @endforeach
     </tbody>

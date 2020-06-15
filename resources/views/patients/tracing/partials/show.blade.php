@@ -8,6 +8,15 @@
         @method('PUT')
 
         <div class="form-row">
+            <fieldset class="form-group col-6 col-md-1">
+                <label for="for_index">Indice</label>
+                <select name="index" id="for_index" class="form-control" required>
+                    <option value=""></option>
+                    <option value="1" {{ ($patient->tracing->index === 1) ? 'selected' : '' }}>Si</option>
+                    <option value="0" {{ ($patient->tracing->index === 0) ? 'selected' : '' }}>No</option>
+                </select>
+            </fieldset>
+
             <fieldset class="form-group col-md-3">
                 <label for="for_next_control_at">Próximo Control *</label>
                 <input type="datetime-local" class="form-control" name="next_control_at"
@@ -74,12 +83,6 @@
         </div>
 
         <div class="form-row">
-            <fieldset class="form-group col-md-2">
-                <label for="for_prevision">Previsión</label>
-                <select name="prevision" id="for_prevision" class="form-control">
-                    <option value=""></option>
-                </select>
-            </fieldset>
 
             <fieldset class="form-group col-md-3">
                 <label for="for_establishment_id">Establecimiento</label>
@@ -90,6 +93,49 @@
                 </select>
             </fieldset>
 
+            <fieldset class="form-group col-md-2">
+                <label for="for_prevision">Previsión</label>
+                <select name="prevision" id="for_prevision" class="form-control">
+                    <option value=""></option>
+                    <option value="Sin prevision"
+                        {{ ($patient->tracing->prevision == 'Sin prevision') ? 'selected' : '' }}>Sin prevision
+                    </option>
+                    <option value="Fonasa A"
+                        {{ ($patient->tracing->prevision == 'Fonasa A') ? 'selected' : '' }}>Fonasa A
+                    </option>
+                    <option value="Fonasa B"
+                        {{ ($patient->tracing->prevision == 'Fonasa B') ? 'selected' : '' }}>Fonasa B
+                    </option>
+                    <option value="Fonasa C"
+                        {{ ($patient->tracing->prevision == 'Fonasa C') ? 'selected' : '' }}>Fonasa C
+                    </option>
+                    <option value="Fonasa D"
+                        {{ ($patient->tracing->prevision == 'Fonasa D') ? 'selected' : '' }}>Fonasa D
+                    </option>
+                    <option value="Isapre"
+                        {{ ($patient->tracing->prevision == 'Isapre') ? 'selected' : '' }}>Isapre
+                    </option>
+                    <option value="Otro"
+                        {{ ($patient->tracing->prevision == 'O') ? 'selected' : '' }}>Otro
+                    </option>
+                </select>
+            </fieldset>
+
+            <fieldset class="form-group col-6 col-md-1">
+                <label for="for_gestation">Gestante *</label>
+                <select name="gestation" id="for_gestation" class="form-control" required>
+                    <option value=""></option>
+                    <option value="0" {{ ($patient->tracing->gestation === 0) ? 'selected' : '' }}>No</option>
+                    <option value="1" {{ ($patient->tracing->gestation == 1) ? 'selected' : '' }}>Si</option>
+                </select>
+            </fieldset>
+
+            <fieldset class="form-group col-6 col-md-2">
+                <label for="for_gestation_week">Semanas de gestación</label>
+                <input type="text" class="form-control" name="gestation_week"
+                    id="for_gestation_week" value="{{ $patient->tracing->gestation_week }}">
+            </fieldset>
+
 
         </div>
 
@@ -97,13 +143,13 @@
             <fieldset class="form-group col">
                 <label for="for_allergies">Alergias</label>
                 <input type="text" class="form-control" name="allergies"
-                    id="for_allergies">
+                    id="for_allergies" value="{{ $patient->tracing->allergies }}">
             </fieldset>
 
             <fieldset class="form-group col">
                 <label for="for_common_use_drugs">Farmacos de uso común</label>
                 <input type="text" class="form-control" name="common_use_drugs"
-                    id="for_common_use_drugs">
+                    id="for_common_use_drugs" value="{{ $patient->tracing->common_use_drugs }}">
             </fieldset>
         </div>
 
@@ -111,7 +157,7 @@
             <fieldset class="form-group col">
                 <label for="for_morbid_history">Antecedentes Mórbidos</label>
                 <input type="text" class="form-control" name="morbid_history"
-                    id="for_morbid_history">
+                    id="for_morbid_history" value="{{ $patient->tracing->morbid_history }}">
             </fieldset>
         </div>
 
@@ -119,7 +165,45 @@
             <fieldset class="form-group col">
                 <label for="for_family_history">Antecedentes Familiares</label>
                 <input type="text" class="form-control" name="family_history"
-                    id="for_family_history">
+                    id="for_family_history" value="{{ $patient->tracing->family_history }}">
+            </fieldset>
+        </div>
+
+        <div class="form-row">
+            <fieldset class="form-group col-6 col-md-1">
+                <label for="for_help_basket">Canasta</label>
+                <select name="help_basket" id="for_help_basket" class="form-control">
+                    <option value=""></option>
+                    <option value="1" {{ ($patient->tracing->help_basket === 1) ? 'selected' : '' }}>Si</option>
+                    <option value="0" {{ ($patient->tracing->help_basket === 0) ? 'selected' : '' }}>No</option>
+                </select>
+            </fieldset>
+
+            <fieldset class="form-group col-6 col-md-1">
+                <label for="for_psychological_intervention">Psícológica</label>
+                <select name="psychological_intervention" id="for_psychological_intervention" class="form-control">
+                    <option value=""></option>
+                    <option value="1" {{ ($patient->tracing->psychological_intervention === 1) ? 'selected' : '' }}>Si</option>
+                    <option value="0" {{ ($patient->tracing->psychological_intervention === 0) ? 'selected' : '' }}>No</option>
+                </select>
+            </fieldset>
+
+            <fieldset class="form-group col-6 col-md-1">
+                <label for="for_requires_hospitalization">Hospitaliza.</label>
+                <select name="requires_hospitalization" id="for_requires_hospitalization" class="form-control">
+                    <option value=""></option>
+                    <option value="1" {{ ($patient->tracing->requires_hospitalization === 1) ? 'selected' : '' }}>Si</option>
+                    <option value="0" {{ ($patient->tracing->requires_hospitalization === 0) ? 'selected' : '' }}>No</option>
+                </select>
+            </fieldset>
+
+            <fieldset class="form-group col-6 col-md-1">
+                <label for="for_requires_licence">Licencia</label>
+                <select name="requires_licence" id="for_requires_licence" class="form-control">
+                    <option value=""></option>
+                    <option value="1" {{ ($patient->tracing->requires_licence === 1) ? 'selected' : '' }}>Si</option>
+                    <option value="0" {{ ($patient->tracing->requires_licence === 0) ? 'selected' : '' }}>No</option>
+                </select>
             </fieldset>
         </div>
 
@@ -128,13 +212,13 @@
             <fieldset class="form-group col">
                 <label for="for_indications">Indicaciones</label>
                 <textarea class="form-control" name="indications"
-                    id="for_indications" rows="5"></textarea>
+                    id="for_indications" rows="5">{{ $patient->tracing->indications }}</textarea>
             </fieldset>
 
             <fieldset class="form-group col">
                 <label for="for_observations">Observaciones</label>
                 <textarea class="form-control" name="observations"
-                    id="for_observations" rows="5"></textarea>
+                    id="for_observations" rows="5">{{ $patient->tracing->observations }}</textarea>
             </fieldset>
 
 
@@ -144,8 +228,10 @@
 
     </form>
 
+
+    @include('patients.tracing.partials.events')
+    
     @if($patient->tracing->status)
-        @include('patients.tracing.partials.events')
         @include('patients.tracing.partials.event_create')
     @endif
 

@@ -23,10 +23,7 @@ class CreateDemographicsTable extends Migration
             $table->string('suburb')->nullable();
 
             $table->unsignedBigInteger('region_id')->nullable();
-            //$table->string('region')->nullable();
-
             $table->unsignedBigInteger('commune_id')->nullable();
-            //$table->string('commune')->nullable();
 
             $table->string('city')->nullable();
 

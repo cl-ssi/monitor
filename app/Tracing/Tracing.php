@@ -17,13 +17,16 @@ class Tracing extends Model  implements Auditable
      * @var array
      */
     protected $fillable = [
-        'patient_id',
+        'patient_id','index',
         'next_control_at','status',
-        'prevision', 'establishment_id',
+        'responsible_family_member',
+        'prevision','establishment_id',
+        'gestation','gestation_week',
         'symptoms','symptoms_start_at','symptoms_end_at',
         'quarantine_start_at','quarantine_end_at',
         'allergies','common_use_drugs','morbid_history','family_history',
-        'indications','responsible_family_member','observation',
+        'indications','observations',
+        'help_basket','psychological_intervention','requires_hospitalization','requires_licence',
         'user_id'
     ];
 
