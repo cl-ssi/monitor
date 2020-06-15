@@ -151,6 +151,12 @@
             </select>
         </fieldset>
 
+        <fieldset class="form-group col-5 col-md-3">
+            <label for="for_symptoms_at">Fecha Inicio de Sintomas</label>
+            <input type="datetime-local" class="form-control" id="for_symptoms_at"
+                name="symptoms_at" min="{{ date('Y-m-d\TH:i', strtotime("-4 week")) }}" max="{{ date('Y-m-d\TH:i:s') }}">
+        </fieldset>
+
         <fieldset class="form-group col-6 col-md-1">
             <label for="for_gestation">Gestante *</label>
             <select name="gestation" id="for_gestation" class="form-control" required>

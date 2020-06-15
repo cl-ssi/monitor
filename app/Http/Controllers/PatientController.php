@@ -28,7 +28,7 @@ class PatientController extends Controller
                         ->with('contactPatient')
                         ->orderBy('name')
                         ->paginate(250);
-        return view('patients.index', compact('patients'));
+        return view('patients.index', compact('patients','request'));
     }
 
     /**
@@ -150,6 +150,8 @@ class PatientController extends Controller
         //$log->save();
 
         $patient->delete();
+
+        session()->flash('success', 'Paciente Eliminado exitosamente');
 
         return redirect()->route('patients.index');
     }
