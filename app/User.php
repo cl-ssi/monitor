@@ -51,6 +51,12 @@ class User extends Authenticatable
         return $this->hasMany('App\SuspectCase');
     }
 
+    public function communes() {
+        foreach($this->establishments as $estab) {
+            $ids[] = $estab->commune->id;
+        }
+        return array_values(array_unique($ids));
+    }
 
     /**
      * The attributes that should be hidden for arrays.
