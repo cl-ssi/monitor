@@ -191,21 +191,28 @@ class PatientController extends Controller
 
     public function georeferencing()
     {
-        $suspectCases = SuspectCase::latest('id')->get();
+        $date = \Carbon\Carbon::today()->subDays(30);
+        // $users = User::where('created_at', '>=', $date)->get();
+        // $suspectCases = SuspectCase::latest('id')->get();
+        $suspectCases = SuspectCase::where('pscr_sars_cov_2_at', '>=', $date)
+                                   ->where('pscr_sars_cov_2', 'positive')
+                                   ->whereHas('patient', function ($q) {
+                                        $q->whereNotIn('status',['Hospitalizado UTI','Hospitalizado UCI','Hospitalizado Básico','Hospitalizado Crítico','Residencia Sanitaria','Fallecido','Alta']);
+                                    })
+                                   ->get();
 
         $data = array();
         foreach ($suspectCases as $key => $case) {
-          if ($case->pscr_sars_cov_2 == 'positive' || $case->pscr_sars_cov_2 == 'pending') {
+          if ($case->pscr_sars_cov_2 == 'positive'){// || $case->pscr_sars_cov_2 == 'pending') {
               // FIX , pendiente ver que pasó que hay un caso sin paciente asociado
               if($case->patient) {
                   if ($case->patient->demographic != null) {
                     $data[$case->patient->demographic->address . " " . $case->patient->demographic->number . ", " . $case->patient->demographic->commune][$case->patient->run]['paciente']=$case;
                   }
               }
-
           }
         }
-        //dd($data);
+        // dd($data);
         // foreach ($data as $key1 => $data1) {
         //   foreach ($data1 as $key2 => $data2) {
         //     foreach ($data2 as $key3 => $data3) {
