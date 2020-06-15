@@ -34,7 +34,7 @@ $patient = $suspectCase->patient;
             <select name="laboratory_id" id="for_laboratory_id" class="form-control">
                 <option value=""></option>
                 @foreach($local_labs as $local_lab)
-                <option value="{{ $local_lab->id }}"  {{ ($suspectCase->laboratory_id == $local_lab->id)?'selected':'' }}>{{ $local_lab->name }}</option>
+                <option value="{{ $local_lab->id }}"  {{ ($suspectCase->laboratory_id == $local_lab->id)?'selected':'' }}>{{ $local_lab->alias }}</option>
                 @endforeach
             </select>
         </fieldset>
