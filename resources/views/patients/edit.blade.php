@@ -119,32 +119,43 @@
         </fieldset>
 
     </div>
+    <div class="row">
+        <div class="col">
+            <button type="submit" class="btn btn-primary">Guardar</button>
 
-    <button type="submit" class="btn btn-primary">Guardar</button>
+            <a class="btn btn-outline-secondary" href="{{ route('patients.index') }}">
+                Cancelar
+            </a>
 
-    <a class="btn btn-outline-secondary" href="{{ route('patients.index') }}">
-        Cancelar
-    </a>
+        </form>
+        </div>
+        <div class="col">
+            @can('Patient: delete')
+                @if($patient->suspectCases->count() === 0)
+                <form method="POST" class="form-horizontal" action="{{ route('patients.destroy',$patient) }}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger float-right" onclick="return confirm('¿Está seguro que desea eliminar al paciente : {{$patient->fullName}}? ' )">Borrar</button>
 
-</form>
-
-@can('Patient: delete')
-    @if($patient->suspectCases->count() === 0)
-    <form method="POST" class="form-horizontal" action="{{ route('patients.destroy',$patient) }}">
-        @csrf
-        @method('DELETE')
-        <button type="submit" class="btn btn-danger float-right" onclick="return confirm('¿Está seguro que desea eliminar al paciente : {{$patient->fullName}}? ' )">Borrar</button>
-
-    </form>
-    @else
-        <button class="btn btn-outline-danger float-right" disabled>No es posible eliminar, tiene examenes asociados</button>
-    @endif
-@endcan
+                </form>
+                @else
+                    <button class="btn btn-outline-danger float-right" disabled>No es posible eliminar, tiene examenes asociados</button>
+                @endif
+            @endcan
+        </div>
+    </div>
 
 
-@can('SuspectCase: list')
+<hr>
 
-    <h4 class="mt-4">Examenes realizados</h4>
+<div class="card">
+    <div class="card-body">
+    @include('patients.tracing.partials.show')
+
+    @can('SuspectCase: list')
+    </div>
+</div>
+    <h4 class="mt-4">Examenes PCR</h4>
 
     <table class="table table-sm table-bordered small mb-4 mt-4">
         <thead>
