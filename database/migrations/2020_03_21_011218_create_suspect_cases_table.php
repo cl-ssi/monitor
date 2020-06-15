@@ -25,6 +25,7 @@ class CreateSuspectCasesTable extends Migration
             $table->string('run_medic')->nullable();
 
             $table->string('symptoms')->nullable();
+            $table->datetime('symptoms_at')->nullable();
 
             $table->datetime('reception_at')->nullable();
             $table->unsignedBigInteger('receptor_id')->nullable();
