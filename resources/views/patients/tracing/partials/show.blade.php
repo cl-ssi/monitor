@@ -20,7 +20,7 @@
             <fieldset class="form-group col-md-3">
                 <label for="for_next_control_at">Próximo Control *</label>
                 <input type="datetime-local" class="form-control" name="next_control_at"
-                    id="for_next_control_at" required value="{{ $patient->tracing->next_control_at->format('Y-m-d\TH:i:s') }}">
+                    id="for_next_control_at" required value="{{ ($patient->tracing->next_control_at) ? $patient->tracing->next_control_at->format('Y-m-d\TH:i:s') : '' }}">
             </fieldset>
 
             <fieldset class="form-group col-md-3">
@@ -230,7 +230,7 @@
 
 
     @include('patients.tracing.partials.events')
-    
+
     @if($patient->tracing->status)
         @include('patients.tracing.partials.event_create')
     @endif
