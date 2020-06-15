@@ -34,7 +34,7 @@
     </div>
     <div class="col-5">
         @if(Auth::user()->laboratory)
-        <h3>Tu Laboratorio: {{ Auth::user()->laboratory->name }}</h3>
+        <h3>Tu Laboratorio: {{ Auth::user()->laboratory->alias }}</h3>
         @else
         <h3 class="text-danger">Usuario no tiene laboratorio asignado</h3>
         @endif

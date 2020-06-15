@@ -92,7 +92,7 @@
                                 @endphp
 
                                 @foreach($labs as $lab)
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.index',$lab) }}?&text=&pendientes=on">Laboratorio {{ $lab->name }}</a>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.index',$lab) }}?&text=&pendientes=on">Laboratorio {{ $lab->alias }}</a>
                                 @endforeach
 
                                 <div class="dropdown-divider"></div>

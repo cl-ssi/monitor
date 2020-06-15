@@ -58,7 +58,7 @@ class AdmissionSurveyController extends Controller
         
         
         $admission->save();
-        session()->flash('success', 'Se Añadió la Encuesta de Habitabilidad exitosamente');        
+        session()->flash('success', 'Se Añadió a la bandeja de "Aprobados" de Residencia Sanitaria');        
         return redirect()->route('patients.index');
     }
 
