@@ -260,10 +260,20 @@
                 id="for_paho_flu">
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
+        {{-- <fieldset class="form-group col-6 col-md-2">
             <label for="for_run_medic">Run Médico Solicitante</label>
             <input type="text" class="form-control" name="run_medic" id="for_run_medic"
                 placeholder="Ej: 12345678-9">
+        </fieldset> --}}
+
+        <fieldset class="form-group col-8 col-md-2">
+            <label for="for_run_medic_s_dv">Run Médico SIN DV</label>
+            <input type="number" class="form-control" id="for_run_medic_s_dv" name="run_medic_s_dv">
+        </fieldset>
+
+        <fieldset class="form-group col-4 col-md-1">
+            <label for="for_run_medic_dv">DV</label>
+            <input type="text" class="form-control" id="for_run_medic_dv" name="run_medic_dv" readonly>
         </fieldset>
 
 
