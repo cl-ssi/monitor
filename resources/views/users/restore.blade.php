@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'Restore Password')
+@section('title', 'Cambiar Password')
 
 @section('content')
-<h3 class="mb-3">Restore Password</h3>
+<h3 class="mb-3">Cambiar Password</h3>
 
 @can('Admin')
 
