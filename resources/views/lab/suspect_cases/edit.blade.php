@@ -34,7 +34,7 @@ $patient = $suspectCase->patient;
             <select name="laboratory_id" id="for_laboratory_id" class="form-control">
                 <option value=""></option>
                 @foreach($local_labs as $local_lab)
-                <option value="{{ $local_lab->id }}"  {{ ($suspectCase->laboratory_id == $local_lab->id)?'selected':'' }}>{{ $local_lab->name }}</option>
+                <option value="{{ $local_lab->id }}"  {{ ($suspectCase->laboratory_id == $local_lab->id)?'selected':'' }}>{{ $local_lab->alias }}</option>
                 @endforeach
             </select>
         </fieldset>
@@ -237,6 +237,12 @@ $patient = $suspectCase->patient;
                 <option value="Si" {{ ($suspectCase->symptoms == 'Si') ? 'selected' : '' }}>Si</option>
                 <option value="No" {{ ($suspectCase->symptoms == 'No') ? 'selected' : '' }}>No</option>
             </select>
+        </fieldset>
+
+        <fieldset class="form-group col-5 col-md-3">
+            <label for="for_symptoms_at">Fecha Inicio de Sintomas</label>
+            <input type="datetime-local" class="form-control" id="for_symptoms_at"
+                name="symptoms_at" value="{{ ($suspectCase->symptoms_at)?$suspectCase->symptoms_at->format('Y-m-d\TH:i:s'):'' }}">
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-1">

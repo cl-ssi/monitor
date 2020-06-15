@@ -126,7 +126,8 @@
             <a class="btn btn-outline-secondary" href="{{ route('patients.index') }}">
                 Cancelar
             </a>
-            </form>
+
+        </form>
         </div>
         <div class="col">
             @can('Patient: delete')
@@ -134,7 +135,7 @@
                 <form method="POST" class="form-horizontal" action="{{ route('patients.destroy',$patient) }}">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger float-right">Borrar</button>
+                    <button type="submit" class="btn btn-danger float-right" onclick="return confirm('¿Está seguro que desea eliminar al paciente : {{$patient->fullName}}? ' )">Borrar</button>
 
                 </form>
                 @else
@@ -189,6 +190,8 @@
 
 @endcan
 
+<hr>
+
 @can('Inmuno Test: list')
 
     <h4 class="mt-4">Examenes Inmunoglobulinas</h4>
@@ -228,24 +231,39 @@
 
 <h4 class="mt-3">Contactos</h4>
 
-<a class="btn btn-primary btn-sm disabled" href="{{ route('patients.contacts.create', ['search'=>'search_false', 'id' => $patient->id]) }}">
+@can('Patient: tracing')
+<a class="btn btn-primary btn-sm" href="{{ route('patients.contacts.create', ['search'=>'search_false', 'id' => $patient->id]) }}">
     <i class="fas fa-plus"></i> Nuevo Contacto
 </a>
+@endcan
 
 <table class="table table-sm table-bordered small mb-4 mt-4">
     <thead>
         <tr class="text-center">
-            <th>Run o Identificación</th>
-            <th>Nombre Paciente</th>
+            <th rowspan="2">Nombre Paciente</th>
+            <th colspan="4">Contacto</th>
+            <th rowspan="2">Observación</th>
+            <th rowspan="2">Fecha de carga</th>
+        </tr>
+        <tr class="text-center">
+            <th>Es</th>
             <th>Parentesco</th>
-            <th>Observación</th>
-            <th>Fecha de carga</th>
-            <th></th>
+            <th>RUN</th>
+            <th>Nombre</th>
         </tr>
     </thead>
     <tbody>
       @foreach($patient->contactPatient as $contact)
       <tr>
+          <td class="text-right">{{ $patient->fullName }}</td>
+          <td class="text-center">
+          @if($contact->index == 1)
+            Tiene como
+          @else
+            Es
+          @endif
+          </td>
+          <td class="text-right">{{ $contact->RelationshipName }}</td>
           <td class="text-right">{{ $contact->contact_patient->identifier }}</td>
           <td class="text-right">
             @can('Patient: edit')
@@ -256,14 +274,15 @@
               </a>
             @endcan
           </td>
-          <td class="text-right">{{ $contact->relationship }}</td>
           <td class="text-right">{{ $contact->comment }}</td>
           <td class="text-right">{{ $contact->created_at->format('d-m-Y') }}</td>
+          @can('Patient: tracing')
           <td>
               <a class="btn btn-danger btn-sm disabled" href="">
                   <i class="far fa-trash-alt"></i>
               </a>
           </td>
+          @endcan
       </tr>
       @endforeach
     </tbody>
