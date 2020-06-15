@@ -133,7 +133,7 @@
     <form method="POST" class="form-horizontal" action="{{ route('patients.destroy',$patient) }}">
         @csrf
         @method('DELETE')
-        <button type="submit" class="btn btn-danger float-right">Borrar</button>
+        <button type="submit" class="btn btn-danger float-right" onclick="return confirm('¿Está seguro que desea eliminar al paciente : {{$patient->fullName}}? ' )">Borrar</button>
 
     </form>
     @else
