@@ -48,7 +48,7 @@
             </div>
             <label for="for_region" class="col-sm-2 col-form-label">Región</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_region" value="{{$suspectCase->patient->demographic->region}}" >
+                <input type="text" class="form-control" id="for_region" value="{{$suspectCase->patient->demographic->region->name}}" >
             </div>
         </div>
         <div class="form-group row">
@@ -68,7 +68,7 @@
             </div>
             <label for="for_commune" class="col-sm-2 col-form-label">Comuna</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_commune" value="{{$suspectCase->patient->demographic->commune}}">
+                <input type="text" class="form-control" id="for_commune" value="{{$suspectCase->patient->demographic->commune->name}}">
             </div>
         </div>
         <div class="form-group row">
