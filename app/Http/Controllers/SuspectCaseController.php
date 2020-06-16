@@ -17,6 +17,7 @@ use App\Establishment;
 use App\ReportBackup;
 use App\SampleOrigin;
 use App\Country;
+use App\Tracing\Tracing;
 use Carbon\CarbonPeriod;
 use Carbon\Carbon;
 use App\Mail\NewPositive;
@@ -418,8 +419,32 @@ class SuspectCaseController extends Controller
             }
         }
 
-        //$log->new = $suspectCase;
-        //$log->save();
+        /* Crea un TRACING si el resultado es positivo */
+        if ($old_pcr == 'pending' and $suspectCase->pscr_sars_cov_2 == 'positive') {
+            $tracing                    = new Tracing();
+            $tracing->patient_id        = $suspectCase->patient_id;
+            $tracing->user_id           = $suspectCase->user_id;
+            $tracing->index             = 1;
+            $tracing->establishment_id  = $suspectCase->establishment_id;
+            $tracing->functionary       = $suspectCase->functionary;
+            $tracing->gestation         = $suspectCase->gestation;
+            $tracing->gestation_week    = $suspectCase->gestation_week;
+            $tracing->next_control_at   = $suspectCase->pscr_sars_cov_2_at->add(1,'day');
+            $tracing->quarantine_start_at = $suspectCase->pscr_sars_cov_2_at;
+            $tracing->quarantine_end_at = $suspectCase->pscr_sars_cov_2_at->add(14,'days');
+            $tracing->observations      = $suspectCase->observation;
+            $tracing->status            = ($suspectCase->patient->status == 'Fallecido') ? 0:1;
+            switch ($suspectCase->symptoms) {
+                case 'Si':
+                    $tracing->symptoms = 1; break;
+                case 'No':
+                    $tracing->symptoms = 0; break;
+                default:
+                    $tracing->symptoms = null; break;
+            }
+            $tracing->save();
+        }
+
 
         return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
     }
