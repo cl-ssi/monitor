@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Contacto Pacientes')
+
 @section('content')
 
 <h3>Agregar Contacto de Pacientes</h3>
