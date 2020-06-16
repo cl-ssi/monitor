@@ -17,9 +17,11 @@ use App\Establishment;
 use App\ReportBackup;
 use App\SampleOrigin;
 use App\Country;
+use App\Tracing\Tracing;
 use Carbon\CarbonPeriod;
 use Carbon\Carbon;
 use App\Mail\NewPositive;
+use App\Mail\NewNegative;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Mail;
@@ -302,12 +304,6 @@ class SuspectCaseController extends Controller
             $demographic->save();
         }
 
-        /* Log de cambios en caso sospecha */
-        //$log = new Log();
-        //$log->old = $suspectCase;
-        //$log->new = $suspectCase;
-        //$log->save();
-
         session()->flash('success', 'Se ha creado el caso número: <h3>'
             . $suspectCase->id. ' <a href="' . route('lab.suspect_cases.notificationForm',$suspectCase)
             . '">Imprimir Formulario</a></h3>');
@@ -337,11 +333,7 @@ class SuspectCaseController extends Controller
         $external_labs = Laboratory::where('external',1)->orderBy('name')->get();
         $local_labs = Laboratory::where('external',0)->orderBy('name')->get();
 
-
-        //$establishments = Establishment::orderBy('alias','ASC')->get();
-
-        $env_communes = array_map('trim',explode(",",env('COMUNAS')));
-        $establishments = Establishment::whereIn('commune_id',$env_communes)
+        $establishments = Establishment::whereIn('commune_id',explode(',',env('COMUNAS')))
                                         ->orderBy('name','ASC')->get();
 
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
@@ -386,7 +378,6 @@ class SuspectCaseController extends Controller
             }
         }
 
-
         if (env('APP_ENV') == 'production') {
             if ($old_pcr == 'pending' and $suspectCase->pscr_sars_cov_2 == 'positive') {
                 $emails  = explode(',', env('EMAILS_ALERT'));
@@ -394,10 +385,43 @@ class SuspectCaseController extends Controller
                 Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($suspectCase));
             }
             /* TODO: Si el resultado es negativo y el usuario tiene email, enviar resultado al usuario */
+            if($old_pcr == 'pending' && ($suspectCase->pscr_sars_cov_2 == 'negative' ||
+                                          $suspectCase->pscr_sars_cov_2 == 'undetermined' ||
+                                          $suspectCase->pscr_sars_cov_2 == 'rejected') &&
+                $suspectCase->patient->demographic != NULL){
+                if($suspectCase->patient->demographic->email != NULL){
+                    $email  = $suspectCase->patient->demographic->email;
+                    Mail::to($email)->send(new NewNegative($suspectCase));
+                }
+            }
         }
 
-        //$log->new = $suspectCase;
-        //$log->save();
+        /* Crea un TRACING si el resultado es positivo */
+        if ($old_pcr == 'pending' and $suspectCase->pscr_sars_cov_2 == 'positive') {
+            $tracing                    = new Tracing();
+            $tracing->patient_id        = $suspectCase->patient_id;
+            $tracing->user_id           = $suspectCase->user_id;
+            $tracing->index             = 1;
+            $tracing->establishment_id  = $suspectCase->establishment_id;
+            $tracing->functionary       = $suspectCase->functionary;
+            $tracing->gestation         = $suspectCase->gestation;
+            $tracing->gestation_week    = $suspectCase->gestation_week;
+            $tracing->next_control_at   = $suspectCase->pscr_sars_cov_2_at->add(1,'day');
+            $tracing->quarantine_start_at = $suspectCase->pscr_sars_cov_2_at;
+            $tracing->quarantine_end_at = $suspectCase->pscr_sars_cov_2_at->add(14,'days');
+            $tracing->observations      = $suspectCase->observation;
+            $tracing->status            = ($suspectCase->patient->status == 'Fallecido') ? 0:1;
+            switch ($suspectCase->symptoms) {
+                case 'Si':
+                    $tracing->symptoms = 1; break;
+                case 'No':
+                    $tracing->symptoms = 0; break;
+                default:
+                    $tracing->symptoms = null; break;
+            }
+            $tracing->save();
+        }
+
 
         return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
     }
