@@ -13,13 +13,14 @@
 </h3>
 
 <div class="row">
-    @can('SuspectCase: create')
-    <div class="col-5 col-sm-3">
+    <div class="col-sm-12">
+        @can('SuspectCase: create')
         <a class="btn btn-primary mb-3" href="{{ route('lab.suspect_cases.create') }}">
             Crear nueva sospecha
         </a>
+        @endcan
+        <a type="button" class="btn btn-success mb-3" href="{{ route('lab.suspect_cases.export', 'all') }}">Descargar <i class="far fa-file-excel"></i></a>
     </div>
-    @endcan
 
 </div>
 
@@ -46,7 +47,6 @@
     </tbody>
 </table>
 
-<a type="button" class="btn btn-success" href="{{ route('lab.suspect_cases.export', 'all') }}">Descargar <i class="far fa-file-excel"></i></a>
 @if($laboratory)
 <a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.minsal',$laboratory) }}">
     Reporte MINSAL
@@ -59,29 +59,28 @@
 </a>
 @endif
 
-
-<div align="right">
-<form method="get" action="{{ route('lab.suspect_cases.ownIndex',$laboratory) }}">
-
-    <input type="checkbox" name="positivos" id="chk_positivos" v="Positivos" {{ ($request->positivos)?'checked':'' }} /> Positivos
-    <input type="checkbox" name="negativos" id="chk_negativos" v="Negativos" {{ ($request->negativos)?'checked':'' }} /> Negativos
-    <input type="checkbox" name="pendientes" id="chk_pendientes" v="Pendientes" {{ ($request->pendientes)?'checked':'' }} /> Pendientes
-    <input type="checkbox" name="rechazados" id="chk_rechazados" v="Rechazados" {{ ($request->rechazados)?'checked':'' }} /> Rechazados
-    <input type="checkbox" name="indeterminados" id="chk_indeterminados" v="Indeterminados" {{ ($request->indeterminados)?'checked':'' }} /> Indeterminados
-
-    <div class="input-group mb-3 col-12 col-sm-5">
-    <div class="input-group-prepend">
-        <span class="input-group-text">Búsqueda</span>
+<div class="row">
+    <div class="col-6 align-self-end">
+        @include('lab.suspect_cases.partials.search_id')
     </div>
+    <div class="col-6">
+        <form method="get" action="{{ route('lab.suspect_cases.ownIndex',$laboratory) }}">
 
-    <input class="form-control" type="text" name="text" value="{{$request->text}}" placeholder="Rut / Nombre">
-    <div class="input-group-append">
-        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
+            <input type="checkbox" name="positivos" id="chk_positivos" v="Positivos" {{ ($request->positivos)?'checked':'' }} /> Positivos
+            <input type="checkbox" name="negativos" id="chk_negativos" v="Negativos" {{ ($request->negativos)?'checked':'' }} /> Negativos
+            <input type="checkbox" name="pendientes" id="chk_pendientes" v="Pendientes" {{ ($request->pendientes)?'checked':'' }} /> Pendientes
+            <input type="checkbox" name="rechazados" id="chk_rechazados" v="Rechazados" {{ ($request->rechazados)?'checked':'' }} /> Rechazados
+            <input type="checkbox" name="indeterminados" id="chk_indeterminados" v="Indeterminados" {{ ($request->indeterminados)?'checked':'' }} /> Indeterminados
+
+            <div class="input-group mb-3">
+                <input class="form-control" type="text" name="text" value="{{$request->text}}" placeholder="Rut / Nombre">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
+                </div>
+            </div>
+
+        </form>
     </div>
-  </div>
-
-</form>
-@include('lab.suspect_cases.partials.search_id')
 </div>
 
 <div class="table-responsive">
