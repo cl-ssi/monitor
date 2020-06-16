@@ -20,6 +20,7 @@ use App\Country;
 use Carbon\CarbonPeriod;
 use Carbon\Carbon;
 use App\Mail\NewPositive;
+use App\Mail\NewNegative;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -434,7 +435,6 @@ class SuspectCaseController extends Controller
             }
         }
 
-
         if (env('APP_ENV') == 'production') {
             if ($old_pcr == 'pending' and $suspectCase->pscr_sars_cov_2 == 'positive') {
                 $emails  = explode(',', env('EMAILS_ALERT'));
@@ -442,6 +442,15 @@ class SuspectCaseController extends Controller
                 Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($suspectCase));
             }
             /* TODO: Si el resultado es negativo y el usuario tiene email, enviar resultado al usuario */
+            if($old_pcr == 'pending' && ($suspectCase->pscr_sars_cov_2 == 'negative' ||
+                                          $suspectCase->pscr_sars_cov_2 == 'undetermined' ||
+                                          $suspectCase->pscr_sars_cov_2 == 'rejected') &&
+                $suspectCase->patient->demographic != NULL){
+                if($suspectCase->patient->demographic->email != NULL){
+                    $email  = $suspectCase->patient->demographic->email;
+                    Mail::to($email)->send(new NewNegative($suspectCase));
+                }
+            }
         }
 
         //$log->new = $suspectCase;
