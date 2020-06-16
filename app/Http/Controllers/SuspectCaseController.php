@@ -325,12 +325,6 @@ class SuspectCaseController extends Controller
             $demographic->save();
         }
 
-        /* Log de cambios en caso sospecha */
-        //$log = new Log();
-        //$log->old = $suspectCase;
-        //$log->new = $suspectCase;
-        //$log->save();
-
         session()->flash('success', 'Se ha creado el caso número: <h3>'
             . $suspectCase->id. ' <a href="' . route('lab.suspect_cases.notificationForm',$suspectCase)
             . '">Imprimir Formulario</a></h3>');
@@ -360,11 +354,7 @@ class SuspectCaseController extends Controller
         $external_labs = Laboratory::where('external',1)->orderBy('name')->get();
         $local_labs = Laboratory::where('external',0)->orderBy('name')->get();
 
-
-        //$establishments = Establishment::orderBy('alias','ASC')->get();
-
-        $env_communes = array_map('trim',explode(",",env('COMUNAS')));
-        $establishments = Establishment::whereIn('commune_id',$env_communes)
+        $establishments = Establishment::whereIn('commune_id',explode(',',env('COMUNAS')))
                                         ->orderBy('name','ASC')->get();
 
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();

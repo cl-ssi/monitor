@@ -76,6 +76,7 @@ class TracingController extends Controller
     {
         $tracing = new tracing($request->All());
         $tracing->user_id = auth()->id();
+        $tracing->next_control_at = Carbon::now()->add(1,'day');
         $tracing->save();
 
         return redirect()->back();
