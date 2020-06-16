@@ -110,7 +110,7 @@ class ReportBackup extends Command
 
         //echo '<pre>'; print_r($patients->where('status','Hospitalizado UCI (Ventilador)')->count()); die();
         //echo '<pre>'; print_r($evolucion); die();
-        $data = view('lab.suspect_cases.reports.positives', compact('patients','evolucion','ventilator','exams'))->render();
+        $data = view('lab.suspect_cases.reports.positives', compact('patients','evolucion','ventilator','exams','communes'))->render();
 
         $reportBackup = new ReportBackup2();
         $reportBackup->data = $data;/// trim(preg_replace('/\r\n/', ' ', ));
