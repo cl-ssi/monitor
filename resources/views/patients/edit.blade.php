@@ -107,7 +107,7 @@
                 <option value="Hospitalizado Medio" {{ ($patient->status == 'Hospitalizado Medio')?'selected':'' }}>Hospitalizado Medio</option>
                 <option value="Hospitalizado UTI" {{ ($patient->status == 'Hospitalizado UTI')?'selected':'' }}>Hospitalizado UTI</option>
                 <option value="Hospitalizado UCI" {{ ($patient->status == 'Hospitalizado UCI')?'selected':'' }}>Hospitalizado UCI</option>
-                <option value="Hospitalizado UCI (Ventilador)" {{ ($patient->status == 'Hospitalizado UCI')?'selected':'' }}>Hospitalizado UCI (Ventilador)</option>
+                <option value="Hospitalizado UCI (Ventilador)" {{ ($patient->status == 'Hospitalizado UCI (Ventilador)')?'selected':'' }}>Hospitalizado UCI (Ventilador)</option>
                 <option value="Residencia Sanitaria" {{ ($patient->status == 'Residencia Sanitaria')?'selected':'' }}>Residencia Sanitaria</option>
             </select>
         </fieldset>
@@ -308,7 +308,7 @@
         <tr class="text-center">
             <th>Fecha Encuesta</th>
             <th>Encuesta Realizada por</th>
-            <th>¿Es Posible Aislar al Paciente?</th>            
+            <th>¿Es Posible Aislar al Paciente?</th>
             <th>Resultado</th>
             <th>Visto Bueno</th>
         </tr>
@@ -318,7 +318,7 @@
       <tr>
           <td class="text-center align-middle">{{ $admission->created_at }}</td>
           <td class="text-center align-middle">{{ $admission->user->name }}</td>
-          <td class="text-center align-middle">{{ $admission->isolate_text }}</td>          
+          <td class="text-center align-middle">{{ $admission->isolate_text }}</td>
           <td class="text-center align-middle">{!! $admission->result !!}</td>
           <td class="text-center align-middle"><a class="btn btn-success btn-sm" href="{{ route('sanitary_residences.admission.edit', $admission) }}">
     <i class="fas fa-poll-h"></i> Revisar Encuesta
