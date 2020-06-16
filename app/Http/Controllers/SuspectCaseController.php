@@ -20,6 +20,8 @@ use App\Country;
 use Carbon\CarbonPeriod;
 use Carbon\Carbon;
 use App\Mail\NewPositive;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -28,6 +30,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
+use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\SuspectCasesExport;
 use App\Exports\HetgSuspectCasesExport;
@@ -102,76 +105,48 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.index', compact('suspectCases','request','suspectCasesTotal','laboratory'));
     }
 
-    public function ownIndex(request $request, Laboratory $laboratory){
-        //$lab_id = $request->input('lab_id');
-
-
-        /*                      Establishment del usuario                     */
+    /**
+     * Muestra examenes asociados al establishment de usuario actual.
+     * @param Request $request
+     * @param Laboratory $laboratory
+     * @return Application|Factory|View
+     */
+    public function ownIndex(request $request, Laboratory $laboratory)
+    {
+        //Se obtienen establecimientos del usuario
         $establishments_user = EstablishmentUser::where('user_id', Auth::user()->id)->get();
-
         $establishment_selected = array();
-        foreach($establishments_user as $key => $establishment_user){
+        foreach ($establishments_user as $key => $establishment_user) {
             $establishment_selected[$key] = $establishment_user->establishment_id;
         }
-        $establishments = implode (", ", $establishment_selected);
-        /* ------------------------------------------------------------------ */
 
-        if ($request->get('positivos') == "on") {
-            $positivos = "positive";
-        } else {$positivos = NULL;}
+        //Se obtienen variables de request
+        $searchText = $request->get('text');
+        $positivos = ($request->get('positivos') == "on") ? "positive" : NULL;
+        $negativos = ($request->get('negativos') == "on") ? "negative" : NULL;
+        $pendientes = ($request->get('pendientes') == "on") ? "pending" : NULL;
+        $rechazados = ($request->get('rechazados') == "on") ? "rejected" : NULL;
+        $indeterminados = ($request->get('indeterminados') == "on") ? "undetermined" : NULL;
 
-        if ($request->get('negativos') == "on") {
-            $negativos = "negative";
-        } else {$negativos = NULL;}
+        //Se inicia construcción de query
+        $builder = SuspectCase::latest('id');
 
-        if ($request->get('pendientes') == "on") {
-            $pendientes = "pending";
-        } else{$pendientes = NULL;}
-
-        if ($request->get('rechazados') == "on") {
-            $rechazados = "rejected";
-        } else{$rechazados = NULL;}
-
-        if ($request->get('indeterminados') == "on") {
-            $indeterminados = "undetermined";
-        }else{$indeterminados = NULL;}
-
-        $text = $request->get('text');
-
-        if($laboratory->id) {
-            //$laboratory = Laboratory::find($lab->id);
-            $suspectCasesTotal = SuspectCase::where('laboratory_id',$laboratory->id)->latest('id')->get();
-
-            $suspectCases = SuspectCase::latest('id')
-                                      ->where('laboratory_id',$laboratory->id)
-                                      ->whereHas('patient', function($q) use ($text){
-                                              $q->Where('name', 'LIKE', '%'.$text.'%')
-                                                ->orWhere('fathers_family','LIKE','%'.$text.'%')
-                                                ->orWhere('mothers_family','LIKE','%'.$text.'%')
-                                                ->orWhere('run','LIKE','%'.$text.'%');
-                                      })
-                                      ->whereNotNull('laboratory_id')
-                                      ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
-                                      ->whereIn('establishment_id', $establishment_selected)
-                                      ->paginate(200);//->appends(request()->query());
-        }
-        else {
+        if ($laboratory->id) {
+            $builder = $builder->where('laboratory_id', $laboratory->id);
+            $suspectCasesTotal = SuspectCase::where('laboratory_id', $laboratory->id)->latest('id')->get();
+        } else {
             $laboratory = null;
             $suspectCasesTotal = SuspectCase::whereNotNull('laboratory_id')->latest('id')->get();
-
-            $suspectCases = SuspectCase::latest('id')
-                                      ->whereHas('patient', function($q) use ($text){
-                                              $q->Where('name', 'LIKE', '%'.$text.'%')
-                                                ->orWhere('fathers_family','LIKE','%'.$text.'%')
-                                                ->orWhere('mothers_family','LIKE','%'.$text.'%')
-                                                ->orWhere('run','LIKE','%'.$text.'%');
-                                      })
-                                      ->whereNotNull('laboratory_id')
-                                      ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
-                                      ->whereIn('establishment_id', $establishment_selected)
-                                      ->paginate(200);//->appends(request()->query());
         }
-        return view('lab.suspect_cases.ownIndex', compact('suspectCases','request','suspectCasesTotal','laboratory', 'establishment_selected'));
+
+        $suspectCases = $builder
+            ->patientTextFilter($searchText)
+            ->whereNotNull('laboratory_id')
+            ->stateFilter($positivos, $negativos, $pendientes, $rechazados, $indeterminados)
+            ->establishmentFilter($establishment_selected)
+            ->paginate(200);
+
+        return view('lab.suspect_cases.ownIndex', compact('suspectCases', 'request', 'suspectCasesTotal', 'laboratory', 'establishment_selected'));
     }
 
     /**
