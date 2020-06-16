@@ -32,49 +32,51 @@
 
 <hr>
 
-<table class="table table-sm table-bordered text-center table-striped small">
-    <thead>
-        <tr class="text-center">
-            <th></th>
-            <th>Run o (ID)</th>
-            <th>Nombre</th>
-            <th>Genero</th>
-            <th>Fecha Nac.</th>
-            <th>Comuna</th>
-            <th>Dirección</th>
-            <th>Teléfono</th>
-            <th>Email</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($patients as $patient)
-        <tr>
-            <td>
-                @canany(['Patient: edit','Patient: demographic edit'])
-                    <a href="{{ route('patients.edit', $patient) }}">
-                        Editar
-                    </a>
-                @endcan
-            </td>
-            <td class="text-rigth" nowrap>{{ $patient->identifier }}</td>
-            <td class="text-rigth">
-                {{ $patient->fullName }}
-            </td>
-            <td>{{ $patient->sexEsp }}</td>
-            <td nowrap>{{ ($patient->birthday)?$patient->birthday->format('d-m-Y'):'' }}</td>
-            <td nowrap>{{ ($patient->demographic AND $patient->demographic->commune)  ?$patient->demographic->commune->name:'' }}</td>
-            <td>
-                {{ ($patient->demographic)?$patient->demographic->address:'' }}
-                {{ ($patient->demographic)?$patient->demographic->number:'' }}
-            </td>
-            <td>
-                {{ ($patient->demographic)?$patient->demographic->telephone:'' }}
-            </td>
-            <td>{{ ($patient->demographic)?$patient->demographic->email:'' }}</td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+<div class="table-responsive">
+  <table class="table table-sm table-bordered table-striped small">
+      <thead>
+          <tr class="text-center">
+              <th></th>
+              <th>Run o (ID)</th>
+              <th>Nombre</th>
+              <th>Genero</th>
+              <th>Fecha Nac.</th>
+              <th>Comuna</th>
+              <th>Dirección</th>
+              <th>Teléfono</th>
+              <th>Email</th>
+          </tr>
+      </thead>
+      <tbody>
+          @foreach($patients as $patient)
+          <tr>
+              <td>
+                  @canany(['Patient: edit','Patient: demographic edit'])
+                      <a href="{{ route('patients.edit', $patient) }}">
+                          Editar
+                      </a>
+                  @endcan
+              </td>
+              <td class="text-rigth" nowrap>{{ $patient->identifier }}</td>
+              <td class="text-rigth">
+                  {{ $patient->fullName }}
+              </td>
+              <td>{{ $patient->sexEsp }}</td>
+              <td nowrap>{{ ($patient->birthday)?$patient->birthday->format('d-m-Y'):'' }}</td>
+              <td nowrap>{{ ($patient->demographic AND $patient->demographic->commune)  ?$patient->demographic->commune->name:'' }}</td>
+              <td>
+                  {{ ($patient->demographic)?$patient->demographic->address:'' }}
+                  {{ ($patient->demographic)?$patient->demographic->number:'' }}
+              </td>
+              <td>
+                  {{ ($patient->demographic)?$patient->demographic->telephone:'' }}
+              </td>
+              <td>{{ ($patient->demographic)?$patient->demographic->email:'' }}</td>
+          </tr>
+          @endforeach
+      </tbody>
+  </table>
+</div>
 
 {{ $patients->appends(request()->query())->links() }}
 
