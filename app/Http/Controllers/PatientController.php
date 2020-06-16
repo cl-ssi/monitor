@@ -20,14 +20,18 @@ class PatientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, $s)
     {
-        $patients = Patient::search($request->input('search'))
-                        ->with('demographic')
-                        ->with('suspectCases')
-                        ->with('contactPatient')
-                        ->orderBy('name')
-                        ->paginate(250);
+        $search = $s;
+
+          $patients = Patient::search($request->input('search'))
+                          ->with('demographic')
+                          ->with('suspectCases')
+                          ->with('contactPatient')
+                          ->orderBy('name')
+                          ->paginate(250);
+
+
         return view('patients.index', compact('patients','request'));
     }
 
