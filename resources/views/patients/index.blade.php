@@ -16,15 +16,13 @@
     @endcan
 </div>
 
-<form method="GET" class="form-horizontal" action="{{ route('patients.index', 'search_true') }}">
+<form method="GET" class="form-horizontal" action="{{ route('patients.index') }}">
   <div class="input-group mb-sm-0">
       <div class="input-group-prepend">
           <span class="input-group-text">Búsqueda</span>
       </div>
 
       <input class="form-control" type="text" name="search" autocomplete="off" id="for_search" style="text-transform: uppercase;" placeholder="RUN (sin dígito verificador) / OTRA IDENTIFICACION / NOMBRE" value="{{$request->search}}" required>
-
-      <input class="form-control" type="text" name="dv" id="for_dv" style="text-transform: uppercase;" placeholder="DV" readonly hidden>
 
       <div class="input-group-append">
           <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
@@ -34,54 +32,53 @@
 
 <hr>
 
-<table class="table table-sm table-bordered text-center table-striped small">
-    <thead>
-        <tr class="text-center">
-            <th></th>
-            <th>Run o (ID)</th>
-            <th>Nombre</th>
-            <th>Genero</th>
-            <th>Fecha Nac.</th>
-            <th>Comuna</th>
-            <th>Dirección</th>
-            <th>Teléfono</th>
-            <th>Email</th>
-        </tr>
-    </thead>
-    <tbody>
-      @if($patients != NULL)
-        @foreach($patients as $patient)
-        <tr>
-            <td>
-                @canany(['Patient: edit','Patient: demographic edit'])
-                    <a href="{{ route('patients.edit', $patient) }}">
-                        Editar
-                    </a>
-                @endcan
-            </td>
-            <td class="text-rigth" nowrap>{{ $patient->identifier }}</td>
-            <td class="text-rigth">
-                {{ $patient->fullName }}
-            </td>
-            <td>{{ $patient->sexEsp }}</td>
-            <td nowrap>{{ ($patient->birthday)?$patient->birthday->format('d-m-Y'):'' }}</td>
-            <td nowrap>{{ ($patient->demographic AND $patient->demographic->commune)  ?$patient->demographic->commune->name:'' }}</td>
-            <td>
-                {{ ($patient->demographic)?$patient->demographic->address:'' }}
-                {{ ($patient->demographic)?$patient->demographic->number:'' }}
-            </td>
-            <td>
-                {{ ($patient->demographic)?$patient->demographic->telephone:'' }}
-            </td>
-            <td>{{ ($patient->demographic)?$patient->demographic->email:'' }}</td>
-        </tr>
-        @endforeach
-      @endif
-    </tbody>
-</table>
+<div class="table-responsive">
+  <table class="table table-sm table-bordered table-striped small">
+      <thead>
+          <tr class="text-center">
+              <th></th>
+              <th>Run o (ID)</th>
+              <th>Nombre</th>
+              <th>Genero</th>
+              <th>Fecha Nac.</th>
+              <th>Comuna</th>
+              <th>Dirección</th>
+              <th>Teléfono</th>
+              <th>Email</th>
+          </tr>
+      </thead>
+      <tbody>
+          @foreach($patients as $patient)
+          <tr>
+              <td>
+                  @canany(['Patient: edit','Patient: demographic edit'])
+                      <a href="{{ route('patients.edit', $patient) }}">
+                          Editar
+                      </a>
+                  @endcan
+              </td>
+              <td class="text-rigth" nowrap>{{ $patient->identifier }}</td>
+              <td class="text-rigth">
+                  {{ $patient->fullName }}
+              </td>
+              <td>{{ $patient->sexEsp }}</td>
+              <td nowrap>{{ ($patient->birthday)?$patient->birthday->format('d-m-Y'):'' }}</td>
+              <td nowrap>{{ ($patient->demographic AND $patient->demographic->commune)  ?$patient->demographic->commune->name:'' }}</td>
+              <td>
+                  {{ ($patient->demographic)?$patient->demographic->address:'' }}
+                  {{ ($patient->demographic)?$patient->demographic->number:'' }}
+              </td>
+              <td>
+                  {{ ($patient->demographic)?$patient->demographic->telephone:'' }}
+              </td>
+              <td>{{ ($patient->demographic)?$patient->demographic->email:'' }}</td>
+          </tr>
+          @endforeach
+      </tbody>
+  </table>
+</div>
 
 {{ $patients->appends(request()->query())->links() }}
-
 
 @endsection
 
