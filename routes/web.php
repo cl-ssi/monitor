@@ -61,7 +61,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::prefix('patients')->name('patients.')->middleware('auth')->group(function () {
     Route::get('get/{rut?}','PatientController@getPatient')->name('get')->middleware('auth');
     Route::get('georeferencing','PatientController@georeferencing')->name('georeferencing')->middleware('can:Patient: georeferencing');
-    Route::get('/index/{s}', 'PatientController@index')->name('index')->middleware('can:Patient: list');
+    Route::get('/', 'PatientController@index')->name('index')->middleware('can:Patient: list');
     Route::get('positives', 'PatientController@positives')->name('positives')->middleware('can:Patient: list');
     Route::get('/create', 'PatientController@create')->name('create')->middleware('can:Patient: create');
     Route::post('/', 'PatientController@store')->name('store')->middleware('can:Patient: create');
@@ -217,13 +217,13 @@ Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(functi
     Route::post('/status/store', 'StatuController@store')->name('statu.store');
     Route::get('/status/{statu}/edit', 'StatuController@edit')->name('statu.edit');
     Route::put('/status/update/{statu}', 'StatuController@update')->name('statu.update');
-    
+
     Route::get('/event_type', 'EventTypeController@index')->name('EventType');
     Route::get('/event_type/create', 'EventTypeController@create')->name('EventType.create');
     Route::post('/event_type/store', 'EventTypeController@store')->name('EventType.store');
     Route::get('/event_type/{eventType}/edit', 'EventTypeController@edit')->name('EventType.edit');
     Route::put('/event_type/update/{eventType}', 'EventTypeController@update')->name('EventType.update');
-    
+
 });
 
 Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('auth')->group(function () {

@@ -16,15 +16,13 @@
     @endcan
 </div>
 
-<form method="GET" class="form-horizontal" action="{{ route('patients.index', 'search_true') }}">
+<form method="GET" class="form-horizontal" action="{{ route('patients.index') }}">
   <div class="input-group mb-sm-0">
       <div class="input-group-prepend">
           <span class="input-group-text">Búsqueda</span>
       </div>
 
       <input class="form-control" type="text" name="search" autocomplete="off" id="for_search" style="text-transform: uppercase;" placeholder="RUN (sin dígito verificador) / OTRA IDENTIFICACION / NOMBRE" value="{{$request->search}}" required>
-
-      <input class="form-control" type="text" name="dv" id="for_dv" style="text-transform: uppercase;" placeholder="DV" readonly hidden>
 
       <div class="input-group-append">
           <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
@@ -49,7 +47,7 @@
         </tr>
     </thead>
     <tbody>
-      @if($patients != NULL)
+      @if($patients != "")
         @foreach($patients as $patient)
         <tr>
             <td>
@@ -81,7 +79,6 @@
 </table>
 
 {{ $patients->appends(request()->query())->links() }}
-
 
 @endsection
 

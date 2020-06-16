@@ -60,7 +60,7 @@
 
                         @can('Patient: list')
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('patients.index', 'search_false') }}">
+                            <a class="nav-link" href="{{ route('patients.index') }}">
                                 <i class="fas fa-user-injured"></i>
                                 Pacientes
                             </a>
