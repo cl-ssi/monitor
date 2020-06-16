@@ -17,6 +17,7 @@ use App\Establishment;
 use App\ReportBackup;
 use App\SampleOrigin;
 use App\Country;
+use App\Tracing\Tracing;
 use Carbon\CarbonPeriod;
 use Carbon\Carbon;
 use App\Mail\NewPositive;
@@ -107,47 +108,24 @@ class SuspectCaseController extends Controller
     }
 
     /**
-     * Muestra examenes asociados al establishment de usuario actual.
+     * Muestra exámenes asociados al establishment de usuario actual.
      * @param Request $request
      * @param Laboratory $laboratory
      * @return Application|Factory|View
      */
     public function ownIndex(request $request, Laboratory $laboratory)
     {
-        //Se obtienen establecimientos del usuario
-        $establishments_user = EstablishmentUser::where('user_id', Auth::user()->id)->get();
-        $establishment_selected = array();
-        foreach ($establishments_user as $key => $establishment_user) {
-            $establishment_selected[$key] = $establishment_user->establishment_id;
-        }
-
-        //Se obtienen variables de request
         $searchText = $request->get('text');
-        $positivos = ($request->get('positivos') == "on") ? "positive" : NULL;
-        $negativos = ($request->get('negativos') == "on") ? "negative" : NULL;
-        $pendientes = ($request->get('pendientes') == "on") ? "pending" : NULL;
-        $rechazados = ($request->get('rechazados') == "on") ? "rejected" : NULL;
-        $indeterminados = ($request->get('indeterminados') == "on") ? "undetermined" : NULL;
+        $arrayFilter = (empty($request->filter)) ? array() : $request->filter;
 
-        //Se inicia construcción de query
-        $builder = SuspectCase::latest('id');
+        $suspectCasesTotal = SuspectCase::whereIn('establishment_id', Auth::user()->establishments->pluck('id'))->get();
 
-        if ($laboratory->id) {
-            $builder = $builder->where('laboratory_id', $laboratory->id);
-            $suspectCasesTotal = SuspectCase::where('laboratory_id', $laboratory->id)->latest('id')->get();
-        } else {
-            $laboratory = null;
-            $suspectCasesTotal = SuspectCase::whereNotNull('laboratory_id')->latest('id')->get();
-        }
-
-        $suspectCases = $builder
+        $suspectCases = SuspectCase::whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
             ->patientTextFilter($searchText)
-            ->whereNotNull('laboratory_id')
-            ->stateFilter($positivos, $negativos, $pendientes, $rechazados, $indeterminados)
-            ->establishmentFilter($establishment_selected)
+            ->whereIn('pscr_sars_cov_2', $arrayFilter)
             ->paginate(200);
 
-        return view('lab.suspect_cases.ownIndex', compact('suspectCases', 'request', 'suspectCasesTotal', 'laboratory', 'establishment_selected'));
+        return view('lab.suspect_cases.ownIndex', compact('suspectCases', 'arrayFilter', 'searchText', 'laboratory', 'suspectCasesTotal'));
     }
 
     /**
@@ -418,8 +396,32 @@ class SuspectCaseController extends Controller
             }
         }
 
-        //$log->new = $suspectCase;
-        //$log->save();
+        /* Crea un TRACING si el resultado es positivo */
+        if ($old_pcr == 'pending' and $suspectCase->pscr_sars_cov_2 == 'positive') {
+            $tracing                    = new Tracing();
+            $tracing->patient_id        = $suspectCase->patient_id;
+            $tracing->user_id           = $suspectCase->user_id;
+            $tracing->index             = 1;
+            $tracing->establishment_id  = $suspectCase->establishment_id;
+            $tracing->functionary       = $suspectCase->functionary;
+            $tracing->gestation         = $suspectCase->gestation;
+            $tracing->gestation_week    = $suspectCase->gestation_week;
+            $tracing->next_control_at   = $suspectCase->pscr_sars_cov_2_at->add(1,'day');
+            $tracing->quarantine_start_at = $suspectCase->pscr_sars_cov_2_at;
+            $tracing->quarantine_end_at = $suspectCase->pscr_sars_cov_2_at->add(14,'days');
+            $tracing->observations      = $suspectCase->observation;
+            $tracing->status            = ($suspectCase->patient->status == 'Fallecido') ? 0:1;
+            switch ($suspectCase->symptoms) {
+                case 'Si':
+                    $tracing->symptoms = 1; break;
+                case 'No':
+                    $tracing->symptoms = 0; break;
+                default:
+                    $tracing->symptoms = null; break;
+            }
+            $tracing->save();
+        }
+
 
         return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
     }

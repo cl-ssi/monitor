@@ -21,10 +21,10 @@
             <i class="fas fa-fan"></i> Ventiladores</a>
     </li>
     
-    <li class="nav-item">
+    <!-- <li class="nav-item">
         <a class="nav-link" href="{{ route('parameters.statu') }}">
             <i class="fas fa-exchange-alt"></i> Estados</a>
-    </li>
+    </li> -->
     
     <li class="nav-item">
         <a class="nav-link" href="{{ route('parameters.EventType') }}">
