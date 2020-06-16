@@ -106,47 +106,24 @@ class SuspectCaseController extends Controller
     }
 
     /**
-     * Muestra examenes asociados al establishment de usuario actual.
+     * Muestra exámenes asociados al establishment de usuario actual.
      * @param Request $request
      * @param Laboratory $laboratory
      * @return Application|Factory|View
      */
     public function ownIndex(request $request, Laboratory $laboratory)
     {
-        //Se obtienen establecimientos del usuario
-        $establishments_user = EstablishmentUser::where('user_id', Auth::user()->id)->get();
-        $establishment_selected = array();
-        foreach ($establishments_user as $key => $establishment_user) {
-            $establishment_selected[$key] = $establishment_user->establishment_id;
-        }
-
-        //Se obtienen variables de request
         $searchText = $request->get('text');
-        $positivos = ($request->get('positivos') == "on") ? "positive" : NULL;
-        $negativos = ($request->get('negativos') == "on") ? "negative" : NULL;
-        $pendientes = ($request->get('pendientes') == "on") ? "pending" : NULL;
-        $rechazados = ($request->get('rechazados') == "on") ? "rejected" : NULL;
-        $indeterminados = ($request->get('indeterminados') == "on") ? "undetermined" : NULL;
+        $arrayFilter = (empty($request->filter)) ? array() : $request->filter;
 
-        //Se inicia construcción de query
-        $builder = SuspectCase::latest('id');
+        $suspectCasesTotal = SuspectCase::whereIn('establishment_id', Auth::user()->establishments->pluck('id'))->get();
 
-        if ($laboratory->id) {
-            $builder = $builder->where('laboratory_id', $laboratory->id);
-            $suspectCasesTotal = SuspectCase::where('laboratory_id', $laboratory->id)->latest('id')->get();
-        } else {
-            $laboratory = null;
-            $suspectCasesTotal = SuspectCase::whereNotNull('laboratory_id')->latest('id')->get();
-        }
-
-        $suspectCases = $builder
+        $suspectCases = SuspectCase::whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
             ->patientTextFilter($searchText)
-            ->whereNotNull('laboratory_id')
-            ->stateFilter($positivos, $negativos, $pendientes, $rechazados, $indeterminados)
-            ->establishmentFilter($establishment_selected)
+            ->whereIn('pscr_sars_cov_2', $arrayFilter)
             ->paginate(200);
 
-        return view('lab.suspect_cases.ownIndex', compact('suspectCases', 'request', 'suspectCasesTotal', 'laboratory', 'establishment_selected'));
+        return view('lab.suspect_cases.ownIndex', compact('suspectCases', 'arrayFilter', 'searchText', 'laboratory', 'suspectCasesTotal'));
     }
 
     /**

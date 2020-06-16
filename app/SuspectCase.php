@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Patient;
 use File;
 use Illuminate\Database\Eloquent\Model;
@@ -114,41 +115,22 @@ class SuspectCase extends Model implements Auditable
     }
 
     /**
-     * Obtiene SuspectCase por establishment_id.
-     * @param $query
-     * @param $establishment_selected
-     */
-    public function scopeEstablishmentFilter($query, $establishment_selected)
-    {
-        $query->whereIn('establishment_id', $establishment_selected);
-    }
-
-    /**
-     * Obtiene SuspectCase por estado.
-     * @param $query
-     * @param $positivos
-     * @param $negativos
-     * @param $pendientes
-     * @param $rechazados
-     * @param $indeterminados
-     */
-    public function scopeStateFilter($query, $positivos, $negativos, $pendientes, $rechazados, $indeterminados)
-    {
-        $query->whereIn('pscr_sars_cov_2', [$positivos, $negativos, $pendientes, $rechazados, $indeterminados]);
-    }
-
-    /**
      * Obtiene SuspectCase por string de name, fathers_family, mothers_family, run.
      * @param $query
      * @param $searchText
      */
     public function scopePatientTextFilter($query, $searchText)
     {
+
         $query->whereHas('patient', function ($q) use ($searchText) {
-            $q->Where('name', 'LIKE', '%' . $searchText . '%')
-                ->orWhere('fathers_family', 'LIKE', '%' . $searchText . '%')
-                ->orWhere('mothers_family', 'LIKE', '%' . $searchText . '%')
+            $q->Where(DB::raw('CONCAT(name, " ", fathers_family , " ", mothers_family)'), 'LIKE', '%' . $searchText . '%' )
                 ->orWhere('run', 'LIKE', '%' . $searchText . '%');
+
+
+//        $query->whereHas('patient', function ($q) use ($searchText) {
+//            $q->Where(DB::raw('("name" || " " || "fathers_family" || " " || COALESCE("mothers_family", ""))'), 'LIKE', '%' . $searchText . '%' )
+//                ->orWhere('run', 'LIKE', '%' . $searchText . '%');
+
         });
     }
 
