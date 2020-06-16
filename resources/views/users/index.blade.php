@@ -20,8 +20,7 @@
             <th>Run</th>
             <th>Nombre</th>
             <th>Email</th>
-            <th></th>
-            <th></th>
+            <th></th>           
         </tr>
     </thead>
     <tbody>
@@ -30,8 +29,7 @@
             <td>{{ $user->run }}-{{$user->dv}}</td>
             <td>{{ $user->name }}</td>
             <td>{{ $user->email }}</td>
-            <td> <a href="{{ route('users.edit', $user) }}">Editar</a> </td>
-            <td> <a href="{{ route('users.password.restore', $user) }}">Cambiar Contraseña</a> </td>
+            <td> <a href="{{ route('users.edit', $user) }}">Editar</a> </td>            
         </tr>
         @endforeach
     </tbody>

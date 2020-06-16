@@ -65,6 +65,14 @@
                     </select>
                 </fieldset>
             </div>
+
+            <div class="form-row">
+                <fieldset class="form-group col-6 col-md-6">
+                    <a class="btn btn-primary btn-sm" href="{{ route('users.password.restore', $user) }}">
+                        <i class="fas fa-plus"></i> Generar Nueva Contraseña
+                    </a>
+                </fieldset>
+            </div>
             
         </div>
     </div>
@@ -73,6 +81,9 @@
 
     <div class="form-row">
         <div class="col">
+            
+
+            
             <h5>Roles:</h5>
             @foreach($permissions as $permission)
             <div class="form-check">
