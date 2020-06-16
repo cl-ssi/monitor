@@ -156,6 +156,7 @@
                   <select class="form-control selectpicker" name="relationship" id="for_relationship" title="Seleccione..." data-live-search="true" data-size="5" required>
                       @if($patient->sexEsp == 'Femenino')
                         <option value="grandmother">Abuela</option>
+                        <option value="coworker">Compañera de Trabajo</option>
                         <option value="sister in law">Cuñada</option>
                         <option value="wife">Esposa</option>
                         <option value="sister">Hermana</option>
@@ -167,21 +168,26 @@
                         <option value="aunt">Tía</option>
                         <option value="grandchild">Nieta</option>
                         <option value="daughter in law">Nuera</option>
+                        <option value="girlfriend">Pareja</option>
+                        <option value="neighbour">Vecina</option>
                         <option value="other">Otro</option>
                       @else
                         <option value="grandfather">Abuelo</option>
+                        <option value="coworker">Compañero de Trabajo</option>
                         <option value="brother in law">Cuñado</option>
                         <option value="husband">Esposo</option>
                         <option value="brother">Hermano</option>
                         <option value="son">Hijo</option>
                         <option value="grandchild">Nieto</option>
                         <option value="father">Padre</option>
-                        <option value="cousin">Primo/a</option>
-                        <option value="nephew">Sobrino</option>
-                        <option value="father in law">Suegro</option>
-                        <option value="uncle">Tío</option>
-                        <option value="son in law">Yerno</option>
-                        <option value="other">Otro</option>
+                        <option value="boyfriend">Pareja</option>
+                        <option value="cousin">Primo/a</option> ok
+                        <option value="nephew">Sobrino</option> ok
+                        <option value="father in law">Suegro</option> ok
+                        <option value="uncle">Tío</option> ok
+                        <option value="neighbour">Vecino</option>ok
+                        <option value="son in law">Yerno</option> ok
+                        <option value="other">Otro</option> ok
                       @endif
                       <!--
                       abuelo/a
