@@ -47,7 +47,6 @@
         </tr>
     </thead>
     <tbody>
-      @if($patients != "")
         @foreach($patients as $patient)
         <tr>
             <td>
@@ -74,7 +73,6 @@
             <td>{{ ($patient->demographic)?$patient->demographic->email:'' }}</td>
         </tr>
         @endforeach
-      @endif
     </tbody>
 </table>
 
