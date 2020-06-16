@@ -3,6 +3,7 @@
 @section('title', 'Editar Laboratorio')
 
 @section('content')
+@include('parameters.nav')
 
 
 <h3 class="mb-3">Editar Laboratorio</h3>

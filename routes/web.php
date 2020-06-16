@@ -212,6 +212,18 @@ Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(functi
     Route::post('/lab/store', 'LaboratoryController@store')->name('lab.store');
     Route::get('/lab/{laboratory}/edit', 'LaboratoryController@edit')->name('lab.edit');
     Route::put('/lab/update/{laboratory}', 'LaboratoryController@update')->name('lab.update');
+    Route::get('/status', 'StatuController@index')->name('statu');
+    Route::get('/status/create', 'StatuController@create')->name('statu.create');
+    Route::post('/status/store', 'StatuController@store')->name('statu.store');
+    Route::get('/status/{statu}/edit', 'StatuController@edit')->name('statu.edit');
+    Route::put('/status/update/{statu}', 'StatuController@update')->name('statu.update');
+    
+    Route::get('/event_type', 'EventTypeController@index')->name('EventType');
+    Route::get('/event_type/create', 'EventTypeController@create')->name('EventType.create');
+    Route::post('/event_type/store', 'EventTypeController@store')->name('EventType.store');
+    Route::get('/event_type/{eventType}/edit', 'EventTypeController@edit')->name('EventType.edit');
+    Route::put('/event_type/update/{eventType}', 'EventTypeController@update')->name('EventType.update');
+    
 });
 
 Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('auth')->group(function () {
