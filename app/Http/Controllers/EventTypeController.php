@@ -14,7 +14,11 @@ class EventTypeController extends Controller
      */
     public function index()
     {
-        //
+        $event_types = EventType::orderby('name', 'ASC')
+            ->get();
+            
+        return view('parameters.event_type.index', compact('event_types'));
+        
     }
 
     /**
@@ -24,7 +28,8 @@ class EventTypeController extends Controller
      */
     public function create()
     {
-        //
+        
+        return view('parameters.event_type.create');
     }
 
     /**
@@ -35,7 +40,10 @@ class EventTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $event_types = new EventType($request->All());
+        $event_types->save();
+        session()->flash('success', '¡Tipo de evento creado con éxito!');
+        return redirect()->route('parameters.EventType');
     }
 
     /**
@@ -57,7 +65,7 @@ class EventTypeController extends Controller
      */
     public function edit(EventType $eventType)
     {
-        //
+        return view('parameters.event_type.edit', compact('eventType'));
     }
 
     /**
@@ -69,7 +77,10 @@ class EventTypeController extends Controller
      */
     public function update(Request $request, EventType $eventType)
     {
-        //
+        $eventType->fill($request->all());
+        $eventType->save();
+        session()->flash('success', '¡Tipo de evento modificado exitosamente!');
+        return redirect()->route('parameters.EventType');
     }
 
     /**

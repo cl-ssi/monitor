@@ -23,11 +23,12 @@ class PatientController extends Controller
     public function index(Request $request)
     {
         $patients = Patient::search($request->input('search'))
-                        ->with('demographic')
-                        ->with('suspectCases')
-                        ->with('contactPatient')
-                        ->orderBy('name')
-                        ->paginate(250);
+                              ->with('demographic')
+                              ->with('suspectCases')
+                              ->with('contactPatient')
+                              ->orderBy('name')
+                              ->paginate(250);
+
         return view('patients.index', compact('patients','request'));
     }
 

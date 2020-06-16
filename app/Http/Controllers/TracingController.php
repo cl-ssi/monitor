@@ -16,6 +16,8 @@ class TracingController extends Controller
      */
     public function indexByCommune()
     {
+        // TODO: Falta chequear que tenga algun establecimiento asociado
+        
         $patients = Patient::whereHas('demographic', function($q) {
                 $q->whereIn('commune_id', auth()->user()->communes());
             })
@@ -76,6 +78,7 @@ class TracingController extends Controller
     {
         $tracing = new tracing($request->All());
         $tracing->user_id = auth()->id();
+        $tracing->next_control_at = Carbon::now()->add(1,'day');
         $tracing->save();
 
         return redirect()->back();
@@ -145,12 +148,11 @@ class TracingController extends Controller
             $tracing->establishment_id = ($case->establishment_id === 0) ? 4002 : $case->establishment_id;
             switch ($case->symptoms) {
                 case 'Si':
-                    $symptom = 1;
-                    break;
+                    $symptom = 1; break;
                 case 'No':
-                    $symptom = 0;
+                    $symptom = 0; break;
                 default:
-                    $symptom = null;
+                    $symptom = null; break;
             }
             $tracing->symptoms = $symptom;
             $tracing->functionary = $case->functionary;
