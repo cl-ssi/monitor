@@ -57,12 +57,20 @@ class InmunoTestController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $store)
     {
+        $patient = $request->input('patient_id');
+
         $inmunoTest = new InmunoTest($request->All());
         $inmunoTest->save();
 
-        return redirect()->route('lab.inmuno_tests.index');
+        if($store == 'modal'){
+            return redirect()->route('patients.edit', $patient);
+        }
+
+        if($store == 'inmuno_form'){
+            return redirect()->route('lab.inmuno_tests.index');
+        }
     }
 
     /**
