@@ -25,5 +25,10 @@
         <a class="nav-link" href="{{ route('parameters.statu') }}">
             <i class="fas fa-exchange-alt"></i> Estados</a>
     </li>
+    
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('parameters.EventType') }}">
+            <i class="fas fa-clipboard-list"></i> Tipos de eventos</a>
+    </li>
 </ul>
 @endcan
