@@ -17,16 +17,9 @@ use Carbon\Carbon;
 class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping, WithColumnFormatting, ShouldAutoSize
 {
     private $cod_lab;
-    private $lab_id;
 
     public function __construct($cod_lab) {
           $this->cod_lab = $cod_lab;
-          if($this->cod_lab == 'hetg'){
-              $this->lab_id = 1;
-          }
-          if($this->cod_lab == 'unap'){
-              $this->lab_id = 2;
-          }
     }
     /**
     * @return \Illuminate\Support\Collection
@@ -38,24 +31,16 @@ class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping, W
               ->get();
         }
         else{
-          return SuspectCase::where('laboratory_id', $this->lab_id)
+          return SuspectCase::where('laboratory_id', $this->cod_lab)
               ->orderBy('suspect_cases.id', 'desc')
               ->get();
         }
-
-
-        // return DB::table('suspect_cases')->leftJoin('patients', 'suspect_cases.patient_id', '=', 'patients.id')
-        //     ->select('suspect_cases.id', 'suspect_cases.sample_at', 'suspect_cases.origin',
-        //              'patients.name', 'patients.fathers_family', 'patients.mothers_family',
-        //              'patients.run', 'age', )
-        //     ->orderBy('suspect_cases.id', 'desc')
-        //     ->get();
     }
 
     public function headings(): array
     {
         return [
-          '#', 'fecha_muestra', 'origen','nombre', 'run', 'edad', 'sexo', 'resultado_ifd',
+          '#', 'fecha_muestra', 'origen','nombre','run', 'edad', 'sexo', 'resultado_ifd',
           'pcr_sars_cov2', 'sem', 'epivigila', 'paho_flu', 'estado', 'observación'
         ];
     }
@@ -65,6 +50,7 @@ class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping, W
     */
     public function map($suspectCase): array
     {
+        // dd($suspectCase);
         return [
             $suspectCase->id,
             Date::dateTimeToExcel($suspectCase->sample_at),
