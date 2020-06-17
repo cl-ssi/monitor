@@ -5,13 +5,15 @@
 @section('content')
 
 <!-- <a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a> -->
-<a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.exportMinsal', $laboratory) }}">Descargar <i class="far fa-file-excel"></i></a>
+
 {{-- @can('Admin')
 <a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.ws_minsal', $laboratory) }}">Minsal <i class="fas fa-upload"></i></a>
 @endcan --}}
 
 
 <form method="get" class="form-inline mb-3" action="{{ route('lab.suspect_cases.reports.minsal', $laboratory) }}">
+
+<a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.exportMinsal', ['laboratory' => $laboratory, 'from' => $request->from, 'to' => $request->to] ) }}">Descargar <i class="far fa-file-excel"></i></a>
     <div class="form-group ml-3">
         <label for="for_from">Desde</label>
         <input type="date" class="form-control mx-sm-3" id="for_from" name="from"
@@ -27,6 +29,8 @@
     </div>
 
 </form>
+
+
 
 
 <table class="table table-sm table-bordered table-responsive small text-uppercase" id="tabla_casos">
@@ -72,7 +76,7 @@
             <td nowrap>{{ ($case->patient->demographic)?$case->patient->demographic->email:'' }}</td>
             <td nowrap>{{ ($case->patient->demographic)?$case->patient->demographic->address:'' }}
                        {{ ($case->patient->demographic)? $case->patient->demographic->number:'' }}
-                       {{ ($case->patient->demographic)?$case->patient->demographic->commune->name:'' }}</td>
+                       {{ ($case->patient->demographic AND $case->patient->demographic->commune) ?$case->patient->demographic->commune->name:'' }}</td>
         </tr>
         @endforeach
 
