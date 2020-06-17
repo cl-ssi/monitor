@@ -16,12 +16,12 @@ class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
     private $cod_lab;
     private $from;
     private $to;
-    
+
 
     public function __construct($laboratory, $from, $to) {
-        $this->cod_lab = $laboratory;        
+        $this->cod_lab = $laboratory;
         $this->from = $from;
-        $this->to = $to;        
+        $this->to = $to;
         //$this->nombre_lab = 'hola probando';
   }
 
@@ -35,6 +35,10 @@ class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
         // $from = ("2020-06-15 21:00:00");
         // $to = ("2020-06-17 20:59:59");
 
+// <<<<<<< HEAD
+//         $sc = SuspectCase::where('laboratory_id',$this->cod_lab)
+//                 ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
+// =======
         //$externos = Covid19::whereBetween('result_at', [$from, $to])->get();
         // $test = SuspectCase::where('laboratory_id',$this->cod_lab)
         // ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
@@ -44,10 +48,13 @@ class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
         // dd($test);
         return SuspectCase::where('laboratory_id',$this->cod_lab)
                 ->whereBetween('pscr_sars_cov_2_at', [$this->from, $this->to])
+
                 ->whereNull('external_laboratory')
                 ->get()
                 ->sortByDesc('pscr_sars_cov_2_at');
         // return SuspectCase::find(1301);
+
+        // DD($sc);
 
     }
 
