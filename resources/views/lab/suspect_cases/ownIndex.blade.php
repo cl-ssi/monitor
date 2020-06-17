@@ -8,13 +8,6 @@
         Listado de todos los exámenes
 </h3>
 
-<div class="row">
-    <div class="col-sm-12">
-        <a type="button" class="btn btn-success mb-3" href="{{ route('lab.suspect_cases.export', 'all') }}">Descargar <i class="far fa-file-excel"></i></a>
-    </div>
-
-</div>
-
 <table class="table table-sm table-bordered">
     <thead>
         <tr class="text-center">
@@ -51,7 +44,10 @@
 @endif
 
 <div class="row">
-    <div class="col-6 align-self-end">
+    <div class="col-2 align-self-end">
+        <a type="button" class="btn btn-success mb-3" href="{{ route('lab.suspect_cases.export', 'all') }}">Descargar <i class="far fa-file-excel"></i></a>
+    </div>
+    <div class="col-4 align-self-end">
         @include('lab.suspect_cases.partials.search_id')
     </div>
     <div class="col-6">

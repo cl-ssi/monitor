@@ -84,6 +84,7 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
         Route::get('/{tracing}/edit', 'TracingController@edit')->name('edit');
         Route::put('/{tracing}', 'TracingController@update')->name('update');
         Route::delete('/{tracing}', 'TracingController@destroy')->name('destroy');
+        Route::get('/quarantine_check', 'TracingController@quarantineCheck')->name('quarantineCheck');
 
         Route::get('/migrate', 'TracingController@migrate')->name('migrate');
         Route::prefix('events')->name('events.')->group(function () {
