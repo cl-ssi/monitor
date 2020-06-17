@@ -2,16 +2,12 @@
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Test IgG - IgM</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <h3>Test IgG - IgM</h3>
-
-        <hr>
-
         <h5>Paciente:</h5>
         <div class="form-row">
             <fieldset class="form-group col-md-3">
