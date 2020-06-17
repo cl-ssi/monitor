@@ -42,20 +42,12 @@ class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping, W
               ->orderBy('suspect_cases.id', 'desc')
               ->get();
         }
-
-
-        // return DB::table('suspect_cases')->leftJoin('patients', 'suspect_cases.patient_id', '=', 'patients.id')
-        //     ->select('suspect_cases.id', 'suspect_cases.sample_at', 'suspect_cases.origin',
-        //              'patients.name', 'patients.fathers_family', 'patients.mothers_family',
-        //              'patients.run', 'age', )
-        //     ->orderBy('suspect_cases.id', 'desc')
-        //     ->get();
     }
 
     public function headings(): array
     {
         return [
-          '#', 'fecha_muestra', 'origen','nombre', 'run', 'edad', 'sexo', 'resultado_ifd',
+          '#', 'fecha_muestra', 'origen','nombre','run', 'edad', 'sexo', 'resultado_ifd',
           'pcr_sars_cov2', 'sem', 'epivigila', 'paho_flu', 'estado', 'observación'
         ];
     }
@@ -65,6 +57,7 @@ class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping, W
     */
     public function map($suspectCase): array
     {
+        // dd($suspectCase);
         return [
             $suspectCase->id,
             Date::dateTimeToExcel($suspectCase->sample_at),
