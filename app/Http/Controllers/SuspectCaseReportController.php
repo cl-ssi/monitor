@@ -309,7 +309,7 @@ class SuspectCaseReportController extends Controller
                 ->whereNull('external_laboratory')
                 ->get()
                 ->sortByDesc('pscr_sars_cov_2_at');
-        return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory', 'externos', 'from', 'to'));
+        return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory', 'externos', 'from', 'to', 'request'));
     }
 
     /*****************************************************/
