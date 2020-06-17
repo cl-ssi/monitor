@@ -104,18 +104,18 @@
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.ownIndex') }}?text=&filter%5B%5D=pending">Mis exámenes</a>
                                 @endcan
 
-
-                                @can('Patient: tracing')
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing') }}">Seguimiento de casos</a>
-                                @endcan
-
-                                @can('Patient: tracing')
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing_excel') }}">Seguimiento Excel</a>
-                                @endcan
+                                <div class="dropdown-divider"></div>
 
                                 @can('Developer')
                                 <a class="dropdown-item" href="{{ route('patients.tracings.communes') }}">Seguimiento de mis comunas</a>
                                 <a class="dropdown-item" href="{{ route('patients.tracings.establishments') }}">Seguimiento de mis establecimientos</a>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing_excel') }}">Seguimiento SEREMI</a>
+                                @endcan
+
+                                <div class="dropdown-divider"></div>
+
+                                @can('Patient: tracing')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing') }}">Seguimiento (Antiguo)</a>
                                 @endcan
 
                             </div>
@@ -212,14 +212,14 @@
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.rooms.index') }}">Habitaciones</a>
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.users') }}">Usuarios</a>
-                                
+
 
                                 <div class="dropdown-divider"></div>
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.admission.index') }}">Aprobados por SEREMI</a>
 
                                 @endcan
-                                
+
                             </div>
                         </li>
                         @endcan

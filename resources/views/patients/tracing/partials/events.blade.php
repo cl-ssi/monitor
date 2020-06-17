@@ -5,6 +5,7 @@
             <th>Funcionario</th>
             <th>Tipo de evento</th>
             <th>Detalle</th>
+            <th>Síntomas</th>
         </tr>
     </thead>
     <tbody>
@@ -14,6 +15,7 @@
             <td>{{ $event->user->name }}</td>
             <td>{{ $event->type->name }}</td>
             <td>{{ $event->details }}</td>
+            <td>{{ $event->symptoms }}</td>
         </tr>
         @endforeach
     </tbody>
