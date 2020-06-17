@@ -362,7 +362,7 @@ class SuspectCaseReportController extends Controller
         $from = '2020-06-01 00:00';//date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $to = date("Y-m-d 20:59:59");
 
-        $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
+        // $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
 
         $cases = SuspectCase::where('laboratory_id',$laboratory->id)
                 ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
@@ -381,16 +381,19 @@ class SuspectCaseReportController extends Controller
                     $response = WSMinsal::crea_muestra($case);
                     if ($response['status'] == 0) {
                         session()->flash('info', 'Error al subir muestra ' . $case->id . ' a MINSAL. ' . $response['msg']);
+                        return redirect()->back();
                         // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'laboratory','externos'));
                     }else{
                         $response = WSMinsal::recepciona_muestra($case);
                         if ($response['status'] == 0) {
                             session()->flash('info', 'Error al recepcionar muestra ' . $case->id . ' en MINSAL. ' . $response['msg']);
+                            return redirect()->back();
                             // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'laboratory','externos'));
                         }else{
                             $response = WSMinsal::resultado_muestra($case);
                             if ($response['status'] == 0) {
                                 session()->flash('info', 'Error al subir resultado de muestra ' . $case->id . ' en MINSAL. ' . $response['msg']);
+                                return redirect()->back();
                                 // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'laboratory','externos'));
                             }
                         }
@@ -398,6 +401,7 @@ class SuspectCaseReportController extends Controller
                 }
             }else{
                 session()->flash('info', 'No se detectó run de médico registrado en muestra:  ' . $case->id);
+                return redirect()->back();
             }
         }
 

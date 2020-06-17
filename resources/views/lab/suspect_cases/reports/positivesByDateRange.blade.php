@@ -49,6 +49,8 @@
             <th nowrap>Teléfono</th>
             <th nowrap>Latitud</th>
             <th nowrap>Longitud</th>
+            <th nowrap>Gestante</th>
+            <th nowrap>Establecimiento</th>
         </thead>
 
         <tbody>
@@ -71,6 +73,9 @@
                     <td nowrap>{{ ($suspectCase->patient->demographic)? $suspectCase->patient->demographic->telephone : '' }}</td>
                     <td nowrap>{{ ($suspectCase->patient->demographic)? $suspectCase->patient->demographic->latitude : '' }}</td>
                     <td nowrap>{{ ($suspectCase->patient->demographic)? $suspectCase->patient->demographic->longitude : '' }}</td>
+                    <td nowrap>{{ ($suspectCase->gestation == 1) ? 'Sí' : '' }}</td>
+                    <td nowrap>{{ ($suspectCase->establishment) ? $suspectCase->establishment->alias : '' }}</td>
+
                 </tr>
         @endforeach
         </tbody>
