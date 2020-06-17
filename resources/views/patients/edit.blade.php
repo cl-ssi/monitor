@@ -197,9 +197,16 @@
     <h4 class="mt-4">Examenes Inmunoglobulinas</h4>
 
     @can('Inmuno Test: create')
-    <a class="btn btn-primary btn-sm" href="{{ route('lab.inmuno_tests.create', 'search_false') }}">
+    <!-- <a class="btn btn-primary btn-sm" href="{{ route('lab.inmuno_tests.create', 'search_false') }}">
         <i class="fas fa-plus"></i> Agregar Test
+    </a> -->
+
+    <a class="btn btn-primary btn-sm" href="" data-toggle="modal" data-target="#exampleModal">
+      <i class="fas fa-plus"></i> Agregar Test
     </a>
+
+    @include('patients.modals.create_inmuno')
+
     @endcan
 
     <table class="table table-sm table-bordered small mb-4 mt-4">
