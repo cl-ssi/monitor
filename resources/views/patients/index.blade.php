@@ -76,9 +76,10 @@
           @endforeach
       </tbody>
   </table>
-</div>
+
 
 {{ $patients->appends(request()->query())->links() }}
+</div>
 
 @endsection
 
