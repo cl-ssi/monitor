@@ -18,24 +18,28 @@ class EventController extends Controller
         //dd($request);
         $event = new Event($request->All());
         $event->user_id = auth()->id();
+        if($request->input('sympthoms_array')) {
+            $event->symptoms = implode (", ",$request->input('sympthoms_array'));
+        }
         $event->save();
 
-        switch ($request->input('next_action')) {
-            case 0:
-                $event->tracing->status = 0;
-                break;
-            case 1:
-                $event->tracing->next_control_at = $event->event_at->add(1,'day');
-                break;
-            case 2:
-                $event->tracing->next_control_at = $event->event_at->add(2,'day');
-                break;
-            case 3:
-                $event->tracing->next_control_at = $event->event_at->add(3,'day');
-                break;
+        if($request->input('next_action')) {
+            switch ($request->input('next_action')) {
+                case 0:
+                    $event->tracing->status = 0;
+                    break;
+                case 1:
+                    $event->tracing->next_control_at = $event->event_at->add(1,'day');
+                    break;
+                case 2:
+                    $event->tracing->next_control_at = $event->event_at->add(2,'day');
+                    break;
+                case 3:
+                    $event->tracing->next_control_at = $event->event_at->add(3,'day');
+                    break;
+            }
+            $event->tracing->save();
         }
-
-        $event->tracing->save();
 
         session()->flash('info', 'Evento almacenado');
 
