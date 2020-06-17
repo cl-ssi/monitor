@@ -31,12 +31,14 @@ class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
         // $from = ("2020-05-14 21:00:00");
         // $to = ("2020-05-15 20:59:59");
 
-        return SuspectCase::where('laboratory_id',$this->cod_lab)
+        $sc = SuspectCase::where('laboratory_id',$this->cod_lab)
                 ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
                 ->whereNull('external_laboratory')
                 ->get()
                 ->sortByDesc('pscr_sars_cov_2_at');
         // return SuspectCase::find(1301);
+
+        DD($sc);
 
     }
 
