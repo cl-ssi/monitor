@@ -733,9 +733,17 @@ class SuspectCaseController extends Controller
     public function exportMinsalExcel($laboratory, Request $request)
     {
         //dd($from);
+
+        if($from = $request->has('from')){
+            $from = $request->get('from'). ' 21:00:00';
+            $to = $request->get('to'). ' 20:59:59';
+        }else{
+            $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+            $to = date("Y-m-d 20:59:59");
+        }
         
-        $from = $request->get('from'). ' 21:00:00';
-        $to = $request->get('to'). ' 20:59:59';
+        // $from = $request->get('from'). ' 21:00:00';
+        // $to = $request->get('to'). ' 20:59:59';
         //dd($request->get('from'));
         // switch ($cod_lab) {
         //     case '1':
