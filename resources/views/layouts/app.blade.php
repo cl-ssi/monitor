@@ -101,7 +101,7 @@
                                 @endcan
 
                                 @can('SuspectCase: own')
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.ownIndex') }}?text=&pendientes=on">Mis exámenes</a>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.ownIndex') }}?text=&filter%5B%5D=pending">Mis exámenes</a>
                                 @endcan
 
 
