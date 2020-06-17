@@ -315,19 +315,28 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     /*                  REPORTE MINSAL WS                */
     /*****************************************************/
-    public function report_minsal_ws(Laboratory $laboratory)
+    public function report_minsal_ws(Request $request)
     {
         $from = '2020-06-01 00:00';//date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $to = date("Y-m-d 20:59:59");
 
+        $laboratory_id = 1;
+        if ($request->all()) {
+            $laboratory_id = $request->laboratory_id;
+        }else{
+            $request->laboratory_id = 1;
+        }
+
+
         // $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
 
-        $cases = SuspectCase::where('laboratory_id',$laboratory->id)
+        $cases = SuspectCase::where('laboratory_id',$laboratory_id)
                 ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
                 ->whereNull('external_laboratory')
                 ->whereNULL('minsal_ws_id')
-                ->get()
-                ->sortByDesc('pscr_sars_cov_2_at');
+                // ->get()
+                // ->sortByDesc('pscr_sars_cov_2_at');
+                ->paginate(15);
 
         // //obtiene datos que faltan
         // foreach ($cases as $key => $case) {
@@ -350,21 +359,26 @@ class SuspectCaseReportController extends Controller
         // }
 
         // dd($cases->first());
-        return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'laboratory'));//,'externos'));
+
+        $laboratories = Laboratory::all();
+
+        return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'request','laboratories'));//,'externos'));
     }
 
 
     /*****************************************************/
     /*                    WS - Minsal                    */
     /*****************************************************/
-    public function ws_minsal(Laboratory $laboratory)
+    public function ws_minsal(Request $request)
     {
+
+        // dd($request);
         $from = '2020-06-01 00:00';//date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $to = date("Y-m-d 20:59:59");
 
         // $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
 
-        $cases = SuspectCase::where('laboratory_id',$laboratory->id)
+        $cases = SuspectCase::where('laboratory_id',$request->laboratory_id)
                 ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
                 ->whereNull('external_laboratory')
                 ->whereNULL('minsal_ws_id')
