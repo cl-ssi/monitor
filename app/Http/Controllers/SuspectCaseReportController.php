@@ -84,14 +84,33 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     public function case_tracing(Request $request)
     {
-        $patients = Patient::
-            whereHas('suspectCases', function ($q) {
-              $q->where('pscr_sars_cov_2','positive');
-            })
+//        $patients = Patient::
+//            whereHas('suspectCases', function ($q) {
+//              $q->where('pscr_sars_cov_2','positive');
+//            })
+//            ->with('inmunoTests')
+//            ->get();
+
+//        $region_not = array_diff( [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], [env('REGION')] );
+//        $patients = $patients->whereNotIn('demographic.region_id', $region_not);
+
+        $env_communes = array_map('trim', explode(",", env('COMUNAS')));
+
+        $patients = Patient::whereHas('suspectCases', function ($q) {
+            $q->where('pscr_sars_cov_2', 'positive');
+        })->whereHas('demographic', function ($q) use ($env_communes) {
+            $q->whereIn('commune_id', $env_communes);
+        })
             ->with('inmunoTests')
             ->get();
-        $region_not = array_diff( [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], [env('REGION')] );
-        $patients = $patients->whereNotIn('demographic.region_id', $region_not);
+
+        $patientsNoDemographic = Patient::whereHas('suspectCases', function ($q) {
+            $q->where('pscr_sars_cov_2', 'positive');
+        })->doesntHave('demographic')
+            ->with('inmunoTests')
+            ->get();
+
+//        dd($patientsNoDemographic);
 
         $max_cases = 0;
         $max_cases_inmuno = 0;
@@ -102,10 +121,20 @@ class SuspectCaseReportController extends Controller
             if($max_cases_inmuno < $patient->inmunoTests->count()){
                 $max_cases_inmuno = $patient->inmunoTests->count();
             }
-
         }
 
-        return view('lab.suspect_cases.reports.case_tracing', compact('patients','max_cases', 'max_cases_inmuno'));
+        $max_cases_no_demographic = 0;
+        $max_cases_inmuno_no_demographic = 0;
+        foreach ($patientsNoDemographic as $patient) {
+            if($max_cases_no_demographic < $patient->suspectCases->count()){
+                $max_cases_no_demographic = $patient->suspectCases->count();
+            }
+            if($max_cases_inmuno_no_demographic < $patient->inmunoTests->count()){
+                $max_cases_inmuno_no_demographic = $patient->inmunoTests->count();
+            }
+        }
+
+        return view('lab.suspect_cases.reports.case_tracing', compact('patients','patientsNoDemographic', 'max_cases', 'max_cases_inmuno', 'max_cases_no_demographic', 'max_cases_inmuno_no_demographic'));
     }
 
     public function case_tracing_excel(Request $request)
@@ -139,16 +168,15 @@ class SuspectCaseReportController extends Controller
 
     public function case_tracing_export()
     {
-        $patients = Patient::latest()
-            ->whereHas('suspectCases', function ($q) {
-                $q->where('pscr_sars_cov_2','positive');
-            })
-            ->with('suspectCases')
+        $env_communes = array_map('trim', explode(",", env('COMUNAS')));
+
+        $patients = Patient::whereHas('suspectCases', function ($q) {
+            $q->where('pscr_sars_cov_2', 'positive');
+        })->whereHas('demographic', function ($q) use ($env_communes) {
+            $q->whereIn('commune_id', $env_communes);
+        })
             ->with('inmunoTests')
             ->get();
-
-        $region_not = array_diff( [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], [env('REGION')] );
-        $patients = $patients->whereNotIn('demographic.region_id', $region_not);
 
         $max_cases = 0;
         $max_cases_inmuno = 0;
