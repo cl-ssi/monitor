@@ -77,7 +77,7 @@ class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
                   $suspectCase->patient->demographic->commune) {
                 $address = $suspectCase->patient->demographic->address;
                 $number = $suspectCase->patient->demographic->number;
-                $commune = $suspectCase->patient->demographic->commune->name;
+                $commune = $suspectCase->patient->demographic->commune;
             }
             else {
                 $address  = '';
