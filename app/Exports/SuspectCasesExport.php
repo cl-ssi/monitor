@@ -17,16 +17,9 @@ use Carbon\Carbon;
 class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping, WithColumnFormatting, ShouldAutoSize
 {
     private $cod_lab;
-    private $lab_id;
 
     public function __construct($cod_lab) {
           $this->cod_lab = $cod_lab;
-          if($this->cod_lab == 'hetg'){
-              $this->lab_id = 1;
-          }
-          if($this->cod_lab == 'unap'){
-              $this->lab_id = 2;
-          }
     }
     /**
     * @return \Illuminate\Support\Collection
@@ -38,7 +31,7 @@ class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping, W
               ->get();
         }
         else{
-          return SuspectCase::where('laboratory_id', $this->lab_id)
+          return SuspectCase::where('laboratory_id', $this->cod_lab)
               ->orderBy('suspect_cases.id', 'desc')
               ->get();
         }
