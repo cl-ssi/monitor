@@ -154,12 +154,54 @@
                         </li>
                         @endcan
 
-                        @canany(['SanitaryResidence: user', 'SanitaryResidence: admin'])
+                        <!-- @canany(['SanitaryResidence: user', 'SanitaryResidence: admin'])
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('sanitary_residences.home') }}">
                                 <i class="fas fa-hotel"></i>
                                 Residencias
                             </a>
+                        </li>
+                        @endcan -->
+
+
+
+                        @canany(['SanitaryResidence: user'])
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-shopping-basket"></i>
+                                Residencia
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.home') }}">Residencias Sanitarias</a>
+                                
+                                <div class="dropdown-divider"></div>
+                                
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.excelall') }}">Booking Actuales</a>
+
+                                @can('SanitaryResidence: admin')
+
+
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.residences.statusReport') }}">Consolidado Booking</a>
+
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.bookingByDate') }}">Booking Realizados por Fechas</a>
+                                
+                                <div class="dropdown-divider"></div>
+
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.residences.index') }}">Mantenedor Residencias</a>
+
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.rooms.index') }}">Habitaciones</a>
+
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.users') }}">Usuarios</a>
+                                
+
+                                <div class="dropdown-divider"></div>
+
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.admission.index') }}">Aprobados por SEREMI</a>
+
+                                @endcan
+                                
+                            </div>
                         </li>
                         @endcan
 
