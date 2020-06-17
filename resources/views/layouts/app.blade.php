@@ -212,14 +212,14 @@
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.rooms.index') }}">Habitaciones</a>
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.users') }}">Usuarios</a>
-                                
+
 
                                 <div class="dropdown-divider"></div>
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.admission.index') }}">Aprobados por SEREMI</a>
 
                                 @endcan
-                                
+
                             </div>
                         </li>
                         @endcan
