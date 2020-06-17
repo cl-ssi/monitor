@@ -727,21 +727,30 @@ class SuspectCaseController extends Controller
     }
 
     public function exportExcel($cod_lab = null){
-        return Excel::download(new SuspectCasesExport($cod_lab), 'lista-examenes.xlsx');
+        //return Excel::download(new SuspectCasesExport($cod_lab), 'lista-examenes.xlsx');
     }
 
-    public function exportMinsalExcel($cod_lab = null)
+    public function exportMinsalExcel($laboratory, Request $request)
     {
-        switch ($cod_lab) {
-            case '1':
-                $nombre_lab = 'HETG';
-                break;
-            case '2':
-                $nombre_lab = 'UNAP';
-                break;
-        }
+        //dd($from);
+        
+        $from = $request->get('from'). ' 21:00:00';
+        $to = $request->get('to'). ' 20:59:59';
+        //dd($request->get('from'));
+        // switch ($cod_lab) {
+        //     case '1':
+        //         $nombre_lab = 'HETG';
+        //         break;
+        //     case '2':
+        //         $nombre_lab = 'UNAP';
+        //         break;
+        // }
+        
+        //dd($nombre_lab);
 
-        return Excel::download(new MinsalSuspectCasesExport($cod_lab, $nombre_lab), 'reporte-minsal.xlsx');
+        //return Excel::download(new MinsalSuspectCasesExport($cod_lab, $nombre_lab), 'reporte-minsal.xlsx');
+        //dd($from);
+        return Excel::download(new MinsalSuspectCasesExport($laboratory, $from, $to), 'reporte-minsal-desde-'.$from.'-hasta-'.$to.'.xlsx');
     }
 
     public function exportSeremiExcel($cod_lab = null)
