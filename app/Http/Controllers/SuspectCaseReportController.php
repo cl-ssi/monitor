@@ -362,7 +362,7 @@ class SuspectCaseReportController extends Controller
         $from = '2020-06-01 00:00';//date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $to = date("Y-m-d 20:59:59");
 
-        $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
+        // $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
 
         $cases = SuspectCase::where('laboratory_id',$laboratory->id)
                 ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
@@ -374,7 +374,7 @@ class SuspectCaseReportController extends Controller
                 // $cases = SuspectCase::where('id',13784)->get();
                 // dd($cases);
 
-        // dd($cases);
+        dd($cases);
         foreach ($cases as $key => $case) {
             if ($case->run_medic != 0) {
                 if ($case->patient->demographic && $case->files) {
@@ -392,6 +392,8 @@ class SuspectCaseReportController extends Controller
                             if ($response['status'] == 0) {
                                 session()->flash('info', 'Error al subir resultado de muestra ' . $case->id . ' en MINSAL. ' . $response['msg']);
                                 // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'laboratory','externos'));
+                            }else{
+                                session()->flash('success', 'Se registró muestra: ' . $case->id);
                             }
                         }
                     }
