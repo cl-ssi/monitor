@@ -732,22 +732,39 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.reception_inbox', compact('suspectCases', 'establishments', 'selectedEstablishment'));
     }
 
-    public function exportExcel($cod_lab = null){
+    public function exportExcel($cod_lab){
         return Excel::download(new SuspectCasesExport($cod_lab), 'lista-examenes.xlsx');
     }
 
-    public function exportMinsalExcel($cod_lab = null)
+    public function exportMinsalExcel($laboratory, Request $request)
     {
-        switch ($cod_lab) {
-            case '1':
-                $nombre_lab = 'HETG';
-                break;
-            case '2':
-                $nombre_lab = 'UNAP';
-                break;
+        //dd($from);
+
+        if($from = $request->has('from')){
+            $from = $request->get('from'). ' 21:00:00';
+            $to = $request->get('to'). ' 20:59:59';
+        }else{
+            $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+            $to = date("Y-m-d 20:59:59");
         }
 
-        return Excel::download(new MinsalSuspectCasesExport($cod_lab, $nombre_lab), 'reporte-minsal.xlsx');
+        // $from = $request->get('from'). ' 21:00:00';
+        // $to = $request->get('to'). ' 20:59:59';
+        //dd($request->get('from'));
+        // switch ($cod_lab) {
+        //     case '1':
+        //         $nombre_lab = 'HETG';
+        //         break;
+        //     case '2':
+        //         $nombre_lab = 'UNAP';
+        //         break;
+        // }
+
+        //dd($nombre_lab);
+
+        //return Excel::download(new MinsalSuspectCasesExport($cod_lab, $nombre_lab), 'reporte-minsal.xlsx');
+        //dd($from);
+        return Excel::download(new MinsalSuspectCasesExport($laboratory, $from, $to), 'reporte-minsal-desde-'.$from.'-hasta-'.$to.'.xlsx');
     }
 
     public function exportSeremiExcel($cod_lab = null)
