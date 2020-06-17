@@ -11,6 +11,7 @@
 <div class="table-responsive">
     <table class="table table-sm table-bordered table-responsive small" id="tabla_estado_residencias">
         <thead>
+            <th nowrap>N°</th>
             <th nowrap>Residencia</th>
             <th nowrap>Habitaciones total</th>
             <th nowrap>Habitaciones ocupadas</th>
@@ -22,7 +23,8 @@
         @foreach($dataArray as $residencia)
             @if(!$loop->last)
             <tr>
-                <td nowrap>{{$loop->iteration}}){{$residencia['residenceName']}}</td>
+                <td nowrap>{{$loop->iteration}}</td>
+                <td nowrap>{{$residencia['residenceName']}}</td>
                 <td nowrap>{{$residencia['totalRooms']}}</td>
                 <td nowrap>{{$residencia['occupiedRooms']}}</td>
                 <td nowrap>{{$residencia['patients'] }}</td>

@@ -6,7 +6,7 @@
 
 @include('sanitary_residences.nav')
 
-<h3 class="mb-3">Listado de Personas Aprobadas para Residencia</h3>
+<h3 class="mb-3">Listado de Personas Aprobadas para Residencia Sanitaria</h3>
 
 
 
