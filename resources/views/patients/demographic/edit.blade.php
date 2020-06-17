@@ -321,13 +321,13 @@
     <fieldset class="form-group col-6 col-md-2">
         <label for="for_latitude">Latitud</label>
         <input type="number" class="form-control" step="00.00000001" id="for_latitude"
-            name="latitude" value="{{ $patient->demographic->latitude }}" readonly>
+            name="latitude" value="{{ $patient->demographic->latitude }}">
     </fieldset>
 
     <fieldset class="form-group col-6 col-md-2">
         <label for="for_longitude">Longitud</label>
         <input type="number" step="00.00000001" class="form-control" id="for_longitude"
-            name="longitude" value="{{ $patient->demographic->longitude }}" readonly>
+            name="longitude" value="{{ $patient->demographic->longitude }}">
     </fieldset>
 
 </div>
