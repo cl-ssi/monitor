@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Exports;
-
+use App\Lab\Exam\Covid19;
 use App\SuspectCase;
 use App\Patient;
 use Maatwebsite\Excel\Concerns\{FromCollection, WithHeadings, WithMapping,
@@ -14,11 +14,15 @@ use App\Laboratory;
 class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapping, WithColumnFormatting, ShouldAutoSize
 {
     private $cod_lab;
-    private $nombre_lab;
+    private $from;
+    private $to;
+    
 
-    public function __construct($cod_lab, $nombre_lab) {
-        $this->cod_lab = $cod_lab;
-        $this->nombre_lab = $nombre_lab;
+    public function __construct($laboratory, $from, $to) {
+        $this->cod_lab = $laboratory;        
+        $this->from = $from;
+        $this->to = $to;        
+        //$this->nombre_lab = 'hola probando';
   }
 
     /**
@@ -26,13 +30,20 @@ class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
     */
     public function collection()
     {
-        $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
-        $to = date("Y-m-d 20:59:59");
-        // $from = ("2020-05-14 21:00:00");
-        // $to = ("2020-05-15 20:59:59");
+        // $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+        // $to = date("Y-m-d 20:59:59");
+        // $from = ("2020-06-15 21:00:00");
+        // $to = ("2020-06-17 20:59:59");
 
+        //$externos = Covid19::whereBetween('result_at', [$from, $to])->get();
+        // $test = SuspectCase::where('laboratory_id',$this->cod_lab)
+        // ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
+        // ->whereNull('external_laboratory')
+        // ->get()
+        // ->sortByDesc('pscr_sars_cov_2_at');
+        // dd($test);
         return SuspectCase::where('laboratory_id',$this->cod_lab)
-                ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
+                ->whereBetween('pscr_sars_cov_2_at', [$this->from, $this->to])
                 ->whereNull('external_laboratory')
                 ->get()
                 ->sortByDesc('pscr_sars_cov_2_at');
@@ -77,7 +88,7 @@ class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
                   $suspectCase->patient->demographic->commune) {
                 $address = $suspectCase->patient->demographic->address;
                 $number = $suspectCase->patient->demographic->number;
-                $commune = $suspectCase->patient->demographic->commune;
+                $commune = $suspectCase->patient->demographic->commune->name;
             }
             else {
                 $address  = '';
@@ -106,9 +117,9 @@ class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
             //strtoupper($suspectCase->origin),
             ($suspectCase->establishment)?$suspectCase->establishment->alias.' - '.$suspectCase->origin: '',
 
-            'TARAPACÁ',
-            $this->nombre_lab,
-            'TARAPACÁ',
+            $suspectCase->establishment->commune->region->name,
+            $suspectCase->laboratory->name,
+            $suspectCase->laboratory->commune->region->name,
             $telephone,
             $email,
             strtoupper($address.' '.$number.' '.$commune),
