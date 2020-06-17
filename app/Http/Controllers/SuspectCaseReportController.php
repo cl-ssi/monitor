@@ -401,6 +401,9 @@ class SuspectCaseReportController extends Controller
             }else{
                 session()->flash('info', 'No se detectó run de médico registrado en muestra:  ' . $case->id);
             }
+
+            session()->flash('success', 'Se ha subido la información a sistema MINSAL.');
+            return redirect()->back();
         }
 
         session()->flash('success', 'Se ha subido la información a sistema MINSAL.');
