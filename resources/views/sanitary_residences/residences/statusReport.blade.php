@@ -22,7 +22,7 @@
         @foreach($dataArray as $residencia)
             @if(!$loop->last)
             <tr>
-                <td nowrap>{{$residencia['residenceName']}}</td>
+                <td nowrap>{{$loop->iteration}}){{$residencia['residenceName']}}</td>
                 <td nowrap>{{$residencia['totalRooms']}}</td>
                 <td nowrap>{{$residencia['occupiedRooms']}}</td>
                 <td nowrap>{{$residencia['patients'] }}</td>
