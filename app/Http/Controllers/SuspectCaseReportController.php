@@ -117,7 +117,7 @@ class SuspectCaseReportController extends Controller
             })
             ->with('contactPatient')
             ->get();
-            
+
         return view('lab.suspect_cases.reports.case_tracing_excel', compact('patients'));
     }
 
@@ -318,9 +318,9 @@ class SuspectCaseReportController extends Controller
                 ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
                 ->whereNull('external_laboratory')
                 ->whereNULL('minsal_ws_id')
-                // ->get()
-                // ->sortByDesc('pscr_sars_cov_2_at');
-                ->paginate(15);
+                ->get()
+                ->sortByDesc('pscr_sars_cov_2_at');
+                // ->paginate(15);
 
         // //obtiene datos que faltan
         // foreach ($cases as $key => $case) {
