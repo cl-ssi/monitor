@@ -72,7 +72,7 @@
             <td nowrap>{{ ($case->patient->demographic)?$case->patient->demographic->email:'' }}</td>
             <td nowrap>{{ ($case->patient->demographic)?$case->patient->demographic->address:'' }}
                        {{ ($case->patient->demographic)? $case->patient->demographic->number:'' }}
-                       {{ ($case->patient->demographic)?$case->patient->demographic->commune->name:'' }}</td>
+                       {{ ($case->patient->demographic AND $case->patient->demographic->commune) ?$case->patient->demographic->commune->name:'' }}</td>
         </tr>
         @endforeach
 
