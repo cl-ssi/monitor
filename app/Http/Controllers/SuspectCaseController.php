@@ -726,8 +726,8 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.reception_inbox', compact('suspectCases', 'establishments', 'selectedEstablishment'));
     }
 
-    public function exportExcel($cod_lab = null){
-        //return Excel::download(new SuspectCasesExport($cod_lab), 'lista-examenes.xlsx');
+    public function exportExcel($cod_lab){
+        return Excel::download(new SuspectCasesExport($cod_lab), 'lista-examenes.xlsx');
     }
 
     public function exportMinsalExcel($laboratory, Request $request)
@@ -741,7 +741,7 @@ class SuspectCaseController extends Controller
             $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
             $to = date("Y-m-d 20:59:59");
         }
-        
+
         // $from = $request->get('from'). ' 21:00:00';
         // $to = $request->get('to'). ' 20:59:59';
         //dd($request->get('from'));
@@ -753,7 +753,7 @@ class SuspectCaseController extends Controller
         //         $nombre_lab = 'UNAP';
         //         break;
         // }
-        
+
         //dd($nombre_lab);
 
         //return Excel::download(new MinsalSuspectCasesExport($cod_lab, $nombre_lab), 'reporte-minsal.xlsx');
