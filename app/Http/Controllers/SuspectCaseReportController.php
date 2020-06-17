@@ -374,7 +374,7 @@ class SuspectCaseReportController extends Controller
                 // $cases = SuspectCase::where('id',13784)->get();
                 // dd($cases);
 
-        dd($cases);
+        // dd($cases);
         foreach ($cases as $key => $case) {
             if ($case->run_medic != 0) {
                 if ($case->patient->demographic && $case->files) {
