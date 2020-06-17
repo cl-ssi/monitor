@@ -181,7 +181,7 @@
 
                                 @can('SanitaryResidence: admin')
 
-                                
+
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.residences.statusReport') }}">Consolidado Booking</a>
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.bookingByDate') }}">Booking Realizados por Fechas</a>
@@ -194,35 +194,6 @@
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.users') }}">Usuarios</a>
                                 @endcan
-
-                                <div class="dropdown-divider"></div>
-
-                                @can('SuspectCase: list')
-                                @php
-                                $labs = App\Laboratory::where('external',0)->get();
-                                @endphp
-
-                                
-
-                                <div class="dropdown-divider"></div>
-
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.index') }}?text=&pendientes=on">Todos los exámenes</a>
-                                @endcan
-
-                                @can('SuspectCase: own')
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.ownIndex') }}?text=&pendientes=on">Mis exámenes</a>
-                                @endcan
-
-
-                                @can('Patient: tracing')
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing') }}">Seguimiento de casos</a>
-                                @endcan
-
-                                @can('Developer')
-                                <a class="dropdown-item" href="{{ route('patients.tracings.communes') }}">Seguimiento de mis comunas</a>
-                                <a class="dropdown-item" href="{{ route('patients.tracings.establishments') }}">Seguimiento de mis establecimientos</a>
-                                @endcan
-
                             </div>
                         </li>
                         @endcan
