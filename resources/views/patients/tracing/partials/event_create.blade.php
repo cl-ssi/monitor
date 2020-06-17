@@ -22,6 +22,28 @@
                 </fieldset>
 
             </div>
+
+            <div class="form-row">
+                <fieldset class="form-group col">
+                    <label for="for_sympthoms">Síntomas</label>
+                    <select name="sympthoms[]" id="for_sympthoms"
+                        class="form-control selectpicker"
+                        title="Seleccione síntomas" multiple >
+                        <option value="Fiebre">Fiebre</option>
+                        <option value="Tos">Tos</option>
+                        <option value="Mialgias">Mialgias</option>
+                        <option value="Odinofagia">Odinofagia</option>
+                        <option value="Anosmia">Anosmia</option>
+                        <option value="Ageusia">Ageusia</option>
+                        <option value="Dolor toráxico">Dolor toráxico</option>
+                        <option value="Diarrea">Diarrea</option>
+                        <option value="Calofrios">Calofrios</option>
+                        <option value="Cefalea">Cefalea</option>
+                        <option value="Dificultad para respirar">Dificultad para respirar</option>
+                    </select>
+                </fieldset>
+            </div>
+
             <div class="form-row">
                 <fieldset class="form-group col-md-12">
                     <label for="for_event_type_id">Próximo Control</label>
@@ -54,7 +76,7 @@
 
                 <fieldset class="form-group col-md-12">
                     <label for="for_details">Detalle del envento</label>
-                    <textarea class="form-control" name="details" rows="5"
+                    <textarea class="form-control" name="details" rows="8"
                         id="for_details"></textarea>
                 </fieldset>
 

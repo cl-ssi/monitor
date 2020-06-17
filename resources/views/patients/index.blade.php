@@ -57,21 +57,21 @@
                       </a>
                   @endcan
               </td>
-              <td class="text-rigth" nowrap>{{ $patient->identifier }}</td>
-              <td class="text-rigth">
+              <td class="text-right" nowrap>{{ $patient->identifier }}</td>
+              <td class="text-right">
                   {{ $patient->fullName }}
               </td>
               <td>{{ $patient->sexEsp }}</td>
               <td nowrap>{{ ($patient->birthday)?$patient->birthday->format('d-m-Y'):'' }}</td>
-              <td nowrap>{{ ($patient->demographic AND $patient->demographic->commune)  ?$patient->demographic->commune->name:'' }}</td>
-              <td>
+              <td class="text-right" nowrap>{{ ($patient->demographic AND $patient->demographic->commune)  ?$patient->demographic->commune->name:'' }}</td>
+              <td class="text-right">
                   {{ ($patient->demographic)?$patient->demographic->address:'' }}
                   {{ ($patient->demographic)?$patient->demographic->number:'' }}
               </td>
-              <td>
+              <td class="text-right">
                   {{ ($patient->demographic)?$patient->demographic->telephone:'' }}
               </td>
-              <td>{{ ($patient->demographic)?$patient->demographic->email:'' }}</td>
+              <td class="text-right">{{ ($patient->demographic)?$patient->demographic->email:'' }}</td>
           </tr>
           @endforeach
       </tbody>

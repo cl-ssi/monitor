@@ -197,9 +197,16 @@
     <h4 class="mt-4">Examenes Inmunoglobulinas</h4>
 
     @can('Inmuno Test: create')
-    <a class="btn btn-primary btn-sm" href="{{ route('lab.inmuno_tests.create', 'search_false') }}">
+    <!-- <a class="btn btn-primary btn-sm" href="{{ route('lab.inmuno_tests.create', 'search_false') }}">
         <i class="fas fa-plus"></i> Agregar Test
+    </a> -->
+
+    <a class="btn btn-primary btn-sm" href="" data-toggle="modal" data-target="#exampleModal">
+      <i class="fas fa-plus"></i> Agregar Test
     </a>
+
+    @include('patients.modals.create_inmuno')
+
     @endcan
 
     <table class="table table-sm table-bordered small mb-4 mt-4">
@@ -380,9 +387,15 @@
 @endsection
 
 @section('custom_js')
+<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-select.min.css') }}">
+
+<script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
+<script src="{{ asset('js/defaults-es_CL.min.js') }}"></script>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
 <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+
 <script type="text/javascript">
 
 jQuery(document).ready(function () {
@@ -466,6 +479,6 @@ jQuery(document).ready(function () {
   });
 
 });
-</script>
 
+</script>
 @endsection

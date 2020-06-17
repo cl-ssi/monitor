@@ -90,7 +90,7 @@
     <div class="card-body">
         <h5>Ingreso de resultados:</h5>
 
-        <form method="POST" class="form-horizontal" action="{{ route('lab.inmuno_tests.store') }}">
+        <form method="POST" class="form-horizontal" action="{{ route('lab.inmuno_tests.store', 'inmuno_form') }}">
             @csrf
             @method('POST')
             <div class="form-row">
