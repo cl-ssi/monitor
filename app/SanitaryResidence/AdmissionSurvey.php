@@ -51,53 +51,38 @@ class AdmissionSurvey extends Model implements Auditable //Authenticatable
     }
 
     function getResultAttribute(){
-        // switch($this->isolate) {
-        //     case '1': return '<span class="bg-primary text-white">PACIENTE SE PUEDE AISLAR EN SU DOMICILIO</span>'; break;
-        //     case '0': 
-        //         if ($this->residency == 0) {
-        //             return '<span class="bg-danger text-white">RECHAZADO PARA RESIDENCIA SANITARIA</span>'; break;
-        //           }                
-        //         if ($this->residency == 1) {
-        //             return '<span class="bg-success text-white">APROBADO PARA RESIDENCIA SANITARIA</span>'; break;
-        //           }
-        //         if ($this->residency == null) {
-        //             return '<span class="bg-warning text-dark">PENDIENTE VISTO BUENO</span>'; break;
-        //           }
-                
-            
-        // }
-        if ($this->isolate == 1)
+        if ($this->isolate == 1 and $this->residency == 1)
         {
-            return '<span class="bg-primary text-white">PACIENTE SE PUEDE AISLAR EN SU DOMICILIO</span>';
-            
+                 return '<span class="bg-success text-white">SE PUEDE AISLAR</span> <span class="bg-danger text-white"><br> CALIFICADOR APRUEBA R.S. </span>';
         }
-        else
-        {
-            if(isset($this->residency))
-            {
-                if ($this->isolate == 0 and $this->residency == 0)
-                {
-                    return '<span class="bg-danger text-white">RECHAZADO PARA RESIDENCIA SANITARIA</span>'; 
-                    
-                    
-                }
 
-                if ($this->isolate == 0 and $this->residency == 1)
-                {
-                    return '<span class="bg-success text-white">APROBADO PARA RESIDENCIA SANITARIA</span>';
-                    
-                    
-                }
-            }
-            else
-            {
-            return '<span class="bg-warning text-dark">PENDIENTE VISTO BUENO</span>';
-            }
+        if ($this->isolate == 1 and $this->residency == 0)
+        {
+                 return '<span class="bg-success text-white">SE PUEDE AISLAR<br>  CALIFICADOR RECHAZA R.S. </span>';
         }
+
+        if ($this->isolate == 0 and $this->residency == 1)
+        {
+            return '<span class="bg-danger text-white">NO SE PUEDE AISLAR <br> CALIFICADOR APRUEBA R.S. </span>';
+        }
+
+        if ($this->isolate == 0 and $this->residency == 0)
+        {
+            return '<span class="bg-danger text-white">NO SE PUEDE AISLAR </span> <span class="bg-success text-white"><br>CALIFICADOR RECHAZA R.S. </span></></spam>';
+        }
+        
     }
 
     function getIsolateTextAttribute(){
         switch($this->isolate) {
+                case '1': return 'SÍ'; break;
+                case '0': return 'No'; break;            
+        }
+    
+    }
+
+    function getResidencyTextAttribute(){
+        switch($this->residency) {
                 case '1': return 'SÍ'; break;
                 case '0': return 'No'; break;            
         }

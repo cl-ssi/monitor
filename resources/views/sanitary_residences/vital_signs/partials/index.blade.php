@@ -1,9 +1,10 @@
 <h3 class="mb-3">Listado de Signos Vitales</h3>
 
-<table class="table table-sm table-bordered table-responsive">
+<table class="table table-sm table-bordered table-responsive text-center align-middle">
     <thead>
-        <tr>
-            <th>Fecha y hora</th>
+        <tr>            
+            <th>Fecha y hora Toma de Muestra</th>
+            <th>Fecha y hora Digitación</th>
             <th>Temp.</th>
             <th>Frec. Card.</th>
             <th>P. Arterial</th>
@@ -18,8 +19,9 @@
     </thead>
     <tbody>
         @foreach($booking->vitalSigns->reverse() as $vitalsign)
-        <tr>
+        <tr>            
             <td nowrap>{{ $vitalsign->created_at->format('d-m-Y H:i') }}</td>
+            <td nowrap>{{ $vitalsign->updated_at->format('d-m-Y H:i') }}</td>
             <td class="text-center">{{ $vitalsign->temperature }}</td>
             <td class="text-center">{{ $vitalsign->heart_rate }}</td>
             <td class="text-center">{{ $vitalsign->blood_pressure }}</td>

@@ -14,18 +14,36 @@ class AdmissionSurveyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        //
-        //$admissions = AdmissionSurvey::All();
-        
-        //$admissions = AdmissionSurvey::where('residency',true)->get();
-        //$admissions = AdmissionSurvey::where('residency',1);
+    {        
         $admissions = AdmissionSurvey::where('residency',true)->
             whereHas('patient', function($q){
-            $q->where('status', 'Aprobado Residencia Sanitaria');
+            $q->where('status', 'Esperando Residencia Sanitaria');
         })->get();
         return view('sanitary_residences.admission.index', compact('admissions'));
     }
+
+    public function inbox()
+    {       
+        $admissions = AdmissionSurvey::whereNotNull('residency')->
+        whereHas('patient', function($q){
+            $q->where('status','<>' ,'Esperando Residencia Sanitaria');
+        })->get();
+
+        //dd($admissions);
+        return view('sanitary_residences.admission.inbox', compact('admissions'));
+
+    }
+
+    public function changestatus(AdmissionSurvey $admission)
+    {       
+        //dd($admission);
+        $admission->patient->status = 'Esperando Residencia Sanitaria';
+        $admission->patient->save();
+        session()->flash('success', 'Se Aprobo exitosamente para Residencia Sanitaria');
+        return redirect()->route('sanitary_residences.admission.inbox');
+    }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -54,11 +72,9 @@ class AdmissionSurveyController extends Controller
         {
         $admission->patient->status = 'Esperando Residencia Sanitaria';
         $admission->patient->save();
-        }
-        
-        
+        }        
         $admission->save();
-        session()->flash('success', 'Encuesta Realizada Esperando Visto Bueno en caso que sea necesario');
+        session()->flash('success', 'Encuesta Realizada Exitosamente a'.$admission->patient->name);
         return redirect()->route('patients.index');
     }
 
