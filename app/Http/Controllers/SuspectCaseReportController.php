@@ -140,28 +140,12 @@ class SuspectCaseReportController extends Controller
     public function case_tracing_excel(Request $request)
     {
         $patients = Patient::
-            whereHas('suspectCases', function ($q) {
-              $q->where('pscr_sars_cov_2','positive')
+            whereHas('tracing', function ($q) {
+              $q->where('status', '>', '0')
               ->Where('patient_id', 12604);
             })
             ->with('contactPatient')
             ->get();
-        $region_not = array_diff( [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], [env('REGION')] );
-        $patients = $patients->whereNotIn('demographic.region_id', $region_not);
-
-        // dd($patients);
-
-        // $max_cases = 0;
-        // $max_cases_inmuno = 0;
-        // foreach ($patients as $patient) {
-        //     if($max_cases < $patient->suspectCases->count()){
-        //         $max_cases = $patient->suspectCases->count();
-        //     }
-        //     if($max_cases_inmuno < $patient->inmunoTests->count()){
-        //         $max_cases_inmuno = $patient->inmunoTests->count();
-        //     }
-        //
-        // }
 
         return view('lab.suspect_cases.reports.case_tracing_excel', compact('patients'));
     }
@@ -343,19 +327,28 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     /*                  REPORTE MINSAL WS                */
     /*****************************************************/
-    public function report_minsal_ws(Laboratory $laboratory)
+    public function report_minsal_ws(Request $request)
     {
         $from = '2020-06-01 00:00';//date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $to = date("Y-m-d 20:59:59");
 
+        $laboratory_id = 1;
+        if ($request->all()) {
+            $laboratory_id = $request->laboratory_id;
+        }else{
+            $request->laboratory_id = 1;
+        }
+
+
         // $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
 
-        $cases = SuspectCase::where('laboratory_id',$laboratory->id)
+        $cases = SuspectCase::where('laboratory_id',$laboratory_id)
                 ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
                 ->whereNull('external_laboratory')
                 ->whereNULL('minsal_ws_id')
                 ->get()
                 ->sortByDesc('pscr_sars_cov_2_at');
+                // ->paginate(15);
 
         // //obtiene datos que faltan
         // foreach ($cases as $key => $case) {
@@ -378,21 +371,26 @@ class SuspectCaseReportController extends Controller
         // }
 
         // dd($cases->first());
-        return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'laboratory'));//,'externos'));
+
+        $laboratories = Laboratory::all();
+
+        return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'request','laboratories'));//,'externos'));
     }
 
 
     /*****************************************************/
     /*                    WS - Minsal                    */
     /*****************************************************/
-    public function ws_minsal(Laboratory $laboratory)
+    public function ws_minsal(Request $request)
     {
+
+        // dd($request);
         $from = '2020-06-01 00:00';//date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $to = date("Y-m-d 20:59:59");
 
-        $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
+        // $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
 
-        $cases = SuspectCase::where('laboratory_id',$laboratory->id)
+        $cases = SuspectCase::where('laboratory_id',$request->laboratory_id)
                 ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
                 ->whereNull('external_laboratory')
                 ->whereNULL('minsal_ws_id')
@@ -409,16 +407,19 @@ class SuspectCaseReportController extends Controller
                     $response = WSMinsal::crea_muestra($case);
                     if ($response['status'] == 0) {
                         session()->flash('info', 'Error al subir muestra ' . $case->id . ' a MINSAL. ' . $response['msg']);
+                        return redirect()->back();
                         // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'laboratory','externos'));
                     }else{
                         $response = WSMinsal::recepciona_muestra($case);
                         if ($response['status'] == 0) {
                             session()->flash('info', 'Error al recepcionar muestra ' . $case->id . ' en MINSAL. ' . $response['msg']);
+                            return redirect()->back();
                             // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'laboratory','externos'));
                         }else{
                             $response = WSMinsal::resultado_muestra($case);
                             if ($response['status'] == 0) {
                                 session()->flash('info', 'Error al subir resultado de muestra ' . $case->id . ' en MINSAL. ' . $response['msg']);
+                                return redirect()->back();
                                 // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'laboratory','externos'));
                             }
                         }
@@ -426,6 +427,7 @@ class SuspectCaseReportController extends Controller
                 }
             }else{
                 session()->flash('info', 'No se detectó run de médico registrado en muestra:  ' . $case->id);
+                return redirect()->back();
             }
         }
 
