@@ -22,7 +22,7 @@ Route::get('test/fonasa', 'TestController@fonasa');
 Route::prefix('webservices')->name('webservices.')->group(function () {
     Route::get('fonasa', 'WebserviceController@fonasa')->middleware('auth')->name('fonasa');
 });
-
+Route::get('/cuarentena', 'TracingController@quarantineCheck')->name('quarantineCheck');
 //ruta para capturar data enviada desde intranet.
 Route::match(['get', 'post'],'endpoint/receiveDispatchC19','EndpointController@receiveDispatchC19')->name('endpoint.receiveDispatchC19');
 Route::match(['get', 'post'],'endpoint/deleteDispatchC19','EndpointController@deleteDispatchC19')->name('endpoint.deleteDispatchC19');
@@ -84,7 +84,6 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
         Route::get('/{tracing}/edit', 'TracingController@edit')->name('edit');
         Route::put('/{tracing}', 'TracingController@update')->name('update');
         Route::delete('/{tracing}', 'TracingController@destroy')->name('destroy');
-        Route::get('/quarantine_check', 'TracingController@quarantineCheck')->name('quarantineCheck');
 
         Route::get('/migrate', 'TracingController@migrate')->name('migrate');
         Route::prefix('events')->name('events.')->group(function () {
@@ -161,7 +160,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::put('/{suspect_case}','SuspectCaseController@update')->name('update')->middleware('auth','can:SuspectCase: edit');
         Route::delete('/{suspect_case}','SuspectCaseController@destroy')->name('destroy')->middleware('auth','can:SuspectCase: delete');
         Route::get('/{suspect_case}/notificationForm','SuspectCaseController@notificationForm')->name('notificationForm')->middleware('auth','can:SuspectCase: admission');
-        
+
         Route::prefix('reports')->name('reports.')->group(function () {
             Route::get('/positives','SuspectCaseReportController@positives')->name('positives')->middleware('auth','can:Report: positives');
             Route::get('case_tracing','SuspectCaseReportController@case_tracing')->name('case_tracing')->middleware('auth','can:Patient: tracing');
@@ -241,7 +240,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
     Route::get('/changestatus/{admission}', 'AdmissionSurveyController@changestatus')->name('changestatus');
     Route::get('/create/{patient}', 'AdmissionSurveyController@create')->name('create');
     Route::get('/', 'AdmissionSurveyController@index')->name('index');
-    Route::get('/inbox', 'AdmissionSurveyController@inbox')->name('inbox');    
+    Route::get('/inbox', 'AdmissionSurveyController@inbox')->name('inbox');
     Route::post('/', 'AdmissionSurveyController@store')->name('store');
     Route::get('/{admission}/edit', 'AdmissionSurveyController@edit')->name('edit');
     Route::put('update/{admission}', 'AdmissionSurveyController@update')->name('update');
