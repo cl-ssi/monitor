@@ -17,6 +17,7 @@ class CreateContactPatientsTable extends Migration
             $table->id();
             $table->foreignId('patient_id');
             $table->foreignId('contact_id');
+            $table->datetime('last_contact_at')->nullable();
             $table->longText('comment')->nullable();
             $table->string('relationship')->nullable();
             $table->integer('index')->nullable();

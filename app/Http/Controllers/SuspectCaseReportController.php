@@ -113,11 +113,15 @@ class SuspectCaseReportController extends Controller
         $patients = Patient::
             whereHas('tracing', function ($q) {
               $q->where('status', '>', '0')
-              ->Where('patient_id', 12604);
+              ->where('index', '1');
             })
             ->with('contactPatient')
+            ->with('tracing')
             ->get();
-            
+
+        
+
+
         return view('lab.suspect_cases.reports.case_tracing_excel', compact('patients'));
     }
 
