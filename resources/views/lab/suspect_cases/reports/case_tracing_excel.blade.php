@@ -45,7 +45,8 @@
                     <th>FECHA FIN SEGUIMIENTO (CALCULAR LOS 14 DÍAS DESPUES) DD-MM-AAAA</th>
                     <th>SEGUIMIENTO FINALIZADO</th>
                     <th>CATEGORÍA (MIRAR DICCIONARIO)</th>
-                    <th>ESPECIFIQUE	FECHA DE NOTIFICACIÓN AL CONTACTO ESTRECHO</th>
+                    <th>ESPECIFIQUE</th>
+                    <th>FECHA DE NOTIFICACIÓN AL CONTACTO ESTRECHO</th>
                     <th>OBSERVACIÓN</th>
                     <th>PRESENTACIÓN DE SÍNTOMAS</th>
                     <th>FIEBRE</th>
@@ -95,9 +96,9 @@
                     <td></td>
                     <td></td>
                     <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->category : '' }}</td>
+                    <td>{{ $contact->RelationshipName }}</td>
                     <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>{{ $contact->observation }}</td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -125,6 +126,7 @@
             </tbody>
         </table>
     </div>
+
 </main>
 
 

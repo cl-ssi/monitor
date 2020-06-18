@@ -22,7 +22,7 @@ Route::get('test/fonasa', 'TestController@fonasa');
 Route::prefix('webservices')->name('webservices.')->group(function () {
     Route::get('fonasa', 'WebserviceController@fonasa')->middleware('auth')->name('fonasa');
 });
-Route::get('/cuarentena', 'TracingController@quarantineCheck')->name('quarantineCheck');
+Route::get('/cuarentena', 'TracingController@quarantineCheck')->name('quarantineCheck')->middleware('auth');
 //ruta para capturar data enviada desde intranet.
 Route::match(['get', 'post'],'endpoint/receiveDispatchC19','EndpointController@receiveDispatchC19')->name('endpoint.receiveDispatchC19');
 Route::match(['get', 'post'],'endpoint/deleteDispatchC19','EndpointController@deleteDispatchC19')->name('endpoint.deleteDispatchC19');
@@ -73,6 +73,7 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
     Route::prefix('contacts')->name('contacts.')->group(function () {
         Route::get('/create/{search}/{id}', 'ContactPatientController@create')->name('create')->middleware('auth');
         Route::post('/', 'ContactPatientController@store')->name('store')->middleware('auth');
+        Route::get('/{contact_patient}/edit', 'ContactPatientController@edit')->name('edit')->middleware('auth');
     });
 
     Route::prefix('tracings')->name('tracings.')->middleware('auth')->group(function () {

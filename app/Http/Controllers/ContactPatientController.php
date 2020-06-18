@@ -89,20 +89,15 @@ class ContactPatientController extends Controller
         $contactPatient = new ContactPatient($request->All());
         $contactPatient->save();
 
-        // GUARDAR RELACION INVERSA PACIENTE
-        $patient_id = $request->get('contact_id');
-        $contact_id = $request->get('patient_id');
-        $relationship = $request->get('relationship');
-
         $patient = Patient::where('id', $request->get('patient_id'))->first();
 
-        $inverse_relationship = $this->inverse_realtionship($relationship, $patient);
-
         $contactPatient = new ContactPatient($request->All());
-        $contactPatient->patient_id = $patient_id;
-        $contactPatient->contact_id = $contact_id;
-        $contactPatient->relationship = $relationship;
+        $contactPatient->patient_id = $request->get('contact_id');
+        $contactPatient->contact_id = $request->get('patient_id');
+        $contactPatient->relationship = $request->get('relationship');
         $contactPatient->comment = $request->get('comment');
+        $contactPatient->last_contact_at =  $request->get('last_contact_at');
+        $contactPatient->live_together = $request->get('live_together');
         $contactPatient->index = NULL;
 
         $contactPatient->save();
@@ -130,7 +125,7 @@ class ContactPatientController extends Controller
      */
     public function edit(ContactPatient $contactPatient)
     {
-        //
+
     }
 
     /**
@@ -157,14 +152,6 @@ class ContactPatientController extends Controller
     }
 
     public function inverse_realtionship($relationship, $patient){
-        if($patient->gender == 'male'){
-          switch ($relationship) {
-              case "son":
-                  return 'father';
-                  break;
-          }
 
-        }
-        // return $relationship.' hola';
     }
 }

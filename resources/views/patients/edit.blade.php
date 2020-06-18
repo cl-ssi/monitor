@@ -249,26 +249,28 @@
     <i class="fas fa-plus"></i> Nuevo Contacto
 </a>
 @endcan
-
 <table class="table table-sm table-bordered small mb-4 mt-4">
     <thead>
         <tr class="text-center">
             <th rowspan="2">Nombre Paciente</th>
-            <th colspan="4">Contacto</th>
+            <th colspan="6">Contacto</th>
             <th rowspan="2">Observación</th>
             <th rowspan="2">Fecha de carga</th>
         </tr>
         <tr class="text-center">
+            <th>Fecha Último Contacto</th>
             <th>Es</th>
             <th>Parentesco</th>
             <th>RUN</th>
             <th>Nombre</th>
+            <th>¿Viven Juntos?</th>
         </tr>
     </thead>
     <tbody>
       @foreach($patient->contactPatient as $contact)
       <tr>
           <td class="text-right">{{ $patient->fullName }}</td>
+          <td class="text-right">{{ $contact->last_contact_at }}</td>
           <td class="text-center">
           @if($contact->index == 1)
             Tiene como
@@ -287,12 +289,16 @@
               </a>
             @endcan
           </td>
+          <td class="text-right">{{ $contact->LiveTogetherDesc }}</td>
           <td class="text-right">{{ $contact->comment }}</td>
           <td class="text-right">{{ $contact->created_at->format('d-m-Y') }}</td>
           @can('Patient: tracing')
           <td>
-              <a class="btn btn-danger btn-sm disabled" href="">
+              <!-- <a class="btn btn-danger btn-sm disabled" href="">
                   <i class="far fa-trash-alt"></i>
+              </a> -->
+              <a class="btn btn-light btn-sm disabled" href="{{ route('patients.contacts.edit', $contact) }}">
+                  <i class="far fa-edit"></i>
               </a>
           </td>
           @endcan
