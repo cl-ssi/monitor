@@ -16,7 +16,7 @@ class ContactPatient extends Model
         'patient_id', 'contact_id', 'comment', 'relationship', 'index','user_id'
     ];
 
-    public function contact_patient() {
+    public function patient() {
         return $this->belongsTo('App\Patient', 'contact_id');
     }
 
