@@ -277,12 +277,12 @@
           @endif
           </td>
           <td class="text-right">{{ $contact->RelationshipName }}</td>
-          <td class="text-right">{{ $contact->contact_patient->identifier }}</td>
+          <td class="text-right">{{ $contact->patient->identifier }}</td>
           <td class="text-right">
             @can('Patient: edit')
               <a href="{{ route('patients.edit', $contact->contact_id) }}">
             @endcan
-            {{ $contact->contact_patient->fullName }}
+            {{ $contact->patient->fullName }}
             @can('Patient: edit')
               </a>
             @endcan
