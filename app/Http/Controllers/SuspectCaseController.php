@@ -786,4 +786,5 @@ class SuspectCaseController extends Controller
         $user = auth()->user();
         return view('lab.suspect_cases.notification_form', compact('suspectCase', 'user'));
     }
+    
 }

@@ -8,11 +8,31 @@
 
 <h3 class="mb-3">Listado de usuarios</h3>
 
-@can('Admin')
-    <a class="btn btn-primary mb-4" href="{{ route('users.create') }}">
-        Crear usuario
-    </a>
-@endcan
+    <form method="get" action="{{ route('users.index') }}">
+        <div class="form-group row">
+            <div class="col-2">
+                @can('Admin')
+                    <a class="btn btn-primary" href="{{ route('users.create') }}">
+                        Crear usuario
+                    </a>
+                @endcan
+            </div>
+            <div class="col-4">
+                <input class="form-control" type="text" name="search" value="" placeholder="Nombre y/o apellido">
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
+        </div>
+    </form>
+
+
+<h5>
+        @if($search)
+        <div class="alert alert-primary" role="alert">
+            Los resultados para tu búsqueda "{{ $search }}" son:
+        </div>
+        @endif
+</h5>
+
 
 <table class="table">
     <thead>
