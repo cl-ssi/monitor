@@ -1,14 +1,14 @@
-<table class="table table-sm table-bordered table-responsive small" id="tabla_casos_no_demographic">
+<table class="table table-sm table-bordered table-responsive small" id="tabla_casos">
     <thead>
     <tr class="text-center">
         <th colspan="7"></th>
         <th colspan="1"></th>
 
-        @for ($i=1; $i <= $max_cases_no_demographic; $i++)
+        @for ($i=1; $i <= $max_cases; $i++)
             <th colspan="5" nowrap>Covid {{ $i }}</th>
         @endfor
 
-        @for ($i=1; $i <= $max_cases_inmuno_no_demographic; $i++)
+        @for ($i=1; $i <= $max_cases_inmuno; $i++)
             <th colspan="5" nowrap>Inmunoglobulinas {{ $i }}</th>
         @endfor
 
@@ -34,7 +34,7 @@
 
         <th>Estado</th>
 
-        @for ($i=1; $i <= $max_cases_no_demographic; $i++)
+        @for ($i=1; $i <= $max_cases; $i++)
             <th class="table-active">ID</th>
             <th nowrap class="table-active">Fecha Muestra</th>
             <th nowrap class="table-active">Fecha Resultado</th>
@@ -42,7 +42,7 @@
             <th title='Sintomas'>S</th>
         @endfor
 
-        @for ($i=1; $i <= $max_cases_inmuno_no_demographic; $i++)
+        @for ($i=1; $i <= $max_cases_inmuno; $i++)
             <th class="table-active">ID</th>
             <th nowrap class="table-active">Fecha Examen</th>
             <th>IgG</th>
@@ -72,10 +72,10 @@
     </tr>
     </thead>
     <tbody>
-    @php $ct = $patientsNoDemographic->count(); @endphp
-    @foreach($patientsNoDemographic->reverse() as $patient)
+    @php $ct = $patients->count(); @endphp
+    @foreach($patients->reverse() as $patient)
         <tr class="
-            @switch($patient->status)
+                @switch($patient->status)
         @case ('Alta') alert-success @break
         @case ('Fallecido') alert-danger @break
         @case ('Hospitalizado UCI') alert-warning @break
@@ -135,7 +135,7 @@
                 <td title="Síntomas">{{ $suspectCase->symptoms }}</td>
             @endforeach
 
-            @for($i = $patient->suspectCases->count(); $i < $max_cases_no_demographic; $i++)
+            @for($i = $patient->suspectCases->count(); $i < $max_cases; $i++)
                 <td></td>
                 <td></td>
                 <td></td>
@@ -161,7 +161,7 @@
                 <td nowrap>{{ strtoupper($inmunoTest->ControlValue) }}</td>
             @endforeach
 
-            @for($i = $patient->inmunoTests->count(); $i < $max_cases_inmuno_no_demographic; $i++)
+            @for($i = $patient->inmunoTests->count(); $i < $max_cases_inmuno; $i++)
                 <td></td>
                 <td></td>
                 <td></td>
