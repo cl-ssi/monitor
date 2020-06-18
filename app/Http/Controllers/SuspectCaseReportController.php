@@ -134,7 +134,7 @@ class SuspectCaseReportController extends Controller
             }
         }
 
-        return view('lab.suspect_cases.reports.case_tracing', compact('patients','patientsNoDemographic', 'max_cases', 'max_cases_inmuno', 'max_cases_no_demographic', 'max_cases_inmuno_no_demographic'));
+        return view('lab.suspect_cases.reports.case_tracing', compact('patients', 'max_cases', 'max_cases_inmuno', 'patientsNoDemographic', 'max_cases_no_demographic', 'max_cases_inmuno_no_demographic'));
     }
 
     public function case_tracing_excel(Request $request)
