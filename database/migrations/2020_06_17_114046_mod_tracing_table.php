@@ -16,6 +16,7 @@ class ModTracingTable extends Migration
         Schema::table('tracings', function (Blueprint $table) {
             $table->datetime('notification_at')->after('functionary')->nullable();
             $table->string('notification_mechanism')->after('functionary')->nullable();
+            $table->datetime('discharged_at')->nullable();
             $table->text('chronic_diseases')->after('morbid_history')->nullable();
         });
 

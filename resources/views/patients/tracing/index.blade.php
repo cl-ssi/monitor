@@ -14,7 +14,7 @@
             <th>Establecimiento</th>
             <th>Inicio Cuarentena</th>
             <th>Fin de Cuarentena</th>
-            <th>Dias transcurridos</th>
+            <th>Notificación</th>
             <th>Ultimo evento</th>
         </tr>
     </thead>
@@ -40,8 +40,11 @@
                     $patient->demographic->commune->name : '' }}</td>
             <td>{{ ($patient->tracing->establishment) ? $patient->tracing->establishment->alias : '' }}</td>
             <td nowrap>{{ $patient->tracing->quarantine_start_at->format('Y-m-d') }}</td>
-            <td nowrap>{{ $patient->tracing->quarantine_end_at->format('Y-m-d') }}</td>
-            <td>{{ $patient->tracing->quarantine_start_at->diffInDays(Carbon\Carbon::now()) }}</td>
+            <td nowrap class="{{ ($patient->tracing->quarantine_end_at < Carbon\Carbon::now()->sub(1,'day')) ? 'text-danger' : ''}}">
+                {{ $patient->tracing->quarantine_end_at->format('Y-m-d') }}
+                ({{ $patient->tracing->quarantine_start_at->diffInDays(Carbon\Carbon::now()) }})
+            </td>
+            <td>{{ $patient->tracing->notification }}</td>
             <td nowrap>{{ ($patient->tracing->events->last()) ? $patient->tracing->events->last()->event_at->format('Y-m-d') : '' }}</td>
         </tr>
         @endforeach
