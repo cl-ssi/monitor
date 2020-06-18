@@ -18,10 +18,25 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::Latest()->get();
-        return view('users.index', compact('users'));
+ 
+        $users = User::orderby('name', 'asc')
+                ->get();
+        
+        if ($request) {
+        
+            $query = trim($request->get('search'));
+            
+            $users = User::where('name', 'LIKE', '%' . $query . '%')
+                    ->orderBy('name', 'asc')
+                    ->get();
+            
+            return view('users.index', ['users' => $users, 'search' => $query]);
+        
+        }
+
+        return view('users.index', compact('users', 'request', 'query'));
     }
 
     /**
