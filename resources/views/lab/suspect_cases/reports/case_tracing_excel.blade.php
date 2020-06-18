@@ -94,7 +94,7 @@
                     <td>{{ $contact->last_contact_at }}</td>
                     <td></td>
                     <td></td>
-                    <td></td>
+                    <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->category : '' }}</td>
                     <td></td>
                     <td></td>
                     <td></td>
