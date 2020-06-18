@@ -97,16 +97,17 @@ class SuspectCaseReportController extends Controller
         $env_communes = array_map('trim', explode(",", env('COMUNAS')));
 
         $patients = Patient::whereHas('suspectCases', function ($q) {
-            $q->where('pscr_sars_cov_2', 'positive');
-        })->whereHas('demographic', function ($q) use ($env_communes) {
-            $q->whereIn('commune_id', $env_communes);
-        })
+                $q->where('pscr_sars_cov_2', 'positive');
+            })->whereHas('demographic', function ($q) use ($env_communes) {
+                $q->whereIn('commune_id', $env_communes);
+            })
             ->with('inmunoTests')
-            ->get();
+            ->latest()
+            ->paginate(500);
 
         $patientsNoDemographic = Patient::whereHas('suspectCases', function ($q) {
-            $q->where('pscr_sars_cov_2', 'positive');
-        })->doesntHave('demographic')
+                $q->where('pscr_sars_cov_2', 'positive');
+            })->doesntHave('demographic')
             ->with('inmunoTests')
             ->get();
 
