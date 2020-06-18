@@ -8,10 +8,12 @@
 
 </main><main class="">
 
-    <h4>Casos sin domicilio</h4>
-    @include('lab.suspect_cases.reports.partials.table_case_tracing',['patients' => $patientsNoDemographic,
-                                                                        'max_cases' => $max_cases_no_demographic,
-                                                                        'max_cases_inmuno' => $max_cases_inmuno_no_demographic])
+    @if($patientsNoDemographic->count() > 0)
+        <h4>Casos sin domicilio</h4>
+        @include('lab.suspect_cases.reports.partials.table_case_tracing',['patients' => $patientsNoDemographic,
+                                                                            'max_cases' => $max_cases_no_demographic,
+                                                                            'max_cases_inmuno' => $max_cases_inmuno_no_demographic])
+    @endif
 
     <br/>
 

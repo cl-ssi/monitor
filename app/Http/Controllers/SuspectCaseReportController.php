@@ -84,15 +84,6 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     public function case_tracing(Request $request)
     {
-//        $patients = Patient::
-//            whereHas('suspectCases', function ($q) {
-//              $q->where('pscr_sars_cov_2','positive');
-//            })
-//            ->with('inmunoTests')
-//            ->get();
-
-//        $region_not = array_diff( [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], [env('REGION')] );
-//        $patients = $patients->whereNotIn('demographic.region_id', $region_not);
 
         $env_communes = array_map('trim', explode(",", env('COMUNAS')));
 
@@ -109,8 +100,6 @@ class SuspectCaseReportController extends Controller
         })->doesntHave('demographic')
             ->with('inmunoTests')
             ->get();
-
-//        dd($patientsNoDemographic);
 
         $max_cases = 0;
         $max_cases_inmuno = 0;
