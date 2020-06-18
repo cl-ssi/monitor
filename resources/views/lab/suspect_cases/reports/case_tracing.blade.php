@@ -6,10 +6,11 @@
 
 <h3 class="">Seguimiento de Casos Positivos</h3>
 
-    <h4>Casos sin comuna</h4>
-    @include('lab.suspect_cases.reports.partials.table_case_tracing',['patients' => $patientsNoDemographic,
-                                                                        'max_cases' => $max_cases_no_demographic,
-                                                                        'max_cases_inmuno' => $max_cases_inmuno_no_demographic])
+    @if($patientsNoDemographic->count() > 0)
+        @include('lab.suspect_cases.reports.partials.table_case_tracing',['patients' => $patientsNoDemographic,
+                                                                            'max_cases' => $max_cases_no_demographic,
+                                                                            'max_cases_inmuno' => $max_cases_inmuno_no_demographic])
+    @endif
 
     <br/>
 
