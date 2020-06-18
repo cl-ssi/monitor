@@ -171,16 +171,7 @@
                                 EPP
                             </a>
                         </li>
-                        @endcan
-
-                        <!-- @canany(['SanitaryResidence: user', 'SanitaryResidence: admin'])
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('sanitary_residences.home') }}">
-                                <i class="fas fa-hotel"></i>
-                                Residencias
-                            </a>
-                        </li>
-                        @endcan -->
+                        @endcan           
 
 
 
@@ -217,7 +208,12 @@
                                 <div class="dropdown-divider"></div>
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.admission.index') }}">Aprobados por SEREMI</a>
+                                @endcan
 
+
+                                @canany(['SanitaryResidence: admission','Developer'])
+                                <div class="dropdown-divider"></div>                                
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.admission.inbox') }}">En Espera de Confirmación Por SEREMI</a>
                                 @endcan
 
                             </div>

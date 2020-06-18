@@ -277,12 +277,12 @@
           @endif
           </td>
           <td class="text-right">{{ $contact->RelationshipName }}</td>
-          <td class="text-right">{{ $contact->contact_patient->identifier }}</td>
+          <td class="text-right">{{ $contact->patient->identifier }}</td>
           <td class="text-right">
             @can('Patient: edit')
               <a href="{{ route('patients.edit', $contact->contact_id) }}">
             @endcan
-            {{ $contact->contact_patient->fullName }}
+            {{ $contact->patient->fullName }}
             @can('Patient: edit')
               </a>
             @endcan
@@ -302,22 +302,23 @@
 </table>
 
 
-@can('Developer')
+@canany(['SanitaryResidence: survey','Developer'])
 <hr>
 <h4 class="mt-3">Evaluación Residencia Sanitaria </h4>
 
-<a class="btn btn-primary btn-sm" href="{{ route('sanitary_residences.admission.create', $patient) }}">
+<a class="btn btn-primary btn-sm" href="{{ route('sanitary_residences.admission.create', $patient) }}" onclick="return confirm('Recuerde que tiene que llenar los datos de contactos si es que tuviese antes de proceder con la encuesta' )">
     <i class="fas fa-plus"></i> Nueva Encuesta
 </a>
 
 <table class="table table-sm table-bordered small mb-4 mt-4">
     <thead>
         <tr class="text-center">
-            <th>Fecha Encuesta</th>
-            <th>Encuesta Realizada por</th>
+            <th>Fecha Digitación en Sistema de Encuesta</th>
+            <th>Encuesta Digitada en Sistema por</th>
             <th>¿Es Posible Aislar al Paciente?</th>
-            <th>Resultado</th>
-            <th>Visto Bueno</th>
+            <th>Resultado Encuesta</th>
+            <th>Resultado Final</th>
+            <th>Ver Encuesta</th>
         </tr>
     </thead>
     <tbody>
@@ -327,6 +328,7 @@
           <td class="text-center align-middle">{{ $admission->user->name }}</td>
           <td class="text-center align-middle">{{ $admission->isolate_text }}</td>
           <td class="text-center align-middle">{!! $admission->result !!}</td>
+          <td class="text-center align-middle"></td>
           <td class="text-center align-middle"><a class="btn btn-success btn-sm" href="{{ route('sanitary_residences.admission.edit', $admission) }}">
     <i class="fas fa-poll-h"></i> Revisar Encuesta
 </a></td>
