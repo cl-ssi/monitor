@@ -150,7 +150,7 @@
                                 <a class="dropdown-item" href="{{ route('lab.inmuno_tests.index') }}">Inmunoglobulinas</a>
                                 @endcan
 
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.minsal_ws', 1) }}">WS Minsal</a>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.minsal_ws') }}">WS Minsal</a>
                             </div>
                         </li>
                         @endcan
