@@ -313,12 +313,12 @@
 
     <fieldset class="form-group col-6 col-md-2">
         <label for="for_latitude">Latitud</label>
-        <input type="number" step="00.00000001" class="form-control" name="latitude" id="for_latitude" readonly>
+        <input type="number" step="00.00000001" class="form-control" name="latitude" id="for_latitude">
     </fieldset>
 
     <fieldset class="form-group col-6 col-md-2">
         <label for="for_longitude">Longitud</label>
-        <input type="number" step="00.00000001" class="form-control" name="longitude" id="for_longitude" readonly>
+        <input type="number" step="00.00000001" class="form-control" name="longitude" id="for_longitude">
     </fieldset>
 
 </div>

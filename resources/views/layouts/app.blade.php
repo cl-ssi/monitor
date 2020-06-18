@@ -40,8 +40,8 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light shadow-sm navbar-custom">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                <a class="navbar-brand" href="{{ url('/home') }}">
+                    <i class="fas fa-home"></i> {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -51,12 +51,12 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         @auth
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="{{ url('/home') }}">
                                 <i class="fas fa-home"></i>
                                 Home
                             </a>
-                        </li>
+                        </li> -->
 
                         @can('Patient: list')
                         <li class="nav-item">
@@ -101,12 +101,16 @@
                                 @endcan
 
                                 @can('SuspectCase: own')
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.ownIndex') }}?text=&pendientes=on">Mis exámenes</a>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.ownIndex') }}?text=&filter%5B%5D=pending">Mis exámenes</a>
                                 @endcan
 
 
                                 @can('Patient: tracing')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing') }}">Seguimiento de casos</a>
+                                @endcan
+
+                                @can('Patient: tracing')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing_excel') }}">Seguimiento Excel</a>
                                 @endcan
 
                                 @can('Developer')
@@ -117,6 +121,21 @@
                             </div>
                         </li>
                         @endcan
+
+                        <!-- @canany('Patient: tracing')
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-lungs-virus"></i>
+                                Seguimiento
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                @can('Patient: tracing')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing_excel') }}">Seguimiento Excel</a>
+                                @endcan
+
+                            </div>
+                        </li>
+                        @endcan -->
 
                         @canany(['Lab: menu'])
                         <li class="nav-item dropdown">
@@ -131,7 +150,7 @@
                                 <a class="dropdown-item" href="{{ route('lab.inmuno_tests.index') }}">Inmunoglobulinas</a>
                                 @endcan
 
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.minsal_ws', 1) }}">WS Minsal</a>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.minsal_ws') }}">WS Minsal</a>
                             </div>
                         </li>
                         @endcan
@@ -154,12 +173,54 @@
                         </li>
                         @endcan
 
-                        @canany(['SanitaryResidence: user', 'SanitaryResidence: admin'])
+                        <!-- @canany(['SanitaryResidence: user', 'SanitaryResidence: admin'])
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('sanitary_residences.home') }}">
                                 <i class="fas fa-hotel"></i>
                                 Residencias
                             </a>
+                        </li>
+                        @endcan -->
+
+
+
+                        @canany(['SanitaryResidence: user'])
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-shopping-basket"></i>
+                                Residencia
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.home') }}">Residencias Sanitarias</a>
+
+                                <div class="dropdown-divider"></div>
+
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.excelall') }}">Booking Actuales</a>
+
+                                @can('SanitaryResidence: admin')
+
+
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.residences.statusReport') }}">Consolidado Booking</a>
+
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.bookingByDate') }}">Booking Realizados por Fechas</a>
+
+                                <div class="dropdown-divider"></div>
+
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.residences.index') }}">Mantenedor Residencias</a>
+
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.rooms.index') }}">Habitaciones</a>
+
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.users') }}">Usuarios</a>
+
+
+                                <div class="dropdown-divider"></div>
+
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.admission.index') }}">Aprobados por SEREMI</a>
+
+                                @endcan
+
+                            </div>
                         </li>
                         @endcan
 
