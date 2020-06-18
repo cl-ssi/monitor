@@ -14,21 +14,22 @@
         </a>
     </div>
     @endcan
+    <div class="col-8 col-sm-9">
+        <form method="GET" class="form-horizontal" action="{{ route('patients.index') }}">
+            <div class="input-group mb-sm-0">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Búsqueda</span>
+                </div>
+
+                <input class="form-control" type="text" name="search" autocomplete="off" id="for_search" style="text-transform: uppercase;" placeholder="RUN (sin dígito verificador) / OTRA IDENTIFICACION / NOMBRE" value="{{$request->search}}" required>
+
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
-
-<form method="GET" class="form-horizontal" action="{{ route('patients.index') }}">
-  <div class="input-group mb-sm-0">
-      <div class="input-group-prepend">
-          <span class="input-group-text">Búsqueda</span>
-      </div>
-
-      <input class="form-control" type="text" name="search" autocomplete="off" id="for_search" style="text-transform: uppercase;" placeholder="RUN (sin dígito verificador) / OTRA IDENTIFICACION / NOMBRE" value="{{$request->search}}" required>
-
-      <div class="input-group-append">
-          <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
-      </div>
-  </div>
-</form>
 
 <hr>
 
