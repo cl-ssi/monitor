@@ -17,7 +17,7 @@ class TracingController extends Controller
     public function indexByCommune()
     {
         // TODO: Falta chequear que tenga algun establecimiento asociado
-        
+
         $patients = Patient::whereHas('demographic', function($q) {
                 $q->whereIn('commune_id', auth()->user()->communes());
             })
@@ -182,5 +182,22 @@ class TracingController extends Controller
             $tracing->save();
             echo $patient->name . '<br>';
         }
+    }
+
+    public function quarantineCheck(Request $request)
+    {
+        $fechaActual = Carbon::now()->toDateString();
+        $run = $request->run;
+
+        $isQuarantined = Tracing::whereHas('patient', function ($q) use ($run) {
+            $q->where('run', $run);
+        })
+            ->where('quarantine_start_at', '<=', $fechaActual)
+            ->where(function($q) use ($fechaActual){
+                $q->where('quarantine_end_at', '>=', $fechaActual)
+                    ->orWhereNull('quarantine_end_at');
+            })->exists();
+
+        return view('patients.tracing.quarantine_check', compact('isQuarantined', 'run'));
     }
 }

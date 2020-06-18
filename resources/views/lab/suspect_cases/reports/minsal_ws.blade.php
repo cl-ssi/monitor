@@ -6,8 +6,25 @@
 
 <!-- <a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a> -->
 {{-- <a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.exportMinsal', $laboratory) }}">Descargar <i class="far fa-file-excel"></i></a> --}}
+
+
+<form method="POST" class="form-horizontal" action="{{ route('lab.suspect_cases.reports.minsal_ws') }}" enctype="multipart/form-data">
+    @csrf
+    @method('POST')
+    <div class="form-row">
+        <fieldset class="form-group col-6 col-md-6">
+            <label for="for_laboratory">Laboratorio</label>
+            <select name="laboratory_id" id="for_laboratory" class="form-control" onchange="this.form.submit()">
+                @foreach ($laboratories as $key => $lab)
+                    <option value="{{$lab->id}}" {{($lab->id == $request->laboratory_id)?'selected':''}}>{{$lab->name}}</option>
+                @endforeach
+            </select>
+        </fieldset>
+    </div>
+</form>
+
 @can('Admin')
-<a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.ws_minsal', $laboratory) }}">Minsal <i class="fas fa-upload"></i></a>
+<a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.ws_minsal', 'laboratory_id='.$request->laboratory_id) }}">Minsal <i class="fas fa-upload"></i></a>
 @endcan
 
 <table class="table table-sm table-bordered table-responsive small text-uppercase" id="tabla_casos">
@@ -41,7 +58,7 @@
 
     <tbody>
         @foreach ($cases as $case)
-        @if($case->run_medic == '0') <tr style="background-color:#FF0000"> 
+        @if($case->run_medic == '0') <tr style="background-color:#FF0000">
         @else <tr> @endif
 
             {{-- <td>{{ $case->minsal_ws_id }}</td> --}}

@@ -3,67 +3,19 @@
     @foreach(Auth::user()->residences->sortBy('id') as $residence)
     <li class="nav-item">
         <a class="nav-link" href="{{ route('sanitary_residences.bookings.index', $residence) }}">
-            <i class="fas fa-inbox"></i> {{ $residence->name }}
+            <i class="fas fa-hotel"></i> {{ $residence->name }}
         </a>
     </li>
     @endforeach
 
-    <li class="nav-item">
+    <!-- <li class="nav-item">
         <a class="nav-link" href="{{ route('sanitary_residences.admission.index') }}">        
             <i class="fas fa-clipboard-check"></i> Aprobados
         </a>
-    </li>
+    </li> -->
 
     
-    @can('SanitaryResidence: admin')
-
-
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-file-excel"></i>
-                Reportería
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.excelall') }}">Booking Actuales</a>
-
-                <a class="dropdown-item" href="{{ route('sanitary_residences.residences.statusReport') }}">Consolidado Booking</a>
-                
-                <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.bookingByDate') }}">Booking Realizados por Fechas</a>
-                
-            </div>
-        </li>
-
-
-
-
-
-
-
-
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-cogs"></i>
-                Configuración
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-                <a class="dropdown-item" href="{{ route('sanitary_residences.residences.index') }}">Residencias</a>
-                
-                <a class="dropdown-item" href="{{ route('sanitary_residences.rooms.index') }}">Habitaciones</a>
-                
-
-                <a class="dropdown-item" href="{{ route('sanitary_residences.users') }}">Usuarios</a>
-            </div>
-        </li>
-
-
-
-        
-
-        
-    @endcan
-
+    
     
 
 

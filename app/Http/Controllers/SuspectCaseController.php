@@ -108,47 +108,30 @@ class SuspectCaseController extends Controller
     }
 
     /**
-     * Muestra examenes asociados al establishment de usuario actual.
+     * Muestra exámenes asociados al establishment de usuario actual.
      * @param Request $request
      * @param Laboratory $laboratory
      * @return Application|Factory|View
      */
     public function ownIndex(request $request, Laboratory $laboratory)
     {
-        //Se obtienen establecimientos del usuario
-        $establishments_user = EstablishmentUser::where('user_id', Auth::user()->id)->get();
-        $establishment_selected = array();
-        foreach ($establishments_user as $key => $establishment_user) {
-            $establishment_selected[$key] = $establishment_user->establishment_id;
-        }
-
-        //Se obtienen variables de request
         $searchText = $request->get('text');
-        $positivos = ($request->get('positivos') == "on") ? "positive" : NULL;
-        $negativos = ($request->get('negativos') == "on") ? "negative" : NULL;
-        $pendientes = ($request->get('pendientes') == "on") ? "pending" : NULL;
-        $rechazados = ($request->get('rechazados') == "on") ? "rejected" : NULL;
-        $indeterminados = ($request->get('indeterminados') == "on") ? "undetermined" : NULL;
+        $arrayFilter = (empty($request->filter)) ? array() : $request->filter;
 
-        //Se inicia construcción de query
-        $builder = SuspectCase::latest('id');
+        $suspectCasesTotal = SuspectCase::where(function($q){
+            $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
+                ->orWhere('user_id', Auth::user()->id);
+        })->get();
 
-        if ($laboratory->id) {
-            $builder = $builder->where('laboratory_id', $laboratory->id);
-            $suspectCasesTotal = SuspectCase::where('laboratory_id', $laboratory->id)->latest('id')->get();
-        } else {
-            $laboratory = null;
-            $suspectCasesTotal = SuspectCase::whereNotNull('laboratory_id')->latest('id')->get();
-        }
-
-        $suspectCases = $builder
+        $suspectCases = SuspectCase::where(function($q){
+            $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
+                ->orWhere('user_id', Auth::user()->id);
+        })
             ->patientTextFilter($searchText)
-            ->whereNotNull('laboratory_id')
-            ->stateFilter($positivos, $negativos, $pendientes, $rechazados, $indeterminados)
-            ->establishmentFilter($establishment_selected)
+            ->whereIn('pscr_sars_cov_2', $arrayFilter)
             ->paginate(200);
 
-        return view('lab.suspect_cases.ownIndex', compact('suspectCases', 'request', 'suspectCasesTotal', 'laboratory', 'establishment_selected'));
+        return view('lab.suspect_cases.ownIndex', compact('suspectCases', 'arrayFilter', 'searchText', 'laboratory', 'suspectCasesTotal'));
     }
 
     /**
@@ -749,22 +732,39 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.reception_inbox', compact('suspectCases', 'establishments', 'selectedEstablishment'));
     }
 
-    public function exportExcel($cod_lab = null){
+    public function exportExcel($cod_lab){
         return Excel::download(new SuspectCasesExport($cod_lab), 'lista-examenes.xlsx');
     }
 
-    public function exportMinsalExcel($cod_lab = null)
+    public function exportMinsalExcel($laboratory, Request $request)
     {
-        switch ($cod_lab) {
-            case '1':
-                $nombre_lab = 'HETG';
-                break;
-            case '2':
-                $nombre_lab = 'UNAP';
-                break;
+        //dd($from);
+
+        if($from = $request->has('from')){
+            $from = $request->get('from'). ' 21:00:00';
+            $to = $request->get('to'). ' 20:59:59';
+        }else{
+            $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+            $to = date("Y-m-d 20:59:59");
         }
 
-        return Excel::download(new MinsalSuspectCasesExport($cod_lab, $nombre_lab), 'reporte-minsal.xlsx');
+        // $from = $request->get('from'). ' 21:00:00';
+        // $to = $request->get('to'). ' 20:59:59';
+        //dd($request->get('from'));
+        // switch ($cod_lab) {
+        //     case '1':
+        //         $nombre_lab = 'HETG';
+        //         break;
+        //     case '2':
+        //         $nombre_lab = 'UNAP';
+        //         break;
+        // }
+
+        //dd($nombre_lab);
+
+        //return Excel::download(new MinsalSuspectCasesExport($cod_lab, $nombre_lab), 'reporte-minsal.xlsx');
+        //dd($from);
+        return Excel::download(new MinsalSuspectCasesExport($laboratory, $from, $to), 'reporte-minsal-desde-'.$from.'-hasta-'.$to.'.xlsx');
     }
 
     public function exportSeremiExcel($cod_lab = null)

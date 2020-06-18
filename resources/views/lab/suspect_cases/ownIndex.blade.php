@@ -5,24 +5,8 @@
 @section('content')
 
 <h3 class="mb-3"><i class="fas fa-lungs-virus"></i>
-    @if($laboratory)
-        Examenes del laboratorio {{ $laboratory->alias }}
-    @else
         Listado de todos los exámenes
-    @endif
 </h3>
-
-<div class="row">
-    <div class="col-sm-12">
-        @can('SuspectCase: create')
-        <a class="btn btn-primary mb-3" href="{{ route('lab.suspect_cases.create') }}">
-            Crear nueva sospecha
-        </a>
-        @endcan
-        <a type="button" class="btn btn-success mb-3" href="{{ route('lab.suspect_cases.export', 'all') }}">Descargar <i class="far fa-file-excel"></i></a>
-    </div>
-
-</div>
 
 <table class="table table-sm table-bordered">
     <thead>
@@ -37,17 +21,17 @@
     </thead>
     <tbody>
         <tr class="text-center">
-            <td>{{ $suspectCasesTotal->whereIn('establishment_id', $establishment_selected)->count() }}</td>
-            <th class="text-danger">{{ $suspectCasesTotal->where('pscr_sars_cov_2','positive')->whereIn('establishment_id', $establishment_selected)->count() }}</th>
-            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','negative')->whereIn('establishment_id', $establishment_selected)->count() }}</td>
-            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','pending')->whereIn('establishment_id', $establishment_selected)->count() }}</td>
-            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','rejected')->whereIn('establishment_id', $establishment_selected)->count() }}</td>
-            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','undetermined')->whereIn('establishment_id', $establishment_selected)->count() }}</td>
+            <td>{{ $suspectCasesTotal->count() }}</td>
+            <th class="text-danger">{{ $suspectCasesTotal->where('pscr_sars_cov_2','positive')->count() }}</th>
+            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','negative')->count() }}</td>
+            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','pending')->count() }}</td>
+            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','rejected')->count() }}</td>
+            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','undetermined')->count() }}</td>
         </tr>
     </tbody>
 </table>
 
-@if($laboratory)
+@if($laboratory->id)
 <a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.minsal',$laboratory) }}">
     Reporte MINSAL
 </a>
@@ -60,20 +44,23 @@
 @endif
 
 <div class="row">
-    <div class="col-6 align-self-end">
+    <div class="col-2 align-self-end">
+        <a type="button" class="btn btn-success mb-3" href="{{ route('lab.suspect_cases.export', 'all') }}">Descargar <i class="far fa-file-excel"></i></a>
+    </div>
+    <div class="col-4 align-self-end">
         @include('lab.suspect_cases.partials.search_id')
     </div>
     <div class="col-6">
-        <form method="get" action="{{ route('lab.suspect_cases.ownIndex',$laboratory) }}">
+        <form method="get" action="{{ route('lab.suspect_cases.ownIndex', $laboratory) }}">
 
-            <input type="checkbox" name="positivos" id="chk_positivos" v="Positivos" {{ ($request->positivos)?'checked':'' }} /> Positivos
-            <input type="checkbox" name="negativos" id="chk_negativos" v="Negativos" {{ ($request->negativos)?'checked':'' }} /> Negativos
-            <input type="checkbox" name="pendientes" id="chk_pendientes" v="Pendientes" {{ ($request->pendientes)?'checked':'' }} /> Pendientes
-            <input type="checkbox" name="rechazados" id="chk_rechazados" v="Rechazados" {{ ($request->rechazados)?'checked':'' }} /> Rechazados
-            <input type="checkbox" name="indeterminados" id="chk_indeterminados" v="Indeterminados" {{ ($request->indeterminados)?'checked':'' }} /> Indeterminados
+            <input type="checkbox" name="filter[]" id="chk_positivos" value="positive" {{ (in_array('positive', $arrayFilter)) ? 'checked' : '' }} /> Positivos
+            <input type="checkbox" name="filter[]" id="chk_negativos" value="negative" {{ (in_array('negative', $arrayFilter)) ? 'checked' : '' }} /> Negativos
+            <input type="checkbox" name="filter[]" id="chk_pendientes" value="pending" {{ (in_array('pending', $arrayFilter)) ? 'checked' : '' }} /> Pendientes
+            <input type="checkbox" name="filter[]" id="chk_rechazados" value="rejected" {{ (in_array('rejected', $arrayFilter)) ? 'checked' : '' }} /> Rechazados
+            <input type="checkbox" name="filter[]" id="chk_indeterminados" value="undetermined" {{ (in_array('undetermined', $arrayFilter)) ? 'checked' : '' }} /> Indeterminados
 
             <div class="input-group mb-3">
-                <input class="form-control" type="text" name="text" value="{{$request->text}}" placeholder="Rut / Nombre">
+                <input class="form-control" type="text" name="text" value="{{$searchText}}" placeholder="Rut / Nombre">
                 <div class="input-group-append">
                     <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
                 </div>
@@ -108,7 +95,7 @@
         <tr class="row_{{$case->covid19}} {{ ($case->pscr_sars_cov_2 == 'positive')?'table-danger':''}}">
             <td class="text-center">
                 {{ $case->id }}<br>
-                <small>{{ $case->laboratory->alias }}</small>
+                <small>{{ ($case->laboratory) ? $case->laboratory->alias : ''}}</small>
                 @canany(['SuspectCase: edit','SuspectCase: tecnologo'])
                 <a href="{{ route('lab.suspect_cases.edit', $case) }}" class="btn_edit"><i class="fas fa-edit"></i></a>
                 @endcan

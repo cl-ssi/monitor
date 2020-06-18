@@ -9,8 +9,9 @@
 <a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a>
 
 <div class="table-responsive">
-    <table class="table table-sm table-bordered table-responsive small" id="tabla_estado_residencias">
+    <table class="table table-sm table-bordered table-responsive" id="tabla_estado_residencias">
         <thead>
+            <th nowrap>N°</th>
             <th nowrap>Residencia</th>
             <th nowrap>Habitaciones total</th>
             <th nowrap>Habitaciones ocupadas</th>
@@ -22,6 +23,7 @@
         @foreach($dataArray as $residencia)
             @if(!$loop->last)
             <tr>
+                <td nowrap>{{$loop->iteration}}</td>
                 <td nowrap>{{$residencia['residenceName']}}</td>
                 <td nowrap>{{$residencia['totalRooms']}}</td>
                 <td nowrap>{{$residencia['occupiedRooms']}}</td>
@@ -30,6 +32,7 @@
             </tr>
             @else
             <tr>
+                <th nowrap></th>
                 <th nowrap>{{$residencia['residenceName']}}</th>
                 <th nowrap>{{$residencia['totalRooms']}}</th>
                 <th nowrap>{{$residencia['occupiedRooms']}}</th>

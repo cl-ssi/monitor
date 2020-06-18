@@ -84,6 +84,7 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
         Route::get('/{tracing}/edit', 'TracingController@edit')->name('edit');
         Route::put('/{tracing}', 'TracingController@update')->name('update');
         Route::delete('/{tracing}', 'TracingController@destroy')->name('destroy');
+        Route::get('/quarantine_check', 'TracingController@quarantineCheck')->name('quarantineCheck');
 
         Route::get('/migrate', 'TracingController@migrate')->name('migrate');
         Route::prefix('events')->name('events.')->group(function () {
@@ -164,13 +165,15 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::prefix('reports')->name('reports.')->group(function () {
             Route::get('/positives','SuspectCaseReportController@positives')->name('positives')->middleware('auth','can:Report: positives');
             Route::get('case_tracing','SuspectCaseReportController@case_tracing')->name('case_tracing')->middleware('auth','can:Patient: tracing');
+            Route::get('case_tracing_excel','SuspectCaseReportController@case_tracing_excel')->name('case_tracing_excel')->middleware('auth','can:Patient: tracing');
             Route::get('case_tracing/export', 'SuspectCaseReportController@case_tracing_export')->name('case_tracing.export');
             Route::get('/gestants','SuspectCaseReportController@gestants')->name('gestants')->middleware('auth','can:Report: gestants');
             // Route::get('case_chart','SuspectCaseController@case_chart')->name('case_chart')->middleware('auth');
             Route::match(['get','post'],'case_chart','SuspectCaseReportController@case_chart')->middleware('auth')->name('case_chart');
             Route::match(['get','post'],'exams_with_result','SuspectCaseReportController@exams_with_result')->middleware('auth','can:Report: exams with result')->name('exams_with_result');
             Route::get('/minsal/{laboratory}','SuspectCaseReportController@report_minsal')->name('minsal')->middleware('auth');
-            Route::get('/minsal_ws/{laboratory}','SuspectCaseReportController@report_minsal_ws')->name('minsal_ws')->middleware('auth');
+            // Route::get('/minsal_ws','SuspectCaseReportController@report_minsal_ws')->name('minsal_ws')->middleware('auth');
+            Route::match(['get','post'],'/minsal_ws','SuspectCaseReportController@report_minsal_ws')->name('minsal_ws');
             Route::get('/seremi/{laboratory}','SuspectCaseReportController@report_seremi')->name('seremi')->middleware('auth');
             Route::get('/positivesByDateRange','SuspectCaseReportController@positivesByDateRange')->name('positivesByDateRange')->middleware('auth');
 
@@ -180,7 +183,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::get('historical_report','SuspectCaseController@historical_report')->name('historical_report')->middleware('auth','can:Report: historical');
             Route::get('/minsal-export/{laboratory}','SuspectCaseController@exportMinsalExcel')->name('exportMinsal')->middleware('auth');
             Route::get('/seremi-export/{laboratory}','SuspectCaseController@exportSeremiExcel')->name('exportSeremi')->middleware('auth');
-            Route::get('/ws_minsal/{laboratory}','SuspectCaseReportController@ws_minsal')->name('ws_minsal')->middleware('auth');
+            Route::get('/ws_minsal','SuspectCaseReportController@ws_minsal')->name('ws_minsal')->middleware('auth');
             Route::get('diary_lab_report','SuspectCaseController@diary_lab_report')->name('diary_lab_report')->middleware('auth');
             Route::get('diary_by_lab_report','SuspectCaseController@diary_by_lab_report')->name('diary_by_lab_report')->middleware('auth');
             Route::get('estadistico_diario_covid19','SuspectCaseController@estadistico_diario_covid19')->name('estadistico_diario_covid19')->middleware('auth');
@@ -198,7 +201,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/', 'InmunoTestController@index')->name('index')->middleware('auth');
         Route::get('/create/{search}', 'InmunoTestController@create')->name('create')->middleware('auth');
         Route::get('/{inmunoTest}/edit', 'InmunoTestController@edit')->name('edit')->middleware('auth');
-        Route::post('/', 'InmunoTestController@store')->name('store')->middleware('auth');
+        Route::post('/{store}', 'InmunoTestController@store')->name('store')->middleware('auth');
         Route::put('/update/{inmunoTest}', 'InmunoTestController@update')->name('update')->middleware('auth');
     });
 });

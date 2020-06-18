@@ -50,4 +50,10 @@ class Tracing extends Model  implements Auditable
     public function user() {
         return $this->belongsTo('App\User');
     }
+
+    public function patient(){
+        return $this->belongsTo('App\Patient');
+    }
+
+
 }
