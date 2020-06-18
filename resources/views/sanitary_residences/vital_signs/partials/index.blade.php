@@ -19,7 +19,7 @@
     </thead>
     <tbody>
         @foreach($booking->vitalSigns->reverse() as $vitalsign)
-        @if($vitalsign->created_at->diffInHours($vitalsign->updated_at) > 3)
+        @if($vitalsign->created_at->diffInHours($vitalsign->updated_at) > 2)
         <tr class="table-danger">
         @else
         <tr>
