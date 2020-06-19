@@ -16,13 +16,13 @@
 <a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.exportMinsal', ['laboratory' => $laboratory, 'from' => $request->from, 'to' => $request->to] ) }}">Descargar <i class="far fa-file-excel"></i></a>
     <div class="form-group ml-3">
         <label for="for_from">Desde</label>
-        <input type="date" class="form-control mx-sm-3" id="for_from" name="from"
-               value="{{ Carbon\Carbon::parse($from)->format('Y-m-d') }}">
+        <input type="datetime-local" class="form-control mx-sm-3" id="for_from" name="from"
+               value="{{ Carbon\Carbon::parse($from)->format('Y-m-d\TH:i') }}">
     </div>
     <div class="form-group">
         <label for="for_to">Hasta</label>
-        <input type="date" class="form-control mx-sm-3" id="for_to" name="to"
-               value="{{ Carbon\Carbon::parse($to)->format('Y-m-d') }}">
+        <input type="datetime-local" class="form-control mx-sm-3" id="for_to" name="to"
+               value="{{ Carbon\Carbon::parse($to)->format('Y-m-d\TH:i') }}">
     </div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>

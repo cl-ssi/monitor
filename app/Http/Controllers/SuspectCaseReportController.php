@@ -88,16 +88,17 @@ class SuspectCaseReportController extends Controller
         $env_communes = array_map('trim', explode(",", env('COMUNAS')));
 
         $patients = Patient::whereHas('suspectCases', function ($q) {
-            $q->where('pscr_sars_cov_2', 'positive');
-        })->whereHas('demographic', function ($q) use ($env_communes) {
-            $q->whereIn('commune_id', $env_communes);
-        })
+                $q->where('pscr_sars_cov_2', 'positive');
+            })->whereHas('demographic', function ($q) use ($env_communes) {
+                $q->whereIn('commune_id', $env_communes);
+            })
             ->with('inmunoTests')
-            ->get();
+            ->latest()
+            ->paginate(500);
 
         $patientsNoDemographic = Patient::whereHas('suspectCases', function ($q) {
-            $q->where('pscr_sars_cov_2', 'positive');
-        })->doesntHave('demographic')
+                $q->where('pscr_sars_cov_2', 'positive');
+            })->doesntHave('demographic')
             ->with('inmunoTests')
             ->get();
 
@@ -301,11 +302,11 @@ class SuspectCaseReportController extends Controller
     {
 
         if($from = $request->has('from')){
-            $from = $request->get('from'). ' 21:00:00';
-            $to = $request->get('to'). ' 20:59:59';
+            $from = $request->get('from');
+            $to = $request->get('to');
         }else{
-            $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
-            $to = date("Y-m-d 20:59:59");
+            $from = date("Y-m-d 21:00", time() - 60 * 60 * 24);
+            $to = date("Y-m-d 20:59");
         }
 
         $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
