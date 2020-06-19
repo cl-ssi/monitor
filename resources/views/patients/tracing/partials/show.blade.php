@@ -1,12 +1,35 @@
-@can('Developer')
-<h4 class="mt-4">Seguimiento</h4>
+@can('Patient: tracing')
 
 @if($patient->tracing)
 
     <form method="POST" class="form-horizontal mb-3" action="{{ route('patients.tracings.update',$patient->tracing) }}">
         @csrf
         @method('PUT')
+        <h4>Notificación</h4>
+        <div class="form-row">
+            <fieldset class="form-group col-md-2">
+                <label for="for_notification_at">Fecha de Notificación</label>
+                <input type="date" class="form-control" name="notification_at"
+                    id="for_notification_at" value="{{ ($patient->tracing->notification_at) ? $patient->tracing->notification_at->format('Y-m-d') : '' }}">
+            </fieldset>
 
+            <fieldset class="form-group col-md-2">
+                <label for="for_notification_mechanism">Mecanismo</label>
+                <select name="notification_mechanism" id="for_notification_mechanism" class="form-control">
+                    <option>{{ $patient->tracing->notification_mechanism }}</option>
+                </select>
+            </fieldset>
+
+            <fieldset class="form-group col-md-2">
+                <label for="for_discharged_at">Fecha alta médica</label>
+                <input type="date" class="form-control" name="discharged_at"
+                    id="for_discharged_at" value="{{ $patient->tracing->discharged_at }}">
+            </fieldset>
+
+        </div>
+
+        <hr>
+        <h4 class="mt-4">Seguimiento</h4>
         <div class="form-row">
             <fieldset class="form-group col-6 col-md-1">
                 <label for="for_index">Indice</label>
@@ -18,7 +41,7 @@
             </fieldset>
 
             <fieldset class="form-group col-md-3">
-                <label for="for_next_control_at">Próximo Control *</label>
+                <label for="for_next_control_at">Próximo seguimiento *</label>
                 <input type="datetime-local" class="form-control" name="next_control_at"
                     id="for_next_control_at" required value="{{ ($patient->tracing->next_control_at) ? $patient->tracing->next_control_at->format('Y-m-d\TH:i:s') : '' }}">
             </fieldset>
@@ -65,7 +88,9 @@
                     id="for_symptoms_end_at"
                     value="{{ ($patient->tracing->symptoms_end_at) ? $patient->tracing->symptoms_end_at->format('Y-m-d\TH:i:s') : '' }}">
             </fieldset>
+        </div>
 
+        <div class="form-row">
             <fieldset class="form-group col-md-2">
                 <label for="for_quarantine_start_at">Inicio Cuarentena *</label>
                 <input type="date" class="form-control" name="quarantine_start_at"
@@ -80,12 +105,19 @@
                     value="{{ ($patient->tracing->quarantine_end_at) ? $patient->tracing->quarantine_end_at->format('Y-m-d') : '' }}">
             </fieldset>
 
+            <fieldset class="form-group col-md-5">
+                <label for="for_cannot_quarantine">No puede realizar cuarentena</label>
+                <input type="text" class="form-control" name="cannot_quarantine"
+                    id="for_cannot_quarantine" value="{{ $patient->tracing->cannot_quarantine }}">
+            </fieldset>
+
+
         </div>
 
         <div class="form-row">
 
-            <fieldset class="form-group col-md-3">
-                <label for="for_establishment_id">Establecimiento</label>
+            <fieldset class="form-group col-md-4">
+                <label for="for_establishment_id">Establecimiento que realiza seguimiento</label>
                 <select name="establishment_id" id="for_establishment_id" class="form-control">
                     @foreach($establishments as $estab)
                     <option value="{{ $estab->id }}" {{ ($patient->tracing->establishment_id == $estab->id) ? 'selected' : '' }}>{{ $estab->alias }}</option>
@@ -170,6 +202,15 @@
         </div>
 
         <div class="form-row">
+            <fieldset class="form-group col-6 col-md-1">
+                <label for="for_functionary">Func. Salud</label>
+                <select name="functionary" id="for_functionary" class="form-control">
+                    <option value=""></option>
+                    <option value="1" {{ ($patient->tracing->functionary === 1) ? 'selected' : '' }}>Si</option>
+                    <option value="0" {{ ($patient->tracing->functionary === 0) ? 'selected' : '' }}>No</option>
+                </select>
+            </fieldset>
+
             <fieldset class="form-group col-6 col-md-1">
                 <label for="for_help_basket">Canasta</label>
                 <select name="help_basket" id="for_help_basket" class="form-control">

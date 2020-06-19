@@ -1,3 +1,5 @@
+<h4 class="mt-4">Seguimiento epidemiológico</h4>
+
 <table class="table table-sm table-bordered">
     <thead>
         <tr>
@@ -5,6 +7,7 @@
             <th>Funcionario</th>
             <th>Tipo de evento</th>
             <th>Detalle</th>
+            <th>Síntomas</th>
         </tr>
     </thead>
     <tbody>
@@ -14,6 +17,7 @@
             <td>{{ $event->user->name }}</td>
             <td>{{ $event->type->name }}</td>
             <td>{{ $event->details }}</td>
+            <td>{{ $event->symptoms }}</td>
         </tr>
         @endforeach
     </tbody>

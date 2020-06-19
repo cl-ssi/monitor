@@ -391,7 +391,7 @@ class SuspectCaseController extends Controller
                 $emails_bcc  = explode(',', env('EMAILS_ALERT_BCC'));
                 Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($suspectCase));
             }
-            /* TODO: Si el resultado es negativo y el usuario tiene email, enviar resultado al usuario */
+            /* Si el resultado es negativo y el usuario tiene email, enviar resultado al usuario */
             if($old_pcr == 'pending' && ($suspectCase->pscr_sars_cov_2 == 'negative' ||
                                           $suspectCase->pscr_sars_cov_2 == 'undetermined' ||
                                           $suspectCase->pscr_sars_cov_2 == 'rejected') &&
@@ -405,30 +405,44 @@ class SuspectCaseController extends Controller
 
         /* Crea un TRACING si el resultado es positivo */
         if ($old_pcr == 'pending' and $suspectCase->pscr_sars_cov_2 == 'positive') {
-            $tracing                    = new Tracing();
-            $tracing->patient_id        = $suspectCase->patient_id;
-            $tracing->user_id           = $suspectCase->user_id;
-            $tracing->index             = 1;
-            $tracing->establishment_id  = $suspectCase->establishment_id;
-            $tracing->functionary       = $suspectCase->functionary;
-            $tracing->gestation         = $suspectCase->gestation;
-            $tracing->gestation_week    = $suspectCase->gestation_week;
-            $tracing->next_control_at   = $suspectCase->pscr_sars_cov_2_at->add(1,'day');
-            $tracing->quarantine_start_at = $suspectCase->pscr_sars_cov_2_at;
-            $tracing->quarantine_end_at = $suspectCase->pscr_sars_cov_2_at->add(14,'days');
-            $tracing->observations      = $suspectCase->observation;
-            $tracing->status            = ($suspectCase->patient->status == 'Fallecido') ? 0:1;
-            switch ($suspectCase->symptoms) {
-                case 'Si':
-                    $tracing->symptoms = 1; break;
-                case 'No':
-                    $tracing->symptoms = 0; break;
-                default:
-                    $tracing->symptoms = null; break;
+            /* Si el paciente no tiene Tracing */
+            if($suspectCase->patient->tracing) {
+                $suspectCase->patient->tracing->index = 1;
+                $suspectCase->patient->tracing->status = ($suspectCase->patient->status == 'Fallecido') ? 0:1;
+                $suspectCase->patient->tracing->save();
+                $suspectCase->patient->tracing->quarantine_start_at = ($suspectCase->symptoms_at) ?
+                                                $suspectCase->symptoms_at :
+                                                $suspectCase->pscr_sars_cov_2_at;
+                $tracing->quarantine_end_at = $tracing->quarantine_start_at->add(14,'days');
             }
-            $tracing->save();
+            else {
+                $tracing                    = new Tracing();
+                $tracing->patient_id        = $suspectCase->patient_id;
+                $tracing->user_id           = $suspectCase->user_id;
+                $tracing->index             = 1;
+                $tracing->establishment_id  = $suspectCase->establishment_id;
+                $tracing->functionary       = $suspectCase->functionary;
+                $tracing->gestation         = $suspectCase->gestation;
+                $tracing->gestation_week    = $suspectCase->gestation_week;
+                $tracing->next_control_at   = $suspectCase->pscr_sars_cov_2_at->add(1,'day');
+                $tracing->quarantine_start_at = ($suspectCase->symptoms_at) ?
+                                                $suspectCase->symptoms_at :
+                                                $suspectCase->pscr_sars_cov_2_at;
+                $tracing->quarantine_end_at = $tracing->quarantine_start_at->add(14,'days');
+                $tracing->observations      = $suspectCase->observation;
+                $tracing->notification_at   = $suspectCase->notification_at;
+                $tracing->notification_mechanism = $suspectCase->notification_mechanism;
+                $tracing->discharged_at     = $suspectCase->discharged_at;
+                $tracing->symptoms_start_at = $suspectCase->symptoms_at;
+                switch ($suspectCase->symptoms) {
+                    case 'Si': $tracing->symptoms = 1; break;
+                    case 'No': $tracing->symptoms = 0; break;
+                    default:   $tracing->symptoms = null; break;
+                }
+                $tracing->status            = ($suspectCase->patient->status == 'Fallecido') ? 0:1;
+                $tracing->save();
+            }
         }
-
 
         return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
     }
@@ -441,11 +455,6 @@ class SuspectCaseController extends Controller
      */
     public function destroy(SuspectCase $suspectCase)
     {
-        //$log = new Log();
-        //$log->old = clone $suspectCase;
-        //$log->new = $suspectCase->setAttribute('suspect_case', 'delete');
-        //$log->save();
-
         $suspectCase->delete();
 
         return redirect()->route('lab.suspect_cases.index');
@@ -453,11 +462,6 @@ class SuspectCaseController extends Controller
 
     public function fileDelete(File $file)
     {
-        // $log = new Log();
-        // $log->old =  clone $file;
-        // $log->new =  $file->setAttribute('suspect_case', 'delete');
-        // $log->save();
-
         /* TODO: implementar auditable en file delete  */
         Storage::delete($file->file);
         $file->delete();
