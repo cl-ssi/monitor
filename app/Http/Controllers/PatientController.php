@@ -9,6 +9,7 @@ use App\Region;
 use App\Commune;
 use App\Establishment;
 use App\Tracing\EventType;
+use App\Tracing\Symptom;
 
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -88,7 +89,8 @@ class PatientController extends Controller
         $event_types = EventType::all();
         $env_communes = array_map('trim',explode(",",env('COMUNAS')));
         $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
-        return view('patients.edit',compact('patient', 'regions', 'communes','event_types','establishments'));
+        $symptoms = Symptom::All();
+        return view('patients.edit',compact('patient', 'regions', 'communes','event_types','establishments','symptoms'));
     }
 
     /**
