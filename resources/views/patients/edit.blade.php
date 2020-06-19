@@ -253,12 +253,13 @@
     <thead>
         <tr class="text-center">
             <th rowspan="2">Nombre Paciente</th>
-            <th colspan="6">Contacto</th>
+            <th colspan="7">Contacto</th>
             <th rowspan="2">Observación</th>
             <th rowspan="2">Fecha de carga</th>
         </tr>
         <tr class="text-center">
             <th>Fecha Último Contacto</th>
+            <th>Categoría</th>
             <th>Es</th>
             <th>Parentesco</th>
             <th>RUN</th>
@@ -271,6 +272,7 @@
       <tr>
           <td class="text-right">{{ $patient->fullName }}</td>
           <td class="text-right">{{ $contact->last_contact_at }}</td>
+          <td class="text-right">{{ $contact->CategoryDesc }}</td>
           <td class="text-center">
           @if($contact->index == 1)
             Tiene como
