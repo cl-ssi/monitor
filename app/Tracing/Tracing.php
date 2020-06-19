@@ -72,4 +72,12 @@ class Tracing extends Model  implements Auditable
 
     }
 
+    public function getSymptomsDescAttribute(){
+      switch($this->requires_licence) {
+          case 1: return 'SI'; break;
+          case 0: return 'NO'; break;
+      }
+
+    }
+
 }

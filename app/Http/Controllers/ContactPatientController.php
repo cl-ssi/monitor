@@ -143,7 +143,7 @@ class ContactPatientController extends Controller
 
 
 
-        return redirect()->route('patients.edit', $contactPatient->self_patient->id);
+        return redirect()->route('patients.edit', $contactPatient->patient->id);
     }
 
     /**
@@ -154,10 +154,17 @@ class ContactPatientController extends Controller
      */
     public function destroy(ContactPatient $contactPatient)
     {
-        //
+
+        $patient = $contactPatient->patient_id;
+        $contact = $contactPatient->contact_id;
+
+        $contactPatient->delete();
+
+        $contact = ContactPatient::where('contact_id', $patient)
+            ->where('patient_id', $contact)
+            ->delete();
+
+        return redirect()->route('patients.edit', $patient);
     }
 
-    public function inverse_realtionship($relationship, $patient){
-
-    }
 }

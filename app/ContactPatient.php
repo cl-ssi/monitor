@@ -8,9 +8,11 @@ use User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class ContactPatient extends Model
+class ContactPatient extends Model implements Auditable
 {
+    use \OwenIt\Auditing\Auditable;
     use softDeletes;
 
     protected $fillable = [
