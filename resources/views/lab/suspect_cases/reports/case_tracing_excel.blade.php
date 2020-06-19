@@ -59,7 +59,6 @@
                     <th>ACCIONES (MIRAR DICCIONARIO)</th>
                     <th>OBSERVACIONES</th>
                     <th>AFILIACIÓN</th>
-                    <th>NOMBRE EMPLEADOR</th>
                 </tr>
             </thead>
             <tbody>
@@ -88,19 +87,12 @@
                     <td>{{ $contact->patient->demographic->region->name }}</td>
                     <td>{{ $contact->last_contact_at }}</td>
                     <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->quarantine_end_at->format('d-m-Y') : '' }}</td>
-                    <td></td>
-                    <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->category : '' }}</td>
+                    <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->StatusDesc : '' }}</td>
+                    <td>{{ $contact->CategoryDesc  }}</td>
                     <td>{{ $contact->RelationshipName }}</td>
-                    <td>{{ ($contact->notification_contact_at) ? $contact->notification_contact_at : '' }}</td>
-                    <td>{{ $contact->observation }}</td>
+                    <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->notification_at->format('d-m-Y') : '' }}</td>
                     <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->observations : '' }}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->symptoms : '' }}</td>
                     <td></td>
                     <td></td>
                     <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->requires_licence : '' }}</td>
@@ -108,11 +100,9 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->prevision : '' }}</td>
                     <td></td>
-                    <!-- <td>{{ $contact->patient->tracing }}</td> -->
-
-
+                    <td></td>
+                    <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->prevision : '' }}</td>
                   @endforeach
 
                 @endforeach

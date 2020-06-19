@@ -94,10 +94,11 @@ class ContactPatientController extends Controller
         $contactPatient = new ContactPatient($request->All());
         $contactPatient->patient_id = $request->get('contact_id');
         $contactPatient->contact_id = $request->get('patient_id');
-        $contactPatient->relationship = $request->get('relationship');
-        $contactPatient->comment = $request->get('comment');
         $contactPatient->last_contact_at =  $request->get('last_contact_at');
+        $contactPatient->category = $request->get('category');
+        $contactPatient->relationship = $request->get('relationship');
         $contactPatient->live_together = $request->get('live_together');
+        $contactPatient->comment = $request->get('comment');
         $contactPatient->index = NULL;
 
         $contactPatient->save();
