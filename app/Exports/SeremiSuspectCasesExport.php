@@ -12,11 +12,9 @@ use Carbon\Carbon;
 class SeremiSuspectCasesExport implements FromCollection, WithHeadings, WithMapping, WithColumnFormatting, ShouldAutoSize
 {
     private $cod_lab;
-    private $nombre_lab;
 
-    public function __construct($cod_lab, $nombre_lab) {
+    public function __construct($cod_lab) {
           $this->cod_lab = $cod_lab;
-          $this->nombre_lab = $nombre_lab;
     }
 
     /**
@@ -64,13 +62,6 @@ class SeremiSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
 
     public function columnFormats(): array
     {
-        // if(){
-        //
-        // }
-        // else {
-        //   // code...
-        // }
-
         return [
             'A' => NumberFormat::FORMAT_GENERAL,
             'B' => NumberFormat::FORMAT_GENERAL,
