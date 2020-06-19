@@ -186,6 +186,7 @@ class SuspectCaseController extends Controller
 
 
     /**
+     * NO UTILIZAR
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -773,16 +774,7 @@ class SuspectCaseController extends Controller
 
     public function exportSeremiExcel($cod_lab = null)
     {
-        switch ($cod_lab) {
-            case '1':
-                $nombre_lab = 'HETG';
-                break;
-            case '2':
-                $nombre_lab = 'UNAP';
-                break;
-        }
-
-        return Excel::download(new SeremiSuspectCasesExport($cod_lab, $nombre_lab), 'reporte-seremi.xlsx');
+        return Excel::download(new SeremiSuspectCasesExport($cod_lab), 'reporte-seremi.xlsx');
     }
 
     public function notificationForm(SuspectCase $suspectCase)
