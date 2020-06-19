@@ -14,32 +14,57 @@ class AdmissionSurveyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {        
-        $admissions = AdmissionSurvey::where('residency',true)->
-            whereHas('patient', function($q){
-            $q->where('status', 'Esperando Residencia Sanitaria');
-        })->get();
+    {
+        $admissions = AdmissionSurvey::where('status', 'Aceptado')->whereHas('patient', function ($q) {
+                $q->where('status', '<>','Residencia Sanitaria');
+            })->get();
+        
         return view('sanitary_residences.admission.index', compact('admissions'));
     }
 
     public function inbox()
-    {       
-        $admissions = AdmissionSurvey::whereNotNull('residency')->
-        whereHas('patient', function($q){
-            $q->where('status','<>' ,'Esperando Residencia Sanitaria');
-        })->get();
-
-        //dd($admissions);
+    {
+        $admissions = AdmissionSurvey::whereNull('status')->orderBy('created_at', 'asc')->get();
         return view('sanitary_residences.admission.inbox', compact('admissions'));
-
     }
 
-    public function changestatus(AdmissionSurvey $admission)
-    {       
-        //dd($admission);
+    public function inboxaccept()
+    {
+        $admissions = AdmissionSurvey::where('status','Aceptado')->orderBy('created_at', 'asc')->get();
+        return view('sanitary_residences.admission.inboxaccept', compact('admissions'));
+    }
+
+    public function inboxrejected()
+    {
+        $admissions = AdmissionSurvey::where('status','Rechazado')->orderBy('created_at', 'asc')->get();
+        return view('sanitary_residences.admission.inboxrejected', compact('admissions'));
+    }
+
+    public function changestatus(AdmissionSurvey $admission, $status)
+    {
+        dd($status);
         $admission->patient->status = 'Esperando Residencia Sanitaria';
         $admission->patient->save();
         session()->flash('success', 'Se Aprobo exitosamente para Residencia Sanitaria');
+        return redirect()->route('sanitary_residences.admission.inbox');
+    }
+
+    public function accept(AdmissionSurvey $admission)
+    {      
+
+        $accept = AdmissionSurvey::find($admission->id);
+        $accept->status = 'Aceptado';
+        $accept->save();
+        session()->flash('success', 'Encuesta a Paciente' . $admission->patient->full_name.' aprobada exitosamente a residencia sanitaria');
+        return redirect()->route('sanitary_residences.admission.inbox');
+    }
+
+    public function rejected(AdmissionSurvey $admission)
+    {
+        $accept = AdmissionSurvey::find($admission->id);
+        $accept->status = 'Rechazado';
+        $accept->save();
+        session()->flash('success', 'Encuesta a Paciente' . $admission->patient->full_name.' rechazado a residencia sanitaria');
         return redirect()->route('sanitary_residences.admission.inbox');
     }
 
@@ -54,7 +79,7 @@ class AdmissionSurveyController extends Controller
     {
         //
 
-        return view('sanitary_residences.admission.create',compact('patient'));
+        return view('sanitary_residences.admission.create', compact('patient'));
     }
 
     /**
@@ -68,14 +93,14 @@ class AdmissionSurveyController extends Controller
         //
         $admission = new AdmissionSurvey($request->All());
         $admission->user_id = auth()->user()->id;
-        if($request->residency)
-        {
-        $admission->patient->status = 'Esperando Residencia Sanitaria';
-        $admission->patient->save();
-        }        
+        // if ($request->residency) {
+        //     $admission->patient->status = 'Esperando Residencia Sanitaria';
+        //     $admission->patient->save();
+        // }
         $admission->save();
-        session()->flash('success', 'Encuesta Realizada Exitosamente a'.$admission->patient->name);
-        return redirect()->route('patients.index');
+        session()->flash('success', 'Encuesta Realizada Exitosamente a ' . $admission->patient->full_name);
+        return redirect()->route('patients.edit', $admission->patient);
+        //return redirect()->route('patients.index');
     }
 
     /**
@@ -84,9 +109,11 @@ class AdmissionSurveyController extends Controller
      * @param  \App\SanitaryResidence\AdmissionSurvey  $admissionSurvey
      * @return \Illuminate\Http\Response
      */
-    public function show(AdmissionSurvey $admissionSurvey)
+    public function show(AdmissionSurvey $admission)
     {
         //
+
+        return view('sanitary_residences.admission.show', compact('admission'));
     }
 
     /**
@@ -98,7 +125,14 @@ class AdmissionSurveyController extends Controller
     public function edit(AdmissionSurvey $admission)
     {
         //
-        return view('sanitary_residences.admission.edit',compact('admission'));
+        return view('sanitary_residences.admission.edit', compact('admission'));
+    }
+
+
+    public function seremiadmission(AdmissionSurvey $admission)
+    {
+        //
+        return view('sanitary_residences.admission.seremiadmission', compact('admission'));
     }
 
     /**
@@ -112,15 +146,14 @@ class AdmissionSurveyController extends Controller
     {
         //
         $admission->fill($request->all());
-        if($request->residency==1)
-        {
-        $admission->patient->status = 'Aprobado Residencia Sanitaria';
-        $admission->patient->save();
-        }        
-        
+        // if ($request->residency == 1) {
+        //     $admission->patient->status = 'Aprobado Residencia Sanitaria';
+        //     $admission->patient->save();
+        // }
+
         $admission->save();
-        session()->flash('success', 'Cambios realizados ');
-        return redirect()->route('patients.index');
+        session()->flash('success', 'Encuesta Modificada Exitosamente a ' . $admission->patient->full_name);
+        return redirect()->route('patients.edit', $admission->patient);
     }
 
     /**
