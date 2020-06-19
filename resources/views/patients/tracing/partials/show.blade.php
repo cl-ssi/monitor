@@ -99,9 +99,9 @@
             </fieldset>
 
             <fieldset class="form-group col-md-2">
-                <label for="for_quarantine_end_at">Término de Cuarentena</label>
+                <label for="for_quarantine_end_at">Término de Cuarentena *</label>
                 <input type="date" class="form-control" name="quarantine_end_at"
-                    id="for_quarantine_end_at"
+                    id="for_quarantine_end_at" required
                     value="{{ ($patient->tracing->quarantine_end_at) ? $patient->tracing->quarantine_end_at->format('Y-m-d') : '' }}">
             </fieldset>
 

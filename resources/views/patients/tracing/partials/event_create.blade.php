@@ -29,17 +29,9 @@
                     <select name="sympthoms_array[]" id="for_sympthoms"
                         class="form-control selectpicker"
                         title="Seleccione síntomas" multiple >
-                        <option value="Fiebre">Fiebre</option>
-                        <option value="Tos">Tos</option>
-                        <option value="Mialgias">Mialgias</option>
-                        <option value="Odinofagia">Odinofagia</option>
-                        <option value="Anosmia">Anosmia</option>
-                        <option value="Ageusia">Ageusia</option>
-                        <option value="Dolor toráxico">Dolor toráxico</option>
-                        <option value="Diarrea">Diarrea</option>
-                        <option value="Calofrios">Calofrios</option>
-                        <option value="Cefalea">Cefalea</option>
-                        <option value="Dificultad para respirar">Dificultad para respirar</option>
+                        @foreach($symptoms as $symptom)
+                        <option value="{{ $symptom->name }}">{{ $symptom->name }}</option>
+                        @endforeach
                     </select>
                 </fieldset>
             </div>

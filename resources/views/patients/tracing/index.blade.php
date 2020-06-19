@@ -11,7 +11,7 @@
             <th>ID</th>
             <th>Nombre</th>
             <th>Comuna</th>
-            <th>Establecimiento</th>
+            <th>Estab. Muestra</th>
             <th>Inicio Cuarentena</th>
             <th>Fin de Cuarentena</th>
             <th>Notificacion</th>
