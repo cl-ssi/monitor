@@ -154,7 +154,7 @@
 
               <fieldset class="form-group col-md-3">
                   <label for="for_category">Categoría</label>
-                  <select class="form-control selectpicker country" name="category" id="for_category" title="Seleccione..." data-live-search="true" data-size="5" required>
+                  <select class="form-control country" name="category" id="for_category" title="Seleccione..." data-live-search="true" data-size="5" required>
                       <option value="institutional">Institucional</option>
                       <option value="ocupational">Laboral</option>
                       <option value="passenger">Pasajero</option>
@@ -167,8 +167,9 @@
 
               <fieldset class="form-group col-md-3">
                   <label for="for_register_at">Parentesco</label>
-                  <select class="form-control selectpicker" name="relationship" id="for_relationship" title="Seleccione..." data-live-search="true" data-size="5">
+                  <select class="form-control" name="relationship" id="for_relationship" title="Seleccione..." data-live-search="true" data-size="5" disabled>
                       @if($patient->sexEsp == 'Femenino')
+                        <option value=""></option>
                         <option value="grandmother">Abuela</option>
                         <option value="sister in law">Cuñada</option>
                         <option value="wife">Esposa</option>
@@ -184,6 +185,7 @@
                         <option value="girlfriend">Pareja</option>
                         <option value="other">Otro</option>
                       @elseif($patient->sexEsp == 'Masculino')
+                        <option value=""></option>
                         <option value="grandfather">Abuelo</option>
                         <option value="brother in law">Cuñado</option>
                         <option value="husband">Esposo</option>
@@ -199,6 +201,7 @@
                         <option value="son in law">Yerno</option>
                         <option value="other">Otro</option>
                       @else
+                        <option value=""></option>
                         <option value="grandmother">Abuela</option>
                         <option value="grandfather">Abuelo</option>
                         <option value="sister in law">Cuñada</option>
@@ -315,14 +318,15 @@ $(document).ready(function(){
     $("select.country").change(function(){
         var selectedcategory = $(this).children("option:selected").val();
         if(selectedcategory =='family')
-        {
-            alert("You have selected the country - " + selectedcategory);    
+        {            
             $('#for_relationship').prop('disabled', false);
             $('#for_relationship').prop("required", true);            
         }
         else
         {
+            $('#for_relationship').val('');
             $('#for_relationship').prop('disabled', true);
+            
         }
         
         
