@@ -296,12 +296,12 @@
           <td class="text-right">{{ $contact->created_at->format('d-m-Y') }}</td>
           @can('Patient: tracing')
           <td>
-              <!-- <a class="btn btn-danger btn-sm disabled" href="">
+              <a class="btn btn-danger btn-sm" href="{{ route('patients.contacts.destroy', $contact) }}" onclick="return confirm('¿Está seguro que desea eliminar el contacto estrecho con el paciente {{$contact->patient->fullName}}?' )">
                   <i class="far fa-trash-alt"></i>
-              </a> -->
-              <a class="btn btn-light btn-sm" href="{{ route('patients.contacts.edit', $contact) }}">
-                  <i class="far fa-edit"></i>
               </a>
+              <!-- <a class="btn btn-light btn-sm" href="{{ route('patients.contacts.edit', $contact) }}">
+                  <i class="far fa-edit"></i>
+              </a> -->
           </td>
           @endcan
       </tr>
