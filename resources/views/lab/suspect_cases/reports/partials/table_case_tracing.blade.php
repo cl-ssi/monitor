@@ -72,8 +72,7 @@
     </tr>
     </thead>
     <tbody>
-    @php $ct = $patients->count(); @endphp
-    @foreach($patients->reverse() as $patient)
+    @foreach($patients as $patient)
         <tr class="
                 @switch($patient->status)
         @case ('Alta') alert-success @break
@@ -82,7 +81,7 @@
         @case ('Hospitalizado UCI (Ventilador)') alert-warning @break
         @endswitch
             ">
-            <td>{{ $ct-- }}</td>
+            <td>{{ $patient->id }}</td>
             <td nowrap>
                 @can('Patient: edit')
                     <a href="{{ route('patients.edit', $patient) }}">

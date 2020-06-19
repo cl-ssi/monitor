@@ -24,7 +24,7 @@ class CreateTracingsTable extends Migration
             $table->datetime('next_control_at')->nullable();
             $table->unsignedSmallInteger('status')->nullable();
 
-            $table->string('category')->nullable();
+            //$table->string('category')->nullable();
 
             $table->string('responsible_family_member')->nullable();
 
