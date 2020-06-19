@@ -298,11 +298,11 @@ class SuspectCaseReportController extends Controller
     {
 
         if($from = $request->has('from')){
-            $from = $request->get('from'). ' 21:00:00';
-            $to = $request->get('to'). ' 20:59:59';
+            $from = $request->get('from');
+            $to = $request->get('to');
         }else{
-            $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
-            $to = date("Y-m-d 20:59:59");
+            $from = date("Y-m-d 21:00", time() - 60 * 60 * 24);
+            $to = date("Y-m-d 20:59");
         }
 
         $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
