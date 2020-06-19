@@ -74,6 +74,7 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
         Route::get('/create/{search}/{id}', 'ContactPatientController@create')->name('create')->middleware('auth');
         Route::post('/', 'ContactPatientController@store')->name('store')->middleware('auth');
         Route::get('/{contact_patient}/edit', 'ContactPatientController@edit')->name('edit')->middleware('auth');
+        Route::put('/{contact_patient}', 'ContactPatientController@update')->name('update')->middleware('auth');
     });
 
     Route::prefix('tracings')->name('tracings.')->middleware('auth')->group(function () {

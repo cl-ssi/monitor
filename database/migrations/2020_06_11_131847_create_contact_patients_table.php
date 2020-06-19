@@ -21,7 +21,6 @@ class CreateContactPatientsTable extends Migration
             $table->longText('comment')->nullable();
             $table->string('relationship')->nullable();
             $table->boolean('live_together')->nullable();
-            $table->datetime('notification_contact_at')->nullable();
             $table->integer('index')->nullable();
             $table->foreignId('user_id');
 

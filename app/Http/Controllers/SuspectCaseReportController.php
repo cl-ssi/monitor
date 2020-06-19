@@ -137,6 +137,10 @@ class SuspectCaseReportController extends Controller
             ->with('tracing')
             ->get();
 
+            // ->whereHas('suspectCases', function ($q) {
+            //   $q->where('pscr_sars_cov_2_at', now());
+            // })
+
         return view('lab.suspect_cases.reports.case_tracing_excel', compact('patients'));
     }
 

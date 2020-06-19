@@ -21,6 +21,10 @@ class ContactPatient extends Model
         return $this->belongsTo('App\Patient', 'contact_id');
     }
 
+    public function self_patient() {
+        return $this->belongsTo('App\Patient', 'patient_id');
+    }
+
     public function user() {
         return $this->belongsTo('App\User');
     }
@@ -31,6 +35,11 @@ class ContactPatient extends Model
             case 0: return 'NO'; break;
         }
     }
+
+    public function getLastContactDateAttribute(){
+        return Carbon::parse($this->last_contact_at)->format('Y-m-d\TH:i');
+    }
+
 
     public function getRelationshipNameAttribute(){
         switch ($this->relationship) {

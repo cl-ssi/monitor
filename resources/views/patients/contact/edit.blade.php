@@ -4,191 +4,99 @@
 
 @section('content')
 
-<h3>Agregar Contacto de Pacientes</h3>
-
-<br>
+<h3>Editar Contacto de Pacientes</h3>
 
 <h5>Paciente:</h5>
+
+
 <div class="form-row">
-  @foreach($patients as $patient)
-    <fieldset class="form-group col-md-3">
-        <label for="for_register_at">RUN</label>
-        <input type="text" class="form-control" name="register_at" id="for_register_at" value="{{ $patient->Identifier }}" style="text-transform: uppercase;" readonly>
-    </fieldset>
-
-    <fieldset class="form-group col-md-3">
+    <fieldset class="form-group col-md-4">
         <label for="for_register_at">Nombre</label>
-        <input type="text" class="form-control" name="register_at" id="for_register_at" value="{{ $patient->name }}" style="text-transform: uppercase;" readonly>
+        <input type="text" class="form-control" name="register_at" id="for_register_at" value="{{ $contactPatient->self_patient->name }}" style="text-transform: uppercase;" readonly>
     </fieldset>
 
-    <fieldset class="form-group col-md-3">
+    <fieldset class="form-group col-md-4">
         <label for="for_fathers_family">Apellido Paterno</label>
-        <input type="text" class="form-control" value="{{ $patient->fathers_family }}" style="text-transform: uppercase;" readonly>
+        <input type="text" class="form-control" value="{{ $contactPatient->self_patient->fathers_family }}" style="text-transform: uppercase;" readonly>
     </fieldset>
 
-    <fieldset class="form-group col-md-3">
+    <fieldset class="form-group col-md-4">
         <label for="for_mothers_family">Apellido Materno</label>
-        <input type="text" class="form-control" value="{{ $patient->mothers_family }}" style="text-transform: uppercase;" readonly>
+        <input type="text" class="form-control" value="{{ $contactPatient->self_patient->mothers_family }}" style="text-transform: uppercase;" readonly>
     </fieldset>
-  @endforeach
 </div>
 
 <hr>
 
-<form method="GET" class="form-horizontal" action="{{ route('patients.contacts.create', ['search'=>'search_true', 'id' => $id_patient]) }}">
-<div class="input-group mb-sm-0">
-    <div class="input-group-prepend">
-        <span class="input-group-text">Búsqueda</span>
-    </div>
-
-    <input class="form-control" type="number" name="search" autocomplete="off" id="for_search" style="text-transform: uppercase;" placeholder="RUN (sin dígito verificador) o OTRA IDENTIFICACION" value="{{$request->search}}" required>
-
-    <input class="form-control" type="text" name="dv" id="for_dv" style="text-transform: uppercase;" placeholder="DV" readonly hidden>
-
-    <div class="input-group-append">
-        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
-    </div>
-</div>
-</form>
-
-<br>
-
 <h5>Contacto:</h5>
-@if($s == 'search_true' && $message == 'dont exist')
-        <div class="alert alert-danger" role="alert">
-            El paciente consultado no se encuentra en nuestros registros.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
 
-        @can('Patient: create')
-        <div class="col-4 col-sm-3">
-            <a class="btn btn-primary mb-4" href="{{ route('patients.create') }}" target="-_blank">
-                <i class="fas fa-plus"></i> Crear Paciente
-            </a>
-        </div>
-        @endcan
-@endif
-@if($s == 'search_true' && $message == 'same patient')
-        <div class="alert alert-danger" role="alert">
-            No puedes asignar al mismo paciente como contacto.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-@endif
-@if($s == 'search_true' && $message == 'contact already registered')
-        <div class="alert alert-success" role="alert">
-            El contacto entre pacientes ya fue registrado anteriormente, ingrese otro RUN.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-@endif
-@if($s == 'search_true' && $message == 'new contact')
-@foreach($contacts as $patient)
-    <div class="form-row">
-        <fieldset class="form-group col-md-4">
-            <label for="for_register_at">Nombre</label>
-            <input type="text" class="form-control" name="register_at" id="for_register_at" value="{{ $patient->name }}" style="text-transform: uppercase;" readonly>
-        </fieldset>
 
-        <fieldset class="form-group col-md-4">
-            <label for="for_fathers_family">Apellido Paterno</label>
-            <input type="text" class="form-control" value="{{ $patient->fathers_family }}" style="text-transform: uppercase;" readonly>
-        </fieldset>
+<div class="form-row">
+    <fieldset class="form-group col-md-4">
+        <label for="for_register_at">Nombre</label>
+        <input type="text" class="form-control" name="register_at" id="for_register_at" value="{{ $contactPatient->patient->name }}" style="text-transform: uppercase;" readonly>
+    </fieldset>
 
-        <fieldset class="form-group col-md-4">
-            <label for="for_mothers_family">Apellido Materno</label>
-            <input type="text" class="form-control" value="{{ $patient->mothers_family }}" style="text-transform: uppercase;" readonly>
-        </fieldset>
-    </div>
-    <div class="form-row">
-        <fieldset class="form-group col-md-2">
-            <label for="for_name">Género</label>
-            <input type="text" class="form-control" value="{{ $patient->sexEsp }}" style="text-transform: uppercase;" readonly>
-        </fieldset>
+    <fieldset class="form-group col-md-4">
+        <label for="for_fathers_family">Apellido Paterno</label>
+        <input type="text" class="form-control" value="{{ $contactPatient->patient->fathers_family }}" style="text-transform: uppercase;" readonly>
+    </fieldset>
 
-        <fieldset class="form-group col-md-2">
-            <label for="for_fathers_family">Fecha Nac.</label>
-            <input type="text" class="form-control" value="{{ ($patient->birthday)?$patient->birthday->format('d-m-Y'):'' }}" readonly>
-        </fieldset>
-    </div>
-    <div class="form-row">
-        <fieldset class="form-group col-md-2">
-            <label for="for_mothers_family">Comuna: </label>
-            <input type="text" class="form-control" value="{{ ($patient->demographic->commune)?$patient->demographic->commune->name:'' }}" style="text-transform: uppercase;" readonly>
-        </fieldset>
-
-        <fieldset class="form-group col-md-4">
-            <label for="for_mothers_family">Dirección: </label>
-            <input type="text" class="form-control" value="{{ ($patient->demographic)?$patient->demographic->address:'' }}  {{($patient->demographic)?$patient->demographic->number:'' }}" style="text-transform: uppercase;" readonly>
-        </fieldset>
-
-        <fieldset class="form-group col-md-2">
-            <label for="for_mothers_family">Teléfono: </label>
-            <input type="text" class="form-control" value="{{ ($patient->demographic)?$patient->demographic->telephone:'' }}" readonly>
-        </fieldset>
-
-        <fieldset class="form-group col-md-4">
-            <label for="for_mothers_family">E-mail: </label>
-            <input type="text" class="form-control" value="{{ ($patient->demographic)?$patient->demographic->email:'' }}" style="text-transform: uppercase;" readonly>
-        </fieldset>
-    </div>
-    <hr>
-
+    <fieldset class="form-group col-md-4">
+        <label for="for_mothers_family">Apellido Materno</label>
+        <input type="text" class="form-control" value="{{ $contactPatient->patient->mothers_family }}" style="text-transform: uppercase;" readonly>
+    </fieldset>
+</div>
 
 <div class="card mb-3">
     <div class="card-body">
         <h5>Ingreso los datos del contacto:</h5>
-
-        <form method="POST" class="form-horizontal" action="{{ route('patients.contacts.store') }}">
+        <form method="POST" class="form-horizontal" action="{{ route('patients.contacts.update', $contactPatient) }}">
             @csrf
-            @method('POST')
+            @method('PUT')
             <div class="form-row">
               <fieldset class="form-group col-md-3">
                   <label for="for_last_contact_at">Fecha último contacto</label>
-                  <input type="datetime-local" class="form-control" name="last_contact_at" id="for_last_contact_at" value="">
+                  <input type="datetime-local" class="form-control" name="last_contact_at" id="for_last_contact_at" value="{{ ($contactPatient->LastContactDate) ? $contactPatient->LastContactDate : '' }}">
               </fieldset>
 
               <fieldset class="form-group col-md-3">
                   <label for="for_register_at">Parentesco</label>
                   <select class="form-control selectpicker" name="relationship" id="for_relationship" title="Seleccione..." data-live-search="true" data-size="5" required>
-                      @if($patient->sexEsp == 'Femenino')
-                        <option value="grandmother">Abuela</option>
-                        <option value="coworker">Compañera de Trabajo</option>
-                        <option value="sister in law">Cuñada</option>
-                        <option value="wife">Esposa</option>
-                        <option value="sister">Hermana</option>
-                        <option value="daughter">Hija</option>
-                        <option value="mother">Madre</option>
-                        <option value="cousin">Primo/a</option>
-                        <option value="niece">Sobrina</option>
-                        <option value="mother in law">Suegra</option>
-                        <option value="aunt">Tía</option>
-                        <option value="grandchild">Nieta</option>
-                        <option value="daughter in law">Nuera</option>
-                        <option value="girlfriend">Pareja</option>
-                        <option value="neighbour">Vecina</option>
-                        <option value="other">Otro</option>
-                      @elseif($patient->sexEsp == 'Masculino')
-                        <option value="grandfather">Abuelo</option>
-                        <option value="coworker">Compañero de Trabajo</option>
-                        <option value="brother in law">Cuñado</option>
-                        <option value="husband">Esposo</option>
-                        <option value="brother">Hermano</option>
-                        <option value="son">Hijo</option>
-                        <option value="grandchild">Nieto</option>
-                        <option value="father">Padre</option>
-                        <option value="boyfriend">Pareja</option>
-                        <option value="cousin">Primo/a</option>
-                        <option value="nephew">Sobrino</option>
-                        <option value="father in law">Suegro</option>
-                        <option value="uncle">Tío</option>
-                        <option value="neighbour">Vecino</option>
-                        <option value="son in law">Yerno</option>
-                        <option value="other">Otro</option>
+                      @if($contactPatient->self_patient->sexEsp == 'Femenino')
+                        <option value="grandmother" {{ ($contactPatient->relationship == 'grandmother') ? 'selected' : '' }}>Abuela</option>
+                        <option value="coworker" {{ ($contactPatient->relationship == "coworker") ? 'selected' : '' }}>Compañera de Trabajo</option>
+                        <option value="sister in law" {{ ($contactPatient->relationship == 'sister in law') ? 'selected' : '' }}>Cuñada</option>
+                        <option value="wife" {{ ($contactPatient->relationship == 'wife') ? 'selected' : '' }}>Esposa</option>
+                        <option value="sister" {{ ($contactPatient->relationship == 'sister') ? 'selected' : '' }}>Hermana</option>
+                        <option value="daughter" {{ ($contactPatient->relationship == 'daughter') ? 'selected' : '' }}>Hija</option>
+                        <option value="mother" {{ ($contactPatient->relationship == 'mother') ? 'selected' : '' }}>Madre</option>
+                        <option value="cousin" {{ ($contactPatient->relationship == 'cousin') ? 'selected' : '' }}>Primo/a</option>
+                        <option value="niece" {{ ($contactPatient->relationship == 'niece') ? 'selected' : '' }}>Sobrina</option>
+                        <option value="mother in law" {{ ($contactPatient->relationship == 'mother in law') ? 'selected' : '' }}>Suegra</option>
+                        <option value="aunt" {{ ($contactPatient->relationship == 'aunt') ? 'selected' : '' }}>Tía</option>
+                        <option value="grandchild" {{ ($contactPatient->relationship == 'grandchild') ? 'selected' : '' }}>Nieta</option>
+                        <option value="daughter in law" {{ ($contactPatient->relationship == 'daughter in law') ? 'selected' : '' }}>Nuera</option>
+                        <option value="girlfriend" {{ ($contactPatient->relationship == 'girlfriend') ? 'selected' : '' }}>Pareja</option>
+                        <option value="neighbour" {{ ($contactPatient->relationship == 'neighbour') ? 'selected' : '' }}>Vecina</option>
+                        <option value="other" {{ ($contactPatient->relationship == 'other') ? 'selected' : '' }}>Otro</option>
+                      @elseif($contactPatient->self_patient->sexEsp == 'Masculino')
+                        <option value="grandfather" {{ ($contactPatient->relationship == 'grandfather') ? 'selected' : '' }}>Abuelo</option>
+                        <option value="coworker" {{ ($contactPatient->relationship == 'coworker') ? 'selected' : '' }}>Compañero de Trabajo</option>
+                        <option value="brother in law" {{ ($contactPatient->relationship == 'brother in law') ? 'selected' : '' }}>Cuñado</option>
+                        <option value="husband" {{ ($contactPatient->relationship == 'husband') ? 'selected' : '' }}>Esposo</option>
+                        <option value="brother" {{ ($contactPatient->relationship == 'brother') ? 'selected' : '' }}>Hermano</option>
+                        <option value="son" {{ ($contactPatient->relationship == 'son') ? 'selected' : '' }}>Hijo</option>
+                        <option value="grandchild" {{ ($contactPatient->relationship == 'grandchild') ? 'selected' : '' }}>Nieto</option>
+                        <option value="father" {{ ($contactPatient->relationship == 'father') ? 'selected' : '' }}>Padre</option>
+                        <option value="boyfriend" {{ ($contactPatient->relationship == 'boyfriend') ? 'selected' : '' }}>Pareja</option>
+                        <option value="cousin" {{ ($contactPatient->relationship == 'cousin') ? 'selected' : '' }}>Primo/a</option>
+                        <option value="nephew" {{ ($contactPatient->relationship == 'nephew') ? 'selected' : '' }}>Sobrino</option>
+                        <option value="father in law" {{ ($contactPatient->relationship == 'father in law') ? 'selected' : '' }}>Suegro</option>
+                        <option value="uncle" {{ ($contactPatient->relationship == 'uncle') ? 'selected' : '' }}>Tío</option>
+                        <option value="neighbour" {{ ($contactPatient->relationship == 'neighbour') ? 'selected' : '' }}>Vecino</option>
+                        <option value="son in law" {{ ($contactPatient->relationship == 'son in law') ? 'selected' : '' }}>Yerno</option>
+                        <option value="other" {{ ($contactPatient->relationship == 'other') ? 'selected' : '' }}>Otro</option>
                       @else
                         <option value="grandmother">Abuela</option>
                         <option value="grandfather">Abuelo</option>
@@ -224,47 +132,23 @@
               <fieldset class="form-group col-md-3">
                   <label for="for_live_together">¿Viven Juntos?</label>
                   <select class="form-control selectpicker" name="live_together" id="for_live_together" title="Seleccione..." data-size="2" required>
-                      <option value="1">Si</option>
-                      <option value="0">No</option>
+                      <option value="1" {{ ($contactPatient->live_together == 1) ? 'selected' : '' }}>Si</option>
+                      <option value="0" {{ ($contactPatient->live_together == 0) ? 'selected' : '' }}>No</option>
                   </select>
               </fieldset>
 
-              <!-- <fieldset class="form-group col-md-3">
+              <fieldset class="form-group col-md-3">
                   <label for="for_notification_contact_at">Fecha de notificación de contacto:</label>
                   <input type="datetime-local" class="form-control" name="notification_contact_at" id="for_notification_contact_at" value="">
-              </fieldset> -->
-            </div>
-            <div class="form-row">
-                <fieldset class="form-group col-md-12">
-                    <label for="for_comment">Observación</label>
-                    <textarea class="form-control" name="comment"  id="for_comment" rows="1"></textarea>
-                </fieldset>
-            </div>
-            <div class="form-row">
-              <fieldset class="form-group col-md-3" hidden>
-                  <input type="text" class="form-control" name="patient_id" id="for_patient_id" value="{{ $id_patient }}">
               </fieldset>
 
-              <fieldset class="form-group col-md-3" hidden>
-                  <input type="text" class="form-control" name="contact_id" id="for_contact_id" value="{{ $patient->id }}">
-              </fieldset>
-
-              <fieldset class="form-group col-md-3" hidden>
-                  <input type="text" class="form-control" name="user_id" id="for_user_id" value="{{ Auth::id() }}">
-              </fieldset>
-
-              <fieldset class="form-group col-md-3" hidden>
-                  <input type="text" class="form-control" name="index" id="for_index" value="1">
-              </fieldset>
-
+              </div>
               <hr>
               <button type="submit" class="btn btn-primary float-right">Guardar</button>
             </div>
         </form>
     </div>
 </div>
-@endforeach
-@endif
 
 @endsection
 
@@ -273,32 +157,5 @@
 
 <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
 <script src="{{ asset('js/defaults-es_CL.min.js') }}"></script>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-
-<script src='{{asset("js/jquery.rut.chileno.js")}}'></script>
-
-<script type="text/javascript">
-    jQuery(document).ready(function($) {
-        //obtiene digito verificador
-        $('input[name=search]').keyup(function(e) {
-            var str = $("#for_search").val();
-            $('#for_dv').val($.rut.dv(str));
-        });
-    });
-</script>
-
-<script type="text/javascript">
-$(document).ready(function(){
-    // $("main").removeClass("container");
-
-    $("#inputSearch").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
-        $("#tablePatients tr").filter(function() {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        });
-    });
-});
-</script>
 
 @endsection
