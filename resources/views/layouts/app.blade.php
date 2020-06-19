@@ -109,7 +109,7 @@
                                 @can('Patient: tracing')
                                 <a class="dropdown-item" href="{{ route('patients.tracings.communes') }}">Seguimiento de mis comunas</a>
                                 <a class="dropdown-item" href="{{ route('patients.tracings.establishments') }}">Seguimiento de mis establecimientos</a>
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing_excel') }}">Seguimiento SEREMI</a>
+                                <!-- <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.tracing_minsal') }}">Seguimiento SEREMI</a> -->
                                 @endcan
 
                                 <div class="dropdown-divider"></div>
@@ -130,7 +130,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 @can('Patient: tracing')
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing_excel') }}">Seguimiento Minsal</a>
+                                  <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.tracing_minsal') }}">Seguimiento Minsal</a>
                                 @endcan
                             </div>
                         </li>
