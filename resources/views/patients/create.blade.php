@@ -67,6 +67,12 @@
 
     </div>
 
+    <div class="card mb-3">
+        <div class="card-body">
+            @include('patients.demographic.create')
+        </div>
+    </div>
+
     <button type="submit" class="btn btn-primary">Guardar</button>
 
     <a class="btn btn-outline-secondary" href="{{ route('patients.index') }}">
@@ -80,14 +86,82 @@
 @endsection
 
 @section('custom_js')
-<script src='{{asset("js/jquery.rut.chileno.js")}}'></script>
-<script type="text/javascript">
-    jQuery(document).ready(function($) {
-        //obtiene digito verificador
-        $('input[name=run]').keyup(function(e) {
-            var str = $("#for_run").val();
-            $('#for_dv').val($.rut.dv(str));
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-select.min.css') }}">
+
+    <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
+    <script src="{{ asset('js/defaults-es_CL.min.js') }}"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+
+    <script type="text/javascript">
+
+        jQuery(document).ready(function () {
+
+            var iRegion = 0;
+
+            // caso cuando se cambie manualmente
+            jQuery('#regiones').change(function () {
+                // var iRegiones = 0;
+                var valorRegion = jQuery(this).val();
+                var htmlComuna = '<option value="sin-comuna">Seleccione comuna</option><option value="sin-comuna">--</option>';
+                @foreach ($communes as $key => $commune)
+                if (valorRegion == '{{$commune->region_id}}') {
+                    htmlComuna = htmlComuna + '<option value="' + '{{$commune->id}}' + '">' + '{{$commune->name}}' + '</option>';
+                }
+                @endforeach
+                jQuery('#comunas').html(htmlComuna);
+            });
+
+            //obtener coordenadas
+            jQuery('.geo').change(function () {
+                // Instantiate a map and platform object:
+                var platform = new H.service.Platform({
+                    'apikey': '{{ env('API_KEY_HERE') }}'
+                });
+
+                var address = jQuery('#for_address').val();
+                var number = jQuery('#for_number').val();
+                // var regiones = jQuery('#regiones').val();
+                // var comunas = jQuery('#comunas').val();
+                var regiones = $("#regiones option:selected").html();
+                var comunas = $("#comunas option:selected").html();
+
+                if (address != "" && number != "" && regiones != "Seleccione región" && comunas != "Seleccione comuna") {
+                    // Create the parameters for the geocoding request:
+                    var geocodingParams = {
+                        searchText: address + ' ' + number + ', ' + comunas + ', chile'
+                    };console.log(geocodingParams);
+
+                    // Define a callback function to process the geocoding response:
+
+                    jQuery('#for_latitude').val("");
+                    jQuery('#for_longitude').val("");
+                    var onResult = function(result) {
+                        console.log(result);
+                        var locations = result.Response.View[0].Result;
+
+                        // Add a marker for each location found
+                        for (i = 0;  i < locations.length; i++) {
+                            //alert(locations[i].Location.DisplayPosition.Latitude);
+                            jQuery('#for_latitude').val(locations[i].Location.DisplayPosition.Latitude);
+                            jQuery('#for_longitude').val(locations[i].Location.DisplayPosition.Longitude);
+                        }
+                    };
+
+                    // Get an instance of the geocoding service:
+                    var geocoder = platform.getGeocodingService();
+
+                    // Error
+                    geocoder.geocode(geocodingParams, onResult, function(e) {
+                        alert(e);
+                    });
+                }
+
+            });
+
         });
-    });
-</script>
+
+    </script>
 @endsection

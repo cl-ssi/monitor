@@ -39,7 +39,10 @@ class PatientController extends Controller
      */
     public function create()
     {
-        return view('patients.create');
+        $regions = Region::orderBy('id','ASC')->get();
+        $communes = Commune::orderBy('id','ASC')->get();
+
+        return view('patients.create', compact('regions', 'communes'));
     }
 
     /**
@@ -53,10 +56,9 @@ class PatientController extends Controller
         $patient = new Patient($request->All());
         $patient->save();
 
-        //$log = new Log();
-        //$log->old = $patient;
-        //$log->new = $patient;
-        //$log->save();
+        $demographic = new Demographic($request->All());
+        $demographic->patient_id = $patient->id;
+        $demographic->save();
 
         return redirect()->route('patients.index');
     }
