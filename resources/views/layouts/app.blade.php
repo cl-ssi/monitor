@@ -109,10 +109,6 @@
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing') }}">Seguimiento de casos</a>
                                 @endcan
 
-                                @can('Patient: tracing')
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing_excel') }}">Seguimiento Excel</a>
-                                @endcan
-
                                 @can('Developer')
                                 <a class="dropdown-item" href="{{ route('patients.tracings.communes') }}">Seguimiento de mis comunas</a>
                                 <a class="dropdown-item" href="{{ route('patients.tracings.establishments') }}">Seguimiento de mis establecimientos</a>
@@ -171,7 +167,7 @@
                                 EPP
                             </a>
                         </li>
-                        @endcan           
+                        @endcan
 
 
 
@@ -212,7 +208,7 @@
 
 
                                 @canany(['SanitaryResidence: admission','Developer'])
-                                <div class="dropdown-divider"></div>                                
+                                <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.admission.inbox') }}">En Espera de Confirmación Por SEREMI</a>
                                 @endcan
 
