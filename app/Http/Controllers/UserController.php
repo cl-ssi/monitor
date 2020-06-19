@@ -20,20 +20,20 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
- 
+
         $users = User::orderby('name', 'asc')
                 ->get();
-        
+
         if ($request) {
-        
+
             $query = trim($request->get('search'));
-            
+
             $users = User::where('name', 'LIKE', '%' . $query . '%')
                     ->orderBy('name', 'asc')
                     ->get();
-            
+
             return view('users.index', ['users' => $users, 'search' => $query]);
-        
+
         }
 
         return view('users.index', compact('users', 'request', 'query'));
@@ -63,6 +63,13 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $validatedData = $request->validate([
+           'run' => ['unique:users']
+        ],
+        [
+            'run.unique' => 'Este rut ya está registrado.'
+        ]);
+
         $user = new User();
         $user->run = $request->input('run');
         $user->dv = $request->input('dv');
