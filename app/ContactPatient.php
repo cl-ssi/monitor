@@ -7,13 +7,14 @@ use User;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
 
 class ContactPatient extends Model
 {
     use softDeletes;
 
     protected $fillable = [
-        'patient_id', 'contact_id', 'comment', 'relationship', 'index','user_id'
+        'patient_id', 'contact_id', 'last_contact_at', 'comment', 'relationship', 'live_together', 'notification_contact_at', 'index', 'user_id'
     ];
 
     public function patient() {
@@ -22,6 +23,13 @@ class ContactPatient extends Model
 
     public function user() {
         return $this->belongsTo('App\User');
+    }
+
+    public function getLiveTogetherDescAttribute(){
+        switch ($this->live_together) {
+            case 1: return 'SI'; break;
+            case 0: return 'NO'; break;
+        }
     }
 
     public function getRelationshipNameAttribute(){
