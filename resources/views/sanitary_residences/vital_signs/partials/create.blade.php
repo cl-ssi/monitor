@@ -13,7 +13,7 @@
 
         <fieldset class="form-group col-8 col-md-3">
             <label for="for_created_at">Fecha y Hora Chequeo</label>
-            <input type="datetime-local" class="form-control" name="created_at" id="for_created_at" required>
+            <input type="datetime-local" class="form-control" name="created_at" id="for_created_at" min="{{ date('Y-m-d\TH:i', strtotime('-1 day')) }}" max="{{ date('Y-m-d\TH:i:s') }}" required>
         </fieldset>
 
 

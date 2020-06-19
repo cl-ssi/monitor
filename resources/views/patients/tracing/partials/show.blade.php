@@ -1,4 +1,4 @@
-@can('Developer')
+@can('Patient: tracing')
 
 @if($patient->tracing)
 
