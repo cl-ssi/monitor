@@ -8,6 +8,26 @@
     </li>
     @endforeach
 
+    @canany(['SanitaryResidence: admission','Developer'])
+
+    <a class="nav-link" href="{{ route('sanitary_residences.admission.inbox') }}">
+        <i class="fas fa-question"></i> Pendientes
+    </a>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('sanitary_residences.admission.inboxaccept') }}">
+            <i class="fas fa-clipboard-check"></i> Aprobadas
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('sanitary_residences.admission.inboxrejected') }}">
+            <i class="fas fa-minus-square"></i> Rechazados
+        </a>
+    </li>
+
+    @endcan
+
     <!-- <li class="nav-item">
         <a class="nav-link" href="{{ route('sanitary_residences.admission.index') }}">        
             <i class="fas fa-clipboard-check"></i> Aprobados

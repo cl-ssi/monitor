@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'SEREMI')
+@section('title', 'Home Residencias')
 
 @section('content')
 
 @include('sanitary_residences.nav')
 
-<h3 class="mb-3">Listado de Encuestas Pendientes de Visto Bueno</h3>
+<h3 class="mb-3">Listado de Encuestas Aprobadas</h3>
 <table class="table table-sm table-bordered text-center align-middle">
   <thead>
-    <tr>      
+    <tr>
       <th>Nombre de Encuestado</th>
       <th>Fecha de Encuesta</th>
       <th>Fecha Digitación en Sistema de Encuesta</th>
@@ -17,7 +17,8 @@
       <th>¿Es Posible Aislar al Paciente?</th>
       <th>¿Califica Residencia?</th>
       <th>Resultado</th>
-      <th>Dar Visto Bueno/Rechazar</th>
+      <th>Resultado Final</th>
+      <th>Ver encuesta</th>
     </tr>
   </thead>
   <tbody>
@@ -29,8 +30,9 @@
       <td class="text-center align-middle">{{ $admission->user->name }}</td>
       <td class="text-center align-middle">{{ $admission->isolate_text }}</td>
       <td class="text-center align-middle">{{ $admission->residency_text }}</td>
+      <td class="text-center align-middle">{{ $admission->status }}</td>
       <td class="text-center align-middle" nowrap>{!! $admission->result !!}</td>
-      <td class="text-center align-middle"><a class="btn btn-success btn-sm" href="{{ route('sanitary_residences.admission.seremiadmission', $admission) }}">
+      <td class="text-center align-middle"><a class="btn btn-success btn-sm" href="{{ route('sanitary_residences.admission.show', $admission) }}">
           <i class="fas fa-poll-h"></i> Revisar Encuesta
         </a></td>
     </tr>

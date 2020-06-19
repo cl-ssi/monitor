@@ -154,7 +154,7 @@
 
               <fieldset class="form-group col-md-3">
                   <label for="for_category">Categoría</label>
-                  <select class="form-control selectpicker" name="category" id="for_category" title="Seleccione..." data-live-search="true" data-size="5" required>
+                  <select class="form-control selectpicker country" name="category" id="for_category" title="Seleccione..." data-live-search="true" data-size="5" required>
                       <option value="institutional">Institucional</option>
                       <option value="ocupational">Laboral</option>
                       <option value="passenger">Pasajero</option>
@@ -311,12 +311,22 @@ $(document).ready(function(){
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 
 <script type="text/javascript">
-    $('#for_category').change(function() {
-      $('#for_relationship').prop('disabled', true);
-      if ($(this).val() == 'family') {
-        $('#for_relationship').prop('disabled', false);
-      }
+$(document).ready(function(){
+    $("select.country").change(function(){
+        var selectedcategory = $(this).children("option:selected").val();
+        if(selectedcategory =='family')
+        {
+            alert("You have selected the country - " + selectedcategory);    
+            $('#for_relationship').prop('disabled', false);
+            $('#for_relationship').prop("required", true);            
+        }
+        else
+        {
+            $('#for_relationship').prop('disabled', true);
+        }
+        
+        
     });
+});
 </script>
-
 @endsection

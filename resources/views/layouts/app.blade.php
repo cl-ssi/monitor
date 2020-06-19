@@ -212,7 +212,7 @@
 
                                 @canany(['SanitaryResidence: admission','Developer'])
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('sanitary_residences.admission.inbox') }}">En Espera de Confirmación Por SEREMI</a>
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.admission.inbox') }}">Bandeja SEREMI</a>
                                 @endcan
 
                             </div>

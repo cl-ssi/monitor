@@ -16,18 +16,19 @@ class CreateAdmissionSurveysTable extends Migration
         Schema::create('admission_surveys', function (Blueprint $table) {
             //IDENTIFICACIÓN DE PACIENTE
             $table->id(); 
-            $table->string('prevision')->nullable();           
+            //estado de si es aprobado y rechazado en r.s. importante para SEREMIA
+            $table->string('status')->nullable();            
             $table->string('contactnumber')->nullable();                        
             $table->text('morbid_history')->nullable();
             $table->text('observations')->nullable();
-
-            //aislar a la persona
-            $table->boolean('isolate')->nullable();
 
             //CONDICIONES DE HABITABILIDAD
             $table->integer('people')->nullable();
             $table->integer('rooms')->nullable();
             $table->integer('bathrooms')->nullable();
+            $table->boolean('water')->nullable();
+            //aislar a la persona
+            $table->boolean('isolate')->nullable();
 
 
             //Criterios de Inclusión-Exclusión
@@ -36,18 +37,16 @@ class CreateAdmissionSurveysTable extends Migration
             $table->boolean('basicactivities')->nullable();
             $table->boolean('drugs')->nullable();
             $table->boolean('chronic')->nullable();
-            $table->boolean('healthnow')->nullable();
-            $table->boolean('water')->nullable();
-            $table->boolean('work')->nullable();
-            $table->boolean('food')->nullable();
+            $table->boolean('healthnow')->nullable();            
             $table->boolean('risk')->nullable();
             $table->boolean('old')->nullable();
 
             
 
 
-            //pregunta más importante
+            //pregunta más importante para encuestador
             $table->boolean('residency')->nullable();
+
             $table->unsignedBigInteger('patient_id');
             $table->unsignedBigInteger('user_id');
 

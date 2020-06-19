@@ -321,25 +321,35 @@
 <table class="table table-sm table-bordered small mb-4 mt-4">
     <thead>
         <tr class="text-center">
-            <th>Fecha Digitación en Sistema de Encuesta</th>
-            <th>Encuesta Digitada en Sistema por</th>
+            <th>Fecha de Encuesta</th>
+            <th>Fecha Digitación en Sistema</th>
+            <th>Encuesta Digitada por</th>
             <th>¿Es Posible Aislar al Paciente?</th>
             <th>Resultado Encuesta</th>
             <th>Resultado Final</th>
-            <th>Ver Encuesta</th>
+            <th>Ver/Editar Encuesta</th>
         </tr>
     </thead>
     <tbody>
       @foreach($patient->admissionSurvey as $admission)
       <tr>
-          <td class="text-center align-middle">{{ $admission->created_at }}</td>
+          <td class="text-center align-middle">{{ $admission->created_at->format('d-m-y H:i') }}</td>
+          <td class="text-center align-middle">{{ $admission->updated_at->format('d-m-y H:i') }}</td>
           <td class="text-center align-middle">{{ $admission->user->name }}</td>
           <td class="text-center align-middle">{{ $admission->isolate_text }}</td>
           <td class="text-center align-middle">{!! $admission->result !!}</td>
-          <td class="text-center align-middle"></td>
+          <td class="text-center align-middle">{{ $admission->status }}</td>
+            @if($admission->status)
+            <td class="text-center align-middle">
+                <a class="btn btn-warning btn-sm" href="{{ route('sanitary_residences.admission.show', $admission) }}">
+                    <i class="fas fa-poll-h"></i> Ver Encuesta (tiene resultado final)
+                </a></td>
+            @else
+          
           <td class="text-center align-middle"><a class="btn btn-success btn-sm" href="{{ route('sanitary_residences.admission.edit', $admission) }}">
-    <i class="fas fa-poll-h"></i> Revisar Encuesta
-</a></td>
+                    <i class="fas fa-poll-h"></i> Ver/Editar Encuesta
+                </a></td>
+            @endif
       </tr>
       @endforeach
     </tbody>

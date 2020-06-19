@@ -239,13 +239,19 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
     Route::delete('/{residenceUser}', 'ResidenceController@usersDestroy')->name('users.destroy');
 
     Route::prefix('admission')->name('admission.')->group(function () {
-    Route::get('/changestatus/{admission}', 'AdmissionSurveyController@changestatus')->name('changestatus');
+    Route::get('/changestatus/{admission}/{status}', 'AdmissionSurveyController@changestatus')->name('changestatus');
+    Route::get('/accept/{admission}', 'AdmissionSurveyController@accept')->name('accept');    
+    Route::get('/inboxaccept', 'AdmissionSurveyController@inboxaccept')->name('inboxaccept');
+    Route::get('/rejected/{admission}', 'AdmissionSurveyController@rejected')->name('rejected');
+    Route::get('/inboxrejected', 'AdmissionSurveyController@inboxrejected')->name('inboxrejected');
     Route::get('/create/{patient}', 'AdmissionSurveyController@create')->name('create');
     Route::get('/', 'AdmissionSurveyController@index')->name('index');
     Route::get('/inbox', 'AdmissionSurveyController@inbox')->name('inbox');
     Route::post('/', 'AdmissionSurveyController@store')->name('store');
     Route::get('/{admission}/edit', 'AdmissionSurveyController@edit')->name('edit');
+    Route::get('/{admission}/seremiadmission', 'AdmissionSurveyController@seremiadmission')->name('seremiadmission');
     Route::put('update/{admission}', 'AdmissionSurveyController@update')->name('update');
+    Route::get('/{admission}', 'AdmissionSurveyController@show')->name('show');
 
     });
 
