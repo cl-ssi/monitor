@@ -8,7 +8,15 @@
 
 <h3 class="mb-3">Nuevo Usuario</h3>
 
-
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
 <form method="POST" class="form-horizontal" action="{{ route('users.store') }}">
     @csrf
