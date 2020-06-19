@@ -75,6 +75,7 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
         Route::post('/', 'ContactPatientController@store')->name('store')->middleware('auth');
         Route::get('/{contact_patient}/edit', 'ContactPatientController@edit')->name('edit')->middleware('auth');
         Route::put('/{contact_patient}', 'ContactPatientController@update')->name('update')->middleware('auth');
+        Route::get('delete/{contact_patient}','ContactPatientController@destroy')->name('destroy')->middleware('auth');;
     });
 
     Route::prefix('tracings')->name('tracings.')->middleware('auth')->group(function () {
@@ -166,7 +167,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::prefix('reports')->name('reports.')->group(function () {
             Route::get('/positives','SuspectCaseReportController@positives')->name('positives')->middleware('auth','can:Report: positives');
             Route::get('case_tracing','SuspectCaseReportController@case_tracing')->name('case_tracing')->middleware('auth','can:Patient: tracing');
-            Route::get('case_tracing_excel','SuspectCaseReportController@case_tracing_excel')->name('case_tracing_excel')->middleware('auth','can:Patient: tracing');
+            Route::get('tracing_minsal','SuspectCaseReportController@tracing_minsal')->name('tracing_minsal')->middleware('auth','can:Patient: tracing');
             Route::get('case_tracing/export', 'SuspectCaseReportController@case_tracing_export')->name('case_tracing.export');
             Route::get('/gestants','SuspectCaseReportController@gestants')->name('gestants')->middleware('auth','can:Report: gestants');
             // Route::get('case_chart','SuspectCaseController@case_chart')->name('case_chart')->middleware('auth');

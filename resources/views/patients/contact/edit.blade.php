@@ -61,6 +61,19 @@
               </fieldset>
 
               <fieldset class="form-group col-md-3">
+                  <label for="for_category">Categoría</label>
+                  <select class="form-control selectpicker" name="category" id="for_category" title="Seleccione..." data-live-search="true" data-size="5" required>
+                      <option value="institutional" {{ ($contactPatient->category == 'institutional') ? 'selected' : '' }}>Institucional</option>
+                      <option value="ocupational" {{ ($contactPatient->category == 'ocupational') ? 'selected' : '' }}>Laboral</option>
+                      <option value="passenger" {{ ($contactPatient->category == 'passenger') ? 'selected' : '' }}>Pasajero</option>
+                      <option value="social" {{ ($contactPatient->category == 'social') ? 'selected' : '' }}>Social</option>
+                      <option value="waiting room" {{ ($contactPatient->category == 'waiting room') ? 'selected' : '' }}>Sala de espera</option>
+                      <option value="family" {{ ($contactPatient->category == 'family') ? 'selected' : '' }}>Familiar</option>
+                      <option value="intradomiciliary" {{ ($contactPatient->category == 'intradomiciliary') ? 'selected' : '' }}>Intradomiciliario</option>
+                  </select>
+              </fieldset>
+
+              <fieldset class="form-group col-md-3">
                   <label for="for_register_at">Parentesco</label>
                   <select class="form-control selectpicker" name="relationship" id="for_relationship" title="Seleccione..." data-live-search="true" data-size="5" required>
                       @if($contactPatient->self_patient->sexEsp == 'Femenino')
@@ -98,33 +111,31 @@
                         <option value="son in law" {{ ($contactPatient->relationship == 'son in law') ? 'selected' : '' }}>Yerno</option>
                         <option value="other" {{ ($contactPatient->relationship == 'other') ? 'selected' : '' }}>Otro</option>
                       @else
-                        <option value="grandmother">Abuela</option>
-                        <option value="grandfather">Abuelo</option>
-                        <option value="coworker">Compañera de Trabajo</option>
-                        <option value="sister in law">Cuñada</option>
-                        <option value="brother in law">Cuñado</option>
-                        <option value="wife">Esposa</option>
-                        <option value="husband">Esposo</option>
-                        <option value="sister">Hermana</option>
-                        <option value="brother">Hermano</option>
-                        <option value="daughter">Hija</option>
-                        <option value="son">Hijo</option>
-                        <option value="mother">Madre</option>
-                        <option value="father">Padre</option>
-                        <option value="cousin">Primo/a</option>
-                        <option value="niece">Sobrina</option>
-                        <option value="nephew">Sobrino</option>
-                        <option value="mother in law">Suegra</option>
-                        <option value="father in law">Suegro</option>
-                        <option value="aunt">Tía</option>
-                        <option value="uncle">Tío</option>
-                        <option value="grandchild">Nieta/o</option>
-                        <option value="daughter in law">Nuera</option>
-                        <option value="son in law">Yerno</option>
-                        <option value="girlfriend">Pareja (Femenino)</option>
-                        <option value="boyfriend">Pareja (Masculino)</option>
-                        <option value="neighbour">Vecina/o</option>
-                        <option value="other">Otro</option>
+                        <option value="grandmother" {{ ($contactPatient->relationship == 'grandmother') ? 'selected' : '' }}>Abuela</option>
+                        <option value="grandfather" {{ ($contactPatient->relationship == 'grandfather') ? 'selected' : '' }}>Abuelo</option>
+                        <option value="sister in law" {{ ($contactPatient->relationship == 'sister in law') ? 'selected' : '' }}>Cuñada</option>
+                        <option value="brother in law" {{ ($contactPatient->relationship == 'brother in law') ? 'selected' : '' }}>Cuñado</option>
+                        <option value="wife" {{ ($contactPatient->relationship == 'wife') ? 'selected' : '' }}>Esposa</option>
+                        <option value="husband" {{ ($contactPatient->relationship == 'husband') ? 'selected' : '' }}>Esposo</option>
+                        <option value="sister" {{ ($contactPatient->relationship == 'sister') ? 'selected' : '' }}>Hermana</option>
+                        <option value="brother" {{ ($contactPatient->relationship == 'brother') ? 'selected' : '' }}>Hermano</option>
+                        <option value="daughter" {{ ($contactPatient->relationship == 'daughter') ? 'selected' : '' }}>Hija</option>
+                        <option value="son" {{ ($contactPatient->relationship == 'son') ? 'selected' : '' }}>Hijo</option>
+                        <option value="mother" {{ ($contactPatient->relationship == 'mother') ? 'selected' : '' }}>Madre</option>
+                        <option value="father" {{ ($contactPatient->relationship == 'father') ? 'selected' : '' }}>Padre</option>
+                        <option value="cousin" {{ ($contactPatient->relationship == 'cousin') ? 'selected' : '' }}>Primo/a</option>
+                        <option value="niece" {{ ($contactPatient->relationship == 'niece') ? 'selected' : '' }}>Sobrina</option>
+                        <option value="nephew" {{ ($contactPatient->relationship == 'nephew') ? 'selected' : '' }}>Sobrino</option>
+                        <option value="mother in law" {{ ($contactPatient->relationship == 'mother in law') ? 'selected' : '' }}>Suegra</option>
+                        <option value="father in law" {{ ($contactPatient->relationship == 'father in law') ? 'selected' : '' }}>Suegro</option>
+                        <option value="aunt" {{ ($contactPatient->relationship == 'aunt') ? 'selected' : '' }}>Tía</option>
+                        <option value="uncle" {{ ($contactPatient->relationship == 'uncle') ? 'selected' : '' }}>Tío</option>
+                        <option value="grandchild" {{ ($contactPatient->relationship == 'grandchild') ? 'selected' : '' }}>Nieta/o</option>
+                        <option value="daughter in law" {{ ($contactPatient->relationship == 'daughter in law') ? 'selected' : '' }}>Nuera</option>
+                        <option value="son in law" {{ ($contactPatient->relationship == 'son in law') ? 'selected' : '' }}>Yerno</option>
+                        <option value="girlfriend" {{ ($contactPatient->relationship == 'girlfriend') ? 'selected' : '' }}>Pareja (Femenino)</option>
+                        <option value="boyfriend" {{ ($contactPatient->relationship == 'boyfriend') ? 'selected' : '' }}>Pareja (Masculino)</option>
+                        <option value="other" {{ ($contactPatient->relationship == 'other') ? 'selected' : '' }}>Otro</option>
                       @endif
                   </select>
               </fieldset>
@@ -137,10 +148,6 @@
                   </select>
               </fieldset>
 
-              <fieldset class="form-group col-md-3">
-                  <label for="for_notification_contact_at">Fecha de notificación de contacto:</label>
-                  <input type="datetime-local" class="form-control" name="notification_contact_at" id="for_notification_contact_at" value="">
-              </fieldset>
 
               </div>
               <hr>
