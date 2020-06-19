@@ -23,9 +23,14 @@ class TracingController extends Controller
             })
             ->whereHas('tracing', function($q) {
                     $q->where('status',1)
-                    ->orderBy('next_control_at');
+                      ->orderBy('next_control_at');
                 })
+            ->where(function ($q) {
+                $q->whereNotIn('status',['Fallecido','Alta','Residencia Sanitaria','Hospitalizado Básico','Hospitalizado medio','Hospitalizado UCI','Hospitalizado UTI','Hospitalizado UTI (Ventilador)'])
+                  ->orWhereNull('status');
+             })
             ->with('tracing')
+            ->with('demographic')
             ->get()
             ->sortBy(function($q){
                 return $q->tracing->next_control_at;
@@ -48,7 +53,12 @@ class TracingController extends Controller
                   ->where('status',1)
                   ->orderBy('next_control_at');
             })
+            ->where(function ($q) {
+                $q->whereNotIn('status',['Fallecido','Alta','Residencia Sanitaria','Hospitalizado Básico','Hospitalizado medio','Hospitalizado UCI','Hospitalizado UTI','Hospitalizado UTI (Ventilador)'])
+                  ->orWhereNull('status');
+             })
             ->with('tracing')
+            ->with('demographic')
             ->get()
             ->sortBy(function($q){
                 return $q->tracing->next_control_at;
@@ -141,42 +151,35 @@ class TracingController extends Controller
 
         foreach($patients as $patient){
             $case = $patient->suspectCases->where('pscr_sars_cov_2','positive')->first();
-            $tracing = new Tracing();
-            $tracing->patient_id = $case->patient_id;
-            $tracing->user_id = ($case->user_id === 0) ? null : $case->user_id;
-            $tracing->index = 1;
-            $tracing->establishment_id = ($case->establishment_id === 0) ? 4002 : $case->establishment_id;
-            switch ($case->symptoms) {
-                case 'Si':
-                    $symptom = 1; break;
-                case 'No':
-                    $symptom = 0; break;
-                default:
-                    $symptom = null; break;
-            }
-            $tracing->symptoms = $symptom;
-            $tracing->functionary = $case->functionary;
-            $tracing->gestation = $case->gestation;
-            $tracing->gestation_week = $case->gestation_week;
-            $tracing->next_control_at = $case->pscr_sars_cov_2_at->add(1,'day');
-            $tracing->quarantine_start_at = $case->pscr_sars_cov_2_at;
-            $tracing->quarantine_end_at = $case->pscr_sars_cov_2_at->add(14,'days');
+            $tracing                    = new Tracing();
+            $tracing->patient_id        = $case->patient_id;
+            $tracing->user_id           = ($case->user_id === 0) ? null : $case->user_id;
+            $tracing->index             = 1;
+            $tracing->establishment_id  = ($case->establishment_id === 0) ? 4002 : $case->establishment_id;
+            $tracing->functionary       = $case->functionary;
+            $tracing->gestation         = $case->gestation;
+            $tracing->gestation_week    = $case->gestation_week;
+            $tracing->next_control_at   = $case->pscr_sars_cov_2_at->add(1,'day');
+            $tracing->quarantine_start_at = ($case->symptoms_at) ?
+                                            $case->symptoms_at :
+                                            $case->pscr_sars_cov_2_at;
+            $tracing->quarantine_end_at = $tracing->quarantine_start_at->add(14,'days');
             $tracing->observations = $case->observation;
-            if($patient->status != 'Hospitalizado UCI (Ventilador)'
-                AND $patient->status != 'Hospitalizado Básico'
-                AND $patient->status != 'Hospitalizado Medio'
-                AND $patient->status != 'Hospitalizado UTI'
-                AND $patient->status != 'Hospitalizado UCI'
-                AND $patient->status != 'Residencia Sanitaria')
+            $tracing->notification_at = $case->notification_at;
+            $tracing->notification_mechanism = $case->notification_mechanism;
+            $tracing->discharged_at = $case->discharged_at;
+            $tracing->symptoms_start_at = $case->symptoms_at;
+            switch ($case->symptoms) {
+                case 'Si': $tracing->symptoms = 1; break;
+                case 'No': $tracing->symptoms = 0; break;
+                default: $tracing->symptoms = null; break;
+            }
 
-                if($tracing->quarantine_end_at < Carbon::now()->sub(1,'days')) {
-                    $tracing->status = 0;
-                }
-                else {
-                    $tracing->status = 1;
-                }
-            else if($patient->status != 'Fallecido' ) {
+            if($case->patient->status == 'Fallecido') {
                 $tracing->status = 0;
+            }
+            else {
+                $tracing->status = ($tracing->quarantine_end_at < Carbon::now()->sub(1,'days')) ? 0 : 1;
             }
 
             $tracing->save();
@@ -192,11 +195,11 @@ class TracingController extends Controller
         $isQuarantined = Tracing::whereHas('patient', function ($q) use ($run) {
             $q->where('run', $run);
         })
-            ->where('quarantine_start_at', '<=', $fechaActual)
-            ->where(function($q) use ($fechaActual){
-                $q->where('quarantine_end_at', '>=', $fechaActual)
-                    ->orWhereNull('quarantine_end_at');
-            })->exists();
+        ->where('quarantine_start_at', '<=', $fechaActual)
+        ->where(function($q) use ($fechaActual){
+            $q->where('quarantine_end_at', '>=', $fechaActual)
+                ->orWhereNull('quarantine_end_at');
+        })->exists();
 
         return view('patients.tracing.quarantine_check', compact('isQuarantined', 'run'));
     }
