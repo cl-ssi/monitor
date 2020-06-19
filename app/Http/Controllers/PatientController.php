@@ -202,8 +202,10 @@ class PatientController extends Controller
         $suspectCases = SuspectCase::where('pscr_sars_cov_2_at', '>=', $date)
                                    ->where('pscr_sars_cov_2', 'positive')
                                    ->whereHas('patient', function ($q) {
-                                        $q->whereNotIn('status',['Hospitalizado UTI','Hospitalizado UCI','Hospitalizado Básico','Hospitalizado Crítico','Residencia Sanitaria','Fallecido','Alta']);
+                                        $q->whereIn('status',['Ambulatorio',''])
+                                          ->OrWhereNULL('status');
                                     })
+
                                    ->get();
 
         $data = array();
