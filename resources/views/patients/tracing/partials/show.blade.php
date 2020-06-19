@@ -13,10 +13,26 @@
                     id="for_notification_at" value="{{ ($patient->tracing->notification_at) ? $patient->tracing->notification_at->format('Y-m-d') : '' }}">
             </fieldset>
 
-            <fieldset class="form-group col-md-2">
-                <label for="for_notification_mechanism">Mecanismo</label>
+
+            <fieldset class="form-group col-6 col-md-3">
+                <label for="for_notification_mechanism">Mecanismo de Notificación</label>
                 <select name="notification_mechanism" id="for_notification_mechanism" class="form-control">
-                    <option>{{ $patient->tracing->notification_mechanism }}</option>
+                    <option></option>
+                    <option value="Pendiente"
+                        {{ ($patient->tracing->notification_mechanism == 'Pendiente')?'selected':'' }}>
+                        Pendiente</option>
+                    <option value="Llamada telefónica"
+                        {{ ($patient->tracing->notification_mechanism == 'Llamada telefónica')?'selected':'' }}>
+                        Llamada telefónica</option>
+                    <option value="Correo electrónico"
+                        {{ ($patient->tracing->notification_mechanism == 'Correo electrónico')?'selected':'' }}>
+                        Correo electrónico</option>
+                    <option value="Visita domiciliaria"
+                        {{ ($patient->tracing->notification_mechanism == 'Visita domiciliaria')?'selected':'' }}>
+                        Visita domiciliaria</option>
+                    <option value="Centro de salud"
+                        {{ ($patient->tracing->notification_mechanism == 'Centro de salud')?'selected':'' }}>
+                        Centro de salud</option>
                 </select>
             </fieldset>
 
@@ -99,9 +115,9 @@
             </fieldset>
 
             <fieldset class="form-group col-md-2">
-                <label for="for_quarantine_end_at">Término de Cuarentena</label>
+                <label for="for_quarantine_end_at">Término de Cuarentena *</label>
                 <input type="date" class="form-control" name="quarantine_end_at"
-                    id="for_quarantine_end_at"
+                    id="for_quarantine_end_at" required
                     value="{{ ($patient->tracing->quarantine_end_at) ? $patient->tracing->quarantine_end_at->format('Y-m-d') : '' }}">
             </fieldset>
 
@@ -269,6 +285,7 @@
 
     </form>
 
+    <hr>
 
     @include('patients.tracing.partials.events')
 

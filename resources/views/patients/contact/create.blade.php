@@ -148,16 +148,29 @@
             @method('POST')
             <div class="form-row">
               <fieldset class="form-group col-md-3">
-                  <label for="for_last_contact_at">Fecha último contacto</label>
-                  <input type="datetime-local" class="form-control" name="last_contact_at" id="for_last_contact_at" value="">
+                  <label for="for_last_contact_at">Fecha último contacto *</label>
+                  <input type="datetime-local" class="form-control" name="last_contact_at" id="for_last_contact_at" value="" required>
+              </fieldset>
+
+              <fieldset class="form-group col-md-3">
+                  <label for="for_category">Categoría *</label>
+                  <select class="form-control country" name="category" id="for_category" title="Seleccione..." data-live-search="true" data-size="5" required>
+                      <option value="institutional">Institucional</option>
+                      <option value="ocupational">Laboral</option>
+                      <option value="passenger">Pasajero</option>
+                      <option value="social">Social</option>
+                      <option value="waiting room">Sala de espera</option>
+                      <option value="family">Familiar</option>
+                      <option value="intradomiciliary">Intradomiciliario</option>
+                  </select>
               </fieldset>
 
               <fieldset class="form-group col-md-3">
                   <label for="for_register_at">Parentesco</label>
-                  <select class="form-control selectpicker" name="relationship" id="for_relationship" title="Seleccione..." data-live-search="true" data-size="5" required>
+                  <select class="form-control" name="relationship" id="for_relationship" title="Seleccione..." data-live-search="true" data-size="5" disabled>
                       @if($patient->sexEsp == 'Femenino')
+                        <option value=""></option>
                         <option value="grandmother">Abuela</option>
-                        <option value="coworker">Compañera de Trabajo</option>
                         <option value="sister in law">Cuñada</option>
                         <option value="wife">Esposa</option>
                         <option value="sister">Hermana</option>
@@ -170,11 +183,10 @@
                         <option value="grandchild">Nieta</option>
                         <option value="daughter in law">Nuera</option>
                         <option value="girlfriend">Pareja</option>
-                        <option value="neighbour">Vecina</option>
                         <option value="other">Otro</option>
                       @elseif($patient->sexEsp == 'Masculino')
+                        <option value=""></option>
                         <option value="grandfather">Abuelo</option>
-                        <option value="coworker">Compañero de Trabajo</option>
                         <option value="brother in law">Cuñado</option>
                         <option value="husband">Esposo</option>
                         <option value="brother">Hermano</option>
@@ -186,13 +198,12 @@
                         <option value="nephew">Sobrino</option>
                         <option value="father in law">Suegro</option>
                         <option value="uncle">Tío</option>
-                        <option value="neighbour">Vecino</option>
                         <option value="son in law">Yerno</option>
                         <option value="other">Otro</option>
                       @else
+                        <option value=""></option>
                         <option value="grandmother">Abuela</option>
                         <option value="grandfather">Abuelo</option>
-                        <option value="coworker">Compañera de Trabajo</option>
                         <option value="sister in law">Cuñada</option>
                         <option value="brother in law">Cuñado</option>
                         <option value="wife">Esposa</option>
@@ -215,7 +226,6 @@
                         <option value="son in law">Yerno</option>
                         <option value="girlfriend">Pareja (Femenino)</option>
                         <option value="boyfriend">Pareja (Masculino)</option>
-                        <option value="neighbour">Vecina/o</option>
                         <option value="other">Otro</option>
                       @endif
                   </select>
@@ -223,7 +233,7 @@
 
               <fieldset class="form-group col-md-3">
                   <label for="for_live_together">¿Viven Juntos?</label>
-                  <select class="form-control selectpicker" name="live_together" id="for_live_together" title="Seleccione..." data-size="2" required>
+                  <select class="form-control selectpicker" name="live_together" id="for_live_together" title="Seleccione..." data-size="2">
                       <option value="1">Si</option>
                       <option value="0">No</option>
                   </select>
@@ -301,4 +311,26 @@ $(document).ready(function(){
 });
 </script>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("select.country").change(function(){
+        var selectedcategory = $(this).children("option:selected").val();
+        if(selectedcategory =='family')
+        {
+            $('#for_relationship').prop('disabled', false);
+            $('#for_relationship').prop("required", true);
+        }
+        else
+        {
+            $('#for_relationship').val('');
+            $('#for_relationship').prop('disabled', true);
+
+        }
+
+
+    });
+});
+</script>
 @endsection

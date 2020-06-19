@@ -75,34 +75,19 @@
 
     <div class="form-row">
         <fieldset class="form-group col-4 col-md-4">
-            <label for="for_prevision">Previsión</label>
-            <select name="prevision" id="for_prevision" class="form-control" required>
-                <option value="">Elegir Previsión</option>
-                <option value="Sin Previsión">Sin Previsión</option>
-                <option value="Fonasa A">Fonasa A</option>
-                <option value="Fonasa B">Fonasa B</option>
-                <option value="Fonasa C">Fonasa C</option>
-                <option value="Fonasa D">Fonasa D</option>
-                <option value="Fonasa E">Fonasa E</option>
-                <option value="ISAPRE">ISAPRE</option>
-                <option value="OTRO">OTRO</option>
-            </select>
+            <label for="for_prevision">Fecha y Hora de Encuesta en Terreno*</label>
+            <input type="datetime-local" name="created_at" id="for_prevision" class="form-control" max="{{ date('Y-m-d\TH:i:s') }}" required>                
+            </input>
         </fieldset>
 
         <fieldset class="form-group col-3 col-md-3">
             <label for="for_address">Telefono(s) Contacto Emergencia</label>
             <input type="text" class="form-control" name="contactnumber" id="for_contactnumber" placeholder="" autocomplete="off">
-        </fieldset>
-
-
-
-        
+        </fieldset>      
 
         
 
     </div>
-
-
     <div class="form-row">
         <fieldset class="form-group col-12 col-md-7">
             <label for="for_indications">Antecedentes Morbidos</label>

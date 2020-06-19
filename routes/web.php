@@ -74,6 +74,8 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
         Route::get('/create/{search}/{id}', 'ContactPatientController@create')->name('create')->middleware('auth');
         Route::post('/', 'ContactPatientController@store')->name('store')->middleware('auth');
         Route::get('/{contact_patient}/edit', 'ContactPatientController@edit')->name('edit')->middleware('auth');
+        Route::put('/{contact_patient}', 'ContactPatientController@update')->name('update')->middleware('auth');
+        Route::get('delete/{contact_patient}','ContactPatientController@destroy')->name('destroy')->middleware('auth');;
     });
 
     Route::prefix('tracings')->name('tracings.')->middleware('auth')->group(function () {
@@ -165,7 +167,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::prefix('reports')->name('reports.')->group(function () {
             Route::get('/positives','SuspectCaseReportController@positives')->name('positives')->middleware('auth','can:Report: positives');
             Route::get('case_tracing','SuspectCaseReportController@case_tracing')->name('case_tracing')->middleware('auth','can:Patient: tracing');
-            Route::get('case_tracing_excel','SuspectCaseReportController@case_tracing_excel')->name('case_tracing_excel')->middleware('auth','can:Patient: tracing');
+            Route::get('tracing_minsal','SuspectCaseReportController@tracing_minsal')->name('tracing_minsal')->middleware('auth','can:Patient: tracing');
             Route::get('case_tracing/export', 'SuspectCaseReportController@case_tracing_export')->name('case_tracing.export');
             Route::get('/gestants','SuspectCaseReportController@gestants')->name('gestants')->middleware('auth','can:Report: gestants');
             // Route::get('case_chart','SuspectCaseController@case_chart')->name('case_chart')->middleware('auth');
@@ -238,13 +240,19 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
     Route::delete('/{residenceUser}', 'ResidenceController@usersDestroy')->name('users.destroy');
 
     Route::prefix('admission')->name('admission.')->group(function () {
-    Route::get('/changestatus/{admission}', 'AdmissionSurveyController@changestatus')->name('changestatus');
+    Route::get('/changestatus/{admission}/{status}', 'AdmissionSurveyController@changestatus')->name('changestatus');
+    Route::get('/accept/{admission}', 'AdmissionSurveyController@accept')->name('accept');    
+    Route::get('/inboxaccept', 'AdmissionSurveyController@inboxaccept')->name('inboxaccept');
+    Route::get('/rejected/{admission}', 'AdmissionSurveyController@rejected')->name('rejected');
+    Route::get('/inboxrejected', 'AdmissionSurveyController@inboxrejected')->name('inboxrejected');
     Route::get('/create/{patient}', 'AdmissionSurveyController@create')->name('create');
     Route::get('/', 'AdmissionSurveyController@index')->name('index');
     Route::get('/inbox', 'AdmissionSurveyController@inbox')->name('inbox');
     Route::post('/', 'AdmissionSurveyController@store')->name('store');
     Route::get('/{admission}/edit', 'AdmissionSurveyController@edit')->name('edit');
+    Route::get('/{admission}/seremiadmission', 'AdmissionSurveyController@seremiadmission')->name('seremiadmission');
     Route::put('update/{admission}', 'AdmissionSurveyController@update')->name('update');
+    Route::get('/{admission}', 'AdmissionSurveyController@show')->name('show');
 
     });
 

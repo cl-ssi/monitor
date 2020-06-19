@@ -8,17 +8,23 @@ use User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class ContactPatient extends Model
+class ContactPatient extends Model implements Auditable
 {
+    use \OwenIt\Auditing\Auditable;
     use softDeletes;
 
     protected $fillable = [
-        'patient_id', 'contact_id', 'last_contact_at', 'comment', 'relationship', 'live_together', 'notification_contact_at', 'index', 'user_id'
+        'patient_id', 'contact_id', 'last_contact_at', 'category', 'relationship', 'live_together', 'comment', 'index', 'user_id'
     ];
 
     public function patient() {
         return $this->belongsTo('App\Patient', 'contact_id');
+    }
+
+    public function self_patient() {
+        return $this->belongsTo('App\Patient', 'patient_id');
     }
 
     public function user() {
@@ -32,6 +38,41 @@ class ContactPatient extends Model
         }
     }
 
+    public function getLastContactDateAttribute(){
+        return Carbon::parse($this->last_contact_at)->format('Y-m-d\TH:i');
+    }
+
+    public function getCategoryDescAttribute(){
+      switch ($this->category) {
+          case "institutional":
+              return 'Institucional';
+              break;
+          case "ocupational":
+              return 'Laboral';
+              break;
+
+          case "passenger":
+              return 'Pasajero';
+              break;
+          case "social":
+              return 'Social';
+              break;
+
+          case "waiting room":
+              return 'Sala de Espera';
+              break;
+          case "family":
+              return 'Familiar';
+              break;
+
+          case "intradomiciliary":
+              return 'Intradomiciliario';
+              break;
+
+      }
+    }
+
+
     public function getRelationshipNameAttribute(){
         switch ($this->relationship) {
             case "grandfather":
@@ -39,10 +80,6 @@ class ContactPatient extends Model
                 break;
             case "grandmother":
                 return 'Abuela';
-                break;
-
-            case "coworker":
-                return 'Compañero/a de trabajo';
                 break;
 
             case "sister in law":
@@ -121,10 +158,6 @@ class ContactPatient extends Model
                 break;
             case "boyfriend":
                 return 'Pareja';
-                break;
-
-            case "neighbour":
-                return 'Vecino/a';
                 break;
 
             case "other":
