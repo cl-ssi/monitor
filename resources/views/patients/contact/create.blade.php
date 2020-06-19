@@ -148,12 +148,12 @@
             @method('POST')
             <div class="form-row">
               <fieldset class="form-group col-md-3">
-                  <label for="for_last_contact_at">Fecha último contacto</label>
+                  <label for="for_last_contact_at">Fecha último contacto *</label>
                   <input type="datetime-local" class="form-control" name="last_contact_at" id="for_last_contact_at" value="" required>
               </fieldset>
 
               <fieldset class="form-group col-md-3">
-                  <label for="for_category">Categoría</label>
+                  <label for="for_category">Categoría *</label>
                   <select class="form-control country" name="category" id="for_category" title="Seleccione..." data-live-search="true" data-size="5" required>
                       <option value="institutional">Institucional</option>
                       <option value="ocupational">Laboral</option>
@@ -318,18 +318,18 @@ $(document).ready(function(){
     $("select.country").change(function(){
         var selectedcategory = $(this).children("option:selected").val();
         if(selectedcategory =='family')
-        {            
+        {
             $('#for_relationship').prop('disabled', false);
-            $('#for_relationship').prop("required", true);            
+            $('#for_relationship').prop("required", true);
         }
         else
         {
             $('#for_relationship').val('');
             $('#for_relationship').prop('disabled', true);
-            
+
         }
-        
-        
+
+
     });
 });
 </script>
