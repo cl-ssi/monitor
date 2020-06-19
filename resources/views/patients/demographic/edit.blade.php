@@ -334,13 +334,13 @@
 
 
 <div class="form-row">
-    <fieldset class="form-group col-4 col-md-4">
+    <fieldset class="form-group col-12 col-md-2">
         <label for="for_city">Ciudad</label>
         <input type="city" class="form-control" name="city" id="for_city"
-            value="{{ $patient->demographic->city }}">        
+            value="{{ $patient->demographic->city }}">
     </fieldset>
 
-    <fieldset class="form-group col-4 col-md-4">
+    <fieldset class="form-group col-12 col-md-6">
         <label for="for_email">email</label>
         <input type="email" class="form-control" name="email" id="for_email"
             value="{{ $patient->demographic->email }}">
