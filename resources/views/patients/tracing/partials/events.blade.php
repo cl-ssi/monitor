@@ -1,3 +1,5 @@
+<h4 class="mt-4">Seguimiento epidemiológico</h4>
+
 <table class="table table-sm table-bordered">
     <thead>
         <tr>

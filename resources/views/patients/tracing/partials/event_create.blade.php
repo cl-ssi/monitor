@@ -46,7 +46,7 @@
 
             <div class="form-row">
                 <fieldset class="form-group col-md-12">
-                    <label for="for_event_type_id">Próximo Control</label>
+                    <label for="for_event_type_id">Próximo seguimiento</label>
                     <br>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="next_action"

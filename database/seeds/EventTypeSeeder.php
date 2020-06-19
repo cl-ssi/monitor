@@ -17,6 +17,7 @@ class EventTypeSeeder extends Seeder
         EventType::create(['name' => 'Entrega de ayuda']);
         EventType::create(['name' => 'Entrega de insumos']);
         EventType::create(['name' => 'Licencia médica']);
+        EventType::create(['name' => 'No se pudo contactar']);
         EventType::create(['name' => 'Solicitar traslado hospital']);
         EventType::create(['name' => 'Solicitar traslado residencia']);
         EventType::create(['name' => 'Visita domiciliaria']);

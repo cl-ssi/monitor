@@ -163,8 +163,7 @@ class TracingController extends Controller
             $tracing->quarantine_start_at = ($case->symptoms_at) ?
                                             $case->symptoms_at :
                                             $case->pscr_sars_cov_2_at;
-            $tracing->quarantine_end_at = clone $tracing->quarantine_start_at;
-            $tracing->quarantine_end_at->add(14,'days');
+            $tracing->quarantine_end_at = $tracing->quarantine_start_at->add(14,'days');
             $tracing->observations = $case->observation;
             $tracing->notification_at = $case->notification_at;
             $tracing->notification_mechanism = $case->notification_mechanism;
