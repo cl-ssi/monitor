@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\SuspectCase;
 use App\Establishment;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -27,8 +28,10 @@ class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping, W
     public function collection()
     {
         if($this->cod_lab == 'all'){
-          return SuspectCase::orderBy('suspect_cases.id', 'desc')
-              ->get();
+          return SuspectCase::where(function($q){
+              $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
+                  ->orWhere('user_id', Auth::user()->id);
+          })->get();
         }
         else{
           return SuspectCase::where('laboratory_id', $this->cod_lab)
