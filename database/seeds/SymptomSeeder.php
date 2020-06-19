@@ -23,5 +23,6 @@ class SymptomSeeder extends Seeder
         Symptom::create(['name' => 'Calofrios']);
         Symptom::create(['name' => 'Cefalea']);
         Symptom::create(['name' => 'Dificultad para respirar']);
+        Symptom::create(['name' => 'Otro']);
     }
 }

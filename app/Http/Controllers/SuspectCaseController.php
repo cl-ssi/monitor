@@ -433,7 +433,7 @@ class SuspectCaseController extends Controller
                 $tracing->notification_at   = $suspectCase->notification_at;
                 $tracing->notification_mechanism = $suspectCase->notification_mechanism;
                 $tracing->discharged_at     = $suspectCase->discharged_at;
-                $tracing->symptoms_at       = $suspectCase->symptoms_at;
+                $tracing->symptoms_start_at = $suspectCase->symptoms_at;
                 switch ($suspectCase->symptoms) {
                     case 'Si': $tracing->symptoms = 1; break;
                     case 'No': $tracing->symptoms = 0; break;
