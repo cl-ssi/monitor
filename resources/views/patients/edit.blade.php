@@ -297,7 +297,7 @@
               <!-- <a class="btn btn-danger btn-sm disabled" href="">
                   <i class="far fa-trash-alt"></i>
               </a> -->
-              <a class="btn btn-light btn-sm disabled" href="{{ route('patients.contacts.edit', $contact) }}">
+              <a class="btn btn-light btn-sm" href="{{ route('patients.contacts.edit', $contact) }}">
                   <i class="far fa-edit"></i>
               </a>
           </td>

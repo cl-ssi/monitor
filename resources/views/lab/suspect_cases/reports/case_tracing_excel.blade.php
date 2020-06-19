@@ -49,13 +49,7 @@
                     <th>FECHA DE NOTIFICACIÓN AL CONTACTO ESTRECHO</th>
                     <th>OBSERVACIÓN</th>
                     <th>PRESENTACIÓN DE SÍNTOMAS</th>
-                    <th>FIEBRE</th>
-                    <th>TOS</th>
-                    <th>DIFICULTAD RESPIRATORIA</th>
-                    <th>DOLOR MUSCULAR</th>
-                    <th>DOLOR DE GARGANTA</th>
-                    <th>DOLOR DE CABEZA</th>
-                    <th>DIARREA</th>
+                    <th>Detalles sintomas</th>
                     <th>OTRO, ¿CUÁL?</th>
                     <th>ENFERMEDAD CRÓNICA (MIRAR DICCIONARIO)</th>
                     <th>COVID+</th>
@@ -93,13 +87,13 @@
                     <td>{{ $contact->patient->demographic->commune->name }}</td>
                     <td>{{ $contact->patient->demographic->region->name }}</td>
                     <td>{{ $contact->last_contact_at }}</td>
-                    <td></td>
+                    <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->quarantine_end_at->format('d-m-Y') : '' }}</td>
                     <td></td>
                     <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->category : '' }}</td>
                     <td>{{ $contact->RelationshipName }}</td>
-                    <td></td>
+                    <td>{{ ($contact->notification_contact_at) ? $contact->notification_contact_at : '' }}</td>
                     <td>{{ $contact->observation }}</td>
-                    <td></td>
+                    <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->observations : '' }}</td>
                     <td></td>
                     <td></td>
                     <td></td>

@@ -121,14 +121,13 @@
                         <!-- @canany('Patient: tracing')
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-lungs-virus"></i>
+                                <i class="fa fa-calendar"></i>
                                 Seguimiento
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 @can('Patient: tracing')
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing_excel') }}">Seguimiento Excel</a>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing_excel') }}">Seguimiento Minsal</a>
                                 @endcan
-
                             </div>
                         </li>
                         @endcan -->

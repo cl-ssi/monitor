@@ -125,7 +125,7 @@ class ContactPatientController extends Controller
      */
     public function edit(ContactPatient $contactPatient)
     {
-
+        return view('patients.contact.edit', compact('contactPatient'));
     }
 
     /**
@@ -137,7 +137,12 @@ class ContactPatientController extends Controller
      */
     public function update(Request $request, ContactPatient $contactPatient)
     {
-        //
+        $contactPatient->fill($request->all());
+        $contactPatient->save();
+
+
+
+        return redirect()->route('patients.edit', $contactPatient->self_patient->id);
     }
 
     /**
