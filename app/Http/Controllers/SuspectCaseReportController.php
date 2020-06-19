@@ -127,18 +127,25 @@ class SuspectCaseReportController extends Controller
         return view('lab.suspect_cases.reports.case_tracing', compact('patients', 'max_cases', 'max_cases_inmuno', 'patientsNoDemographic', 'max_cases_no_demographic', 'max_cases_inmuno_no_demographic'));
     }
 
-    public function case_tracing_excel(Request $request)
+    public function tracing_minsal(Request $request)
     {
         $patients = Patient::
             whereHas('tracing', function ($q) {
               $q->where('status', '>', '0')
               ->where('index', '1');
             })
+            // ->whereHas('suspectCases', function ($q) {
+            //   $q->where('pscr_sars_cov_2_at', now());
+            // })
             ->with('contactPatient')
             ->with('tracing')
             ->get();
 
-        return view('lab.suspect_cases.reports.case_tracing_excel', compact('patients'));
+            // ->whereHas('suspectCases', function ($q) {
+            //   $q->where('pscr_sars_cov_2_at', now());
+            // })
+
+        return view('lab.suspect_cases.reports.tracing_minsal', compact('patients'));
     }
 
     public function case_tracing_export()

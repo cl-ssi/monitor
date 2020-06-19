@@ -94,10 +94,11 @@ class ContactPatientController extends Controller
         $contactPatient = new ContactPatient($request->All());
         $contactPatient->patient_id = $request->get('contact_id');
         $contactPatient->contact_id = $request->get('patient_id');
-        $contactPatient->relationship = $request->get('relationship');
-        $contactPatient->comment = $request->get('comment');
         $contactPatient->last_contact_at =  $request->get('last_contact_at');
+        $contactPatient->category = $request->get('category');
+        $contactPatient->relationship = $request->get('relationship');
         $contactPatient->live_together = $request->get('live_together');
+        $contactPatient->comment = $request->get('comment');
         $contactPatient->index = NULL;
 
         $contactPatient->save();
@@ -125,7 +126,7 @@ class ContactPatientController extends Controller
      */
     public function edit(ContactPatient $contactPatient)
     {
-
+        return view('patients.contact.edit', compact('contactPatient'));
     }
 
     /**
@@ -137,7 +138,12 @@ class ContactPatientController extends Controller
      */
     public function update(Request $request, ContactPatient $contactPatient)
     {
-        //
+        $contactPatient->fill($request->all());
+        $contactPatient->save();
+
+
+
+        return redirect()->route('patients.edit', $contactPatient->patient->id);
     }
 
     /**
@@ -148,10 +154,17 @@ class ContactPatientController extends Controller
      */
     public function destroy(ContactPatient $contactPatient)
     {
-        //
+
+        $patient = $contactPatient->patient_id;
+        $contact = $contactPatient->contact_id;
+
+        $contactPatient->delete();
+
+        $contact = ContactPatient::where('contact_id', $patient)
+            ->where('patient_id', $contact)
+            ->delete();
+
+        return redirect()->route('patients.edit', $patient);
     }
 
-    public function inverse_realtionship($relationship, $patient){
-
-    }
 }

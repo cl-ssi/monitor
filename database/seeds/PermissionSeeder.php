@@ -24,8 +24,13 @@ class PermissionSeeder extends Seeder
         $permission = Permission::create(['name' => 'Patient: list']);
         $permission = Permission::create(['name' => 'Patient: tracing']);
 
-        $permission = Permission::create(['name' => 'SanitaryResidence: user']);
+        
         $permission = Permission::create(['name' => 'SanitaryResidence: admin']);
+        $permission = Permission::create(['name' => 'SanitaryResidence: admission']);
+        $permission = Permission::create(['name' => 'SanitaryResidence: survey']);
+        $permission = Permission::create(['name' => 'SanitaryResidence: user']);
+
+        $permission = Permission::create(['name' => 'Basket:']);
 
         $permission = Permission::create(['name' => 'SuspectCase: admission']);
         $permission = Permission::create(['name' => 'SuspectCase: create']);

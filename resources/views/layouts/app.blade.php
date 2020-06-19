@@ -109,7 +109,7 @@
                                 @can('Patient: tracing')
                                 <a class="dropdown-item" href="{{ route('patients.tracings.communes') }}">Seguimiento de mis comunas</a>
                                 <a class="dropdown-item" href="{{ route('patients.tracings.establishments') }}">Seguimiento de mis establecimientos</a>
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing_excel') }}">Seguimiento SEREMI</a>
+                                <!-- <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.tracing_minsal') }}">Seguimiento SEREMI</a> -->
                                 @endcan
 
                                 <div class="dropdown-divider"></div>
@@ -125,14 +125,13 @@
                         <!-- @canany('Patient: tracing')
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-lungs-virus"></i>
+                                <i class="fa fa-calendar"></i>
                                 Seguimiento
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 @can('Patient: tracing')
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing_excel') }}">Seguimiento Excel</a>
+                                  <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.tracing_minsal') }}">Seguimiento Minsal</a>
                                 @endcan
-
                             </div>
                         </li>
                         @endcan -->
@@ -175,22 +174,24 @@
 
 
 
-                        @canany(['SanitaryResidence: user'])
+                        @canany(['SanitaryResidence: user', 'SanitaryResidence: admin' ,'SanitaryResidence: admission'] )
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-shopping-basket"></i>
                                 Residencia
-                            </a>
+                            </a>                            
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
+                                @canany(['SanitaryResidence: user', 'SanitaryResidence: admin'] )
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.home') }}">Residencias Sanitarias</a>
 
                                 <div class="dropdown-divider"></div>
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.excelall') }}">Booking Actuales</a>
 
-                                @can('SanitaryResidence: admin')
+                                @endcan
 
+                                @can('SanitaryResidence: admin')
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.residences.statusReport') }}">Consolidado Booking</a>
 
@@ -213,7 +214,7 @@
 
                                 @canany(['SanitaryResidence: admission','Developer'])
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('sanitary_residences.admission.inbox') }}">En Espera de Confirmación Por SEREMI</a>
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.admission.inbox') }}">Bandeja SEREMI</a>
                                 @endcan
 
                             </div>

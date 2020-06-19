@@ -56,12 +56,28 @@ class Tracing extends Model  implements Auditable
         return $this->belongsTo('App\Patient');
     }
 
-    // function getRequiresLicenceAttribute(){
-    //   switch($this->requires_licence) {
-    //       case 1: return 'SI'; break;
-    //       case 2: return 'NO'; break;
-    //   }
-    //
-    // }
+    public function getStatusDescAttribute(){
+      switch($this->status) {
+          case 0: return 'SI'; break;
+          case 1: return 'NO'; break;
+      }
+
+    }
+
+    public function getRequiresLicenceDescAttribute(){
+      switch($this->requires_licence) {
+          case 1: return 'SI'; break;
+          case 0: return 'NO'; break;
+      }
+
+    }
+
+    public function getSymptomsDescAttribute(){
+      switch($this->requires_licence) {
+          case 1: return 'SI'; break;
+          case 0: return 'NO'; break;
+      }
+
+    }
 
 }
