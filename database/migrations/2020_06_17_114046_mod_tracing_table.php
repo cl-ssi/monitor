@@ -16,8 +16,9 @@ class ModTracingTable extends Migration
         Schema::table('tracings', function (Blueprint $table) {
             $table->datetime('notification_at')->after('functionary')->nullable();
             $table->string('notification_mechanism')->after('functionary')->nullable();
-            $table->datetime('discharged_at')->nullable();
+            $table->datetime('discharged_at')->after('status')->nullable();
             $table->text('chronic_diseases')->after('morbid_history')->nullable();
+            $table->string('cannot_quarantine')->after('quarantine_end_at')->nullable();
         });
 
         Schema::table('tracing_events', function (Blueprint $table) {
@@ -35,7 +36,9 @@ class ModTracingTable extends Migration
         Schema::table('tracings', function (Blueprint $table) {
             $table->dropColumn('notification_at');
             $table->dropColumn('notification_mechanism');
+            $table->dropColumn('discharged_at');
             $table->dropColumn('chronic_diseases');
+            $table->dropColumn('cannot_quarantine');
         });
         Schema::table('tracing_events', function (Blueprint $table) {
             $table->dropColumn('symptoms');

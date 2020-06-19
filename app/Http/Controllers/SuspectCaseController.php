@@ -405,7 +405,16 @@ class SuspectCaseController extends Controller
         /* Crea un TRACING si el resultado es positivo */
         if ($old_pcr == 'pending' and $suspectCase->pscr_sars_cov_2 == 'positive') {
             /* Si el paciente no tiene Tracing */
-            if(!$suspectCase->patient->tracing) {
+            if($suspectCase->patient->tracing) {
+                $suspectCase->patient->tracing->index = 1;
+                $suspectCase->patient->tracing->status = ($suspectCase->patient->status == 'Fallecido') ? 0:1;
+                $suspectCase->patient->tracing->save();
+                $suspectCase->patient->tracing->quarantine_start_at = ($suspectCase->symptoms_at) ?
+                                                $suspectCase->symptoms_at :
+                                                $suspectCase->pscr_sars_cov_2_at;
+                $tracing->quarantine_end_at = $tracing->quarantine_start_at->add(14,'days');
+            }
+            else {
                 $tracing                    = new Tracing();
                 $tracing->patient_id        = $suspectCase->patient_id;
                 $tracing->user_id           = $suspectCase->user_id;
@@ -418,8 +427,7 @@ class SuspectCaseController extends Controller
                 $tracing->quarantine_start_at = ($suspectCase->symptoms_at) ?
                                                 $suspectCase->symptoms_at :
                                                 $suspectCase->pscr_sars_cov_2_at;
-                $tracing->quarantine_end_at = clone $tracing->quarantine_start_at;
-                $tracing->quarantine_end_at->add(14,'days');
+                $tracing->quarantine_end_at = $tracing->quarantine_start_at->add(14,'days');
                 $tracing->observations      = $suspectCase->observation;
                 $tracing->notification_at   = $suspectCase->notification_at;
                 $tracing->notification_mechanism = $suspectCase->notification_mechanism;

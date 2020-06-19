@@ -14,8 +14,9 @@
             <th>Establecimiento</th>
             <th>Inicio Cuarentena</th>
             <th>Fin de Cuarentena</th>
-            <th>Notificación</th>
+            <th>Notificacion</th>
             <th>Ultimo evento</th>
+            <th>Funcionario</th>
         </tr>
     </thead>
     <tbody>
@@ -23,7 +24,7 @@
         @foreach($patients as $key => $patient)
         @if($fecha != $patient->tracing->next_control_at->format('Y-m-d'))
         <tr>
-            <td colspan="8" class="table-active">
+            <td colspan="9" class="table-active">
                 <h5>Siguiente Control: {{ $patient->tracing->next_control_at->format('Y-m-d') }}</h5>
             </td>
         </tr>
@@ -44,8 +45,9 @@
                 {{ $patient->tracing->quarantine_end_at->format('Y-m-d') }}
                 ({{ $patient->tracing->quarantine_start_at->diffInDays(Carbon\Carbon::now()) }})
             </td>
-            <td>{{ $patient->tracing->notification }}</td>
+            <td nowrap>{{ ($patient->tracing->notification_at)? $patient->tracing->notification_at->format('Y-m-d') : '' }}</td>
             <td nowrap>{{ ($patient->tracing->events->last()) ? $patient->tracing->events->last()->event_at->format('Y-m-d') : '' }}</td>
+            <td>{{ ($patient->tracing->events->last()) ? $patient->tracing->events->last()->user->name : '' }}</td>
         </tr>
         @endforeach
     </tbody>
