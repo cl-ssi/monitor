@@ -179,7 +179,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-shopping-basket"></i>
                                 Residencia
-                            </a>                            
+                            </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
                                 @canany(['SanitaryResidence: user', 'SanitaryResidence: admin'] )
@@ -271,6 +271,10 @@
 
                                 @can('Report: positives by range')
                                     <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.positivesByDateRange') }}">Reporte de positivos por fecha</a>
+                                @endcan
+
+                                @can('Report: positives')
+                                    <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.positives_own') }}">Reporte de mi comuna</a>
                                 @endcan
 
                             </div>

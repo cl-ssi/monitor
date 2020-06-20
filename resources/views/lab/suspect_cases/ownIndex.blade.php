@@ -45,7 +45,7 @@
 
 <div class="row">
     <div class="col-2 align-self-end">
-        <a type="button" class="btn btn-success mb-3" href="{{ route('lab.suspect_cases.export', 'all') }}">Descargar <i class="far fa-file-excel"></i></a>
+        <a type="button" class="btn btn-success mb-3" href="{{ route('lab.suspect_cases.export', 'own') }}">Descargar <i class="far fa-file-excel"></i></a>
     </div>
     <div class="col-4 align-self-end">
         @include('lab.suspect_cases.partials.search_id')

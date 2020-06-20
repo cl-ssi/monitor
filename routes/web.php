@@ -178,6 +178,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::match(['get','post'],'/minsal_ws','SuspectCaseReportController@report_minsal_ws')->name('minsal_ws');
             Route::get('/seremi/{laboratory}','SuspectCaseReportController@report_seremi')->name('seremi')->middleware('auth');
             Route::get('/positivesByDateRange','SuspectCaseReportController@positivesByDateRange')->name('positivesByDateRange')->middleware('auth');
+            Route::get('/positives_own','SuspectCaseReportController@positivesOwn')->name('positives_own')->middleware('auth','can:Report: positives');
 
         });
         Route::prefix('report')->name('report.')->group(function () {
@@ -241,7 +242,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
 
     Route::prefix('admission')->name('admission.')->group(function () {
     Route::get('/changestatus/{admission}/{status}', 'AdmissionSurveyController@changestatus')->name('changestatus');
-    Route::get('/accept/{admission}', 'AdmissionSurveyController@accept')->name('accept');    
+    Route::get('/accept/{admission}', 'AdmissionSurveyController@accept')->name('accept');
     Route::get('/inboxaccept', 'AdmissionSurveyController@inboxaccept')->name('inboxaccept');
     Route::get('/rejected/{admission}', 'AdmissionSurveyController@rejected')->name('rejected');
     Route::get('/inboxrejected', 'AdmissionSurveyController@inboxrejected')->name('inboxrejected');

@@ -27,11 +27,15 @@ class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping, W
     */
     public function collection()
     {
-        if($this->cod_lab == 'all'){
+        if($this->cod_lab == 'own'){
           return SuspectCase::where(function($q){
               $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
                   ->orWhere('user_id', Auth::user()->id);
           })->get();
+        }
+        elseif ($this->cod_lab == 'all'){
+            return SuspectCase::orderBy('suspect_cases.id', 'desc')
+                ->get();
         }
         else{
           return SuspectCase::where('laboratory_id', $this->cod_lab)
