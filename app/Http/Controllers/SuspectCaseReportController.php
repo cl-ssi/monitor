@@ -21,7 +21,6 @@ use App\Region;
 use App\WSMinsal;
 use App\Commune;
 use App\Country;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class SuspectCaseReportController extends Controller
