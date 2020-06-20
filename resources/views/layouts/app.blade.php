@@ -160,22 +160,24 @@
 
 
 
-                        @canany(['SanitaryResidence: user'])
+                        @canany(['SanitaryResidence: user', 'SanitaryResidence: admin' ,'SanitaryResidence: admission'] )
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-shopping-basket"></i>
                                 Residencia
-                            </a>
+                            </a>                            
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
+                                @canany(['SanitaryResidence: user', 'SanitaryResidence: admin'] )
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.home') }}">Residencias Sanitarias</a>
 
                                 <div class="dropdown-divider"></div>
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.excelall') }}">Booking Actuales</a>
 
-                                @can('SanitaryResidence: admin')
+                                @endcan
 
+                                @can('SanitaryResidence: admin')
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.residences.statusReport') }}">Consolidado Booking</a>
 

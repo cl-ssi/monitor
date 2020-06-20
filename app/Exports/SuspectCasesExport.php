@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\SuspectCase;
 use App\Establishment;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -27,8 +28,10 @@ class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping, W
     public function collection()
     {
         if($this->cod_lab == 'all'){
-          return SuspectCase::orderBy('suspect_cases.id', 'desc')
-              ->get();
+          return SuspectCase::where(function($q){
+              $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
+                  ->orWhere('user_id', Auth::user()->id);
+          })->get();
         }
         else{
           return SuspectCase::where('laboratory_id', $this->cod_lab)
@@ -41,7 +44,8 @@ class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping, W
     {
         return [
           '#', 'fecha_muestra', 'origen','nombre','run', 'edad', 'sexo', 'resultado_ifd',
-          'pcr_sars_cov2', 'sem', 'epivigila', 'paho_flu', 'estado', 'observación'
+          'pcr_sars_cov2', 'sem', 'epivigila', 'paho_flu', 'estado', 'observación', 'teléfono',
+          'dirección', 'comuna'
         ];
     }
 
@@ -66,6 +70,9 @@ class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping, W
             $suspectCase->paho_flu,
             $suspectCase->status,
             $suspectCase->observation,
+            ($suspectCase->patient && $suspectCase->patient->demographic)?$suspectCase->patient->demographic->telephone:'',
+            ($suspectCase->patient && $suspectCase->patient->demographic)?$suspectCase->patient->demographic->fullAddress:'',
+            ($suspectCase->patient && $suspectCase->patient->demographic && $suspectCase->patient->demographic->commune)?$suspectCase->patient->demographic->commune->name:'',
         ];
     }
 
@@ -85,6 +92,9 @@ class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping, W
             'L' => NumberFormat::FORMAT_GENERAL,
             'M' => NumberFormat::FORMAT_GENERAL,
             'N' => NumberFormat::FORMAT_GENERAL,
+            'O' => NumberFormat::FORMAT_GENERAL,
+            'P' => NumberFormat::FORMAT_GENERAL,
+            'Q' => NumberFormat::FORMAT_GENERAL,
         ];
     }
 }
