@@ -5,7 +5,7 @@
             <div class="card">
                 <div class="card-body">
                     <h3>Estimado/a: {{ $suspectCase->patient->FullName }}</h3><br>
-                    <p>A través del presente, se informa el resultado de exámen PCR para el virus SARS CoV-2, que ocaciona la enfermedad Covid-19, realizado el día: {{ $suspectCase->sample_at->format('d-m-Y') }}:</p>
+                    <p>A través del presente, se informa el resultado de exámen PCR para el virus SARS CoV-2, causante de la enfermedad Covid-19, realizado el día: {{ $suspectCase->sample_at->format('d-m-Y') }}:</p>
                     <br>
                     <p><strong>Resultado: {{ $suspectCase->Covid19 }}</strong></p>
                     <p><strong>Fecha de resultado</strong>: {{ $suspectCase->pscr_sars_cov_2_at->format('d-m-Y') }}</p>
