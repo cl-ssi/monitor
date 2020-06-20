@@ -424,7 +424,7 @@ class SuspectCaseController extends Controller
                 $tracing->functionary       = $suspectCase->functionary;
                 $tracing->gestation         = $suspectCase->gestation;
                 $tracing->gestation_week    = $suspectCase->gestation_week;
-                $tracing->next_control_at   = $suspectCase->pscr_sars_cov_2_at->add(1,'day');
+                $tracing->next_control_at   = $suspectCase->pscr_sars_cov_2_at;
                 $tracing->quarantine_start_at = ($suspectCase->symptoms_at) ?
                                                 $suspectCase->symptoms_at :
                                                 $suspectCase->pscr_sars_cov_2_at;

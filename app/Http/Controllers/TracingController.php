@@ -165,7 +165,10 @@ class TracingController extends Controller
         })->with('suspectCases')->get();
 
         foreach($patients as $patient){
-            if($patient->demographic->commune->id == 6) {
+            if($patient->demographic->commune->id == 8 OR
+               $patient->demographic->commune->id == 9 OR
+               $patient->demographic->commune->id == 10 OR
+               $patient->demographic->commune->id == 11) {
                 $suspectCase                = $patient->suspectCases->where('pscr_sars_cov_2','positive')->first();
                 $tracing                    = new Tracing();
                 $tracing->patient_id        = $suspectCase->patient_id;
@@ -175,7 +178,7 @@ class TracingController extends Controller
                 $tracing->functionary       = $suspectCase->functionary;
                 $tracing->gestation         = $suspectCase->gestation;
                 $tracing->gestation_week    = $suspectCase->gestation_week;
-                $tracing->next_control_at   = $suspectCase->pscr_sars_cov_2_at->add(1,'day');
+                $tracing->next_control_at   = $suspectCase->pscr_sars_cov_2_at;
                 $tracing->quarantine_start_at = ($suspectCase->symptoms_at) ?
                                                 $suspectCase->symptoms_at :
                                                 $suspectCase->pscr_sars_cov_2_at;
