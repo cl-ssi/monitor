@@ -7,14 +7,14 @@
 <h3 class="">Seguimiento de Casos Positivos y Contactos.</h3>
 
 <!--a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a-->
-<a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" href="" >Descargar en excel</a>
+<a class="btn btn-outline-success btn-sm mb-3 disabled" id="downloadLink" href="" >Descargar en excel</a>
 
-<form method="get" class="form-inline mb-3" action="">
+<form method="get" class="form-inline mb-3" action="{{ route('lab.suspect_cases.reports.tracing_minsal') }}">
 
   <!-- <a type="button" class="btn btn-success btn-sm mb-3" href="">Descargar <i class="far fa-file-excel"></i></a> -->
   <div class="form-group">
-      <label for="for_to">fecha:</label>
-      <input type="datetime-local" class="form-control mx-sm-3" id="for_to" name="to" value="">
+      <label for="for_date">fecha:</label>
+      <input type="date" class="form-control mx-sm-3" id="for_date" name="date" value="{{ $request->date }}">
   </div>
   <div class="form-group">
       <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
@@ -46,7 +46,7 @@
                 <th>TELEFONO</th>
                 <th>TELEFONO</th>
                 <th>VÍA</th>
-                <th>2</th>
+                <th>NOMBRE</th>
                 <th>NÚMERO DE RESIDENCIA</th>
                 <th>NÚMERO  DEPARTAMENTO O NÚMERO DE CASA</th>
                 <th>OTRA INFORMACIÓN BLOCK CONDOMINIO TORRE NOMBRE TOMA</th>
@@ -56,7 +56,7 @@
                 <th>FECHA DE ÚLTIMO CONTACTO CON EL CASO</th>
                 <th>FECHA FIN SEGUIMIENTO</th>
                 <th>SEGUIMIENTO FINALIZADO</th>
-                <th>CATEGORÍA (MIRAR DICCIONARIO)</th>
+                <th>CATEGORÍA</th>
                 <th>ESPECIFIQUE</th>
                 <th>FECHA DE NOTIFICACIÓN AL CONTACTO ESTRECHO</th>
                 <th>OBSERVACIÓN</th>
@@ -96,28 +96,68 @@
                     <td>{{ $contact->patient->demographic->commune->name }}</td>
                     <td>{{ $contact->patient->demographic->region->name }}</td>
                     <td>{{ $contact->last_contact_at }}</td>
-                    <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->quarantine_end_at->format('d-m-Y') : '' }}</td>
-                    <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->StatusDesc : '' }}</td>
+
+                    @if($contact->patient->tracing)
+                    <td>{{ ($contact->patient->tracing->quarantine_end_at)? $contact->patient->tracing->quarantine_end_at->format('d-m-Y') : '' }}</td>
+                    <td>{{ ($contact->patient->tracing->StatusDesc)? $contact->patient->tracing->StatusDesc : '' }}</td>
+                    @else
+                    <td></td>
+                    <td></td>
+                    @endif
+
                     <td>{{ $contact->CategoryDesc  }}</td>
                     <td>{{ $contact->RelationshipName }}</td>
-                    <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->notification_at->format('d-m-Y') : '' }}</td>
-                    <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->observations : '' }}</td>
-                    <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->SymptomsDesc : '' }}</td>
-                    <td>{{ $contact->patient->tracing->events->last()->symptoms }}</td>
+
+                    @if($contact->patient->tracing)
+                    <td>{{ ($contact->patient->tracing->notification_at)? $contact->patient->tracing->notification_at->format('d-m-Y') : '' }}</td>
+                    <td>{{ ($contact->patient->tracing->observations)? $contact->patient->tracing->observations : '' }}</td>
+                    <td>{{ ($contact->patient->tracing->symptoms)? $contact->patient->tracing->SymptomsDesc : '' }}</td>
+                    @else
                     <td></td>
+                    <td></td>
+                    <td></td>
+                    @endif
+
+                    <!-- DETALLES DE SINTOMAS -->
+                    @if($contact->patient->tracing && $contact->patient->tracing->events)
+                    <td>{{ ($contact->patient->tracing->events->last()) ? $contact->patient->tracing->events->last()->symptoms : '' }}</td>
+                    @else
+                    <td></td>
+                    @endif
+
+                    <td></td> <!-- OTRO CUAL -->
                     <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->chronic_diseases : '' }}</td>
-                    @foreach($contact->patient->suspectCases as $suspectCases)
-                      @if($suspectCases->pscr_sars_cov_2 == 'positive')
-                          <td> SI </td>
-                        @else
-                          <td> NO </td>
-                        @endif
+
+                    <td>
+                    @foreach($contact->patient->suspectCases->where('pscr_sars_cov_2', 'positive') as $suspectCase)
+                      @if($suspectCase->pscr_sars_cov_2 == 'positive')
+                          SI
+                      @endif
                     @endforeach
+                    </td>
+
+                    @if($contact->patient->tracing)
                     <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->RequiresLicenceDesc : '' }}</td>
-                    <td>{{ ($contact->patient->tracing && $contact->patient->tracing->cannot_quarantine)? 'NO' : 'SI' }}</td>
+                    <td>{{ ($contact->patient->tracing->cannot_quarantine)? 'NO' : 'SI' }}</td>
                     <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->cannot_quarantine : '' }}</td>
-                    <td>{{ $contact->patient->tracing->events->last()->type->name }}</td>
+                    @else
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    @endif
+
+                    @if($contact->patient->tracing && $contact->patient->tracing->events)
+                    <td>{{ ($contact->patient->tracing->events->last()) ? $contact->patient->tracing->events->last()->type->name : '' }}</td>
+                    @else
+                    <td></td>
+                    @endif
+
+                    @if($contact->patient->tracing)
                     <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->prevision : '' }}</td>
+                    @else
+                    <td></td>
+                    @endif
+
                   @endforeach
                 @endforeach
             </tbody>
