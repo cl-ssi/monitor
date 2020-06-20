@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Arr;
 use App\SuspectCase;
 use App\Patient;
 use App\Ventilator;
 use App\File;
+use App\EstablishmentUser;
 use App\SanitaryResidence\Residence;
 use App\SanitaryResidence\Booking;
 use Carbon\Carbon;
@@ -129,23 +132,29 @@ class SuspectCaseReportController extends Controller
 
     public function tracing_minsal(Request $request)
     {
+
+        if($request->has('date')){
+            $date = $request->get('date');
+        }
+        else{
+            $date = Carbon::now();
+        }
+
         $patients = Patient::
             whereHas('tracing', function ($q) {
               $q->where('status', '>', '0')
-              ->where('index', '1');
+              ->where('index', '1')
+              ->whereIn('establishment_id', auth()->user()->establishments->pluck('id'));
             })
-            // ->whereHas('suspectCases', function ($q) {
-            //   $q->where('pscr_sars_cov_2_at', now());
-            // })
+            ->whereHas('suspectCases', function ($q) use($date) {
+              $q->whereDate('pscr_sars_cov_2_at', $date);
+            })
             ->with('contactPatient')
             ->with('tracing')
+            ->with('suspectCases')
             ->get();
 
-            // ->whereHas('suspectCases', function ($q) {
-            //   $q->where('pscr_sars_cov_2_at', now());
-            // })
-
-        return view('lab.suspect_cases.reports.tracing_minsal', compact('patients'));
+        return view('lab.suspect_cases.reports.tracing_minsal', compact('patients', 'request'));
     }
 
     public function case_tracing_export()
