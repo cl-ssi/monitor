@@ -18,6 +18,7 @@ use App\Region;
 use App\WSMinsal;
 use App\Commune;
 use App\Country;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class SuspectCaseReportController extends Controller
@@ -77,6 +78,53 @@ class SuspectCaseReportController extends Controller
 
     }
 
+    /**
+     * Obtiene positivos y acumulados por día.
+     * @return Application|Factory|View
+     */
+    public function positivesOwn() {
+
+        $patients = Patient::whereHas('suspectCases', function ($q){
+            $q->where('pscr_sars_cov_2', 'positive');
+        })->whereHas('demographic', function ($q){
+            $q->whereIn('commune_id', Auth::user()->communes());
+        })->with('suspectCases')->with('demographic')->get();
+
+        /* Calculo de gráfico de evolución */
+        $begin = SuspectCase::where('pscr_sars_cov_2','positive')
+            ->whereIn('patient_id', $patients->pluck('id')->toArray())
+            ->orderBy('sample_at')
+            ->first()->sample_at;
+
+        $end = SuspectCase::where('pscr_sars_cov_2','positive')
+            ->whereIn('patient_id', $patients->pluck('id')->toArray())
+            ->orderByDesc('sample_at')
+            ->first()->sample_at;
+
+        $begin = $begin->setTime(00, 00, 00);
+        $end = $end->setTime(00, 00, 00);
+
+        $communes = Commune::find(Auth::user()->communes());
+
+        for ($i = $begin; $i <= $end; $i->modify('+1 day')) {
+            $casos[$i->format("Y-m-d")] = 0;
+        }
+
+        foreach($patients as $patient) {
+            $casos[$patient->suspectCases->where('pscr_sars_cov_2','positive')->first()->sample_at->format('Y-m-d')] += 1;
+        }
+
+        $acumulado = 0;
+        foreach($casos as $dia => $valor) {
+            $acumulado += $valor;
+            $evolucion[$dia] = $acumulado;
+        }
+
+        /* Fin de cálculo de evolución */
+
+        return view('lab.suspect_cases.reports.positives_own', compact('patients','evolucion', 'communes'));
+
+    }
 
 
     /*****************************************************/
