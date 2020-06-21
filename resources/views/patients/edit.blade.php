@@ -244,7 +244,7 @@
 
 <h4 class="mt-3">Contactos</h4>
 
-@can('Patient: tracing')
+@canany(['SanitaryResidence: survey','Developer','Patient: tracing'])
 <a class="btn btn-primary btn-sm" href="{{ route('patients.contacts.create', ['search'=>'search_false', 'id' => $patient->id]) }}">
     <i class="fas fa-plus"></i> Nuevo Contacto
 </a>
