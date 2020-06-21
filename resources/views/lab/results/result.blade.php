@@ -91,10 +91,10 @@
         <tr>
             <th>SEXO</th>
             <td>{{ strtoupper($case->patient->sexEsp) }}</td>
-        </tr>
+        </tr>        
         <tr>
-            <th>ORIGEN</th>
-            <td>{{ strtoupper($case->origin) }}</td>
+            <th>ESTABLECIMIENTO</th>
+            <td>{{ strtoupper(($case->establishment)?$case->establishment->alias.' - '.$case->origin: '') }}</td>
         </tr>
         <tr>
             <th>FECHA MUESTRA</th>
