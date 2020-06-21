@@ -16,7 +16,7 @@ class AdmissionSurveyController extends Controller
     public function index()
     {
         $admissions = AdmissionSurvey::where('status', 'Aceptado')->whereHas('patient', function ($q) {
-                $q->where('status', '<>','Residencia Sanitaria');
+                $q->where('status', '<>','Residencia Sanitaria')->orWhere('status', null);
             })->get();
         
         return view('sanitary_residences.admission.index', compact('admissions'));
