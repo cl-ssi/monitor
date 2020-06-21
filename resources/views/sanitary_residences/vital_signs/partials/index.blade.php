@@ -19,13 +19,14 @@
     </thead>
     <tbody>
         @foreach($booking->vitalSigns->reverse() as $vitalsign)
-        @if($vitalsign->created_at->diffInHours($vitalsign->updated_at) > 2)
-        <tr class="table-danger">
-        @else
-        <tr>
-        @endif
-            <td nowrap>{{ $vitalsign->created_at->format('d-m-Y H:i') }}</td>
+        <tr>        
+            <td nowrap>{{ $vitalsign->created_at->format('d-m-Y H:i') }}</td>            
+            @if($vitalsign->created_at->diffInHours($vitalsign->updated_at) > 2)
+            <td nowrap class="table-danger">{{ $vitalsign->updated_at->format('d-m-Y H:i') }}</td>
+            @else
             <td nowrap>{{ $vitalsign->updated_at->format('d-m-Y H:i') }}</td>
+            @endif
+            
             <td class="text-center">{{ $vitalsign->temperature }}</td>
             <td class="text-center">{{ $vitalsign->heart_rate }}</td>
             <td class="text-center">{{ $vitalsign->blood_pressure }}</td>
