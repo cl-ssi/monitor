@@ -55,7 +55,7 @@ class AdmissionSurveyController extends Controller
         $accept = AdmissionSurvey::find($admission->id);
         $accept->status = 'Aceptado';
         $accept->save();
-        session()->flash('success', 'Encuesta a Paciente' . $admission->patient->full_name.' aprobada exitosamente a residencia sanitaria');
+        session()->flash('success', 'Encuesta a Paciente ' . $admission->patient->full_name.' aprobada exitosamente a residencia sanitaria');
         return redirect()->route('sanitary_residences.admission.inbox');
     }
 
@@ -64,7 +64,7 @@ class AdmissionSurveyController extends Controller
         $accept = AdmissionSurvey::find($admission->id);
         $accept->status = 'Rechazado';
         $accept->save();
-        session()->flash('success', 'Encuesta a Paciente' . $admission->patient->full_name.' rechazado a residencia sanitaria');
+        session()->flash('success', 'Encuesta a Paciente ' . $admission->patient->full_name.' rechazado a residencia sanitaria');
         return redirect()->route('sanitary_residences.admission.inbox');
     }
 
