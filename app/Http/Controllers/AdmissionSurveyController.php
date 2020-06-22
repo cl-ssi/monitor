@@ -145,6 +145,7 @@ class AdmissionSurveyController extends Controller
     public function update(Request $request, AdmissionSurvey $admission)
     {
         //
+        //dd($request);
         $admission->fill($request->all());
         // if ($request->residency == 1) {
         //     $admission->patient->status = 'Aprobado Residencia Sanitaria';
@@ -153,7 +154,8 @@ class AdmissionSurveyController extends Controller
 
         $admission->save();
         session()->flash('success', 'Encuesta Modificada Exitosamente a ' . $admission->patient->full_name);
-        return redirect()->route('patients.edit', $admission->patient);
+        //return redirect()->route('patients.edit', $admission->patient);
+        return redirect()->back();
     }
 
     /**

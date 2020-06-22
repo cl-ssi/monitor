@@ -72,8 +72,8 @@
     <div class="form-row">
 
         <fieldset class="form-group col-4 col-md-4">
-            <label for="for_prevision">Fecha y Hora de Encuesta en Terreno*</label>
-            <input type="datetime-local" name="created_at" id="for_prevision" class="form-control" max="{{ date('Y-m-d\TH:i:s') }}" required value="{{ $admission->created_at->format('Y-m-d\TH:i:s') }}">
+            <label for="for_created_at">Fecha y Hora de Encuesta en Terreno*</label>
+            <input type="datetime-local" name="created_at" id="for_created_at" class="form-control" max="{{ date('Y-m-d\TH:i:s') }}" required value="{{ $admission->created_at->format('Y-m-d\TH:i:s') }}">
             </input>
         </fieldset>
         
@@ -184,7 +184,7 @@
             <td class="text-center"><input name="healthnow" id="for_healthnow" type="radio" value="0" {{ ($admission->healthnow=='0')?'checked':'' }}></td>
         </tr>                
         <tr>
-            <td>¿Convive usted con personas portadoras de enfermedades crónicas (ej: Cancer, Hierpertención, Diabetes, Lupus, etc)?</td>
+            <td>¿Convive usted con personas portadoras de enfermedades crónicas (ej: Cancer, Hipertensión, Diabetes, Lupus, etc)?</td>
             <td class="text-center"><input name="risk" type="radio" value="1" {{ ($admission->risk=='1')?'checked':'' }}></td>
             <td class="text-center"><input name="risk" type="radio" value="0" {{ ($admission->risk=='0')?'checked':'' }}></td>
         </tr>
@@ -221,9 +221,9 @@
     </div>
     
     
-    @canany(['SanitaryResidence: survey','Developer'])
+    
     <button type="submit" class="btn btn-primary">Actualizar Datos</button>
-    @endcan
+    
 
     <a class="btn btn-outline-secondary" href="{{ URL::previous() }}">Cancelar</a>
 
@@ -231,12 +231,7 @@
     <br>
     <br>
 
-    @can('SanitaryResidence: admission')
-    <div class="text-center">
-        <a class="btn btn-success text-center" href="{{ route('sanitary_residences.admission.changestatus', $admission) }}">VISTO BUENO INGRESO</a>
-        <a class="btn btn-danger text-center" href="{{ route('sanitary_residences.admission.changestatus', $admission) }}">RECHAZO INGRESO</a>
-    </div>
-    @endcan
+    
 
 
 
