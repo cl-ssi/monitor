@@ -344,13 +344,13 @@ $('#btn_fonasa').click(function() {
             document.getElementById("for_name").value = data.name;
             document.getElementById("for_fathers_family").value = data.fathers_family;
             document.getElementById("for_mothers_family").value = data.mothers_family;
-            document.getElementById("for_gender").value = data.gender;
+            // document.getElementById("for_gender").value = data.gender;
             document.getElementById("for_birthday").value = data.birthday;
         } else {
             document.getElementById("for_name").value = "";
             document.getElementById("for_fathers_family").value = "";
             document.getElementById("for_mothers_family").value = "";
-            document.getElementById("for_gender").value = "";
+            // document.getElementById("for_gender").value = "";
             document.getElementById("for_birthday").value = "";
         }
 }).done(function() {
