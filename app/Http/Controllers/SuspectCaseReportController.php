@@ -456,7 +456,7 @@ class SuspectCaseReportController extends Controller
 
         // dd($cases);
         foreach ($cases as $key => $case) {
-            if ($case->run_medic != 0) {
+            // if ($case->run_medic != 0) {
                 if ($case->patient->demographic && $case->files) {
                     $response = WSMinsal::crea_muestra($case);
                     if ($response['status'] == 0) {
@@ -479,10 +479,10 @@ class SuspectCaseReportController extends Controller
                         }
                     }
                 }
-            }else{
-                session()->flash('info', 'No se detectó run de médico registrado en muestra:  ' . $case->id);
-                return redirect()->back();
-            }
+            // }else{
+            //     session()->flash('info', 'No se detectó run de médico registrado en muestra:  ' . $case->id);
+            //     return redirect()->back();
+            // }
         }
 
         session()->flash('success', 'Se ha subido la información a sistema MINSAL.');
