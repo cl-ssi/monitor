@@ -224,8 +224,17 @@
                                 Reportes
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
                                 @can('Report: positives')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.positives') }}">Reporte de positivos</a>
+                                @endcan
+
+                                @can('Report: commune')
+                                    <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.positives_own') }}">Reporte de mi comuna</a>
+                                @endcan
+
+                                @can('Report: hospitalized')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.hospitalized') }}">Hospitalizados</a>
                                 @endcan
 
                                 @can('Report: other')
@@ -259,9 +268,6 @@
                                     <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.positivesByDateRange') }}">Reporte de positivos por fecha</a>
                                 @endcan
 
-                                @can('Report: positives')
-                                    <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.positives_own') }}">Reporte de mi comuna</a>
-                                @endcan
 
                             </div>
                         </li>
