@@ -217,7 +217,18 @@
                         @endcan
 
 
-                        @canany(['Report: positives','Report: other','Report: historical','Report: exams with result','Report: gestants','Report: positives demographics','Report: residences','Report: positives by range'])
+                        @canany(['Report: positives',
+                                    'Report: commune',
+                                    'Report: hospitalized',
+                                    'Report: deceased',
+                                    'Report: other',
+                                    'Report: historical',
+                                    'Report: exams with result',
+                                    'Report: gestants',
+                                    'Report: positives demographics',
+                                    'Report: residences',
+                                    'Report: positives by range'
+                                    ])
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-clipboard"></i>
@@ -235,6 +246,10 @@
 
                                 @can('Report: hospitalized')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.hospitalized') }}">Hospitalizados</a>
+                                @endcan
+
+                                @can('Report: deceased')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.deceased') }}">Fallecidos</a>
                                 @endcan
 
                                 @can('Report: other')
