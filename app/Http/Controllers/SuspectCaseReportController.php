@@ -400,6 +400,7 @@ class SuspectCaseReportController extends Controller
                 ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
                 ->whereNull('external_laboratory')
                 ->whereNULL('minsal_ws_id')
+                // ->where('id',20370)
                 ->get()
                 ->sortByDesc('pscr_sars_cov_2_at');
                 // ->paginate(15);
@@ -448,6 +449,7 @@ class SuspectCaseReportController extends Controller
                 ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
                 ->whereNull('external_laboratory')
                 ->whereNULL('minsal_ws_id')
+                // ->where('id',20370)
                 ->get()
                 ->sortByDesc('pscr_sars_cov_2_at');
 
@@ -461,19 +463,19 @@ class SuspectCaseReportController extends Controller
                     $response = WSMinsal::crea_muestra($case);
                     if ($response['status'] == 0) {
                         session()->flash('info', 'Error al subir muestra ' . $case->id . ' a MINSAL. ' . $response['msg']);
-                        return redirect()->back();
+                        // return redirect()->back();
                         // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'laboratory','externos'));
                     }else{
                         $response = WSMinsal::recepciona_muestra($case);
                         if ($response['status'] == 0) {
                             session()->flash('info', 'Error al recepcionar muestra ' . $case->id . ' en MINSAL. ' . $response['msg']);
-                            return redirect()->back();
+                            // return redirect()->back();
                             // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'laboratory','externos'));
                         }else{
                             $response = WSMinsal::resultado_muestra($case);
                             if ($response['status'] == 0) {
                                 session()->flash('info', 'Error al subir resultado de muestra ' . $case->id . ' en MINSAL. ' . $response['msg']);
-                                return redirect()->back();
+                                // return redirect()->back();
                                 // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'laboratory','externos'));
                             }
                         }
