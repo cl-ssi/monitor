@@ -638,6 +638,20 @@ class SuspectCaseReportController extends Controller
         return view('lab.suspect_cases.reports.positivesByDateRange', compact('suspectCases', 'from', 'to'));
     }
 
+    public function hospitalized() {
+        $patients = Patient::whereIn('status',[
+            'Hospitalizado Básico',
+            'Hospitalizado Medio',
+            'Hospitalizado UTI',
+            'Hospitalizado UCI',
+            'Hospitalizado UCI (Ventilador)'
+        ])
+        ->orderBy('status')
+        ->get();
+
+        return view('lab.suspect_cases.reports.hospitalized', compact('patients'));
+    }
+
 
     /*****************************************************/
     /*            REPORTE SISTEMAS EXPERTOS              */
