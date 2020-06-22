@@ -27,6 +27,8 @@
 <a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.ws_minsal', 'laboratory_id='.$request->laboratory_id) }}">Minsal <i class="fas fa-upload"></i></a>
 @endcan
 
+<small>Filas: {{$cases->count()}}</small>
+
 <table class="table table-sm table-bordered table-responsive small text-uppercase" id="tabla_casos">
     <thead>
         <th nowrap>ID muestra</th>
