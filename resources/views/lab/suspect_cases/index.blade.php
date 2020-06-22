@@ -146,7 +146,6 @@
                 </a>
                 @endif
 
-                {{-- @if ($case->laboratory_id == 2 && $case->pscr_sars_cov_2 <> 'pending') --}}
                 @if ($case->laboratory->pdf_generate == 1 && $case->pscr_sars_cov_2 <> 'pending')
                 <a href="{{ route('lab.print', $case) }}"
                     target="_blank"><i class="fas fa-paperclip"></i>&nbsp
