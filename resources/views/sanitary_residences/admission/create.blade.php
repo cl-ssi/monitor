@@ -76,7 +76,7 @@
     <div class="form-row">
         <fieldset class="form-group col-4 col-md-4">
             <label for="for_prevision">Fecha y Hora de Encuesta en Terreno*</label>
-            <input type="datetime-local" name="created_at" id="for_prevision" class="form-control" max="{{ date('Y-m-d\TH:i:s') }}" required>                
+            <input type="datetime-local" name="created_at" id="for_prevision" class="form-control" max="{{ date('Y-m-d\TH:i:s') }}" required>
             </input>
         </fieldset>
 
@@ -188,7 +188,7 @@
                     <td class="text-center"><input name="healthnow" id="for_healthnow" type="radio" value="0"></td>
                 </tr>
                 <tr>
-                    <td>¿Convive usted con personas portadoras de enfermedades crónicas (ej: Cancer, Hierpertención, Diabetes, Lupus, etc)?</td>
+                    <td>¿Convive usted con personas portadoras de enfermedades crónicas (ej: Cancer, Hirpertensión, Diabetes, Lupus, etc)?</td>
                     <td class="text-center"><input name="risk" type="radio" value="1"></td>
                     <td class="text-center"><input name="risk" type="radio" value="0"></td>
                 </tr>

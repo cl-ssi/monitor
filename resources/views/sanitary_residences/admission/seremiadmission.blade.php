@@ -9,6 +9,9 @@
 <h3 class="mb-3">Aceptar/Rechazar Pauta de Evaluación Residencia Sanitaria</h3>
 
 <hr>
+<form method="POST" class="form-horizontal" action=" {{ route('sanitary_residences.admission.update', $admission) }} ">
+    @csrf
+    @method('PUT')
     <h5 class="mb-6">Identificación de Paciente</h5>
 
     <div class="form-row">
@@ -68,15 +71,20 @@
     <div class="form-row">
 
         <fieldset class="form-group col-4 col-md-4">
-            <label for="for_prevision">Fecha y Hora de Encuesta en Terreno*</label>
-            <input type="text" name="created_at" id="for_prevision" class="form-control"  value="{{ $admission->created_at->format('d-m-Y H:i') }}" readonly>
+            <label for="for_created_at">Fecha y Hora de Encuesta en Terreno*</label>
+            <input type="text" name="created_at" id="for_created_at" class="form-control"  value="{{ $admission->created_at->format('d-m-Y H:i') }}" readonly>
             </input>
         </fieldset>
         
         <fieldset class="form-group col-3 col-md-3">
             <label for="for_address">Telefono(s) Contacto Emergencia</label>
             <input type="text" class="form-control" name="contactnumber" id="for_contactnumber" placeholder="" autocomplete="off" value="{{$admission->contactnumber}}" readonly>
-        </fieldset>        
+        </fieldset>
+
+        <fieldset class="form-group col-4 col-md-4">
+            <label for="for_symptoms_epivigila">Fecha de Inicio de Sintomas (Epivigila)</label>
+            <input type="date" class="form-control" name="symptoms_epivigila" id="for_symptoms_epivigila" placeholder="" max="{{ date('Y-m-d') }}" value="{{ $admission->symptoms_epivigila }}" autocomplete="off" required>
+        </fieldset>
 
         
 
@@ -86,12 +94,12 @@
     <div class="form-row">
         <fieldset class="form-group col-12 col-md-7">
             <label for="for_indications">Antecedentes Morbidos</label>
-            <textarea class="form-control" id="for_morbid_history" rows="6" name="morbid_history" readonly>{{$admission->morbid_history}}</textarea>
+            <textarea class="form-control" id="for_morbid_history" rows="6" name="morbid_history">{{$admission->morbid_history}}</textarea>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-5">
             <label for="for_observations">Observaciones</label>
-            <textarea type="textarea" class="form-control" rows="6" name="observations" id="for_observations" readonly>{{$admission->observations}}</textarea>
+            <textarea type="textarea" class="form-control" rows="6" name="observations" id="for_observations">{{$admission->observations}}</textarea>
         </fieldset>
     </div>
 
@@ -216,16 +224,18 @@
     </div>   
     
     <br>
-    
 
+    <button type="submit" class="btn btn-primary">Actualizar Datos</button>
     <a class="btn btn-outline-secondary" href="{{ URL::previous() }}">Volver a Bandeja</a>
+
+    </form>
 
     <br>
     <br>
 
     
     <div class="text-center">
-        <a class="btn btn-success text-center" href="{{ route('sanitary_residences.admission.accept', $admission) }}">VISTO BUENO INGRESO</a>
+        <a class="btn btn-success text-center" href="{{ route('sanitary_residences.admission.accept', $admission) }}"  onclick="return confirm('Recuerde que si va a confirmar ingreso debe tener el dato de Fecha de Inicio de Sintomas' )">VISTO BUENO INGRESO</a>
         <a class="btn btn-danger text-center" href="{{ route('sanitary_residences.admission.rejected', $admission) }}">RECHAZO INGRESO</a>
     </div>
     

@@ -16,8 +16,9 @@ class CreateAdmissionSurveysTable extends Migration
         Schema::create('admission_surveys', function (Blueprint $table) {
             //IDENTIFICACIÓN DE PACIENTE
             $table->id(); 
-            //estado de si es aprobado y rechazado en r.s. importante para SEREMIA
-            $table->string('status')->nullable();            
+            //estado de si es aprobado y rechazado en r.s. importante para
+            $table->string('status')->nullable();
+            $table->date('symptoms_epivigila')->nullable();
             $table->string('contactnumber')->nullable();                        
             $table->text('morbid_history')->nullable();
             $table->text('observations')->nullable();

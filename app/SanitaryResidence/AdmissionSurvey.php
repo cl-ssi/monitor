@@ -17,7 +17,7 @@ class AdmissionSurvey extends Model implements Auditable //Authenticatable
         //datos de persona
         'prevision','observations',
         'contactnumber','morbid_history',
-        'observations',
+        'observations', 'symptoms_epivigila',
 
         //se puede aislar
         'isolate',

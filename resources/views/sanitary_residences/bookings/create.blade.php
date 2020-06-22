@@ -106,8 +106,14 @@
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-3">
-            <label for="for_onset_on_symptoms">Fecha de Inicio de Sintomas</label>
+            <label for="for_onset_on_symptoms">Fecha de Inicio de Sintomas (Epivigila)</label>
+            @if($request->input('symptoms_epivigila'))
+            <input type="date" class="form-control" name="onset_on_symptoms" id="for_onset_on_symptoms" value="{{ $request->input('symptoms_epivigila') }}" readonly>
+            @else
             <input type="date" class="form-control" name="onset_on_symptoms" id="for_onset_on_symptoms">
+            @endif
+            
+            
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-3">
