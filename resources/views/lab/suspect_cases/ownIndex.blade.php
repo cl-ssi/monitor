@@ -5,7 +5,7 @@
 @section('content')
 
 <h3 class="mb-3"><i class="fas fa-lungs-virus"></i>
-        Listado de todos los exámenes
+    Exámenes ingresados en el establecimiento del usuario.
 </h3>
 
 <table class="table table-sm table-bordered">
@@ -122,16 +122,22 @@
             </td>
             <td>{{ $case->age }}</td>
             <td>{{ strtoupper($case->gender[0]) }}</td>
-            <td>{{ $case->covid19 }}
-                @if($case->files->first())
-                <a href="{{ route('lab.suspect_cases.download', $case->files->first()->id) }}"
-                    target="_blank"><i class="fas fa-paperclip"></i>&nbsp
-                </a>
-                @endif
-                @if ($case->laboratory_id == 2 && $case->pscr_sars_cov_2 <> 'pending')
-                <a href="{{ route('lab.print', $case) }}"
-                    target="_blank"><i class="fas fa-paperclip"></i>&nbsp
-                </a>
+            <td>
+                @if($case->laboratory)
+                    {{ $case->covid19 }}
+                    @if($case->files->first())
+                    <a href="{{ route('lab.suspect_cases.download', $case->files->first()->id) }}"
+                        target="_blank"><i class="fas fa-paperclip"></i>&nbsp
+                    </a>
+                    @endif
+
+                    @if ($case->laboratory->pdf_generate == 1 && $case->pscr_sars_cov_2 <> 'pending')
+                    <a href="{{ route('lab.print', $case) }}"
+                        target="_blank"><i class="fas fa-paperclip"></i>&nbsp
+                    </a>
+                    @endif
+                @else
+                    No recepcionado
                 @endif
             </td>
             <td class="{{ ($case->result_ifd <> 'Negativo' AND $case->result_ifd <> 'No solicitado')?'text-danger':''}}">{{ $case->result_ifd }} {{ $case->subtype }}</td>
