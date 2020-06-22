@@ -278,33 +278,6 @@ jQuery(document).ready(function($){
         $('#for_dv').val($.rut.dv(str));
     });
 
-    $('#btn_fonasa').click(function() {
-	    var btn = $(this);
-	    btn.prop('disabled',true);
-
-        var run = $("#for_run").val();
-        var dv  = $("#for_dv").val();
-        var url = '{{route('webservices.fonasa')}}/?run='+run+'&dv='+dv;
-
-        $.getJSON(url, function(data) {
-            if(data){
-                document.getElementById("for_name").value = data.name;
-                document.getElementById("for_fathers_family").value = data.fathers_family;
-                document.getElementById("for_mothers_family").value = data.mothers_family;
-                document.getElementById("for_gender").value = data.gender;
-                document.getElementById("for_birthday").value = data.birthday;
-            } else {
-                document.getElementById("for_name").value = "";
-                document.getElementById("for_fathers_family").value = "";
-                document.getElementById("for_mothers_family").value = "";
-                document.getElementById("for_gender").value = "";
-                document.getElementById("for_birthday").value = "";
-            }
-	}).done(function() {
-            btn.prop('disabled',false);
-        });
-    });
-
     $('input[name=run_medic_s_dv]').keyup(function(e) {
         var str = $("#for_run_medic_s_dv").val();
         $('#for_run_medic_dv').val($.rut.dv(str));
@@ -355,6 +328,33 @@ $('input[name=other_identification]').change(function() {
             document.getElementById("for_fathers_family").value = "";
             document.getElementById("for_mothers_family").value = "";
         }
+    });
+});
+
+$('#btn_fonasa').click(function() {
+    var btn = $(this);
+    btn.prop('disabled',true);
+
+    var run = $("#for_run").val();
+    var dv  = $("#for_dv").val();
+    var url = '{{route('webservices.fonasa')}}/?run='+run+'&dv='+dv;
+
+    $.getJSON(url, function(data) {
+        if(data){
+            document.getElementById("for_name").value = data.name;
+            document.getElementById("for_fathers_family").value = data.fathers_family;
+            document.getElementById("for_mothers_family").value = data.mothers_family;
+            document.getElementById("for_gender").value = data.gender;
+            document.getElementById("for_birthday").value = data.birthday;
+        } else {
+            document.getElementById("for_name").value = "";
+            document.getElementById("for_fathers_family").value = "";
+            document.getElementById("for_mothers_family").value = "";
+            document.getElementById("for_gender").value = "";
+            document.getElementById("for_birthday").value = "";
+        }
+}).done(function() {
+        btn.prop('disabled',false);
     });
 });
 
