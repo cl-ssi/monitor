@@ -28,7 +28,7 @@
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_gender">Genero</label>
-            <select name="gender" id="for_gender" class="form-control">
+            <select name="gender" id="for_gender" class="form-control genero">
                 <option value="male">Masculino</option>
                 <option value="female">Femenino</option>
                 <option value="other">Otro</option>
@@ -297,6 +297,7 @@
 @endsection
 
 @section('custom_js')
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src='{{asset("js/jquery.rut.chileno.js")}}'></script>
 <script type="text/javascript">
@@ -311,7 +312,8 @@ jQuery(document).ready(function($){
     $('input[name=run]').keyup(function(e) {
         var str = $("#for_run").val();
         $('#for_dv').val($.rut.dv(str));
-    });
+    });    
+
 
     $('input[name=run]').change(function() {
         var str = $("#for_run").val();
@@ -360,9 +362,39 @@ jQuery(document).ready(function($){
             }
         });
     });
+    
 
 });
 
 </script>
 
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#for_gender").change(function(){
+        alert('entre al change');
+        var selectedcategory = $(this).children("option:selected").val();
+        if(selectedcategory =='male')
+        {
+            alert('entre al male');
+            $('#for_gestation').val('');
+            $('#for_gestation').prop('disabled', true);
+            
+        }
+        else
+        {
+            alert('entre a otros');
+            $('#for_gestation').prop('disabled', false);
+            $('#for_gestation').prop("required", true);
+
+        }
+
+
+    });
+});
+
+
+
+
+</script>
 @endsection

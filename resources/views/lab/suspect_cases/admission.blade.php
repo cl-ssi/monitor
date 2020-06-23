@@ -281,7 +281,9 @@ jQuery(document).ready(function($){
     $('input[name=run_medic_s_dv]').keyup(function(e) {
         var str = $("#for_run_medic_s_dv").val();
         $('#for_run_medic_dv').val($.rut.dv(str));
-    });
+    });    
+
+
 
 $('input[name=run]').change(function() {
     var str = $("#for_run").val();
@@ -442,4 +444,29 @@ jQuery(document).ready(function () {
 });
 </script>
 
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#for_gender").change(function(){        
+        var selectedcategory = $(this).children("option:selected").val();
+        if(selectedcategory =='male')
+        {            
+            $('#for_gestation').val('');
+            $('#for_gestation').prop('disabled', true);            
+        }
+        else
+        {            
+            $('#for_gestation').prop('disabled', false);
+            $('#for_gestation').prop("required", true);
+        }
+
+
+    });
+});
+
+
+
+
+</script>
 @endsection

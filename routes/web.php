@@ -155,6 +155,9 @@ Route::prefix('lab')->name('lab.')->group(function () {
 
         Route::get('/exportSuspectCases/{lab}','SuspectCaseController@exportExcel')->name('export')->middleware('auth');
 
+//        pruebas
+        Route::get('/exportAllCasesCsv','SuspectCaseController@exportAllCasesCsv')->name('exportAllCasesCsv')->middleware('auth');
+
         Route::get('/create','SuspectCaseController@create')->name('create')->middleware('auth','can:SuspectCase: create');
         Route::post('/','SuspectCaseController@store')->name('store')->middleware('auth','can:SuspectCase: create');
         Route::get('/admission','SuspectCaseController@admission')->name('admission')->middleware('auth','can:SuspectCase: admission');
