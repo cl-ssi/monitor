@@ -195,24 +195,6 @@
             </select>
         </fieldset--> --}}
 
-
-        <!--fieldset class="form-group col-8 col-md-4">
-            <label for="for_status">Estado</label>
-            <select name="status" id="for_status" class="form-control">
-                <option value=""></option>
-                <option value="Alta">Alta</option>
-                <option value="Ambulatorio">Ambulatorio (domiciliario)</option>
-                <option value="Fallecido">Fallecido</option>
-                <option value="Fugado">Fugado</option>
-                <option value="Hospitalizado Básico">Hospitalizado Básico</option>
-                <option value="Hospitalizado Medio">Hospitalizado Medio</option>
-                <option value="Hospitalizado UTI">Hospitalizado UTI</option>
-                <option value="Hospitalizado UCI">Hospitalizado UCI</option>
-                <option value="Hospitalizado UCI (Ventilador)">Hospitalizado UCI (Ventilador)</option>
-                <option value="Residencia Sanitaria">Residencia Sanitaria</option>
-            </select>
-        </fieldset-->
-
     </div>
 
     <hr>
@@ -281,7 +263,7 @@ jQuery(document).ready(function($){
     $('input[name=run_medic_s_dv]').keyup(function(e) {
         var str = $("#for_run_medic_s_dv").val();
         $('#for_run_medic_dv').val($.rut.dv(str));
-    });    
+    });
 
 
 
@@ -448,15 +430,15 @@ jQuery(document).ready(function () {
 
 <script type="text/javascript">
 $(document).ready(function(){
-    $("#for_gender").change(function(){        
+    $("#for_gender").change(function(){
         var selectedcategory = $(this).children("option:selected").val();
         if(selectedcategory =='male')
-        {            
+        {
             $('#for_gestation').val('');
-            $('#for_gestation').prop('disabled', true);            
+            $('#for_gestation').prop('disabled', true);
         }
         else
-        {            
+        {
             $('#for_gestation').prop('disabled', false);
             $('#for_gestation').prop("required", true);
         }
