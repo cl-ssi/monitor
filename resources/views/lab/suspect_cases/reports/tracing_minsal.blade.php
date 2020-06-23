@@ -6,12 +6,12 @@
 
 <h3 class="">Seguimiento de Casos Positivos y Contactos.</h3>
 
-<!--a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel</a-->
-<a class="btn btn-outline-success btn-sm mb-3 disabled" id="downloadLink" href="" >Descargar en excel</a>
+@if($request->date)
+    <a class="btn btn-outline-success btn-sm mb-3" type="button" id="downloadLink" onclick="exportF(this)"><i class="far fa-file-excel"></i> Descargar en excel</a>
+@endif
 
 <form method="get" class="form-inline mb-3" action="{{ route('lab.suspect_cases.reports.tracing_minsal') }}">
 
-  <!-- <a type="button" class="btn btn-success btn-sm mb-3" href="">Descargar <i class="far fa-file-excel"></i></a> -->
   <div class="form-group">
       <label for="for_date">fecha:</label>
       <input type="date" class="form-control mx-sm-3" id="for_date" name="date" value="{{ $request->date }}">
@@ -27,12 +27,12 @@
 <main>
 
 <div class="table-responsive">
-    <table class="table table-sm table-bordered table-responsive small" id="tabla_casos">
+    <table class="table table-sm table-bordered table-responsive small" id="tabla_files" >
         <thead>
             <tr class="text-center">
                 <th rowspan="2">°</th>
                 <th colspan="3">Caso Indice</th>
-                <th colspan="39">Contactos</th>
+                <th colspan="32">Contactos</th>
             </tr>
             <tr class="text-center">
                 <th>N°</th>
@@ -41,7 +41,7 @@
                 <th>NOMBRES</th>
                 <th>APELLIDO PATERNO</th>
                 <th>APELLIDO MATERNO</th>
-                <th>NOMBRE UNIDO
+                <th>NOMBRE UNIDO</th>
                 <th>FECHA DE NACIMIENTO</th>
                 <th>TELEFONO</th>
                 <th>TELEFONO</th>
@@ -52,7 +52,7 @@
                 <th>OTRA INFORMACIÓN BLOCK CONDOMINIO TORRE NOMBRE TOMA</th>
                 <th>CORREO ELECTRONICO</th>
                 <th>COMUNA RESIDENCIA</th>
-                <th>REGIÓN (EVENTUALMENTE PUEDE SER DE OTRA REGIÓN)</th>
+                <th>REGIÓN</th>
                 <th>FECHA DE ÚLTIMO CONTACTO CON EL CASO</th>
                 <th>FECHA FIN SEGUIMIENTO</th>
                 <th>SEGUIMIENTO FINALIZADO</th>
@@ -169,7 +169,22 @@
 
 @endsection
 
-@section('custom_js_head')
+@section('custom_js')
 
+<script type="text/javascript">
+    function exportF(elem) {
+        var table = document.getElementById("tabla_files");
+        var html = table.outerHTML;
+        var html_no_links = html.replace(/<a[^>]*>|<\/a>/g, "");//remove if u want links in your table
+        var url = 'data:application/vnd.ms-excel,' + escape(html_no_links); // Set your html table into url
+        elem.setAttribute("href", url);
+        elem.setAttribute("download", "seguimiento.xls"); // Choose the file name
+        return false;
+    }
+</script>
+
+@endsection
+
+@section('custom_js_head')
 
 @endsection
