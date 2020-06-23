@@ -53,7 +53,14 @@ class PatientController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
+
+        $validatedData = $request->validate([
+            'run' => ['unique:patients']
+        ],
+        [
+            'run.unique' => 'Este rut ya está registrado.'
+        ]);
         $patient = new Patient($request->All());
         $patient->save();
 
