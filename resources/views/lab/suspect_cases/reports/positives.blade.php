@@ -47,7 +47,7 @@
             <tbody>
                 <tr>
                     <td style="color: red;">Covid-19+</td>
-                    <th class="text-center">{{ $huciv }}</th>
+                    <th class="text-center">{{ $huciv = $patients->where('status','Hospitalizado UCI (Ventilador)')->count() }}</th>
                     <td>No Covid-19</td>
                     <th class="text-center">{{ $ventilator->no_covid }}</th>
                     <td>Disponibles</td>
