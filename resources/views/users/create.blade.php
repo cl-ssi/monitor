@@ -45,6 +45,7 @@
                 <fieldset class="form-group col-12 col-md-3">
                     <label for="for_email">Email *</label>
                     <input type="email" class="form-control" name="email" id="for_email"
+                        style="text-transform: lowercase;"
                         required autocomplete="off">
                 </fieldset>
 

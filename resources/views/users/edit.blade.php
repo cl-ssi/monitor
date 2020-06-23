@@ -37,7 +37,7 @@
                 <fieldset class="form-group col-12 col-md-3">
                     <label for="for_email">Email</label>
                     <input type="email" class="form-control" name="email" id="for_email"
-                        value="{{ $user->email }}" required>
+                        value="{{ $user->email }}" required style="text-transform: lowercase;">
                 </fieldset>
 
                 <fieldset class="form-group col-12 col-md-3">
