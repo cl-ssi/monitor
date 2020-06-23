@@ -27,7 +27,7 @@ class WSMinsal extends Model
         if($suspectCase->gender == "female"){$genero = "F";}
         elseif($suspectCase->gender == "male"){$genero = "M";}
         elseif($suspectCase->gender == "other"){$genero = "Intersex";} //intersex
-        else($suspectCase->gender == "male"){$genero = "Desconocido";} //desconocido
+        else{$genero = "Desconocido";} //desconocido
 
         $commune_code_deis = Commune::find($suspectCase->patient->demographic->commune_id)->code_deis;
 
