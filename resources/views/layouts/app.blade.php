@@ -283,6 +283,9 @@
                                     <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.positivesByDateRange') }}">Reporte de positivos por fecha</a>
                                 @endcan
 
+                                @can('Report: requires licence')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.requires_licence') }}">Reporte de pacientes que requieren licencia médica</a>
+                                @endcan
 
                             </div>
                         </li>

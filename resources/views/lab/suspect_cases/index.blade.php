@@ -59,7 +59,33 @@
     Reporte estadistico diario
 </a>
 @else
-<a type="button" class="btn btn-success" href="{{ route('lab.suspect_cases.export', 'all') }}">Descargar <i class="far fa-file-excel"></i></a>
+
+{{--    <form method="POST" action="{{route('lab.suspect_cases.export', 'all')}}" target="_blank">--}}
+{{--        @method('POST')--}}
+{{--        @csrf--}}
+
+{{--        <div class="row">--}}
+{{--            <div class="col-5 col-sm-3">--}}
+{{--                <input type="month" class="form-control" id="for_date_filter"--}}
+{{--                       name="date_filter" required>--}}
+{{--            </div>--}}
+{{--            <div class="col-5 col-sm-3">--}}
+{{--                <button type="submit" class="btn btn-success">Descargar <i class="far fa-file-excel"></i></button>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+
+{{--    </form>--}}
+
+{{--    <div class="row">--}}
+{{--        <div class="col-5 col-sm-3">--}}
+{{--            <input type="month" class="form-control" id="for_month"--}}
+{{--                   name="month" required>--}}
+{{--        </div>--}}
+{{--        <div class="col-5 col-sm-3">--}}
+            <a type="button" class="btn btn-success" href="{{ route('lab.suspect_cases.export', 'all') }}">Descargar <i class="far fa-file-excel"></i></a>
+{{--        </div>--}}
+{{--    </div>--}}
+
 @endif
 
 

@@ -343,7 +343,7 @@
     <fieldset class="form-group col-12 col-md-6">
         <label for="for_email">email</label>
         <input type="email" class="form-control" name="email" id="for_email"
-            value="{{ $patient->demographic->email }}">
+            value="{{ $patient->demographic->email }}" style="text-transform: lowercase;">
     </fieldset>
 
     <fieldset class="form-group col-12 col-md-4">
