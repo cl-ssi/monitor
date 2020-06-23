@@ -18,9 +18,16 @@ use Carbon\Carbon;
 class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping, WithColumnFormatting, ShouldAutoSize
 {
     private $cod_lab;
+//    private $month;
+//    private $year;
 
-    public function __construct($cod_lab) {
-          $this->cod_lab = $cod_lab;
+    public function __construct($cod_lab
+//        , $date_filter
+        ) {
+        $this->cod_lab = $cod_lab;
+//        $this->month = Carbon::parse($date_filter)->month;
+//        $this->year = Carbon::parse($date_filter)->year;
+
     }
     /**
     * @return \Illuminate\Support\Collection
@@ -34,7 +41,10 @@ class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping, W
           })->get();
         }
         elseif ($this->cod_lab == 'all'){
-            return SuspectCase::orderBy('suspect_cases.id', 'desc')
+            return SuspectCase::
+//                whereYear('sample_at', '=', $this->year)
+//                ->whereMonth('sample_at', '=', $this->month)
+                orderBy('suspect_cases.id', 'desc')
                 ->get();
         }
         else{
@@ -58,7 +68,6 @@ class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping, W
     */
     public function map($suspectCase): array
     {
-        // dd($suspectCase);
         return [
             $suspectCase->id,
             Date::dateTimeToExcel($suspectCase->sample_at),

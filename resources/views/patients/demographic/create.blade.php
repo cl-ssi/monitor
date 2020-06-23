@@ -332,7 +332,8 @@
 
     <fieldset class="form-group col-12 col-md-6">
         <label for="for_email">email</label>
-        <input type="email" class="form-control" name="email" id="for_email">
+        <input type="email" class="form-control" name="email" id="for_email"
+        style="text-transform: lowercase;">
     </fieldset>
 
     <fieldset class="form-group col-12 col-md-4">
