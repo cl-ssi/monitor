@@ -24,7 +24,7 @@ class PermissionSeeder extends Seeder
         $permission = Permission::create(['name' => 'Patient: list']);
         $permission = Permission::create(['name' => 'Patient: tracing']);
 
-        
+
         $permission = Permission::create(['name' => 'SanitaryResidence: admin']);
         $permission = Permission::create(['name' => 'SanitaryResidence: admission']);
         $permission = Permission::create(['name' => 'SanitaryResidence: survey']);
@@ -52,7 +52,10 @@ class PermissionSeeder extends Seeder
         $permission = Permission::create(['name' => 'Report: gestants']);
         $permission = Permission::create(['name' => 'Report: residences']);
         $permission = Permission::create(['name' => 'Report: positives by range']);
-        
+        $permission = Permission::create(['name' => 'Report: hospitalized']);
+        $permission = Permission::create(['name' => 'Report: commune']);
+        $permission = Permission::create(['name' => 'Report: deceased']);
+
         $permission = Permission::create(['name' => 'Epp: list']);
 
         $permission = Permission::create(['name' => 'Inmuno Test: list']);

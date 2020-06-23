@@ -182,7 +182,8 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::get('/seremi/{laboratory}','SuspectCaseReportController@report_seremi')->name('seremi')->middleware('auth');
             Route::get('/positivesByDateRange','SuspectCaseReportController@positivesByDateRange')->name('positivesByDateRange')->middleware('auth');
             Route::get('/positives_own','SuspectCaseReportController@positivesOwn')->name('positives_own')->middleware('auth');
-            Route::get('hospitalized','SuspectCaseReportController@hospitalized')->name('hospitalized')->middleware('auth');
+            Route::get('hospitalized','SuspectCaseReportController@hospitalized')->name('hospitalized')->middleware('auth','can:Report: hospitalized');
+            Route::get('deceased','SuspectCaseReportController@deceased')->name('deceased')->middleware('auth','can:Report: deceased');
         });
         Route::prefix('report')->name('report.')->group(function () {
             Route::get('/','SuspectCaseReportController@positives')->name('index')->middleware('auth','can:Report: other');
