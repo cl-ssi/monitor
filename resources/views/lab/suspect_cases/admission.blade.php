@@ -105,12 +105,14 @@
                 <option value=""></option>
                 <option value="TÓRULAS NASOFARÍNGEAS">TORULAS NASOFARINGEAS</option>
                 <option value="ESPUTO">ESPUTO</option>
-                <option value="TÓRULAS NASOFARÍNGEAS/ESPUTO">TÓRULAS NASOFARÍNGEAS/ESPUTO</option>
+                {{-- <option value="TÓRULAS NASOFARÍNGEAS/ESPUTO">TÓRULAS NASOFARÍNGEAS/ESPUTO</option> --}}
                 <option value="ASPIRADO NASOFARÍNGEO">ASPIRADO NASOFARÍNGEO</option>
-                {{-- <option value="LAVADO BRONCOALVEOLAR">LAVADO BRONCOALVEOLAR</option>
+                <option value="LAVADO BRONCOALVEOLAR">LAVADO BRONCOALVEOLAR</option>
                 <option value="ASPIRADO TRAQUEAL">ASPIRADO TRAQUEAL</option>
                 <option value="MUESTRA SANGUÍNEA">MUESTRA SANGUÍNEA</option>
-                <option value="TEJIDO PULMONAR">TEJIDO PULMONAR</option> --}}
+                <option value="TEJIDO PULMONAR">TEJIDO PULMONAR</option>
+                <option value="SALIVA">SALIVA</option>
+                <option value="OTRO">OTRO</option>
             </select>
         </fieldset>
 
@@ -281,7 +283,7 @@ jQuery(document).ready(function($){
     $('input[name=run_medic_s_dv]').keyup(function(e) {
         var str = $("#for_run_medic_s_dv").val();
         $('#for_run_medic_dv').val($.rut.dv(str));
-    });    
+    });
 
 
 
@@ -448,15 +450,15 @@ jQuery(document).ready(function () {
 
 <script type="text/javascript">
 $(document).ready(function(){
-    $("#for_gender").change(function(){        
+    $("#for_gender").change(function(){
         var selectedcategory = $(this).children("option:selected").val();
         if(selectedcategory =='male')
-        {            
+        {
             $('#for_gestation').val('');
-            $('#for_gestation').prop('disabled', true);            
+            $('#for_gestation').prop('disabled', true);
         }
         else
-        {            
+        {
             $('#for_gestation').prop('disabled', false);
             $('#for_gestation').prop("required", true);
         }
