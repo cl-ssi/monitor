@@ -198,7 +198,7 @@
                                 @endcan
 
 
-                                @canany(['SanitaryResidence: admission','Developer'])
+                                @canany(['SanitaryResidence: admission','Developer','SanitaryResidence: user'])
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.admission.inbox') }}">Bandeja SEREMI</a>
                                 @endcan
