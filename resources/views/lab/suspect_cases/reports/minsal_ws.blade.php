@@ -69,7 +69,7 @@
             <td nowrap>{{ ($case->user) ? $case->user->name : '' }} </td>
             <td nowrap>02-100</td>
             <td nowrap>{{ $case->run_medic }}</td>
-            <td nowrap>{{ $case->patient->runExport }}</td>
+            <td nowrap>{{ $case->patient->run }} - {{ $case->patient->dv }}</td>
             <td nowrap>{{ $case->patient->name }}</td>
             <td nowrap>{{ $case->patient->fathers_family }}</td>
             <td nowrap>{{ $case->patient->mothers_family }}</td>
