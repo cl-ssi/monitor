@@ -34,48 +34,7 @@
         </table>
 
 
-
         <div id="evolution" style="width: 480px; height: 400"></div>
-
-        <!-- <table class="table table-sm table-bordered">
-            <thead>
-                <tr>
-                    <th class="table-active">Hospitalizados</th>
-                    <th class="table-active text-right">Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th>Hospitalizados Básicos</th>
-                    <td class="text-right">{{ $hbasico = $patients->where('status', 'Hospitalizado Básico')->count() }}</td>
-                </tr>
-                <tr>
-                    <th>Hospitalizados Medios</th>
-                    <td class="text-right">{{ $hmedio = $patients->where('status', 'Hospitalizado Medio')->count() }}</td>
-                </tr>
-                <tr>
-                    <th>Hospitalizados UTI</th>
-                    <td class="text-right">{{ $huti = $patients->where('status', 'Hospitalizado UTI')->count() }}</td>
-                </tr>
-                <tr>
-                    <th>Hospitalizados UCI</th>
-                    <td class="text-right">{{ $huci = $patients->where('status', 'Hospitalizado UCI')->count() }}</td>
-                </tr>
-                <tr>
-                    <th>Hospitalizado UCI (Ventilador)</th>
-                    <td class="text-right">{{ $huciv = $patients->where('status', 'Hospitalizado UCI (Ventilador)')->count() }}</td>
-                </tr>
-                @foreach($patients->where('status', 'Hospitalizado UCI (Ventilador)') as $patient)
-                <tr>
-                    <td colspan="2"> - {{ $patient->genderEsp }} - {{ $patient->age }} - {{ ($patient->demographic) ? $patient->demographic->commune:'' }}</td>
-                </tr>
-                @endforeach
-                <tr>
-                    <th>Total</th>
-                    <th class="text-right">{{ $hbasico + $hmedio + $huti + $huci + $huciv }}</th>
-                </tr>
-            </tbody>
-        </table> -->
 
 
         <table class="table table-sm table-bordered">
@@ -88,7 +47,7 @@
             <tbody>
                 <tr>
                     <td style="color: red;">Covid-19+</td>
-                    <th class="text-center">{{ $huciv }}</th>
+                    <th class="text-center">{{ $huciv = $patients->where('status','Hospitalizado UCI (Ventilador)')->count() }}</th>
                     <td>No Covid-19</td>
                     <th class="text-center">{{ $ventilator->no_covid }}</th>
                     <td>Disponibles</td>

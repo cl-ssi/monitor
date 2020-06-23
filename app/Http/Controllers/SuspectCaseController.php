@@ -738,7 +738,74 @@ class SuspectCaseController extends Controller
     }
 
     public function exportExcel($cod_lab){
+//    public function exportExcel(Request $request, $cod_lab){
+
+        //        return Excel::download(new SuspectCasesExport($cod_lab, $request->get('date_filter')), 'lista-examenes.xlsx');
         return Excel::download(new SuspectCasesExport($cod_lab), 'lista-examenes.xlsx');
+    }
+
+    public function exportAllCasesCsv(){
+        $headers = array(
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=allCases.csv",
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        );
+
+        $filas = SuspectCase::orderBy('suspect_cases.id', 'desc')
+            ->get();
+
+        $columnas = array(
+            '#',
+            'fecha_muestra',
+            'origen',
+            'nombre',
+            'run',
+            'edad',
+            'sexo',
+            'resultado_ifd',
+            'pcr_sars_cov2',
+            'sem',
+            'epivigila',
+            'paho_flu',
+            'estado',
+            'observación',
+            'teléfono',
+            'dirección',
+            'comuna'
+        );
+
+        $callback = function() use ($filas, $columnas)
+        {
+            $file = fopen('php://output', 'w');
+            fputs($file, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
+            fputcsv($file, $columnas,';');
+
+            foreach($filas as $fila) {
+                fputcsv($file, array(
+                    $fila->id,
+                    $fila->sample_at,
+                    ($fila->establishment)?$fila->establishment->alias.' - '.$fila->origin: '',
+                    ($fila->patient)?$fila->patient->fullName:'',
+                    ($fila->patient)?$fila->patient->Identifier:'',
+                    $fila->age,
+                    strtoupper($fila->gender[0]),
+                    $fila->result_ifd,
+                    $fila->Covid19,
+                    $fila->epidemiological_week,
+                    $fila->epivigila,
+                    $fila->paho_flu,
+                    $fila->status,
+                    $fila->observation,
+                    ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->telephone:'',
+                    ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->fullAddress:'',
+                    ($fila->patient && $fila->patient->demographic && $fila->patient->demographic->commune)?$fila->patient->demographic->commune->name:'',
+                ),';');
+            }
+            fclose($file);
+        };
+        return response()->stream($callback, 200, $headers);
     }
 
     public function exportMinsalExcel($laboratory, Request $request)

@@ -680,4 +680,19 @@ class SuspectCaseReportController extends Controller
         return response()->json($patients);
     }
 
+    /*****************************************************/
+    /*            REPORTE LICENCIA MEDICA                */
+    /*****************************************************/
+    public function requires_licence()
+    {
+        $patients = Patient::
+            whereHas('tracing', function ($q) {
+              $q->where('status', '>', '0')
+              ->where('requires_licence', 1)
+              ->whereIn('establishment_id', auth()->user()->establishments->pluck('id'));
+            })
+            ->get();
+
+        return view('lab.suspect_cases.reports.requires_licence', compact('patients'));
+    }
 }

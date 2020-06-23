@@ -44,7 +44,8 @@
 
                 <fieldset class="form-group col-12 col-md-3">
                     <label for="for_email">Email *</label>
-                    <input type="text" class="form-control" name="email" id="for_email"
+                    <input type="email" class="form-control" name="email" id="for_email"
+                        style="text-transform: lowercase;"
                         required autocomplete="off">
                 </fieldset>
 
@@ -67,10 +68,21 @@
                         @endforeach
                     </select>
                 </fieldset>
-                <fieldset class="form-group col-12 col-md-3">
+                <fieldset class="form-group col-12 col-md-2">
                     <label for="for_password">Clave *</label>
                     <input type="password" class="form-control" name="password" id="for_password"
                         required>
+                </fieldset>
+
+                <fieldset class="form-group col-6 col-md-2">
+                    <label for="for_telephone">Telefono</label>
+                    <input type="text" class="form-control" name="telephone" id="for_telephone" placeholder="ej:+56912345678"
+                        >
+                </fieldset>
+
+                <fieldset class="form-group col-6 col-md-2">
+                    <label for="for_function">Función</label>
+                    <input type="text" class="form-control" name="function" id="for_function">
                 </fieldset>
 
             </div>
