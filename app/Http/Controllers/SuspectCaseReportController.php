@@ -651,7 +651,9 @@ class SuspectCaseReportController extends Controller
     /*            REPORTE HOSPITALIZADOS                 */
     /*****************************************************/
     public function hospitalized() {
-        $patients = Patient::whereIn('status',[
+        $patients = Patient::whereHas('suspectCases', function ($q) {
+            $q->where('pscr_sars_cov_2','positive');
+        })->whereIn('status',[
             'Hospitalizado Básico',
             'Hospitalizado Medio',
             'Hospitalizado UTI',
@@ -668,7 +670,10 @@ class SuspectCaseReportController extends Controller
     /*            REPORTE FALLECIDOS                     */
     /*****************************************************/
     public function deceased() {
-        $patients = Patient::where('status','Fallecido')->orderBy('deceased_at')->get();
+        $patients = Patient::whereHas('suspectCases', function ($q) {
+            $q->where('pscr_sars_cov_2','positive');
+        })->where('status','Fallecido')->with('suspectCases')->with('demographic')->orderBy('deceased_at')->get();
+
         return view('lab.suspect_cases.reports.deceased', compact('patients'));
     }
 
