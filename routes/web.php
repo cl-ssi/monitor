@@ -184,6 +184,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::get('/positives_own','SuspectCaseReportController@positivesOwn')->name('positives_own')->middleware('auth');
             Route::get('hospitalized','SuspectCaseReportController@hospitalized')->name('hospitalized')->middleware('auth','can:Report: hospitalized');
             Route::get('deceased','SuspectCaseReportController@deceased')->name('deceased')->middleware('auth','can:Report: deceased');
+            Route::get('requires_licence','SuspectCaseReportController@requires_licence')->name('requires_licence')->middleware('auth', 'can:Report: requires licence');
         });
         Route::prefix('report')->name('report.')->group(function () {
             Route::get('/','SuspectCaseReportController@positives')->name('index')->middleware('auth','can:Report: other');
