@@ -23,10 +23,11 @@ class WSMinsal extends Model
         $response = [];
         $client = new \GuzzleHttp\Client();
 
-        $genero = strtoupper($suspectCase->gender[0]);
-        // if($suspectCase->gender == "female"){
-        //     $genero = "F";
-        // }else{$genero = "M";}
+        // $genero = strtoupper($suspectCase->gender[0]);
+        if($suspectCase->gender == "female"){$genero = "F";}
+        elseif($suspectCase->gender == "male"){$genero = "M";}
+        elseif($suspectCase->gender == "other"){$genero = "Intersex";} //intersex
+        else($suspectCase->gender == "male"){$genero = "Desconocido";} //desconocido
 
         $commune_code_deis = Commune::find($suspectCase->patient->demographic->commune_id)->code_deis;
 
