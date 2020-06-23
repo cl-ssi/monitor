@@ -51,11 +51,22 @@ $patient = $suspectCase->patient;
         <fieldset class="form-group col-7 col-md-3">
             <label for="for_sample_type">Tipo de Muestra</label>
             <select name="sample_type" id="for_sample_type" class="form-control">
-                <option value=""></option>
+                {{-- <option value=""></option>
                 <option value="TÓRULAS NASOFARÍNGEAS" {{ ($suspectCase->sample_type == 'TÓRULAS NASOFARÍNGEAS')?'selected':'' }}>TORULAS NASOFARINGEAS</option>
                 <option value="ESPUTO" {{ ($suspectCase->sample_type == 'ESPUTO')?'selected':'' }}>ESPUTO</option>
                 <option value="TÓRULAS NASOFARÍNGEAS/ESPUTO" {{ ($suspectCase->sample_type == 'TÓRULAS NASOFARÍNGEAS/ESPUTO')?'selected':'' }}>TÓRULAS NASOFARÍNGEAS/ESPUTO</option>
+                <option value="ASPIRADO NASOFARÍNGEO" {{ ($suspectCase->sample_type == 'ASPIRADO NASOFARÍNGEO')?'selected':'' }}>ASPIRADO NASOFARÍNGEO</option> --}}
+                <option value=""></option>
+                <option value="TÓRULAS NASOFARÍNGEAS" {{ ($suspectCase->sample_type == 'TÓRULAS NASOFARÍNGEAS')?'selected':'' }}>TORULAS NASOFARINGEAS</option>
+                <option value="ESPUTO" {{ ($suspectCase->sample_type == 'ESPUTO')?'selected':'' }}>ESPUTO</option>
+                {{-- <option value="TÓRULAS NASOFARÍNGEAS/ESPUTO">TÓRULAS NASOFARÍNGEAS/ESPUTO</option> --}}
                 <option value="ASPIRADO NASOFARÍNGEO" {{ ($suspectCase->sample_type == 'ASPIRADO NASOFARÍNGEO')?'selected':'' }}>ASPIRADO NASOFARÍNGEO</option>
+                <option value="LAVADO BRONCOALVEOLAR" {{ ($suspectCase->sample_type == 'LAVADO BRONCOALVEOLAR')?'selected':'' }}>LAVADO BRONCOALVEOLAR</option>
+                <option value="ASPIRADO TRAQUEAL" {{ ($suspectCase->sample_type == 'ASPIRADO TRAQUEAL')?'selected':'' }}>ASPIRADO TRAQUEAL</option>
+                <option value="MUESTRA SANGUÍNEA" {{ ($suspectCase->sample_type == 'MUESTRA SANGUÍNEA')?'selected':'' }}>MUESTRA SANGUÍNEA</option>
+                <option value="TEJIDO PULMONAR" {{ ($suspectCase->sample_type == 'TEJIDO PULMONAR')?'selected':'' }}>TEJIDO PULMONAR</option>
+                <option value="SALIVA" {{ ($suspectCase->sample_type == 'SALIVA')?'selected':'' }}>SALIVA</option>
+                <option value="OTRO" {{ ($suspectCase->sample_type == 'OTRO')?'selected':'' }}>OTRO</option>
             </select>
         </fieldset>
 

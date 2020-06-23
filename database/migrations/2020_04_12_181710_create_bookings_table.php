@@ -38,7 +38,7 @@ class CreateBookingsTable extends Migration
             $table->date('onset_on_symptoms')->nullable();
             $table->date('end_of_symptoms')->nullable();
             $table->string('allergies')->nullable();
-            $table->string('commonly_used_drugs')->nullable();
+            $table->string('commonly_used_drugs', 400)->nullable();
 
             $table->string('status')->nullable(); 
             /* Fallecido, Alta, Hospitalizado, Fugado, Residencia */

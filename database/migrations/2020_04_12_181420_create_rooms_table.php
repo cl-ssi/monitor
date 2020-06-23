@@ -19,6 +19,8 @@ class CreateRoomsTable extends Migration
             $table->integer('floor')->nullable();
             $table->text('description')->nullable();
             $table->string('type')->nullable();
+            $table->integer('single')->nullable();
+            $table->integer('double')->nullable();
             
             $table->unsignedBigInteger('residence_id');
             
