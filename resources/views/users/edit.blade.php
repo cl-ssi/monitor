@@ -36,7 +36,7 @@
 
                 <fieldset class="form-group col-12 col-md-3">
                     <label for="for_email">Email</label>
-                    <input type="text" class="form-control" name="email" id="for_email"
+                    <input type="email" class="form-control" name="email" id="for_email"
                         value="{{ $user->email }}" required>
                 </fieldset>
 
@@ -54,7 +54,7 @@
 
             <div class="form-row">
 
-                <fieldset class="form-group col-6 col-md-6">
+                <fieldset class="form-group col-12 col-md-6">
                     <label for="for_establishment_id">Establecimiento *</label>
                     <select name="establishment_id[]" id="for_establishment_id" class="form-control selectpicker" data-live-search="true" multiple="" data-size="10" title="Seleccione..." multiple data-actions-box="true" required>
 
@@ -64,7 +64,22 @@
 
                     </select>
                 </fieldset>
+
+
+                <fieldset class="form-group col-6 col-md-3">
+                    <label for="for_telephone">Telefono</label>
+                    <input type="text" class="form-control" name="telephone" id="for_telephone" placeholder="ej:+56912345678"
+                    value="{{ $user->telephone }}">
+                </fieldset>
+
+                <fieldset class="form-group col-6 col-md-3">
+                    <label for="for_function">Función</label>
+                    <input type="text" class="form-control" name="function" id="for_function" 
+                    value="{{ $user->function }}">
+                </fieldset>
             </div>
+
+
 
             <div class="form-row">
                 <fieldset class="form-group col-6 col-md-6">

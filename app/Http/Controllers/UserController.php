@@ -75,6 +75,8 @@ class UserController extends Controller
         $user->dv = $request->input('dv');
         $user->name = $request->input('name');
         $user->email = $request->input('email');
+        $user->telephone = $request->input('telephone');
+        $user->function = $request->input('function');
         $user->laboratory_id = $request->input('laboratory_id');
         $user->password = bcrypt($request->input('password'));
 
@@ -93,6 +95,9 @@ class UserController extends Controller
         $user->syncPermissions(
             is_array($request->input('permissions')) ? $request->input('permissions') : array()
         );
+
+
+        session()->flash('success', 'Usuario Creado Exitosamente');
 
         return redirect()->route('users.index');
     }
@@ -147,6 +152,8 @@ class UserController extends Controller
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->laboratory_id = $request->input('laboratory_id');
+        $user->telephone = $request->input('telephone');
+        $user->function = $request->input('function');
         //$user->password = bcrypt($request->input('password'));
         $user->save();
 
@@ -185,6 +192,7 @@ class UserController extends Controller
             is_array($request->input('permissions')) ? $request->input('permissions') : array()
         );
 
+        session()->flash('success', 'Usuario Actualizado Exitosamente');
         return redirect()->route('users.index');
     }
 
