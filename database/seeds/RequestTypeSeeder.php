@@ -12,10 +12,10 @@ class RequestTypeSeeder extends Seeder
      */
     public function run()
     {
-        EventType::create(['name' => 'Agua potable']);
-        EventType::create(['name' => 'Canasta']);
-        EventType::create(['name' => 'Hospitalizacion']);
-        EventType::create(['name' => 'Licencia']);
-        EventType::create(['name' => 'Psícologica']);
+        RequestType::create(['name' => 'Agua potable']);
+        RequestType::create(['name' => 'Canasta']);
+        RequestType::create(['name' => 'Hospitalizacion']);
+        RequestType::create(['name' => 'Licencia']);
+        RequestType::create(['name' => 'Psícologica']);
     }
 }

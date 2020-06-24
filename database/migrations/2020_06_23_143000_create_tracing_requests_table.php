@@ -18,6 +18,7 @@ class CreateTracingRequestsTable extends Migration
             $table->datetime('request_at');
             $table->foreignId('request_type_id');
             $table->text('details')->nullable();
+            $table->datetime('validity_at')->nullable();
             $table->foreignId('tracing_id');
             $table->foreignId('user_id'); //USUARIO QUE REGISTRA
             $table->datetime('request_complete_at')->nullable();
@@ -29,7 +30,7 @@ class CreateTracingRequestsTable extends Migration
             $table->softDeletes();
 
             $table->foreign('tracing_id')->references('id')->on('tracings');
-            $table->foreign('request_type_id')->references('id')->on('request_types');
+            $table->foreign('request_type_id')->references('id')->on('tracing_request_types');
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

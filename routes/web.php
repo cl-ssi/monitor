@@ -94,6 +94,12 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
             Route::put('/{event}', 'EventController@update')->name('update');
             Route::delete('/{event}', 'EventController@destroy')->name('destroy');
         });
+
+        Route::prefix('requests')->name('requests.')->group(function () {
+            Route::post('/', 'TracingRequestController@store')->name('store');
+            Route::put('/{request}', 'TracingRequestController@update')->name('update');
+            Route::delete('/{request}', 'TracingRequestController@destroy')->name('destroy');
+        });
     });
 });
 

@@ -1,4 +1,4 @@
-<form method="POST" class="form-horizontal" action="">
+<form method="POST" class="form-horizontal" action="{{ route('patients.tracings.requests.store') }}">
     @csrf
     @method('POST')
 
@@ -7,14 +7,14 @@
             <div class="form-row">
                 <fieldset class="form-group col-md-6">
                     <label for="for_request_at">Fecha de Solicitud*</label>
-                    <input type="datetime-local" class="form-control" name="request_at" id="for_event_at" required value="{{ date('Y-m-d\TH:i:s') }}">
+                    <input type="datetime-local" class="form-control" name="request_at" id="for_request_at" required value="{{ date('Y-m-d\TH:i:s') }}">
                 </fieldset>
 
                 <fieldset class="form-group col-md-6">
-                    <label for="for_event_type_id">Tipo de solicitud *</label>
-                    <select name="event_type_id" id="for_event_type_id" required class="form-control">
+                    <label for="for_request_type_id">Tipo de solicitud *</label>
+                    <select name="request_type_id" id="for_request_type_id" required class="form-control">
                         <option value=""></option>
-                        @foreach($event_types as $type)
+                        @foreach($request_types as $type)
                         <option value="{{ $type->id }}">{{ $type->name }}</option>
                         @endforeach
                     </select>
@@ -33,7 +33,7 @@
             <div class="form-row">
 
                 <fieldset class="form-group col-md-12">
-                    <label for="for_details">Detalle del envento</label>
+                    <label for="for_details">Detalle de la solicitud</label>
                     <textarea class="form-control" name="details" rows="8"
                         id="for_details"></textarea>
                 </fieldset>
