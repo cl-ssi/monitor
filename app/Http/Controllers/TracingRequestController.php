@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Request;
+use App\Tracing\TracingRequest;
 use Illuminate\Http\Request;
 
-class RequestController extends Controller
+class TracingRequestController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,7 +24,7 @@ class RequestController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -35,7 +35,17 @@ class RequestController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //dd($request);
+        $tracing_request = new TracingRequest($request->All());
+        $tracing_request->user_id = auth()->id();
+
+        // dd($tracing_request);
+
+        $tracing_request->save();
+
+        session()->flash('info', 'Estimado Usuario: Su solicitud fue correctamente almacenada.');
+
+        return redirect()->back();
     }
 
     /**
@@ -67,7 +77,7 @@ class RequestController extends Controller
      * @param  \App\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Request $request)
+    public function update(Request $request, TracingRequest $tracing_request)
     {
         //
     }
