@@ -191,14 +191,19 @@
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.users') }}">Usuarios</a>
 
+                                @endcan
+
+                                @canany(['SanitaryResidence: admin','SanitaryResidence: user'])
 
                                 <div class="dropdown-divider"></div>
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.admission.index') }}">Aprobados por SEREMI</a>
+
                                 @endcan
+                                
 
 
-                                @canany(['SanitaryResidence: admission','Developer','SanitaryResidence: user'])
+                                @canany(['SanitaryResidence: admission','Developer'])
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.admission.inbox') }}">Bandeja SEREMI</a>
                                 @endcan
