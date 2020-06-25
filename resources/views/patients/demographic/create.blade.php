@@ -326,8 +326,8 @@
 <div class="form-row">
 
     <fieldset class="form-group col-12 col-md-2">
-        <label for="for_email">Ciudad</label>
-        <input type="city" class="form-control" name="email" id="for_city">
+        <label for="for_city">Ciudad/Pueblo/Localidad*</label>
+        <input type="text" class="form-control" name="city" id="for_city" required>
     </fieldset>
 
     <fieldset class="form-group col-12 col-md-6">
