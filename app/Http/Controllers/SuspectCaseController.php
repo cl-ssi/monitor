@@ -523,6 +523,11 @@ class SuspectCaseController extends Controller
 
     public function diary_by_lab_report(Request $request)
     {
+        if (SuspectCase::count() == 0){
+            session()->flash('info', 'No existen casos.');
+            return redirect()->route('home');
+        }
+
         //FIRST CASE
         $beginExamDate = SuspectCase::orderBy('sample_at')->first()->sample_at;
         $laboratories = Laboratory::all();
@@ -564,6 +569,12 @@ class SuspectCaseController extends Controller
 
     public function diary_lab_report(Request $request)
     {
+
+        if (SuspectCase::count() == 0){
+            session()->flash('info', 'No existen casos.');
+            return redirect()->route('home');
+        }
+
         $beginExamDate = SuspectCase::orderBy('sample_at')->first()->sample_at;
 
         $periods = CarbonPeriod::create($beginExamDate, now());
@@ -582,6 +593,11 @@ class SuspectCaseController extends Controller
         }
 
         $suspectCases = SuspectCase::whereNotNull('laboratory_id')->get();
+
+        if ($suspectCases->count() == 0){
+            session()->flash('info', 'No existen casos con laboratorio.');
+            return redirect()->route('home');
+        }
 
         foreach ($suspectCases as $suspectCase) {
           $total_cases_by_days['cases'] = 0;
