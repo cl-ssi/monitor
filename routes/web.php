@@ -242,6 +242,12 @@ Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(functi
     Route::get('/event_type/{eventType}/edit', 'EventTypeController@edit')->name('EventType.edit');
     Route::put('/event_type/update/{eventType}', 'EventTypeController@update')->name('EventType.update');
 
+    Route::get('/request_type', 'RequestTypeController@index')->name('request_type');
+    Route::get('/request_type/create', 'RequestTypeController@create')->name('request_type.create');
+    Route::post('/request_type/store', 'RequestTypeController@store')->name('request_type.store');
+    Route::get('/request_type/{request_type}/edit', 'RequestTypeController@edit')->name('request_type.edit');
+    Route::put('/request_type/update/{request_type}', 'RequestTypeController@update')->name('request_type.update');
+
 });
 
 Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('auth')->group(function () {
