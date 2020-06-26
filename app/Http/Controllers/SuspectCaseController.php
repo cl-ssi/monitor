@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Rules\UniqueSampleDateByPatient;
 use GuzzleHttp\Client;
 
 use App\SuspectCase;
@@ -161,11 +162,13 @@ class SuspectCaseController extends Controller
     {
         $regions = Region::orderBy('id','ASC')->get();
         $communes = Commune::orderBy('id','ASC')->get();
+        $countries = Country::select('name')->orderBy('id', 'ASC')->get();
+
         $env_communes = array_map('trim',explode(",",env('COMUNAS')));
         $establishments = Establishment::whereIn('commune_id',$env_communes)->where('name','<>','Otros')->orderBy('name','ASC')->get();
 
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
-        return view('lab.suspect_cases.admission',compact('sampleOrigins','regions', 'communes','establishments'));
+        return view('lab.suspect_cases.admission',compact('sampleOrigins','regions', 'communes','establishments', 'countries'));
     }
 
 
@@ -264,6 +267,9 @@ class SuspectCaseController extends Controller
      */
     public function storeAdmission(Request $request)
     {
+        $request->validate([
+           'id' => new UniqueSampleDateByPatient($request->sample_at)
+        ]);
 
         /* Si existe el paciente lo actualiza, si no, crea uno nuevo */
         if ($request->id == null) {

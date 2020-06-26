@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Country;
 use App\SuspectCase;
 use App\Patient;
 use App\Demographic;
@@ -40,10 +41,12 @@ class PatientController extends Controller
      */
     public function create()
     {
+
         $regions = Region::orderBy('id','ASC')->get();
         $communes = Commune::orderBy('id','ASC')->get();
+        $countries = Country::select('name')->orderBy('id', 'ASC')->get();
 
-        return view('patients.create', compact('regions', 'communes'));
+        return view('patients.create', compact('regions', 'communes', 'countries'));
     }
 
     /**
@@ -53,7 +56,7 @@ class PatientController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
 
         $validatedData = $request->validate([
             'run' => ['unique:patients']
