@@ -26,7 +26,7 @@
             <td>{{ ($case->pscr_sars_cov_2_at) ? $case->pscr_sars_cov_2_at : '' }}</td>
             <td>
                 @if($case->pscr_sars_cov_2 != 'positive')
-                <a href="{{ route('lab.print', $case) }}"
+                <a href="{{ route('lab.suspect_cases.download', $case->files->id) }}"                
                     target="_blank"><i class="fas fa-paperclip"></i>&nbsp
                 </a>
                 <!-- <a href="{{ route('lab.suspect_cases.download', $case->files->first()->id) }}"
