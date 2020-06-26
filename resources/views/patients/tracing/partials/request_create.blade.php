@@ -15,16 +15,13 @@
                     <select name="request_type_id" id="for_request_type_id" required class="form-control">
                         <option value=""></option>
                         @foreach($request_types as $type)
-                        <option value="{{ $type->id }}">{{ $type->name }}</option>
+                          @if($patient->tracing->index == 1)
+                          <option value="{{ $type->id }}" @if($type->name == 'Licencia Medica SEREMI') disabled @endif>{{ $type->name }}</option>
+                          @else
+                          <option value="{{ $type->id }}" @if($type->name == 'Licencia Medica APS') disabled @endif>{{ $type->name }}</option>
+                          @endif
                         @endforeach
                     </select>
-                </fieldset>
-
-            </div>
-            <div class="form-row">
-                <fieldset class="form-group col-md-6">
-                    <label for="for_validity_at">Fecha Vigencia*</label>
-                    <input type="datetime-local" class="form-control" name="validity_at" id="for_validity_at" required>
                 </fieldset>
             </div>
 

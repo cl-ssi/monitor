@@ -95,10 +95,19 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
             Route::delete('/{event}', 'EventController@destroy')->name('destroy');
         });
 
+        // Route::prefix('requests')->name('requests.')->group(function () {
+        //     Route::post('/', 'TracingRequestController@store')->name('store');
+        //     Route::put('/{request}', 'TracingRequestController@update')->name('update');
+        //     Route::delete('/{request}', 'TracingRequestController@destroy')->name('destroy');
+        // });
+
         Route::prefix('requests')->name('requests.')->group(function () {
             Route::post('/', 'TracingRequestController@store')->name('store');
-            Route::put('/{request}', 'TracingRequestController@update')->name('update');
             Route::delete('/{request}', 'TracingRequestController@destroy')->name('destroy');
+
+            Route::get('/social_index', 'TracingRequestController@social_index')->name('social_index');
+            Route::get('/{tracing_request}/request_complete', 'TracingRequestController@request_complete')->name('request_complete');
+            Route::put('/{tracing_request}', 'TracingRequestController@request_complete_update')->name('request_complete_update');
         });
     });
 });

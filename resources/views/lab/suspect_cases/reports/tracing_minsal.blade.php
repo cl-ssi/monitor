@@ -38,6 +38,7 @@
                 <th>N°</th>
                 <th>RUN o IDENTIFICADOR</th>
                 <th nowrap>NOMBRE UNIDO</th>
+                <th>RUN o IDENTIFICADOR</th>
                 <th>NOMBRES</th>
                 <th>APELLIDO PATERNO</th>
                 <th>APELLIDO MATERNO</th>
@@ -80,6 +81,7 @@
                     <td>{{ $contact->self_patient->tracing->id }}</td>
                     <td>{{ $patient->identifier }}</td>
                     <td>{{ $patient->fullName }}</td>
+                    <td>{{ $contact->patient->Identifier }}</td>
                     <td>{{ $contact->patient->name }}</td>
                     <td>{{ $contact->patient->fathers_family }}</td>
                     <td>{{ $contact->patient->mothers_family }}</td>

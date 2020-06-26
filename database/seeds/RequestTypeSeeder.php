@@ -15,7 +15,8 @@ class RequestTypeSeeder extends Seeder
         RequestType::create(['name' => 'Agua potable']);
         RequestType::create(['name' => 'Canasta']);
         RequestType::create(['name' => 'Hospitalizacion']);
-        RequestType::create(['name' => 'Licencia']);
+        RequestType::create(['name' => 'Licencia Medica APS']);
+        RequestType::create(['name' => 'Licencia Medica SEREMI']);
         RequestType::create(['name' => 'Psícologica']);
     }
 }
