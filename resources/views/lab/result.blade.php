@@ -14,7 +14,7 @@
             <th>Fecha de toma de muestra</th>
             <th>Resultado COVID19</th>
             <th>Fecha del resultado</th>            
-            <th>Descargar Examen</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -26,16 +26,15 @@
             <td>{{ ($case->pscr_sars_cov_2_at) ? $case->pscr_sars_cov_2_at : '' }}</td>
             <td>
                 @if($case->pscr_sars_cov_2 != 'positive')
-                @foreach($case->files as $file)
-                <a href="{{ route('lab.suspect_cases.download', $file->id) }}"
+                <!-- <a href="{{ route('lab.print', $case) }}"
+                
                     target="_blank"><i class="fas fa-paperclip"></i>&nbsp
-                </a>
+                </a> -->
                 <!-- <a href="{{ route('lab.suspect_cases.download', $case->files->first()->id) }}"
                     target="_blank" data-toggle="tooltip" data-placement="top"
                     data-original-title="resultado_{{$case->patient->run}}.pdf">
                     resultado_{{$case->patient->run}}.pdf<i class="fas fa-paperclip"></i>&nbsp
                 </a> -->
-                @endforeach
                 @endif
             </td>
         </tr>
