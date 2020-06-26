@@ -123,8 +123,8 @@ Route::prefix('lab')->name('lab.')->group(function () {
     //Route::put('update/{laboratory}', 'LaboratoryController@update')->name('update');
     Route::get('login/{access_token}','SuspectCaseController@login')->name('login');
     Route::get('results','SuspectCaseController@result')->name('result');
-    //Route::get('print/{suspect_case}','SuspectCaseController@print')->middleware('auth')->name('print');
-    Route::get('print/{suspect_case}','SuspectCaseController@print')->name('print');
+    Route::get('print/{suspect_case}','SuspectCaseController@print')->middleware('auth')->name('print');
+    //Route::get('print/{suspect_case}','SuspectCaseController@print')->name('print');
     Route::prefix('exams')->name('exams.')->middleware('auth')->group(function () {
         Route::prefix('covid19')->name('covid19.')->group(function () {
             Route::get('/', 'Covid19Controller@index')->name('index');
@@ -147,7 +147,8 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::post('/search_id','SuspectCaseController@search_id')->name('search_id')->middleware('auth');
         //Route::get('stat', 'SuspectCaseController@stat')->name('stat');
 
-        Route::get('download/{file}','SuspectCaseController@download')->name('download')->middleware('auth');
+        //Route::get('download/{file}','SuspectCaseController@download')->name('download')->middleware('auth');
+        Route::get('download/{file}','SuspectCaseController@download')->name('download');
         Route::get('file/{file}','SuspectCaseController@fileDelete')->name('fileDelete')->middleware('auth','can:SuspectCase: file delete');
 
         Route::get('/index/{laboratory?}','SuspectCaseController@index')->name('index')->middleware('auth','can:SuspectCase: list');
