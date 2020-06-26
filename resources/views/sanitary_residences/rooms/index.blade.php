@@ -15,6 +15,8 @@
             <th>Residencia</th>
             <th>Piso</th>
             <th>Numero</th>
+            <th>N° Camas Single</th>
+            <th>N° Camas Doble</th>
             <th>Editar</th>
         </tr>
     </thead>
@@ -23,7 +25,9 @@
         <tr>
             <td>{{ $room->residence->name }}</td>
             <td>{{ $room->floor }}</td>
-            <td>{{ $room->number }}</td>            
+            <td>{{ $room->number }}</td>
+            <td>{{ $room->single }}</td>
+            <td>{{ $room->double }}</td>
             <td>
                 <a href="{{ route('sanitary_residences.rooms.edit', $room) }}" class="btn btn-secondary float-left"><i class="fas fa-edit"></i></a>
             </td>            
