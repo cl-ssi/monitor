@@ -81,12 +81,13 @@
             <input type="text" class="form-control" name="entry_criteria" id="for_entry_criteria">
         </fieldset> -->
         <fieldset class="form-group col-7 col-md-4">
-            <label for="for_prevision">Criterio de Ingreso</label>
+            <label for="for_prevision">Criterio de Ingreso*</label>
             <select name="entry_criteria" id="for_entry_criteria" class="form-control" required>
                 <option value="">Seleccione Condición</option>
                 <option value="PCR +">PCR +</option>
                 <option value="Otro">Otro</option>
-                <option value="Contacto Estrecho">Contacto Estrecho</option>                
+                <option value="Contacto Estrecho">Contacto Estrecho</option>
+                <option value="Sospecha">Sospecha</option>                
             </select>
         </fieldset>
 
