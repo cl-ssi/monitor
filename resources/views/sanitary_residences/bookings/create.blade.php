@@ -32,11 +32,11 @@
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-4">
-            <label for="for_room_id">Residencia - Habitación</label>
+            <label for="for_room_id">Residencia - Habitación - Cuartos Totales(Single: Doble:)</label>
             <select name="room_id" id="for_room_id" class="form-control">
                 @foreach(Auth::user()->residences as $residence)
                     @foreach($residence->rooms->sortBy('number') as $room)
-                    <option value="{{ $room->id }}">{{ $room->residence->name }} - Habitación {{ $room->number }}</option>
+                    <option value="{{ $room->id }}">{{ $room->residence->name }} - Habitación {{ $room->number }} - S:{{ $room->single }} D:{{ $room->double }}</option>
                     @endforeach
                 @endforeach
             </select>
