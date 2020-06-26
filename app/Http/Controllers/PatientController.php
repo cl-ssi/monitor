@@ -60,11 +60,12 @@ class PatientController extends Controller
     {
 
         $validatedData = $request->validate([
-            'run' => ['unique:patients']
+            'run' => 'nullable|unique:patients'
         ],
         [
             'run.unique' => 'Este rut ya está registrado.'
         ]);
+
         $patient = new Patient($request->All());
         $patient->save();
 
