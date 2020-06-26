@@ -169,7 +169,7 @@
 
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_to">Hasta (Estimado)</label>
-            <input type="datetime-local" class="form-control date" name="to" id="for_to" value="{{$booking->to->format('Y-m-d\TH:i:s')}}" required>
+            <input type="datetime-local" class="form-control date" name="to" id="for_to" value="{{$booking->to->format('Y-m-d\TH:i:s')}}" >
         </fieldset>
 
         <fieldset class="form-group col-5 col-md-2">
