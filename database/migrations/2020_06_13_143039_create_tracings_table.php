@@ -47,7 +47,7 @@ class CreateTracingsTable extends Migration
             $table->text('family_history')->nullable();
 
             $table->text('indications')->nullable();
-            $table->string('observations')->nullable();
+            $table->text('observations')->nullable();
 
             $table->boolean('help_basket')->nullable();
             $table->boolean('psychological_intervention')->nullable();
