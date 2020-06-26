@@ -96,7 +96,7 @@
     <div class="form-row">
 
         <fieldset class="form-group col-12 col-md-3">
-            <label for="for_responsible_family_member">Familiar Responsable</label>
+            <label for="for_responsible_family_member">Familiar Responsable/Telefono</label>
             <input type="text" class="form-control" name="responsible_family_member" id="for_responsible_family_member" autocomplete="off">
         </fieldset>
 
@@ -163,12 +163,12 @@
     <div class="form-row">
         <fieldset class="form-group col-12 col-md-7">
             <label for="for_indications">Indicaciones</label>
-            <textarea class="form-control" id="for_indications" rows="6" name="indications"></textarea>
+            <textarea class="form-control" id="for_indications" rows="6" name="indications">@if($patient->tracing)){{$patient->tracing->observations}}@endif</textarea>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-5">
             <label for="for_observations">Observaciones</label>
-            <textarea type="textarea" class="form-control" rows="4" name="observations" id="for_observations">@if($request->input('observations')){{$request->input('observations')}}@endif </textarea>
+            <textarea type="textarea" class="form-control" rows="4" name="observations" id="for_observations">@if($request->input('observations')){{$request->input('observations')}}@endif @if($patient->tracing)){{$patient->tracing->observations}}@endif </textarea>
         </fieldset>
     </div>
 
