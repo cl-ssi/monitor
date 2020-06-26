@@ -227,7 +227,7 @@
                 </select>
             </fieldset>
 
-            <fieldset class="form-group col-6 col-md-1">
+            <!-- <fieldset class="form-group col-6 col-md-1">
                 <label for="for_help_basket">Canasta</label>
                 <select name="help_basket" id="for_help_basket" class="form-control">
                     <option value=""></option>
@@ -261,7 +261,7 @@
                     <option value="1" {{ ($patient->tracing->requires_licence === 1) ? 'selected' : '' }}>Si</option>
                     <option value="0" {{ ($patient->tracing->requires_licence === 0) ? 'selected' : '' }}>No</option>
                 </select>
-            </fieldset>
+            </fieldset> -->
         </div>
 
         <div class="form-row">
@@ -278,7 +278,6 @@
                     id="for_observations" rows="5">{{ $patient->tracing->observations }}</textarea>
             </fieldset>
 
-
         </div>
 
         <button type="submit" class="btn btn-primary">Guardar</button>
@@ -293,6 +292,12 @@
         @include('patients.tracing.partials.event_create')
     @endif
 
+    <hr>
+    @include('patients.tracing.partials.requests')
+    @if($patient->tracing->status)
+        @include('patients.tracing.partials.request_create')
+    @endif
+
 @else
 <form method="POST" class="form-horizontal" action="{{ route('patients.tracings.store') }}">
     @csrf
@@ -305,5 +310,4 @@
 
 </form>
 @endif
-<hr>
 @endcan

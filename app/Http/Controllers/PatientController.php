@@ -10,6 +10,7 @@ use App\Region;
 use App\Commune;
 use App\Establishment;
 use App\Tracing\EventType;
+use App\Tracing\RequestType;
 use App\Tracing\Symptom;
 
 use Illuminate\Http\Request;
@@ -98,10 +99,11 @@ class PatientController extends Controller
         $communes = Commune::orderBy('id','ASC')->get();
         $countries = Country::select('name')->orderBy('id', 'ASC')->get();
         $event_types = EventType::all();
+        $request_types = RequestType::all();
         $env_communes = array_map('trim',explode(",",env('COMUNAS')));
         $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
         $symptoms = Symptom::All();
-        return view('patients.edit',compact('patient', 'regions', 'communes','event_types','establishments','symptoms', 'countries'));
+        return view('patients.edit',compact('patient', 'regions', 'communes','event_types', 'request_types','establishments','symptoms', 'countries'));
     }
 
     /**
