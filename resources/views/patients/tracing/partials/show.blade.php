@@ -285,16 +285,17 @@
     </form>
 
     <hr>
-    @include('patients.tracing.partials.requests')
-    @include('patients.tracing.partials.request_create')
-    <hr>
-
-    <hr>
 
     @include('patients.tracing.partials.events')
 
     @if($patient->tracing->status)
         @include('patients.tracing.partials.event_create')
+    @endif
+
+    <hr>
+    @include('patients.tracing.partials.requests')
+    @if($patient->tracing->status)
+        @include('patients.tracing.partials.request_create')
     @endif
 
 @else
@@ -309,5 +310,4 @@
 
 </form>
 @endif
-<hr>
 @endcan

@@ -18,7 +18,7 @@ class TracingRequest extends Model implements Auditable
      */
     protected $fillable = [
         'request_at','request_type_id','details', 'validity_at', 'tracing_id','user_id','request_complete_at',
-        'rejection','rejection_details','user_complete_request_id'
+        'rejection','request_complete_details','user_complete_request_id'
     ];
 
     /**
@@ -39,10 +39,10 @@ class TracingRequest extends Model implements Auditable
     }
 
     public function user() {
-        return $this->belongsTo('App\User', 'user_id');
+        return $this->belongsTo('App\User');
     }
 
-    public function user_complete() {
+    public function request_complete_user() {
         return $this->belongsTo('App\User', 'user_complete_request_id');
     }
 
