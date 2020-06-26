@@ -32,7 +32,7 @@
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-4">
-            <label for="for_room_id">Residencia - Habitación - Cuartos Totales(Single: Doble:)</label>
+            <label for="for_room_id">Residencia - Habitación - Cuartos (Single: Doble:)</label>
             <select name="room_id" id="for_room_id" class="form-control">
                 @foreach(Auth::user()->residences as $residence)
                     @foreach($residence->rooms->sortBy('number') as $room)
