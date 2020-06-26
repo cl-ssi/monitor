@@ -123,7 +123,8 @@ Route::prefix('lab')->name('lab.')->group(function () {
     //Route::put('update/{laboratory}', 'LaboratoryController@update')->name('update');
     Route::get('login/{access_token}','SuspectCaseController@login')->name('login');
     Route::get('results','SuspectCaseController@result')->name('result');
-    Route::get('print/{suspect_case}','SuspectCaseController@print')->middleware('auth')->name('print');
+    //Route::get('print/{suspect_case}','SuspectCaseController@print')->middleware('auth')->name('print');
+    Route::get('print/{suspect_case}','SuspectCaseController@print')->name('print');
     Route::prefix('exams')->name('exams.')->middleware('auth')->group(function () {
         Route::prefix('covid19')->name('covid19.')->group(function () {
             Route::get('/', 'Covid19Controller@index')->name('index');
