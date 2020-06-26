@@ -122,16 +122,19 @@ class SuspectCase extends Model implements Auditable
     public function scopePatientTextFilter($query, $searchText)
     {
 
-        $query->whereHas('patient', function ($q) use ($searchText) {
-            $q->Where(DB::raw('CONCAT(name, " ", fathers_family , " ", mothers_family)'), 'LIKE', '%' . $searchText . '%' )
-                ->orWhere('run', 'LIKE', '%' . $searchText . '%');
-
-
 //        $query->whereHas('patient', function ($q) use ($searchText) {
-//            $q->Where(DB::raw('("name" || " " || "fathers_family" || " " || COALESCE("mothers_family", ""))'), 'LIKE', '%' . $searchText . '%' )
+//            $q->Where(DB::raw('CONCAT(name, " ", fathers_family , " ", mothers_family)'), 'LIKE', '%' . $searchText . '%' )
 //                ->orWhere('run', 'LIKE', '%' . $searchText . '%');
+//
+//        });
 
+        $query->whereHas('patient', function($q) use ($searchText){
+            $q->Where('name', 'LIKE', '%'.$searchText.'%')
+                ->orWhere('fathers_family','LIKE','%'.$searchText.'%')
+                ->orWhere('mothers_family','LIKE','%'.$searchText.'%')
+                ->orWhere('run','LIKE','%'.$searchText.'%');
         });
+
     }
 
     /**
