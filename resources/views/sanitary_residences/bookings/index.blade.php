@@ -57,6 +57,12 @@
             <span class="{{ ($booking->days < 14)? 'text-success':'text-danger' }}">
                 ({{ $booking->days }} DÍAS EN R.S.) 
             </span>
+
+            @if($booking->patient->tracing)
+            <span class="{{ ($booking->patient->tracing->quarantine_end_at > now())? 'text-success':'text-danger' }}">
+            (Termino de Cuarentena:
+            {{$booking->patient->tracing->quarantine_end_at->format('d-m-Y')}})
+            @endif
             <br>
             <hr>
             

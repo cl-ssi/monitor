@@ -197,7 +197,7 @@
     <div class="form-row">
 
         <fieldset class="form-group col-12 col-md-3">
-            <label for="for_responsible_family_member">Familiar Responsable</label>
+            <label for="for_responsible_family_member">Familiar Responsable/Teléfono</label>
             <input type="text" class="form-control" name="responsible_family_member" id="for_responsible_family_member" autocomplete="off" value="{{$booking->responsible_family_member}}">
         </fieldset>
 

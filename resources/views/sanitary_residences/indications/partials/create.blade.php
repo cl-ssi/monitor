@@ -10,7 +10,7 @@
     <div class="form-row">
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_created_at">Fecha y Hora</label>
-            <input type="datetime-local" class="form-control" name="created_at" id="for_indication_created_at" required>
+            <input type="datetime-local" class="form-control" name="created_at" id="for_indication_created_at" max="{{ date('Y-m-d\TH:i:s') }}" required>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-9">

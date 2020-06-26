@@ -32,7 +32,9 @@ class TracingController extends Controller
                     'Residencia Sanitaria',
                     'Hospitalizado Básico',
                     'Hospitalizado Medio',
-                    'Hospitalizado UCI','Hospitalizado UTI','Hospitalizado UTI (Ventilador)'])
+                    'Hospitalizado UCI',
+                    'Hospitalizado UTI',
+                    'Hospitalizado UCI (Ventilador)'])
                   ->orWhereNull('status');
              })
             ->with('tracing')
@@ -68,7 +70,7 @@ class TracingController extends Controller
                     'Hospitalizado Medio',
                     'Hospitalizado UCI',
                     'Hospitalizado UTI',
-                    'Hospitalizado UTI (Ventilador)'
+                    'Hospitalizado UCI (Ventilador)'
                 ])
                 ->orWhereNull('status');
              })
