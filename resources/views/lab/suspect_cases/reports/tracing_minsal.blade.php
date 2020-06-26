@@ -32,7 +32,7 @@
             <tr class="text-center">
                 <th rowspan="2">°</th>
                 <th colspan="3">Caso Indice</th>
-                <th colspan="32">Contactos</th>
+                <th colspan="33">Contactos</th>
             </tr>
             <tr class="text-center">
                 <th>N°</th>
@@ -81,7 +81,7 @@
                     <td>{{ $contact->self_patient->tracing->id }}</td>
                     <td>{{ $patient->identifier }}</td>
                     <td>{{ $patient->fullName }}</td>
-                    <td>{{ $contact->patient->Identifier }}</td>
+                    <td>{{ $contact->patient->identifier }}</td>
                     <td>{{ $contact->patient->name }}</td>
                     <td>{{ $contact->patient->fathers_family }}</td>
                     <td>{{ $contact->patient->mothers_family }}</td>

@@ -37,10 +37,23 @@
                 @endforeach
             </select>
         </fieldset>
-
     </div>
 
-    <button type="submit" class="btn btn-primary">Guardar</button>
+    <div class="form-row">
+        <fieldset class="form-group col-4 col-md-2">
+            <label for="for_single">Camas Singles</label>
+            <input type="number" class="form-control" name="single" id="for_single"
+                 placeholder="" value ="{{$room->single}}">
+        </fieldset>
+
+        <fieldset class="form-group col-4 col-md-2">
+            <label for="for_double">Camas Dobles</label>
+            <input type="number" class="form-control" name="double" id="for_double"
+                 placeholder="" value ="{{$room->double}}">
+        </fieldset>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Actualizar</button>
     <a class="btn btn-outline-secondary" href="{{ route('sanitary_residences.rooms.index') }}">Cancelar</a>
 
 
