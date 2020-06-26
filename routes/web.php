@@ -94,6 +94,21 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
             Route::put('/{event}', 'EventController@update')->name('update');
             Route::delete('/{event}', 'EventController@destroy')->name('destroy');
         });
+
+        // Route::prefix('requests')->name('requests.')->group(function () {
+        //     Route::post('/', 'TracingRequestController@store')->name('store');
+        //     Route::put('/{request}', 'TracingRequestController@update')->name('update');
+        //     Route::delete('/{request}', 'TracingRequestController@destroy')->name('destroy');
+        // });
+
+        Route::prefix('requests')->name('requests.')->group(function () {
+            Route::post('/', 'TracingRequestController@store')->name('store');
+            Route::delete('/{request}', 'TracingRequestController@destroy')->name('destroy');
+
+            Route::get('/social_index', 'TracingRequestController@social_index')->name('social_index');
+            Route::get('/{tracing_request}/request_complete', 'TracingRequestController@request_complete')->name('request_complete');
+            Route::put('/{tracing_request}', 'TracingRequestController@request_complete_update')->name('request_complete_update');
+        });
     });
 });
 
@@ -237,6 +252,12 @@ Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(functi
     Route::post('/event_type/store', 'EventTypeController@store')->name('EventType.store');
     Route::get('/event_type/{eventType}/edit', 'EventTypeController@edit')->name('EventType.edit');
     Route::put('/event_type/update/{eventType}', 'EventTypeController@update')->name('EventType.update');
+
+    Route::get('/request_type', 'RequestTypeController@index')->name('request_type');
+    Route::get('/request_type/create', 'RequestTypeController@create')->name('request_type.create');
+    Route::post('/request_type/store', 'RequestTypeController@store')->name('request_type.store');
+    Route::get('/request_type/{request_type}/edit', 'RequestTypeController@edit')->name('request_type.edit');
+    Route::put('/request_type/update/{request_type}', 'RequestTypeController@update')->name('request_type.update');
 
 });
 
