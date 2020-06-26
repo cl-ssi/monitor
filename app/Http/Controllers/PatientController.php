@@ -96,11 +96,12 @@ class PatientController extends Controller
         // dd($patient);
         $regions = Region::orderBy('id','ASC')->get();
         $communes = Commune::orderBy('id','ASC')->get();
+        $countries = Country::select('name')->orderBy('id', 'ASC')->get();
         $event_types = EventType::all();
         $env_communes = array_map('trim',explode(",",env('COMUNAS')));
         $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
         $symptoms = Symptom::All();
-        return view('patients.edit',compact('patient', 'regions', 'communes','event_types','establishments','symptoms'));
+        return view('patients.edit',compact('patient', 'regions', 'communes','event_types','establishments','symptoms', 'countries'));
     }
 
     /**
