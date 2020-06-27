@@ -21,10 +21,19 @@ class TracingRequestController extends Controller
 
     public function social_index()
     {
-        $tracing_request = TracingRequest::whereHas('tracing', function($q) {
+        $tracing_request_pending = TracingRequest::whereHas('tracing', function($q) {
                 $q->where('status',1)
                 ->whereIn('establishment_id', auth()->user()->establishments->pluck('id'));
-            })->get();
+            })
+            ->whereNull('request_complete_at')
+            ->get();
+
+        $tracing_request_complete = TracingRequest::whereHas('tracing', function($q) {
+                $q->where('status',1)
+                ->whereIn('establishment_id', auth()->user()->establishments->pluck('id'));
+            })
+            ->whereNotNull('request_complete_at')
+            ->paginate(200);
 
         $request_types = TracingRequest::select('request_type_id')
         ->whereHas('tracing', function($q) {
@@ -34,7 +43,7 @@ class TracingRequestController extends Controller
         ->groupBy('request_type_id')
         ->get();
 
-        return view('patients.tracing.social_index', compact('request_types', 'tracing_request'));
+        return view('patients.tracing.social_index', compact('request_types', 'tracing_request_pending', 'tracing_request_complete'));
     }
 
     /**
