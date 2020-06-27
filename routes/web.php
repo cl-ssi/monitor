@@ -81,6 +81,8 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
     Route::prefix('tracings')->name('tracings.')->middleware('auth')->group(function () {
         Route::get('/communes', 'TracingController@indexByCommune')->name('communes');
         Route::get('/establishments', 'TracingController@indexByEstablishment')->name('establishments');
+        Route::get('/completed', 'TracingController@tracingCompleted')->name('completed');
+
 
         Route::get('/create', 'TracingController@create')->name('create');
         Route::post('/', 'TracingController@store')->name('store');
