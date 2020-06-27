@@ -16,8 +16,8 @@ class ModUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             //
 
-            $table->string('telephone')->after('remember_token')->nullable();
-            $table->string('function')->after('telephone')->nullable();
+            // $table->string('telephone')->after('remember_token')->nullable();
+            // $table->string('function')->after('telephone')->nullable();
             
         });
     }
@@ -32,8 +32,8 @@ class ModUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             //
 
-            $table->dropColumn('telephone');
-            $table->dropColumn('function');
+            // $table->dropColumn('telephone');
+            // $table->dropColumn('function');
         });
     }
 }
