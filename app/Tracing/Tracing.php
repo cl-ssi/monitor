@@ -44,6 +44,10 @@ class Tracing extends Model  implements Auditable
         return $this->hasMany('App\Tracing\Event');
     }
 
+    public function tracing_requests() {
+        return $this->hasMany('App\Tracing\TracingRequest');
+    }
+
     public function establishment() {
         return $this->belongsTo('App\Establishment');
     }

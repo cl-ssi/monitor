@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Rules\UniqueSampleDateByPatient;
 use GuzzleHttp\Client;
 
 use App\SuspectCase;
@@ -161,11 +162,13 @@ class SuspectCaseController extends Controller
     {
         $regions = Region::orderBy('id','ASC')->get();
         $communes = Commune::orderBy('id','ASC')->get();
+        $countries = Country::select('name')->orderBy('id', 'ASC')->get();
+
         $env_communes = array_map('trim',explode(",",env('COMUNAS')));
         $establishments = Establishment::whereIn('commune_id',$env_communes)->where('name','<>','Otros')->orderBy('name','ASC')->get();
 
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
-        return view('lab.suspect_cases.admission',compact('sampleOrigins','regions', 'communes','establishments'));
+        return view('lab.suspect_cases.admission',compact('sampleOrigins','regions', 'communes','establishments', 'countries'));
     }
 
 
@@ -264,6 +267,9 @@ class SuspectCaseController extends Controller
      */
     public function storeAdmission(Request $request)
     {
+        $request->validate([
+           'id' => new UniqueSampleDateByPatient($request->sample_at)
+        ]);
 
         /* Si existe el paciente lo actualiza, si no, crea uno nuevo */
         if ($request->id == null) {
@@ -523,6 +529,11 @@ class SuspectCaseController extends Controller
 
     public function diary_by_lab_report(Request $request)
     {
+        if (SuspectCase::count() == 0){
+            session()->flash('info', 'No existen casos.');
+            return redirect()->route('home');
+        }
+
         //FIRST CASE
         $beginExamDate = SuspectCase::orderBy('sample_at')->first()->sample_at;
         $laboratories = Laboratory::all();
@@ -564,6 +575,12 @@ class SuspectCaseController extends Controller
 
     public function diary_lab_report(Request $request)
     {
+
+        if (SuspectCase::count() == 0){
+            session()->flash('info', 'No existen casos.');
+            return redirect()->route('home');
+        }
+
         $beginExamDate = SuspectCase::orderBy('sample_at')->first()->sample_at;
 
         $periods = CarbonPeriod::create($beginExamDate, now());
@@ -582,6 +599,11 @@ class SuspectCaseController extends Controller
         }
 
         $suspectCases = SuspectCase::whereNotNull('laboratory_id')->get();
+
+        if ($suspectCases->count() == 0){
+            session()->flash('info', 'No existen casos con laboratorio.');
+            return redirect()->route('home');
+        }
 
         foreach ($suspectCases as $suspectCase) {
           $total_cases_by_days['cases'] = 0;

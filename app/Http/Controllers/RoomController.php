@@ -16,7 +16,7 @@ class RoomController extends Controller
     public function index()
     {
         //$rooms = Room::all();
-        $rooms = Room::orderBy('residence_id','ASC')->get();
+        $rooms = Room::orderBy('residence_id','ASC')->orderBy('floor','ASC')->orderBy('number','ASC')->get();
         return view('sanitary_residences.rooms.index', compact('rooms'));
     }
 

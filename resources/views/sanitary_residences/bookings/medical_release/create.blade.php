@@ -9,7 +9,7 @@
     <div class="form-row">
         <fieldset class="form-group col-8 col-md-3">
             <label for="for_real_to">Fecha y Hora de Egreso de Residencia</label>
-            <input type="datetime-local" class="form-control" name="real_to" id="for_for_real_to" required>
+            <input type="datetime-local" class="form-control" name="real_to" id="for_for_real_to" max="{{ date('Y-m-d\TH:i:s') }}" required>
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
@@ -35,6 +35,13 @@
         </fieldset>
     </div>
 
-    <button type="submit" class="btn btn-primary">Guardar</button>
+    <button type="submit" class="btn btn-primary" 
+    @if(isset($booking->patient->tracing) && isset($booking->patient->tracing->quarantine_end_at))    
+    @if ($booking->patient->tracing->quarantine_end_at > now()))
+    onclick="return confirm('¿Está seguro que desea dar de alta al paciente sin haber terminado su Cuarentena?. El Paciente: {{$booking->patient->fullName}} finaliza su cuarentena el {{$booking->patient->tracing->quarantine_end_at->format('d-m-Y')}}  ' )"
+    @endif
+    @endif
+    >
+    Guardar</button>
 
 </form>

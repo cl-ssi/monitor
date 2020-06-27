@@ -29,6 +29,19 @@
 
     <div class="border text-center small m-2" style="width:{{$residence->width}}px; height: {{$residence->height}}px;border-width:20px">
         Habitación {{ $room->number }}
+        <br>
+        @if($room->single)
+        <div class="float-left">
+        <i class="fa fa-bed" aria-hidden="true"></i>
+        Single: {{$room->single}}
+        </div>
+        @endif
+        @if($room->double)
+        <div class="float-right">
+        <i class="fa fa-bed" aria-hidden="true"></i>
+        Doble: {{$room->double}}
+        </div>
+        @endif 
         <hr style="height:2px;border-width:0;color:gray;background-color:gray">
 
         @if($room->bookings->first())
@@ -44,6 +57,12 @@
             <span class="{{ ($booking->days < 14)? 'text-success':'text-danger' }}">
                 ({{ $booking->days }} DÍAS EN R.S.) 
             </span>
+
+            @if($booking->patient->tracing && isset($booking->patient->tracing->quarantine_end_at))
+            <span class="{{ ($booking->patient->tracing->quarantine_end_at > now())? 'text-success':'text-danger' }}">
+            (Termino de Cuarentena:
+            {{$booking->patient->tracing->quarantine_end_at->format('d-m-Y')}})
+            @endif
             <br>
             <hr>
             

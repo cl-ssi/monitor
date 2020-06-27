@@ -32,7 +32,9 @@ class TracingController extends Controller
                     'Residencia Sanitaria',
                     'Hospitalizado Básico',
                     'Hospitalizado Medio',
-                    'Hospitalizado UCI','Hospitalizado UTI','Hospitalizado UTI (Ventilador)'])
+                    'Hospitalizado UCI',
+                    'Hospitalizado UTI',
+                    'Hospitalizado UCI (Ventilador)'])
                   ->orWhereNull('status');
              })
             ->with('tracing')
@@ -68,7 +70,7 @@ class TracingController extends Controller
                     'Hospitalizado Medio',
                     'Hospitalizado UCI',
                     'Hospitalizado UTI',
-                    'Hospitalizado UTI (Ventilador)'
+                    'Hospitalizado UCI (Ventilador)'
                 ])
                 ->orWhereNull('status');
              })
@@ -81,6 +83,39 @@ class TracingController extends Controller
             ->all();
 
         return view('patients.tracing.index', compact('patients'));
+    }
+
+    public function tracingCompleted()
+    {
+        $patients = Patient::whereHas('demographic', function($q) {
+            $q->whereIn('commune_id', auth()->user()->communes());
+        })
+            ->whereHas('tracing', function($q) {
+                $q->where('status',0)
+                    ->orderBy('next_control_at');
+            })
+            ->where(function ($q) {
+                $q->whereNotIn('status',[
+                    'Fallecido',
+                    'Alta',
+                    'Residencia Sanitaria',
+                    'Hospitalizado Básico',
+                    'Hospitalizado Medio',
+                    'Hospitalizado UCI',
+                    'Hospitalizado UTI',
+                    'Hospitalizado UCI (Ventilador)'])
+                    ->orWhereNull('status');
+            })
+            ->with('tracing')
+            ->with('demographic')
+            ->get()
+            ->sortBy(function($q){
+                return $q->tracing->next_control_at;
+            })
+            ->all();
+
+        $completed = true;
+        return view('patients.tracing.index', compact('patients', 'completed'));
     }
 
     /**

@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RoomSeeder::class);
         $this->call(VentilatorSeeder::class);
         $this->call(EventTypeSeeder::class);
+        $this->call(RequestTypeSeeder::class);
         if(env('APP_ENV') == 'testing') {
             $this->call(PatientSeeder::class);
             $this->call(DemographicSeeder::class);

@@ -15,7 +15,7 @@
     <div class="form-row">
 
         <fieldset class="form-group col-12 col-md-6">
-            <label for="for_patient_id">Paciente</label>
+            <label for="for_patient_id">Paciente*</label>
             @if($request->input('paciente'))
             <select name="patient_id" id="for_patient_id" class="form-control" readonly> 
                 @foreach($patients as $patient)
@@ -32,18 +32,18 @@
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-4">
-            <label for="for_room_id">Residencia - Habitación</label>
+            <label for="for_room_id">Residencia - Habitación - Cuartos (Single: Doble:)*</label>
             <select name="room_id" id="for_room_id" class="form-control">
                 @foreach(Auth::user()->residences as $residence)
                     @foreach($residence->rooms->sortBy('number') as $room)
-                    <option value="{{ $room->id }}">{{ $room->residence->name }} - Habitación {{ $room->number }}</option>
+                    <option value="{{ $room->id }}">{{ $room->residence->name }} - Habitación {{ $room->number }} - S:{{ $room->single }} D:{{ $room->double }}</option>
                     @endforeach
                 @endforeach
             </select>
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
-            <label for="for_prevision">Previsión</label>
+            <label for="for_prevision">Previsión*</label>
             <select name="prevision" id="for_prevision" class="form-control" required>
                 <option value="">Seleccionar Previsión</option>
                 <option value="Sin Previsión">Sin Previsión</option>
@@ -62,13 +62,13 @@
     <div class="form-row">
 
         <fieldset class="form-group col-12 col-md-3">
-            <label for="for_from">Desde</label>
+            <label for="for_from">Desde*</label>
             <input type="datetime-local" class="form-control date" name="from" id="for_from" required>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_to">Hasta (Estimado)</label>
-            <input type="datetime-local" class="form-control date" name="to" id="for_to" required>
+            <input type="datetime-local" class="form-control date" name="to" id="for_to" >
         </fieldset>
 
         <fieldset class="form-group col-5 col-md-2">
@@ -81,12 +81,13 @@
             <input type="text" class="form-control" name="entry_criteria" id="for_entry_criteria">
         </fieldset> -->
         <fieldset class="form-group col-7 col-md-4">
-            <label for="for_prevision">Criterio de Ingreso</label>
+            <label for="for_prevision">Criterio de Ingreso*</label>
             <select name="entry_criteria" id="for_entry_criteria" class="form-control" required>
                 <option value="">Seleccione Condición</option>
                 <option value="PCR +">PCR +</option>
                 <option value="Otro">Otro</option>
-                <option value="Contacto Estrecho">Contacto Estrecho</option>                
+                <option value="Contacto Estrecho">Contacto Estrecho</option>
+                <option value="Sospecha">Sospecha</option>                
             </select>
         </fieldset>
 
@@ -96,7 +97,7 @@
     <div class="form-row">
 
         <fieldset class="form-group col-12 col-md-3">
-            <label for="for_responsible_family_member">Familiar Responsable</label>
+            <label for="for_responsible_family_member">Familiar Responsable/Telefono</label>
             <input type="text" class="form-control" name="responsible_family_member" id="for_responsible_family_member" autocomplete="off">
         </fieldset>
 
@@ -163,12 +164,12 @@
     <div class="form-row">
         <fieldset class="form-group col-12 col-md-7">
             <label for="for_indications">Indicaciones</label>
-            <textarea class="form-control" id="for_indications" rows="6" name="indications"></textarea>
+            <textarea class="form-control" id="for_indications" rows="6" name="indications">@if($patient->tracing)){{$patient->tracing->observations}}@endif</textarea>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-5">
             <label for="for_observations">Observaciones</label>
-            <textarea type="textarea" class="form-control" rows="4" name="observations" id="for_observations">@if($request->input('observations')){{$request->input('observations')}}@endif </textarea>
+            <textarea type="textarea" class="form-control" rows="4" name="observations" id="for_observations">@if($request->input('observations')){{$request->input('observations')}}@endif @if($patient->tracing)){{$patient->tracing->observations}}@endif </textarea>
         </fieldset>
     </div>
 

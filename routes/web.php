@@ -81,6 +81,8 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
     Route::prefix('tracings')->name('tracings.')->middleware('auth')->group(function () {
         Route::get('/communes', 'TracingController@indexByCommune')->name('communes');
         Route::get('/establishments', 'TracingController@indexByEstablishment')->name('establishments');
+        Route::get('/completed', 'TracingController@tracingCompleted')->name('completed');
+
 
         Route::get('/create', 'TracingController@create')->name('create');
         Route::post('/', 'TracingController@store')->name('store');
@@ -93,6 +95,21 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
             Route::post('/', 'EventController@store')->name('store');
             Route::put('/{event}', 'EventController@update')->name('update');
             Route::delete('/{event}', 'EventController@destroy')->name('destroy');
+        });
+
+        // Route::prefix('requests')->name('requests.')->group(function () {
+        //     Route::post('/', 'TracingRequestController@store')->name('store');
+        //     Route::put('/{request}', 'TracingRequestController@update')->name('update');
+        //     Route::delete('/{request}', 'TracingRequestController@destroy')->name('destroy');
+        // });
+
+        Route::prefix('requests')->name('requests.')->group(function () {
+            Route::post('/', 'TracingRequestController@store')->name('store');
+            Route::delete('/{request}', 'TracingRequestController@destroy')->name('destroy');
+
+            Route::get('/social_index', 'TracingRequestController@social_index')->name('social_index');
+            Route::get('/{tracing_request}/request_complete', 'TracingRequestController@request_complete')->name('request_complete');
+            Route::put('/{tracing_request}', 'TracingRequestController@request_complete_update')->name('request_complete_update');
         });
     });
 });
@@ -124,6 +141,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
     Route::get('login/{access_token}','SuspectCaseController@login')->name('login');
     Route::get('results','SuspectCaseController@result')->name('result');
     Route::get('print/{suspect_case}','SuspectCaseController@print')->middleware('auth')->name('print');
+    //Route::get('print/{suspect_case}','SuspectCaseController@print')->name('print');
     Route::prefix('exams')->name('exams.')->middleware('auth')->group(function () {
         Route::prefix('covid19')->name('covid19.')->group(function () {
             Route::get('/', 'Covid19Controller@index')->name('index');
@@ -147,6 +165,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         //Route::get('stat', 'SuspectCaseController@stat')->name('stat');
 
         Route::get('download/{file}','SuspectCaseController@download')->name('download')->middleware('auth');
+        //Route::get('download/{file}','SuspectCaseController@download')->name('download');
         Route::get('file/{file}','SuspectCaseController@fileDelete')->name('fileDelete')->middleware('auth','can:SuspectCase: file delete');
 
         Route::get('/index/{laboratory?}','SuspectCaseController@index')->name('index')->middleware('auth','can:SuspectCase: list');
@@ -235,6 +254,12 @@ Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(functi
     Route::post('/event_type/store', 'EventTypeController@store')->name('EventType.store');
     Route::get('/event_type/{eventType}/edit', 'EventTypeController@edit')->name('EventType.edit');
     Route::put('/event_type/update/{eventType}', 'EventTypeController@update')->name('EventType.update');
+
+    Route::get('/request_type', 'RequestTypeController@index')->name('request_type');
+    Route::get('/request_type/create', 'RequestTypeController@create')->name('request_type.create');
+    Route::post('/request_type/store', 'RequestTypeController@store')->name('request_type.store');
+    Route::get('/request_type/{request_type}/edit', 'RequestTypeController@edit')->name('request_type.edit');
+    Route::put('/request_type/update/{request_type}', 'RequestTypeController@update')->name('request_type.update');
 
 });
 

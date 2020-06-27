@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Country;
 use App\SuspectCase;
 use App\Patient;
 use App\Demographic;
@@ -9,6 +10,7 @@ use App\Region;
 use App\Commune;
 use App\Establishment;
 use App\Tracing\EventType;
+use App\Tracing\RequestType;
 use App\Tracing\Symptom;
 
 use Illuminate\Http\Request;
@@ -40,10 +42,12 @@ class PatientController extends Controller
      */
     public function create()
     {
+
         $regions = Region::orderBy('id','ASC')->get();
         $communes = Commune::orderBy('id','ASC')->get();
+        $countries = Country::select('name')->orderBy('id', 'ASC')->get();
 
-        return view('patients.create', compact('regions', 'communes'));
+        return view('patients.create', compact('regions', 'communes', 'countries'));
     }
 
     /**
@@ -53,14 +57,15 @@ class PatientController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
 
         $validatedData = $request->validate([
-            'run' => ['unique:patients']
+            'run' => 'nullable|unique:patients'
         ],
         [
             'run.unique' => 'Este rut ya está registrado.'
         ]);
+
         $patient = new Patient($request->All());
         $patient->save();
 
@@ -93,11 +98,13 @@ class PatientController extends Controller
         // dd($patient);
         $regions = Region::orderBy('id','ASC')->get();
         $communes = Commune::orderBy('id','ASC')->get();
+        $countries = Country::select('name')->orderBy('id', 'ASC')->get();
         $event_types = EventType::all();
+        $request_types = RequestType::all();
         $env_communes = array_map('trim',explode(",",env('COMUNAS')));
         $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
         $symptoms = Symptom::All();
-        return view('patients.edit',compact('patient', 'regions', 'communes','event_types','establishments','symptoms'));
+        return view('patients.edit',compact('patient', 'regions', 'communes','event_types', 'request_types','establishments','symptoms', 'countries'));
     }
 
     /**
