@@ -16,8 +16,8 @@ class ModRoomsTable extends Migration
         Schema::table('rooms', function (Blueprint $table) {
             //
 
-            // $table->integer('single')->after('type')->nullable();
-            // $table->integer('double')->after('single')->nullable();
+            $table->integer('single')->after('type')->nullable();
+            $table->integer('double')->after('single')->nullable();
             
         });
     }
@@ -32,8 +32,8 @@ class ModRoomsTable extends Migration
         Schema::table('rooms', function (Blueprint $table) {
             //
 
-            // $table->dropColumn('single');
-            // $table->dropColumn('double');
+            $table->dropColumn('single');
+            $table->dropColumn('double');
         });
     }
 }
