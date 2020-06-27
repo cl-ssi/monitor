@@ -38,7 +38,7 @@
     </div>
 
     <div class="col-6 col-md-3 p-2">
-        <strong>Salida: </strong>{{ $booking->to->format('d-m-Y H:i') }}
+        <strong>Salida: </strong>{{ ($booking->to->)?$booking->to->format('d-m-Y H:i'):'' }}
     </div>
 
 </div>
