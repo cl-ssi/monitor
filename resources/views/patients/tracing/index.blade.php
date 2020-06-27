@@ -3,7 +3,13 @@
 @section('title', 'Seguimiento')
 
 @section('content')
-<h3 class="mb-3">Seguimiento</h3>
+
+    @isset($completed)
+        <h3 class="mb-3">Fin de Seguimiento</h3>
+    @else
+        <h3 class="mb-3">Seguimiento</h3>
+    @endisset
+
 
 <table class="table table-sm table-bordered small">
     <thead>
