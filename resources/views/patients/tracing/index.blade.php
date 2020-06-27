@@ -3,7 +3,13 @@
 @section('title', 'Seguimiento')
 
 @section('content')
-<h3 class="mb-3">Seguimiento</h3>
+
+    @isset($completed)
+        <h3 class="mb-3">Fin de Seguimiento</h3>
+    @else
+        <h3 class="mb-3">Seguimiento</h3>
+    @endisset
+
 
 <table class="table table-sm table-bordered small">
     <thead>
@@ -52,6 +58,42 @@
         @endforeach
     </tbody>
 </table>
+
+
+@can('Admin')
+
+@include('partials.audit', ['audits' => $patient->tracing->audits] )
+
+<table class="table table-sm small text-muted mt-3">
+    <thead>
+        <tr>
+            <th colspan="4">Historial de cambios</th>
+        </tr>
+        <tr>
+            <th>Modelo</th>
+            <th>Fecha</th>
+            <th>Usuario</th>
+            <th>Modificaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($patient->logs->sortByDesc('created_at') as $log)
+        <tr>
+            <td>{{ $log->model_type }}</td>
+            <td>{{ $log->created_at }}</td>
+            <td>{{ $log->user->name }}</td>
+            <td>
+                @foreach($log->diferencesArray as $key => $diference)
+                    {{ $key }} => {{ $diference}} <br>
+                @endforeach
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+@endcan
+
+
 
 
 @endsection

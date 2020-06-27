@@ -38,7 +38,7 @@
     </div>
 
     <div class="col-6 col-md-3 p-2">
-        <strong>Salida: </strong>{{ $booking->to->format('d-m-Y H:i') }}
+        <strong>Salida: </strong>{{ ($booking->to)?$booking->to->format('d-m-Y H:i'):'' }}
     </div>
 
 </div>
@@ -169,7 +169,8 @@
 
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_to">Hasta (Estimado)</label>
-            <input type="datetime-local" class="form-control date" name="to" id="for_to" value="{{$booking->to->format('Y-m-d\TH:i:s')}}" required>
+            <input type="datetime-local" class="form-control date" name="to" id="for_to"  @if($booking->to) value="{{$booking->to->format('Y-m-d\TH:i:s')}}" @endif >
+            
         </fieldset>
 
         <fieldset class="form-group col-5 col-md-2">
@@ -188,7 +189,8 @@
                 <option value="">Seleccione Condición</option>
                 <option value="PCR +" {{ ($booking->entry_criteria == 'PCR +')?'selected':'' }}>PCR +</option>
                 <option value="Otro" {{ ($booking->entry_criteria == 'Otro')?'selected':'' }}>Otro</option>
-                <option value="Contacto Estrecho" {{ ($booking->entry_criteria == 'Contacto Estrecho')?'selected':'' }} >Contacto Estrecho</option>                
+                <option value="Contacto Estrecho" {{ ($booking->entry_criteria == 'Contacto Estrecho')?'selected':'' }} >Contacto Estrecho</option>
+                <option value="Sospecha" {{ ($booking->entry_criteria == 'Sospecha')?'selected':'' }} >Sospecha</option>
             </select>
         </fieldset>
 
@@ -197,7 +199,7 @@
     <div class="form-row">
 
         <fieldset class="form-group col-12 col-md-3">
-            <label for="for_responsible_family_member">Familiar Responsable</label>
+            <label for="for_responsible_family_member">Familiar Responsable/Teléfono</label>
             <input type="text" class="form-control" name="responsible_family_member" id="for_responsible_family_member" autocomplete="off" value="{{$booking->responsible_family_member}}">
         </fieldset>
 

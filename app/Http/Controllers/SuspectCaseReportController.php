@@ -29,6 +29,11 @@ class SuspectCaseReportController extends Controller
 
         $patients = Patient::positivesList();
 
+        if ($patients->count() == 0){
+            session()->flash('info', 'No existen casos positivos o no hay casos con dirección.');
+            return redirect()->route('home');
+        }
+
         /* Calculo de gráfico de evolución */
         $begin = SuspectCase::where('pscr_sars_cov_2','positive')->orderBy('sample_at')->first()->sample_at;
         $end   = SuspectCase::where('pscr_sars_cov_2','positive')->orderByDesc('sample_at')->first()->sample_at;

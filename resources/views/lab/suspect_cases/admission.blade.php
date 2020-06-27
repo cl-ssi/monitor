@@ -5,6 +5,16 @@
 @section('content')
 <h3 class="mb-3">Nueva sospecha</h3>
 
+@if ($errors->any())
+    <div class="alert alert-warning">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 <form method="POST" class="form-horizontal" action="{{ route('lab.suspect_cases.store_admission') }}" enctype="multipart/form-data">
     @csrf
     @method('POST')
@@ -12,13 +22,13 @@
 
         <fieldset class="form-group col-8 col-md-2">
             <label for="for_run">Run SIN DIGITO VERIF.</label>
-            <input type="hidden" class="form-control" id="for_id" name="id">
-            <input type="number" class="form-control" id="for_run" name="run">
+            <input type="hidden" class="form-control" id="for_id" name="id" value="{{old('id')}}">
+            <input type="number" class="form-control" id="for_run" name="run" value="{{old('run')}}">
         </fieldset>
 
         <fieldset class="form-group col-4 col-md-1">
             <label for="for_dv">Digito</label>
-            <input type="text" class="form-control" id="for_dv" name="dv" readonly>
+            <input type="text" class="form-control" id="for_dv" name="dv" readonly value="{{old('dv')}}">
         </fieldset>
 
         <fieldset class="form-group col-1 col-md-1">
@@ -28,7 +38,7 @@
 
         <fieldset class="form-group col-12 col-md-2">
             <label for="for_other_identification">Otra identificación</label>
-            <input type="text" class="form-control" id="for_other_identification"
+            <input type="text" class="form-control" id="for_other_identification" value="{{old('other_identification')}}"
                 placeholder="Extranjeros sin run" name="other_identification">
         </fieldset>
 
@@ -44,22 +54,22 @@
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_gender">Genero</label>
             <select name="gender" id="for_gender" class="form-control">
-                <option value="male">Masculino</option>
-                <option value="female">Femenino</option>
-                <option value="other">Otro</option>
-                <option value="unknown">Desconocido</option>
+                <option value="male" {{(old('gender') == 'male') ? 'selected' : '' }} >Masculino</option>
+                <option value="female" {{(old('gender') == 'female') ? 'selected' : '' }} >Femenino</option>
+                <option value="other" {{(old('gender') == 'other') ? 'selected' : '' }} >Otro</option>
+                <option value="unknown" {{(old('gender') == 'unknown') ? 'selected' : '' }} >Desconocido</option>
             </select>
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-3">
             <label for="for_birthday">Fecha Nacimiento *</label>
-            <input type="date" class="form-control" id="for_birthday"
+            <input type="date" class="form-control" id="for_birthday" value="{{old('birthday')}}"
                 name="birthday" required>
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-1">
             <label for="for_age">Edad</label>
-            <input type="number" class="form-control" id="for_age" min="0" name="age">
+            <input type="number" class="form-control" id="for_age" min="0" name="age" value="{{old('age')}}">
         </fieldset>
 
 
@@ -68,19 +78,19 @@
     <div class="form-row">
         <fieldset class="form-group col-12 col-md-4">
             <label for="for_name">Nombres *</label>
-            <input type="text" class="form-control" id="for_name" name="name"
+            <input type="text" class="form-control" id="for_name" name="name" value="{{old('name')}}"
                 style="text-transform: uppercase;" required>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-4">
             <label for="for_fathers_family">Apellido Paterno *</label>
-            <input type="text" class="form-control" id="for_fathers_family"
+            <input type="text" class="form-control" id="for_fathers_family" value="{{old('fathers_family')}}"
                 name="fathers_family" style="text-transform: uppercase;" required>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-4">
             <label for="for_mothers_family">Apellido Materno</label>
-            <input type="text" class="form-control" id="for_mothers_family"
+            <input type="text" class="form-control" id="for_mothers_family" value="{{old('mothers_family')}}"
                 name="mothers_family" style="text-transform: uppercase;">
         </fieldset>
 
@@ -102,17 +112,17 @@
         <fieldset class="form-group col-7 col-md-3">
             <label for="for_sample_type">Tipo de Muestra *</label>
             <select name="sample_type" id="for_sample_type" class="form-control" required>
-                <option value=""></option>
-                <option value="TÓRULAS NASOFARÍNGEAS">TORULAS NASOFARINGEAS</option>
-                <option value="ESPUTO">ESPUTO</option>
+                <option value="" {{(old('sample_type') == '') ? 'selected' : '' }} ></option>
+                <option value="TÓRULAS NASOFARÍNGEAS" {{(old('sample_type') == 'TÓRULAS NASOFARÍNGEAS') ? 'selected' : '' }}>TORULAS NASOFARINGEAS</option>
+                <option value="ESPUTO" {{(old('sample_type') == 'ESPUTO') ? 'selected' : '' }}>ESPUTO</option>
                 {{-- <option value="TÓRULAS NASOFARÍNGEAS/ESPUTO">TÓRULAS NASOFARÍNGEAS/ESPUTO</option> --}}
-                <option value="ASPIRADO NASOFARÍNGEO">ASPIRADO NASOFARÍNGEO</option>
-                <option value="LAVADO BRONCOALVEOLAR">LAVADO BRONCOALVEOLAR</option>
-                <option value="ASPIRADO TRAQUEAL">ASPIRADO TRAQUEAL</option>
-                <option value="MUESTRA SANGUÍNEA">MUESTRA SANGUÍNEA</option>
-                <option value="TEJIDO PULMONAR">TEJIDO PULMONAR</option>
-                <option value="SALIVA">SALIVA</option>
-                <option value="OTRO">OTRO</option>
+                <option value="ASPIRADO NASOFARÍNGEO" {{(old('sample_type') == 'ASPIRADO NASOFARÍNGEO') ? 'selected' : '' }}>ASPIRADO NASOFARÍNGEO</option>
+                <option value="LAVADO BRONCOALVEOLAR" {{(old('sample_type') == 'LAVADO BRONCOALVEOLAR') ? 'selected' : '' }}>LAVADO BRONCOALVEOLAR</option>
+                <option value="ASPIRADO TRAQUEAL" {{(old('sample_type') == 'ASPIRADO TRAQUEAL') ? 'selected' : '' }}>ASPIRADO TRAQUEAL</option>
+                <option value="MUESTRA SANGUÍNEA" {{(old('sample_type') == 'MUESTRA SANGUÍNEA') ? 'selected' : '' }}>MUESTRA SANGUÍNEA</option>
+                <option value="TEJIDO PULMONAR" {{(old('sample_type') == 'TEJIDO PULMONAR') ? 'selected' : '' }}>TEJIDO PULMONAR</option>
+                <option value="SALIVA" {{(old('sample_type') == 'SALIVA') ? 'selected' : '' }}>SALIVA</option>
+                <option value="OTRO" {{(old('sample_type') == 'OTRO') ? 'selected' : '' }}>OTRO</option>
             </select>
         </fieldset>
 
@@ -121,7 +131,7 @@
             <select name="establishment_id" id="for_establishment_id" class="form-control" required>
                 <option value="">Seleccionar Establecimiento</option>
                 @foreach($establishments as $establishment)
-                    <option value="{{ $establishment->id }}">{{ $establishment->alias }}</option>
+                    <option value="{{ $establishment->id }}" {{(old('establishment_id') == $establishment->id) ? 'selected' : '' }} >{{ $establishment->alias }}</option>
                 @endforeach
             </select>
         </fieldset>
@@ -131,7 +141,7 @@
             <select name="origin" id="for_origin" class="form-control">
                 <option value=""></option>
                 @foreach($sampleOrigins as $sampleOrigin)
-                    <option value="{{ $sampleOrigin->name }}">{{ $sampleOrigin->alias }}</option>
+                    <option value="{{ $sampleOrigin->name }}" {{(old('origin') == $sampleOrigin->name) ? 'selected' : '' }} >{{ $sampleOrigin->alias }}</option>
                 @endforeach
             </select>
         </fieldset>
@@ -143,48 +153,48 @@
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_functionary">Funcionario de Salud</label>
             <select name="functionary" id="for_functionary" class="form-control">
-                <option value=""></option>
-                <option value="0">No</option>
-                <option value="1">Si</option>
+                <option value="" {{(old('functionary') == '') ? 'selected' : '' }}></option>
+                <option value="0" {{(old('functionary') == '0') ? 'selected' : '' }}>No</option>
+                <option value="1" {{(old('functionary') == '1') ? 'selected' : '' }}>Si</option>
             </select>
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-1">
             <label for="for_symptoms">Sintomas</label>
             <select name="symptoms" id="for_symptoms" class="form-control">
-                <option value=""></option>
-                <option value="Si">Si</option>
-                <option value="No">No</option>
+                <option value="" {{(old('symptoms') == '') ? 'selected' : '' }}></option>
+                <option value="Si" {{(old('symptoms') == 'Si') ? 'selected' : '' }}>Si</option>
+                <option value="No" {{(old('symptoms') == 'No') ? 'selected' : '' }}>No</option>
             </select>
         </fieldset>
 
         <fieldset class="form-group col-5 col-md-3">
             <label for="for_symptoms_at">Fecha Inicio de Sintomas</label>
-            <input type="datetime-local" class="form-control" id="for_symptoms_at"
+            <input type="datetime-local" class="form-control" id="for_symptoms_at" value="{{old('symptoms_at')}}"
                 name="symptoms_at" min="{{ date('Y-m-d\TH:i', strtotime("-4 week")) }}" max="{{ date('Y-m-d\TH:i:s') }}">
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-1">
             <label for="for_gestation">Gestante *</label>
             <select name="gestation" id="for_gestation" class="form-control" required>
-                <option value=""></option>
-                <option value="0">No</option>
-                <option value="1">Si</option>
+                <option value="" {{(old('gestation') == '') ? 'selected' : '' }}></option>
+                <option value="0" {{(old('gestation') == '0') ? 'selected' : '' }}>No</option>
+                <option value="1" {{(old('gestation') == '1') ? 'selected' : '' }}>Si</option>
             </select>
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_gestation_week">Semanas de gestación</label>
-            <input type="text" class="form-control" name="gestation_week"
+            <input type="text" class="form-control" name="gestation_week" value="{{old('gestation_week')}}"
                 id="for_gestation_week">
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_close_contact">Contacto estrecho</label>
             <select name="close_contact" id="for_close_contact" class="form-control">
-                <option value=""></option>
-                <option value="0">No</option>
-                <option value="1">Si</option>
+                <option value="" {{(old('close_contact') == '') ? 'selected' : '' }}></option>
+                <option value="0" {{(old('close_contact') == '0') ? 'selected' : '' }}>No</option>
+                <option value="1" {{(old('close_contact') == '1') ? 'selected' : '' }}>Si</option>
             </select>
         </fieldset>
 
@@ -206,13 +216,13 @@
 
         <fieldset class="form-group col-12 col-md-4">
             <label for="for_observation">Observación</label>
-            <input type="text" class="form-control" name="observation"
+            <input type="text" class="form-control" name="observation" value="{{old('observation')}}"
                 id="for_observation">
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_paho_flu">PAHO FLU</label>
-            <input type="number" class="form-control" name="paho_flu"
+            <input type="number" class="form-control" name="paho_flu" value="{{old('paho_flu')}}"
                 id="for_paho_flu">
         </fieldset>
 
@@ -224,17 +234,17 @@
 
         <fieldset class="form-group col-8 col-md-2">
             <label for="for_run_medic_s_dv">Run Médico SIN DV</label>
-            <input type="number" class="form-control" id="for_run_medic_s_dv" name="run_medic_s_dv">
+            <input type="number" class="form-control" id="for_run_medic_s_dv" name="run_medic_s_dv" value="{{old('run_medic_s_dv')}}">
         </fieldset>
 
         <fieldset class="form-group col-4 col-md-1">
             <label for="for_run_medic_dv">DV</label>
-            <input type="text" class="form-control" id="for_run_medic_dv" name="run_medic_dv" readonly>
+            <input type="text" class="form-control" id="for_run_medic_dv" name="run_medic_dv" value="{{old('run_medic_dv')}}" readonly>
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_epivigila">Epivigila *</label>
-            <input type="number" class="form-control" id="for_epivigila"
+            <input type="number" class="form-control" id="for_epivigila" value="{{old('epivigila')}}"
                 name="epivigila" min="0" required>
         </fieldset>
 
