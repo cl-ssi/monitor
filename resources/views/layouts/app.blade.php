@@ -117,6 +117,9 @@
                                 @endcan
 
                                 <div class="dropdown-divider"></div>
+                                @can('Developer')
+                                <a class="dropdown-item" href="{{ route('patients.tracings.withouttracing') }}">Pacientes Positivos sin Seguimientos</a>
+                                @endcan
 
                                 @can('Patient: tracing old')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing') }}">Seguimiento (Antiguo)</a>

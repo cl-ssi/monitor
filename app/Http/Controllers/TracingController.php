@@ -14,6 +14,18 @@ class TracingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function withoutTracing(Request $request)
+    {
+        //
+        $patients = Patient::search($request->input('search'))->doesntHave('tracing')->whereHas('suspectCases', function ($q) {
+            $q->where('pscr_sars_cov_2','positive');
+        })->paginate(200);
+        return view('patients.tracing.withouttracing', compact('patients','request'));
+
+    }
+
+
     public function indexByCommune()
     {
         // TODO: Falta chequear que tenga algun establecimiento asociado
