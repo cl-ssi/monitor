@@ -15,7 +15,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Demographic extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -47,6 +47,10 @@ class Demographic extends Model implements Auditable
 
     function getFullAddressAttribute(){
         return mb_strtoupper($this->address . ' ' . $this->number . ' ' . $this->department);
+    }
+
+    function getFullTelephonesAttribute(){
+        return mb_strtoupper($this->telephone . ' ' . $this->telephone2);
     }
 
     use SoftDeletes;
