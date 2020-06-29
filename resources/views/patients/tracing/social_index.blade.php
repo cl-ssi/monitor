@@ -48,6 +48,7 @@
                   <thead>
                       <tr class="text-center">
                           <th>N° Solicitud</th>
+                          <th>Comuna Residencia</th>
                           <th>Fecha Solicitud</th>
                           <th>Run o Identificación</th>
                           <th>Paciente</th>
@@ -63,6 +64,7 @@
                         @if($request->request_type_id == $request_type->request_type_id)
                           <tr class="text-right">
                             <td>{{ $request->id }}</td>
+                            <td>{{ ($request->tracing->patient->demographic) ? $request->tracing->patient->demographic->commune->name : '' }}</td>
                             <td>{{ $request->request_at->format('d-m-Y H:i:s') }}</td>
                             <td>{{ $request->tracing->patient->identifier }}</td>
                             <td>{{ $request->tracing->patient->fullName }}</td>
@@ -95,6 +97,7 @@
                   <thead>
                       <tr class="text-center">
                           <th>N° Solicitud</th>
+                          <th>Comuna Residencia</th>
                           <th>Fecha Solicitud</th>
                           <th>Run o Identificación</th>
                           <th>Paciente</th>
@@ -110,6 +113,7 @@
                         @if($request->request_type_id == $request_type->request_type_id)
                           <tr class="text-right">
                             <td>{{ $request->id }}</td>
+                            <td>{{ ($request->tracing->patient->demographic) ? $request->tracing->patient->demographic->commune->name : '' }}</td>
                             <td>{{ $request->request_at->format('d-m-Y H:i:s') }}</td>
                             <td>{{ $request->tracing->patient->identifier }}</td>
                             <td>{{ $request->tracing->patient->fullName }}</td>
