@@ -41,7 +41,7 @@
         <div class="tab-pane" id="{{ str_replace(" ","_",$request_type->type->name) }}" role="tabpanel" >
             <h4>{{ $request_type->type->name }}</h4>
             <br>
-            <h5>Solciitudes pendientes de respuesta.</h5>
+            <h5>Solicitudes pendientes de respuesta.</h5>
 
             <div class="table-responsive">
               <table class="table table-sm table-bordered table-striped small">
@@ -89,7 +89,7 @@
             </div>
 
             <hr>
-            <h5>Solciitudes con respuesta.</h5>
+            <h5>Solicitudes con respuesta.</h5>
             <div class="table-responsive">
               <table class="table table-sm table-bordered table-striped small">
                   <thead>
