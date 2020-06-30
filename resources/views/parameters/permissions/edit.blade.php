@@ -13,13 +13,19 @@
     @method('PUT')
 
     <div class="row">
-
         <fieldset class="form-group col">
-            <label for="for_name">Nombre</label>
+            <label for="for_name">Nombre*</label>
             <input type="text" class="form-control" id="for_name" name="name"
                 value="{{ $permission->name }}" required>
         </fieldset>
+    </div>
 
+    <div class="row">
+        <fieldset class="form-group col">
+            <label for="for_description">Descripción</label>
+            <input type="text" class="form-control" id="for_name"
+            value="{{ $permission->description }}" name="description">
+        </fieldset>
     </div>
 
     <button type="submit" class="btn btn-primary float-left">Guardar</button>
