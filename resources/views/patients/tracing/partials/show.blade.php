@@ -71,10 +71,22 @@
                 </select>
             </fieldset>
 
-            <fieldset class="form-group col-md-5">
-                <label for="for_responsible_family_member">Familiar responsable / teléfono</label>
-                <input type="text" class="form-control" name="responsible_family_member"
-                    id="for_responsible_family_member" value="{{ $patient->tracing->responsible_family_member }}">
+            <fieldset class="form-group col-md-4">
+                <label for="for_establishment_id">Establecimiento que realiza seguimiento</label>
+                <select name="establishment_id" id="for_establishment_id" class="form-control">
+                    @foreach($establishments as $estab)
+                    <option value="{{ $estab->id }}" {{ ($patient->tracing->establishment_id == $estab->id) ? 'selected' : '' }}>{{ $estab->alias }}</option>
+                    @endforeach
+                </select>
+            </fieldset>
+
+            <fieldset class="form-group col-6 col-md-1">
+                <label for="for_functionary">Func. Salud</label>
+                <select name="functionary" id="for_functionary" class="form-control">
+                    <option value=""></option>
+                    <option value="1" {{ ($patient->tracing->functionary === 1) ? 'selected' : '' }}>Si</option>
+                    <option value="0" {{ ($patient->tracing->functionary === 0) ? 'selected' : '' }}>No</option>
+                </select>
             </fieldset>
 
 
@@ -132,13 +144,10 @@
 
         <div class="form-row">
 
-            <fieldset class="form-group col-md-4">
-                <label for="for_establishment_id">Establecimiento que realiza seguimiento</label>
-                <select name="establishment_id" id="for_establishment_id" class="form-control">
-                    @foreach($establishments as $estab)
-                    <option value="{{ $estab->id }}" {{ ($patient->tracing->establishment_id == $estab->id) ? 'selected' : '' }}>{{ $estab->alias }}</option>
-                    @endforeach
-                </select>
+            <fieldset class="form-group col-md-6">
+                <label for="for_responsible_family_member">Familiar responsable / teléfono</label>
+                <input type="text" class="form-control" name="responsible_family_member"
+                    id="for_responsible_family_member" value="{{ $patient->tracing->responsible_family_member }}">
             </fieldset>
 
             <fieldset class="form-group col-md-2">
@@ -184,7 +193,6 @@
                     id="for_gestation_week" value="{{ $patient->tracing->gestation_week }}">
             </fieldset>
 
-
         </div>
 
         <div class="form-row">
@@ -218,14 +226,6 @@
         </div>
 
         <div class="form-row">
-            <fieldset class="form-group col-6 col-md-1">
-                <label for="for_functionary">Func. Salud</label>
-                <select name="functionary" id="for_functionary" class="form-control">
-                    <option value=""></option>
-                    <option value="1" {{ ($patient->tracing->functionary === 1) ? 'selected' : '' }}>Si</option>
-                    <option value="0" {{ ($patient->tracing->functionary === 0) ? 'selected' : '' }}>No</option>
-                </select>
-            </fieldset>
 
             <!-- <fieldset class="form-group col-6 col-md-1">
                 <label for="for_help_basket">Canasta</label>
@@ -269,13 +269,13 @@
             <fieldset class="form-group col">
                 <label for="for_indications">Indicaciones</label>
                 <textarea class="form-control" name="indications"
-                    id="for_indications" rows="5">{{ $patient->tracing->indications }}</textarea>
+                    id="for_indications" rows="4">{{ $patient->tracing->indications }}</textarea>
             </fieldset>
 
             <fieldset class="form-group col">
                 <label for="for_observations">Observaciones</label>
                 <textarea class="form-control" name="observations"
-                    id="for_observations" rows="5">{{ $patient->tracing->observations }}</textarea>
+                    id="for_observations" rows="4">{{ $patient->tracing->observations }}</textarea>
             </fieldset>
 
         </div>
@@ -297,6 +297,15 @@
     @if($patient->tracing->status)
         @include('patients.tracing.partials.request_create')
     @endif
+
+
+    @can('Admin')
+
+        @include('partials.audit_simple', ['audits' => $patient->tracing->audits] )
+
+    @endcan
+
+
 
 @else
 <form method="POST" class="form-horizontal" action="{{ route('patients.tracings.store') }}">
