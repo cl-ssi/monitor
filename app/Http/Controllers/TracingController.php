@@ -20,7 +20,7 @@ class TracingController extends Controller
         //
         $patients = Patient::search($request->input('search'))->doesntHave('tracing')->whereHas('suspectCases', function ($q) {
             $q->where('pscr_sars_cov_2','positive')
-            ->where('pscr_sars_cov_2_at', '>=', '2020-06-22');
+            ->where('pscr_sars_cov_2_at', '>=', '2020-06-23');
         })->paginate(200);
         return view('patients.tracing.withouttracing', compact('patients','request'));
 

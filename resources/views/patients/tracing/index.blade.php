@@ -13,12 +13,12 @@
             @endisset
         </div>
         <div class="col-12 col-sm-9" >
-            <a type="button" class="btn btn-primary" href="{{ route('patients.tracings.completed') }}">
+            <a type="button" class="btn btn-sm btn-outline-primary" href="{{ route('patients.tracings.completed') }}">
                 Seguimientos finalizados
             </a>
-            <a type="button" class="btn btn-primary" href="{{ route('patients.in_residence') }}">
+            <!--a type="button" class="btn btn-sm btn-outline-primary" href="{{ route('patients.in_residence') }}">
                 En residencia
-            </a>
+            </a-->
         </div>
     </div>
 
@@ -29,6 +29,7 @@
     <thead>
         <tr>
             <th>ID</th>
+            <th>Indice</th>
             <th>Nombre</th>
             <th>Comuna</th>
             <th>Establecimiento Muestra</th>
@@ -44,7 +45,7 @@
         @foreach($patients as $key => $patient)
         @if($fecha != $patient->tracing->next_control_at->format('Y-m-d'))
         <tr>
-            <td colspan="9" class="table-active">
+            <td colspan="10" class="table-active">
                 <h5>Siguiente Control: {{ $patient->tracing->next_control_at->format('Y-m-d') }}</h5>
             </td>
         </tr>
@@ -56,7 +57,13 @@
                 {{ $patient->id }}
                 </a>
             </td>
-            <td>{{ $patient->fullName }}</td>
+            <td>
+                {{ ($patient->tracing->index) ? 'Sí' : 'CAR' }} 
+            </td>
+            <td>
+                {{ $patient->fullName }}
+
+            </td>
             <td>{{ ($patient->demographic AND $patient->demographic->commune) ?
                     $patient->demographic->commune->name : '' }}</td>
             <td>{{ ($patient->tracing->establishment) ? $patient->tracing->establishment->alias : '' }}</td>
