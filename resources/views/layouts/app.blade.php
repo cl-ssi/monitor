@@ -110,12 +110,16 @@
                                 <a class="dropdown-item" href="{{ route('patients.tracings.communes') }}">Seguimiento de mis comunas</a>
                                 <a class="dropdown-item" href="{{ route('patients.tracings.establishments') }}">Seguimiento de mis establecimientos</a>
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.tracing_minsal') }}">Seguimiento SEREMI</a>
-                                    @canany(['SocialTracing: seremi', 'SocialTracing: seremi'])
+
+                                @canany(['SocialTracing: seremi', 'SocialTracing: aps'])
                                 <a class="dropdown-item" href="{{ route('patients.tracings.requests.social_index') }}">Seguimiento de solicitudes</a>
                                 @endcanany
                                 @endcan
 
                                 <div class="dropdown-divider"></div>
+                                @can('Developer')
+                                <a class="dropdown-item" href="{{ route('patients.tracings.withouttracing') }}">Beta Pacientes Positivos sin Seguimientos >= 22-06-2020</a>
+                                @endcan
 
                                 @can('Patient: tracing old')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing') }}">Seguimiento (Antiguo)</a>

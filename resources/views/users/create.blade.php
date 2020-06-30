@@ -71,7 +71,7 @@
                 <fieldset class="form-group col-12 col-md-2">
                     <label for="for_password">Clave *</label>
                     <input type="password" class="form-control" name="password" id="for_password"
-                        required>
+                        autocomplete="off" required>
                 </fieldset>
 
                 <fieldset class="form-group col-6 col-md-2">
