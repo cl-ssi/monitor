@@ -4,11 +4,25 @@
 
 @section('content')
 
-    @isset($completed)
-        <h3 class="mb-3">Fin de Seguimiento</h3>
-    @else
-        <h3 class="mb-3">Seguimiento</h3>
-    @endisset
+    <div class="row">
+        <div class="col-12 col-sm-3">
+            @isset($titulo)
+                <h3 class="mb-3">{{$titulo}}</h3>
+            @else
+                <h3 class="mb-3">Seguimiento</h3>
+            @endisset
+        </div>
+        <div class="col-12 col-sm-9" >
+            <a type="button" class="btn btn-primary" href="{{ route('patients.tracings.completed') }}">
+                Seguimientos finalizados
+            </a>
+            <a type="button" class="btn btn-primary" href="{{ route('patients.in_residence') }}">
+                En residencia
+            </a>
+        </div>
+    </div>
+
+
 
 
 <table class="table table-sm table-bordered small">

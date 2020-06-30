@@ -114,8 +114,8 @@ class TracingController extends Controller
             })
             ->all();
 
-        $completed = true;
-        return view('patients.tracing.index', compact('patients', 'completed'));
+        $titulo = 'Fin de Seguimiento';
+        return view('patients.tracing.index', compact('patients', 'titulo'));
     }
 
     /**
