@@ -139,7 +139,7 @@
                     </td>
 
                     @if($contact->patient->tracing)
-                    <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->RequiresLicenceDesc : '' }}</td>
+                    <td>{{ ($contact->patient->tracing->RequiresLicenceDesc)? $contact->patient->tracing->hasAcceptedLicence : '' }}</td>
                     <td>{{ ($contact->patient->tracing->cannot_quarantine)? 'NO' : 'SI' }}</td>
                     <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->cannot_quarantine : '' }}</td>
                     @else
