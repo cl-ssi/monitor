@@ -299,12 +299,8 @@
     @endif
 
 
-    @can('Admin')
 
-        @include('partials.audit_simple', ['audits' => $patient->tracing->audits] )
-
-    @endcan
-
+    @include('partials.audit_simple', ['audits' => $patient->tracing->audits] )
 
 
 @else
