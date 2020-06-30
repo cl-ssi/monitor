@@ -379,47 +379,17 @@ class SuspectCaseController extends Controller
 
         $suspectCase->save();
 
-        /* guarda archivos FIX: pendiente traspasar a sólo un archivo */
-        if ($request->hasFile('forfile')) {
-            foreach ($request->file('forfile') as $file) {
-                $filename = $file->getClientOriginalName();
-                $fileModel = new File;
-                $fileModel->file = $file->store('files');
-                $fileModel->name = $filename;
-                $fileModel->suspect_case_id = $suspectCase->id;
-                $fileModel->save();
-            }
-        }
-
-        if (env('APP_ENV') == 'production') {
-            if ($old_pcr == 'pending' and $suspectCase->pscr_sars_cov_2 == 'positive') {
-                $emails  = explode(',', env('EMAILS_ALERT'));
-                $emails_bcc  = explode(',', env('EMAILS_ALERT_BCC'));
-                Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($suspectCase));
-            }
-            /* Si el resultado es negativo y el usuario tiene email, enviar resultado al usuario */
-            if($old_pcr == 'pending' && ($suspectCase->pscr_sars_cov_2 == 'negative' ||
-                                          $suspectCase->pscr_sars_cov_2 == 'undetermined' ||
-                                          $suspectCase->pscr_sars_cov_2 == 'rejected') &&
-                $suspectCase->patient->demographic != NULL){
-                if($suspectCase->patient->demographic->email != NULL){
-                    $email  = $suspectCase->patient->demographic->email;
-                    Mail::to($email)->send(new NewNegative($suspectCase));
-                }
-            }
-        }
-
         /* Crea un TRACING si el resultado es positivo */
         if ($old_pcr == 'pending' and $suspectCase->pscr_sars_cov_2 == 'positive') {
             /* Si el paciente no tiene Tracing */
             if($suspectCase->patient->tracing) {
                 $suspectCase->patient->tracing->index = 1;
                 $suspectCase->patient->tracing->status = ($suspectCase->patient->status == 'Fallecido') ? 0:1;
-                $suspectCase->patient->tracing->save();
                 $suspectCase->patient->tracing->quarantine_start_at = ($suspectCase->symptoms_at) ?
                                                 $suspectCase->symptoms_at :
                                                 $suspectCase->pscr_sars_cov_2_at;
-                $tracing->quarantine_end_at = $tracing->quarantine_start_at->add(14,'days');
+                $suspectCase->patient->tracing->quarantine_end_at = $tracing->quarantine_start_at->add(14,'days');
+                $suspectCase->patient->tracing->save();
             }
             else {
                 $tracing                    = new Tracing();
@@ -447,6 +417,36 @@ class SuspectCaseController extends Controller
                 }
                 $tracing->status            = ($suspectCase->patient->status == 'Fallecido') ? 0:1;
                 $tracing->save();
+            }
+        }
+
+        /* guarda archivos FIX: pendiente traspasar a sólo un archivo */
+        if ($request->hasFile('forfile')) {
+            foreach ($request->file('forfile') as $file) {
+                $filename = $file->getClientOriginalName();
+                $fileModel = new File;
+                $fileModel->file = $file->store('files');
+                $fileModel->name = $filename;
+                $fileModel->suspect_case_id = $suspectCase->id;
+                $fileModel->save();
+            }
+        }
+
+        if (env('APP_ENV') == 'production') {
+            if ($old_pcr == 'pending' and $suspectCase->pscr_sars_cov_2 == 'positive') {
+                $emails  = explode(',', env('EMAILS_ALERT'));
+                $emails_bcc  = explode(',', env('EMAILS_ALERT_BCC'));
+                Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($suspectCase));
+            }
+            /* Si el resultado es negativo y el usuario tiene email, enviar resultado al usuario */
+            if($old_pcr == 'pending' && ($suspectCase->pscr_sars_cov_2 == 'negative' ||
+                                          $suspectCase->pscr_sars_cov_2 == 'undetermined' ||
+                                          $suspectCase->pscr_sars_cov_2 == 'rejected') &&
+                $suspectCase->patient->demographic != NULL){
+                if($suspectCase->patient->demographic->email != NULL){
+                    $email  = $suspectCase->patient->demographic->email;
+                    Mail::to($email)->send(new NewNegative($suspectCase));
+                }
             }
         }
 

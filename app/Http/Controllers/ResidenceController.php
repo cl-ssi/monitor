@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\SanitaryResidence\Booking;
 use App\SanitaryResidence\Residence;
+use App\SanitaryResidence\Room;
 use App\SanitaryResidence\ResidenceUser;
 use Illuminate\Http\Request;
 use App\User;
@@ -148,20 +149,30 @@ class ResidenceController extends Controller
             $counterTotalRoomsByResidence = $residence->rooms()->count();
             $counterPatientsByResidence = 0;
             $counterOccupiedRoomsByResidence = 0;
+            $singlecounter = 0;
+            $doublecounter = 0;
+            $totalsinglebyresidence = $residence->rooms->sum('single');
+            $totaldoublebyresidence = $residence->rooms->sum('double');
 
             $rooms = $residence->rooms;
-            foreach ($rooms as $room){
-                $bookings = $room->bookings();
+            foreach ($rooms as $room){                
+                $bookings = $room->bookings();                
 
                 $counterPatientsByRoom = $bookings->where('status', 'Residencia Sanitaria')->whereNull('real_to')
                                         ->whereHas('patient', function($q){
                                             $q->where('status', 'Residencia Sanitaria');
                                         })->get()->count();
+                
 
                 $counterPatientsByResidence = $counterPatientsByResidence + $counterPatientsByRoom;
 
                 if($counterPatientsByRoom > 0){
                     $counterOccupiedRoomsByResidence = $counterOccupiedRoomsByResidence + 1;
+                }
+
+                if($counterPatientsByRoom == 0){
+                    $singlecounter = $room->single + $singlecounter;
+                    $doublecounter = $room->double + $doublecounter;
                 }
 
             }
@@ -172,7 +183,12 @@ class ResidenceController extends Controller
                     'totalRooms' => $counterTotalRoomsByResidence,
                     'occupiedRooms' => $counterOccupiedRoomsByResidence,
                     'patients' => $counterPatientsByResidence,
-                    'availableRooms' => $counterTotalRoomsByResidence - $counterOccupiedRoomsByResidence)
+                    'availableRooms' => $counterTotalRoomsByResidence - $counterOccupiedRoomsByResidence,
+                    'single' => $singlecounter,
+                    'double' => $doublecounter,
+                    'totalsinglebyresidence'=> $totalsinglebyresidence,
+                    'totaldoublebyresidence'=> $totaldoublebyresidence
+                    )
             );
 
         }
@@ -181,12 +197,21 @@ class ResidenceController extends Controller
         $totalOccupiedRooms = 0;
         $totalPatients = 0;
         $totalAvailableRooms = 0;
+        $totalSingle = 0;
+        $totalDouble = 0;
+        $sumSingle = 0;
+        $sumDouble = 0;
 
         foreach ($dataArray as $residence){
             $totalRooms = $totalRooms + $residence['totalRooms'];
             $totalOccupiedRooms = $totalOccupiedRooms + $residence['occupiedRooms'];
             $totalPatients = $totalPatients + $residence['patients'];
             $totalAvailableRooms = $totalAvailableRooms + $residence['availableRooms'];
+            $totalSingle = $totalSingle + $residence['single'];
+            $totalDouble = $totalDouble + $residence['double'];
+            $sumSingle = $sumSingle + $residence['totalsinglebyresidence'];
+            $sumDouble = $sumDouble + $residence['totaldoublebyresidence'];
+
         }
 
         array_push(
@@ -195,7 +220,12 @@ class ResidenceController extends Controller
                 'totalRooms' => $totalRooms,
                 'occupiedRooms' => $totalOccupiedRooms,
                 'patients' => $totalPatients,
-                'availableRooms' => $totalAvailableRooms)
+                'availableRooms' => $totalAvailableRooms,
+                'single' => $totalSingle,
+                'double' => $totalDouble,
+                'sumsingle' => $sumSingle,
+                'sumdouble' => $sumDouble
+                )
         );
 
         return view('sanitary_residences.residences.statusReport', compact('dataArray'));

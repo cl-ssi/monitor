@@ -14,7 +14,8 @@
     <thead>
         <tr>
             <th>ID</th>
-            <th>Name</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
             <th></th>
         </tr>
     </thead>
@@ -23,6 +24,7 @@
         <tr>
             <td>{{ $permission->id }}</td>
             <td>{{ $permission->name }}</td>
+            <td>{{ $permission->description }}</td>
             <td>
                 <a href="{{ route('parameters.permissions.edit', $permission->id )}}">
                 <i class="fas fa-edit"></i>

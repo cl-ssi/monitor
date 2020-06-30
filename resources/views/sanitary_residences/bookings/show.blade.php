@@ -38,7 +38,7 @@
     </div>
 
     <div class="col-6 col-md-3 p-2">
-        <strong>Salida: </strong>{{ $booking->to->format('d-m-Y H:i') }}
+        <strong>Salida: </strong>{{ ($booking->to)?$booking->to->format('d-m-Y H:i'):'' }}
     </div>
 
 </div>
@@ -169,7 +169,8 @@
 
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_to">Hasta (Estimado)</label>
-            <input type="datetime-local" class="form-control date" name="to" id="for_to" value="{{$booking->to->format('Y-m-d\TH:i:s')}}" >
+            <input type="datetime-local" class="form-control date" name="to" id="for_to"  @if($booking->to) value="{{$booking->to->format('Y-m-d\TH:i:s')}}" @endif >
+            
         </fieldset>
 
         <fieldset class="form-group col-5 col-md-2">
