@@ -6,32 +6,33 @@
 <h3 class="mb-3">Seguimiento Social</h3>
 
 <div class="form-row">
-    <fieldset class="form-group col-md-3">
-        <label for="for_sample_at">Fecha Solicitud</label>
-        <input type="datetime-local" class="form-control" id="for_sample_at"
-            name="sample_at" value="{{ $tracing_request->request_at->format('Y-m-d\TH:i:s') }}" readonly>
-    </fieldset>
 </div>
 
 <div class="form-row">
-    <fieldset class="form-group col-md-3">
-        <label>Nro. de Solicitud:</label>
-        <input type="text" class="form-control" value="{{ $tracing_request->id }}" style="text-transform: uppercase;" readonly>
-    </fieldset>
-
-    <fieldset class="form-group col-md-3">
+    <fieldset class="form-group col-md-2">
         <label>Run:</label>
         <input type="text" class="form-control" value="{{ $tracing_request->tracing->patient->identifier }}" style="text-transform: uppercase;" readonly>
     </fieldset>
 
-    <fieldset class="form-group col-md-6">
+    <fieldset class="form-group col-md-5">
         <label for="for_fathers_family">Paciente:</label>
         <input type="text" class="form-control" value="{{ $tracing_request->tracing->patient->fullName }}" style="text-transform: uppercase;" readonly>
     </fieldset>
 </div>
 
 <div class="form-row">
+    <fieldset class="form-group col-md-2">
+        <label>Nro. de Solicitud:</label>
+        <input type="text" class="form-control" value="{{ $tracing_request->id }}" style="text-transform: uppercase;" readonly>
+    </fieldset>
+
     <fieldset class="form-group col-md-3">
+        <label for="for_sample_at">Fecha Solicitud</label>
+        <input type="datetime-local" class="form-control" id="for_sample_at"
+            name="sample_at" value="{{ $tracing_request->request_at->format('Y-m-d\TH:i:s') }}" readonly>
+    </fieldset>
+
+    <fieldset class="form-group col-md-2">
         <label>Tipo de Solicitud:</label>
         <input type="text" class="form-control" value="{{ $tracing_request->type->name }}" style="text-transform: uppercase;" readonly>
     </fieldset>
@@ -69,15 +70,15 @@
         <div class="col-md-9">
             <div class="form-row">
                 <fieldset class="form-group col-md-12">
-                    <label for="for_request_complete_details">Detalle de la solicitud</label>
-                    <textarea class="form-control" name="request_complete_details" rows="3"
+                    <label for="for_request_complete_details">Observacion</label>
+                    <textarea class="form-control" name="request_complete_details" rows="2"
                         id="for_request_complete_details" required></textarea>
                 </fieldset>
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">Guardar</button>
     </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
 </form>
 
 
