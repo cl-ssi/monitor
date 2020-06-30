@@ -13,12 +13,12 @@
             @endisset
         </div>
         <div class="col-12 col-sm-9" >
-            <a type="button" class="btn btn-primary" href="{{ route('patients.tracings.completed') }}">
+            <a type="button" class="btn btn-sm btn-outline-primary" href="{{ route('patients.tracings.completed') }}">
                 Seguimientos finalizados
             </a>
-            <a type="button" class="btn btn-primary" href="{{ route('patients.in_residence') }}">
+            <!--a type="button" class="btn btn-sm btn-outline-primary" href="{{ route('patients.in_residence') }}">
                 En residencia
-            </a>
+            </a-->
         </div>
     </div>
 
