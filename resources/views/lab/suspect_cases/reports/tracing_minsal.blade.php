@@ -122,7 +122,7 @@
 
                     <!-- DETALLES DE SINTOMAS -->
                     @if($contact->patient->tracing && $contact->patient->tracing->events)
-                    <td>{{ ($contact->patient->tracing->events->last()) ? $contact->patient->tracing->events->last()->symptoms : '' }}</td>
+                    <td>{{ ($contact->patient->tracing->events->where('symptoms')->last()) ? $contact->patient->tracing->events->where('symptoms')->last()->symptoms : '' }}</td>
                     @else
                     <td></td>
                     @endif
