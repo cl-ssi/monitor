@@ -25,13 +25,15 @@
                 </fieldset>
             </div>
 
+            <button type="submit" class="btn btn-primary">Crear</button>
+
         </div>
         <div class="col">
             <div class="form-row">
 
                 <fieldset class="form-group col-md-12">
                     <label for="for_details">Detalle de la solicitud</label>
-                    <textarea class="form-control" name="details" rows="8"
+                    <textarea class="form-control" name="details" rows="3"
                         id="for_details"></textarea>
                 </fieldset>
 
@@ -43,6 +45,5 @@
     <input type="hidden" class="form-control" name="tracing_id"
         id="for_tracing_id" required value="{{ $patient->tracing->id }}">
 
-    <button type="submit" class="btn btn-primary">Crear</button>
 
 </form>
