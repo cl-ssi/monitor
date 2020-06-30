@@ -151,6 +151,8 @@ class ResidenceController extends Controller
             $counterOccupiedRoomsByResidence = 0;
             $singlecounter = 0;
             $doublecounter = 0;
+            $totalsinglebyresidence = $residence->rooms->sum('single');
+            $totaldoublebyresidence = $residence->rooms->sum('double');
 
             $rooms = $residence->rooms;
             foreach ($rooms as $room){                
@@ -183,7 +185,9 @@ class ResidenceController extends Controller
                     'patients' => $counterPatientsByResidence,
                     'availableRooms' => $counterTotalRoomsByResidence - $counterOccupiedRoomsByResidence,
                     'single' => $singlecounter,
-                    'double' => $doublecounter
+                    'double' => $doublecounter,
+                    'totalsinglebyresidence'=> $totalsinglebyresidence,
+                    'totaldoublebyresidence'=> $totaldoublebyresidence
                     )
             );
 
@@ -195,6 +199,8 @@ class ResidenceController extends Controller
         $totalAvailableRooms = 0;
         $totalSingle = 0;
         $totalDouble = 0;
+        $sumSingle = 0;
+        $sumDouble = 0;
 
         foreach ($dataArray as $residence){
             $totalRooms = $totalRooms + $residence['totalRooms'];
@@ -203,6 +209,9 @@ class ResidenceController extends Controller
             $totalAvailableRooms = $totalAvailableRooms + $residence['availableRooms'];
             $totalSingle = $totalSingle + $residence['single'];
             $totalDouble = $totalDouble + $residence['double'];
+            $sumSingle = $sumSingle + $residence['totalsinglebyresidence'];
+            $sumDouble = $sumDouble + $residence['totaldoublebyresidence'];
+
         }
 
         array_push(
@@ -213,7 +222,9 @@ class ResidenceController extends Controller
                 'patients' => $totalPatients,
                 'availableRooms' => $totalAvailableRooms,
                 'single' => $totalSingle,
-                'double' => $totalDouble
+                'double' => $totalDouble,
+                'sumsingle' => $sumSingle,
+                'sumdouble' => $sumDouble
                 )
         );
 
