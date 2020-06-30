@@ -29,6 +29,7 @@
     <thead>
         <tr>
             <th>ID</th>
+            <th>Indice</th>
             <th>Nombre</th>
             <th>Comuna</th>
             <th>Establecimiento Muestra</th>
@@ -44,7 +45,7 @@
         @foreach($patients as $key => $patient)
         @if($fecha != $patient->tracing->next_control_at->format('Y-m-d'))
         <tr>
-            <td colspan="9" class="table-active">
+            <td colspan="10" class="table-active">
                 <h5>Siguiente Control: {{ $patient->tracing->next_control_at->format('Y-m-d') }}</h5>
             </td>
         </tr>
@@ -56,7 +57,13 @@
                 {{ $patient->id }}
                 </a>
             </td>
-            <td>{{ $patient->fullName }}</td>
+            <td>
+                {{ ($patient->tracing->index) ? 'Sí' : 'CAR' }} 
+            </td>
+            <td>
+                {{ $patient->fullName }}
+
+            </td>
             <td>{{ ($patient->demographic AND $patient->demographic->commune) ?
                     $patient->demographic->commune->name : '' }}</td>
             <td>{{ ($patient->tracing->establishment) ? $patient->tracing->establishment->alias : '' }}</td>
