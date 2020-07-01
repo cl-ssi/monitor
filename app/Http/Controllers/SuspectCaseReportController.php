@@ -26,6 +26,7 @@ use Illuminate\View\View;
 class SuspectCaseReportController extends Controller
 {
     public function positives() {
+        // set_time_limit(3600);
 
         $patients = Patient::positivesList();
 
