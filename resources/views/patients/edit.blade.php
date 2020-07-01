@@ -151,10 +151,80 @@
 <div class="card">
     <div class="card-body">
     @include('patients.tracing.partials.show')
-
-    @can('SuspectCase: list')
     </div>
 </div>
+
+
+<h4 class="mt-3">Contactos</h4>
+
+@canany(['SanitaryResidence: survey','Developer','Patient: tracing'])
+<a class="btn btn-primary btn-sm" href="{{ route('patients.contacts.create', ['search'=>'search_false', 'id' => $patient->id]) }}">
+    <i class="fas fa-plus"></i> Nuevo Contacto
+</a>
+@endcan
+<table class="table table-sm table-bordered small mb-4 mt-4">
+    <thead>
+        <tr class="text-center">
+            <th rowspan="2">Nombre Paciente</th>
+            <th colspan="7">Contacto</th>
+            <th rowspan="2">Observación</th>
+            <th rowspan="2">Fecha de carga</th>
+        </tr>
+        <tr class="text-center">
+            <th>Fecha Último Contacto</th>
+            <th>Categoría</th>
+            <th>Es</th>
+            <th>Parentesco</th>
+            <th>RUN</th>
+            <th>Nombre</th>
+            <th>¿Viven Juntos?</th>
+        </tr>
+    </thead>
+    <tbody>
+      @foreach($patient->contactPatient as $contact)
+      <tr>
+          <td class="text-right">{{ $patient->fullName }}</td>
+          <td class="text-right">{{ $contact->last_contact_at }}</td>
+          <td class="text-right">{{ $contact->CategoryDesc }}</td>
+          <td class="text-center">
+          @if($contact->index == 1)
+            Tiene como
+          @else
+            Es
+          @endif
+          </td>
+          <td class="text-right">{{ $contact->RelationshipName }}</td>
+          <td class="text-right">{{ $contact->patient->identifier }}</td>
+          <td class="text-right">
+            @can('Patient: edit')
+              <a href="{{ route('patients.edit', $contact->contact_id) }}">
+            @endcan
+            {{ $contact->patient->fullName }}
+            @can('Patient: edit')
+              </a>
+            @endcan
+          </td>
+          <td class="text-right">{{ $contact->LiveTogetherDesc }}</td>
+          <td class="text-right">{{ $contact->comment }}</td>
+          <td class="text-right">{{ $contact->created_at->format('d-m-Y') }}</td>
+          @can('Patient: tracing')
+          <td>
+              <a class="btn btn-danger btn-sm" href="{{ route('patients.contacts.destroy', $contact) }}" onclick="return confirm('¿Está seguro que desea eliminar el contacto estrecho con el paciente {{$contact->patient->fullName}}?' )">
+                  <i class="far fa-trash-alt"></i>
+              </a>
+              <!-- <a class="btn btn-light btn-sm" href="{{ route('patients.contacts.edit', $contact) }}">
+                  <i class="far fa-edit"></i>
+              </a> -->
+          </td>
+          @endcan
+      </tr>
+      @endforeach
+    </tbody>
+</table>
+
+<hr>
+
+    @can('SuspectCase: list')
     <h4 class="mt-4">Examenes PCR</h4>
 
     <table class="table table-sm table-bordered small mb-4 mt-4">
@@ -240,75 +310,6 @@
 
 @endcan
 
-<hr>
-
-<h4 class="mt-3">Contactos</h4>
-
-@canany(['SanitaryResidence: survey','Developer','Patient: tracing'])
-<a class="btn btn-primary btn-sm" href="{{ route('patients.contacts.create', ['search'=>'search_false', 'id' => $patient->id]) }}">
-    <i class="fas fa-plus"></i> Nuevo Contacto
-</a>
-@endcan
-<table class="table table-sm table-bordered small mb-4 mt-4">
-    <thead>
-        <tr class="text-center">
-            <th rowspan="2">Nombre Paciente</th>
-            <th colspan="7">Contacto</th>
-            <th rowspan="2">Observación</th>
-            <th rowspan="2">Fecha de carga</th>
-        </tr>
-        <tr class="text-center">
-            <th>Fecha Último Contacto</th>
-            <th>Categoría</th>
-            <th>Es</th>
-            <th>Parentesco</th>
-            <th>RUN</th>
-            <th>Nombre</th>
-            <th>¿Viven Juntos?</th>
-        </tr>
-    </thead>
-    <tbody>
-      @foreach($patient->contactPatient as $contact)
-      <tr>
-          <td class="text-right">{{ $patient->fullName }}</td>
-          <td class="text-right">{{ $contact->last_contact_at }}</td>
-          <td class="text-right">{{ $contact->CategoryDesc }}</td>
-          <td class="text-center">
-          @if($contact->index == 1)
-            Tiene como
-          @else
-            Es
-          @endif
-          </td>
-          <td class="text-right">{{ $contact->RelationshipName }}</td>
-          <td class="text-right">{{ $contact->patient->identifier }}</td>
-          <td class="text-right">
-            @can('Patient: edit')
-              <a href="{{ route('patients.edit', $contact->contact_id) }}">
-            @endcan
-            {{ $contact->patient->fullName }}
-            @can('Patient: edit')
-              </a>
-            @endcan
-          </td>
-          <td class="text-right">{{ $contact->LiveTogetherDesc }}</td>
-          <td class="text-right">{{ $contact->comment }}</td>
-          <td class="text-right">{{ $contact->created_at->format('d-m-Y') }}</td>
-          @can('Patient: tracing')
-          <td>
-              <a class="btn btn-danger btn-sm" href="{{ route('patients.contacts.destroy', $contact) }}" onclick="return confirm('¿Está seguro que desea eliminar el contacto estrecho con el paciente {{$contact->patient->fullName}}?' )">
-                  <i class="far fa-trash-alt"></i>
-              </a>
-              <!-- <a class="btn btn-light btn-sm" href="{{ route('patients.contacts.edit', $contact) }}">
-                  <i class="far fa-edit"></i>
-              </a> -->
-          </td>
-          @endcan
-      </tr>
-      @endforeach
-    </tbody>
-</table>
-
 
 @canany(['SanitaryResidence: survey','Developer'])
 <hr>
@@ -345,7 +346,7 @@
                     <i class="fas fa-poll-h"></i> Ver Encuesta (tiene resultado final)
                 </a></td>
             @else
-          
+
           <td class="text-center align-middle"><a class="btn btn-success btn-sm" href="{{ route('sanitary_residences.admission.edit', $admission) }}">
                     <i class="fas fa-poll-h"></i> Ver/Editar Encuesta
                 </a></td>

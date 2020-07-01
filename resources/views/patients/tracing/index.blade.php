@@ -4,17 +4,32 @@
 
 @section('content')
 
-    @isset($completed)
-        <h3 class="mb-3">Fin de Seguimiento</h3>
-    @else
-        <h3 class="mb-3">Seguimiento</h3>
-    @endisset
+    <div class="row">
+        <div class="col-12 col-sm-3">
+            @isset($titulo)
+                <h3 class="mb-3">{{$titulo}}</h3>
+            @else
+                <h3 class="mb-3">Seguimiento</h3>
+            @endisset
+        </div>
+        <div class="col-12 col-sm-9" >
+            <a type="button" class="btn btn-sm btn-outline-primary" href="{{ route('patients.tracings.completed') }}">
+                Seguimientos finalizados
+            </a>
+            <!--a type="button" class="btn btn-sm btn-outline-primary" href="{{ route('patients.in_residence') }}">
+                En residencia
+            </a-->
+        </div>
+    </div>
+
+
 
 
 <table class="table table-sm table-bordered small">
     <thead>
         <tr>
             <th>ID</th>
+            <th>Indice</th>
             <th>Nombre</th>
             <th>Comuna</th>
             <th>Establecimiento Muestra</th>
@@ -30,7 +45,7 @@
         @foreach($patients as $key => $patient)
         @if($fecha != $patient->tracing->next_control_at->format('Y-m-d'))
         <tr>
-            <td colspan="9" class="table-active">
+            <td colspan="10" class="table-active">
                 <h5>Siguiente Control: {{ $patient->tracing->next_control_at->format('Y-m-d') }}</h5>
             </td>
         </tr>
@@ -42,7 +57,13 @@
                 {{ $patient->id }}
                 </a>
             </td>
-            <td>{{ $patient->fullName }}</td>
+            <td>
+                {{ ($patient->tracing->index) ? 'Sí' : 'CAR' }} 
+            </td>
+            <td>
+                {{ $patient->fullName }}
+
+            </td>
             <td>{{ ($patient->demographic AND $patient->demographic->commune) ?
                     $patient->demographic->commune->name : '' }}</td>
             <td>{{ ($patient->tracing->establishment) ? $patient->tracing->establishment->alias : '' }}</td>
@@ -58,41 +79,6 @@
         @endforeach
     </tbody>
 </table>
-
-
-@can('Admin')
-
-@include('partials.audit', ['audits' => $patient->tracing->audits] )
-
-<table class="table table-sm small text-muted mt-3">
-    <thead>
-        <tr>
-            <th colspan="4">Historial de cambios</th>
-        </tr>
-        <tr>
-            <th>Modelo</th>
-            <th>Fecha</th>
-            <th>Usuario</th>
-            <th>Modificaciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($patient->logs->sortByDesc('created_at') as $log)
-        <tr>
-            <td>{{ $log->model_type }}</td>
-            <td>{{ $log->created_at }}</td>
-            <td>{{ $log->user->name }}</td>
-            <td>
-                @foreach($log->diferencesArray as $key => $diference)
-                    {{ $key }} => {{ $diference}} <br>
-                @endforeach
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
-@endcan
-
 
 
 

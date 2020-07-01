@@ -359,4 +359,21 @@ class PatientController extends Controller
         return response()->stream($callback, 200, $headers);
 
     }
+
+    public function inResidence()
+    {
+        $patients = Patient::whereHas('demographic', function($q) {
+            $q->whereIn('commune_id', auth()->user()->communes());
+        })
+            ->where(function ($q) {
+                $q->where('status','Residencia Sanitaria');
+            })
+            ->with('tracing')
+            ->with('demographic')
+            ->get();
+
+        $titulo = 'En residencia';
+        return view('patients.tracing.index', compact('patients', 'titulo'));
+    }
+
 }

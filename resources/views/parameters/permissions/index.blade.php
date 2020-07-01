@@ -22,8 +22,8 @@
     <tbody>
         @foreach($permissions as $permission)
         <tr>
-            <td>{{ $permission->id }}</td>
-            <td>{{ $permission->name }}</td>
+            <td nowrap>{{ $permission->id }}</td>
+            <td nowrap>{{ $permission->name }}</td>
             <td>{{ $permission->description }}</td>
             <td>
                 <a href="{{ route('parameters.permissions.edit', $permission->id )}}">
