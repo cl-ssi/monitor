@@ -362,6 +362,11 @@ class PatientController extends Controller
 
     public function inResidence()
     {
+        if(auth()->user()->establishments->count() == 0){
+            session()->flash('info', 'Usuario no tiene establecimientos asociados.');
+            return redirect()->back();
+        }
+
         $patients = Patient::whereHas('demographic', function($q) {
             $q->whereIn('commune_id', auth()->user()->communes());
         })

@@ -52,6 +52,7 @@ class User extends Authenticatable
     }
 
     public function communes() {
+        $ids[] = null;
         foreach($this->establishments as $estab) {
             $ids[] = $estab->commune->id;
         }
