@@ -326,6 +326,10 @@
                                 </a>
                                 @endcan
 
+                                <a class="dropdown-item" target="_blank" href="https://www.youtube.com/channel/UCynVYUM4qEu9eGPvM_3Z-WA">
+                                    Tutoriales
+                                </a>
+
                                 <a class="dropdown-item" href="{{ route('users.password.show_form') }}">
                                     Cambiar clave
                                 </a>
