@@ -151,6 +151,13 @@
             </tbody>
         </table>
 
+        <!-- <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#exampleModal">
+          <i class="fas fa-chart-line"></i> Ver Gráfica
+        </button>
+
+        <br> -->
+
+        @include('lab.suspect_cases.reports.graphics.positives_by_commune')
 
         <table class="table table-sm table-bordered">
             <thead>
