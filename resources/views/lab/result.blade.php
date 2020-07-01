@@ -13,7 +13,7 @@
             <th>Establecimiento</th>
             <th>Fecha de toma de muestra</th>
             <th>Resultado COVID19</th>
-            <th>Fecha del resultado</th>            
+            <th>Fecha del resultado</th>
             <th></th>
         </tr>
     </thead>
@@ -26,6 +26,14 @@
             <td>{{ ($case->pscr_sars_cov_2_at) ? $case->pscr_sars_cov_2_at : '' }}</td>
             <td>
                 @if($case->pscr_sars_cov_2 != 'positive')
+                
+                <form method="POST" class="form-horizontal" action="{{ route('lab.printpost', $case) }}">
+                    @csrf
+                    @method('POST')
+                    <button type="submit" class="btn btn-danger float-right"><i class="fas fa-paperclip"></i>Descargar</button>
+                </form>
+
+
                 <!-- <a href="{{ route('lab.print', $case) }}"
                 
                     target="_blank"><i class="fas fa-paperclip"></i>&nbsp
@@ -42,7 +50,7 @@
     </tbody>
 </table>
 @else
-    <h3>{{ Auth::user()->name }} {{ Auth::user()->fathers_family }} no registra exámenes de COVID19 en el Hospital Ernesto Torres Galdámes </h3>
+<h3>{{ Auth::user()->name }} {{ Auth::user()->fathers_family }} no registra exámenes de COVID19 en el Hospital Ernesto Torres Galdámes </h3>
 @endif
 
 @endsection

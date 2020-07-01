@@ -739,6 +739,16 @@ class SuspectCaseController extends Controller
     }
 
 
+    public function printpost(SuspectCase $suspect_case)
+    {
+        //$case = SuspectCase::find(1);
+        $case = $suspect_case;
+
+        $pdf = \PDF::loadView('lab.results.result', compact('case'));
+        return $pdf->stream();
+    }
+
+
     public function reception_inbox(Request $request)
     {
         $selectedEstablishment = $request->input('establishment_id');

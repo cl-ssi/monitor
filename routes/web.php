@@ -144,6 +144,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
     Route::get('login/{access_token}','SuspectCaseController@login')->name('login');
     Route::get('results','SuspectCaseController@result')->name('result');
     Route::get('print/{suspect_case}','SuspectCaseController@print')->middleware('auth')->name('print');
+    Route::post('printpost/{suspect_case}','SuspectCaseController@printpost')->name('printpost');
     //Route::get('print/{suspect_case}','SuspectCaseController@print')->name('print');
     Route::prefix('exams')->name('exams.')->middleware('auth')->group(function () {
         Route::prefix('covid19')->name('covid19.')->group(function () {
