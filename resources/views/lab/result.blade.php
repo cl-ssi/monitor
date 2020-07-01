@@ -14,7 +14,7 @@
             <th>Fecha de toma de muestra</th>
             <th>Resultado COVID19</th>
             <th>Fecha del resultado</th>
-            <th></th>
+            <th>Resultado</th>
         </tr>
     </thead>
     <tbody>
@@ -27,10 +27,10 @@
             <td>
                 @if($case->pscr_sars_cov_2 != 'positive')
                 
-                <form method="POST" class="form-horizontal" action="{{ route('lab.printpost', $case) }}">
+                <form method="POST" target="_blank" class="form-horizontal" action="{{ route('lab.printpost', $case) }}">
                     @csrf
                     @method('POST')
-                    <button type="submit" class="btn btn-danger float-right"><i class="fas fa-paperclip"></i>Descargar</button>
+                    <button type="submit" class="btn btn-success float-right"><i class="fas fa-paperclip"></i> Descargar</button>
                 </form>
 
 
