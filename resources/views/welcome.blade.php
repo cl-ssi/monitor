@@ -95,7 +95,7 @@
 
                 <div class="links">
                     <a href="https://www.minsal.cl">Minsal</a>
-                    <a href="https://www.gob.cl/coronavirus/casosconfirmados/">Coronavirus Casos Confirmados</a>
+                    <a href="https://www.gob.cl/coronavirus/">Coronavirus</a>
                 </div>
 
                 <br> <br>
