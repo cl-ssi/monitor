@@ -194,13 +194,11 @@ class SuspectCaseReportController extends Controller
         }
 
         $patients = Patient::
-            whereHas('tracing', function ($q) {
+            whereHas('tracing', function ($q) use($date) {
               $q->where('status', '>', '0')
               ->where('index', '1')
-              ->whereIn('establishment_id', auth()->user()->establishments->pluck('id'));
-            })
-            ->whereHas('suspectCases', function ($q) use($date) {
-              $q->whereDate('pscr_sars_cov_2_at', $date);
+              ->whereIn('establishment_id', auth()->user()->establishments->pluck('id'))
+              ->whereDate('notification_at', $date);
             })
             ->with('contactPatient')
             ->with('tracing')
