@@ -30,7 +30,7 @@
                 <form method="POST" target="_blank" class="form-horizontal" action="{{ route('lab.printpost', $case) }}">
                     @csrf
                     @method('POST')
-                    <button type="submit" class="btn btn-success float-right"><i class="fas fa-paperclip"></i> Descargar</button>
+                    <button type="submit" class="btn btn-success"><i class="fas fa-paperclip"></i> Descargar</button>
                 </form>
 
 
