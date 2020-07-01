@@ -29,7 +29,10 @@ class TracingController extends Controller
 
     public function indexByCommune()
     {
-        // TODO: Falta chequear que tenga algun establecimiento asociado
+        if(auth()->user()->establishments->count() == 0){
+            session()->flash('info', 'Usuario no tiene establecimientos asociados.');
+            return  redirect()->back();
+        }
 
         $patients = Patient::whereHas('demographic', function($q) {
                 $q->whereIn('commune_id', auth()->user()->communes());
