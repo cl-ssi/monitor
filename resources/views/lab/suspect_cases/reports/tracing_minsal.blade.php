@@ -122,7 +122,7 @@
 
                     <!-- DETALLES DE SINTOMAS -->
                     @if($contact->patient->tracing && $contact->patient->tracing->events)
-                    <td>{{ ($contact->patient->tracing->events->last()) ? $contact->patient->tracing->events->last()->symptoms : '' }}</td>
+                    <td>{{ ($contact->patient->tracing->events->where('symptoms')->last()) ? $contact->patient->tracing->events->where('symptoms')->last()->symptoms : '' }}</td>
                     @else
                     <td></td>
                     @endif
@@ -139,7 +139,7 @@
                     </td>
 
                     @if($contact->patient->tracing)
-                    <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->RequiresLicenceDesc : '' }}</td>
+                    <td>{{ ($contact->patient->tracing->requires_licence)? $contact->patient->tracing->RequiresLicenceDesc : $contact->patient->tracing->hasAcceptedLicence }}</td>
                     <td>{{ ($contact->patient->tracing->cannot_quarantine)? 'NO' : 'SI' }}</td>
                     <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->cannot_quarantine : '' }}</td>
                     @else

@@ -62,8 +62,8 @@ class PermissionSeeder extends Seeder
         $permission = Permission::create(['name' => 'Inmuno Test: create']);
         $permission = Permission::create(['name' => 'Inmuno Test: edit']);
 
-        $permission = Permission::create(['name' => 'Social Tracing: seremi']);
-        $permission = Permission::create(['name' => 'Social Tracing: aps']);
+        $permission = Permission::create(['name' => 'SocialTracing: seremi']);
+        $permission = Permission::create(['name' => 'SocialTracing: aps']);
 
 /*
         $users = User::all();

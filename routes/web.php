@@ -70,6 +70,8 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
     Route::delete('/{patient}', 'PatientController@destroy')->name('destroy')->middleware('can:Patient: delete');
     Route::get('/export', 'PatientController@export')->name('export');
     Route::get('/exportPositives', 'PatientController@exportPositives')->name('exportPositives');
+    Route::get('/in_residence', 'PatientController@inResidence')->name('in_residence');
+
     Route::prefix('contacts')->name('contacts.')->group(function () {
         Route::get('/create/{search}/{id}', 'ContactPatientController@create')->name('create')->middleware('auth');
         Route::post('/', 'ContactPatientController@store')->name('store')->middleware('auth');

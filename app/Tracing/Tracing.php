@@ -84,4 +84,21 @@ class Tracing extends Model  implements Auditable
 
     }
 
+    public function getHasAcceptedLicenceAttribute(){
+
+        if($this->tracing_requests()->exists() == false){
+            return 'NO';
+        }
+
+        foreach ($this->tracing_requests as $request){
+            if ($request->request_type_id == 4 || $request->request_type_id == 5){
+                if($request->request_complete_at && $request->rejection == null){
+                    return 'SI';
+                }
+            }
+            return 'NO';
+        }
+
+    }
+
 }
