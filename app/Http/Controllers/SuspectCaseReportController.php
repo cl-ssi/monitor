@@ -15,7 +15,7 @@ use App\EstablishmentUser;
 use App\SanitaryResidence\Residence;
 use App\SanitaryResidence\Booking;
 use Carbon\Carbon;
-use App\Lab\Exam\Covid19;
+use App\Lab\Exam\SARSCoV2External;
 use App\Laboratory;
 use App\Region;
 use App\WSMinsal;
@@ -372,7 +372,7 @@ class SuspectCaseReportController extends Controller
             $to = date("Y-m-d 20:59");
         }
 
-        $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
+        $externos = SARSCoV2External::whereBetween('result_at', [$from, $to])->get();
 
         $cases = SuspectCase::where('laboratory_id',$laboratory->id)
                 ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
@@ -398,7 +398,7 @@ class SuspectCaseReportController extends Controller
         }
 
 
-        // $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
+        // $externos = SARSCoV2External::whereBetween('result_at', [$from, $to])->get();
 
         $cases = SuspectCase::where('laboratory_id',$laboratory_id)
                 ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
@@ -454,7 +454,7 @@ class SuspectCaseReportController extends Controller
             $request->laboratory_id = 1;
         }
 
-        // $externos = Covid19::whereBetween('result_at', [$from, $to])->get();
+        // $externos = SARSCoV2External::whereBetween('result_at', [$from, $to])->get();
         $laboratories = Laboratory::all();
 
         $cases = SuspectCase::where('laboratory_id',$request->laboratory_id)

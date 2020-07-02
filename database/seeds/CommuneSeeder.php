@@ -51,7 +51,7 @@ class CommuneSeeder extends Seeder
         Commune::Create(['name' => 'Andacollo', 'code_deis' => '4103', 'region_id' => 4]);
         Commune::Create(['name' => 'Vicuña', 'code_deis' => '4106', 'region_id' => 4]);
         Commune::Create(['name' => 'Los Vilos', 'code_deis' => '4203', 'region_id' => 4]);
-        Commune::Create(['name' => 'Paiguano', 'code_deis' => '4105', 'region_id' => 4]);
+        Commune::Create(['name' => 'Paihuano', 'code_deis' => '4105', 'region_id' => 4]);
         Commune::Create(['name' => 'Punitaqui', 'code_deis' => '4304', 'region_id' => 4]);
         Commune::Create(['name' => 'Canela', 'code_deis' => '4202', 'region_id' => 4]);
         Commune::Create(['name' => 'Río Hurtado', 'code_deis' => '4305', 'region_id' => 4]);
