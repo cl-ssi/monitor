@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Exports;
-use App\Lab\Exam\Covid19;
+use App\Lab\Exam\SARSCoV2External;
 use App\SuspectCase;
 use App\Patient;
 use Maatwebsite\Excel\Concerns\{FromCollection, WithHeadings, WithMapping,

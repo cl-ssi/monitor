@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
-class Covid19 extends Model
+class SARSCoV2External extends Model
 {
+//    protected $table = 'covid19s';
+    protected $table = 'sars_cov_2_external';
     use SoftDeletes;
 
     /**
@@ -34,7 +36,7 @@ class Covid19 extends Model
             return 'E:'.$this->other_identification;
         }
     }
-    
+
     function getRunExportAttribute(){
         if(isset($this->run) and isset($this->dv)) {
             return $this->run . $this->dv;
