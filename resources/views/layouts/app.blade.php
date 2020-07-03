@@ -170,7 +170,7 @@
                         @canany(['SanitaryResidence: user', 'SanitaryResidence: admin' ,'SanitaryResidence: admission'] )
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-shopping-basket"></i>
+                                <i class="fas fa-hotel"></i>
                                 Residencia
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
