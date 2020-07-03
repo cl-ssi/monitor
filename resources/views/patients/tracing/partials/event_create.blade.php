@@ -80,6 +80,6 @@
     <input type="hidden" class="form-control" name="tracing_id"
         id="for_tracing_id" required value="{{ $patient->tracing->id }}">
 
-    <button type="submit" class="btn btn-primary">Crear</button>
+    <button type="submit" class="btn btn-primary">Guardar</button>
 
 </form>
