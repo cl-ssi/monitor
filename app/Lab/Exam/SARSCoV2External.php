@@ -8,7 +8,6 @@ use Carbon\Carbon;
 
 class SARSCoV2External extends Model
 {
-//    protected $table = 'covid19s';
     protected $table = 'sars_cov_2_external';
     use SoftDeletes;
 
@@ -21,11 +20,10 @@ class SARSCoV2External extends Model
         'run','dv','other_identification',
         'name','fathers_family','mothers_family',
         'gender', 'birthday',
-        'telephone','email','address','commune',
-        'origin','origin_commune',
-        'sample_type', 'sample_at',
+        'telephone','email','address','commune_id',
+        'establishment_id', 'sample_type', 'sample_at',
         'reception_at', 'result_at', 'result',
-        'user_id','recpetor_id','validator_id'
+        'user_id','receptor_id','validator_id'
     ];
 
     function getIdentifierAttribute() {
@@ -69,6 +67,14 @@ class SARSCoV2External extends Model
                 ->orWhere('run','LIKE', '%'.$search.'%')
                 ->orWhere('other_identification','LIKE', '%'.$search.'%');
         }
+    }
+
+    public function commune(){
+        return $this->belongsTo('App\Commune');
+    }
+
+    public function establishment(){
+        return $this->belongsTo('App\Establishment');
     }
 
     /**
