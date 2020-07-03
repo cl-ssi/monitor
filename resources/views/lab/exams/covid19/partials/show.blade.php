@@ -130,4 +130,15 @@
                 id="for_sample_at" disabled value="{{ $covid19->sample_at->format('Y-m-d\TH:i:s') }}">
         </fieldset>
 
+        <fieldset class="form-group col-12 col-md-3">
+            <label for="for_run_medic">Run Médico *</label>
+            <input type="text" class="form-control" name="run_medic" disabled
+                   id="for_run_medic" value="{{$covid19->run_medic}}" >
+        </fieldset>
+
+        <fieldset class="form-group col-12 col-md-3">
+            <label for="for_run_responsible">Run Responsable *</label>
+            <input type="text" class="form-control" name="run_responsible"
+                   id="for_run_responsible" value="{{$covid19->run_responsible}}" disabled>
+        </fieldset>
     </div>

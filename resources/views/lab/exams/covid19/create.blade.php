@@ -153,6 +153,29 @@
                 id="for_sample_at" required value="{{ date('Y-m-d\TH:i:s') }}">
         </fieldset>
 
+        <fieldset class="form-group col-8 col-md-2">
+            <label for="for_run_medic">Run Médico SIN DV *</label>
+            <input type="text" class="form-control" name="run_medic"
+                   id="for_run_medic" required>
+        </fieldset>
+
+        <fieldset class="form-group col-4 col-md-1">
+            <label for="for_run_medic_dv">DV *</label>
+            <input type="text" class="form-control" id="for_run_medic_dv" name="run_medic_dv" readonly>
+        </fieldset>
+
+        <fieldset class="form-group col-8 col-md-2">
+            <label for="for_run_responsible">Run Responsable SIN DV *</label>
+            <input type="text" class="form-control" name="run_responsible"
+                   id="for_run_responsible" required>
+        </fieldset>
+
+        <fieldset class="form-group col-4 col-md-1">
+            <label for="for_run_responsible_dv">DV *</label>
+            <input type="text" class="form-control" id="for_run_responsible_dv" name="run_responsible_dv" readonly>
+        </fieldset>
+
+
     </div>
 
     <button type="submit" class="btn btn-primary">Guardar</button>
@@ -170,6 +193,18 @@ jQuery(document).ready(function($){
     $('input[name=run]').keyup(function(e) {
         var str = $("#for_run").val();
         $('#for_dv').val($.rut.dv(str));
+    });
+
+    //obtiene digito verificador
+    $('input[name=run_medic]').keyup(function(e) {
+        var str = $("#for_run_medic").val();
+        $('#for_run_medic_dv').val($.rut.dv(str));
+    });
+
+    //obtiene digito verificador
+    $('input[name=run_responsible]').keyup(function(e) {
+        var str = $("#for_run_responsible").val();
+        $('#for_run_responsible_dv').val($.rut.dv(str));
     });
 
     $('#btn_fonasa').click(function() {

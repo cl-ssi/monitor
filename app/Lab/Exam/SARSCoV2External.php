@@ -23,7 +23,8 @@ class SARSCoV2External extends Model
         'telephone','email','address','commune_id',
         'establishment_id', 'sample_type', 'sample_at',
         'reception_at', 'result_at', 'result',
-        'user_id','receptor_id','validator_id'
+        'user_id','receptor_id','validator_id',
+        'run_medic', 'run_responsible'
     ];
 
     function getIdentifierAttribute() {
