@@ -7,7 +7,9 @@
 @include('sanitary_residences.nav')
 
 <h3 class="mb-3">Listado de Encuestas Rechazadas</h3>
-<table class="table table-sm table-bordered text-center align-middle">
+<a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel <i class="far fa-file-excel"></i></a>
+<div class="table-responsive">
+<table class="table table-sm table-bordered text-center align-middle" id="tabla_encuestas_rechazadas_vb">
   <thead>
     <tr>
       <th>Nombre de Encuestado</th>
@@ -38,6 +40,7 @@
     </tr>
     @endforeach
 </table>
+</div>
 
 @endsection
 
@@ -45,5 +48,25 @@
 
 
 @section('custom_js')
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+let date = new Date()
+let day = date.getDate()
+let month = date.getMonth() + 1
+let year = date.getFullYear()
+let hour = date.getHours()
+let minute = date.getMinutes()
+function exportF(elem) {
+    var table = document.getElementById("tabla_encuestas_rechazadas_vb");
+    var html = table.outerHTML;
+    var html_no_links = html.replace(/<a[^>]*>|<\/a>/g, "");//remove if u want links in your table
+    var url = 'data:application/vnd.ms-excel,' + escape(html_no_links); // Set your html table into url
+    elem.setAttribute("href", url);
+    elem.setAttribute("download", "encuestas_rechazadas_vb_"+day+"_"+month+"_"+year+"_"+hour+"_"+minute+".xls"); // Choose the file name
+    return false;
+}
+</script>
 
 @endsection
