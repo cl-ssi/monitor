@@ -15,7 +15,7 @@
             <th>Fecha de toma de muestra</th>
             <th>Resultado COVID19</th>
             <th>Fecha del resultado</th>
-            <th>Resultado</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -26,24 +26,8 @@
             <td>{{ ($case->pscr_sars_cov_2 != 'positive') ? $case->covid19 : 'Será notificado' }}</td>
             <td>{{ ($case->pscr_sars_cov_2_at) ? $case->pscr_sars_cov_2_at : '' }}</td>
             <td>
-                @if($case->pscr_sars_cov_2 != 'positive')
+                @if($case->pscr_sars_cov_2 != 'positive')                
                 
-                <form method="POST" target="_blank" class="form-horizontal" action="{{ route('lab.printpost', $case) }}">
-                    @csrf
-                    @method('POST')
-                    <button type="submit" class="btn btn-success"><i class="fas fa-paperclip"></i> Descargar</button>
-                </form>
-
-
-                <!-- <a href="{{ route('lab.print', $case) }}"
-                
-                    target="_blank"><i class="fas fa-paperclip"></i>&nbsp
-                </a> -->
-                <!-- <a href="{{ route('lab.suspect_cases.download', $case->files->first()->id) }}"
-                    target="_blank" data-toggle="tooltip" data-placement="top"
-                    data-original-title="resultado_{{$case->patient->run}}.pdf">
-                    resultado_{{$case->patient->run}}.pdf<i class="fas fa-paperclip"></i>&nbsp
-                </a> -->
                 @endif
             </td>
         </tr>
