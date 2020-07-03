@@ -83,5 +83,44 @@
         var fileName = e.target.files[0].name;
         $('.custom-file-label').html(fileName);
     });
+
+    jQuery(document).ready(function($){
+        // cuando cambia region
+        jQuery('#regiones_demo').change(function () {
+            var valorRegion = jQuery(this).val();
+            var htmlComuna = '<option value="sin-comuna">Seleccione comuna</option><option value="sin-comuna">--</option>';
+            @foreach ($communes as $key => $commune)
+            if (valorRegion == '{{$commune->region_id}}') {
+                htmlComuna = htmlComuna + '<option value="' + '{{$commune->id}}' + '">' + '{{$commune->name}}' + '</option>';
+            }
+            @endforeach
+            jQuery('#for_commune_id').html(htmlComuna);
+        });
+
+        // cuando cambia region origen
+        jQuery('#regiones').change(function () {
+            var valorRegion = jQuery(this).val();
+            var htmlComuna = '<option value="sin-comuna">Seleccione comuna</option><option value="sin-comuna">--</option>';
+            @foreach ($communes as $key => $commune)
+            if (valorRegion == '{{$commune->region_id}}') {
+                htmlComuna = htmlComuna + '<option value="' + '{{$commune->id}}' + '">' + '{{$commune->name}}' + '</option>';
+            }
+            @endforeach
+            jQuery('#for_origin_commune').html(htmlComuna);
+        });
+
+        // cuando cambia comuna origen
+        jQuery('#for_origin_commune').change(function () {
+            var valorComuna = jQuery(this).val();
+            var htmlEstablecimiento = '<option value="sin-comuna">Seleccione establecimiento</option><option value="sin-establecimiento">--</option>';
+            @foreach ($establishments as $key => $establishment)
+            if (valorComuna == '{{$establishment->commune_id}}') {
+                htmlEstablecimiento = htmlEstablecimiento + '<option value="' + '{{$establishment->id}}' + '">' + '{{$establishment->name}}' + '</option>';
+            }
+            @endforeach
+            jQuery('#for_establishment_id').html(htmlEstablecimiento);
+        });
+    });
+
 </script>
 @endsection

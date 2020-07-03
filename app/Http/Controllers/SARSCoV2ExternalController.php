@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Commune;
+use App\Establishment;
 use App\Lab\Exam\SARSCoV2External;
+use App\Region;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -27,7 +30,10 @@ class SARSCoV2ExternalController extends Controller
      */
     public function create()
     {
-        return view('lab.exams.covid19.create');
+        $regions = Region::orderBy('id','ASC')->get();
+        $communes = Commune::orderBy('id','ASC')->get();
+        $establishments = Establishment::orderBy('id','ASC')->get();
+        return view('lab.exams.covid19.create', compact('establishments', 'communes', 'regions'));
     }
 
     /**
@@ -66,7 +72,10 @@ class SARSCoV2ExternalController extends Controller
      */
     public function edit(SARSCoV2External $covid19)
     {
-        return view('lab.exams.covid19.edit', compact('covid19'));
+        $regions = Region::orderBy('id','ASC')->get();
+        $communes = Commune::orderBy('id','ASC')->get();
+        $establishments = Establishment::orderBy('id','ASC')->get();
+        return view('lab.exams.covid19.edit', compact('covid19', 'establishments', 'communes', 'regions'));
     }
 
     /**
