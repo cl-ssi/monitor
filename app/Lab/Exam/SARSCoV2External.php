@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
-class Covid19 extends Model
+class SARSCoV2External extends Model
 {
+    protected $table = 'sars_cov_2_external';
     use SoftDeletes;
 
     /**
@@ -19,11 +20,11 @@ class Covid19 extends Model
         'run','dv','other_identification',
         'name','fathers_family','mothers_family',
         'gender', 'birthday',
-        'telephone','email','address','commune',
-        'origin','origin_commune',
-        'sample_type', 'sample_at',
+        'telephone','email','address','commune_id',
+        'establishment_id', 'sample_type', 'sample_at',
         'reception_at', 'result_at', 'result',
-        'user_id','recpetor_id','validator_id'
+        'user_id','receptor_id','validator_id',
+        'run_medic', 'run_responsible'
     ];
 
     function getIdentifierAttribute() {
@@ -34,7 +35,7 @@ class Covid19 extends Model
             return 'E:'.$this->other_identification;
         }
     }
-    
+
     function getRunExportAttribute(){
         if(isset($this->run) and isset($this->dv)) {
             return $this->run . $this->dv;
@@ -67,6 +68,14 @@ class Covid19 extends Model
                 ->orWhere('run','LIKE', '%'.$search.'%')
                 ->orWhere('other_identification','LIKE', '%'.$search.'%');
         }
+    }
+
+    public function commune(){
+        return $this->belongsTo('App\Commune');
+    }
+
+    public function establishment(){
+        return $this->belongsTo('App\Establishment');
     }
 
     /**

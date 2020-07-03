@@ -148,16 +148,16 @@ Route::prefix('lab')->name('lab.')->group(function () {
     //Route::get('print/{suspect_case}','SuspectCaseController@print')->name('print');
     Route::prefix('exams')->name('exams.')->middleware('auth')->group(function () {
         Route::prefix('covid19')->name('covid19.')->group(function () {
-            Route::get('/', 'Covid19Controller@index')->name('index');
-            Route::get('/create', 'Covid19Controller@create')->name('create');
-            Route::post('/', 'Covid19Controller@store')->name('store');
-            Route::get('/{covid19}/edit', 'Covid19Controller@edit')->name('edit');
-            Route::put('/{covid19}', 'Covid19Controller@update')->name('update');
-            Route::put('/{covid19}/reception', 'Covid19Controller@reception')->name('reception');
-            Route::put('/{covid19}/addresult', 'Covid19Controller@addresult')->name('addresult');
-            Route::delete('/{covid19}', 'Covid19Controller@destroy')->name('destroy');
-            Route::get('/download/{storage}/{file?}', 'Covid19Controller@download')->name('download');
-            Route::get('/export', 'Covid19Controller@export')->name('export');
+            Route::get('/', 'SARSCoV2ExternalController@index')->name('index');
+            Route::get('/create', 'SARSCoV2ExternalController@create')->name('create');
+            Route::post('/', 'SARSCoV2ExternalController@store')->name('store');
+            Route::get('/{covid19}/edit', 'SARSCoV2ExternalController@edit')->name('edit');
+            Route::put('/{covid19}', 'SARSCoV2ExternalController@update')->name('update');
+            Route::put('/{covid19}/reception', 'SARSCoV2ExternalController@reception')->name('reception');
+            Route::put('/{covid19}/addresult', 'SARSCoV2ExternalController@addresult')->name('addresult');
+            Route::delete('/{covid19}', 'SARSCoV2ExternalController@destroy')->name('destroy');
+            Route::get('/download/{storage}/{file?}', 'SARSCoV2ExternalController@download')->name('download');
+            Route::get('/export', 'SARSCoV2ExternalController@export')->name('export');
         });
     });
     Route::prefix('suspect_cases')->name('suspect_cases.')->group(function () {
