@@ -74,7 +74,7 @@
             <td nowrap>{{ $covid19->name }}</td>
             <td nowrap>{{ $covid19->fathers_family }}</td>
             <td nowrap>{{ $covid19->mothers_family }}</td>
-            <td nowrap>{{ $covid19->origin }}</td>
+            <td nowrap>{{ $covid19->establishment->alias }}</td>
             <td nowrap class="small">{{ $covid19->sample_at }}</td>
             <td nowrap class="small">{{ ($covid19->reception_at) ? $covid19->reception_at->format('Y-m-d') : '' }}</td>
             <td nowrap class="small">{{ $covid19->result_at }}</td>

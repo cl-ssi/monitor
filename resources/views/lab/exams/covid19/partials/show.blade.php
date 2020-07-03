@@ -81,10 +81,18 @@
                 id="for_address" value="{{ $covid19->address }}" disabled>
         </fieldset>
 
-        <fieldset class="form-group col">
+        <fieldset class="form-group col-12 col-md-3">
+            <label for="regiones_demo">Región *</label>
+            <select class="form-control" name="region_id_demo" id="regiones_demo" disabled>
+                <option value="">{{$covid19->commune->region->name}}</option>
+
+            </select>
+        </fieldset>
+
+        <fieldset class="form-group col-12 col-md-3">
             <label for="for_commune">Comuna *</label>
             <select name="commune" id="for_commune" class="form-control" disabled>
-                <option value="">{{ $covid19->commune }}</option>
+                <option value="">{{ $covid19->commune->name }}</option>
             </select>
         </fieldset>
 
@@ -95,17 +103,17 @@
 
     <div class="form-row">
 
-        <fieldset class="form-group col-3">
-            <label for="for_origin">Origen *</label>
-            <input type="text" class="form-control" name="origin" id="for_origin"
-                disabled value="{{ $covid19->origin }}">
+        <fieldset class="form-group col-12 col-md-3">
+            <label for="regiones">Región Origen *</label>
+            <select class="form-control" name="region_id" id="regiones" disabled>
+                <option value="">{{ $covid19->establishment->commune->region->name }}</option>
+            </select>
         </fieldset>
-
 
         <fieldset class="form-group col-3">
             <label for="for_origin_commune">Comuna Origen</label>
             <select name="origin_commune" id="for_origin_commune" class="form-control" disabled>
-                <option value="Coquimbo">Coquimbo</option>
+                <option value="">{{$covid19->establishment->commune->name}}</option>
             </select>
         </fieldset>
 
@@ -122,4 +130,15 @@
                 id="for_sample_at" disabled value="{{ $covid19->sample_at->format('Y-m-d\TH:i:s') }}">
         </fieldset>
 
+        <fieldset class="form-group col-12 col-md-3">
+            <label for="for_run_medic">Run Médico *</label>
+            <input type="text" class="form-control" name="run_medic" disabled
+                   id="for_run_medic" value="{{$covid19->run_medic}}" >
+        </fieldset>
+
+        <fieldset class="form-group col-12 col-md-3">
+            <label for="for_run_responsible">Run Responsable *</label>
+            <input type="text" class="form-control" name="run_responsible"
+                   id="for_run_responsible" value="{{$covid19->run_responsible}}" disabled>
+        </fieldset>
     </div>

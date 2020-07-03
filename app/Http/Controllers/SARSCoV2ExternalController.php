@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Lab\Exam\Covid19;
+use App\Commune;
+use App\Establishment;
+use App\Lab\Exam\SARSCoV2External;
+use App\Region;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-class Covid19Controller extends Controller
+class SARSCoV2ExternalController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +19,7 @@ class Covid19Controller extends Controller
      */
     public function index(Request $request)
     {
-        $exams = Covid19::search($request->input('search'))->get();
+        $exams = SARSCoV2External::search($request->input('search'))->get();
         return view('lab.exams.covid19.index', compact('exams'));
     }
 
@@ -27,7 +30,10 @@ class Covid19Controller extends Controller
      */
     public function create()
     {
-        return view('lab.exams.covid19.create');
+        $regions = Region::orderBy('id','ASC')->get();
+        $communes = Commune::orderBy('id','ASC')->get();
+        $establishments = Establishment::orderBy('id','ASC')->get();
+        return view('lab.exams.covid19.create', compact('establishments', 'communes', 'regions'));
     }
 
     /**
@@ -38,7 +44,7 @@ class Covid19Controller extends Controller
      */
     public function store(Request $request)
     {
-        $covid19 = new Covid19($request->All());
+        $covid19 = new SARSCoV2External($request->All());
         $covid19->user_id = Auth::id();
         $covid19->save();
 
@@ -50,10 +56,10 @@ class Covid19Controller extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Lab\Exam\Covid19  $covid19
+     * @param  \App\Lab\Exam\SARSCoV2External  $covid19
      * @return \Illuminate\Http\Response
      */
-    public function show(Covid19 $covid19)
+    public function show(SARSCoV2External $covid19)
     {
         //
     }
@@ -61,22 +67,25 @@ class Covid19Controller extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Lab\Exam\Covid19  $covid19
+     * @param  \App\Lab\Exam\SARSCoV2External  $covid19
      * @return \Illuminate\Http\Response
      */
-    public function edit(Covid19 $covid19)
+    public function edit(SARSCoV2External $covid19)
     {
-        return view('lab.exams.covid19.edit', compact('covid19'));
+        $regions = Region::orderBy('id','ASC')->get();
+        $communes = Commune::orderBy('id','ASC')->get();
+        $establishments = Establishment::orderBy('id','ASC')->get();
+        return view('lab.exams.covid19.edit', compact('covid19', 'establishments', 'communes', 'regions'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Lab\Exam\Covid19  $covid19
+     * @param  \App\Lab\Exam\SARSCoV2External  $covid19
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Covid19 $covid19)
+    public function update(Request $request, SARSCoV2External $covid19)
     {
         $covid19->fill($request->all());
         $covid19->result_at = date('Y-m-d H:i:s');
@@ -89,7 +98,7 @@ class Covid19Controller extends Controller
         return redirect()->route('lab.exams.covid19.index');
     }
 
-    public function reception(Request $request, Covid19 $covid19)
+    public function reception(Request $request, SARSCoV2External $covid19)
     {
         $covid19->fill($request->all());
         $covid19->receptor_id = Auth::id();
@@ -100,7 +109,7 @@ class Covid19Controller extends Controller
         return redirect()->route('lab.exams.covid19.edit', $covid19);
     }
 
-    public function addresult(Request $request, Covid19 $covid19)
+    public function addresult(Request $request, SARSCoV2External $covid19)
     {
         $covid19->fill($request->all());
         $covid19->result_at = date('Y-m-d H:i:s');
@@ -118,10 +127,10 @@ class Covid19Controller extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Lab\Exam\Covid19  $covid19
+     * @param  \App\Lab\Exam\SARSCoV2External  $covid19
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Covid19 $covid19)
+    public function destroy(SARSCoV2External $covid19)
     {
         //
     }
@@ -140,7 +149,7 @@ class Covid19Controller extends Controller
             "Expires" => "0"
         );
 
-        $filas = Covid19::all();
+        $filas = SARSCoV2External::all();
 
         $columnas = array(
             'ID',
