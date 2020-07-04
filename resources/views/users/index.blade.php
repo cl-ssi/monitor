@@ -10,17 +10,21 @@
 
     <form method="get" action="{{ route('users.index') }}">
         <div class="form-group row">
-            <div class="col-2">
+            <div class="col-sm-2">
                 @can('Admin')
-                    <a class="btn btn-primary" href="{{ route('users.create') }}">
+                    <a class="btn btn-primary " href="{{ route('users.create') }}">
                         Crear usuario
                     </a>
                 @endcan
             </div>
-            <div class="col-4">
+            <div class="col-sm-8">
                 <input class="form-control" type="text" name="search" value="" placeholder="Nombre y/o apellido">
             </div>
-            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
+
+            <div class="col-sm-2 ">
+                <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-search"></i> Buscar</button>
+            </div>
+
         </div>
     </form>
 
@@ -40,7 +44,7 @@
             <th>Run</th>
             <th>Nombre</th>
             <th>Email</th>
-            <th></th>           
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -49,7 +53,7 @@
             <td>{{ $user->run }}-{{$user->dv}}</td>
             <td>{{ $user->name }}</td>
             <td>{{ $user->email }}</td>
-            <td> <a href="{{ route('users.edit', $user) }}">Editar</a> </td>            
+            <td> <a href="{{ route('users.edit', $user) }}">Editar</a> </td>
         </tr>
         @endforeach
     </tbody>
