@@ -190,6 +190,8 @@
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.bookingByDate') }}">Booking Realizados por Fechas</a>
 
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.residences.map') }}">Mapa de Residencias</a>
+
                                 <div class="dropdown-divider"></div>
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.residences.index') }}">Mantenedor Residencias</a>
