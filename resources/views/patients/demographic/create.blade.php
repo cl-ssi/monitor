@@ -84,8 +84,8 @@
 <div class="form-row">
 
     <fieldset class="form-group col-12 col-md-2">
-        <label for="for_city">Ciudad/Pueblo/Localidad*</label>
-        <input type="text" class="form-control" name="city" id="for_city" value="{{old('city')}}" required>
+        <label for="for_city">Ciudad/Pueblo/Localidad</label>
+        <input type="text" class="form-control" name="city" id="for_city" value="{{old('city')}}">
     </fieldset>
 
     <fieldset class="form-group col-12 col-md-6">
