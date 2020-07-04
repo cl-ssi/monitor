@@ -25,7 +25,7 @@
                 </fieldset>
             </div>
 
-            <button type="submit" class="btn btn-primary">Crear</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
 
         </div>
         <div class="col">
