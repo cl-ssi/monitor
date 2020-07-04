@@ -12,13 +12,16 @@
                 <h3 class="mb-3">Seguimiento</h3>
             @endisset
         </div>
-        <div class="col-12 col-sm-9" >
+        <div class="col-12 col-sm-3" >
             <a type="button" class="btn btn-sm btn-outline-primary" href="{{ route('patients.tracings.completed') }}">
                 Seguimientos finalizados
             </a>
             <!--a type="button" class="btn btn-sm btn-outline-primary" href="{{ route('patients.in_residence') }}">
                 En residencia
             </a-->
+        </div>
+        <div class="col-12 col-sm-6" >
+            <input type="text" class="form-control" placeholder="Filtrar por nombre" id="textoFiltro">
         </div>
     </div>
 
@@ -40,7 +43,7 @@
             <th>Funcionario</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="tableTracings">
         @php $fecha = null; @endphp
         @foreach($patients as $key => $patient)
         @if($fecha != $patient->tracing->next_control_at->format('Y-m-d'))
@@ -58,7 +61,7 @@
                 </a>
             </td>
             <td>
-                {{ ($patient->tracing->index) ? 'Sí' : 'CAR' }} 
+                {{ ($patient->tracing->index) ? 'Sí' : 'CAR' }}
             </td>
             <td>
                 {{ $patient->fullName }}
@@ -85,5 +88,19 @@
 @endsection
 
 @section('custom_js')
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#textoFiltro").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#tableTracings tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+
+    </script>
 
 @endsection

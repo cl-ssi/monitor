@@ -82,7 +82,7 @@
 
 <div class="form-row">
     <fieldset class="form-group col-12 col-md-2">
-        <label for="for_city">Ciudad/Pueblo/Localidad*</label>
+        <label for="for_city">Ciudad/Pueblo/Localidad</label>
         <input type="city" class="form-control" name="city" id="for_city"
             value="{{ $patient->demographic->city }}">
     </fieldset>
