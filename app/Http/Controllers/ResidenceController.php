@@ -139,6 +139,17 @@ class ResidenceController extends Controller
         return redirect()->route('sanitary_residences.residences.index');
     }
 
+
+    public function map(Residence $residence)
+    {
+
+        $residences = Residence::All();        
+        return view('sanitary_residences.residences.map', compact('residences'));
+    }
+
+
+    
+
     /**
      * Reporte de estado de residencias
      */

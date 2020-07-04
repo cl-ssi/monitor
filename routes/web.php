@@ -300,6 +300,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
         Route::put('update/{residence}', 'ResidenceController@update')->name('update');
         Route::delete('/{residence}', 'ResidenceController@destroy')->name('destroy');
         Route::get('/statusReport', 'ResidenceController@statusReport')->name('statusReport');
+        Route::get('/map', 'ResidenceController@map')->name('map');
 
 
     });
