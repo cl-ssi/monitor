@@ -438,16 +438,25 @@ class SuspectCaseController extends Controller
                 $emails_bcc  = explode(',', env('EMAILS_ALERT_BCC'));
                 Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($suspectCase));
             }
-            /* Si el resultado es negativo y el usuario tiene email, enviar resultado al usuario */
-            if($old_pcr == 'pending' && ($suspectCase->pscr_sars_cov_2 == 'negative' ||
-                                          $suspectCase->pscr_sars_cov_2 == 'undetermined' ||
-                                          $suspectCase->pscr_sars_cov_2 == 'rejected') &&
-                $suspectCase->patient->demographic != NULL){
+
+            /* Enviar resultado al usuario, solo si tiene registrado un correo electronico */
+            if($old_pcr == 'pending' && $suspectCase->patient->demographic != NULL){
                 if($suspectCase->patient->demographic->email != NULL){
                     $email  = $suspectCase->patient->demographic->email;
                     Mail::to($email)->send(new NewNegative($suspectCase));
                 }
             }
+
+            /* Si el resultado es negativo y el usuario tiene email, enviar resultado al usuario */
+            // if($old_pcr == 'pending' && ($suspectCase->pscr_sars_cov_2 == 'negative' ||
+            //                               $suspectCase->pscr_sars_cov_2 == 'undetermined' ||
+            //                               $suspectCase->pscr_sars_cov_2 == 'rejected') &&
+            //     $suspectCase->patient->demographic != NULL){
+            //     if($suspectCase->patient->demographic->email != NULL){
+            //         $email  = $suspectCase->patient->demographic->email;
+            //         Mail::to($email)->send(new NewNegative($suspectCase));
+            //     }
+            // }
         }
 
         return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
