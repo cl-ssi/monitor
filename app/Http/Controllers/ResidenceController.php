@@ -142,9 +142,87 @@ class ResidenceController extends Controller
 
     public function map(Residence $residence)
     {
+        $dataArray = array();
+        $residences = Residence::All();
 
-        $residences = Residence::All();        
-        return view('sanitary_residences.residences.map', compact('residences'));
+
+
+        foreach ($residences as $residence){
+            $counterTotalRoomsByResidence = $residence->rooms()->count();
+            $counterPatientsByResidence = 0;
+            $counterOccupiedRoomsByResidence = 0;
+            $singlecounter = 0;
+            $doublecounter = 0;
+            $totalsinglebyresidence = $residence->rooms->sum('single');
+            $totaldoublebyresidence = $residence->rooms->sum('double');
+
+            $rooms = $residence->rooms;
+            foreach ($rooms as $room){                
+                $bookings = $room->bookings();                
+
+                $counterPatientsByRoom = $bookings->where('status', 'Residencia Sanitaria')->whereNull('real_to')
+                                        ->whereHas('patient', function($q){
+                                            $q->where('status', 'Residencia Sanitaria');
+                                        })->get()->count();
+                
+
+                $counterPatientsByResidence = $counterPatientsByResidence + $counterPatientsByRoom;
+
+                if($counterPatientsByRoom > 0){
+                    $counterOccupiedRoomsByResidence = $counterOccupiedRoomsByResidence + 1;
+                }
+
+                if($counterPatientsByRoom == 0){
+                    $singlecounter = $room->single + $singlecounter;
+                    $doublecounter = $room->double + $doublecounter;
+                }
+
+            }
+
+            array_push(
+                $dataArray, array(
+                    'latitude' => $residence->latitude,
+                    'longitude' => $residence->longitude,
+                    'residenceName' => $residence->name,
+                    'totalRooms' => $counterTotalRoomsByResidence,
+                    'occupiedRooms' => $counterOccupiedRoomsByResidence,
+                    'patients' => $counterPatientsByResidence,
+                    'availableRooms' => $counterTotalRoomsByResidence - $counterOccupiedRoomsByResidence,
+                    'single' => $singlecounter,
+                    'double' => $doublecounter,
+                    'totalsinglebyresidence'=> $totalsinglebyresidence,
+                    'totaldoublebyresidence'=> $totaldoublebyresidence
+                    )
+            );
+
+        }
+
+        $totalRooms = 0;
+        $totalOccupiedRooms = 0;
+        $totalPatients = 0;
+        $totalAvailableRooms = 0;
+        $totalSingle = 0;
+        $totalDouble = 0;
+        $sumSingle = 0;
+        $sumDouble = 0;
+
+        foreach ($dataArray as $residence){
+            
+            $totalRooms = $totalRooms + $residence['totalRooms'];
+            $totalOccupiedRooms = $totalOccupiedRooms + $residence['occupiedRooms'];
+            $totalPatients = $totalPatients + $residence['patients'];
+            $totalAvailableRooms = $totalAvailableRooms + $residence['availableRooms'];
+            $totalSingle = $totalSingle + $residence['single'];
+            $totalDouble = $totalDouble + $residence['double'];
+            $sumSingle = $sumSingle + $residence['totalsinglebyresidence'];
+            $sumDouble = $sumDouble + $residence['totaldoublebyresidence'];
+
+        }
+
+        
+        
+
+        return view('sanitary_residences.residences.map', compact('residences', 'dataArray'));
     }
 
 
