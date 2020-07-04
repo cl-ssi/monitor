@@ -10,7 +10,7 @@
 
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDig7buC7kBRzFGzBayhcLZ_loogA1h98g&callback=initMap&libraries=&v=weekly"
+      src="https://maps.googleapis.com/maps/api/js?key={{env('API_KEY_GOOGLE_MAPS')}}&callback=initMap&libraries=&v=weekly"
       defer
     ></script>
 
@@ -36,15 +36,19 @@
             mapOptions
           );
 
-          @foreach($residences as $residence)
-          @if($residence->latitude)
+          @foreach($dataArray as $residencia)
+          @if($residencia['latitude'])
           var marker = new google.maps.Marker({
             // The below line is equivalent to writing:
             // position: new google.maps.LatLng(-34.397, 150.644)
-            
+            @if($residencia['availableRooms']>0)
+            icon: {url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"},
+            @else
+            icon: {url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"},
+            @endif
             position: {                
-              lat: {{$residence->latitude }},
-              lng: {{$residence->longitude }}
+              lat: {{$residencia['latitude'] }},
+              lng: {{$residencia['longitude'] }}
             },
             map: exports.map
           }); // You can use a LatLng literal in place of a google.maps.LatLng object when
@@ -52,11 +56,12 @@
           // position will be available as a google.maps.LatLng object. In this case,
           // we retrieve the marker's position using the
           // google.maps.LatLng.getPosition() method.
-          var content = "<p align='center'>{{$residence->name }} </p> <p>Total Camas Singles: {{$residence->rooms->sum('single')}} </p> <p>Total Camas Dobles: {{$residence->rooms->sum('double')}} </p><hr>";
+          
+          var content = "<h5><p align='center'><b>{{$residencia['residenceName']}} </h5></b></p><hr> <p> Habitaciones Totales:{{$residencia['totalRooms']}} (Single:{{$residencia['totalsinglebyresidence'] }} Doble:{{$residencia['totaldoublebyresidence'] }}) </p><p> Habitaciones Ocupadas:{{$residencia['occupiedRooms']}} </p> Pacientes en Residencia:{{$residencia['patients']}} <hr> <p>Habitaciones Disponibles: {{$residencia['availableRooms'] }} ( Single: {{$residencia['single'] }} Doble:{{$residencia['double'] }} )</p>";
           var infowindow = new google.maps.InfoWindow();
 
         //   var infowindow = new google.maps.InfoWindow({
-        //     content: "<p>{{$residence->name }}" + marker.getPosition() + "</p>"
+        
         //   });
         //   google.maps.event.addListener(marker, "click", function() {
         //     infowindow.open(exports.map, marker);
