@@ -60,7 +60,7 @@
                     <small id="laboratoryHelp" class="form-text text-muted">Sólo para ingresos en laboratorio</small>
                 </fieldset>
 
-                <fieldset class="form-group col-6 col-md-6">
+                <fieldset class="form-group col-12 col-md-6">
                     <label for="for_establishment_id">Establecimiento *</label>
                     <select name="establishment_id[]" id="for_establishment_id" class="form-control selectpicker" data-live-search="true" multiple="" data-size="10" title="Seleccione..." multiple data-actions-box="true" required>
                         @foreach($establishments as $establishment)
@@ -74,13 +74,13 @@
                         autocomplete="off" required>
                 </fieldset>
 
-                <fieldset class="form-group col-6 col-md-2">
+                <fieldset class="form-group col-12 col-md-2">
                     <label for="for_telephone">Telefono</label>
                     <input type="text" class="form-control" name="telephone" id="for_telephone" placeholder="ej:+56912345678"
                         >
                 </fieldset>
 
-                <fieldset class="form-group col-6 col-md-2">
+                <fieldset class="form-group col-12 col-md-2">
                     <label for="for_function">Función</label>
                     <input type="text" class="form-control" name="function" id="for_function">
                 </fieldset>
