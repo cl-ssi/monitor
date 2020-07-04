@@ -21,7 +21,7 @@
         @foreach($booking->vitalSigns->reverse() as $vitalsign)
         <tr>        
             <td nowrap>{{ $vitalsign->created_at->format('d-m-Y H:i') }}</td>            
-            @if($vitalsign->created_at->diffInHours($vitalsign->updated_at) > 2)
+            @if($vitalsign->created_at->diffInHours($vitalsign->updated_at) > 3)
             <td nowrap class="table-danger">{{ $vitalsign->updated_at->format('d-m-Y H:i') }}</td>
             @else
             <td nowrap>{{ $vitalsign->updated_at->format('d-m-Y H:i') }}</td>
