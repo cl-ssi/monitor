@@ -3,7 +3,7 @@
 @section('title', 'Georeferenciación')
 
 @section('content')  
-<h3 class="mb-3"><i class="fas fa-globe-americas"></i>Seguimiento en Mis Comunas</h3>
+<h3 class="mb-3"><i class="fas fa-globe-americas"></i> Seguimiento en Mis Comunas</h3> <small>(Rojo:Caso Indice - Azul:Contacto Alto Riesgo)</small>
     <div id="map" style="width: 100%; height: 650px"></div>
 @endsection
 
@@ -25,7 +25,7 @@
         // in place of a google.maps.LatLng object.
 
         function initMap() {
-          var mapOptions = {
+          var mapOptions = {          
             zoom: 12.7,
             center: {
             lat: {{ env('LATITUD') }},
@@ -41,7 +41,12 @@
           @if($patient->demographic->latitude)
           var marker = new google.maps.Marker({
             // The below line is equivalent to writing:
-            // position: new google.maps.LatLng(-34.397, 150.644)            
+            // position: new google.maps.LatLng(-34.397, 150.644)
+            @if($patient->tracing->index)
+            icon: {url: "http://maps.gstatic.com/mapfiles/ridefinder-images/mm_20_red.png"},
+            @else
+            icon: {url: "http://maps.gstatic.com/mapfiles/ridefinder-images/mm_20_blue.png"},
+            @endif
             position: {                
               lat: {{$patient->demographic->latitude}},
               lng: {{$patient->demographic->longitude }}
