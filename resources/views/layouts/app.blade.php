@@ -148,18 +148,18 @@
                         @endcan
 
                         
-                        @canany(['Patient: georeferencing', 'Patient: tracing'] )
+                        @canany(['Patient: georeferencing', 'Geo: communes', 'Geo: region'] )
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-globe-americas"></i>
                                 Geo
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                @can('Patient: georeferencing')
-                                <a class="dropdown-item" href="{{ route('patients.georeferencing') }}">PCR + Último 30 Días</a>
+                                @canany(['Patient: georeferencing', 'Geo: region'])
+                                <a class="dropdown-item" href="{{ route('patients.georeferencing') }}">Geo Regional</a>
                                 @endcan
-                                @can('Patient: tracing')
-                                <a class="dropdown-item" href="{{ route('patients.tracings.mapbycommunes') }}">Seguimiento de mis comunas</a>
+                                @can('Geo: communes')
+                                <a class="dropdown-item" href="{{ route('patients.tracings.mapbycommunes') }}">Geo mis comunas</a>
                                 @endcan
                             </div>
                         </li>
