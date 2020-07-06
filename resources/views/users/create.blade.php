@@ -76,8 +76,8 @@
 
                 <fieldset class="form-group col-12 col-md-2">
                     <label for="for_telephone">Telefono</label>
-                    <input type="text" class="form-control" name="telephone" id="for_telephone" placeholder="ej:+56912345678"
-                        >
+                    <input type="text" class="form-control" name="telephone"
+                        id="for_telephone" placeholder="ej:+56912345678">
                 </fieldset>
 
                 <fieldset class="form-group col-12 col-md-2">
