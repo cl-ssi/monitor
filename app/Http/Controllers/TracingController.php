@@ -193,6 +193,8 @@ class TracingController extends Controller
         $tracing = new tracing($request->All());
         $tracing->user_id = auth()->id();
         $tracing->next_control_at = Carbon::now()->add(1,'day');
+        $tracing->quarantine_start_at = Carbon::now();
+        $tracing->quarantine_end_at = Carbon::now()->add(14,'days');
         $tracing->save();
 
         return redirect()->back();
