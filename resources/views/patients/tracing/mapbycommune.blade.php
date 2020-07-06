@@ -56,10 +56,10 @@
           // creating the Marker object. Once the Marker object is instantiated, its
           // position will be available as a google.maps.LatLng object. In this case,
           // we retrieve the marker's position using the
-          // google.maps.LatLng.getPosition() method.
+          // google.maps.LatLng.getPosition() method.          
           
           
-          var content = "<h6><p align='center'><b><a href='{{route('patients.edit',$patient)}}' target='_blank'>{{$patient->fullName}}</a></b></p></h6><hr> <p>Inicio de Cuaretena:{{ $patient->tracing->quarantine_start_at->format('Y-m-d') }} </p> <p> Fin de Cuarentena:{{ $patient->tracing->quarantine_end_at->format('Y-m-d') }} ({{ $patient->tracing->quarantine_start_at->diffInDays(Carbon\Carbon::now()) }}) </p> <hr> <p>Notificación:{{ ($patient->tracing->notification_at)? $patient->tracing->notification_at->format('Y-m-d') : '' }}</p> <p>Último evento:{{ ($patient->tracing->events->last()) ? $patient->tracing->events->last()->event_at->format('Y-m-d') : '' }}</p> <p>Funcionario:{{ ($patient->tracing->events->last()) ? $patient->tracing->events->last()->user->name : '' }}</p>";
+          var content = "<h6><p align='center'><b><a href='{{route('patients.edit',$patient)}}' target='_blank'>{{$patient->name1}}</a></b></p></h6><hr> <p>Inicio de Cuaretena:{{ $patient->tracing->quarantine_start_at->format('Y-m-d') }} </p> <p> Fin de Cuarentena:{{ $patient->tracing->quarantine_end_at->format('Y-m-d') }} ({{ $patient->tracing->quarantine_start_at->diffInDays(Carbon\Carbon::now()) }}) </p> <hr> <p>Notificación:{{ ($patient->tracing->notification_at)? $patient->tracing->notification_at->format('Y-m-d') : '' }}</p> <p>Último evento:{{ ($patient->tracing->events->last()) ? $patient->tracing->events->last()->event_at->format('Y-m-d') : '' }}</p> <p>Funcionario:{{ ($patient->tracing->events->last()) ? $patient->tracing->events->last()->user->name : '' }}</p>";
           var infowindow = new google.maps.InfoWindow();
 
         //   var infowindow = new google.maps.InfoWindow({
