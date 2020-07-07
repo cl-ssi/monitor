@@ -63,6 +63,7 @@
                             <option value=""></option>
                             <option value="1" {{ ($patient->tracing->index === 1) ? 'selected' : '' }}>Si</option>
                             <option value="0" {{ ($patient->tracing->index === 0) ? 'selected' : '' }}>No</option>
+                            <option value="2" {{ ($patient->tracing->index === 2) ? 'selected' : '' }}>Probable</option>
                         </select>
                     </fieldset>
 
