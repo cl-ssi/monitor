@@ -390,7 +390,7 @@ class SuspectCaseController extends Controller
                 $suspectCase->patient->tracing->quarantine_start_at = ($suspectCase->symptoms_at) ?
                                                 $suspectCase->symptoms_at :
                                                 $suspectCase->pscr_sars_cov_2_at;
-                $suspectCase->patient->tracing->quarantine_end_at = $tracing->quarantine_start_at->add(14,'days');
+                $suspectCase->patient->tracing->quarantine_end_at = $suspectCase->patient->tracing->quarantine_start_at->add(14,'days');
                 $suspectCase->patient->tracing->save();
             }
             else {
@@ -443,7 +443,7 @@ class SuspectCaseController extends Controller
 
             /* Enviar resultado al usuario, solo si tiene registrado un correo electronico */
             if($old_pcr == 'pending' && ($suspectCase->pscr_sars_cov_2 == 'negative' || $suspectCase->pscr_sars_cov_2 == 'undetermined' ||
-                                          $suspectCase->pscr_sars_cov_2 == 'rejected' || $suspectCase->pscr_sars_cov_2 == 'positive') 
+                                          $suspectCase->pscr_sars_cov_2 == 'rejected' || $suspectCase->pscr_sars_cov_2 == 'positive')
                                       && $suspectCase->patient->demographic != NULL){
                 if($suspectCase->patient->demographic->email != NULL){
                     $email  = $suspectCase->patient->demographic->email;
