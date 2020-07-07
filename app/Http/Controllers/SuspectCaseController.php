@@ -40,6 +40,7 @@ use App\Exports\HetgSuspectCasesExport;
 use App\Exports\UnapSuspectCasesExport;
 use App\Exports\MinsalSuspectCasesExport;
 use App\Exports\SeremiSuspectCasesExport;
+use App\Imports\PatientImport;
 
 class SuspectCaseController extends Controller
 {
@@ -105,6 +106,7 @@ class SuspectCaseController extends Controller
                                       ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
                                       ->paginate(200);//->appends(request()->query());
         }
+
         return view('lab.suspect_cases.index', compact('suspectCases','request','suspectCasesTotal','laboratory'));
     }
 
@@ -440,7 +442,9 @@ class SuspectCaseController extends Controller
             }
 
             /* Enviar resultado al usuario, solo si tiene registrado un correo electronico */
-            if($old_pcr == 'pending' && $suspectCase->patient->demographic != NULL){
+            if($old_pcr == 'pending' && ($suspectCase->pscr_sars_cov_2 == 'negative' || $suspectCase->pscr_sars_cov_2 == 'undetermined' ||
+                                          $suspectCase->pscr_sars_cov_2 == 'rejected' || $suspectCase->pscr_sars_cov_2 == 'positive') 
+                                      && $suspectCase->patient->demographic != NULL){
                 if($suspectCase->patient->demographic->email != NULL){
                     $email  = $suspectCase->patient->demographic->email;
                     Mail::to($email)->send(new NewNegative($suspectCase));
@@ -873,4 +877,14 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.notification_form', compact('suspectCase', 'user'));
     }
 
+    public function index_bulk_load(){
+        return view('lab.bulk_load.import');
+    }
+
+    public function bulk_load_import(Request $request){
+        $file = $request->file('file');
+        Excel::import(new PatientImport, $file);
+
+        // return view('lab.suspect_cases.import', compact('events'));
+    }
 }
