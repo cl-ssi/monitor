@@ -182,7 +182,7 @@
 
 
 
-                        @canany(['SanitaryResidence: user', 'SanitaryResidence: admin' ,'SanitaryResidence: admission'] )
+                        @canany(['SanitaryResidence: user', 'SanitaryResidence: admin' ,'SanitaryResidence: admission', 'Report: residences'] )
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-hotel"></i>
@@ -190,7 +190,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-                                @canany(['SanitaryResidence: user', 'SanitaryResidence: admin'] )
+                                @canany(['SanitaryResidence: user', 'SanitaryResidence: admin', 'Report: residences'] )
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.home') }}">Residencias Sanitarias</a>
 
                                 <div class="dropdown-divider"></div>
@@ -199,13 +199,17 @@
 
                                 @endcan
 
-                                @can('SanitaryResidence: admin')
+                                @canany(['SanitaryResidence: admin', 'Report: residences'])
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.residences.statusReport') }}">Consolidado Booking</a>
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.bookingByDate') }}">Booking Realizados por Fechas</a>
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.residences.map') }}">Mapa de Residencias</a>
+                                
+                                @endcan
+
+                                @can('SanitaryResidence: admin')
 
                                 <div class="dropdown-divider"></div>
 
