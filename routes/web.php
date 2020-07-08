@@ -81,6 +81,7 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
     });
 
     Route::prefix('tracings')->name('tracings.')->middleware('auth')->group(function () {
+        Route::get('/mapbycommunes', 'TracingController@mapByCommune')->name('mapbycommunes');
         Route::get('/communes', 'TracingController@indexByCommune')->name('communes');
         Route::get('/establishments', 'TracingController@indexByEstablishment')->name('establishments');
         Route::get('/completed', 'TracingController@tracingCompleted')->name('completed');
@@ -145,6 +146,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
     Route::get('results','SuspectCaseController@result')->name('result');
     Route::get('print/{suspect_case}','SuspectCaseController@print')->middleware('auth')->name('print');
     Route::post('printpost/{suspect_case}','SuspectCaseController@printpost')->name('printpost');
+    Route::post('updateNotification/{suspect_case}','SuspectCaseController@updateNotification')->name('updateNotification');
     //Route::get('print/{suspect_case}','SuspectCaseController@print')->name('print');
     Route::prefix('exams')->name('exams.')->middleware('auth')->group(function () {
         Route::prefix('covid19')->name('covid19.')->group(function () {
@@ -175,6 +177,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/index/{laboratory?}','SuspectCaseController@index')->name('index')->middleware('auth','can:SuspectCase: list');
 
         Route::get('/ownIndex/{laboratory?}','SuspectCaseController@ownIndex')->name('ownIndex')->middleware('auth','can:SuspectCase: own');
+        Route::get('/notification','SuspectCaseController@notificationInbox')->name('notificationInbox')->middleware('auth','can:Patient: tracing');
 
         Route::get('/exportSuspectCases/{lab}','SuspectCaseController@exportExcel')->name('export')->middleware('auth');
 
@@ -234,6 +237,11 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/{inmunoTest}/edit', 'InmunoTestController@edit')->name('edit')->middleware('auth');
         Route::post('/{store}', 'InmunoTestController@store')->name('store')->middleware('auth');
         Route::put('/update/{inmunoTest}', 'InmunoTestController@update')->name('update')->middleware('auth');
+    });
+
+    Route::prefix('bulk_load')->name('bulk_load.')->group(function () {
+        Route::get('/','SuspectCaseController@index_bulk_load')->name('index')->middleware('auth');
+        Route::post('/import', 'SuspectCaseController@bulk_load_import')->name('import.excel');
     });
 });
 

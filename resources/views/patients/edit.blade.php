@@ -256,7 +256,7 @@
 
     <hr>
 
-    @can('SuspectCase: list')
+    @can('Patient: tracing')
 
         <div class="card">
             <div class="card-body">
@@ -278,14 +278,30 @@
                     @foreach($patient->suspectCases as $case)
                         <tr>
                             <td>
+                                @can('SuspectCase: edit')
                                 <a href="{{ route('lab.suspect_cases.edit', $case )}}">
+                                @endcan
                                     {{ $case->id }}
+                                @can('SuspectCase: edit')
                                 </a>
+                                @endcan
                             </td>
                             <td>{{ $case->establishment?$case->establishment->alias.' - '.$case->origin: '' }}</td>
                             <td>{{ $case->sample_at }}</td>
                             <td>{{ $case->pscr_sars_cov_2_at }}</td>
-                            <td>{{ $case->covid19 }}</td>
+                            <td>{{ $case->covid19 }}
+                                @if($case->files->first())
+                                <a href="{{ route('lab.suspect_cases.download', $case->files->first()->id) }}"
+                                    target="_blank"><i class="fas fa-paperclip"></i>&nbsp
+                                </a>
+                                @endif
+
+                                @if ($case->laboratory->pdf_generate == 1 && $case->pscr_sars_cov_2 <> 'pending')
+                                <a href="{{ route('lab.print', $case) }}"
+                                    target="_blank"><i class="fas fa-paperclip"></i>&nbsp
+                                </a>
+                                @endif
+                            </td>
                             <td>{{ $case->epivigila }}</td>
                             <td>{{ $case->observation }}</td>
                         </tr>

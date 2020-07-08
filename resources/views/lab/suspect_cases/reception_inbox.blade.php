@@ -143,8 +143,11 @@ function exportF(elem) {
     $(document).ready(function () {
         $("#texto").on("keyup", function () {
             var value = $(this).val().toLowerCase();
+            value = value.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
             $("#tableCases tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                var tableValue = $(this).text().toLowerCase();
+                tableValue = tableValue.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+                $(this).toggle(tableValue.indexOf(value) > -1)
             });
         });
     });

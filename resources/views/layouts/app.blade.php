@@ -69,7 +69,7 @@
 
 
 
-                        @canany(['SuspectCase: admission','SuspectCase: reception','SuspectCase: own','SuspectCase: list','Patient: tracing'])
+                        @canany(['SuspectCase: admission','SuspectCase: reception','SuspectCase: own','SuspectCase: list','Patient: tracing', 'SuspectCase: bulk load'])
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-lungs-virus"></i>
@@ -107,6 +107,8 @@
                                 <div class="dropdown-divider"></div>
 
                                 @can('Patient: tracing')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.notificationInbox') }}">Notificación (excepto positivos)</a>
+
                                 <a class="dropdown-item" href="{{ route('patients.tracings.communes') }}">Seguimiento de mis comunas</a>
                                 <a class="dropdown-item" href="{{ route('patients.tracings.establishments') }}">Seguimiento de mis establecimientos</a>
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.tracing_minsal') }}">Seguimiento SEREMI</a>
@@ -118,12 +120,18 @@
 
                                 <div class="dropdown-divider"></div>
                                 @can('Developer')
-                                <a class="dropdown-item" href="{{ route('patients.tracings.withouttracing') }}">Beta Pacientes Positivos sin Seguimientos >= 22-06-2020</a>
+                                <!-- <a class="dropdown-item" href="{{ route('patients.tracings.withouttracing') }}">Beta Pacientes Positivos sin Seguimientos >= 22-06-2020</a> -->
                                 @endcan
 
                                 @can('Patient: tracing old')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing') }}">Seguimiento (Antiguo)</a>
                                 @endcan
+
+                                <hr>
+
+                                <!-- @can('SuspectCase: bulk load')
+                                <a class="dropdown-item" href="{{ route('lab.bulk_load.index') }}">Carga Masiva</a>
+                                @endcan -->
 
                             </div>
                         </li>
@@ -147,12 +155,21 @@
                         </li>
                         @endcan
 
-                        @can('Patient: georeferencing')
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('patients.georeferencing') }}">
+
+                        @canany(['Patient: georeferencing', 'Geo: communes', 'Geo: region'] )
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-globe-americas"></i>
                                 Geo
                             </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                @canany(['Patient: georeferencing', 'Geo: region'])
+                                <a class="dropdown-item" href="{{ route('patients.georeferencing') }}">Geo Regional</a>
+                                @endcan
+                                @can('Geo: communes')
+                                <a class="dropdown-item" href="{{ route('patients.tracings.mapbycommunes') }}">Geo mis comunas</a>
+                                @endcan
+                            </div>
                         </li>
                         @endcan
 
@@ -167,7 +184,7 @@
 
 
 
-                        @canany(['SanitaryResidence: user', 'SanitaryResidence: admin' ,'SanitaryResidence: admission'] )
+                        @canany(['SanitaryResidence: user', 'SanitaryResidence: admin' ,'SanitaryResidence: admission', 'Report: residences'] )
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-hotel"></i>
@@ -175,7 +192,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-                                @canany(['SanitaryResidence: user', 'SanitaryResidence: admin'] )
+                                @canany(['SanitaryResidence: user', 'SanitaryResidence: admin', 'Report: residences'] )
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.home') }}">Residencias Sanitarias</a>
 
                                 <div class="dropdown-divider"></div>
@@ -184,13 +201,17 @@
 
                                 @endcan
 
-                                @can('SanitaryResidence: admin')
+                                @canany(['SanitaryResidence: admin', 'Report: residences'])
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.residences.statusReport') }}">Consolidado Booking</a>
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.bookingByDate') }}">Booking Realizados por Fechas</a>
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.residences.map') }}">Mapa de Residencias</a>
+
+                                @endcan
+
+                                @can('SanitaryResidence: admin')
 
                                 <div class="dropdown-divider"></div>
 
@@ -232,17 +253,17 @@
 
 
                         @canany(['Report: positives',
-                                    'Report: commune',
-                                    'Report: hospitalized',
-                                    'Report: deceased',
-                                    'Report: other',
-                                    'Report: historical',
-                                    'Report: exams with result',
-                                    'Report: gestants',
-                                    'Report: positives demographics',
-                                    'Report: residences',
-                                    'Report: positives by range'
-                                    ])
+                        'Report: commune',
+                        'Report: hospitalized',
+                        'Report: deceased',
+                        'Report: other',
+                        'Report: historical',
+                        'Report: exams with result',
+                        'Report: gestants',
+                        'Report: positives demographics',
+                        'Report: residences',
+                        'Report: positives by range'
+                        ])
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-clipboard"></i>
@@ -255,7 +276,7 @@
                                 @endcan
 
                                 @can('Report: commune')
-                                    <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.positives_own') }}">Reporte de mi comuna</a>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.positives_own') }}">Reporte de mi comuna</a>
                                 @endcan
 
                                 @can('Report: hospitalized')
@@ -286,15 +307,15 @@
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.diary_by_lab_report') }}">Exámenes realizados por laboratorios</a>
 
                                 @can('Report: positives demographics')
-                                    <a class="dropdown-item" href="{{ route('patients.exportPositives') }}">Reporte de positivos con dirección</a>
+                                <a class="dropdown-item" href="{{ route('patients.exportPositives') }}">Reporte de positivos con dirección</a>
                                 @endcan
 
                                 @can('Report: residences')
-                                    <a class="dropdown-item" href="{{ route('sanitary_residences.residences.statusReport') }}">Reporte de residencias</a>
+                                <a class="dropdown-item" href="{{ route('sanitary_residences.residences.statusReport') }}">Reporte de residencias</a>
                                 @endcan
 
                                 @can('Report: positives by range')
-                                    <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.positivesByDateRange') }}">Reporte de positivos por fecha</a>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.positivesByDateRange') }}">Reporte de positivos por fecha</a>
                                 @endcan
 
                                 @can('Report: requires licence')

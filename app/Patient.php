@@ -110,6 +110,16 @@ class Patient extends Model implements Auditable //Authenticatable
         return mb_strtoupper($this->name . ' ' . $this->fathers_family . ' ' . $this->mothers_family);
     }
 
+    function getName1Attribute(){
+        $name1 = explode(' ', $this->name);
+        return mb_strtoupper($name1[0]);
+    }
+
+    function getName2Attribute(){
+        $name2 = explode(' ', $this->name);
+        return mb_strtoupper($name2[1]);
+    }
+
     function getRunExportAttribute(){
         if(isset($this->run) and isset($this->dv)) {
             return $this->run . $this->dv;
