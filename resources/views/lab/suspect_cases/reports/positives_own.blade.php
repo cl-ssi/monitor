@@ -105,7 +105,7 @@
                 <tr>
                     <td>{{ $commune->name }} ({{ $commune->population }}*)</td>
                     <td class="text-right">
-                        {{ number_format($commune->count / $commune->population * 100000 ,2) }}
+                        {{ number_format($commune->count / $commune->population * 100000 ,2)  }}
                     </td>
                 </tr>
                 @endforeach
@@ -113,7 +113,7 @@
                 <tr>
                     <th>Total ({{ $communes->sum('population') }}*)</th>
                     <th class="text-right">
-                        {{ number_format($total_male_female / $communes->sum('population') * 100000 ,2) }}
+                        {{ number_format($region / $communes->sum('population') * 100000 ,2) }}
                     </th>
                 </tr>
             </tbody>
