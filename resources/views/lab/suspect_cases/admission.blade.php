@@ -23,7 +23,7 @@
         <fieldset class="form-group col-8 col-md-2">
             <label for="for_run">Run SIN DIGITO VERIF.</label>
             <input type="hidden" class="form-control" id="for_id" name="id" value="{{old('id')}}">
-            <input type="number" max="26000000" class="form-control" id="for_run" name="run" value="{{old('run')}}">
+            <input type="number" max="30000000" class="form-control" id="for_run" name="run" value="{{old('run')}}">
         </fieldset>
 
         <fieldset class="form-group col-4 col-md-1">

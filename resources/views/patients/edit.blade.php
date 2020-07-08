@@ -18,7 +18,7 @@
                     <fieldset class="form-group col-10 col-md-2">
                         <label for="for_run">Run</label>
                         <input type="text" class="form-control" id="for_run" name="run"
-                               value="{{ $patient->run }}" max="26000000">
+                               value="{{ $patient->run }}" max="30000000">
                     </fieldset>
 
                     <fieldset class="form-group col-2 col-md-1">
