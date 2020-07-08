@@ -104,13 +104,11 @@
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.ownIndex') }}?text=&filter%5B%5D=pending">Mis exámenes</a>
                                 @endcan
 
-                                @can('Patient: tracing')
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.MyCommunesIndex') }}">Examenes de mis comunas</a>
-                                @endcan
-
                                 <div class="dropdown-divider"></div>
 
                                 @can('Patient: tracing')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.notificationInbox') }}">Notificación (excepto positivos)</a>
+
                                 <a class="dropdown-item" href="{{ route('patients.tracings.communes') }}">Seguimiento de mis comunas</a>
                                 <a class="dropdown-item" href="{{ route('patients.tracings.establishments') }}">Seguimiento de mis establecimientos</a>
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.tracing_minsal') }}">Seguimiento SEREMI</a>
