@@ -296,10 +296,12 @@
                                 </a>
                                 @endif
 
+                                @if ($case->laboratory)
                                 @if ($case->laboratory->pdf_generate == 1 && $case->pscr_sars_cov_2 <> 'pending')
                                 <a href="{{ route('lab.print', $case) }}"
                                     target="_blank"><i class="fas fa-paperclip"></i>&nbsp
                                 </a>
+                                @endif
                                 @endif
                             </td>
                             <td>{{ $case->epivigila }}</td>
