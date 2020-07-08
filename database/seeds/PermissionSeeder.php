@@ -42,6 +42,7 @@ class PermissionSeeder extends Seeder
         $permission = Permission::create(['name' => 'SuspectCase: tecnologo']);
         $permission = Permission::create(['name' => 'SuspectCase: tecnologo edit']);
         $permission = Permission::create(['name' => 'SuspectCase: own']);
+        $permission = Permission::create(['name' => 'SuspectCase: bulk load']);
 
         $permission = Permission::create(['name' => 'Lab: menu']);
 
