@@ -21,20 +21,20 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($suspectCases as $suspectCase)
+        @foreach($files as $file)
         <tr>
-            <td>{{ $suspectCase->patient->identifier }}</td>
+            <td>{{ $file->suspectCase->patient->identifier }}</td>
             <td>
-                @if($suspectCase->patient != null)
-                    {{ $suspectCase->patient->fullName }}
+                @if($file->suspectCase->patient != null)
+                    {{ $file->suspectCase->patient->fullName }}
                 @endif
             </td>
-            <td>{{ $suspectCase->sample_at }}</td>
-            <td>{{ $suspectCase->pscr_sars_cov_2_at }}</td>
+            <td>{{ $file->suspectCase->sample_at }}</td>
+            <td>{{ $file->suspectCase->pscr_sars_cov_2_at }}</td>
             <td>
-                <a href="{{ route('lab.suspect_cases.download', $suspectCase->id) }}"
+                <a href="{{ route('lab.suspect_cases.download', $file->id) }}"
                 target="_blank" data-toggle="tooltip" data-placement="top"
-                data-original-title="{{ $suspectCase->id . '.pdf' }}">
+                data-original-title="{{ $file->name }}">
                 <i class="fas fa-paperclip"></i>&nbsp</a>
             </td>
         </tr>
@@ -44,7 +44,7 @@
 <!-- del laboratorio UNAP -->
 <table>
     <tbody>
-        @foreach ($suspectCasesUnap as $key => $suspectCase)
+        @foreach ($suspectCases as $key => $suspectCase)
             <tr>
                 <td>
                     {{ $suspectCase->patient->identifier }}

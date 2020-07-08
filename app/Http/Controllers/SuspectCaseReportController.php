@@ -602,23 +602,18 @@ class SuspectCaseReportController extends Controller
         $from = Carbon::now()->subDays(2);
         $to = Carbon::now();
         //dd($from, $to);
-//        $files = File::whereBetween('created_at', [$from, $to])
-//                   ->whereHas('suspectCase', function ($query) {
-//                        $query->where('pscr_sars_cov_2', 'like', 'positive');
-//                    })
-//                   ->orderBy('created_at','DESC')->get();
+        $files = File::whereBetween('created_at', [$from, $to])
+                   ->whereHas('suspectCase', function ($query) {
+                        $query->where('pscr_sars_cov_2', 'like', 'positive');
+                    })
+                   ->orderBy('created_at','DESC')->get();
 
-        $suspectCases = SuspectCase::whereBetween('pscr_sars_cov_2_at', [$from, $to])
-            ->where('pscr_sars_cov_2', 'like', 'positive')
-            ->orderBy('created_at','DESC')->get();
-
-
-        $suspectCasesUnap = SuspectCase::whereBetween('created_at', [$from, $to])
+        $suspectCases = SuspectCase::whereBetween('created_at', [$from, $to])
                                  ->where('pscr_sars_cov_2', 'like', 'positive')
                                  ->where('laboratory_id', 2)
                                  ->get();
 
-        return view('lab.suspect_cases.reports.exams_with_result', compact('suspectCases','suspectCasesUnap'));
+        return view('lab.suspect_cases.reports.exams_with_result', compact('files','suspectCases'));
     }
 
 

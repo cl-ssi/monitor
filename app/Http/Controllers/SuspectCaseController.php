@@ -40,7 +40,6 @@ use App\Exports\HetgSuspectCasesExport;
 use App\Exports\UnapSuspectCasesExport;
 use App\Exports\MinsalSuspectCasesExport;
 use App\Exports\SeremiSuspectCasesExport;
-use App\Imports\PatientImport;
 
 class SuspectCaseController extends Controller
 {
@@ -106,7 +105,6 @@ class SuspectCaseController extends Controller
                                       ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
                                       ->paginate(200);//->appends(request()->query());
         }
-
         return view('lab.suspect_cases.index', compact('suspectCases','request','suspectCasesTotal','laboratory'));
     }
 
@@ -140,50 +138,32 @@ class SuspectCaseController extends Controller
 
     /**
      * Muestra exámenes asociados a la comunas del usuario.
-     * @param Request $request
-     * @param Laboratory $laboratory
      * @return Application|Factory|View
      */
-    public function MyCommunesIndex(request $request, Laboratory $laboratory)
+    public function notificationInbox()
     {
-        // $patients = Patient::whereHas('demographic', function($q) {
-        //     $q->whereIn('commune_id', auth()->user()->communes());
-        // })
-        // $searchText = $request->get('text');
-        // $arrayFilter = (empty($request->filter)) ? array() : $request->filter;
-
-        // $suspectCasesTotal = SuspectCase::where(function($q){
-        //                         $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
-        //                           ->orWhere('user_id', Auth::user()->id);
-        //                     })
-        //                     ->whereHas('patient', function($q){
-        //                             $q->whereHas('demographic', function($q){
-        //                                     $q->whereIn('commune_id',auth()->user()->communes());
-        //                             });
-        //                     })
-        //                     ->whereNotIn('pscr_sars_cov_2', ['pending','positive'])
-        //                     ->get();
-
         $from = Carbon::now()->subDays(3);
         $to = Carbon::now();
 
-        $suspectCases = SuspectCase::where(function($q){
-                            $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
-                              ->orWhere('user_id', Auth::user()->id);
-                        })
-                        ->whereHas('patient', function($q){
+            /*
+            where(function($q){
+                                $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'));
+                            })
+                            ->
+                */
+        $suspectCases = SuspectCase::whereHas('patient', function($q){
                                 $q->whereHas('demographic', function($q){
                                         $q->whereIn('commune_id',auth()->user()->communes());
                                 });
                         })
-                        // ->patientTextFilter($searchText)
                         ->whereNotIn('pscr_sars_cov_2', ['pending','positive'])
+                        ->whereNull('notification_at')
                         ->whereBetween('created_at', [$from, $to])
-                        ->paginate(200);
+                        ->get();
 
-                        // dd($suspectCases);
+        // dd($suspectCases);
 
-        return view('lab.suspect_cases.my_communes_index', compact('suspectCases', 'laboratory'));
+        return view('lab.suspect_cases.notification_inbox', compact('suspectCases'));
     }
 
     /**
@@ -428,13 +408,6 @@ class SuspectCaseController extends Controller
             $suspectCase->validator_id = Auth::id();
         }
 
-        /* guarda archivos FIX: pendiente traspasar a sólo un archivo */
-        if ($request->hasFile('forfile')) {
-            $file = $request->file('forfile');
-            $file->storeAs('suspect_cases', $suspectCase->id . '.pdf');
-            $suspectCase->file = true;
-        }
-
         $suspectCase->save();
 
         /* Crea un TRACING si el resultado es positivo */
@@ -478,7 +451,17 @@ class SuspectCaseController extends Controller
             }
         }
 
-
+        /* guarda archivos FIX: pendiente traspasar a sólo un archivo */
+        if ($request->hasFile('forfile')) {
+            foreach ($request->file('forfile') as $file) {
+                $filename = $file->getClientOriginalName();
+                $fileModel = new File;
+                $fileModel->file = $file->store('files');
+                $fileModel->name = $filename;
+                $fileModel->suspect_case_id = $suspectCase->id;
+                $fileModel->save();
+            }
+        }
 
         if (env('APP_ENV') == 'production') {
             if ($old_pcr == 'pending' and $suspectCase->pscr_sars_cov_2 == 'positive') {
@@ -547,14 +530,11 @@ class SuspectCaseController extends Controller
         return redirect()->route('lab.suspect_cases.index');
     }
 
-    public function fileDelete(SuspectCase $suspectCase)
+    public function fileDelete(File $file)
     {
         /* TODO: implementar auditable en file delete  */
-          if (Storage::delete( 'suspect_cases/' . $suspectCase->id . '.pdf')){
-              $suspectCase->file = false;
-              $suspectCase->save();
-              session()->flash('info', 'Se ha eliminado el archivo correctamente.');
-          }
+        Storage::delete($file->file);
+        $file->delete();
 
         return redirect()->back();
     }
@@ -768,9 +748,9 @@ class SuspectCaseController extends Controller
 
 
 
-    public function download(SuspectCase $suspectCase)
+    public function download(File $file)
     {
-        return Storage::response( 'suspect_cases/' . $suspectCase->id . '.pdf', mb_convert_encoding($suspectCase->id . '.pdf', 'ASCII'));
+        return Storage::response($file->file, mb_convert_encoding($file->name, 'ASCII'));
     }
 
     public function login($access_token = null)
@@ -957,15 +937,24 @@ class SuspectCaseController extends Controller
 
         Storage::makeDirectory('suspect_cases');
 
-        $files = File::all();
+        $files = File::orderBy('id', 'desc')->get();
 
         foreach ($files as $file){
-            $originFileName = $file->file;
-            //TODO cambiar a move?
-            Storage::copy($originFileName, 'suspect_cases/' . $file->suspectCase->id . '.pdf');
-            $file->suspectCase->file = true;
-            $file->suspectCase->save();
+
+            if($file->suspectCase){
+                $originFileName = $file->file;
+                //TODO cambiar a move?
+
+                if(Storage::exists('suspect_cases/' . $file->suspectCase->id . '.pdf')){
+                    Storage::delete('suspect_cases/' . $file->suspectCase->id . '.pdf');
+                }
+
+                Storage::copy($originFileName, 'suspect_cases/' . $file->suspectCase->id . '.pdf');
+                $file->suspectCase->file = true;
+                $file->suspectCase->save();
 //            dump($originFileName);
+            }
+
         }
 
         dd("Migración Lista.");
