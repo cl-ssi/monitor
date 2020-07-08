@@ -238,6 +238,11 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::post('/{store}', 'InmunoTestController@store')->name('store')->middleware('auth');
         Route::put('/update/{inmunoTest}', 'InmunoTestController@update')->name('update')->middleware('auth');
     });
+
+    Route::prefix('bulk_load')->name('bulk_load.')->group(function () {
+        Route::get('/','SuspectCaseController@index_bulk_load')->name('index')->middleware('auth');
+        Route::post('/import', 'SuspectCaseController@bulk_load_import')->name('import.excel');
+    });
 });
 
 Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(function(){
