@@ -93,8 +93,8 @@
             <td nowrap>{{ $case->pscr_sars_cov_2_at }}</td>
             <td nowrap>{{ $case->pscr_sars_cov_2 }}</td>
             <td nowrap>
-                @if($case->files->first())
-                    <a href="{{ route('lab.suspect_cases.download', $case->files->first()->id) }}"
+                @if($case->file)
+                    <a href="{{ route('lab.suspect_cases.download', $case->id) }}"
                         target="_blank"><i class="fas fa-paperclip"></i>&nbsp
                     </a>
                 @else
