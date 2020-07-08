@@ -65,7 +65,7 @@
                data-original-title="{{ $suspectCase->id . 'pdf' }}">Resultado <i class="fas fa-paperclip"></i>&nbsp
             </a>
             @can('SuspectCase: file delete')
-                - <a href="{{ route('lab.suspect_cases.fileDelete', $suspectCase->id) }}" onclick="return confirm('Estás seguro Cesar?')">
+                - <a href="{{ route('lab.suspect_cases.fileDelete', $suspectCase->id) }}" onclick="return confirm('Está seguro?')">
                     [ Borrar ]
                 </a>
             @endcan
