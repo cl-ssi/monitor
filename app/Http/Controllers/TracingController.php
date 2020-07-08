@@ -6,6 +6,8 @@ use App\Tracing\Tracing;
 use Illuminate\Http\Request;
 use App\Patient;
 use Carbon\Carbon;
+use App\EstablishmentUser;
+use App\Commune;
 
 class TracingController extends Controller
 {
@@ -174,7 +176,13 @@ class TracingController extends Controller
             ->all();
         //dd($patients);
 
-        return view('patients.tracing.mapbycommune', compact('patients'));
+        //$establishments_user = EstablishmentUser::where('user_id', auth()->user()->id)->get();
+        //$establishments_user = Commune::where('user_id', auth()->user()->id)->get();
+        $communes = Commune::whereIn('id', auth()->user()->communes())->distinct('name')->get();
+        //$communes = Commune::whereIn('commune_id', auth()->user()->communes());
+        
+
+        return view('patients.tracing.mapbycommune', compact('patients','communes'));
     }
 
     public function create()
