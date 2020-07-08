@@ -55,7 +55,7 @@
                 </div>
 
                 <hr>
-                <h4 class="mt-4">Seguimiento</h4>
+                <h4 class="mt-4">Ficha inicial de Seguimiento</h4>
                 <div class="form-row">
                     <fieldset class="form-group col-6 col-md-1">
                         <label for="for_index">Indice</label>
