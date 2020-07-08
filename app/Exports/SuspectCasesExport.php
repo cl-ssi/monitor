@@ -58,7 +58,7 @@ class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping, W
     {
         return [
           '#', 'fecha_muestra', 'origen','nombre','run', 'edad', 'sexo', 'resultado_ifd',
-          'pcr_sars_cov2', 'sem', 'epivigila', 'paho_flu', 'estado', 'observación', 'teléfono',
+          'pcr_sars_cov2', 'sem', 'epivigila', 'paho_flu', 'observación', 'teléfono',
           'dirección', 'comuna'
         ];
     }
@@ -81,7 +81,6 @@ class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping, W
             $suspectCase->epidemiological_week,
             $suspectCase->epivigila,
             $suspectCase->paho_flu,
-            $suspectCase->status,
             $suspectCase->observation,
             ($suspectCase->patient && $suspectCase->patient->demographic)?$suspectCase->patient->demographic->telephone:'',
             ($suspectCase->patient && $suspectCase->patient->demographic)?$suspectCase->patient->demographic->fullAddress:'',
@@ -107,7 +106,6 @@ class SuspectCasesExport implements FromCollection, WithHeadings, WithMapping, W
             'N' => NumberFormat::FORMAT_GENERAL,
             'O' => NumberFormat::FORMAT_GENERAL,
             'P' => NumberFormat::FORMAT_GENERAL,
-            'Q' => NumberFormat::FORMAT_GENERAL,
         ];
     }
 }

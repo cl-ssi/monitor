@@ -613,19 +613,6 @@ class SuspectCaseReportController extends Controller
         return view('lab.suspect_cases.reports.exams_with_result', compact('suspectCases','suspectCasesUnap'));
     }
 
-
-    public function apuntes() {
-        $patients = Patient::all();
-        foreach($patients as $patient) {
-            foreach($patient->suspectCases as $case) {
-                if($case->status) {
-                    $patient->status = $case->status;
-                    $patient->save();
-                }
-            }
-        }
-    }
-
     /**
      * Obtiene suspectsCases positivos con datos de demographics por
      * rango de fecha
