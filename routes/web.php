@@ -170,9 +170,9 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::post('/search_id','SuspectCaseController@search_id')->name('search_id')->middleware('auth');
         //Route::get('stat', 'SuspectCaseController@stat')->name('stat');
 
-        Route::get('download/{suspect_case}','SuspectCaseController@download')->name('download')->middleware('auth');
+        Route::get('download/{file}','SuspectCaseController@download')->name('download')->middleware('auth');
         //Route::get('download/{file}','SuspectCaseController@download')->name('download');
-        Route::get('file/{suspect_case}','SuspectCaseController@fileDelete')->name('fileDelete')->middleware('auth','can:SuspectCase: file delete');
+        Route::get('file/{file}','SuspectCaseController@fileDelete')->name('fileDelete')->middleware('auth','can:SuspectCase: file delete');
 
         Route::get('/index/{laboratory?}','SuspectCaseController@index')->name('index')->middleware('auth','can:SuspectCase: list');
 
@@ -180,8 +180,6 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/MyCommunesIndex/{laboratory?}','SuspectCaseController@MyCommunesIndex')->name('MyCommunesIndex')->middleware('auth','can:SuspectCase: list');
 
         Route::get('/exportSuspectCases/{lab}','SuspectCaseController@exportExcel')->name('export')->middleware('auth');
-
-        Route::get('/filesMigrationSingleUse','SuspectCaseController@filesMigrationSingleUse')->name('filesMigrationSingleUse')->middleware('auth');
 
 //        pruebas
         Route::get('/exportAllCasesCsv','SuspectCaseController@exportAllCasesCsv')->name('exportAllCasesCsv')->middleware('auth');

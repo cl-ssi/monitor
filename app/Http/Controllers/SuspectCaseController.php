@@ -40,7 +40,6 @@ use App\Exports\HetgSuspectCasesExport;
 use App\Exports\UnapSuspectCasesExport;
 use App\Exports\MinsalSuspectCasesExport;
 use App\Exports\SeremiSuspectCasesExport;
-use App\Imports\PatientImport;
 
 class SuspectCaseController extends Controller
 {
@@ -106,7 +105,6 @@ class SuspectCaseController extends Controller
                                       ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
                                       ->paginate(200);//->appends(request()->query());
         }
-
         return view('lab.suspect_cases.index', compact('suspectCases','request','suspectCasesTotal','laboratory'));
     }
 
@@ -428,12 +426,6 @@ class SuspectCaseController extends Controller
             $suspectCase->validator_id = Auth::id();
         }
 
-        if ($request->hasFile('forfile')) {
-            $file = $request->file('forfile');
-            $file->storeAs('suspect_cases', $suspectCase->id . '.pdf');
-            $suspectCase->file = true;
-        }
-
         $suspectCase->save();
 
         /* Crea un TRACING si el resultado es positivo */
@@ -477,7 +469,17 @@ class SuspectCaseController extends Controller
             }
         }
 
-
+        /* guarda archivos FIX: pendiente traspasar a sólo un archivo */
+        if ($request->hasFile('forfile')) {
+            foreach ($request->file('forfile') as $file) {
+                $filename = $file->getClientOriginalName();
+                $fileModel = new File;
+                $fileModel->file = $file->store('files');
+                $fileModel->name = $filename;
+                $fileModel->suspect_case_id = $suspectCase->id;
+                $fileModel->save();
+            }
+        }
 
         if (env('APP_ENV') == 'production') {
             if ($old_pcr == 'pending' and $suspectCase->pscr_sars_cov_2 == 'positive') {
@@ -546,14 +548,11 @@ class SuspectCaseController extends Controller
         return redirect()->route('lab.suspect_cases.index');
     }
 
-    public function fileDelete(SuspectCase $suspectCase)
+    public function fileDelete(File $file)
     {
         /* TODO: implementar auditable en file delete  */
-          if (Storage::delete( 'suspect_cases/' . $suspectCase->id . '.pdf')){
-              $suspectCase->file = false;
-              $suspectCase->save();
-              session()->flash('info', 'Se ha eliminado el archivo correctamente.');
-          }
+        Storage::delete($file->file);
+        $file->delete();
 
         return redirect()->back();
     }
@@ -767,9 +766,9 @@ class SuspectCaseController extends Controller
 
 
 
-    public function download(SuspectCase $suspectCase)
+    public function download(File $file)
     {
-        return Storage::response( 'suspect_cases/' . $suspectCase->id . '.pdf', mb_convert_encoding($suspectCase->id . '.pdf', 'ASCII'));
+        return Storage::response($file->file, mb_convert_encoding($file->name, 'ASCII'));
     }
 
     public function login($access_token = null)
