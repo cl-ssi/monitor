@@ -12,6 +12,7 @@
             $total_male = $patients->where('gender','male')->count();
             $total_female = $patients->where('gender','female')->count();
             $total_male_female = $total_male + $total_female;
+            $region = $total_male + $total_female
         @endphp
 
         <div id="evolution" style="width: 480px; height: 400"></div>
@@ -113,7 +114,7 @@
                 <tr>
                     <th>Total ({{ $communes->sum('population') }}*)</th>
                     <th class="text-right">
-                        {{ number_format($region / $communes->sum('population') * 100000 ,2) }}
+                        {{ number_format($region/ $communes->sum('population') * 100000 ,2) }}
                     </th>
                 </tr>
             </tbody>
