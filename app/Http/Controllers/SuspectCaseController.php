@@ -959,17 +959,21 @@ class SuspectCaseController extends Controller
         $files = File::orderBy('id', 'desc')->get();
 
         foreach ($files as $file){
-            $originFileName = $file->file;
-            //TODO cambiar a move?
 
-            if(Storage::exists('suspect_cases/' . $file->suspectCase->id . '.pdf')){
-                Storage::delete('suspect_cases/' . $file->suspectCase->id . '.pdf');
+            if($file->suspectCase){
+                $originFileName = $file->file;
+                //TODO cambiar a move?
+
+                if(Storage::exists('suspect_cases/' . $file->suspectCase->id . '.pdf')){
+                    Storage::delete('suspect_cases/' . $file->suspectCase->id . '.pdf');
+                }
+
+                Storage::copy($originFileName, 'suspect_cases/' . $file->suspectCase->id . '.pdf');
+                $file->suspectCase->file = true;
+                $file->suspectCase->save();
+//            dump($originFileName);
             }
 
-            Storage::copy($originFileName, 'suspect_cases/' . $file->suspectCase->id . '.pdf');
-            $file->suspectCase->file = true;
-            $file->suspectCase->save();
-//            dump($originFileName);
         }
 
         dd("Migración Lista.");
