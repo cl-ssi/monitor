@@ -12,7 +12,7 @@
         <fieldset class="form-group col-10 col-md-2">
             <label for="for_run">Run</label>
             <input type="hidden" class="form-control" id="for_id" name="id">
-            <input type="number" max="26000000" class="form-control" id="for_run" name="run">
+            <input type="number" max="30000000" class="form-control" id="for_run" name="run">
         </fieldset>
 
         <fieldset class="form-group col-2 col-md-1">
