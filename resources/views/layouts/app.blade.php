@@ -104,6 +104,10 @@
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.ownIndex') }}?text=&filter%5B%5D=pending">Mis exámenes</a>
                                 @endcan
 
+                                @can('Patient: tracing')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.MyCommunesIndex') }}">Examenes de mis comunas</a>
+                                @endcan
+
                                 <div class="dropdown-divider"></div>
 
                                 @can('Patient: tracing')
@@ -118,7 +122,7 @@
 
                                 <div class="dropdown-divider"></div>
                                 @can('Developer')
-                                <a class="dropdown-item" href="{{ route('patients.tracings.withouttracing') }}">Beta Pacientes Positivos sin Seguimientos >= 22-06-2020</a>
+                                <!-- <a class="dropdown-item" href="{{ route('patients.tracings.withouttracing') }}">Beta Pacientes Positivos sin Seguimientos >= 22-06-2020</a> -->
                                 @endcan
 
                                 @can('Patient: tracing old')
@@ -206,7 +210,7 @@
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.bookingByDate') }}">Booking Realizados por Fechas</a>
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.residences.map') }}">Mapa de Residencias</a>
-                                
+
                                 @endcan
 
                                 @can('SanitaryResidence: admin')
