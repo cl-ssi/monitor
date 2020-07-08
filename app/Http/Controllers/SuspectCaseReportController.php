@@ -112,7 +112,7 @@ class SuspectCaseReportController extends Controller
         $begin = $begin->setTime(00, 00, 00);
         $end = $end->setTime(00, 00, 00);
 
-        $communes = Commune::find(Auth::user()->communes());
+        $communes = Commune::find(Auth::user()->communes());        
 
         for ($i = $begin; $i <= $end; $i->modify('+1 day')) {
             $casos[$i->format("Y-m-d")] = 0;

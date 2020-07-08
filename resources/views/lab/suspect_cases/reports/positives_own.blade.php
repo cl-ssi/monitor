@@ -84,7 +84,7 @@
                         {{ $femalesCommune = $patients->where('demographic.commune_id',$commune->id)->where('gender', 'female')->count()}}
                     </td>
                     <td class="text-center">
-                        {{ $malesCommune + $femalesCommune }}
+                        {{ $totalCommune = $malesCommune + $femalesCommune }}
                     </td>
                 </tr>
                 @endforeach
@@ -102,11 +102,17 @@
                 </tr>
             </thead>
             <tbody>
+                
                 @foreach($communes as $commune)
                 <tr>
                     <td>{{ $commune->name }} ({{ $commune->population }}*)</td>
                     <td class="text-right">
-                        {{ number_format($commune->count / $commune->population * 100000 ,2)  }}
+                        @php
+                        $malesCommune = $patients->where('demographic.commune_id',$commune->id)->where('gender', 'male')->count();
+                        $femalesCommune = $patients->where('demographic.commune_id',$commune->id)->where('gender', 'female')->count();
+                        $totalCommune = $malesCommune + $femalesCommune;
+                        @endphp
+                        {{ number_format(($totalCommune/ $commune->population) * 100000 ,2)  }}
                     </td>
                 </tr>
                 @endforeach
