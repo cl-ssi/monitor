@@ -40,6 +40,7 @@ use App\Exports\HetgSuspectCasesExport;
 use App\Exports\UnapSuspectCasesExport;
 use App\Exports\MinsalSuspectCasesExport;
 use App\Exports\SeremiSuspectCasesExport;
+use App\Imports\PatientImport;
 
 class SuspectCaseController extends Controller
 {
@@ -105,6 +106,7 @@ class SuspectCaseController extends Controller
                                       ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
                                       ->paginate(200);//->appends(request()->query());
         }
+
         return view('lab.suspect_cases.index', compact('suspectCases','request','suspectCasesTotal','laboratory'));
     }
 
@@ -133,6 +135,55 @@ class SuspectCaseController extends Controller
             ->paginate(200);
 
         return view('lab.suspect_cases.ownIndex', compact('suspectCases', 'arrayFilter', 'searchText', 'laboratory', 'suspectCasesTotal'));
+    }
+
+
+    /**
+     * Muestra exámenes asociados a la comunas del usuario.
+     * @param Request $request
+     * @param Laboratory $laboratory
+     * @return Application|Factory|View
+     */
+    public function MyCommunesIndex(request $request, Laboratory $laboratory)
+    {
+        // $patients = Patient::whereHas('demographic', function($q) {
+        //     $q->whereIn('commune_id', auth()->user()->communes());
+        // })
+        // $searchText = $request->get('text');
+        // $arrayFilter = (empty($request->filter)) ? array() : $request->filter;
+
+        // $suspectCasesTotal = SuspectCase::where(function($q){
+        //                         $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
+        //                           ->orWhere('user_id', Auth::user()->id);
+        //                     })
+        //                     ->whereHas('patient', function($q){
+        //                             $q->whereHas('demographic', function($q){
+        //                                     $q->whereIn('commune_id',auth()->user()->communes());
+        //                             });
+        //                     })
+        //                     ->whereNotIn('pscr_sars_cov_2', ['pending','positive'])
+        //                     ->get();
+
+        $from = Carbon::now()->subDays(3);
+        $to = Carbon::now();
+
+        $suspectCases = SuspectCase::where(function($q){
+                            $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
+                              ->orWhere('user_id', Auth::user()->id);
+                        })
+                        ->whereHas('patient', function($q){
+                                $q->whereHas('demographic', function($q){
+                                        $q->whereIn('commune_id',auth()->user()->communes());
+                                });
+                        })
+                        // ->patientTextFilter($searchText)
+                        ->whereNotIn('pscr_sars_cov_2', ['pending','positive'])
+                        ->whereBetween('created_at', [$from, $to])
+                        ->paginate(200);
+
+                        // dd($suspectCases);
+
+        return view('lab.suspect_cases.my_communes_index', compact('suspectCases', 'laboratory'));
     }
 
     /**
@@ -377,6 +428,13 @@ class SuspectCaseController extends Controller
             $suspectCase->validator_id = Auth::id();
         }
 
+        /* guarda archivos FIX: pendiente traspasar a sólo un archivo */
+        if ($request->hasFile('forfile')) {
+            $file = $request->file('forfile');
+            $file->storeAs('suspect_cases', $suspectCase->id . '.pdf');
+            $suspectCase->file = true;
+        }
+
         $suspectCase->save();
 
         /* Crea un TRACING si el resultado es positivo */
@@ -388,7 +446,7 @@ class SuspectCaseController extends Controller
                 $suspectCase->patient->tracing->quarantine_start_at = ($suspectCase->symptoms_at) ?
                                                 $suspectCase->symptoms_at :
                                                 $suspectCase->pscr_sars_cov_2_at;
-                $suspectCase->patient->tracing->quarantine_end_at = $tracing->quarantine_start_at->add(14,'days');
+                $suspectCase->patient->tracing->quarantine_end_at = $suspectCase->patient->tracing->quarantine_start_at->add(14,'days');
                 $suspectCase->patient->tracing->save();
             }
             else {
@@ -420,17 +478,7 @@ class SuspectCaseController extends Controller
             }
         }
 
-        /* guarda archivos FIX: pendiente traspasar a sólo un archivo */
-        if ($request->hasFile('forfile')) {
-            foreach ($request->file('forfile') as $file) {
-                $filename = $file->getClientOriginalName();
-                $fileModel = new File;
-                $fileModel->file = $file->store('files');
-                $fileModel->name = $filename;
-                $fileModel->suspect_case_id = $suspectCase->id;
-                $fileModel->save();
-            }
-        }
+
 
         if (env('APP_ENV') == 'production') {
             if ($old_pcr == 'pending' and $suspectCase->pscr_sars_cov_2 == 'positive') {
@@ -440,7 +488,9 @@ class SuspectCaseController extends Controller
             }
 
             /* Enviar resultado al usuario, solo si tiene registrado un correo electronico */
-            if($old_pcr == 'pending' && $suspectCase->patient->demographic != NULL){
+            if($old_pcr == 'pending' && ($suspectCase->pscr_sars_cov_2 == 'negative' || $suspectCase->pscr_sars_cov_2 == 'undetermined' ||
+                                          $suspectCase->pscr_sars_cov_2 == 'rejected' || $suspectCase->pscr_sars_cov_2 == 'positive')
+                                      && $suspectCase->patient->demographic != NULL){
                 if($suspectCase->patient->demographic->email != NULL){
                     $email  = $suspectCase->patient->demographic->email;
                     Mail::to($email)->send(new NewNegative($suspectCase));
@@ -462,6 +512,28 @@ class SuspectCaseController extends Controller
         return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
     }
 
+
+    /**
+     * Modifica datos notificación de suspect case.
+     *
+     * @param  \App\request  $request
+     * @param  \App\SuspectCase  $suspectCase
+     * @return \Illuminate\Http\Response
+     */
+    public function updateNotification(Request $request, SuspectCase $suspectCase){
+        if($request->notification_at != null && $request->notification_mechanism != null){
+            $suspectCase->notification_at = $request->notification_at;
+            $suspectCase->notification_mechanism = $request->notification_mechanism;
+            $suspectCase->save();
+
+            session()->flash('success', 'Se ha ingresado la notificación');
+        }else{
+            session()->flash('warning', 'Debe seleccionar ambos parámetros');
+        }
+
+        return redirect()->back();
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -475,11 +547,14 @@ class SuspectCaseController extends Controller
         return redirect()->route('lab.suspect_cases.index');
     }
 
-    public function fileDelete(File $file)
+    public function fileDelete(SuspectCase $suspectCase)
     {
         /* TODO: implementar auditable en file delete  */
-        Storage::delete($file->file);
-        $file->delete();
+          if (Storage::delete( 'suspect_cases/' . $suspectCase->id . '.pdf')){
+              $suspectCase->file = false;
+              $suspectCase->save();
+              session()->flash('info', 'Se ha eliminado el archivo correctamente.');
+          }
 
         return redirect()->back();
     }
@@ -693,9 +768,9 @@ class SuspectCaseController extends Controller
 
 
 
-    public function download(File $file)
+    public function download(SuspectCase $suspectCase)
     {
-        return Storage::response($file->file, mb_convert_encoding($file->name, 'ASCII'));
+        return Storage::response( 'suspect_cases/' . $suspectCase->id . '.pdf', mb_convert_encoding($suspectCase->id . '.pdf', 'ASCII'));
     }
 
     public function login($access_token = null)
@@ -871,6 +946,41 @@ class SuspectCaseController extends Controller
     {
         $user = auth()->user();
         return view('lab.suspect_cases.notification_form', compact('suspectCase', 'user'));
+    }
+
+
+    /**
+     * Se utiliza una única vez para migrar los archivos de suspect case a nueva carpeta
+     * con nuevos nombres.
+     */
+    public function filesMigrationSingleUse(){
+
+        Storage::makeDirectory('suspect_cases');
+
+        $files = File::all();
+
+        foreach ($files as $file){
+            $originFileName = $file->file;
+            //TODO cambiar a move?
+            Storage::copy($originFileName, 'suspect_cases/' . $file->suspectCase->id . '.pdf');
+            $file->suspectCase->file = true;
+            $file->suspectCase->save();
+//            dump($originFileName);
+        }
+
+        dd("Migración Lista.");
+
+    }
+
+    public function index_bulk_load(){
+        return view('lab.bulk_load.import');
+    }
+
+    public function bulk_load_import(Request $request){
+        $file = $request->file('file');
+        Excel::import(new PatientImport, $file);
+
+        // return view('lab.suspect_cases.import', compact('events'));
     }
 
 }

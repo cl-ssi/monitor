@@ -69,7 +69,7 @@
 
 
 
-                        @canany(['SuspectCase: admission','SuspectCase: reception','SuspectCase: own','SuspectCase: list','Patient: tracing'])
+                        @canany(['SuspectCase: admission','SuspectCase: reception','SuspectCase: own','SuspectCase: list','Patient: tracing', 'SuspectCase: bulk load'])
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-lungs-virus"></i>
@@ -104,6 +104,10 @@
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.ownIndex') }}?text=&filter%5B%5D=pending">Mis exámenes</a>
                                 @endcan
 
+                                @can('Patient: tracing')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.MyCommunesIndex') }}">Examenes de mis comunas</a>
+                                @endcan
+
                                 <div class="dropdown-divider"></div>
 
                                 @can('Patient: tracing')
@@ -124,6 +128,12 @@
                                 @can('Patient: tracing old')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing') }}">Seguimiento (Antiguo)</a>
                                 @endcan
+
+                                <hr>
+
+                                <!-- @can('SuspectCase: bulk load')
+                                <a class="dropdown-item" href="{{ route('lab.bulk_load.index') }}">Carga Masiva</a>
+                                @endcan -->
 
                             </div>
                         </li>
@@ -147,7 +157,7 @@
                         </li>
                         @endcan
 
-                        
+
                         @canany(['Patient: georeferencing', 'Geo: communes', 'Geo: region'] )
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -200,7 +210,7 @@
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.bookingByDate') }}">Booking Realizados por Fechas</a>
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.residences.map') }}">Mapa de Residencias</a>
-                                
+
                                 @endcan
 
                                 @can('SanitaryResidence: admin')

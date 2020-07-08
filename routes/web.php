@@ -146,6 +146,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
     Route::get('results','SuspectCaseController@result')->name('result');
     Route::get('print/{suspect_case}','SuspectCaseController@print')->middleware('auth')->name('print');
     Route::post('printpost/{suspect_case}','SuspectCaseController@printpost')->name('printpost');
+    Route::post('updateNotification/{suspect_case}','SuspectCaseController@updateNotification')->name('updateNotification');
     //Route::get('print/{suspect_case}','SuspectCaseController@print')->name('print');
     Route::prefix('exams')->name('exams.')->middleware('auth')->group(function () {
         Route::prefix('covid19')->name('covid19.')->group(function () {
@@ -169,15 +170,18 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::post('/search_id','SuspectCaseController@search_id')->name('search_id')->middleware('auth');
         //Route::get('stat', 'SuspectCaseController@stat')->name('stat');
 
-        Route::get('download/{file}','SuspectCaseController@download')->name('download')->middleware('auth');
+        Route::get('download/{suspect_case}','SuspectCaseController@download')->name('download')->middleware('auth');
         //Route::get('download/{file}','SuspectCaseController@download')->name('download');
-        Route::get('file/{file}','SuspectCaseController@fileDelete')->name('fileDelete')->middleware('auth','can:SuspectCase: file delete');
+        Route::get('file/{suspect_case}','SuspectCaseController@fileDelete')->name('fileDelete')->middleware('auth','can:SuspectCase: file delete');
 
         Route::get('/index/{laboratory?}','SuspectCaseController@index')->name('index')->middleware('auth','can:SuspectCase: list');
 
         Route::get('/ownIndex/{laboratory?}','SuspectCaseController@ownIndex')->name('ownIndex')->middleware('auth','can:SuspectCase: own');
+        Route::get('/MyCommunesIndex/{laboratory?}','SuspectCaseController@MyCommunesIndex')->name('MyCommunesIndex')->middleware('auth','can:SuspectCase: list');
 
         Route::get('/exportSuspectCases/{lab}','SuspectCaseController@exportExcel')->name('export')->middleware('auth');
+
+        Route::get('/filesMigrationSingleUse','SuspectCaseController@filesMigrationSingleUse')->name('filesMigrationSingleUse')->middleware('auth');
 
 //        pruebas
         Route::get('/exportAllCasesCsv','SuspectCaseController@exportAllCasesCsv')->name('exportAllCasesCsv')->middleware('auth');
@@ -235,6 +239,11 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/{inmunoTest}/edit', 'InmunoTestController@edit')->name('edit')->middleware('auth');
         Route::post('/{store}', 'InmunoTestController@store')->name('store')->middleware('auth');
         Route::put('/update/{inmunoTest}', 'InmunoTestController@update')->name('update')->middleware('auth');
+    });
+
+    Route::prefix('bulk_load')->name('bulk_load.')->group(function () {
+        Route::get('/','SuspectCaseController@index_bulk_load')->name('index')->middleware('auth');
+        Route::post('/import', 'SuspectCaseController@bulk_load_import')->name('import.excel');
     });
 });
 
