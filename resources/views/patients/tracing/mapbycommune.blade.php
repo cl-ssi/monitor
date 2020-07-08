@@ -3,7 +3,15 @@
 @section('title', 'Georeferenciación')
 
 @section('content')  
-<h3 class="mb-3"><i class="fas fa-globe-americas"></i> Seguimiento en Mis Comunas</h3> <small>(Rojo:Caso Indice - Azul:Contacto Alto Riesgo)</small>
+<h3 class="mb-3"><i class="fas fa-globe-americas"></i> Seguimiento en Mis Comunas</h3> 
+(<b>Mis Comunas:</b>
+@foreach($communes as $commune)
+{{$commune->name}}
+@endforeach
+)
+
+
+ <small>(Rojo:Caso Indice - Azul:Contacto Alto Riesgo)</small>
     <div id="map" style="width: 100%; height: 650px"></div>
 @endsection
 
