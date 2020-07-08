@@ -135,6 +135,55 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.ownIndex', compact('suspectCases', 'arrayFilter', 'searchText', 'laboratory', 'suspectCasesTotal'));
     }
 
+
+    /**
+     * Muestra exámenes asociados a la comunas del usuario.
+     * @param Request $request
+     * @param Laboratory $laboratory
+     * @return Application|Factory|View
+     */
+    public function MyCommunesIndex(request $request, Laboratory $laboratory)
+    {
+        // $patients = Patient::whereHas('demographic', function($q) {
+        //     $q->whereIn('commune_id', auth()->user()->communes());
+        // })
+        // $searchText = $request->get('text');
+        // $arrayFilter = (empty($request->filter)) ? array() : $request->filter;
+
+        // $suspectCasesTotal = SuspectCase::where(function($q){
+        //                         $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
+        //                           ->orWhere('user_id', Auth::user()->id);
+        //                     })
+        //                     ->whereHas('patient', function($q){
+        //                             $q->whereHas('demographic', function($q){
+        //                                     $q->whereIn('commune_id',auth()->user()->communes());
+        //                             });
+        //                     })
+        //                     ->whereNotIn('pscr_sars_cov_2', ['pending','positive'])
+        //                     ->get();
+
+        $from = Carbon::now()->subDays(3);
+        $to = Carbon::now();
+
+        $suspectCases = SuspectCase::where(function($q){
+                            $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
+                              ->orWhere('user_id', Auth::user()->id);
+                        })
+                        ->whereHas('patient', function($q){
+                                $q->whereHas('demographic', function($q){
+                                        $q->whereIn('commune_id',auth()->user()->communes());
+                                });
+                        })
+                        // ->patientTextFilter($searchText)
+                        ->whereNotIn('pscr_sars_cov_2', ['pending','positive'])
+                        ->whereBetween('created_at', [$from, $to])
+                        ->paginate(200);
+
+                        // dd($suspectCases);
+
+        return view('lab.suspect_cases.my_communes_index', compact('suspectCases', 'laboratory'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -460,6 +509,28 @@ class SuspectCaseController extends Controller
         }
 
         return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
+    }
+
+
+    /**
+     * Modifica datos notificación de suspect case.
+     *
+     * @param  \App\request  $request
+     * @param  \App\SuspectCase  $suspectCase
+     * @return \Illuminate\Http\Response
+     */
+    public function updateNotification(Request $request, SuspectCase $suspectCase){
+        if($request->notification_at != null && $request->notification_mechanism != null){
+            $suspectCase->notification_at = $request->notification_at;
+            $suspectCase->notification_mechanism = $request->notification_mechanism;
+            $suspectCase->save();
+
+            session()->flash('success', 'Se ha ingresado la notificación');
+        }else{
+            session()->flash('warning', 'Debe seleccionar ambos parámetros');
+        }
+
+        return redirect()->back();
     }
 
     /**
