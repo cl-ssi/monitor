@@ -112,7 +112,7 @@ class SuspectCaseReportController extends Controller
         $begin = $begin->setTime(00, 00, 00);
         $end = $end->setTime(00, 00, 00);
 
-        $communes = Commune::find(Auth::user()->communes());        
+        $communes = Commune::find(Auth::user()->communes());
 
         for ($i = $begin; $i <= $end; $i->modify('+1 day')) {
             $casos[$i->format("Y-m-d")] = 0;
@@ -592,28 +592,25 @@ class SuspectCaseReportController extends Controller
 
     public function exams_with_result(Request $request)
     {
-        // $from =Carbon::now()->subDays(2);
-        //
-        // $patients = Patient::whereHas('suspectCases', function ($q) {
-        //     $q->where('pscr_sars_cov_2','positive');
-        // })->with('suspectCases')->with('demographic')->get();
-
-
         $from = Carbon::now()->subDays(2);
         $to = Carbon::now();
-        //dd($from, $to);
-        $files = File::whereBetween('created_at', [$from, $to])
-                   ->whereHas('suspectCase', function ($query) {
-                        $query->where('pscr_sars_cov_2', 'like', 'positive');
-                    })
-                   ->orderBy('created_at','DESC')->get();
+//        $files = File::whereBetween('created_at', [$from, $to])
+//                   ->whereHas('suspectCase', function ($query) {
+//                        $query->where('pscr_sars_cov_2', 'like', 'positive');
+//                    })
+//                   ->orderBy('created_at','DESC')->get();
 
-        $suspectCases = SuspectCase::whereBetween('created_at', [$from, $to])
-                                 ->where('pscr_sars_cov_2', 'like', 'positive')
-                                 ->where('laboratory_id', 2)
-                                 ->get();
+        $suspectCases = SuspectCase::whereBetween('pscr_sars_cov_2_at', [$from, $to])
+            ->where('pscr_sars_cov_2', 'like', 'positive')
+            ->orderBy('created_at','DESC')->get();
 
-        return view('lab.suspect_cases.reports.exams_with_result', compact('files','suspectCases'));
+
+        $suspectCasesUnap = SuspectCase::whereBetween('created_at', [$from, $to])
+            ->where('pscr_sars_cov_2', 'like', 'positive')
+            ->where('laboratory_id', 2)
+            ->get();
+
+        return view('lab.suspect_cases.reports.exams_with_result', compact('suspectCases','suspectCasesUnap'));
     }
 
 

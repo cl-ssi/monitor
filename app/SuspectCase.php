@@ -57,10 +57,6 @@ class SuspectCase extends Model implements Auditable
         return $this->morphMany('App\Log','model');
     }
 
-    public function files() {
-        return $this->hasMany('App\File');
-    }
-
     public function establishment() {
         return $this->belongsTo('App\Establishment');
     }
