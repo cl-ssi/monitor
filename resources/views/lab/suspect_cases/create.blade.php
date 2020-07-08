@@ -312,7 +312,7 @@ jQuery(document).ready(function($){
     $('input[name=run]').keyup(function(e) {
         var str = $("#for_run").val();
         $('#for_dv').val($.rut.dv(str));
-    });
+    });    
 
 
     $('input[name=run]').change(function() {
@@ -362,7 +362,7 @@ jQuery(document).ready(function($){
             }
         });
     });
-
+    
 
 });
 
@@ -379,7 +379,7 @@ $(document).ready(function(){
             alert('entre al male');
             $('#for_gestation').val('');
             $('#for_gestation').prop('disabled', true);
-
+            
         }
         else
         {
