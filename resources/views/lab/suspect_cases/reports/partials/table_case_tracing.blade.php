@@ -129,7 +129,6 @@
                 <td nowrap>{{ ($suspectCase->pscr_sars_cov_2_at) ? $suspectCase->pscr_sars_cov_2_at->format('Y-m-d') : '' }}</td>
                 <td nowrap>
                     {{ $suspectCase->covid19 }}
-                    {{ ($suspectCase->discharge_test)? 'x' : '' }}
                 </td>
                 <td title="Síntomas">{{ $suspectCase->symptoms }}</td>
             @endforeach
