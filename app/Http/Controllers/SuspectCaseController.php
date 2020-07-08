@@ -135,6 +135,37 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.ownIndex', compact('suspectCases', 'arrayFilter', 'searchText', 'laboratory', 'suspectCasesTotal'));
     }
 
+
+    /**
+     * Muestra exámenes asociados a la comunas del usuario.
+     * @return Application|Factory|View
+     */
+    public function notificationInbox()
+    {
+        $from = Carbon::now()->subDays(3);
+        $to = Carbon::now();
+
+            /*
+            where(function($q){
+                                $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'));
+                            })
+                            ->
+                */
+        $suspectCases = SuspectCase::whereHas('patient', function($q){
+                                $q->whereHas('demographic', function($q){
+                                        $q->whereIn('commune_id',auth()->user()->communes());
+                                });
+                        })
+                        ->whereNotIn('pscr_sars_cov_2', ['pending','positive'])
+                        ->whereNull('notification_at')
+                        ->whereBetween('created_at', [$from, $to])
+                        ->get();
+
+        // dd($suspectCases);
+
+        return view('lab.suspect_cases.notification_inbox', compact('suspectCases'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -388,7 +419,7 @@ class SuspectCaseController extends Controller
                 $suspectCase->patient->tracing->quarantine_start_at = ($suspectCase->symptoms_at) ?
                                                 $suspectCase->symptoms_at :
                                                 $suspectCase->pscr_sars_cov_2_at;
-                $suspectCase->patient->tracing->quarantine_end_at = $tracing->quarantine_start_at->add(14,'days');
+                $suspectCase->patient->tracing->quarantine_end_at = $suspectCase->patient->tracing->quarantine_start_at->add(14,'days');
                 $suspectCase->patient->tracing->save();
             }
             else {
@@ -440,7 +471,9 @@ class SuspectCaseController extends Controller
             }
 
             /* Enviar resultado al usuario, solo si tiene registrado un correo electronico */
-            if($old_pcr == 'pending' && $suspectCase->patient->demographic != NULL){
+            if($old_pcr == 'pending' && ($suspectCase->pscr_sars_cov_2 == 'negative' || $suspectCase->pscr_sars_cov_2 == 'undetermined' ||
+                                          $suspectCase->pscr_sars_cov_2 == 'rejected' || $suspectCase->pscr_sars_cov_2 == 'positive')
+                                      && $suspectCase->patient->demographic != NULL){
                 if($suspectCase->patient->demographic->email != NULL){
                     $email  = $suspectCase->patient->demographic->email;
                     Mail::to($email)->send(new NewNegative($suspectCase));
@@ -460,6 +493,28 @@ class SuspectCaseController extends Controller
         }
 
         return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
+    }
+
+
+    /**
+     * Modifica datos notificación de suspect case.
+     *
+     * @param  \App\request  $request
+     * @param  \App\SuspectCase  $suspectCase
+     * @return \Illuminate\Http\Response
+     */
+    public function updateNotification(Request $request, SuspectCase $suspectCase){
+        if($request->notification_at != null && $request->notification_mechanism != null){
+            $suspectCase->notification_at = $request->notification_at;
+            $suspectCase->notification_mechanism = $request->notification_mechanism;
+            $suspectCase->save();
+
+            session()->flash('success', 'Se ha ingresado la notificación');
+        }else{
+            session()->flash('warning', 'Debe seleccionar ambos parámetros');
+        }
+
+        return redirect()->back();
     }
 
     /**
@@ -871,6 +926,50 @@ class SuspectCaseController extends Controller
     {
         $user = auth()->user();
         return view('lab.suspect_cases.notification_form', compact('suspectCase', 'user'));
+    }
+
+
+    /**
+     * Se utiliza una única vez para migrar los archivos de suspect case a nueva carpeta
+     * con nuevos nombres.
+     */
+    public function filesMigrationSingleUse(){
+
+        Storage::makeDirectory('suspect_cases');
+
+        $files = File::orderBy('id', 'desc')->get();
+
+        foreach ($files as $file){
+
+            if($file->suspectCase){
+                $originFileName = $file->file;
+                //TODO cambiar a move?
+
+                if(Storage::exists('suspect_cases/' . $file->suspectCase->id . '.pdf')){
+                    Storage::delete('suspect_cases/' . $file->suspectCase->id . '.pdf');
+                }
+
+                Storage::copy($originFileName, 'suspect_cases/' . $file->suspectCase->id . '.pdf');
+                $file->suspectCase->file = true;
+                $file->suspectCase->save();
+//            dump($originFileName);
+            }
+
+        }
+
+        dd("Migración Lista.");
+
+    }
+
+    public function index_bulk_load(){
+        return view('lab.bulk_load.import');
+    }
+
+    public function bulk_load_import(Request $request){
+        $file = $request->file('file');
+        Excel::import(new PatientImport, $file);
+
+        // return view('lab.suspect_cases.import', compact('events'));
     }
 
 }

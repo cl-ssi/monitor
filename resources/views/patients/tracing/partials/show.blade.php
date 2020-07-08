@@ -55,7 +55,7 @@
                 </div>
 
                 <hr>
-                <h4 class="mt-4">Seguimiento</h4>
+                <h4 class="mt-4">Ficha inicial de Seguimiento</h4>
                 <div class="form-row">
                     <fieldset class="form-group col-6 col-md-1">
                         <label for="for_index">Indice</label>
@@ -63,6 +63,7 @@
                             <option value=""></option>
                             <option value="1" {{ ($patient->tracing->index === 1) ? 'selected' : '' }}>Si</option>
                             <option value="0" {{ ($patient->tracing->index === 0) ? 'selected' : '' }}>No</option>
+                            <option value="2" {{ ($patient->tracing->index === 2) ? 'selected' : '' }}>Probable</option>
                         </select>
                     </fieldset>
 
