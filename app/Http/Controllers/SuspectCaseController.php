@@ -140,50 +140,32 @@ class SuspectCaseController extends Controller
 
     /**
      * Muestra exámenes asociados a la comunas del usuario.
-     * @param Request $request
-     * @param Laboratory $laboratory
      * @return Application|Factory|View
      */
-    public function MyCommunesIndex(request $request, Laboratory $laboratory)
+    public function notificationInbox()
     {
-        // $patients = Patient::whereHas('demographic', function($q) {
-        //     $q->whereIn('commune_id', auth()->user()->communes());
-        // })
-        // $searchText = $request->get('text');
-        // $arrayFilter = (empty($request->filter)) ? array() : $request->filter;
-
-        // $suspectCasesTotal = SuspectCase::where(function($q){
-        //                         $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
-        //                           ->orWhere('user_id', Auth::user()->id);
-        //                     })
-        //                     ->whereHas('patient', function($q){
-        //                             $q->whereHas('demographic', function($q){
-        //                                     $q->whereIn('commune_id',auth()->user()->communes());
-        //                             });
-        //                     })
-        //                     ->whereNotIn('pscr_sars_cov_2', ['pending','positive'])
-        //                     ->get();
-
         $from = Carbon::now()->subDays(3);
         $to = Carbon::now();
 
-        $suspectCases = SuspectCase::where(function($q){
-                            $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
-                              ->orWhere('user_id', Auth::user()->id);
-                        })
-                        ->whereHas('patient', function($q){
+            /*
+            where(function($q){
+                                $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'));
+                            })
+                            ->
+                */
+        $suspectCases = SuspectCase::whereHas('patient', function($q){
                                 $q->whereHas('demographic', function($q){
                                         $q->whereIn('commune_id',auth()->user()->communes());
                                 });
                         })
-                        // ->patientTextFilter($searchText)
                         ->whereNotIn('pscr_sars_cov_2', ['pending','positive'])
+                        ->whereNull('notification_at')
                         ->whereBetween('created_at', [$from, $to])
-                        ->paginate(200);
+                        ->get();
 
-                        // dd($suspectCases);
+        // dd($suspectCases);
 
-        return view('lab.suspect_cases.my_communes_index', compact('suspectCases', 'laboratory'));
+        return view('lab.suspect_cases.notification_inbox', compact('suspectCases'));
     }
 
     /**

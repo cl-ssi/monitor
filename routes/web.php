@@ -177,7 +177,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/index/{laboratory?}','SuspectCaseController@index')->name('index')->middleware('auth','can:SuspectCase: list');
 
         Route::get('/ownIndex/{laboratory?}','SuspectCaseController@ownIndex')->name('ownIndex')->middleware('auth','can:SuspectCase: own');
-        Route::get('/MyCommunesIndex/{laboratory?}','SuspectCaseController@MyCommunesIndex')->name('MyCommunesIndex')->middleware('auth','can:SuspectCase: list');
+        Route::get('/notification','SuspectCaseController@notificationInbox')->name('notificationInbox')->middleware('auth','can:Patient: tracing');
 
         Route::get('/exportSuspectCases/{lab}','SuspectCaseController@exportExcel')->name('export')->middleware('auth');
 
