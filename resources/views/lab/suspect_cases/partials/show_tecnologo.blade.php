@@ -59,16 +59,18 @@
             <input type="file" disabled class="custom-file-input" id="forfile" lang="es" multiple>
             <label class="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
         </div>
-        @if($suspectCase->file)
-            <a href="{{ route('lab.suspect_cases.download', $suspectCase->id) }}"
-               target="_blank" data-toggle="tooltip" data-placement="top"
-               data-original-title="{{ $suspectCase->id . 'pdf' }}">Resultado <i class="fas fa-paperclip"></i>&nbsp
-            </a>
-            @can('SuspectCase: file delete')
-                - <a href="{{ route('lab.suspect_cases.fileDelete', $suspectCase->id) }}" onclick="return confirm('Estás seguro Cesar?')">
+        @if($suspectCase->files != null)
+            @foreach($suspectCase->files as $file)
+                <a href="{{ route('lab.suspect_cases.download', $file->id) }}"
+                    target="_blank" data-toggle="tooltip" data-placement="top"
+                    data-original-title="{{ $file->name }}">Resultado <i class="fas fa-paperclip"></i>&nbsp
+                </a>
+                @can('SuspectCase: file delete')
+                 - <a href="{{ route('lab.suspect_cases.fileDelete', $file->id) }}" onclick="return confirm('Estás seguro Cesar?')">
                     [ Borrar ]
                 </a>
-            @endcan
+                @endcan
+            @endforeach
         @endif
     </fieldset>
 </div>

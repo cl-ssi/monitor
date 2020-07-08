@@ -166,8 +166,8 @@
             <td>{{ $case->age }}</td>
             <td>{{ strtoupper($case->gender[0]) }}</td>
             <td>{{ $case->covid19 }}
-                @if($case->file)
-                <a href="{{ route('lab.suspect_cases.download', $case->id) }}"
+                @if($case->files->first())
+                <a href="{{ route('lab.suspect_cases.download', $case->files->first()->id) }}"
                     target="_blank"><i class="fas fa-paperclip"></i>&nbsp
                 </a>
                 @endif

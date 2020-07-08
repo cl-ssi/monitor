@@ -57,7 +57,6 @@ class SuspectCase extends Model implements Auditable
         return $this->morphMany('App\Log','model');
     }
 
-    //todo eliminar
     public function files() {
         return $this->hasMany('App\File');
     }
