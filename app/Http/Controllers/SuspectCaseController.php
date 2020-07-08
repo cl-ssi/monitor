@@ -379,7 +379,6 @@ class SuspectCaseController extends Controller
             $suspectCase->validator_id = Auth::id();
         }
 
-        /* guarda archivos FIX: pendiente traspasar a sólo un archivo */
         if ($request->hasFile('forfile')) {
             $file = $request->file('forfile');
             $file->storeAs('suspect_cases', $suspectCase->id . '.pdf');
@@ -886,11 +885,16 @@ class SuspectCaseController extends Controller
 
         Storage::makeDirectory('suspect_cases');
 
-        $files = File::all();
+        $files = File::orderBy('id', 'desc')->get();
 
         foreach ($files as $file){
             $originFileName = $file->file;
             //TODO cambiar a move?
+
+            if(Storage::exists('suspect_cases/' . $file->suspectCase->id . '.pdf')){
+                Storage::delete('suspect_cases/' . $file->suspectCase->id . '.pdf');
+            }
+
             Storage::copy($originFileName, 'suspect_cases/' . $file->suspectCase->id . '.pdf');
             $file->suspectCase->file = true;
             $file->suspectCase->save();
