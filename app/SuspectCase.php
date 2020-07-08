@@ -35,7 +35,7 @@ class SuspectCase extends Model implements Auditable
         'sent_isp_at', 'external_laboratory', 'paho_flu', 'epivigila',
         'gestation', 'gestation_week', 'close_contact', 'functionary',
         'notification_at', 'notification_mechanism',
-        'discharged_at','discharge_test',
+        'discharged_at',
         'observation', 'minsal_ws_id',
         'patient_id', 'laboratory_id', 'establishment_id',
         'user_id'
