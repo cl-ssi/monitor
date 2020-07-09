@@ -40,9 +40,12 @@ use App\Exports\HetgSuspectCasesExport;
 use App\Exports\UnapSuspectCasesExport;
 use App\Exports\MinsalSuspectCasesExport;
 use App\Exports\SeremiSuspectCasesExport;
+<<<<<<< HEAD
 use App\Imports\PatientImport;
 use App\Imports\DemographicImport;
 use App\Imports\SuspectCaseImport;
+=======
+>>>>>>> 1f2284d4b34a66077e0c5b13771e373fb62d9f00
 
 class SuspectCaseController extends Controller
 {
@@ -108,7 +111,6 @@ class SuspectCaseController extends Controller
                                       ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
                                       ->paginate(200);//->appends(request()->query());
         }
-
         return view('lab.suspect_cases.index', compact('suspectCases','request','suspectCasesTotal','laboratory'));
     }
 
@@ -137,6 +139,37 @@ class SuspectCaseController extends Controller
             ->paginate(200);
 
         return view('lab.suspect_cases.ownIndex', compact('suspectCases', 'arrayFilter', 'searchText', 'laboratory', 'suspectCasesTotal'));
+    }
+
+
+    /**
+     * Muestra exámenes asociados a la comunas del usuario.
+     * @return Application|Factory|View
+     */
+    public function notificationInbox()
+    {
+        $from = Carbon::now()->subDays(3);
+        $to = Carbon::now();
+
+            /*
+            where(function($q){
+                                $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'));
+                            })
+                            ->
+                */
+        $suspectCases = SuspectCase::whereHas('patient', function($q){
+                                $q->whereHas('demographic', function($q){
+                                        $q->whereIn('commune_id',auth()->user()->communes());
+                                });
+                        })
+                        ->whereNotIn('pscr_sars_cov_2', ['pending','positive'])
+                        ->whereNull('notification_at')
+                        ->whereBetween('created_at', [$from, $to])
+                        ->get();
+
+        // dd($suspectCases);
+
+        return view('lab.suspect_cases.notification_inbox', compact('suspectCases'));
     }
 
     /**
@@ -392,7 +425,7 @@ class SuspectCaseController extends Controller
                 $suspectCase->patient->tracing->quarantine_start_at = ($suspectCase->symptoms_at) ?
                                                 $suspectCase->symptoms_at :
                                                 $suspectCase->pscr_sars_cov_2_at;
-                $suspectCase->patient->tracing->quarantine_end_at = $suspectCase->patient->tracing->quarantine_start_at->add(14,'days');
+                $suspectCase->patient->tracing->quarantine_end_at = $suspectCase->patient->tracing->quarantine_start_at->add(13,'days');
                 $suspectCase->patient->tracing->save();
             }
             else {
@@ -408,7 +441,7 @@ class SuspectCaseController extends Controller
                 $tracing->quarantine_start_at = ($suspectCase->symptoms_at) ?
                                                 $suspectCase->symptoms_at :
                                                 $suspectCase->pscr_sars_cov_2_at;
-                $tracing->quarantine_end_at = $tracing->quarantine_start_at->add(14,'days');
+                $tracing->quarantine_end_at = $tracing->quarantine_start_at->add(13,'days');
                 $tracing->observations      = $suspectCase->observation;
                 $tracing->notification_at   = $suspectCase->notification_at;
                 $tracing->notification_mechanism = $suspectCase->notification_mechanism;
@@ -466,6 +499,28 @@ class SuspectCaseController extends Controller
         }
 
         return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
+    }
+
+
+    /**
+     * Modifica datos notificación de suspect case.
+     *
+     * @param  \App\request  $request
+     * @param  \App\SuspectCase  $suspectCase
+     * @return \Illuminate\Http\Response
+     */
+    public function updateNotification(Request $request, SuspectCase $suspectCase){
+        if($request->notification_at != null && $request->notification_mechanism != null){
+            $suspectCase->notification_at = $request->notification_at;
+            $suspectCase->notification_mechanism = $request->notification_mechanism;
+            $suspectCase->save();
+
+            session()->flash('success', 'Se ha ingresado la notificación');
+        }else{
+            session()->flash('warning', 'Debe seleccionar ambos parámetros');
+        }
+
+        return redirect()->back();
     }
 
     /**
@@ -879,6 +934,39 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.notification_form', compact('suspectCase', 'user'));
     }
 
+
+    /**
+     * Se utiliza una única vez para migrar los archivos de suspect case a nueva carpeta
+     * con nuevos nombres.
+     */
+    public function filesMigrationSingleUse(){
+
+        Storage::makeDirectory('suspect_cases');
+
+        $files = File::orderBy('id', 'desc')->get();
+
+        foreach ($files as $file){
+
+            if($file->suspectCase){
+                $originFileName = $file->file;
+                //TODO cambiar a move?
+
+                if(Storage::exists('suspect_cases/' . $file->suspectCase->id . '.pdf')){
+                    Storage::delete('suspect_cases/' . $file->suspectCase->id . '.pdf');
+                }
+
+                Storage::copy($originFileName, 'suspect_cases/' . $file->suspectCase->id . '.pdf');
+                $file->suspectCase->file = true;
+                $file->suspectCase->save();
+//            dump($originFileName);
+            }
+
+        }
+
+        dd("Migración Lista.");
+
+    }
+
     public function index_bulk_load(){
         return view('lab.bulk_load.import');
     }
@@ -892,4 +980,5 @@ class SuspectCaseController extends Controller
         session()->flash('success', 'Se ha realizado carga de archivo exitosamente');
         return view('lab.bulk_load.import');
     }
+
 }

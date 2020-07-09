@@ -8,19 +8,15 @@
 
 <div class="row">
     @can('Patient: create')
-    <div class="col-4 col-sm-3">
+    <div class="col-12 col-md-3">
         <a class="btn btn-primary mb-4" href="{{ route('patients.create') }}">
             <i class="fas fa-plus"></i> Crear Paciente
         </a>
     </div>
     @endcan
-    <div class="col-8 col-sm-9">
+    <div class="col-12 col-md-9">
         <form method="GET" class="form-horizontal" action="{{ route('patients.index') }}">
             <div class="input-group mb-sm-0">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Búsqueda</span>
-                </div>
-
                 <input class="form-control" type="text" name="search" autocomplete="off" id="for_search" style="text-transform: uppercase;" placeholder="RUN (sin dígito verificador) / OTRA IDENTIFICACION / NOMBRE" value="{{$request->search}}" required>
 
                 <div class="input-group-append">

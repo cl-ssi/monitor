@@ -8,33 +8,32 @@
         <div class="card-body">
 
             <h3 class="mb-3">Editar Paciente</h3>
-        <!-- <a class="btn btn-primary mb-3" href="{{ route('sanitary_residences.admission.create', $patient) }}">Evaluación para Residencia Sanitaria</a> -->
 
             <form method="POST" class="form-horizontal" action="{{ route('patients.update',$patient) }}">
                 @csrf
                 @method('PUT')
-
+<!--**********************************-->
                 <div class="form-row">
-                    <fieldset class="form-group col-10 col-md-2">
+                    <fieldset class="form-group col-10 col-sm-4 col-md-2">
                         <label for="for_run">Run</label>
                         <input type="text" class="form-control" id="for_run" name="run"
-                               value="{{ $patient->run }}">
+                               value="{{ $patient->run }}" max="50000000">
                     </fieldset>
 
-                    <fieldset class="form-group col-2 col-md-1">
+                    <fieldset class="form-group col-2 col-sm-2 col-md-1">
                         <label for="for_dv">DV</label>
                         <input type="text" class="form-control" id="for_dv" name="dv"
                                value="{{ $patient->dv }}">
                     </fieldset>
 
-                    <fieldset class="form-group col-12 col-md-4">
+                    <fieldset class="form-group col-12 col-sm-6 col-md-3">
                         <label for="for_other_identification">Otra identificación</label>
                         <input type="text" class="form-control" id="for_other_identification"
                                placeholder="Extranjeros sin run" name="other_identification"
                                value="{{ $patient->other_identification }}">
                     </fieldset>
 
-                    <fieldset class="form-group col-6 col-md-2">
+                    <fieldset class="form-group col-12 col-sm-6 col-md-3">
                         <label for="for_gender">Genero</label>
                         <select name="gender" id="for_gender" class="form-control">
                             <option value="male"
@@ -56,23 +55,23 @@
                         </select>
                     </fieldset>
 
-                    <fieldset class="form-group col-6 col-md-2">
+                    <fieldset class="form-group col-12 col-sm-6 col-md-3">
                         <label for="for_birthday">Fecha Nacimiento</label>
                         <input type="date" class="form-control" id="for_birthday" required
                                name="birthday"
                                value="{{ ($patient->birthday)?$patient->birthday->format('Y-m-d'):'' }}">
                     </fieldset>
                 </div>
-
+<!--**********************************-->
                 <div class="form-row">
-                    <fieldset class="form-group col-12 col-md-4">
+                    <fieldset class="form-group col-12 col-sm-4 col-md-4">
                         <label for="for_name">Nombres*</label>
                         <input type="text" class="form-control" id="for_name" name="name"
                                value="{{ $patient->name }}" style="text-transform: uppercase;"
                                required>
                     </fieldset>
 
-                    <fieldset class="form-group col-12 col-md-4">
+                    <fieldset class="form-group col-12 col-sm-4 col-md-4">
                         <label for="for_fathers_family">Apellido Paterno*</label>
                         <input type="text" class="form-control" id="for_fathers_family"
                                name="fathers_family" value="{{ $patient->fathers_family }}"
@@ -80,7 +79,7 @@
                                required>
                     </fieldset>
 
-                    <fieldset class="form-group col-12 col-md-4">
+                    <fieldset class="form-group col-12 col-sm-4 col-md-4">
                         <label for="for_mothers_family">Apellido Materno</label>
                         <input type="text" class="form-control" id="for_mothers_family"
                                name="mothers_family" value="{{ $patient->mothers_family }}"
@@ -88,16 +87,16 @@
                     </fieldset>
 
                 </div>
-
+<!--**********************************-->
 
                 @if($patient->demographic)
                     @include('patients.demographic.edit')
                 @else
                     @include('patients.demographic.create')
                 @endif
-
+<!--**********************************-->
                 <div class="form-row">
-                    <fieldset class="form-group col-12 col-md-3">
+                    <fieldset class="form-group col-12 col-sm-6">
                         <label for="for_status">Estado</label>
                         <select name="status" id="for_status" class="form-control">
                             <option value=""></option>
@@ -135,24 +134,25 @@
                         </select>
                     </fieldset>
 
-                    <fieldset class="form-group col-6 col-md-2">
+                    <fieldset class="form-group col-12 col-sm-6">
                         <label for="for_deceased_at">Fallecido</label>
                         <input type="date" class="form-control" name="deceased_at" id="for_deceased_at"
                                value="{{ ($patient->deceased_at) ? $patient->deceased_at->format('Y-m-d') : '' }}">
                     </fieldset>
-
                 </div>
+<!--**********************************-->
                 <div class="row">
-                    <div class="col">
+                    <div class="col-4 pl-sm-5">
                         <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
 
-                        <a class="btn btn-outline-secondary" href="{{ route('patients.index') }}">
-                            Cancelar
-                        </a>
+                    <div class="col-4 px-1 text-center">
+                        <a class="btn btn-outline-secondary" href="{{ route('patients.index') }}">Cancelar</a>
+                    </div>
+                </form>
 
-            </form>
-        </div>
-        <div class="col">
+
+        <div class="col-4 pr-sm-5">
             @can('Patient: delete')
                 @if($patient->suspectCases->count() === 0)
                     <form method="POST" class="form-horizontal" action="{{ route('patients.destroy',$patient) }}">
@@ -172,13 +172,15 @@
             @endcan
         </div>
     </div>
-
+    <!--**********************************-->
     </div>
     </div>
 
     <hr>
 
     @include('patients.tracing.partials.show')
+
+    <hr>
 
     <div class="card">
         <div class="card-body">
@@ -190,6 +192,8 @@
                     <i class="fas fa-plus"></i> Nuevo Contacto
                 </a>
             @endcan
+            <!-- <table class="table table-sm table-bordered small mb-4 mt-4"> -->
+            <div class="table-responsive-md">
             <table class="table table-sm table-bordered small mb-4 mt-4">
                 <thead>
                 <tr class="text-center">
@@ -251,17 +255,18 @@
                 @endforeach
                 </tbody>
             </table>
+          </div>
         </div>
     </div>
 
     <hr>
 
-    @can('SuspectCase: list')
+    @can('Patient: tracing')
 
         <div class="card">
             <div class="card-body">
                 <h4 class="mt-4">Examenes PCR</h4>
-
+              <div class="table-responsive-md">
                 <table class="table table-sm table-bordered small mb-4 mt-4">
                     <thead>
                     <tr>
@@ -278,20 +283,39 @@
                     @foreach($patient->suspectCases as $case)
                         <tr>
                             <td>
+                                @can('SuspectCase: edit')
                                 <a href="{{ route('lab.suspect_cases.edit', $case )}}">
+                                @endcan
                                     {{ $case->id }}
+                                @can('SuspectCase: edit')
                                 </a>
+                                @endcan
                             </td>
                             <td>{{ $case->establishment?$case->establishment->alias.' - '.$case->origin: '' }}</td>
                             <td>{{ $case->sample_at }}</td>
                             <td>{{ $case->pscr_sars_cov_2_at }}</td>
-                            <td>{{ $case->covid19 }}</td>
+                            <td>{{ $case->covid19 }}
+                                @if($case->files->first())
+                                <a href="{{ route('lab.suspect_cases.download', $case->files->first()->id) }}"
+                                    target="_blank"><i class="fas fa-paperclip"></i>&nbsp
+                                </a>
+                                @endif
+
+                                @if ($case->laboratory)
+                                @if ($case->laboratory->pdf_generate == 1 && $case->pscr_sars_cov_2 <> 'pending')
+                                <a href="{{ route('lab.print', $case) }}"
+                                    target="_blank"><i class="fas fa-paperclip"></i>&nbsp
+                                </a>
+                                @endif
+                                @endif
+                            </td>
                             <td>{{ $case->epivigila }}</td>
                             <td>{{ $case->observation }}</td>
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
+              </div>
             </div>
         </div>
 
@@ -317,7 +341,7 @@
                     @include('patients.modals.create_inmuno')
 
                 @endcan
-
+              <div class="table-responsive-sm">
                 <table class="table table-sm table-bordered small mb-4 mt-4">
                     <thead>
                     <tr>
@@ -346,6 +370,7 @@
                     @endforeach
                     </tbody>
                 </table>
+              </div>
             </div>
         </div>
 
@@ -363,7 +388,7 @@
                    onclick="return confirm('Recuerde que tiene que llenar los datos de contactos si es que tuviese antes de proceder con la encuesta' )">
                     <i class="fas fa-plus"></i> Nueva Encuesta
                 </a>
-
+              <div class="table-responsive-sm">
                 <table class="table table-sm table-bordered small mb-4 mt-4">
                     <thead>
                     <tr class="text-center">
@@ -402,6 +427,7 @@
                     @endforeach
                     </tbody>
                 </table>
+              </div>
             </div>
         </div>
 

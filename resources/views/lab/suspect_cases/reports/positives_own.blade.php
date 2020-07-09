@@ -12,6 +12,7 @@
             $total_male = $patients->where('gender','male')->count();
             $total_female = $patients->where('gender','female')->count();
             $total_male_female = $total_male + $total_female;
+            $region = $total_male + $total_female
         @endphp
 
         <div id="evolution" style="width: 480px; height: 400"></div>
@@ -83,7 +84,7 @@
                         {{ $femalesCommune = $patients->where('demographic.commune_id',$commune->id)->where('gender', 'female')->count()}}
                     </td>
                     <td class="text-center">
-                        {{ $malesCommune + $femalesCommune }}
+                        {{ $totalCommune = $malesCommune + $femalesCommune }}
                     </td>
                 </tr>
                 @endforeach
@@ -101,11 +102,17 @@
                 </tr>
             </thead>
             <tbody>
+                
                 @foreach($communes as $commune)
                 <tr>
                     <td>{{ $commune->name }} ({{ $commune->population }}*)</td>
                     <td class="text-right">
-                        {{ number_format($commune->count / $commune->population * 100000 ,2) }}
+                        @php
+                        $malesCommune = $patients->where('demographic.commune_id',$commune->id)->where('gender', 'male')->count();
+                        $femalesCommune = $patients->where('demographic.commune_id',$commune->id)->where('gender', 'female')->count();
+                        $totalCommune = $malesCommune + $femalesCommune;
+                        @endphp
+                        {{ number_format(($totalCommune/ $commune->population) * 100000 ,2)  }}
                     </td>
                 </tr>
                 @endforeach
@@ -113,7 +120,7 @@
                 <tr>
                     <th>Total ({{ $communes->sum('population') }}*)</th>
                     <th class="text-right">
-                        {{ number_format($total_male_female / $communes->sum('population') * 100000 ,2) }}
+                        {{ number_format($region/ $communes->sum('population') * 100000 ,2) }}
                     </th>
                 </tr>
             </tbody>

@@ -6,6 +6,9 @@ use App\Tracing\Tracing;
 use Illuminate\Http\Request;
 use App\Patient;
 use Carbon\Carbon;
+use App\EstablishmentUser;
+use App\Commune;
+use App\Establishment;
 
 class TracingController extends Controller
 {
@@ -101,6 +104,41 @@ class TracingController extends Controller
         return view('patients.tracing.index', compact('patients'));
     }
 
+
+
+    public function mapByEstablishment()
+    {
+        $patients = Patient::whereHas('tracing', function($q) {
+                $q->whereIn('establishment_id', auth()->user()->establishments->pluck('id')->toArray())
+                  ->where('status',1)
+                  ->orderBy('next_control_at');
+            })
+            ->where(function ($q) {
+                $q->whereNotIn('status',[
+                    'Fallecido',
+                    'Alta',
+                    'Residencia Sanitaria',
+                    'Hospitalizado Básico',
+                    'Hospitalizado Medio',
+                    'Hospitalizado UCI',
+                    'Hospitalizado UTI',
+                    'Hospitalizado UCI (Ventilador)'
+                ])
+                ->orWhereNull('status');
+             })
+            ->with('tracing')
+            ->with('demographic')
+            ->get()
+            ->sortBy(function($q){
+                return $q->tracing->next_control_at;
+                })
+            ->all();
+
+        $establishments = Establishment::whereIn('id', auth()->user()->establishments)->distinct('name')->get();
+
+        return view('patients.tracing.mapbyestablishment', compact('patients','establishments'));
+    }
+
     public function tracingCompleted()
     {
         $patients = Patient::whereHas('demographic', function($q) {
@@ -172,9 +210,12 @@ class TracingController extends Controller
                 return $q->tracing->next_control_at;
             })
             ->all();
-        //dd($patients);
 
-        return view('patients.tracing.mapbycommune', compact('patients'));
+        $communes = Commune::whereIn('id', auth()->user()->communes())->distinct('name')->get();
+
+
+
+        return view('patients.tracing.mapbycommune', compact('patients','communes'));
     }
 
     public function create()
@@ -192,9 +233,10 @@ class TracingController extends Controller
     {
         $tracing = new tracing($request->All());
         $tracing->user_id = auth()->id();
-        $tracing->next_control_at = Carbon::now()->add(1,'day');
+        $tracing->status = 1;
+        $tracing->next_control_at = Carbon::now();
         $tracing->quarantine_start_at = Carbon::now();
-        $tracing->quarantine_end_at = Carbon::now()->add(14,'days');
+        $tracing->quarantine_end_at = Carbon::now()->add(13,'days');
         $tracing->save();
 
         return redirect()->back();

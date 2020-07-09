@@ -22,7 +22,7 @@
     <div class="form-row">
         <fieldset class="form-group col-10 col-md-2">
             <label for="for_run">Run</label>
-            <input type="number" class="form-control" id="for_run" name="run" autocomplete="off">
+            <input type="number" class="form-control" id="for_run" name="run" autocomplete="off" max="50000000">
         </fieldset>
 
         <fieldset class="form-group col-2 col-md-1">
