@@ -18,7 +18,7 @@
                     <fieldset class="form-group col-10 col-sm-4 col-md-2">
                         <label for="for_run">Run</label>
                         <input type="text" class="form-control" id="for_run" name="run"
-                               value="{{ $patient->run }}">
+                               value="{{ $patient->run }}" max="50000000">
                     </fieldset>
 
                     <fieldset class="form-group col-2 col-sm-2 col-md-1">
@@ -300,10 +300,12 @@
                                 </a>
                                 @endif
 
+                                @if ($case->laboratory)
                                 @if ($case->laboratory->pdf_generate == 1 && $case->pscr_sars_cov_2 <> 'pending')
                                 <a href="{{ route('lab.print', $case) }}"
                                     target="_blank"><i class="fas fa-paperclip"></i>&nbsp
                                 </a>
+                                @endif
                                 @endif
                             </td>
                             <td>{{ $case->epivigila }}</td>
