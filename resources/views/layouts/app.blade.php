@@ -153,7 +153,7 @@
                         @endcan
 
 
-                        @canany(['Patient: georeferencing', 'Geo: communes', 'Geo: region'] )
+                        @canany(['Patient: georeferencing', 'Geo: communes', 'Geo: region', 'Geo: establishments'] )
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-globe-americas"></i>
