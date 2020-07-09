@@ -1,4 +1,5 @@
 <h4 class="mt-3">Historial de cambios</h4>
+<div class="table-responsive-md">
 <table class="table table-sm small text-muted mt-3">
     <thead>
         <tr>
@@ -29,3 +30,4 @@
         @endforeach
     </tbody>
 </table>
+</div>
