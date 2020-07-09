@@ -4,16 +4,21 @@
 
 @section('content')
 
-<h3 class="mb-3"><i class="fas fa-lungs-virus"></i>    
-    Examenes por notificar, excluye positivos y pendientes
-
-    <select class="cl_country" id="ddlCountry">
-    <option value="all">Todos los Establecimiento</option>
-    @foreach($suspectCases->reverse()->unique('establishment') as $case)
-    <option value="{{ $case->establishment->alias }}">{{ $case->establishment->alias }}</option>    
-    @endforeach
-</select>    
-</h3>
+<div class="row mb-3">
+    <div class="col-8">
+        <h3><i class="fas fa-lungs-virus"></i>
+            Examenes por notificar, excluye positivos y pendientes
+        </h3>
+    </div>
+    <div class="col-4">
+        <select class="form-control form-sm" id="ddlCountry">
+            <option value="all">Todos los Establecimiento</option>
+            @foreach($suspectCases->reverse()->unique('establishment') as $case)
+            <option value="{{ $case->establishment->alias }}">{{ $case->establishment->alias }}</option>
+            @endforeach
+        </select>
+    </div>
+</div>
 
 
 <div class="table-responsive">
@@ -127,19 +132,19 @@
 @section('custom_js')
 <script type="text/javascript">
 $(document).ready(function(){
-    $("main").removeClass("container");
+    //$("main").removeClass("container");
     $("#ddlCountry").on("change", function () {
-            var country = $('#ddlCountry').find("option:selected").val();            
+            var country = $('#ddlCountry').find("option:selected").val();
             SearchData(country)
         });
-    
+
 });
 function SearchData(country) {
         if (country.toUpperCase() == 'ALL') {
             $('#tabla_casos tbody tr').show();
         } else {
             $('#tabla_casos tbody tr:has(td)').each(function () {
-                var rowCountry = $.trim($(this).find('td:eq(6)').text()); 
+                var rowCountry = $.trim($(this).find('td:eq(6)').text());
                 if (country.toUpperCase() != 'ALL' ) {
                     if (rowCountry.toUpperCase() == country.toUpperCase()) {
                         $(this).show();
@@ -153,9 +158,9 @@ function SearchData(country) {
                         } else {
                             $(this).hide();
                         }
-                    }                    
+                    }
                 }
- 
+
             });
         }
     }
