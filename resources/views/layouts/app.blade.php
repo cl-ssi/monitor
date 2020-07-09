@@ -125,9 +125,9 @@
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing') }}">Seguimiento (Antiguo)</a>
                                 @endcan
 
-                                <hr>
+                                <!-- <hr>
 
-                                <!-- @can('SuspectCase: bulk load')
+                                @can('SuspectCase: bulk load')
                                 <a class="dropdown-item" href="{{ route('lab.bulk_load.index') }}">Carga Masiva</a>
                                 @endcan -->
 
@@ -206,7 +206,7 @@
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.bookings.bookingByDate') }}">Booking Realizados por Fechas</a>
 
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.residences.map') }}">Mapa de Residencias</a>
-                                
+
                                 @endcan
 
                                 @can('SanitaryResidence: admin')

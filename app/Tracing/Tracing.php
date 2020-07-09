@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+
+use Carbon\Carbon;
+
 class Tracing extends Model  implements Auditable
 {
     use SoftDeletes;
@@ -99,6 +104,47 @@ class Tracing extends Model  implements Auditable
             return 'NO';
         }
 
+    }
+
+    protected static function booted()
+    {
+        /* this is executed after ->save() method */
+        // static::created(function ($tracing) {
+        //     $birthday = Carbon::parse($tracing->patient->birthday);
+        //     $year_birthday = $birthday->year;
+        //     $query = "NUEVO_CASO";
+        //
+        //     if($tracing->patient->demographic){
+        //       $geo_address = $tracing->patient->demographic->latitude.';'.$tracing->patient->demographic->longitude;
+        //     }
+        //     else{
+        //       $geo_address = '';
+        //     }
+        //
+        //     $data = [
+        //         'id'=> $tracing->patient->id.'-'.$year_birthday,
+        //         'direccion'=> $geo_address,
+        //         'comuna'=> $tracing->patient->demographic->commune->id,
+        //         'fecha_inicio'=> $tracing->quarantine_start_at->format('Y-m-d'),
+        //         'fecha_termino'=> $tracing->quarantine_end_at->format('Y-m-d'),
+        //         'app' => env('APP_WS_UNAP'),
+        //         'key' => env('KEY_WS_UNAP'),
+        //         'query' => 'NUEVO_CASO'
+        //     ];
+        //
+        //     $client = new \GuzzleHttp\Client();
+        //
+        //     $response = $client->request('GET', env('WS_UNAP'), [
+        //         'query' => $data
+        //     ]);
+        //
+        //     $responseJson = $response->getBody()->getContents();
+        // });
+
+        /* this is executed after ->save() method */
+        // static::updated(function ($tracing) {
+        //
+        // });
     }
 
 }
