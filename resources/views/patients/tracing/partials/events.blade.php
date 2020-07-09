@@ -1,5 +1,5 @@
 <h4 class="mt-4">Seguimiento epidemiológico</h4>
-
+<div class="table-responsive-sm">
 <table class="table table-sm table-bordered">
     <thead>
         <tr>
@@ -22,3 +22,4 @@
         @endforeach
     </tbody>
 </table>
+</div>

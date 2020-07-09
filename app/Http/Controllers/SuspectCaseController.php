@@ -40,6 +40,9 @@ use App\Exports\HetgSuspectCasesExport;
 use App\Exports\UnapSuspectCasesExport;
 use App\Exports\MinsalSuspectCasesExport;
 use App\Exports\SeremiSuspectCasesExport;
+use App\Imports\PatientImport;
+use App\Imports\DemographicImport;
+use App\Imports\SuspectCaseImport;
 
 class SuspectCaseController extends Controller
 {
@@ -425,7 +428,7 @@ class SuspectCaseController extends Controller
                 $suspectCase->patient->tracing->quarantine_start_at = ($suspectCase->symptoms_at) ?
                                                 $suspectCase->symptoms_at :
                                                 $suspectCase->pscr_sars_cov_2_at;
-                $suspectCase->patient->tracing->quarantine_end_at = $suspectCase->patient->tracing->quarantine_start_at->add(14,'days');
+                $suspectCase->patient->tracing->quarantine_end_at = $suspectCase->patient->tracing->quarantine_start_at->add(13,'days');
                 $suspectCase->patient->tracing->save();
             }
             else {
@@ -441,7 +444,7 @@ class SuspectCaseController extends Controller
                 $tracing->quarantine_start_at = ($suspectCase->symptoms_at) ?
                                                 $suspectCase->symptoms_at :
                                                 $suspectCase->pscr_sars_cov_2_at;
-                $tracing->quarantine_end_at = $tracing->quarantine_start_at->add(14,'days');
+                $tracing->quarantine_end_at = $tracing->quarantine_start_at->add(13,'days');
                 $tracing->observations      = $suspectCase->observation;
                 $tracing->notification_at   = $suspectCase->notification_at;
                 $tracing->notification_mechanism = $suspectCase->notification_mechanism;
@@ -963,8 +966,11 @@ class SuspectCaseController extends Controller
     public function bulk_load_import(Request $request){
         $file = $request->file('file');
         Excel::import(new PatientImport, $file);
+        Excel::import(new DemographicImport, $file);
+        Excel::import(new SuspectCaseImport, $file);
 
-        // return view('lab.suspect_cases.import', compact('events'));
+        session()->flash('success', 'Se ha realizado carga de archivo exitosamente');
+        return view('lab.bulk_load.import');
     }
 
 }
