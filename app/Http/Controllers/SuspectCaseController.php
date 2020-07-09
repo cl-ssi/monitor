@@ -41,6 +41,8 @@ use App\Exports\UnapSuspectCasesExport;
 use App\Exports\MinsalSuspectCasesExport;
 use App\Exports\SeremiSuspectCasesExport;
 use App\Imports\PatientImport;
+use App\Imports\DemographicImport;
+use App\Imports\SuspectCaseImport;
 
 class SuspectCaseController extends Controller
 {
@@ -884,7 +886,10 @@ class SuspectCaseController extends Controller
     public function bulk_load_import(Request $request){
         $file = $request->file('file');
         Excel::import(new PatientImport, $file);
+        Excel::import(new DemographicImport, $file);
+        Excel::import(new SuspectCaseImport, $file);
 
-        // return view('lab.suspect_cases.import', compact('events'));
+        session()->flash('success', 'Se ha realizado carga de archivo exitosamente');
+        return view('lab.bulk_load.import');
     }
 }
