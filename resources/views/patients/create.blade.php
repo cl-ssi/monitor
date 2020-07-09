@@ -15,7 +15,7 @@
 @endif
 
 
-<form method="POST" class="form-horizontal" action="{{ route('patients.store') }}" onsubmit="confirm_email()">
+<form method="POST" class="form-horizontal" action="{{ route('patients.store') }}">
     @csrf
     @method('POST')
 
@@ -172,17 +172,5 @@
 
         });
 
-    </script>
-
-    <script type="text/javascript">
-        function confirm_email() {
-            var r = confirm("Press the button");
-            if (r == true) {
-               alert("You are right");
-            }
-            else {
-               alert("You are wrong");
-            }
-       }
     </script>
 @endsection
