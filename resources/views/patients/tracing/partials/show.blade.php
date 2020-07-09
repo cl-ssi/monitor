@@ -11,16 +11,16 @@
                 @method('PUT')
                 <h4>Notificación</h4>
 
-<!--**********************************-->
+                <!--**********************************-->
                 <div class="form-row">
-                    <fieldset class="form-group col-12 col-sm-4">
+                    <fieldset class="form-group col-12 col-sm-4 col-md-2">
                         <label for="for_notification_at">Fecha de Notificación</label>
                         <input type="date" class="form-control" name="notification_at"
                                id="for_notification_at"
                                value="{{ ($patient->tracing->notification_at) ? $patient->tracing->notification_at->format('Y-m-d') : '' }}">
                     </fieldset>
 
-                    <fieldset class="form-group col-12 col-sm-4">
+                    <fieldset class="form-group col-12 col-sm-4 col-md-3">
                         <label for="for_notification_mechanism">Mecanismo de Notifi.</label>
                         <select name="notification_mechanism" id="for_notification_mechanism" class="form-control">
                             <option></option>
@@ -47,18 +47,20 @@
                         </select>
                     </fieldset>
 
-                    <fieldset class="form-group col-12 col-sm-4">
+                    <fieldset class="form-group col-12 col-sm-4 col-md-3">
                         <label for="for_discharged_at">Fecha alta médica</label>
                         <input type="date" class="form-control" name="discharged_at"
                                id="for_discharged_at" value="{{ $patient->tracing->discharged_at }}">
                     </fieldset>
 
                 </div>
-<!--**********************************-->
+
+                <!--**********************************-->
                 <hr>
-                <h4 class="mt-4">Ficha inicial de Seguimiento</h4>
+
+                <h4 class="mt-4">Ficha de Seguimiento</h4>
                 <div class="form-row">
-                    <fieldset class="form-group col-5">
+                    <fieldset class="form-group col-5 col-md-1">
                         <label for="for_index">Indice</label>
                         <select name="index" id="for_index" class="form-control" required>
                             <option value=""></option>
@@ -68,14 +70,14 @@
                         </select>
                     </fieldset>
 
-                    <fieldset class="form-group col-7">
+                    <fieldset class="form-group col-7 col-md-3">
                         <label for="for_next_control_at">Próximo seguimiento *</label>
                         <input type="datetime-local" class="form-control" name="next_control_at"
                                id="for_next_control_at" required
                                value="{{ ($patient->tracing->next_control_at) ? $patient->tracing->next_control_at->format('Y-m-d\TH:i:s') : '' }}">
                     </fieldset>
 
-                    <fieldset class="form-group col-12 col-md-5">
+                    <fieldset class="form-group col-12 col-md-3">
                         <label for="for_status">Estado del seguimiento *</label>
                         <select name="status" id="for_status_seguimiento" class="form-control" required>
                             <option value=""></option>
@@ -87,7 +89,7 @@
                         </select>
                     </fieldset>
 
-                    <fieldset class="form-group col-12 col-md-7">
+                    <fieldset class="form-group col-12 col-md-4">
                         <label for="for_establishment_id">Establecimiento que realiza seguimiento</label>
                         <select name="establishment_id" id="for_establishment_id" class="form-control">
                             @foreach($establishments as $estab)
@@ -96,20 +98,21 @@
                             @endforeach
                         </select>
                     </fieldset>
+
+                    <fieldset class="form-group col-6 col-sm-6 col-md-1">
+                        <label for="for_functionary">Func. Salud</label>
+                        <select name="functionary" id="for_functionary" class="form-control">
+                            <option value=""></option>
+                            <option value="1" {{ ($patient->tracing->functionary === 1) ? 'selected' : '' }}>Si</option>
+                            <option value="0" {{ ($patient->tracing->functionary === 0) ? 'selected' : '' }}>No</option>
+                        </select>
+                    </fieldset>
                 </div>
 
-<!--**********************************-->
+                <!--**********************************-->
                 <div class="form-row">
-                  <fieldset class="form-group col-6 col-sm-6 col-md-3">
-                      <label for="for_functionary">Func. Salud</label>
-                      <select name="functionary" id="for_functionary" class="form-control">
-                          <option value=""></option>
-                          <option value="1" {{ ($patient->tracing->functionary === 1) ? 'selected' : '' }}>Si</option>
-                          <option value="0" {{ ($patient->tracing->functionary === 0) ? 'selected' : '' }}>No</option>
-                      </select>
-                  </fieldset>
 
-                    <fieldset class="form-group col-6 col-sm-6 col-md-3">
+                    <fieldset class="form-group col-6 col-sm-6 col-md-1">
                         <label for="for_symptoms">Síntomas *</label>
                         <select name="symptoms" id="for_symptoms" class="form-control" required>
                             <option value=""></option>
@@ -132,24 +135,25 @@
                                value="{{ ($patient->tracing->symptoms_end_at) ? $patient->tracing->symptoms_end_at->format('Y-m-d\TH:i:s') : '' }}">
                     </fieldset>
                 </div>
-<!--**********************************-->
+
+                <!--**********************************-->
 
                 <div class="form-row">
-                    <fieldset class="form-group col-12 col-sm-6 col-md-4">
+                    <fieldset class="form-group col-12 col-sm-6 col-md-2">
                         <label for="for_quarantine_start_at">Inicio Cuarentena *</label>
                         <input type="date" class="form-control" name="quarantine_start_at"
                                id="for_quarantine_start_at" required
                                value="{{ ($patient->tracing->quarantine_start_at) ? $patient->tracing->quarantine_start_at->format('Y-m-d') : '' }}">
                     </fieldset>
 
-                    <fieldset class="form-group col-12 col-sm-6 col-md-4">
+                    <fieldset class="form-group col-12 col-sm-6 col-md-2">
                         <label for="for_quarantine_end_at">Término de Cuarentena *</label>
                         <input type="date" class="form-control" name="quarantine_end_at"
                                id="for_quarantine_end_at" required
                                value="{{ ($patient->tracing->quarantine_end_at) ? $patient->tracing->quarantine_end_at->format('Y-m-d') : '' }}">
                     </fieldset>
 
-                    <fieldset class="form-group col-12 col-sm-12 col-md-4">
+                    <fieldset class="form-group col-12 col-sm-12 col-md-5">
                         <label for="for_cannot_quarantine">No puede realizar cuarentena</label>
                         <input type="text" class="form-control" name="cannot_quarantine"
                                id="for_cannot_quarantine" value="{{ $patient->tracing->cannot_quarantine }}">
@@ -159,14 +163,14 @@
 <!--**********************************-->
 
                 <div class="form-row">
-                    <fieldset class="form-group col-12 col-sm-6 col-md-4">
+                    <fieldset class="form-group col-12 col-sm-6 col-md-6">
                         <label for="for_responsible_family_member">Familiar responsable / teléfono</label>
                         <input type="text" class="form-control" name="responsible_family_member"
                                id="for_responsible_family_member"
                                value="{{ $patient->tracing->responsible_family_member }}">
                     </fieldset>
 
-                    <fieldset class="form-group col-12 col-sm-6 col-md-3">
+                    <fieldset class="form-group col-12 col-sm-6 col-md-2">
                         <label for="for_prevision">Previsión</label>
                         <select name="prevision" id="for_prevision" class="form-control">
                             <option value=""></option>
@@ -194,7 +198,7 @@
                         </select>
                     </fieldset>
 
-                    <fieldset class="form-group col-12 col-sm-6 col-md-2">
+                    <fieldset class="form-group col-12 col-sm-6 col-md-1">
                         <label for="for_gestation">Gestante *</label>
                         <select name="gestation" id="for_gestation" class="form-control" required>
                             <option value=""></option>
@@ -203,7 +207,7 @@
                         </select>
                     </fieldset>
 
-                    <fieldset class="form-group col-12 col-sm-6 col-md-3">
+                    <fieldset class="form-group col-12 col-sm-6 col-md-2">
                         <label for="for_gestation_week">Semanas de gestación</label>
                         <input type="text" class="form-control" name="gestation_week"
                                id="for_gestation_week" value="{{ $patient->tracing->gestation_week }}">
@@ -224,13 +228,13 @@
                                id="for_common_use_drugs" value="{{ $patient->tracing->common_use_drugs }}">
                     </fieldset>
 
-                    <fieldset class="form-group col-12 col-sm-6">
+                    <fieldset class="form-group col-12 col-sm-12">
                         <label for="for_morbid_history">Antecedentes Mórbidos</label>
                         <input type="text" class="form-control" name="morbid_history"
                                id="for_morbid_history" value="{{ $patient->tracing->morbid_history }}">
                     </fieldset>
 
-                    <fieldset class="form-group col-12 col-sm-6">
+                    <fieldset class="form-group col-12 col-sm-12">
                         <label for="for_family_history">Antecedentes Familiares</label>
                         <input type="text" class="form-control" name="family_history"
                                id="for_family_history" value="{{ $patient->tracing->family_history }}">
