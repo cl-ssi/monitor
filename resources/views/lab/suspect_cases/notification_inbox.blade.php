@@ -8,7 +8,7 @@
     Examenes por notificar, excluye positivos y pendientes
 
     <select class="cl_country" id="ddlCountry">
-    <option value="all">Seleccionar Establecimiento</option>
+    <option value="all">Todos los Establecimiento</option>
     @foreach($suspectCases->reverse()->unique('establishment') as $case)
     <option value="{{ $case->establishment->alias }}">{{ $case->establishment->alias }}</option>    
     @endforeach
