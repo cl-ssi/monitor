@@ -164,7 +164,10 @@
                                 <a class="dropdown-item" href="{{ route('patients.georeferencing') }}">Geo Regional</a>
                                 @endcan
                                 @can('Geo: communes')
-                                <a class="dropdown-item" href="{{ route('patients.tracings.mapbycommunes') }}">Geo mis comunas</a>
+                                <a class="dropdown-item" href="{{ route('patients.tracings.mapbycommunes') }}">Geo Mis Comunas</a>
+                                @endcan
+                                @can('Geo: establishments')
+                                <a class="dropdown-item" href="{{ route('patients.tracings.mapbyestablishments') }}">Geo Mis Establecimientos</a>
                                 @endcan
                             </div>
                         </li>
