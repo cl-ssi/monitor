@@ -61,7 +61,7 @@
                 <h4 class="mt-4">Ficha de Seguimiento</h4>
                 <div class="form-row">
                     <fieldset class="form-group col-5 col-md-1">
-                        <label for="for_index">Indice</label>
+                        <label for="for_index">Indice *</label>
                         <select name="index" id="for_index" class="form-control" required>
                             <option value=""></option>
                             <option value="1" {{ ($patient->tracing->index === 1) ? 'selected' : '' }}>Si</option>
@@ -113,8 +113,8 @@
                 <div class="form-row">
 
                     <fieldset class="form-group col-6 col-sm-6 col-md-1">
-                        <label for="for_symptoms">Síntomas *</label>
-                        <select name="symptoms" id="for_symptoms" class="form-control" required>
+                        <label for="for_symptoms">Síntomas</label>
+                        <select name="symptoms" id="for_symptoms" class="form-control">
                             <option value=""></option>
                             <option value="0" {{ ($patient->tracing->symptoms === 0) ? 'selected' : '' }}>No</option>
                             <option value="1" {{ ($patient->tracing->symptoms === 1) ? 'selected' : '' }}>Si</option>
@@ -199,8 +199,8 @@
                     </fieldset>
 
                     <fieldset class="form-group col-12 col-sm-6 col-md-1">
-                        <label for="for_gestation">Gestante *</label>
-                        <select name="gestation" id="for_gestation" class="form-control" required>
+                        <label for="for_gestation">Gestante</label>
+                        <select name="gestation" id="for_gestation" class="form-control">
                             <option value=""></option>
                             <option value="0" {{ ($patient->tracing->gestation === 0) ? 'selected' : '' }}>No</option>
                             <option value="1" {{ ($patient->tracing->gestation == 1) ? 'selected' : '' }}>Si</option>
@@ -331,7 +331,7 @@
 
 @else
 
-    <div class="card">
+    <div class="card mb-3">
         <div class="card-body">
 
             <form method="POST" class="form-horizontal" action="{{ route('patients.tracings.store') }}">
