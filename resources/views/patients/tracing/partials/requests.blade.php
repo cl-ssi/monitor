@@ -1,5 +1,5 @@
 <h4 class="mt-4">Solicitudes</h4>
-
+<div class="table-responsive-sm">
 <table class="table table-sm table-bordered small">
     <thead>
         <tr class="text-center">
@@ -38,3 +38,4 @@
         @endforeach
     </tbody>
 </table>
+</div>

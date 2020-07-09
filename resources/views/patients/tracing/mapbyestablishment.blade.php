@@ -3,10 +3,10 @@
 @section('title', 'Georeferenciación')
 
 @section('content')  
-<h3 class="mb-3"><i class="fas fa-globe-americas"></i> Seguimiento en Mis Comunas</h3> 
-(<b>Mis Comunas:</b>
-@foreach($communes as $commune)
-{{$commune->name}}
+<h3 class="mb-3"><i class="fas fa-globe-americas"></i> Seguimiento en Mis Establecimientos</h3> 
+(<b>Mis Establecimientos:</b>
+@foreach($establishments as $establishment)
+{{$establishment->alias}}
 @endforeach
 )
 

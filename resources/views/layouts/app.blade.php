@@ -107,6 +107,8 @@
                                 <div class="dropdown-divider"></div>
 
                                 @can('Patient: tracing')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.notificationInbox') }}">Notificación (excepto positivos)</a>
+
                                 <a class="dropdown-item" href="{{ route('patients.tracings.communes') }}">Seguimiento de mis comunas</a>
                                 <a class="dropdown-item" href="{{ route('patients.tracings.establishments') }}">Seguimiento de mis establecimientos</a>
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.tracing_minsal') }}">Seguimiento SEREMI</a>
@@ -116,10 +118,7 @@
                                 @endcanany
                                 @endcan
 
-                                <div class="dropdown-divider"></div>
-                                @can('Developer')
-                                <a class="dropdown-item" href="{{ route('patients.tracings.withouttracing') }}">Beta Pacientes Positivos sin Seguimientos >= 22-06-2020</a>
-                                @endcan
+                                <div class="dropdown-divider"></div>                                
 
                                 @can('Patient: tracing old')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing') }}">Seguimiento (Antiguo)</a>
@@ -154,7 +153,7 @@
                         @endcan
 
 
-                        @canany(['Patient: georeferencing', 'Geo: communes', 'Geo: region'] )
+                        @canany(['Patient: georeferencing', 'Geo: communes', 'Geo: region', 'Geo: establishments'] )
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-globe-americas"></i>
@@ -165,7 +164,10 @@
                                 <a class="dropdown-item" href="{{ route('patients.georeferencing') }}">Geo Regional</a>
                                 @endcan
                                 @can('Geo: communes')
-                                <a class="dropdown-item" href="{{ route('patients.tracings.mapbycommunes') }}">Geo mis comunas</a>
+                                <a class="dropdown-item" href="{{ route('patients.tracings.mapbycommunes') }}">Geo Mis Comunas</a>
+                                @endcan
+                                @can('Geo: establishments')
+                                <a class="dropdown-item" href="{{ route('patients.tracings.mapbyestablishments') }}">Geo Mis Establecimientos</a>
                                 @endcan
                             </div>
                         </li>
@@ -350,6 +352,10 @@
                                 <a class="dropdown-item" target="_blank" href="https://www.youtube.com/channel/UCynVYUM4qEu9eGPvM_3Z-WA">
                                     Tutoriales
                                 </a>
+
+                                @can('Developer')
+                                <a class="dropdown-item" href="{{ route('patients.tracings.withouttracing') }}">Pacientes Positivos sin Seguimientos</a>
+                                @endcan
 
                                 <a class="dropdown-item" href="{{ route('users.password.show_form') }}">
                                     Cambiar clave
