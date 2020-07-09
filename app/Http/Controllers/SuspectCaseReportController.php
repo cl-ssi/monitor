@@ -195,8 +195,7 @@ class SuspectCaseReportController extends Controller
 
         $patients = Patient::
             whereHas('tracing', function ($q) use($date) {
-              $q->where('status', '>', '0')
-              ->where('index', '1')
+              $q->where('index', '1')
               ->whereIn('establishment_id', auth()->user()->establishments->pluck('id'))
               ->whereDate('notification_at', $date);
             })
