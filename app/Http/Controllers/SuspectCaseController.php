@@ -40,12 +40,9 @@ use App\Exports\HetgSuspectCasesExport;
 use App\Exports\UnapSuspectCasesExport;
 use App\Exports\MinsalSuspectCasesExport;
 use App\Exports\SeremiSuspectCasesExport;
-<<<<<<< HEAD
 use App\Imports\PatientImport;
 use App\Imports\DemographicImport;
 use App\Imports\SuspectCaseImport;
-=======
->>>>>>> 1f2284d4b34a66077e0c5b13771e373fb62d9f00
 
 class SuspectCaseController extends Controller
 {
