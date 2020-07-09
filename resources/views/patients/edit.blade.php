@@ -8,7 +8,6 @@
         <div class="card-body">
 
             <h3 class="mb-3">Editar Paciente</h3>
-        <!-- <a class="btn btn-primary mb-3" href="{{ route('sanitary_residences.admission.create', $patient) }}">Evaluación para Residencia Sanitaria</a> -->
 
             <form method="POST" class="form-horizontal" action="{{ route('patients.update',$patient) }}">
                 @csrf
@@ -143,14 +142,14 @@
                 </div>
 <!--**********************************-->
                 <div class="row">
-                      <div class="col-4 pl-sm-5">
+                    <div class="col-4 pl-sm-5">
                         <button type="submit" class="btn btn-primary">Guardar</button>
-                      </div>
+                    </div>
 
-                      <div class="col-4 px-1 text-center">
-                          <a class="btn btn-outline-secondary" href="{{ route('patients.index') }}">Cancelar</a>
-                        </form>
-                      </div>
+                    <div class="col-4 px-1 text-center">
+                        <a class="btn btn-outline-secondary" href="{{ route('patients.index') }}">Cancelar</a>
+                    </div>
+                </form>
 
 
         <div class="col-4 pr-sm-5">
@@ -173,13 +172,15 @@
             @endcan
         </div>
     </div>
-<!--**********************************-->
+    <!--**********************************-->
     </div>
     </div>
 
     <hr>
 
     @include('patients.tracing.partials.show')
+
+    <hr>
 
     <div class="card">
         <div class="card-body">
