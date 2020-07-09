@@ -601,6 +601,7 @@ class SuspectCaseReportController extends Controller
 
         $suspectCases = SuspectCase::whereBetween('pscr_sars_cov_2_at', [$from, $to])
             ->where('pscr_sars_cov_2', 'like', 'positive')
+            ->where('file', true)
             ->orderBy('created_at','DESC')->get();
 
 
