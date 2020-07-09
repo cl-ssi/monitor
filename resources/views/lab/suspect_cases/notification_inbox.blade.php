@@ -132,7 +132,7 @@
 @section('custom_js')
 <script type="text/javascript">
 $(document).ready(function(){
-    //$("main").removeClass("container");
+    $("main").removeClass("container");
     $("#ddlCountry").on("change", function () {
             var country = $('#ddlCountry').find("option:selected").val();
             SearchData(country)
