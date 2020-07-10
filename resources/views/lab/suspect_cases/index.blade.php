@@ -15,7 +15,7 @@
 <div class="row">
     @can('SuspectCase: create')
     <div class="col-5 col-sm-3">
-        <a class="btn btn-primary mb-3" href="{{ route('lab.suspect_cases.create') }}">
+        <a class="btn btn-primary mb-3" href="{{ route('lab.suspect_cases.admission') }}">
             Crear nueva sospecha
         </a>
     </div>
