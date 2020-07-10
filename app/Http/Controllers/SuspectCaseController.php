@@ -967,9 +967,7 @@ class SuspectCaseController extends Controller
 
         $patientsCollection = Excel::toCollection(new PatientImport, $file);
 
-        foreach ($patientsCollection as $patientCollection) {
-            foreach ($patientCollection as $patient) {
-                // dd($patient);
+        foreach ($patientsCollection[0] as $patient) {
 
                 $patientsDB = Patient::where('run', $patient['RUN'])
                     ->orWhere('other_identification', $patient['RUN'])
@@ -1000,9 +998,7 @@ class SuspectCaseController extends Controller
                     ->first();
 
                 if($patient_create){
-                  $demographic = Demographic::where('patient_id', $patient_create['id'])->get();
-
-                  if($demographic->count() == 0){
+                  if(!$patient_create->demographic){
                       $new_demographic = new Demographic();
 
                       $new_demographic->street_type   = $patient['Via Residencia'];
@@ -1034,12 +1030,31 @@ class SuspectCaseController extends Controller
                         $new_suspect_case->reception_at       = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Recepcion']))->format('Y-m-d H:i:s');
                     }
 
-                    if($patient['Fecha Recepcion'] != null){
+                    if($patient['Fecha Resultado'] != null){
                         $new_suspect_case->pscr_sars_cov_2_at       = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Resultado']))->format('Y-m-d H:i:s');
                     }
 
-                    $new_suspect_case->pscr_sars_cov_2 = $patient['Resultado'];
-                    $new_suspect_case->establishment_id = $patient['Establecimiento Muestra'];
+                    if($patient['Resultado'] == 'Positivo'){
+                        $new_suspect_case->pscr_sars_cov_2 = 'positive';
+                    }
+                    if($patient['Resultado'] == 'Negativo'){
+                        $new_suspect_case->pscr_sars_cov_2 = 'negative';
+                    }
+                    if($patient['Resultado'] == 'Indeterminado'){
+                        $new_suspect_case->pscr_sars_cov_2 = 'undetermined';
+                    }
+                    if($patient['Resultado'] == 'Rechazado '){
+                        $new_suspect_case->pscr_sars_cov_2 = 'rejected';
+                    }
+                    if($patient['Resultado'] == 'Pendiente '){
+                        $new_suspect_case->pscr_sars_cov_2 = 'pending';
+                    }
+
+                    $establishment = Establishment::where('name', $patient['Establecimiento Muestra'])
+                        ->get()
+                        ->first();
+
+                    $new_suspect_case->establishment_id = $establishment['id'];
                     $new_suspect_case->origin = $patient['Detalle Origen'];
                     $new_suspect_case->run_medic = $patient['Run Medico'];
 
@@ -1095,7 +1110,7 @@ class SuspectCaseController extends Controller
                     $new_suspect_case->save();
                 }
             }
-        }
+
 
         return view('lab.bulk_load.import');
     }
