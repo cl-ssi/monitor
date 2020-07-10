@@ -91,7 +91,7 @@
         </tr>
     </thead>
     <tbody id="tableCases">
-        @foreach($suspectCases as $case)
+        @foreach($suspectCases->sortByDesc('created_at') as $case)
         <tr class="row_{{$case->covid19}} {{ ($case->pscr_sars_cov_2 == 'positive')?'table-danger':''}}">
             <td class="text-center">
                 {{ $case->id }}<br>
