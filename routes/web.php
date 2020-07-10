@@ -81,6 +81,7 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
     });
 
     Route::prefix('tracings')->name('tracings.')->middleware('auth')->group(function () {
+        Route::get('/reportbycommune', 'TracingController@reportByCommune')->name('reportbycommune');
         Route::get('/mapbycommunes', 'TracingController@mapByCommune')->name('mapbycommunes');
         Route::get('/mapbyestablishments', 'TracingController@mapByEstablishment')->name('mapbyestablishments');
         Route::get('/communes', 'TracingController@indexByCommune')->name('communes');
@@ -188,8 +189,8 @@ Route::prefix('lab')->name('lab.')->group(function () {
 //        pruebas
         Route::get('/exportAllCasesCsv','SuspectCaseController@exportAllCasesCsv')->name('exportAllCasesCsv')->middleware('auth');
 
-        Route::get('/create','SuspectCaseController@create')->name('create')->middleware('auth','can:SuspectCase: create');
-        Route::post('/','SuspectCaseController@store')->name('store')->middleware('auth','can:SuspectCase: create');
+        //Route::get('/create','SuspectCaseController@create')->name('create')->middleware('auth','can:SuspectCase: create');
+        //Route::post('/','SuspectCaseController@store')->name('store')->middleware('auth','can:SuspectCase: create');
         Route::get('/admission','SuspectCaseController@admission')->name('admission')->middleware('auth','can:SuspectCase: admission');
         Route::post('/admission','SuspectCaseController@storeAdmission')->name('store_admission')->middleware('auth','can:SuspectCase: admission');
         Route::get('/{suspect_case}/edit','SuspectCaseController@edit')->name('edit')->middleware('auth','can:SuspectCase: edit');

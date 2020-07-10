@@ -3,7 +3,6 @@
 namespace App\Imports;
 
 use App\Demographic;
-use App\Patient;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
@@ -28,4 +27,5 @@ class DemographicImport implements ToModel, WithHeadingRow
     {
         return 1;
     }
+
 }
