@@ -14,7 +14,7 @@
         <select class="form-control form-sm" id="ddlCountry">
             <option value="all">Todos los Establecimiento</option>
             @foreach($suspectCases->reverse()->unique('establishment') as $case)
-            <option value="{{ $case->establishment->alias }}">{{ $case->establishment->alias }}</option>
+                <option value="{{ $case->establishment->alias }}" {{(Session::get('selected_establishment') == $case->establishment->alias)  ? 'selected' : ''}} >{{ $case->establishment->alias }}</option>
             @endforeach
         </select>
     </div>
@@ -80,9 +80,11 @@
                     No recepcionado
                 @endif
             </td>
-            <form method="POST" action="{{ route('lab.updateNotification', $case) }}" class="d-inline">
+            <form method="POST" id="notification" action="{{ route('lab.updateNotification', $case) }}" class="d-inline" onsubmit="getEstablishmentValue(this);">
                 @csrf
     			@method('POST')
+                <input type="hidden" value="" name="selected_establishment" id="selected_establishment" >
+
                 @if($case->notification_at)
                     <td>{{ ($case->notification_at)? $case->notification_at->format('Y-m-d') : '' }}</td>
                     <td>{{ $case->notification_mechanism }}</td>
@@ -128,12 +130,27 @@
 
 @section('custom_js')
 <script type="text/javascript">
-$(document).ready(function(){
+
+    $(document).ready(function(){
     $("main").removeClass("container");
+
+    var selected_establishment_in_select = $('#ddlCountry').find("option:selected").val();
+    var selected_establishment_in_session = "{{Session::get('selected_establishment')}}";
+    var selected_establishment;
+
+    if (selected_establishment_in_select === selected_establishment_in_session){
+        selected_establishment = selected_establishment_in_session;
+    }
+    else{
+        selected_establishment = "ALL";
+    }
+
+    SearchData(selected_establishment)
+
     $("#ddlCountry").on("change", function () {
-            var country = $('#ddlCountry').find("option:selected").val();
-            SearchData(country)
-        });
+        var country = $('#ddlCountry').find("option:selected").val();
+        SearchData(country)
+    });
 
 });
 function SearchData(country) {
@@ -161,5 +178,10 @@ function SearchData(country) {
             });
         }
     }
+
+    function getEstablishmentValue(form) {
+        form.selected_establishment.value = $('#ddlCountry').find("option:selected").val();
+    }
+
 </script>
 @endsection
