@@ -15,8 +15,7 @@
             <th>Comuna</th>
             <th>Nacionalidad</th>
             <th>Estado</th>
-            <th>Exámenes</th>
-            <th>Covid-19</th>
+            <th>Exámenes</th>            
         </tr>
     </thead>
     <tbody>
@@ -35,12 +34,12 @@
             <td>{{ $patient->status }}</td>
             <td>
                 @foreach($patient->suspectCases as $case)
-                <a href="{{ route('lab.suspect_cases.edit', $case) }}">
-                    {{ $case->id }}
-                </a> ,
+                <a href="{{ route('lab.suspect_cases.edit', $case) }}" target="_blank">                    
+                    {{ ($case->pscr_sars_cov_2_at)?$case->pscr_sars_cov_2_at->format('Y-m-d'):'' }}
+                    {{ $case->covid19 }}
+                </a> <br>
                 @endforeach
-            </td>
-            <td>{{ $patient->suspectCases->first()->covid19 }}</td>
+            </td>            
         </tr>
         @endforeach
     </tbody>

@@ -28,14 +28,14 @@ class SuspectCase extends Model implements Auditable
      */
     protected $fillable = [
         'age', 'gender', 'sample_at', 'epidemiological_week',
-        'origin', 'status', 'run_medic', 'symptoms',
+        'origin', 'status', 'run_medic', 'symptoms', 'symptoms_at',
         'reception_at', 'receptor_id',
         'result_ifd_at', 'result_ifd', 'subtype',
         'pscr_sars_cov_2_at', 'pscr_sars_cov_2', 'sample_type', 'validator_id',
         'sent_isp_at', 'external_laboratory', 'paho_flu', 'epivigila',
         'gestation', 'gestation_week', 'close_contact', 'functionary',
         'notification_at', 'notification_mechanism',
-        'discharged_at','discharge_test',
+        'discharged_at',
         'observation', 'minsal_ws_id',
         'patient_id', 'laboratory_id', 'establishment_id',
         'user_id'
@@ -55,10 +55,6 @@ class SuspectCase extends Model implements Auditable
 
     public function logs() {
         return $this->morphMany('App\Log','model');
-    }
-
-    public function files() {
-        return $this->hasMany('App\File');
     }
 
     public function establishment() {
@@ -143,7 +139,7 @@ class SuspectCase extends Model implements Auditable
      * @var array
      */
     protected $dates = [
-        'sample_at', 'reception_at', 'result_ifd_at', 'pscr_sars_cov_2_at', 'sent_isp_at',
+        'sample_at', 'symptoms_at', 'reception_at', 'result_ifd_at', 'pscr_sars_cov_2_at', 'sent_isp_at',
         'notification_at', 'discharged_at', 'deleted_at'
     ];
 

@@ -39,7 +39,10 @@ class SuspectCaseReportController extends Controller
         $begin = SuspectCase::where('pscr_sars_cov_2','positive')->orderBy('sample_at')->first()->sample_at;
         $end   = SuspectCase::where('pscr_sars_cov_2','positive')->orderByDesc('sample_at')->first()->sample_at;
 
-        $communes = Region::find(env('REGION'))->communes;
+//        $communes = Region::find(env('REGION'))->communes;
+
+        $communes_ids = array_map('trim',explode(",",env('COMUNAS')));
+        $communes = Commune::whereIn('id', $communes_ids)->get();
 
         for ($i = $begin; $i <= $end; $i->modify('+1 day')) {
             $casos['Region'][$i->format("Y-m-d")] = 0;
@@ -112,7 +115,7 @@ class SuspectCaseReportController extends Controller
         $begin = $begin->setTime(00, 00, 00);
         $end = $end->setTime(00, 00, 00);
 
-        $communes = Commune::find(Auth::user()->communes());        
+        $communes = Commune::find(Auth::user()->communes());
 
         for ($i = $begin; $i <= $end; $i->modify('+1 day')) {
             $casos[$i->format("Y-m-d")] = 0;
@@ -470,7 +473,7 @@ class SuspectCaseReportController extends Controller
         // dd($cases);
         foreach ($cases as $key => $case) {
             // if ($case->run_medic != 0) {
-                if ($case->patient->demographic && $case->files) {
+                if ($case->patient->demographic && $case->file) {
                     $response = WSMinsal::crea_muestra($case);
                     if ($response['status'] == 0) {
                         session()->flash('info', 'Error al subir muestra ' . $case->id . ' a MINSAL. ' . $response['msg']);
@@ -591,41 +594,26 @@ class SuspectCaseReportController extends Controller
 
     public function exams_with_result(Request $request)
     {
-        // $from =Carbon::now()->subDays(2);
-        //
-        // $patients = Patient::whereHas('suspectCases', function ($q) {
-        //     $q->where('pscr_sars_cov_2','positive');
-        // })->with('suspectCases')->with('demographic')->get();
-
-
         $from = Carbon::now()->subDays(2);
         $to = Carbon::now();
-        //dd($from, $to);
-        $files = File::whereBetween('created_at', [$from, $to])
-                   ->whereHas('suspectCase', function ($query) {
-                        $query->where('pscr_sars_cov_2', 'like', 'positive');
-                    })
-                   ->orderBy('created_at','DESC')->get();
+//        $files = File::whereBetween('created_at', [$from, $to])
+//                   ->whereHas('suspectCase', function ($query) {
+//                        $query->where('pscr_sars_cov_2', 'like', 'positive');
+//                    })
+//                   ->orderBy('created_at','DESC')->get();
 
-        $suspectCases = SuspectCase::whereBetween('created_at', [$from, $to])
-                                 ->where('pscr_sars_cov_2', 'like', 'positive')
-                                 ->where('laboratory_id', 2)
-                                 ->get();
-
-        return view('lab.suspect_cases.reports.exams_with_result', compact('files','suspectCases'));
-    }
+        $suspectCases = SuspectCase::whereBetween('pscr_sars_cov_2_at', [$from, $to])
+            ->where('pscr_sars_cov_2', 'like', 'positive')
+            ->where('file', true)
+            ->orderBy('created_at','DESC')->get();
 
 
-    public function apuntes() {
-        $patients = Patient::all();
-        foreach($patients as $patient) {
-            foreach($patient->suspectCases as $case) {
-                if($case->status) {
-                    $patient->status = $case->status;
-                    $patient->save();
-                }
-            }
-        }
+        $suspectCasesUnap = SuspectCase::whereBetween('created_at', [$from, $to])
+            ->where('pscr_sars_cov_2', 'like', 'positive')
+            ->where('laboratory_id', 2)
+            ->get();
+
+        return view('lab.suspect_cases.reports.exams_with_result', compact('suspectCases','suspectCasesUnap'));
     }
 
     /**
