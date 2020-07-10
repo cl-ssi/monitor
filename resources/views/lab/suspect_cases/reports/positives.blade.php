@@ -11,7 +11,7 @@
         <table class="table table-sm table-bordered">
             <thead>
                 <tr class="table-active">
-                    <th>Casos de la Región</th>
+                    <th>Casos del Servicio de Salud</th>
                     <th>Hom</th>
                     <th>Muj</th>
                     <th>Total</th>

@@ -22,13 +22,13 @@ class BookingController extends Controller
     public function index(Residence $residence)
     {
         $rooms = $rooms = Room::where('residence_id',$residence->id)->orderBy('floor')->orderBy('number')->get();
-        
+
         $bookings = Booking::All();
-        $releases = Booking::whereNotNull('real_to')->whereHas('room', function ($q) use($residence) 
+        $releases = Booking::whereNotNull('real_to')->whereHas('room', function ($q) use($residence)
         {
             $q->where('residence_id', $residence->id);
         })->get();
-        
+
         return view('sanitary_residences.bookings.index', compact('residence','bookings', 'rooms','releases'));
     }
 
@@ -58,7 +58,6 @@ class BookingController extends Controller
         {
             $booking = new Booking($request->All());
             $booking->status = 'Residencia Sanitaria';
-            //$booking->patient->suspectCases->last()->status = 'Residencia Sanitaria';
             $booking->patient->status = 'Residencia Sanitaria';
             $booking->patient->save();
             $booking->save();
@@ -67,16 +66,12 @@ class BookingController extends Controller
         else
         {
           $booking = Booking::find($request->booking_id);
-          //$booking->patient->suspectCases->last()->status = $request->status;
           $booking->patient->status = $request->status;
           $booking->patient->save();
-          //$booking->patient->suspectCases->last()->save();
           $booking->fill($request->All());
           $booking->save();
           session()->flash('success', 'Paciente dado de Alta Exitosamente');
         }
-        //return redirect()->route('sanitary_residences.bookings.index', auth()->user()->residences);
-        //return redirect()->back();
         return view('sanitary_residences.home');
     }
 
@@ -144,7 +139,7 @@ class BookingController extends Controller
      */
     public function destroy(Booking $booking)
     {
-        
+
         $booking->delete();
         session()->flash('success', 'Booking eliminado exitosamente');
         //return redirect()->route('sanitary_residences.bookings');
@@ -172,7 +167,7 @@ class BookingController extends Controller
     {   $bookings = Booking::where('status','Residencia Sanitaria')
         ->whereHas('patient', function ($q) {
             $q->where('status','Residencia Sanitaria');
-        })->get();        
+        })->get();
         $vitalsigns = VitalSign::orderBy('booking_id','ASC')->orderBy('patient_id','ASC')->orderBy('created_at', 'DESC')->get();
 
         return view('sanitary_residences.bookings.excel.excelvitalsign',compact('bookings','vitalsigns'));
@@ -189,15 +184,15 @@ class BookingController extends Controller
         }
 
          $bookings = Booking::whereBetween('from', [$from, $to])
-         ->whereNull('deleted_at')         
+         ->whereNull('deleted_at')
          ->whereHas('room', function ($q) {
             $q->whereNull('deleted_at');
         })
         ->orderBy('from')->get();
-        
+
         $residences = Residence::withTrashed()->get();
-        
-        
+
+
 
         return view('sanitary_residences.bookings.excel.excelbydate', compact('residences','bookings', 'from', 'to'));
     }
@@ -205,5 +200,5 @@ class BookingController extends Controller
 
 
 
-    
+
 }

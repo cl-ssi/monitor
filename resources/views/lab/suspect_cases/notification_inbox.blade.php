@@ -65,8 +65,8 @@
             <td nowrap>
                 @if($case->laboratory)
                     {{ $case->covid19 }}
-                    @if($case->files->first())
-                    <a href="{{ route('lab.suspect_cases.download', $case->files->first()->id) }}"
+                    @if($case->file)
+                    <a href="{{ route('lab.suspect_cases.download', $case->id) }}"
                         target="_blank"><i class="fas fa-paperclip"></i>&nbsp
                     </a>
                     @endif
@@ -88,12 +88,9 @@
                     <td>{{ $case->notification_mechanism }}</td>
                 @else
                     <td><input type="date" class="form-control form-control-sm" name="notification_at"
-                        id="for_notification_at" value="{{ ($case->notification_at)?$case->notification_at->format('Y-m-d'):'' }}"></td>
-                    <td><select name="notification_mechanism" id="for_notification_mechanism" class="form-control form-control-sm">
+                        id="for_notification_at" value="{{ ($case->notification_at)?$case->notification_at->format('Y-m-d'):'' }}" required></td>
+                    <td><select name="notification_mechanism" id="for_notification_mechanism" class="form-control form-control-sm" required>
                         <option></option>
-                        <option value="Pendiente"
-                            {{ ($case->notification_mechanism == 'Pendiente')?'selected':'' }}>
-                            Pendiente</option>
                         <option value="Llamada telefónica"
                             {{ ($case->notification_mechanism == 'Llamada telefónica')?'selected':'' }}>
                             Llamada telefónica</option>
