@@ -89,15 +89,17 @@
                         </select>
                     </fieldset>
 
-                    <fieldset class="form-group col-12 col-md-4">
-                        <label for="for_establishment_id">Establecimiento que realiza seguimiento</label>
-                        <select name="establishment_id" id="for_establishment_id" class="form-control">
-                            @foreach($establishments as $estab)
-                                <option
-                                    value="{{ $estab->id }}" {{ ($patient->tracing->establishment_id == $estab->id) ? 'selected' : '' }}>{{ $estab->alias }}</option>
-                            @endforeach
-                        </select>
-                    </fieldset>
+                    @can('Tracing: change')
+                        <fieldset class="form-group col-12 col-md-4">
+                            <label for="for_establishment_id">Establecimiento que realiza seguimiento</label>
+                            <select name="establishment_id" id="for_establishment_id" class="form-control">
+                                @foreach($establishments as $estab)
+                                    <option
+                                        value="{{ $estab->id }}" {{ ($patient->tracing->establishment_id == $estab->id) ? 'selected' : '' }}>{{ $estab->alias }}</option>
+                                @endforeach
+                            </select>
+                        </fieldset>
+                    @endcan
 
                     <fieldset class="form-group col-6 col-sm-6 col-md-1">
                         <label for="for_functionary">Func. Salud</label>
