@@ -165,7 +165,8 @@ Route::prefix('lab')->name('lab.')->group(function () {
     });
     Route::prefix('suspect_cases')->name('suspect_cases.')->group(function () {
 
-        Route::get('/filesMigrationSingleUse','SuspectCaseController@filesMigrationSingleUse')->name('filesMigrationSingleUse')->middleware('auth');
+        //Se utiliza para migración de exámenes pdf desde carpeta "files" a carpeta "suspect cases"
+//        Route::get('/filesMigrationSingleUse','SuspectCaseController@filesMigrationSingleUse')->name('filesMigrationSingleUse')->middleware('auth');
 
         Route::get('reception_inbox','SuspectCaseController@reception_inbox')->name('reception_inbox')->middleware('auth','can:SuspectCase: reception');
         Route::post('reception/{suspect_case}','SuspectCaseController@reception')->name('reception')->middleware('auth','can:SuspectCase: reception');

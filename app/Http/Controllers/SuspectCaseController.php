@@ -941,7 +941,6 @@ class SuspectCaseController extends Controller
 
             if($file->suspectCase){
                 $originFileName = $file->file;
-                //TODO cambiar a move?
 
                 if(Storage::exists('suspect_cases/' . $file->suspectCase->id . '.pdf')){
                     Storage::delete('suspect_cases/' . $file->suspectCase->id . '.pdf');
