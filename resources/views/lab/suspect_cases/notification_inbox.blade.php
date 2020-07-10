@@ -91,9 +91,6 @@
                         id="for_notification_at" value="{{ ($case->notification_at)?$case->notification_at->format('Y-m-d'):'' }}" required></td>
                     <td><select name="notification_mechanism" id="for_notification_mechanism" class="form-control form-control-sm" required>
                         <option></option>
-                        <option value="Pendiente"
-                            {{ ($case->notification_mechanism == 'Pendiente')?'selected':'' }}>
-                            Pendiente</option>
                         <option value="Llamada telefónica"
                             {{ ($case->notification_mechanism == 'Llamada telefónica')?'selected':'' }}>
                             Llamada telefónica</option>
