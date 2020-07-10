@@ -501,6 +501,8 @@ class SuspectCaseController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function updateNotification(Request $request, SuspectCase $suspectCase){
+        $selected_establishment = $request->selected_establishment;
+
         if($request->notification_at != null && $request->notification_mechanism != null){
             $suspectCase->notification_at = $request->notification_at;
             $suspectCase->notification_mechanism = $request->notification_mechanism;
@@ -511,7 +513,7 @@ class SuspectCaseController extends Controller
             session()->flash('warning', 'Debe seleccionar ambos parámetros');
         }
 
-        return redirect()->back();
+        return redirect()->back()->with(compact('selected_establishment'));
     }
 
     /**
