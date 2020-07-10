@@ -20,11 +20,12 @@ class PatientImport implements ToModel, WithHeadingRow
     */
     public function model(array $row)
     {
-  
+
     }
 
     public function headingRow(): int
     {
         return 1;
     }
+
 }

@@ -3,11 +3,9 @@
 namespace App\Imports;
 
 use App\SuspectCase;
-use App\Patient;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
-use Illuminate\Support\Facades\Auth;
 
 class SuspectCaseImport implements ToModel, WithHeadingRow
 {
@@ -25,4 +23,5 @@ class SuspectCaseImport implements ToModel, WithHeadingRow
     {
         return 1;
     }
+
 }

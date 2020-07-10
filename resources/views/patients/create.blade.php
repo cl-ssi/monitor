@@ -27,7 +27,12 @@
 
         <fieldset class="form-group col-2 col-md-1">
             <label for="for_dv">DV</label>
-            <input type="text" class="form-control" id="for_dv" name="dv" autocomplete="off">
+            <input type="text" class="form-control" id="for_dv" name="dv" autocomplete="off" readonly>
+        </fieldset>
+
+        <fieldset class="form-group col-1 col-md-1">
+            <label for="">&nbsp;</label>
+            <button type="button" id="btn_fonasa" class="btn btn-outline-success">Fonasa&nbsp;</button>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-4">
@@ -104,6 +109,8 @@
     <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
 
+    <script src='{{asset("js/jquery.rut.chileno.js")}}'></script>
+
     <script type="text/javascript">
 
         jQuery(document).ready(function () {
@@ -168,6 +175,40 @@
                     });
                 }
 
+            });
+
+
+            //obtiene digito verificador
+            $('input[name=run]').keyup(function(e) {
+                var str = $("#for_run").val();
+                $('#for_dv').val($.rut.dv(str));
+            });
+
+            $('#btn_fonasa').click(function() {
+                var btn = $(this);
+                btn.prop('disabled',true);
+
+                var run = $("#for_run").val();
+                var dv  = $("#for_dv").val();
+                var url = '{{route('webservices.fonasa')}}/?run='+run+'&dv='+dv;
+
+                $.getJSON(url, function(data) {
+                    if(data){
+                        document.getElementById("for_name").value = data.name;
+                        document.getElementById("for_fathers_family").value = data.fathers_family;
+                        document.getElementById("for_mothers_family").value = data.mothers_family;
+                        // document.getElementById("for_gender").value = data.gender;
+                        document.getElementById("for_birthday").value = data.birthday;
+                    } else {
+                        document.getElementById("for_name").value = "";
+                        document.getElementById("for_fathers_family").value = "";
+                        document.getElementById("for_mothers_family").value = "";
+                        // document.getElementById("for_gender").value = "";
+                        document.getElementById("for_birthday").value = "";
+                    }
+            }).done(function() {
+                    btn.prop('disabled',false);
+                });
             });
 
         });
