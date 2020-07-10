@@ -118,15 +118,13 @@
                                 @endcanany
                                 @endcan
 
-                                <div class="dropdown-divider"></div>                                
+                                <div class="dropdown-divider"></div>
 
                                 @can('Patient: tracing old')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing') }}">Seguimiento (Antiguo)</a>
                                 @endcan
 
-                                <!-- <hr>
-
-                                @can('SuspectCase: bulk load')
+                                <!-- @can('SuspectCase: bulk load')
                                 <a class="dropdown-item" href="{{ route('lab.bulk_load.index') }}">Carga Masiva</a>
                                 @endcan -->
 
