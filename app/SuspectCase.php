@@ -139,7 +139,7 @@ class SuspectCase extends Model implements Auditable
      * @var array
      */
     protected $dates = [
-        'sample_at', 'reception_at', 'result_ifd_at', 'pscr_sars_cov_2_at', 'sent_isp_at',
+        'sample_at', 'symptoms_at', 'reception_at', 'result_ifd_at', 'pscr_sars_cov_2_at', 'sent_isp_at',
         'notification_at', 'discharged_at', 'deleted_at'
     ];
 
