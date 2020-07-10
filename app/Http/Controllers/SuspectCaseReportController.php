@@ -39,7 +39,10 @@ class SuspectCaseReportController extends Controller
         $begin = SuspectCase::where('pscr_sars_cov_2','positive')->orderBy('sample_at')->first()->sample_at;
         $end   = SuspectCase::where('pscr_sars_cov_2','positive')->orderByDesc('sample_at')->first()->sample_at;
 
-        $communes = Region::find(env('REGION'))->communes;
+//        $communes = Region::find(env('REGION'))->communes;
+
+        $communes_ids = array_map('trim',explode(",",env('COMUNAS')));
+        $communes = Commune::whereIn('id', $communes_ids)->get();
 
         for ($i = $begin; $i <= $end; $i->modify('+1 day')) {
             $casos['Region'][$i->format("Y-m-d")] = 0;
