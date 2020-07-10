@@ -125,7 +125,9 @@
                     <label for="for_result_ifd_at">Fecha Resultado IFD</label>
                     <input type="datetime-local" class="form-control" id="for_result_ifd_at"
                            name="result_ifd_at"
-                           value="{{( isset($suspectCase->result_ifd_at))?  $suspectCase->result_ifd_at->format('Y-m-d\TH:i:s'):'' }}">
+                           value="{{( isset($suspectCase->result_ifd_at))?  $suspectCase->result_ifd_at->format('Y-m-d\TH:i:s'):'' }}"
+                           max="{{ date('Y-m-d\TH:i:s') }}"
+                           >
                 </fieldset>
 
                 <fieldset class="form-group col-6 col-md-2 alert-warning">
@@ -195,6 +197,7 @@
                     <input type="datetime-local" class="form-control" id="for_pscr_sars_cov_2_at"
                            name="pscr_sars_cov_2_at"
                            value="{{ isset($suspectCase->pscr_sars_cov_2_at)? $suspectCase->pscr_sars_cov_2_at->format('Y-m-d\TH:i:s'):'' }}"
+                           max="{{ date('Y-m-d\TH:i:s') }}"
                            @if(($suspectCase->pscr_sars_cov_2_at AND auth()->user()->cannot('SuspectCase: tecnologo edit'))) disabled @endif>
                 </fieldset>
 
@@ -293,7 +296,9 @@
                 <label for="for_symptoms_at">Fecha Inicio de Sintomas</label>
                 <input type="datetime-local" class="form-control" id="for_symptoms_at"
                        name="symptoms_at"
-                       value="{{ ($suspectCase->symptoms_at)?$suspectCase->symptoms_at->format('Y-m-d\TH:i:s'):'' }}">
+                       value="{{ ($suspectCase->symptoms_at)?$suspectCase->symptoms_at->format('Y-m-d\TH:i:s'):'' }}"
+                       max="{{ date('Y-m-d\TH:i:s') }}"
+                       >
             </fieldset>
 
             <fieldset class="form-group col-6 col-md-1">

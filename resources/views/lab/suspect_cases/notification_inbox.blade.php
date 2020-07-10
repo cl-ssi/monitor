@@ -88,8 +88,8 @@
                     <td>{{ $case->notification_mechanism }}</td>
                 @else
                     <td><input type="date" class="form-control form-control-sm" name="notification_at"
-                        id="for_notification_at" value="{{ ($case->notification_at)?$case->notification_at->format('Y-m-d'):'' }}"></td>
-                    <td><select name="notification_mechanism" id="for_notification_mechanism" class="form-control form-control-sm">
+                        id="for_notification_at" value="{{ ($case->notification_at)?$case->notification_at->format('Y-m-d'):'' }}" required></td>
+                    <td><select name="notification_mechanism" id="for_notification_mechanism" class="form-control form-control-sm" required>
                         <option></option>
                         <option value="Pendiente"
                             {{ ($case->notification_mechanism == 'Pendiente')?'selected':'' }}>
