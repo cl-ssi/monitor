@@ -247,34 +247,60 @@ class TracingController extends Controller
 
 
     public function reportByCommune(Request $request)
-    {   
+    {
 
 
         if($request->has('date')){
-            $date = $request->get('date');            
+            $date = $request->get('date');
         }
         else{
             $date = Carbon::now();
         }
 
+        // ----------------------- crear arreglo ------------------------------
+        $communes = Commune::where('region_id', env('REGION'))->orderBy('name')->get();
+        foreach ($communes as $key => $commune) {
+            $report[$commune->id]['Comuna'] = $commune->name;
+            $report[$commune->id]['positives'] = 0;
+            $report[$commune->id]['car'] = 0;
+            $report[$commune->id]['curso'] = 0;
+            $report[$commune->id]['terminado'] = 0;
+        }
+
         $from = $request->get('date'). ' 00:00:00';
         $to = $request->get('date'). ' 23:59:59';
 
-        
-        $patients = Patient::where('demographic.commune_id',5)->
-            whereHas('suspectCases', function ($q) use($date) {
-              $q->where('pscr_sars_cov_2', 'positive')              
-              ->whereDate('pscr_sars_cov_2_at', $date);
-            })->get();
-            dd($patients);
-        
-        
+        $patients = Patient::whereHas('suspectCases', function ($q) use($date) {
+                                $q->where('pscr_sars_cov_2', 'positive')
+                                ->whereDate('pscr_sars_cov_2_at', $date);
+                              })
+                              ->whereHas('demographic', function ($q) {
+                                $q->where('region_id', env('REGION'));
+                              })
+                              ->get();
+
+        foreach($patients as $patient){
+            /*  */
+            $report[$patient->demographic->commune_id]['positives'] += 1;
+
+            foreach ($patient->contactPatient as $contact) {
+                if($contact->patient_id == $patient->id){
+                    // dd($contact);
+                    $report[$patient->demographic->commune_id]['car'] += 1;
+                }
+            }
+
+        }
+
+        dd($report);
+
+        // dd($patients);
         //$patients = Patient::positivesList()->where('suspectCases.pscr_sars_cov_2_at','>', $from)->get;;
         //$patients = Patient::whereDate('suspectCases.pscr_sars_cov_2_at', $date)->get();
         //$patients = Patient::positivesList()->whereBetween('suspectCases.pscr_sars_cov_2_at', [$from, $to]);
         //$patients = Patient::positivesList()->where('pscr_sars_cov_2_at','>', $from)->get;
         //dd($patients);
-        
+
         if ($patients->count() == 0){
             session()->flash('info', 'No existen casos positivos o no hay casos con dirección.');
             //return redirect()->route('home');
@@ -295,7 +321,7 @@ class TracingController extends Controller
         //         $casos[$commune->name][$i->format("Y-m-d")] = 0;
         //     }
         // }
-        
+
 
 
         // foreach($patients as $patient) {
