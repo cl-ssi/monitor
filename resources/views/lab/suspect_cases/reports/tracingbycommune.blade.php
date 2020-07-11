@@ -22,7 +22,7 @@
 
 
 <div class="table-responsive">
-    <table class="table table-sm table-bordered table-responsive text-center align-middle" id="tabla_estado_residencias">
+    <table class="table table-sm table-bordered table-responsive text-center align-middle" id="tabla_tracing_por_comunas">
         <thead>
             <tr class="text-center">
                 <th rowspan="2">FECHA</th>
@@ -63,13 +63,19 @@
 @section('custom_js')
 
 <script type="text/javascript">
+let date = new Date()
+let day = date.getDate()
+let month = date.getMonth() + 1
+let year = date.getFullYear()
+let hour = date.getHours()
+let minute = date.getMinutes()
     function exportF(elem) {
-        var table = document.getElementById("tabla_files");
+        var table = document.getElementById("tabla_tracing_por_comunas");
         var html = table.outerHTML;
         var html_no_links = html.replace(/<a[^>]*>|<\/a>/g, "");//remove if u want links in your table
         var url = 'data:application/vnd.ms-excel,' + escape(html_no_links); // Set your html table into url
         elem.setAttribute("href", url);
-        elem.setAttribute("download", "seguimiento.xls"); // Choose the file name
+        elem.setAttribute("download", "seguimiento_por_comunas.xls"); // Choose the file name
         return false;
     }
 </script>
