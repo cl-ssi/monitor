@@ -273,10 +273,10 @@ class SuspectCaseReportController extends Controller
 
         
 
-        if ($patients->count() == 0){
-            session()->flash('info', 'No existen casos positivos o no hay casos con dirección.');
-            //return redirect()->route('home');
-        }
+        // if ($patients->count() == 0){
+        //     session()->flash('info', 'No existen casos positivos o no hay casos con dirección.');
+        //     //return redirect()->route('home');
+        // }
 
         
 
