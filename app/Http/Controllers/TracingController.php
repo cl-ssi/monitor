@@ -280,7 +280,7 @@ class TracingController extends Controller
                               ->get();
 
         foreach($patients as $patient){
-            /*  */
+            
             $report[$patient->demographic->commune_id]['positives'] += 1;
 
             foreach ($patient->contactPatient as $contact) {
@@ -288,52 +288,38 @@ class TracingController extends Controller
                     // dd($contact);
                     $report[$patient->demographic->commune_id]['car'] += 1;
                 }
-            }
 
+                
+            }         
+
+            if($patient->tracing){
+                if($patient->tracing->status == 1){
+                $report[$patient->demographic->commune_id]['curso'] += 1;                
+                }
+                if($patient->tracing->status == null or $patient->tracing->status == 0){
+                    $report[$patient->demographic->commune_id]['terminado'] += 1;
+                }                   
+                    
+            
+
+            }
         }
 
         dd($report);
 
-        // dd($patients);
-        //$patients = Patient::positivesList()->where('suspectCases.pscr_sars_cov_2_at','>', $from)->get;;
-        //$patients = Patient::whereDate('suspectCases.pscr_sars_cov_2_at', $date)->get();
-        //$patients = Patient::positivesList()->whereBetween('suspectCases.pscr_sars_cov_2_at', [$from, $to]);
-        //$patients = Patient::positivesList()->where('pscr_sars_cov_2_at','>', $from)->get;
-        //dd($patients);
+        
 
         if ($patients->count() == 0){
             session()->flash('info', 'No existen casos positivos o no hay casos con dirección.');
             //return redirect()->route('home');
         }
 
-        /* Calculo de gráfico de evolución */
-        // $begin = SuspectCase::where('pscr_sars_cov_2','positive')->orderBy('sample_at')->first()->sample_at;
-        // $end   = SuspectCase::where('pscr_sars_cov_2','positive')->orderByDesc('sample_at')->first()->sample_at;
-
-//        $communes = Region::find(env('REGION'))->communes;
+        
 
         $communes_ids = array_map('trim',explode(",",env('COMUNAS')));
         $communes = Commune::whereIn('id', $communes_ids)->get();
 
-        // for ($i = $begin; $i <= $end; $i->modify('+1 day')) {
-        //     $casos['Region'][$i->format("Y-m-d")] = 0;
-        //     foreach($communes as $commune) {
-        //         $casos[$commune->name][$i->format("Y-m-d")] = 0;
-        //     }
-        // }
-
-
-
-        // foreach($patients as $patient) {
-        //     $casos['Region'][$patient->suspectCases->where('pscr_sars_cov_2','positive')->first()->sample_at->format('Y-m-d')] += 1;
-        //     if($patient->demographic AND $patient->demographic->commune) {
-        //         $casos[$patient->demographic->commune->name][$patient->suspectCases->where('pscr_sars_cov_2','positive')->first()->sample_at->format('Y-m-d')] += 1;
-        //     }
-
-        //     if($patient->demographic != NULL && $patient->demographic->commune != NULL) {
-        //         $casos[$patient->demographic->commune->name][$patient->suspectCases->where('pscr_sars_cov_2','positive')->first()->sample_at->format('Y-m-d')] += 1;
-        //     }
-        // }
+        
 
         return view('patients.tracing.reportbycommune',compact('request','communes','patients'));
     }
