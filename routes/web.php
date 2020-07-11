@@ -199,6 +199,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/{suspect_case}/notificationForm','SuspectCaseController@notificationForm')->name('notificationForm')->middleware('auth','can:SuspectCase: admission');
 
         Route::prefix('reports')->name('reports.')->group(function () {
+            Route::get('/tracingbycommunes','SuspectCaseReportController@tracingByCommunes')->name('tracingbycommunes');
             Route::get('/positives','SuspectCaseReportController@positives')->name('positives')->middleware('auth','can:Report: positives');
             Route::get('case_tracing','SuspectCaseReportController@case_tracing')->name('case_tracing')->middleware('auth','can:Patient: tracing');
             Route::get('tracing_minsal','SuspectCaseReportController@tracing_minsal')->name('tracing_minsal')->middleware('auth','can:Patient: tracing');
