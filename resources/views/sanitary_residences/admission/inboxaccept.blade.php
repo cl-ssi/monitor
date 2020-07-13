@@ -19,8 +19,7 @@
       <th>¿Es Posible Aislar al Paciente?</th>
       <th>¿Califica Residencia?</th>
       <th>Resultado</th>
-      <th>Resultado Final</th>
-      <th>Hotel - Habitación</th>
+      <th>Resultado Final</th>      
       <th>Ver encuesta</th>
     </tr>
   </thead>
