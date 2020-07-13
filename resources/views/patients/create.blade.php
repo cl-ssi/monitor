@@ -18,25 +18,25 @@
 <form method="POST" class="form-horizontal" action="{{ route('patients.store') }}">
     @csrf
     @method('POST')
-
+<!--------------------------->
     <div class="form-row">
-        <fieldset class="form-group col-10 col-md-2">
+        <fieldset class="form-group col-10 col-sm-4 col-md-2">
             <label for="for_run">Run</label>
             <input type="number" class="form-control" id="for_run" name="run" autocomplete="off" max="50000000">
         </fieldset>
 
-        <fieldset class="form-group col-2 col-md-1">
+        <fieldset class="form-group col-2 col-sm-2 col-md-1">
             <label for="for_dv">DV</label>
             <input type="text" class="form-control" id="for_dv" name="dv" autocomplete="off">
         </fieldset>
 
-        <fieldset class="form-group col-12 col-md-4">
+        <fieldset class="form-group col-12 col-sm-6 col-md-3">
             <label for="for_other_identification">Otra identificación</label>
             <input type="text" class="form-control" id="for_other_identification"
                 placeholder="Extranjeros sin run" name="other_identification" autocomplete="off">
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
+        <fieldset class="form-group col-6 col-sm-4 col-md-3">
             <label for="for_gender">Genero</label>
             <select name="gender" id="for_gender" class="form-control">
                 <option value="male">Masculino</option>
@@ -46,42 +46,42 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
+        <fieldset class="form-group col-7 col-sm-4 col-md-3">
             <label for="for_birthday">Fecha Nacimiento</label>
             <input type="date" class="form-control" id="for_birthday"
                 name="birthday" required>
         </fieldset>
     </div>
-
+<!--------------------------->
     <div class="form-row">
-        <fieldset class="form-group col-12 col-md-4">
+        <fieldset class="form-group col-12 col-sm-7 col-md-4">
             <label for="for_name">Nombres*</label>
             <input type="text" class="form-control" id="for_name" name="name"
                 style="text-transform: uppercase;"
                 required autocomplete="off">
         </fieldset>
 
-        <fieldset class="form-group col-12 col-md-4">
+        <fieldset class="form-group col-12 col-sm-6 col-md-4">
             <label for="for_fathers_family">Apellido Paterno*</label>
             <input type="text" class="form-control" id="for_fathers_family"
                 name="fathers_family" style="text-transform: uppercase;"
                 required autocomplete="off">
         </fieldset>
 
-        <fieldset class="form-group col-12 col-md-4">
+        <fieldset class="form-group col-12 col-sm-6 col-md-4">
             <label for="for_mothers_family">Apellido Materno</label>
             <input type="text" class="form-control" id="for_mothers_family"
                 name="mothers_family" style="text-transform: uppercase;" autocomplete="off">
         </fieldset>
 
     </div>
-
+<!--------------------------->
     <div class="card mb-3">
         <div class="card-body">
             @include('patients.demographic.create')
         </div>
     </div>
-
+<!--------------------------->
     <button type="submit" class="btn btn-primary">Guardar</button>
 
     <a class="btn btn-outline-secondary" href="{{ route('patients.index') }}">
