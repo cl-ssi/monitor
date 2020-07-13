@@ -7,7 +7,7 @@
 
 <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
     @foreach($request_types as $request_type)
-      @if($request_type->type->name == 'Licencia Medica SEREMI')
+      @if($request_type->type->name == 'Licencia Medica SEREMI' or $request_type->type->name == 'Residencia Sanitaria')
         @can('SocialTracing: seremi')
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" role="tab" aria-selected="true"

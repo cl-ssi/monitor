@@ -353,6 +353,8 @@
 
                                 @can('Developer')
                                 <a class="dropdown-item" href="{{ route('patients.tracings.withouttracing') }}">Pacientes Positivos sin Seguimientos</a>
+
+                                <a class="dropdown-item" href="{{ route('patients.tracings.cartoindex') }}">BETA Pacientes CAR que pasaron a Indice</a>
                                 @endcan
 
                                 <a class="dropdown-item" href="{{ route('users.password.show_form') }}">

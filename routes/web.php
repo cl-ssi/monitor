@@ -81,6 +81,7 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
     });
 
     Route::prefix('tracings')->name('tracings.')->middleware('auth')->group(function () {
+        Route::get('/cartoindex', 'TracingController@carToIndex')->name('cartoindex');
         Route::get('/reportbycommune', 'TracingController@reportByCommune')->name('reportbycommune');
         Route::get('/mapbycommunes', 'TracingController@mapByCommune')->name('mapbycommunes');
         Route::get('/mapbyestablishments', 'TracingController@mapByEstablishment')->name('mapbyestablishments');
