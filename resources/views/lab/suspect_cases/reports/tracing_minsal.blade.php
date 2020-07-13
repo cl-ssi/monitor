@@ -6,16 +6,22 @@
 
 <h3 class="">Seguimiento de Casos Positivos y Contactos.</h3>
 
-@if($request->date)
+@if($request->date_from && $request->date_to)
     <a class="btn btn-outline-success btn-sm mb-3" type="button" id="downloadLink" onclick="exportF(this)"><i class="far fa-file-excel"></i> Descargar en excel</a>
 @endif
 
 <form method="get" class="form-inline mb-3" action="{{ route('lab.suspect_cases.reports.tracing_minsal') }}">
 
   <div class="form-group">
-      <label for="for_date">fecha:</label>
-      <input type="date" class="form-control mx-sm-3" id="for_date" name="date" value="{{ $request->date }}">
+      <label for="for_date_from">Desde:</label>
+      <input type="date" class="form-control mx-sm-3" id="for_date_from" name="date_from" value="{{ $request->date_from }}">
   </div>
+
+  <div class="form-group">
+      <label for="for_date_to">Hasta:</label>
+      <input type="date" class="form-control mx-sm-3" id="for_date_to" name="date_to" value="{{ $request->date_to }}">
+  </div>
+
   <div class="form-group">
       <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
   </div>
@@ -27,22 +33,23 @@
 <main>
 
 <div class="table-responsive">
-    <table class="table table-sm table-bordered table-responsive small" id="tabla_files" >
+    <table class="table table-sm table-bordered table-striped small" id="tabla_files" >
         <thead>
             <tr class="text-center">
                 <th rowspan="2">°</th>
-                <th colspan="3">Caso Indice</th>
+                <th colspan="4">Caso Indice</th>
                 <th colspan="33">Contactos</th>
             </tr>
             <tr class="text-center">
                 <th>N°</th>
+                <th>FECHA NOTIFICACIÓN</th>
                 <th>RUN o IDENTIFICADOR</th>
                 <th nowrap>NOMBRE UNIDO</th>
                 <th>RUN o IDENTIFICADOR</th>
                 <th>NOMBRES</th>
                 <th>APELLIDO PATERNO</th>
                 <th>APELLIDO MATERNO</th>
-                <th>NOMBRE UNIDO</th>
+                <th nowrap>NOMBRE UNIDO</th>
                 <th>FECHA DE NACIMIENTO</th>
                 <th>TELEFONO</th>
                 <th>TELEFONO</th>
@@ -78,9 +85,15 @@
                   @foreach($patient->contactPatient as $contact)
                   <tr>
                     <td>°</td>
-                    <td>{{ $contact->self_patient->tracing->id }}</td>
+                    <td>{{ $patient->tracing->id }}</td>
+                    @if($patient->tracing->notification_at != null)
+                      <td>{{ $patient->tracing->notification_at->format('d-m-Y') }}</td>
+                    @else
+                      <td></td>
+                    @endif
                     <td>{{ $patient->identifier }}</td>
                     <td>{{ $patient->fullName }}</td>
+
                     <td>{{ $contact->patient->identifier }}</td>
                     <td>{{ $contact->patient->name }}</td>
                     <td>{{ $contact->patient->fathers_family }}</td>
