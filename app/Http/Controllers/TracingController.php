@@ -25,7 +25,7 @@ class TracingController extends Controller
         //
         $patients = Patient::search($request->input('search'))->doesntHave('tracing')->whereHas('suspectCases', function ($q) {
             $q->where('pscr_sars_cov_2','positive')
-            ->where('pscr_sars_cov_2_at', '>=', '2020-06-23');
+              ->where('pscr_sars_cov_2_at', '>=', now()->subDays(14));
         })->paginate(200);
         return view('patients.tracing.withouttracing', compact('patients','request'));
 
@@ -280,7 +280,7 @@ class TracingController extends Controller
                               ->get();
 
         foreach($patients as $patient){
-            
+
             $report[$patient->demographic->commune_id]['positives'] += 1;
 
             foreach ($patient->contactPatient as $contact) {
@@ -289,37 +289,37 @@ class TracingController extends Controller
                     $report[$patient->demographic->commune_id]['car'] += 1;
                 }
 
-                
-            }         
+
+            }
 
             if($patient->tracing){
                 if($patient->tracing->status == 1){
-                $report[$patient->demographic->commune_id]['curso'] += 1;                
+                $report[$patient->demographic->commune_id]['curso'] += 1;
                 }
                 if($patient->tracing->status == null or $patient->tracing->status == 0){
                     $report[$patient->demographic->commune_id]['terminado'] += 1;
-                }                   
-                    
-            
+                }
+
+
 
             }
         }
 
         dd($report);
 
-        
+
 
         if ($patients->count() == 0){
             session()->flash('info', 'No existen casos positivos o no hay casos con dirección.');
             //return redirect()->route('home');
         }
 
-        
+
 
         $communes_ids = array_map('trim',explode(",",env('COMUNAS')));
         $communes = Commune::whereIn('id', $communes_ids)->get();
 
-        
+
 
         return view('patients.tracing.reportbycommune',compact('request','communes','patients'));
     }
@@ -437,5 +437,25 @@ class TracingController extends Controller
         })->exists();
 
         return view('patients.tracing.quarantine_check', compact('isQuarantined', 'run'));
+    }
+
+
+    /**
+     *
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Tracing\Tracing  $tracing
+     * @return \Illuminate\Http\Response
+     */
+    public function withoutEvents()
+    {
+        $tracingsWithoutEvents =
+            Tracing::where('quarantine_start_at','<=',now())
+                   ->where('quarantine_end_at','>=',now())
+                   ->whereDoesntHave('events')
+                   ->orderBy('quarantine_start_at')
+                   ->get();
+
+        return view('patients.tracing.without_events', compact('tracingsWithoutEvents'));
     }
 }
