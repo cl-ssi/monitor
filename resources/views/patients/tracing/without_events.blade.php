@@ -33,7 +33,7 @@
             <td>{{ $tracing->patient->demographic->commune->name }}</td>
             <td>{{ ($tracing->establishment) ? $tracing->establishment->alias : '' }}</td>
             <td>{{ $tracing->quarantine_start_at->format('Y-m-d') }}</td>
-            <td>{{ $tracing->quarantine_end_at->format('Y-m-d') }} ({{ $tracing->quarantine_start_at->diffInDays(now()) }})</td>
+            <td nowrap>{{ $tracing->quarantine_end_at->format('Y-m-d') }} ({{ $tracing->quarantine_start_at->diffInDays(now()) }})</td>
             <td>{{ ($tracing->patient->status == '') ? 'Ambulatorio' : $tracing->patient->status }}</td>
         </tr>
         @endforeach
