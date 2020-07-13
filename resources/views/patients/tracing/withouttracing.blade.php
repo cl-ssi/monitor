@@ -4,7 +4,7 @@
 
 @section('content')
 
-<h3 class="mb-3"><i class="fa fa-eye-slash"></i> Listado de Pacientes SIN SEGUIMIENTO</h3>
+<h3 class="mb-3"><i class="fa fa-eye-slash"></i> Pacientes sin seguimiento en las ultimas dos semanas</h3>
 
 <div class="row">
     <div class="col-8 col-sm-9">
@@ -34,9 +34,9 @@
                 <th>Nombre</th>
                 <th>Fecha Nac.</th>
                 <th>Comuna</th>
-                <th>Dirección</th>
-                <th>Teléfono</th>
-                <th>Email</th>
+                <!--th>Dirección</th-->
+                <!--th>Teléfono</th-->
+                <!--th>Email</th-->
                 <th>Fecha Creación en Sistema</th>
                 <th>Fecha PSR COV AT</th>
             </tr>
@@ -54,14 +54,12 @@
                 <td>{{ ($patient->birthday)?$patient->birthday->format('d-m-Y'):'' }}</td>
                 <td>{{ ($patient->demographic AND $patient->demographic->commune) ?
                     $patient->demographic->commune->name : '' }}</td>
-                <td>
+                <!--td>
                   {{ ($patient->demographic)?$patient->demographic->address:'' }}
                   {{ ($patient->demographic)?$patient->demographic->number:'' }}
-                </td>
-                <td>
-                  {{ ($patient->demographic)?$patient->demographic->telephone:'' }}
-                </td>
-                <td>{{ ($patient->demographic)?$patient->demographic->email:'' }}</td>
+              </td-->
+                <!--td>{{ ($patient->demographic)?$patient->demographic->telephone:'' }}</td-->
+                <!--td>{{ ($patient->demographic)?$patient->demographic->email:'' }}</td-->
                 <td>{{ $patient->created_at->format('d-m-Y')  }}</td>
                 <td>{{ ($patient->suspectCases->last()->pscr_sars_cov_2_at) ?
                     $patient->suspectCases->last()->pscr_sars_cov_2_at->format('d-m-Y H:i') : '' }}</td>

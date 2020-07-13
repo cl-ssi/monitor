@@ -355,7 +355,7 @@
                                 </a>
 
                                 @can('Developer')
-                                <a class="dropdown-item" href="{{ route('patients.tracings.withouttracing') }}">Pacientes Positivos sin Seguimientos</a>
+                                <a class="dropdown-item" href="{{ route('patients.tracings.withouttracing') }}">Pacientes (+) sin tracing</a>
                                 @endcan
 
                                 <a class="dropdown-item" href="{{ route('users.password.show_form') }}">
