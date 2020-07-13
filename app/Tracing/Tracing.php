@@ -11,6 +11,8 @@ use GuzzleHttp\Exception\RequestException;
 
 use Carbon\Carbon;
 
+use App\Tracing\Symptom;
+
 class Tracing extends Model  implements Auditable
 {
     use SoftDeletes;
@@ -114,22 +116,30 @@ class Tracing extends Model  implements Auditable
         }
         //elimina ultimo caracter
         $symptoms = substr($symptoms, 0, -1);
-        //se modifican valores de bd segun excel
-        $symptoms = str_replace("Cefalea", "Dolor de cabeza", $symptoms);
-        $symptoms = str_replace("Odinofagia", "Dolor de garganta", $symptoms);
-        $symptoms = str_replace("Mialgias", "Dolor muscular", $symptoms);
+
         //se genera array resultado
         $resultado = explode(",", $symptoms);
         $resultado = array_unique(explode(",", $symptoms));
         $resultado = array_map('trim', $resultado);
-        //ciclo obtener array
+        //crea array
+        $symptoms = Symptom::all();
         $array_final = array();
+        foreach ($symptoms as $key => $symptom) {
+            if ($symptom->name == "Anosmia" || $symptom->name == "Ageusia" ||
+                $symptom->name == "Dolor toráxico" || $symptom->name == "Calofrios" ||
+                $symptom->name == "Otro") {
+            }else{
+                $array_final[$symptom->name] = false;
+            }
+        }
+        //se obtiene info
         $array_otros = array();
         foreach ($resultado as $key => $result) {
             if ($result == "Anosmia" || $result == "Ageusia" || $result == "Dolor toráxico" || $result == "Calofrios" || $result == "Otro") {
                 array_push($array_otros, $result);
             }else{
-                array_push($array_final, $result);
+                // array_push($array_final, $result);
+                $array_final[$result] = true;
             }
         }
         array_push($array_final, $array_otros);
