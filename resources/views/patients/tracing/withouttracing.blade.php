@@ -20,7 +20,7 @@
                     <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
                 </div>
             </div>
-        </form>        
+        </form>
     </div>
 </div>
 
@@ -31,7 +31,7 @@
             <tr class="text-center">
                 <th></th>
                 <th>Run o (ID)</th>
-                <th>Nombre</th>                
+                <th>Nombre</th>
                 <th>Fecha Nac.</th>
                 <th>Comuna</th>
                 <th>Dirección</th>
@@ -50,7 +50,7 @@
                     </a>
                 </td>
                 <td>{{ $patient->identifier }}</td>
-                <td>{{ $patient->fullName }}</td>                
+                <td>{{ $patient->fullName }}</td>
                 <td>{{ ($patient->birthday)?$patient->birthday->format('d-m-Y'):'' }}</td>
                 <td>{{ ($patient->demographic AND $patient->demographic->commune) ?
                     $patient->demographic->commune->name : '' }}</td>
@@ -63,9 +63,11 @@
                 </td>
                 <td>{{ ($patient->demographic)?$patient->demographic->email:'' }}</td>
                 <td>{{ $patient->created_at->format('d-m-Y')  }}</td>
-                <td>{{ $patient->suspectCases->last()->pscr_sars_cov_2_at->format('d-m-Y H:i')  }}</td>
+                <td>{{ ($patient->suspectCases->last()->pscr_sars_cov_2_at) ?
+                    $patient->suspectCases->last()->pscr_sars_cov_2_at->format('d-m-Y H:i') : '' }}</td>
 
-                @endforeach
+            </tr>
+            @endforeach
         </tbody>
     </table>
     {{ $patients->links() }}
