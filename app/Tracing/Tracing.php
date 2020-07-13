@@ -106,6 +106,23 @@ class Tracing extends Model  implements Auditable
 
     }
 
+    public function getSymptoms(){
+        //obtiene sintomas
+        $symptoms = "";
+        foreach ($this->events as $key => $event) {
+            $symptoms = $symptoms . $event->symptoms . ",";
+        }
+        //elimina ultimo caracter
+        $symptoms = substr($symptoms, 0, -1);
+        //se modifican valores de bd segun excel
+        $symptoms = str_replace("Cefalea", "Dolor de cabeza", $symptoms);
+        $symptoms = str_replace("Odinofagia", "Dolor de garganta", $symptoms);
+        $symptoms = str_replace("Mialgias", "Dolor muscular", $symptoms);
+        //se genera array resultado
+        $resultado = array_unique(explode(",", $symptoms));
+        return $resultado;
+    }
+
     protected static function booted()
     {
         /* this is executed after ->save() method */
