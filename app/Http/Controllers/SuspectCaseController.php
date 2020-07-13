@@ -40,6 +40,9 @@ use App\Exports\HetgSuspectCasesExport;
 use App\Exports\UnapSuspectCasesExport;
 use App\Exports\MinsalSuspectCasesExport;
 use App\Exports\SeremiSuspectCasesExport;
+use App\Imports\PatientImport;
+use App\Imports\DemographicImport;
+use App\Imports\SuspectCaseImport;
 
 class SuspectCaseController extends Controller
 {
@@ -408,6 +411,12 @@ class SuspectCaseController extends Controller
             $suspectCase->validator_id = Auth::id();
         }
 
+        if ($request->hasFile('forfile')) {
+            $file = $request->file('forfile');
+            $file->storeAs('suspect_cases', $suspectCase->id . '.pdf');
+            $suspectCase->file = true;
+        }
+
         $suspectCase->save();
 
         /* Crea un TRACING si el resultado es positivo */
@@ -419,7 +428,7 @@ class SuspectCaseController extends Controller
                 $suspectCase->patient->tracing->quarantine_start_at = ($suspectCase->symptoms_at) ?
                                                 $suspectCase->symptoms_at :
                                                 $suspectCase->pscr_sars_cov_2_at;
-                $suspectCase->patient->tracing->quarantine_end_at = $suspectCase->patient->tracing->quarantine_start_at->add(14,'days');
+                $suspectCase->patient->tracing->quarantine_end_at = $suspectCase->patient->tracing->quarantine_start_at->add(13,'days');
                 $suspectCase->patient->tracing->save();
             }
             else {
@@ -435,7 +444,7 @@ class SuspectCaseController extends Controller
                 $tracing->quarantine_start_at = ($suspectCase->symptoms_at) ?
                                                 $suspectCase->symptoms_at :
                                                 $suspectCase->pscr_sars_cov_2_at;
-                $tracing->quarantine_end_at = $tracing->quarantine_start_at->add(14,'days');
+                $tracing->quarantine_end_at = $tracing->quarantine_start_at->add(13,'days');
                 $tracing->observations      = $suspectCase->observation;
                 $tracing->notification_at   = $suspectCase->notification_at;
                 $tracing->notification_mechanism = $suspectCase->notification_mechanism;
@@ -448,18 +457,6 @@ class SuspectCaseController extends Controller
                 }
                 $tracing->status            = ($suspectCase->patient->status == 'Fallecido') ? 0:1;
                 $tracing->save();
-            }
-        }
-
-        /* guarda archivos FIX: pendiente traspasar a sólo un archivo */
-        if ($request->hasFile('forfile')) {
-            foreach ($request->file('forfile') as $file) {
-                $filename = $file->getClientOriginalName();
-                $fileModel = new File;
-                $fileModel->file = $file->store('files');
-                $fileModel->name = $filename;
-                $fileModel->suspect_case_id = $suspectCase->id;
-                $fileModel->save();
             }
         }
 
@@ -504,6 +501,8 @@ class SuspectCaseController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function updateNotification(Request $request, SuspectCase $suspectCase){
+        $selected_establishment = $request->selected_establishment;
+
         if($request->notification_at != null && $request->notification_mechanism != null){
             $suspectCase->notification_at = $request->notification_at;
             $suspectCase->notification_mechanism = $request->notification_mechanism;
@@ -514,7 +513,7 @@ class SuspectCaseController extends Controller
             session()->flash('warning', 'Debe seleccionar ambos parámetros');
         }
 
-        return redirect()->back();
+        return redirect()->back()->with(compact('selected_establishment'));
     }
 
     /**
@@ -530,11 +529,14 @@ class SuspectCaseController extends Controller
         return redirect()->route('lab.suspect_cases.index');
     }
 
-    public function fileDelete(File $file)
+    public function fileDelete(SuspectCase $suspectCase)
     {
         /* TODO: implementar auditable en file delete  */
-        Storage::delete($file->file);
-        $file->delete();
+        if (Storage::delete( 'suspect_cases/' . $suspectCase->id . '.pdf')){
+            $suspectCase->file = false;
+            $suspectCase->save();
+            session()->flash('info', 'Se ha eliminado el archivo correctamente.');
+        }
 
         return redirect()->back();
     }
@@ -748,9 +750,9 @@ class SuspectCaseController extends Controller
 
 
 
-    public function download(File $file)
+    public function download(SuspectCase $suspectCase)
     {
-        return Storage::response($file->file, mb_convert_encoding($file->name, 'ASCII'));
+        return Storage::response( 'suspect_cases/' . $suspectCase->id . '.pdf', mb_convert_encoding($suspectCase->id . '.pdf', 'ASCII'));
     }
 
     public function login($access_token = null)
@@ -865,7 +867,6 @@ class SuspectCaseController extends Controller
             'sem',
             'epivigila',
             'paho_flu',
-            'estado',
             'observación',
             'teléfono',
             'dirección',
@@ -892,7 +893,6 @@ class SuspectCaseController extends Controller
                     $fila->epidemiological_week,
                     $fila->epivigila,
                     $fila->paho_flu,
-                    $fila->status,
                     $fila->observation,
                     ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->telephone:'',
                     ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->fullAddress:'',
@@ -943,7 +943,6 @@ class SuspectCaseController extends Controller
 
             if($file->suspectCase){
                 $originFileName = $file->file;
-                //TODO cambiar a move?
 
                 if(Storage::exists('suspect_cases/' . $file->suspectCase->id . '.pdf')){
                     Storage::delete('suspect_cases/' . $file->suspectCase->id . '.pdf');
@@ -967,9 +966,155 @@ class SuspectCaseController extends Controller
 
     public function bulk_load_import(Request $request){
         $file = $request->file('file');
-        Excel::import(new PatientImport, $file);
 
-        // return view('lab.suspect_cases.import', compact('events'));
+        $patientsCollection = Excel::toCollection(new PatientImport, $file);
+
+        foreach ($patientsCollection[0] as $patient) {
+
+                $patientsDB = Patient::where('run', $patient['RUN'])
+                    ->orWhere('other_identification', $patient['RUN'])
+                    ->get();
+
+                if($patientsDB->count() == 0){
+                    $new_patient = new Patient();
+                    if($patient['DV'] != null){
+                        $new_patient->run = $patient['RUN'];
+                        $new_patient->dv  = $patient['DV'];
+                    }
+                    else {
+                        $new_patient->other_identification  = $patient['RUN'];
+                    }
+
+                    $new_patient->name            = $patient['Nombres'];
+                    $new_patient->fathers_family  = $patient['Apellido Paterno'];
+                    $new_patient->mothers_family  = $patient['Apellido Materno'];
+                    $new_patient->gender          = $patient['Sexo'];
+                    $new_patient->birthday        = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Nacimiento']))->format('Y-m-d H:i:s');
+
+                    $new_patient->save();
+                }
+
+                $patient_create = Patient::where('run', $patient['RUN'])
+                    ->orWhere('other_identification', $patient['RUN'])
+                    ->get()
+                    ->first();
+
+                if($patient_create){
+                  if(!$patient_create->demographic){
+                      $new_demographic = new Demographic();
+
+                      $new_demographic->street_type   = $patient['Via Residencia'];
+                      $new_demographic->address       = $patient['Direccion'];
+                      $new_demographic->number        = $patient['Numero'];
+                      $new_demographic->department    = $patient['Depto'];
+                      $new_demographic->city          = $patient['Ciudad o Pueblo'];
+                      $new_demographic->suburb        = $patient['Poblacion o Suburbio'];
+                      $new_demographic->commune_id    = $patient['Comuna'];
+                      $new_demographic->region_id     = $patient['Region'];
+                      $new_demographic->nationality   = $patient['Nacionalidad'];
+                      $new_demographic->telephone     = $patient['Telefono'];
+                      $new_demographic->email         = $patient['Email'];
+                      $new_demographic->patient_id    = $patient_create->id;
+
+                      $new_demographic->save();
+                  }
+                }
+
+                if($patient_create){
+                    $new_suspect_case = new SuspectCase();
+
+                    $new_suspect_case->status             = $patient['Estado'];
+                    $new_suspect_case->laboratory_id      = $patient['Laboratorio'];
+                    $new_suspect_case->sample_type        = $patient['Tipo Muestra'];
+                    $new_suspect_case->sample_at          = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Muestra']))->format('Y-m-d H:i:s');
+
+                    if($patient['Fecha Recepcion'] != null){
+                        $new_suspect_case->reception_at       = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Recepcion']))->format('Y-m-d H:i:s');
+                    }
+
+                    if($patient['Fecha Resultado'] != null){
+                        $new_suspect_case->pscr_sars_cov_2_at       = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Resultado']))->format('Y-m-d H:i:s');
+                    }
+
+                    if($patient['Resultado'] == 'Positivo'){
+                        $new_suspect_case->pscr_sars_cov_2 = 'positive';
+                    }
+                    if($patient['Resultado'] == 'Negativo'){
+                        $new_suspect_case->pscr_sars_cov_2 = 'negative';
+                    }
+                    if($patient['Resultado'] == 'Indeterminado'){
+                        $new_suspect_case->pscr_sars_cov_2 = 'undetermined';
+                    }
+                    if($patient['Resultado'] == 'Rechazado '){
+                        $new_suspect_case->pscr_sars_cov_2 = 'rejected';
+                    }
+                    if($patient['Resultado'] == 'Pendiente '){
+                        $new_suspect_case->pscr_sars_cov_2 = 'pending';
+                    }
+
+                    $establishment = Establishment::where('name', $patient['Establecimiento Muestra'])
+                        ->get()
+                        ->first();
+
+                    $new_suspect_case->establishment_id = $establishment['id'];
+                    $new_suspect_case->origin = $patient['Detalle Origen'];
+                    $new_suspect_case->run_medic = $patient['Run Medico'];
+
+                    // ---------------------------------------------------------------------
+                    if($patient['Sintomas'] == 'Si' || $patient['Sintomas'] == 'si' ||
+                          $patient['Sintomas'] == 'si' || $patient['Sintomas'] == 'sI'){
+                        $new_suspect_case->symptoms = 1;
+                        $new_suspect_case->symptoms_at = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Inicio Sintomas']))->format('Y-m-d H:i:s');
+                    }
+                    if($patient['Sintomas'] == 'No' || $patient['Sintomas'] == 'no' ||
+                          $patient['Sintomas'] == 'no' || $patient['Sintomas'] == 'nO'){
+                        $new_suspect_case->symptoms = 0;
+                    }
+                    // ---------------------------------------------------------------------
+
+                    if($patient['Gestante'] == 'Si' || $patient['Gestante'] == 'si' ||
+                          $patient['Gestante'] == 'si' || $patient['Gestante'] == 'sI'){
+                        $new_suspect_case->gestation = 1;
+                        $new_suspect_case->gestation_week = $patient['Semanas Gestacion'];
+
+                    }
+                    if($patient['Gestante'] == 'No' || $patient['Gestante'] == 'no' ||
+                          $patient['Gestante'] == 'no' || $patient['Gestante'] == 'nO'){
+                        $new_suspect_case->gestation = 0;
+                    }
+                    // ---------------------------------------------------------------------
+
+                    if($patient['Indice'] == 'Si' || $patient['Indice'] == 'si' ||
+                          $patient['Indice'] == 'si' || $patient['Indice'] == 'sI'){
+                        $new_suspect_case->close_contact = 1;
+                    }
+                    if($patient['Indice'] == 'No' || $patient['Indice'] == 'no' ||
+                          $patient['Indice'] == 'no' || $patient['Indice'] == 'nO'){
+                        $new_suspect_case->close_contact = 0;
+                    }
+                    // ---------------------------------------------------------------------
+
+                    if($patient['Funcionario Salud'] == 'Si' || $patient['Funcionario Salud'] == 'si' ||
+                          $patient['Funcionario Salud'] == 'si' || $patient['Funcionario Salud'] == 'sI'){
+                        $new_suspect_case->functionary = 1;
+                    }
+                    if($patient['Funcionario Salud'] == 'No' || $patient['Funcionario Salud'] == 'no' ||
+                          $patient['Funcionario Salud'] == 'no' || $patient['Funcionario Salud'] == 'nO'){
+                        $new_suspect_case->functionary = 0;
+                    }
+                    // ---------------------------------------------------------------------
+
+                    $new_suspect_case->observation = $patient['Observacion'];
+                    $new_suspect_case->epivigila = $patient['Epivigila'];
+                    $new_suspect_case->patient_id = $patient_create->id;
+                    $new_suspect_case->user_id = Auth::user()->id;
+
+                    $new_suspect_case->save();
+                }
+            }
+
+
+        return view('lab.bulk_load.import');
     }
 
 }

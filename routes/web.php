@@ -81,12 +81,15 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
     });
 
     Route::prefix('tracings')->name('tracings.')->middleware('auth')->group(function () {
+        Route::get('/cartoindex', 'TracingController@carToIndex')->name('cartoindex');
+        Route::get('/reportbycommune', 'TracingController@reportByCommune')->name('reportbycommune');
         Route::get('/mapbycommunes', 'TracingController@mapByCommune')->name('mapbycommunes');
         Route::get('/mapbyestablishments', 'TracingController@mapByEstablishment')->name('mapbyestablishments');
         Route::get('/communes', 'TracingController@indexByCommune')->name('communes');
         Route::get('/establishments', 'TracingController@indexByEstablishment')->name('establishments');
         Route::get('/completed', 'TracingController@tracingCompleted')->name('completed');
         Route::get('/withouttracing', 'TracingController@withoutTracing')->name('withouttracing');
+        Route::get('/withoutevents', 'TracingController@withoutEvents')->name('withoutevents');
 
 
         Route::get('/create', 'TracingController@create')->name('create');
@@ -165,15 +168,18 @@ Route::prefix('lab')->name('lab.')->group(function () {
     });
     Route::prefix('suspect_cases')->name('suspect_cases.')->group(function () {
 
+        //Se utiliza para migración de exámenes pdf desde carpeta "files" a carpeta "suspect cases"
+//        Route::get('/filesMigrationSingleUse','SuspectCaseController@filesMigrationSingleUse')->name('filesMigrationSingleUse')->middleware('auth');
+
         Route::get('reception_inbox','SuspectCaseController@reception_inbox')->name('reception_inbox')->middleware('auth','can:SuspectCase: reception');
         Route::post('reception/{suspect_case}','SuspectCaseController@reception')->name('reception')->middleware('auth','can:SuspectCase: reception');
 
         Route::post('/search_id','SuspectCaseController@search_id')->name('search_id')->middleware('auth');
         //Route::get('stat', 'SuspectCaseController@stat')->name('stat');
 
-        Route::get('download/{file}','SuspectCaseController@download')->name('download')->middleware('auth');
+        Route::get('download/{suspect_case}','SuspectCaseController@download')->name('download')->middleware('auth');
         //Route::get('download/{file}','SuspectCaseController@download')->name('download');
-        Route::get('file/{file}','SuspectCaseController@fileDelete')->name('fileDelete')->middleware('auth','can:SuspectCase: file delete');
+        Route::get('file/{suspect_case}','SuspectCaseController@fileDelete')->name('fileDelete')->middleware('auth','can:SuspectCase: file delete');
 
         Route::get('/index/{laboratory?}','SuspectCaseController@index')->name('index')->middleware('auth','can:SuspectCase: list');
 
@@ -185,8 +191,8 @@ Route::prefix('lab')->name('lab.')->group(function () {
 //        pruebas
         Route::get('/exportAllCasesCsv','SuspectCaseController@exportAllCasesCsv')->name('exportAllCasesCsv')->middleware('auth');
 
-        Route::get('/create','SuspectCaseController@create')->name('create')->middleware('auth','can:SuspectCase: create');
-        Route::post('/','SuspectCaseController@store')->name('store')->middleware('auth','can:SuspectCase: create');
+        //Route::get('/create','SuspectCaseController@create')->name('create')->middleware('auth','can:SuspectCase: create');
+        //Route::post('/','SuspectCaseController@store')->name('store')->middleware('auth','can:SuspectCase: create');
         Route::get('/admission','SuspectCaseController@admission')->name('admission')->middleware('auth','can:SuspectCase: admission');
         Route::post('/admission','SuspectCaseController@storeAdmission')->name('store_admission')->middleware('auth','can:SuspectCase: admission');
         Route::get('/{suspect_case}/edit','SuspectCaseController@edit')->name('edit')->middleware('auth','can:SuspectCase: edit');
@@ -195,6 +201,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/{suspect_case}/notificationForm','SuspectCaseController@notificationForm')->name('notificationForm')->middleware('auth','can:SuspectCase: admission');
 
         Route::prefix('reports')->name('reports.')->group(function () {
+            Route::get('/tracingbycommunes','SuspectCaseReportController@tracingByCommunes')->name('tracingbycommunes');
             Route::get('/positives','SuspectCaseReportController@positives')->name('positives')->middleware('auth','can:Report: positives');
             Route::get('case_tracing','SuspectCaseReportController@case_tracing')->name('case_tracing')->middleware('auth','can:Patient: tracing');
             Route::get('tracing_minsal','SuspectCaseReportController@tracing_minsal')->name('tracing_minsal')->middleware('auth','can:Patient: tracing');

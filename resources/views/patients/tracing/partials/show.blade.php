@@ -60,8 +60,13 @@
 
                 <h4 class="mt-4">Ficha de Seguimiento</h4>
                 <div class="form-row">
+<<<<<<< HEAD
                     <fieldset class="form-group col-5 col-sm-3 col-md-2 col-lg-1 order-1 order-lg-1">
                         <label for="for_index">Indice</label>
+=======
+                    <fieldset class="form-group col-5 col-md-1">
+                        <label for="for_index">Indice *</label>
+>>>>>>> 2ce1cc080c778b7d0345631b17dd28bba57a69c4
                         <select name="index" id="for_index" class="form-control" required>
                             <option value=""></option>
                             <option value="1" {{ ($patient->tracing->index === 1) ? 'selected' : '' }}>Si</option>
@@ -89,6 +94,7 @@
                         </select>
                     </fieldset>
 
+<<<<<<< HEAD
                     <fieldset class="form-group col-12 col-sm-12 col-md-9 col-lg-4 order-5 order-lg-4">
                         <label for="for_establishment_id">Establecimiento que realiza seguimiento</label>
                         <select name="establishment_id" id="for_establishment_id" class="form-control">
@@ -98,6 +104,19 @@
                             @endforeach
                         </select>
                     </fieldset>
+=======
+                    @can('Tracing: change')
+                        <fieldset class="form-group col-12 col-md-4">
+                            <label for="for_establishment_id">Establecimiento que realiza seguimiento</label>
+                            <select name="establishment_id" id="for_establishment_id" class="form-control">
+                                @foreach($establishments as $estab)
+                                    <option
+                                        value="{{ $estab->id }}" {{ ($patient->tracing->establishment_id == $estab->id) ? 'selected' : '' }}>{{ $estab->alias }}</option>
+                                @endforeach
+                            </select>
+                        </fieldset>
+                    @endcan
+>>>>>>> 2ce1cc080c778b7d0345631b17dd28bba57a69c4
 
                     <fieldset class="form-group col-4 col-sm-3 col-md-2 col-lg-2 order-4 order-lg-5">
                         <label for="for_functionary">Func. Salud</label>
@@ -112,9 +131,15 @@
                 <!--**********************************-->
                 <div class="form-row">
 
+<<<<<<< HEAD
                     <fieldset class="form-group col-4 col-sm-3 col-md-2 col-lg-2">
                         <label for="for_symptoms">Síntomas *</label>
                         <select name="symptoms" id="for_symptoms" class="form-control" required>
+=======
+                    <fieldset class="form-group col-6 col-sm-6 col-md-1">
+                        <label for="for_symptoms">Síntomas</label>
+                        <select name="symptoms" id="for_symptoms" class="form-control">
+>>>>>>> 2ce1cc080c778b7d0345631b17dd28bba57a69c4
                             <option value=""></option>
                             <option value="0" {{ ($patient->tracing->symptoms === 0) ? 'selected' : '' }}>No</option>
                             <option value="1" {{ ($patient->tracing->symptoms === 1) ? 'selected' : '' }}>Si</option>
@@ -198,9 +223,15 @@
                         </select>
                     </fieldset>
 
+<<<<<<< HEAD
                     <fieldset class="form-group col-4 col-sm-3 col-md-2 col-lg-2">
                         <label for="for_gestation">Gestante *</label>
                         <select name="gestation" id="for_gestation" class="form-control" required>
+=======
+                    <fieldset class="form-group col-12 col-sm-6 col-md-1">
+                        <label for="for_gestation">Gestante</label>
+                        <select name="gestation" id="for_gestation" class="form-control">
+>>>>>>> 2ce1cc080c778b7d0345631b17dd28bba57a69c4
                             <option value=""></option>
                             <option value="0" {{ ($patient->tracing->gestation === 0) ? 'selected' : '' }}>No</option>
                             <option value="1" {{ ($patient->tracing->gestation == 1) ? 'selected' : '' }}>Si</option>
@@ -331,7 +362,7 @@
 
 @else
 
-    <div class="card">
+    <div class="card mb-3">
         <div class="card-body">
 
             <form method="POST" class="form-horizontal" action="{{ route('patients.tracings.store') }}">

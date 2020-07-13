@@ -3,7 +3,7 @@
     <fieldset class="form-group col-6 col-md-3 alert-warning">
         <label for="for_result_ifd_at">Fecha Resultado IFD</label>
         <input type="datetime-local" class="form-control" id="for_result_ifd_at" disabled
-            value="{{( isset($suspectCase->result_ifd_at))?  $suspectCase->result_ifd_at->format('Y-m-d\TH:i:s'):'' }}">
+               value="{{( isset($suspectCase->result_ifd_at))?  $suspectCase->result_ifd_at->format('Y-m-d\TH:i:s'):'' }}">
     </fieldset>
 
     <fieldset class="form-group col-6 col-md-2 alert-warning">
@@ -28,8 +28,8 @@
     <fieldset class="form-group col-6 col-md-3 alert-danger">
         <label for="for_pscr_sars_cov_2_at">Fecha Resultado PCR</label>
         <input type="datetime-local" class="form-control" id="for_pscr_sars_cov_2_at"
-            value="{{ isset($suspectCase->pscr_sars_cov_2_at)? $suspectCase->pscr_sars_cov_2_at->format('Y-m-d\TH:i:s'):'' }}"
-            disabled>
+               value="{{ isset($suspectCase->pscr_sars_cov_2_at)? $suspectCase->pscr_sars_cov_2_at->format('Y-m-d\TH:i:s'):'' }}"
+               disabled>
     </fieldset>
 
     <fieldset class="form-group col-6 col-md-2 alert-danger">
@@ -42,7 +42,7 @@
     <fieldset class="form-group col-6 col-md-2">
         <label for="for_sent_isp_at">Fecha envío lab externo</label>
         <input type="date" class="form-control" id="for_sent_isp_at" disabled
-            value="{{ isset($suspectCase->sent_isp_at)? $suspectCase->sent_isp_at->format('Y-m-d'):'' }}">
+               value="{{ isset($suspectCase->sent_isp_at)? $suspectCase->sent_isp_at->format('Y-m-d'):'' }}">
     </fieldset>
 
     <fieldset class="form-group col-6 col-md-2">
@@ -59,18 +59,16 @@
             <input type="file" disabled class="custom-file-input" id="forfile" lang="es" multiple>
             <label class="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
         </div>
-        @if($suspectCase->files != null)
-            @foreach($suspectCase->files as $file)
-                <a href="{{ route('lab.suspect_cases.download', $file->id) }}"
-                    target="_blank" data-toggle="tooltip" data-placement="top"
-                    data-original-title="{{ $file->name }}">Resultado <i class="fas fa-paperclip"></i>&nbsp
-                </a>
-                @can('SuspectCase: file delete')
-                 - <a href="{{ route('lab.suspect_cases.fileDelete', $file->id) }}" onclick="return confirm('Estás seguro Cesar?')">
+        @if($suspectCase->file)
+            <a href="{{ route('lab.suspect_cases.download', $suspectCase->id) }}"
+               target="_blank" data-toggle="tooltip" data-placement="top"
+               data-original-title="{{ $suspectCase->id . 'pdf' }}">Resultado <i class="fas fa-paperclip"></i>&nbsp
+            </a>
+            @can('SuspectCase: file delete')
+                - <a href="{{ route('lab.suspect_cases.fileDelete', $suspectCase->id) }}" onclick="return confirm('Está seguro?')">
                     [ Borrar ]
                 </a>
-                @endcan
-            @endforeach
+            @endcan
         @endif
     </fieldset>
 </div>
