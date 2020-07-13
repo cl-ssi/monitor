@@ -189,18 +189,21 @@ class SuspectCaseReportController extends Controller
     public function tracing_minsal(Request $request)
     {
 
-        if($request->has('date')){
-            $date = $request->get('date');
+        if($request->has('date_from') && $request->has('date_to')){
+            $date_from = $request->get('date_from');
+            $date_to = $request->get('date_to');
         }
         else{
-            $date = Carbon::now();
+            $date_from = Carbon::now();
+            $date_to = Carbon::now();
         }
 
         $patients = Patient::
-            whereHas('tracing', function ($q) use($date) {
+            whereHas('tracing', function ($q) use($date_to, $date_from) {
               $q->where('index', '1')
               ->whereIn('establishment_id', auth()->user()->establishments->pluck('id'))
-              ->whereDate('notification_at', $date);
+              ->whereBetween('notification_at', [new Carbon($date_from), new Carbon($date_to)]);
+              // ->whereDate('notification_at', $date);
             })
             ->with('contactPatient')
             ->with('tracing')
@@ -209,7 +212,7 @@ class SuspectCaseReportController extends Controller
 
         return view('lab.suspect_cases.reports.tracing_minsal', compact('patients', 'request'));
     }
-    
+
     public function tracingByCommunes(Request $request)
     {
 
@@ -244,7 +247,7 @@ class SuspectCaseReportController extends Controller
                               ->get();
 
         foreach($patients as $patient){
-            
+
             $report[$patient->demographic->commune_id]['positives'] += 1;
 
             foreach ($patient->contactPatient as $contact) {
@@ -253,37 +256,37 @@ class SuspectCaseReportController extends Controller
                     $report[$patient->demographic->commune_id]['car'] += 1;
                 }
 
-                
-            }         
+
+            }
 
             if($patient->tracing){
                 if($patient->tracing->status == 1){
-                $report[$patient->demographic->commune_id]['curso'] += 1;                
+                $report[$patient->demographic->commune_id]['curso'] += 1;
                 }
                 if($patient->tracing->status == null or $patient->tracing->status == 0){
                     $report[$patient->demographic->commune_id]['terminado'] += 1;
-                }                   
-                    
-            
+                }
+
+
 
             }
         }
 
         //dd($report);
 
-        
+
 
         // if ($patients->count() == 0){
         //     session()->flash('info', 'No existen casos positivos o no hay casos con dirección.');
         //     //return redirect()->route('home');
         // }
 
-        
+
 
         $communes_ids = array_map('trim',explode(",",env('COMUNAS')));
         $communes = Commune::whereIn('id', $communes_ids)->get();
 
-        
+
 
         return view('lab.suspect_cases.reports.tracingbycommune',compact('request','report','communes','patients'));
     }
