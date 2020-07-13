@@ -141,7 +141,7 @@
                     </fieldset>
                 </div>
 <!--**********************************-->
-                <div class="row">
+                <div class="row align-items-center">
                       <div class="col-4 col-sm-2 col-md-2 col-lg-2">
                         <button type="submit" class="btn btn-primary">Guardar</button>
                       </div>
@@ -155,9 +155,10 @@
                       </div>
                       -->
 </form>
-        <div class="col-4 col-sm-2 col-md-2 col-lg-1">
+
             @can('Patient: delete')
                 @if($patient->suspectCases->count() === 0)
+          <div class="col-4 col-sm-2 col-md-2 col-lg-4">
                     <form method="POST" class="form-horizontal" action="{{ route('patients.destroy',$patient) }}">
                         @csrf
                         @method('DELETE')
@@ -165,15 +166,17 @@
                                 onclick="return confirm('¿Está seguro que desea eliminar al paciente : {{$patient->fullName}}? ' )">
                             Borrar
                         </button>
-
                     </form>
+          </div>
                 @else
+                <div class="col-8 col-sm-9 offset-sm-1 offset-md-3 col-md-7 offset-lg-4 col-lg-6">
                     <button class="btn btn-outline-danger float-right" disabled>No es posible eliminar, tiene examenes
                         asociados
                     </button>
+                </div>
                 @endif
             @endcan
-        </div>
+
     </div>
     <!--**********************************-->
     </div>
