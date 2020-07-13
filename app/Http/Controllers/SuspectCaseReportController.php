@@ -203,12 +203,13 @@ class SuspectCaseReportController extends Controller
               $q->where('index', '1')
               ->whereIn('establishment_id', auth()->user()->establishments->pluck('id'))
               ->whereBetween('notification_at', [new Carbon($date_from), new Carbon($date_to)]);
-              // ->whereDate('notification_at', $date);
             })
             ->with('contactPatient')
             ->with('tracing')
             ->with('suspectCases')
             ->get();
+
+//        dd($patients);
 
         return view('lab.suspect_cases.reports.tracing_minsal', compact('patients', 'request'));
     }
