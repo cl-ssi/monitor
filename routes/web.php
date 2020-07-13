@@ -88,6 +88,7 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
         Route::get('/establishments', 'TracingController@indexByEstablishment')->name('establishments');
         Route::get('/completed', 'TracingController@tracingCompleted')->name('completed');
         Route::get('/withouttracing', 'TracingController@withoutTracing')->name('withouttracing');
+        Route::get('/withoutevents', 'TracingController@withoutEvents')->name('withoutevents');
 
 
         Route::get('/create', 'TracingController@create')->name('create');

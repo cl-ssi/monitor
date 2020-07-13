@@ -113,10 +113,13 @@
                                 <a class="dropdown-item" href="{{ route('patients.tracings.establishments') }}">Seguimiento de mis establecimientos</a>
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.tracing_minsal') }}">Seguimiento SEREMI</a>
 
+                                <a class="dropdown-item" href="{{ route('patients.tracings.withoutevents') }}">Pacientes sin seguimiento</a>
+
                                 @canany(['SocialTracing: seremi', 'SocialTracing: aps'])
                                 <a class="dropdown-item" href="{{ route('patients.tracings.requests.social_index') }}">Seguimiento de solicitudes</a>
                                 @endcanany
                                 @endcan
+
 
                                 <div class="dropdown-divider"></div>
 
