@@ -40,7 +40,7 @@ class HetgSuspectCasesExport implements FromCollection, WithHeadings, WithMappin
     {
         return [
           '#', 'fecha_muestra', 'origen','nombre', 'run', 'edad', 'sexo', 'resultado_ifd',
-          'pcr_sars_cov2', 'sem', 'epivigila', 'paho_flu', 'estado', 'observación'
+          'pcr_sars_cov2', 'sem', 'epivigila', 'paho_flu', 'observación'
         ];
     }
 
@@ -62,7 +62,6 @@ class HetgSuspectCasesExport implements FromCollection, WithHeadings, WithMappin
             $suspectCase->epidemiological_week,
             $suspectCase->epivigila,
             $suspectCase->paho_flu,
-            $suspectCase->status,
             $suspectCase->observation,
         ];
     }
@@ -82,7 +81,6 @@ class HetgSuspectCasesExport implements FromCollection, WithHeadings, WithMappin
             'K' => NumberFormat::FORMAT_GENERAL,
             'L' => NumberFormat::FORMAT_GENERAL,
             'M' => NumberFormat::FORMAT_GENERAL,
-            'N' => NumberFormat::FORMAT_GENERAL,
         ];
     }
 }

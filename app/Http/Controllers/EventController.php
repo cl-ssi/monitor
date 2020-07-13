@@ -15,7 +15,6 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request);
         $event = new Event($request->All());
         $event->user_id = auth()->id();
         if($request->input('sympthoms_array')) {

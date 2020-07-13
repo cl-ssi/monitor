@@ -15,7 +15,7 @@
 <div class="row">
     @can('SuspectCase: create')
     <div class="col-5 col-sm-3">
-        <a class="btn btn-primary mb-3" href="{{ route('lab.suspect_cases.create') }}">
+        <a class="btn btn-primary mb-3" href="{{ route('lab.suspect_cases.admission') }}">
             Crear nueva sospecha
         </a>
     </div>
@@ -166,8 +166,8 @@
             <td>{{ $case->age }}</td>
             <td>{{ strtoupper($case->gender[0]) }}</td>
             <td>{{ $case->covid19 }}
-                @if($case->files->first())
-                <a href="{{ route('lab.suspect_cases.download', $case->files->first()->id) }}"
+                @if($case->file)
+                    <a href="{{ route('lab.suspect_cases.download', $case->id) }}"
                     target="_blank"><i class="fas fa-paperclip"></i>&nbsp
                 </a>
                 @endif

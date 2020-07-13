@@ -104,7 +104,7 @@
         </tr>
     </thead>
     <tbody id="tableCases">
-        @foreach($suspectCases as $case)
+        @foreach($suspectCases->sortByDesc('created_at') as $case)
         <tr class="row_{{$case->covid19}} {{ ($case->pscr_sars_cov_2 == 'positive')?'table-danger':''}}">
             <td class="text-center">
                 {{ $case->id }}<br>
@@ -138,8 +138,8 @@
             <td>
                 @if($case->laboratory)
                     {{ $case->covid19 }}
-                    @if($case->files->first())
-                    <a href="{{ route('lab.suspect_cases.download', $case->files->first()->id) }}"
+                    @if($case->file)
+                        <a href="{{ route('lab.suspect_cases.download', $case) }}"
                         target="_blank"><i class="fas fa-paperclip"></i>&nbsp
                     </a>
                     @endif

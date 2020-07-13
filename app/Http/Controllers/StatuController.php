@@ -28,7 +28,7 @@ class StatuController extends Controller
     {
         //
         return view('parameters.status.create');
-        
+
     }
 
     /**
@@ -65,12 +65,7 @@ class StatuController extends Controller
      */
     public function edit(Statu $statu)
     {
-        //
-
-
         return view('parameters.status.edit', compact('statu'));
-
-
     }
 
     /**

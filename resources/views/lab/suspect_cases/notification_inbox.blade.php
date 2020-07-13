@@ -4,16 +4,21 @@
 
 @section('content')
 
-<h3 class="mb-3"><i class="fas fa-lungs-virus"></i>    
-    Examenes por notificar, excluye positivos y pendientes
-
-    <select class="cl_country" id="ddlCountry">
-    <option value="all">Todos los Establecimiento</option>
-    @foreach($suspectCases->reverse()->unique('establishment') as $case)
-    <option value="{{ $case->establishment->alias }}">{{ $case->establishment->alias }}</option>    
-    @endforeach
-</select>    
-</h3>
+<div class="row mb-3">
+    <div class="col-8">
+        <h3><i class="fas fa-lungs-virus"></i>
+            Examenes por notificar, excluye positivos y pendientes
+        </h3>
+    </div>
+    <div class="col-4">
+        <select class="form-control form-sm" id="ddlCountry">
+            <option value="all">Todos los Establecimiento</option>
+            @foreach($suspectCases->reverse()->unique('establishment') as $case)
+                <option value="{{ $case->establishment->alias }}" {{(Session::get('selected_establishment') == $case->establishment->alias)  ? 'selected' : ''}} >{{ $case->establishment->alias }}</option>
+            @endforeach
+        </select>
+    </div>
+</div>
 
 
 <div class="table-responsive">
@@ -60,8 +65,8 @@
             <td nowrap>
                 @if($case->laboratory)
                     {{ $case->covid19 }}
-                    @if($case->files->first())
-                    <a href="{{ route('lab.suspect_cases.download', $case->files->first()->id) }}"
+                    @if($case->file)
+                    <a href="{{ route('lab.suspect_cases.download', $case->id) }}"
                         target="_blank"><i class="fas fa-paperclip"></i>&nbsp
                     </a>
                     @endif
@@ -75,20 +80,19 @@
                     No recepcionado
                 @endif
             </td>
-            <form method="POST" action="{{ route('lab.updateNotification', $case) }}" class="d-inline">
+            <form method="POST" id="notification" action="{{ route('lab.updateNotification', $case) }}" class="d-inline" onsubmit="getEstablishmentValue(this);">
                 @csrf
     			@method('POST')
+                <input type="hidden" value="" name="selected_establishment" id="selected_establishment" >
+
                 @if($case->notification_at)
                     <td>{{ ($case->notification_at)? $case->notification_at->format('Y-m-d') : '' }}</td>
                     <td>{{ $case->notification_mechanism }}</td>
                 @else
                     <td><input type="date" class="form-control form-control-sm" name="notification_at"
-                        id="for_notification_at" value="{{ ($case->notification_at)?$case->notification_at->format('Y-m-d'):'' }}"></td>
-                    <td><select name="notification_mechanism" id="for_notification_mechanism" class="form-control form-control-sm">
+                        id="for_notification_at" value="{{ ($case->notification_at)?$case->notification_at->format('Y-m-d'):'' }}" required></td>
+                    <td><select name="notification_mechanism" id="for_notification_mechanism" class="form-control form-control-sm" required>
                         <option></option>
-                        <option value="Pendiente"
-                            {{ ($case->notification_mechanism == 'Pendiente')?'selected':'' }}>
-                            Pendiente</option>
                         <option value="Llamada telefónica"
                             {{ ($case->notification_mechanism == 'Llamada telefónica')?'selected':'' }}>
                             Llamada telefónica</option>
@@ -126,20 +130,35 @@
 
 @section('custom_js')
 <script type="text/javascript">
-$(document).ready(function(){
+
+    $(document).ready(function(){
     $("main").removeClass("container");
+
+    var selected_establishment_in_select = $('#ddlCountry').find("option:selected").val();
+    var selected_establishment_in_session = "{{Session::get('selected_establishment')}}";
+    var selected_establishment;
+
+    if (selected_establishment_in_select === selected_establishment_in_session){
+        selected_establishment = selected_establishment_in_session;
+    }
+    else{
+        selected_establishment = "ALL";
+    }
+
+    SearchData(selected_establishment)
+
     $("#ddlCountry").on("change", function () {
-            var country = $('#ddlCountry').find("option:selected").val();            
-            SearchData(country)
-        });
-    
+        var country = $('#ddlCountry').find("option:selected").val();
+        SearchData(country)
+    });
+
 });
 function SearchData(country) {
         if (country.toUpperCase() == 'ALL') {
             $('#tabla_casos tbody tr').show();
         } else {
             $('#tabla_casos tbody tr:has(td)').each(function () {
-                var rowCountry = $.trim($(this).find('td:eq(6)').text()); 
+                var rowCountry = $.trim($(this).find('td:eq(6)').text());
                 if (country.toUpperCase() != 'ALL' ) {
                     if (rowCountry.toUpperCase() == country.toUpperCase()) {
                         $(this).show();
@@ -153,11 +172,16 @@ function SearchData(country) {
                         } else {
                             $(this).hide();
                         }
-                    }                    
+                    }
                 }
- 
+
             });
         }
     }
+
+    function getEstablishmentValue(form) {
+        form.selected_establishment.value = $('#ddlCountry').find("option:selected").val();
+    }
+
 </script>
 @endsection
