@@ -35,7 +35,7 @@
       <td class="text-center align-middle">{{ $admission->residency_text }}</td>
       <td class="text-center align-middle" nowrap>{!! $admission->result !!}</td>
       <td class="text-center align-middle">{{ $admission->status }}</td>      
-      <td class="text-center align-middle">{{ ($admission->patient->bookings->last())?($admission->patient->bookings->last()->room->residence->name) .'- Habitación '. ($admission->patient->bookings->last()->room->number): 'No se le ha asignado Habitación Todavía' }}</td>      
+      <td class="text-center align-middle">{{ ($admission->patient->bookings)?($admission->patient->bookings->last()->room->residence->name) .'- Habitación '. ($admission->patient->bookings->last()->room->number): 'No se le ha asignado Habitación Todavía' }}</td>      
       <td class="text-center align-middle"><a class="btn btn-success btn-sm" href="{{ route('sanitary_residences.admission.show', $admission) }}">
           <i class="fas fa-poll-h"></i> Revisar Encuesta
         </a></td>
