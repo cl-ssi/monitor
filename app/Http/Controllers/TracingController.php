@@ -282,9 +282,7 @@ class TracingController extends Controller
             $report[$commune->id]['curso'] = 0;
             $report[$commune->id]['terminado'] = 0;
         }
-
-        $from = $request->get('date') . ' 00:00:00';
-        $to = $request->get('date') . ' 23:59:59';
+        
 
         $patients = Patient::whereHas('suspectCases', function ($q) use ($date) {
             $q->where('pscr_sars_cov_2', 'positive')
@@ -294,14 +292,10 @@ class TracingController extends Controller
                 $q->where('region_id', env('REGION'));
             })
             ->get();
+        
 
-        foreach ($patients as $patient) {
-
-<<<<<<< HEAD
-=======
         foreach($patients as $patient){
 
->>>>>>> 15db614329b2d4bd1fba246a1a17d594d9a5ca51
             $report[$patient->demographic->commune_id]['positives'] += 1;
 
             foreach ($patient->contactPatient as $contact) {
@@ -311,57 +305,34 @@ class TracingController extends Controller
                 }
             }
 
-<<<<<<< HEAD
-            if ($patient->tracing) {
-                if ($patient->tracing->status == 1) {
-                    $report[$patient->demographic->commune_id]['curso'] += 1;
-=======
 
-            }
+            
 
             if($patient->tracing){
                 if($patient->tracing->status == 1){
                 $report[$patient->demographic->commune_id]['curso'] += 1;
->>>>>>> 15db614329b2d4bd1fba246a1a17d594d9a5ca51
                 }
                 if ($patient->tracing->status == null or $patient->tracing->status == 0) {
                     $report[$patient->demographic->commune_id]['terminado'] += 1;
                 }
-<<<<<<< HEAD
-=======
 
 
 
->>>>>>> 15db614329b2d4bd1fba246a1a17d594d9a5ca51
             }
         }
 
-        dd($report);
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 15db614329b2d4bd1fba246a1a17d594d9a5ca51
+        //dd($report);
 
 
-        if ($patients->count() == 0) {
-            session()->flash('info', 'No existen casos positivos o no hay casos con dirección.');
-            //return redirect()->route('home');
-        }
 
-<<<<<<< HEAD
-=======
+        
+    
 
->>>>>>> 15db614329b2d4bd1fba246a1a17d594d9a5ca51
 
 
         $communes_ids = array_map('trim', explode(",", env('COMUNAS')));
         $communes = Commune::whereIn('id', $communes_ids)->get();
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 15db614329b2d4bd1fba246a1a17d594d9a5ca51
 
 
         return view('patients.tracing.reportbycommune', compact('request', 'communes', 'patients'));
