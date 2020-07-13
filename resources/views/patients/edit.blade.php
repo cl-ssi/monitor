@@ -15,26 +15,26 @@
                 @method('PUT')
 <!--**********************************-->
                 <div class="form-row">
-                    <fieldset class="form-group col-10 col-sm-4 col-md-2">
+                    <fieldset class="form-group col-10 col-sm-4 col-md-2 col-lg-2">
                         <label for="for_run">Run</label>
                         <input type="text" class="form-control" id="for_run" name="run"
                                value="{{ $patient->run }}" max="50000000">
                     </fieldset>
 
-                    <fieldset class="form-group col-2 col-sm-2 col-md-1">
+                    <fieldset class="form-group col-2 col-sm-2 col-md-1 col-lg-1">
                         <label for="for_dv">DV</label>
                         <input type="text" class="form-control" id="for_dv" name="dv"
                                value="{{ $patient->dv }}">
                     </fieldset>
 
-                    <fieldset class="form-group col-12 col-sm-6 col-md-3">
+                    <fieldset class="form-group col-12 col-sm-6 col-md-3 col-lg-3">
                         <label for="for_other_identification">Otra identificación</label>
                         <input type="text" class="form-control" id="for_other_identification"
                                placeholder="Extranjeros sin run" name="other_identification"
                                value="{{ $patient->other_identification }}">
                     </fieldset>
 
-                    <fieldset class="form-group col-12 col-sm-6 col-md-3">
+                    <fieldset class="form-group col-12 col-sm-4 col-md-3 col-lg-3">
                         <label for="for_gender">Genero</label>
                         <select name="gender" id="for_gender" class="form-control">
                             <option value="male"
@@ -56,7 +56,7 @@
                         </select>
                     </fieldset>
 
-                    <fieldset class="form-group col-12 col-sm-6 col-md-3">
+                    <fieldset class="form-group col-8 col-sm-5 col-md-3 col-lg-2">
                         <label for="for_birthday">Fecha Nacimiento</label>
                         <input type="date" class="form-control" id="for_birthday" required
                                name="birthday"
@@ -97,7 +97,7 @@
                 @endif
 <!--**********************************-->
                 <div class="form-row">
-                    <fieldset class="form-group col-12 col-sm-6">
+                    <fieldset class="form-group col-12 col-sm-6 col-lg-3">
                         <label for="for_status">Estado</label>
                         <select name="status" id="for_status" class="form-control">
                             <option value=""></option>
@@ -135,7 +135,7 @@
                         </select>
                     </fieldset>
 
-                    <fieldset class="form-group col-12 col-sm-6">
+                    <fieldset class="form-group col-8 col-sm-5 col-md-3 col-lg-2">
                         <label for="for_deceased_at">Fallecido</label>
                         <input type="date" class="form-control" name="deceased_at" id="for_deceased_at"
                                value="{{ ($patient->deceased_at) ? $patient->deceased_at->format('Y-m-d') : '' }}">
@@ -143,23 +143,26 @@
                 </div>
 <!--**********************************-->
                 <div class="row">
-                      <div class="col-4 pl-sm-5">
+                      <div class="col-4 col-sm-2 col-md-2 col-lg-2">
                         <button type="submit" class="btn btn-primary">Guardar</button>
                       </div>
-
-                      <div class="col-4 px-1 text-center">
+                      <!--<div class="col-4 px-1 text-center">
                           <a class="btn btn-outline-secondary" href="{{ route('patients.index') }}">Cancelar</a>
-                        </form>
+                      </div>-->
+
+                      <!--
+                      <div class="col-1">
+                          <p></p>
                       </div>
-
-
-        <div class="col-4 pr-sm-5">
+                      -->
+</form>
+        <div class="col-4 col-sm-2 col-md-2 col-lg-1">
             @can('Patient: delete')
                 @if($patient->suspectCases->count() === 0)
                     <form method="POST" class="form-horizontal" action="{{ route('patients.destroy',$patient) }}">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger float-right"
+                        <button type="submit" class="btn btn-danger"
                                 onclick="return confirm('¿Está seguro que desea eliminar al paciente : {{$patient->fullName}}? ' )">
                             Borrar
                         </button>

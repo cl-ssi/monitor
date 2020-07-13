@@ -1,7 +1,9 @@
+
+<!------------------------------->
 <div class="form-row">
 
-    <fieldset class="form-group col-12 col-md-2">
-        <label for="for_street_type">Vía de residencia *</label>
+    <fieldset class="form-group col-7 col-md-2">
+        <label for="for_street_type">Vía de reside.*</label>
         <select name="street_type" id="for_street_type" class="form-control" required>
             <option value=""></option>
             <option value="Calle" {{(old('street_type') == 'Calle') ? 'selected' : '' }} >Calle</option>
@@ -32,7 +34,7 @@
         <input type="text" class="form-control" name="suburb" id="for_suburb" value="{{old('suburb')}}">
     </fieldset>
 </div>
-
+<!------------------------------->
 <div class="form-row">
 
     <fieldset class="form-group col-12 col-md-2">
@@ -80,15 +82,15 @@
     </fieldset>
 
 </div>
-
+<!------------------------------->
 <div class="form-row">
 
-    <fieldset class="form-group col-12 col-md-2">
+    <fieldset class="form-group col-12 col-md-3">
         <label for="for_city">Ciudad/Pueblo/Localidad</label>
         <input type="text" class="form-control" name="city" id="for_city" value="{{old('city')}}">
     </fieldset>
 
-    <fieldset class="form-group col-12 col-md-6">
+    <fieldset class="form-group col-12 col-md-5">
         <label for="for_email">email</label>
         <input type="email" class="form-control" name="email" id="for_email" value="{{old('email')}}"
         style="text-transform: lowercase;">
@@ -100,3 +102,4 @@
     </fieldset>
 
 </div>
+<!------------------------------->

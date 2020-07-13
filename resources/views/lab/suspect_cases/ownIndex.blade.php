@@ -7,7 +7,7 @@
 <h3 class="mb-3"><i class="fas fa-lungs-virus"></i>
     Exámenes ingresados en el establecimiento del usuario.
 </h3>
-
+<div class="table-responsive">
 <table class="table table-sm table-bordered">
     <thead>
         <tr class="text-center">
@@ -30,6 +30,7 @@
         </tr>
     </tbody>
 </table>
+</div>
 
 @if($laboratory->id)
 <a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.minsal',$laboratory) }}">
@@ -42,23 +43,35 @@
     Reporte estadistico diario
 </a>
 @endif
-
+<!-------------------------------->
 <div class="row">
-    <div class="col-2 align-self-end">
+    <div class="col-8 col-sm-4 col-md-4 col-lg-2 align-self-end">
         <a type="button" class="btn btn-success mb-3" href="{{ route('lab.suspect_cases.export', 'own') }}">Descargar <i class="far fa-file-excel"></i></a>
     </div>
-    <div class="col-4 align-self-end">
+    <div class="col-12 col-sm-7 col-md-6 col-lg-4 align-self-end">
         @include('lab.suspect_cases.partials.search_id')
     </div>
-    <div class="col-6">
+
+    <div class="col-12 col-sm-10 col-md-9 col-lg-6">
         <form method="get" action="{{ route('lab.suspect_cases.ownIndex', $laboratory) }}">
 
+<div class="row">
+  <div class="col-6 col-sm-4 col-lg-4">
             <input type="checkbox" name="filter[]" id="chk_positivos" value="positive" {{ (in_array('positive', $arrayFilter)) ? 'checked' : '' }} /> Positivos
+  </div>
+  <div class="col-6 col-sm-4 col-lg-4">
             <input type="checkbox" name="filter[]" id="chk_negativos" value="negative" {{ (in_array('negative', $arrayFilter)) ? 'checked' : '' }} /> Negativos
+  </div>
+  <div class="col-6 col-sm-4 col-lg-4">
             <input type="checkbox" name="filter[]" id="chk_pendientes" value="pending" {{ (in_array('pending', $arrayFilter)) ? 'checked' : '' }} /> Pendientes
+  </div>
+  <div class="col-6 col-sm-4 col-lg-4">
             <input type="checkbox" name="filter[]" id="chk_rechazados" value="rejected" {{ (in_array('rejected', $arrayFilter)) ? 'checked' : '' }} /> Rechazados
+  </div>
+  <div class="col-6 col-sm-4 col-lg-4">
             <input type="checkbox" name="filter[]" id="chk_indeterminados" value="undetermined" {{ (in_array('undetermined', $arrayFilter)) ? 'checked' : '' }} /> Indeterminados
-
+  </div>
+</div>
             <div class="input-group mb-3">
                 <input class="form-control" type="text" name="text" value="{{$searchText}}" placeholder="Rut / Nombre">
                 <div class="input-group-append">
@@ -69,7 +82,7 @@
         </form>
     </div>
 </div>
-
+<!-------------------------------->
 <div class="table-responsive">
 <table class="table table-sm table-bordered" id="tabla_casos">
     <thead>

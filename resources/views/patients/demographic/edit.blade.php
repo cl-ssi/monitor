@@ -79,19 +79,19 @@
 <!--**********************************-->
 
 <div class="form-row">
-    <fieldset class="form-group col-12 col-md-4">
+    <fieldset class="form-group col-12 col-sm-8 col-md-4 col-lg-3">
         <label for="for_city">Ciudad/Pueblo/Localidad</label>
         <input type="city" class="form-control" name="city" id="for_city"
             value="{{ $patient->demographic->city }}">
     </fieldset>
 
-    <fieldset class="form-group col-12 col-sm-6 col-md-4">
+    <fieldset class="form-group col-12 col-sm-7 col-md-5 col-lg-4">
         <label for="for_email">email</label>
         <input type="email" class="form-control" name="email" id="for_email"
             value="{{ $patient->demographic->email }}" style="text-transform: lowercase;">
     </fieldset>
 
-    <fieldset class="form-group col-12 col-sm-6 col-md-4">
+    <fieldset class="form-group col-12 col-sm-5 col-md-3">
         <label for="for_telephone">Teléfono</label>
         <input type="text" class="form-control" name="telephone" id="for_telephone"
             value="{{ $patient->demographic->telephone }}">
