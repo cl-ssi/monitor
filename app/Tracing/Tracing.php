@@ -35,6 +35,7 @@ class Tracing extends Model  implements Auditable
         'allergies','common_use_drugs','morbid_history','chronic_diseases','family_history',
         'indications','observations',
         'help_basket','psychological_intervention','requires_hospitalization','requires_licence',
+        'employer_name','last_day_worked','employer_contact',
         'user_id'
     ];
 
