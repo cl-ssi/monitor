@@ -83,7 +83,15 @@
     </table>
   </div>
 
+@else
+  <br>
+
+  <div class="alert alert-danger" role="alert">
+      No se encontraron registros para la fecha y usuario seleccionado.
+  </div>
 @endif
+
+
 
 @endsection
 
