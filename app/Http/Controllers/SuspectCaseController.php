@@ -159,7 +159,7 @@ class SuspectCaseController extends Controller
                                         $q->whereIn('commune_id',auth()->user()->communes());
                                 });
                         })
-                        ->whereNotIn('pscr_sars_cov_2', ['pending','positive'])
+                        ->whereNotIn('pscr_sars_cov_2', ['pending','positive','undetermined'])
                         ->whereNull('notification_at')
                         ->whereBetween('created_at', [$from, $to])
                         ->get();
