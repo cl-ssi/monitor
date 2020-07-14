@@ -159,7 +159,7 @@ class SuspectCaseController extends Controller
                                         $q->whereIn('commune_id',auth()->user()->communes());
                                 });
                         })
-                        ->whereNotIn('pscr_sars_cov_2', ['pending','positive'])
+                        ->whereNotIn('pscr_sars_cov_2', ['pending','positive','undetermined'])
                         ->whereNull('notification_at')
                         ->whereBetween('created_at', [$from, $to])
                         ->get();
@@ -419,8 +419,8 @@ class SuspectCaseController extends Controller
 
         $suspectCase->save();
 
-        /* Crea un TRACING si el resultado es positivo */
-        if ($old_pcr == 'pending' and $suspectCase->pscr_sars_cov_2 == 'positive') {
+        /* Crea un TRACING si el resultado es positivo o indeterminado */
+        if ($old_pcr == 'pending' and ($suspectCase->pscr_sars_cov_2 == 'positive' OR $suspectCase->pscr_sars_cov_2 == 'undetermined')) {
             /* Si el paciente no tiene Tracing */
             if($suspectCase->patient->tracing) {
                 $suspectCase->patient->tracing->index = 1;
@@ -429,6 +429,7 @@ class SuspectCaseController extends Controller
                                                 $suspectCase->symptoms_at :
                                                 $suspectCase->pscr_sars_cov_2_at;
                 $suspectCase->patient->tracing->quarantine_end_at = $suspectCase->patient->tracing->quarantine_start_at->add(13,'days');
+                $suspectCase->patient->tracing->next_control_at   = now();
                 $suspectCase->patient->tracing->save();
             }
             else {
@@ -440,7 +441,7 @@ class SuspectCaseController extends Controller
                 $tracing->functionary       = $suspectCase->functionary;
                 $tracing->gestation         = $suspectCase->gestation;
                 $tracing->gestation_week    = $suspectCase->gestation_week;
-                $tracing->next_control_at   = $suspectCase->pscr_sars_cov_2_at;
+                $tracing->next_control_at   = now(); //$suspectCase->pscr_sars_cov_2_at;
                 $tracing->quarantine_start_at = ($suspectCase->symptoms_at) ?
                                                 $suspectCase->symptoms_at :
                                                 $suspectCase->pscr_sars_cov_2_at;
