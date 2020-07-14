@@ -61,7 +61,11 @@
                 </a>
             </td>
             <td>
-                {{ ($patient->tracing->index) ? 'Sí' : 'CAR' }}
+                @switch($patient->tracing->index)
+                    @case(0) CAR      @break
+                    @case(1) Indice   @break
+                    @case(2) Probable @break
+                @endswitch
             </td>
             <td>
                 {{ $patient->fullName }}
