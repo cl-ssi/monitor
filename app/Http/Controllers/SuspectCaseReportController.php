@@ -580,7 +580,7 @@ class SuspectCaseReportController extends Controller
         // dd($cases);
         foreach ($cases as $key => $case) {
             // if ($case->run_medic != 0) {
-                if ($case->patient->demographic && $case->file) {
+                if ($case->patient->demographic) {
                     $response = WSMinsal::crea_muestra($case);
                     if ($response['status'] == 0) {
                         session()->flash('info', 'Error al subir muestra ' . $case->id . ' a MINSAL. ' . $response['msg']);
