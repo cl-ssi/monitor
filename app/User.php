@@ -59,6 +59,10 @@ class User extends Authenticatable
         return array_values(array_unique($ids));
     }
 
+    public function events() {
+        return $this->hasMany('App\Tracing\Event');
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *
