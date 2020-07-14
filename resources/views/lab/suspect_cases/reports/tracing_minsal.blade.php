@@ -69,7 +69,14 @@
                 <th>FECHA DE NOTIFICACIÓN AL CONTACTO ESTRECHO</th>
                 <th>OBSERVACIÓN</th>
                 <th>PRESENTACIÓN DE SÍNTOMAS</th>
-                <th>DETALLES SINTOMAS</th>
+                <th>FIEBRE</th>
+                <th>TOS</th>
+                <th>DIFICULTAD RESPIRATORIA</th>
+                <th>DOLOR MUSCULAR</th>
+                <th>DOLOR DE GARGANTA</th>
+                <th>DOLOR DE CABEZA</th>
+                <th>DIARREA</th>
+{{--                <th>DETALLES SINTOMAS</th>--}}
                 <th>OTRO, ¿CUÁL?</th>
                 <th>ENFERMEDAD CRÓNICA</th>
                 <th>COVID+</th>
@@ -138,13 +145,28 @@
                             @endif
 
                         <!-- DETALLES DE SINTOMAS -->
+
                             @if($contact->patient->tracing && $contact->patient->tracing->events)
-                                <td>{{ ($contact->patient->tracing->events->where('symptoms')->last()) ? $contact->patient->tracing->events->where('symptoms')->last()->symptoms : '' }}</td>
+
+                            @php
+                                $symptomsArray =  $contact->patient->tracing->getSymptoms();
+                            @endphp
+
+                            <td> {{$symptomsArray['Fiebre'] ? 'Si': 'No'}} </td>
+                            <td>{{$symptomsArray['Tos'] ? 'Si': 'No'}}</td>
+                            <td>{{$symptomsArray['Dificultad para respirar'] ? 'Si': 'No'}}</td>
+                            <td>{{$symptomsArray['Mialgias'] ? 'Si': 'No'}}</td>
+                            <td>{{$symptomsArray['Odinofagia'] ? 'Si': 'No'}}</td>
+                            <td>{{$symptomsArray['Cefalea'] ? 'Si': 'No'}}</td>
+                            <td>{{$symptomsArray['Diarrea'] ? 'Si': 'No'}}</td>
+                            <td>{{implode(', ', $symptomsArray[0])}}</td>
+
+{{--                                <td>{{ ($contact->patient->tracing->events->where('symptoms')->last()) ? $contact->patient->tracing->events->where('symptoms')->last()->symptoms : '' }}</td>--}}
                             @else
                                 <td></td>
                             @endif
 
-                            <td></td> <!-- OTRO CUAL -->
+{{--                            <td></td> <!-- OTRO CUAL -->--}}
                             <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->chronic_diseases : '' }}</td>
 
                             <td>
