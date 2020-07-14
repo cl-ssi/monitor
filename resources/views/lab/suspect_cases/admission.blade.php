@@ -52,8 +52,9 @@
         </fieldset> --}}
 
         <fieldset class="form-group col-6 col-md-2">
-            <label for="for_gender">Genero</label>
-            <select name="gender" id="for_gender" class="form-control">
+            <label for="for_gender">Género *</label>
+            <select name="gender" id="for_gender" class="form-control" required>
+                <option disabled selected value></option>
                 <option value="male" {{(old('gender') == 'male') ? 'selected' : '' }} >Masculino</option>
                 <option value="female" {{(old('gender') == 'female') ? 'selected' : '' }} >Femenino</option>
                 <option value="other" {{(old('gender') == 'other') ? 'selected' : '' }} >Otro</option>
@@ -446,16 +447,14 @@ $(document).ready(function(){
         var selectedcategory = $(this).children("option:selected").val();
         if(selectedcategory =='male')
         {
-            $('#for_gestation').val('');
-            $('#for_gestation').prop('disabled', true);
+            $('#for_gestation').val('0');
+            $('#for_gestation option:not(:selected)').attr('disabled', 'disabled');
         }
         else
         {
-            $('#for_gestation').prop('disabled', false);
-            $('#for_gestation').prop("required", true);
+            $('#for_gestation').val('');
+            $('#for_gestation option').removeAttr('disabled', 'disabled');
         }
-
-
     });
 });
 
