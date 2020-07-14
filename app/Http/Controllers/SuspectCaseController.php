@@ -301,6 +301,9 @@ class SuspectCaseController extends Controller
      */
     public function storeAdmission(Request $request)
     {
+
+//        dd($request);
+
         $request->validate([
            'id' => new UniqueSampleDateByPatient($request->sample_at)
         ]);
