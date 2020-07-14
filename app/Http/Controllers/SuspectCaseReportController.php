@@ -12,6 +12,7 @@ use App\Patient;
 use App\Ventilator;
 use App\File;
 use App\EstablishmentUser;
+use App\Tracing\Event;
 use App\SanitaryResidence\Residence;
 use App\SanitaryResidence\Booking;
 use Carbon\Carbon;
@@ -22,6 +23,8 @@ use App\WSMinsal;
 use App\Commune;
 use App\Country;
 use Illuminate\View\View;
+
+use App\User;
 
 class SuspectCaseReportController extends Controller
 {
@@ -780,5 +783,26 @@ class SuspectCaseReportController extends Controller
             ->get();
 
         return view('lab.suspect_cases.reports.requires_licence', compact('patients'));
+    }
+
+    /*****************************************************/
+    /*            REPORTE USUARIOS RENDIMIENTO                */
+    /*****************************************************/
+    public function user_performance(Request $request)
+    {
+        /* USUARIOS DE MIS ESTABLECIMIENTOS */
+        $users = User::whereHas('establishments', function ($q) {
+                    $q->whereIn('establishment_id', auth()->user()->establishments->pluck('id'));
+                  })
+                  ->orderBy('name', 'ASC')
+                  ->get();
+
+        $events = Event::whereDate('event_at', $request->date)
+            ->where('user_id', $request->user)
+            ->get();
+
+        // dd($events);
+
+        return view('lab.suspect_cases.reports.user_performance', compact('users', 'request', 'events'));
     }
 }
