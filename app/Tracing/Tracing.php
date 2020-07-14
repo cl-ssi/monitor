@@ -11,6 +11,8 @@ use GuzzleHttp\Exception\RequestException;
 
 use Carbon\Carbon;
 
+use App\Tracing\Symptom;
+
 class Tracing extends Model  implements Auditable
 {
     use SoftDeletes;
@@ -105,6 +107,61 @@ class Tracing extends Model  implements Auditable
         }
 
     }
+
+    public function getSymptoms(){
+        //obtiene sintomas
+        $symptoms = "";
+        foreach ($this->events as $key => $event) {
+            $symptoms = $symptoms . $event->symptoms . ",";
+        }
+        //elimina ultimo caracter
+        $symptoms = substr($symptoms, 0, -1);
+
+        //se genera array resultado
+        $resultado = explode(",", $symptoms);
+        $resultado = array_unique(explode(",", $symptoms));
+        $resultado = array_map('trim', $resultado);
+        //crea array
+        $symptoms = Symptom::all();
+        $array_final = array();
+        foreach ($symptoms as $key => $symptom) {
+            if ($symptom->name == "Anosmia" || $symptom->name == "Ageusia" ||
+                $symptom->name == "Dolor toráxico" || $symptom->name == "Calofrios" ||
+                $symptom->name == "Otro") {
+            }else{
+                $array_final[$symptom->name] = false;
+            }
+        }
+        //se obtiene info
+        $array_otros = array();
+        foreach ($resultado as $key => $result) {
+            if ($result == "Anosmia" || $result == "Ageusia" || $result == "Dolor toráxico" || $result == "Calofrios" || $result == "Otro") {
+                array_push($array_otros, $result);
+            }else{
+                // array_push($array_final, $result);
+                $array_final[$result] = true;
+            }
+        }
+        array_push($array_final, $array_otros);
+        return $array_final;
+    }
+
+    // fiebre, tos, dificultad respiratoria, dolor muscular, dolor de garganta, dolor de cabeza, diarrea, otro
+    //
+    // "1"	"Fiebre"	"2020-06-17 15:19:52"	"2020-06-17 15:19:52"	\N
+    // "2"	"Tos"	"2020-06-17 15:19:52"	"2020-06-17 15:19:52"	\N
+    // "11"	"Dificultad para respirar"	"2020-06-17 15:19:52"	"2020-06-17 15:19:52"	\N
+    // "3"	"Mialgias"	"2020-06-17 15:19:52"	"2020-06-17 15:19:52"	\N
+    // "4"	"Odinofagia"	"2020-06-17 15:19:52"	"2020-06-17 15:19:52"	\N
+    // "10"	"Cefalea"	"2020-06-17 15:19:52"	"2020-06-17 15:19:52"	\N
+    // "8"	"Diarrea"	"2020-06-17 15:19:52"	"2020-06-17 15:19:52"	\N
+    //
+    // "5"	"Anosmia"	"2020-06-17 15:19:52"	"2020-06-17 15:19:52"	\N
+    // "6"	"Ageusia"	"2020-06-17 15:19:52"	"2020-06-17 15:19:52"	\N
+    // "7"	"Dolor toráxico"	"2020-06-17 15:19:52"	"2020-06-17 15:19:52"	\N
+    // "9"	"Calofrios"	"2020-06-17 15:19:52"	"2020-06-17 15:19:52"	\N
+    // "12"	"Otro"	"2020-06-18 23:27:07"	"2020-06-18 23:27:08"	\N
+
 
     protected static function booted()
     {
