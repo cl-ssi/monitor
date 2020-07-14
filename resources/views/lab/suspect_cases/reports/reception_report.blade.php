@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Reporte Minsal')
+@section('title', 'Reporte de recepciones')
 
 @section('content')
 
@@ -11,7 +11,7 @@
 @endcan --}}
 
 
-{{-- <form method="get" class="form-inline mb-3" action="{{ route('lab.suspect_cases.reports.minsal', $laboratory) }}">
+<form method="get" class="form-inline mb-3" action="{{ route('lab.suspect_cases.reports.reception_report', $laboratory) }}">
 
 <a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.report.exportMinsal', ['laboratory' => $laboratory, 'from' => $request->from, 'to' => $request->to] ) }}">Descargar <i class="far fa-file-excel"></i></a>
     <div class="form-group ml-3">
@@ -28,7 +28,7 @@
         <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
     </div>
 
-</form> --}}
+</form>
 
 
 
