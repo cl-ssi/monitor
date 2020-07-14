@@ -467,6 +467,31 @@ class SuspectCaseReportController extends Controller
     }
 
     /*****************************************************/
+    /*                  REPORTE RECEPCIONADOS            */
+    /*****************************************************/
+    public function reception_report(Request $request, Laboratory $laboratory)
+    {
+
+        if($from = $request->has('from')){
+            $from = $request->get('from');
+            $to = $request->get('to');
+        }else{
+            $from = date("Y-m-d 21:00", time() - 60 * 60 * 24);
+            $to = date("Y-m-d 20:59");
+        }
+
+        $externos = SARSCoV2External::whereBetween('result_at', [$from, $to])->get();
+
+        $cases = SuspectCase::where('laboratory_id',$laboratory->id)
+                ->whereBetween('reception_at', [$from, $to])
+                ->whereNull('external_laboratory')
+                ->get()
+                ->sortByDesc('reception_at');
+        return view('lab.suspect_cases.reports.reception_report', compact('cases', 'laboratory', 'externos', 'from', 'to', 'request'));
+    }
+
+
+    /*****************************************************/
     /*                  REPORTE MINSAL WS                */
     /*****************************************************/
     public function report_minsal_ws(Request $request)
@@ -555,7 +580,7 @@ class SuspectCaseReportController extends Controller
         // dd($cases);
         foreach ($cases as $key => $case) {
             // if ($case->run_medic != 0) {
-                if ($case->patient->demographic && $case->file) {
+                if ($case->patient->demographic) {
                     $response = WSMinsal::crea_muestra($case);
                     if ($response['status'] == 0) {
                         session()->flash('info', 'Error al subir muestra ' . $case->id . ' a MINSAL. ' . $response['msg']);
