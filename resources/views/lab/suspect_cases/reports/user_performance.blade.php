@@ -34,45 +34,56 @@
     </div>
 </div>
 
-<br>
+@if($events->count() > 0)
+  <br>
 
-<div class="table-responsive">
-  <table class="table table-sm table-bordered">
-      <thead>
+  <div class="table-responsive">
+    <table class="table table-sm table-bordered table-striped small">
+        <thead>
           <tr class="text-center">
-              <th>Total de Eventos</th>
-              <td>{{ $events->count() }}</td>
+            @foreach($events_resume as $key => $resume)
+                <th width="10%">{{ $key }}</th>
+            @endforeach
           </tr>
+        </thead>
+        <tbody>
+          <tr class="text-center">
+            @foreach($events_resume as $key => $resume)
+                <td>{{ $resume }}</td>
+            @endforeach
+          </tr>
+        </tbody>
+    </table>
+  </div>
+
+  <br>
+
+  <div class="table-responsive">
+    <table class="table table-sm table-bordered table-striped small">
+      <thead>
+        <tr class="text-center">
+          <th>#</th>
+          <th>Fecha</th>
+          <th>Paciente</th>
+          <th>Tipo Evento</th>
+          <th>Funcionario</th>
+        </tr>
       </thead>
-  </table>
-</div>
+      <tbody>
+        @foreach($events as $key => $event)
+        <tr>
+            <td>{{ $key + 1 }}</td>
+            <td>{{ $event->event_at->format('d-m-Y H:i:s') }}</td>
+            <td>{{ $event->tracing->patient->fullName }}</td>
+            <td>{{ $event->type->name }}</td>
+            <td>{{ $event->user->name }}</td>
+        </tr>
+        @endforeach
+      </tbody>
+    </table>
+  </div>
 
-<br>
-
-<div class="table-responsive">
-  <table class="table table-sm table-bordered table-striped small">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Fecha</th>
-        <th>Paciente</th>
-        <th>Tipo Evento</th>
-        <th>Funcionario</th>
-      </tr>
-    </thead>
-    <tbody>
-      @foreach($events as $key => $event)
-      <tr>
-          <td>{{ $key + 1 }}</td>
-          <td>{{ $event->event_at->format('d-m-Y H:i:s') }}</td>
-          <td>{{ $event->tracing->patient->fullName }}</td>
-          <td>{{ $event->type->name }}</td>
-          <td>{{ $event->user->name }}</td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-</div>
+@endif
 
 @endsection
 
