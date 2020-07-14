@@ -252,7 +252,7 @@ class TracingController extends Controller
     {
         $tracing = new tracing($request->All());
         $tracing->user_id = auth()->id();
-        $tracing->status = 1;
+        //$tracing->status = 1;
         $tracing->next_control_at = Carbon::now();
         $tracing->quarantine_start_at = Carbon::now();
         $tracing->quarantine_end_at = Carbon::now()->add(13, 'days');
@@ -282,7 +282,7 @@ class TracingController extends Controller
             $report[$commune->id]['curso'] = 0;
             $report[$commune->id]['terminado'] = 0;
         }
-        
+
 
         $patients = Patient::whereHas('suspectCases', function ($q) use ($date) {
             $q->where('pscr_sars_cov_2', 'positive')
@@ -292,7 +292,7 @@ class TracingController extends Controller
                 $q->where('region_id', env('REGION'));
             })
             ->get();
-        
+
 
         foreach($patients as $patient){
 
@@ -306,7 +306,7 @@ class TracingController extends Controller
             }
 
 
-            
+
 
             if($patient->tracing){
                 if($patient->tracing->status == 1){
@@ -325,8 +325,8 @@ class TracingController extends Controller
 
 
 
-        
-    
+
+
 
 
 
