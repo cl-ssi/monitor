@@ -81,107 +81,122 @@
             </tr>
         </thead>
         <tbody>
-                @foreach($patients as $patient)
+        @foreach($patients as $patient)
 
-                  @foreach($patient->contactPatient as $contact)
+            @if($patient->contactPatient->count() > 0)
+                @foreach($patient->contactPatient as $contact)
 
-                  <tr>
+                    <tr>
+                        <td>°</td>
+                        <td>{{ $patient->tracing->id }}</td>
+                        @if($patient->tracing->notification_at != null)
+                            <td>{{ $patient->tracing->notification_at->format('d-m-Y') }}</td>
+                        @else
+                            <td></td>
+                        @endif
+                        <td>{{ $patient->identifier }}</td>
+                        <td>{{ $patient->fullName }}</td>
+
+                        @if($contact->patient)
+                            <td>{{ $contact->patient->identifier }}</td>
+                            <td>{{ $contact->patient->name }}</td>
+                            <td>{{ $contact->patient->fathers_family }}</td>
+                            <td>{{ $contact->patient->mothers_family }}</td>
+                            <td>{{ $contact->patient->fullName }}</td>
+                            <td>{{ $contact->patient->birthday->format('d-m-Y') }}</td>
+                            <td>{{ $contact->patient->demographic->telephone }}</td>
+                            <td>{{ $contact->patient->demographic->telephone2 }}</td>
+                            <td>{{ $contact->patient->demographic->street_type }}</td>
+                            <td>{{ $contact->patient->demographic->address }}</td>
+                            <td>{{ $contact->patient->demographic->number }}</td>
+                            <td>{{ $contact->patient->demographic->department }}</td>
+                            <td>{{ $contact->patient->demographic->suburb }}</td>
+                            <td>{{ $contact->patient->demographic->email }}</td>
+                            <td>{{ $contact->patient->demographic->commune->name }}</td>
+                            <td>{{ $contact->patient->demographic->region->name }}</td>
+                            <td>{{ $contact->last_contact_at }}</td>
+
+                            @if($contact->patient->tracing)
+                                <td>{{ ($contact->patient->tracing->quarantine_end_at)? $contact->patient->tracing->quarantine_end_at->format('d-m-Y') : '' }}</td>
+                                <td>{{ ($contact->patient->tracing->StatusDesc)? $contact->patient->tracing->StatusDesc : '' }}</td>
+                            @else
+                                <td></td>
+                                <td></td>
+                            @endif
+
+                            <td>{{ $contact->CategoryDesc  }}</td>
+                            <td>{{ $contact->RelationshipName }}</td>
+
+                            @if($contact->patient->tracing)
+                                <td>{{ ($contact->patient->tracing->notification_at)? $contact->patient->tracing->notification_at->format('d-m-Y') : '' }}</td>
+                                <td>{{ ($contact->patient->tracing->observations)? $contact->patient->tracing->observations : '' }}</td>
+                                <td>{{ ($contact->patient->tracing->symptoms)? $contact->patient->tracing->SymptomsDesc : '' }}</td>
+                            @else
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            @endif
+
+                        <!-- DETALLES DE SINTOMAS -->
+                            @if($contact->patient->tracing && $contact->patient->tracing->events)
+                                <td>{{ ($contact->patient->tracing->events->where('symptoms')->last()) ? $contact->patient->tracing->events->where('symptoms')->last()->symptoms : '' }}</td>
+                            @else
+                                <td></td>
+                            @endif
+
+                            <td></td> <!-- OTRO CUAL -->
+                            <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->chronic_diseases : '' }}</td>
+
+                            <td>
+                                @foreach($contact->patient->suspectCases->where('pscr_sars_cov_2', 'positive') as $suspectCase)
+                                    @if($suspectCase->pscr_sars_cov_2 == 'positive')
+                                        SI
+                                    @endif
+                                @endforeach
+                            </td>
+
+                            @if($contact->patient->tracing)
+                                <td>{{ ($contact->patient->tracing->requires_licence)? $contact->patient->tracing->RequiresLicenceDesc : $contact->patient->tracing->hasAcceptedLicence }}</td>
+                                <td>{{ ($contact->patient->tracing->cannot_quarantine)? 'NO' : 'SI' }}</td>
+                                <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->cannot_quarantine : '' }}</td>
+                            @else
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            @endif
+
+                            @if($contact->patient->tracing && $contact->patient->tracing->events)
+                                <td>{{ ($contact->patient->tracing->events->last()) ? $contact->patient->tracing->events->last()->type->name : '' }}</td>
+                            @else
+                                <td></td>
+                            @endif
+
+                            @if($contact->patient->tracing)
+                                <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->prevision : '' }}</td>
+                            @else
+                                <td></td>
+                    </tr>
+                    @endif
+                    @endif
+
+                @endforeach
+            @else
+                <tr>
                     <td>°</td>
                     <td>{{ $patient->tracing->id }}</td>
                     @if($patient->tracing->notification_at != null)
-                      <td>{{ $patient->tracing->notification_at->format('d-m-Y') }}</td>
+                        <td>{{ $patient->tracing->notification_at->format('d-m-Y') }}</td>
                     @else
-                      <td></td>
+                        <td></td>
                     @endif
                     <td>{{ $patient->identifier }}</td>
                     <td>{{ $patient->fullName }}</td>
+                </tr>
 
-                    @if($contact->patient)
-                          <td>{{ $contact->patient->identifier }}</td>
-                          <td>{{ $contact->patient->name }}</td>
-                          <td>{{ $contact->patient->fathers_family }}</td>
-                          <td>{{ $contact->patient->mothers_family }}</td>
-                          <td>{{ $contact->patient->fullName }}</td>
-                          <td>{{ $contact->patient->birthday->format('d-m-Y') }}</td>
-                          <td>{{ $contact->patient->demographic->telephone }}</td>
-                          <td>{{ $contact->patient->demographic->telephone2 }}</td>
-                          <td>{{ $contact->patient->demographic->street_type }}</td>
-                          <td>{{ $contact->patient->demographic->address }}</td>
-                          <td>{{ $contact->patient->demographic->number }}</td>
-                          <td>{{ $contact->patient->demographic->department }}</td>
-                          <td>{{ $contact->patient->demographic->suburb }}</td>
-                          <td>{{ $contact->patient->demographic->email }}</td>
-                          <td>{{ $contact->patient->demographic->commune->name }}</td>
-                          <td>{{ $contact->patient->demographic->region->name }}</td>
-                          <td>{{ $contact->last_contact_at }}</td>
+            @endif
 
-                          @if($contact->patient->tracing)
-                              <td>{{ ($contact->patient->tracing->quarantine_end_at)? $contact->patient->tracing->quarantine_end_at->format('d-m-Y') : '' }}</td>
-                              <td>{{ ($contact->patient->tracing->StatusDesc)? $contact->patient->tracing->StatusDesc : '' }}</td>
-                          @else
-                              <td></td>
-                              <td></td>
-                          @endif
-
-                          <td>{{ $contact->CategoryDesc  }}</td>
-                          <td>{{ $contact->RelationshipName }}</td>
-
-                          @if($contact->patient->tracing)
-                              <td>{{ ($contact->patient->tracing->notification_at)? $contact->patient->tracing->notification_at->format('d-m-Y') : '' }}</td>
-                              <td>{{ ($contact->patient->tracing->observations)? $contact->patient->tracing->observations : '' }}</td>
-                              <td>{{ ($contact->patient->tracing->symptoms)? $contact->patient->tracing->SymptomsDesc : '' }}</td>
-                          @else
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                          @endif
-
-                      <!-- DETALLES DE SINTOMAS -->
-                          @if($contact->patient->tracing && $contact->patient->tracing->events)
-                              <td>{{ ($contact->patient->tracing->events->where('symptoms')->last()) ? $contact->patient->tracing->events->where('symptoms')->last()->symptoms : '' }}</td>
-                          @else
-                              <td></td>
-                          @endif
-
-                          <td></td> <!-- OTRO CUAL -->
-                          <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->chronic_diseases : '' }}</td>
-
-                          <td>
-                              @foreach($contact->patient->suspectCases->where('pscr_sars_cov_2', 'positive') as $suspectCase)
-                                  @if($suspectCase->pscr_sars_cov_2 == 'positive')
-                                      SI
-                                  @endif
-                              @endforeach
-                          </td>
-
-                          @if($contact->patient->tracing)
-                              <td>{{ ($contact->patient->tracing->requires_licence)? $contact->patient->tracing->RequiresLicenceDesc : $contact->patient->tracing->hasAcceptedLicence }}</td>
-                              <td>{{ ($contact->patient->tracing->cannot_quarantine)? 'NO' : 'SI' }}</td>
-                              <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->cannot_quarantine : '' }}</td>
-                          @else
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                          @endif
-
-                          @if($contact->patient->tracing && $contact->patient->tracing->events)
-                              <td>{{ ($contact->patient->tracing->events->last()) ? $contact->patient->tracing->events->last()->type->name : '' }}</td>
-                          @else
-                              <td></td>
-                          @endif
-
-                          @if($contact->patient->tracing)
-                              <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->prevision : '' }}</td>
-                          @else
-                              <td></td>
-                  @endif
-                      @endif
-
-
-
-                  @endforeach
-                @endforeach
-            </tbody>
+        @endforeach
+        </tbody>
         </table>
     </div>
 

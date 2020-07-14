@@ -323,6 +323,10 @@
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.requires_licence') }}">Reporte de pacientes que requieren licencia médica</a>
                                 @endcan
 
+                                @can('Report: user performance')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.user_performance') }}">Reporte de rendimiento usuario</a>
+                                @endcan
+
                             </div>
                         </li>
                         @endcan
