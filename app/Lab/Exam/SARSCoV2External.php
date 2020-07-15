@@ -8,7 +8,7 @@ use Carbon\Carbon;
 
 class SARSCoV2External extends Model
 {
-    protected $table = 'sars_cov_2_external';
+    protected $table = 'sars_cov_2_externals';
     use SoftDeletes;
 
     /**
