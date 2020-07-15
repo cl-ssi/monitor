@@ -24,6 +24,15 @@
                     @endforeach
                   </select>
               </fieldset>
+
+              <!-- <fieldset class="form-group col-md-3">
+                  <label for="for_index">Indice</label>
+                  <select class="form-control selectpicker" name="index" id="for_index" title="Seleccione..." required>
+                      <option value="1" {{ ($request->index == 1)?'selected':'' }}>Si</option>
+                      <option value="0" {{ ($request->index == 0)?'selected':'' }}>No</option>
+                      <option value="2" {{ ($request->index == 2)?'selected':'' }}>Probable</option>
+                  </select>
+              </fieldset> -->
           </div>
 
           <div>
@@ -64,6 +73,8 @@
         <tr class="text-center">
           <th>#</th>
           <th>Fecha</th>
+          <th>Indice</th>
+          <th>Identificador</th>
           <th>Paciente</th>
           <th>Tipo Evento</th>
           <th>Funcionario</th>
@@ -74,6 +85,8 @@
         <tr>
             <td>{{ $key + 1 }}</td>
             <td>{{ $event->event_at->format('d-m-Y H:i:s') }}</td>
+            <td>{{ $event->tracing->IndexDesc }}</td>
+            <td>{{ $event->tracing->patient->identifier }}</td>
             <td>{{ $event->tracing->patient->fullName }}</td>
             <td>{{ $event->type->name }}</td>
             <td>{{ $event->user->name }}</td>
