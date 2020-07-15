@@ -843,7 +843,7 @@ class SuspectCaseReportController extends Controller
             ->where('user_id', $request->user)
             ->get();
 
-        /* CREAR ARRAY DE RESUMEN */
+        /* ------------------- CREAR ARRAY DE RESUMEN -----------------------*/
         $events_type = EventType::all();
         foreach ($events_type as $key => $type) {
             $events_resume[$type->name] = 0;
@@ -854,7 +854,7 @@ class SuspectCaseReportController extends Controller
             $events_resume[$event->type->name] += 1;
             $events_resume['total'] += 1;
         }
-        /* ---------------------- */
+        /* ----------------------------------------------------------------- */
 
         return view('lab.suspect_cases.reports.user_performance', compact('users', 'request', 'events', 'events_resume'));
     }
