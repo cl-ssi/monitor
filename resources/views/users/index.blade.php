@@ -60,7 +60,7 @@
                 <td nowrap><a href="{{ route('users.edit', $user) }}">{{ $user->name }}</a></td>
                 <td nowrap>{{ $user->email }}</td>
                 <td nowrap>{{ $user->function }}</td>
-                <td nowrap>
+                <td class="small">
                   <a href="#z{{$user->run}}" data-toggle="collapse" >Establecimientos {{$user->establishments->count()}} </a>
                   <!--<button type="button"   class="btn btn-link btn-sm" data-toggle="collapse" data-target="#estab">Cantidad de Establecimientos</button>-->
                    <div id="z{{$user->run}}" class="collapse">
