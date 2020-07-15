@@ -743,10 +743,24 @@ class SuspectCaseReportController extends Controller
             $to = Carbon::now();
         }
 
-        $suspectCases = SuspectCase::whereBetween('pscr_sars_cov_2_at', [$from, $to])
-            ->where('pscr_sars_cov_2', 'positive')->orderBy('pscr_sars_cov_2_at')->get();
+        $communes_ids = array_map('trim',explode(",",env('COMUNAS')));
+        $communes = Commune::whereIn('id', $communes_ids)->get();
 
-        return view('lab.suspect_cases.reports.positivesByDateRange', compact('suspectCases', 'from', 'to'));
+        $selectedCommune = $request->get('commune');
+
+        $suspectCases = SuspectCase::whereBetween('pscr_sars_cov_2_at', [$from, $to])
+            ->where('pscr_sars_cov_2', 'positive')
+            ->when($selectedCommune, function ($q) use ($selectedCommune){
+                return $q->whereHas('patient', function($q) use ($selectedCommune){
+                    $q->whereHas('demographic', function ($q) use ($selectedCommune){
+                        $q->where('commune_id', $selectedCommune);
+                    });
+                });
+            })
+            ->orderBy('pscr_sars_cov_2_at')
+            ->get();
+
+        return view('lab.suspect_cases.reports.positivesByDateRange', compact('suspectCases', 'from', 'to', 'communes', 'selectedCommune'));
     }
 
     /*****************************************************/
