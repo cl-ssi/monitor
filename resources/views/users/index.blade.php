@@ -62,13 +62,11 @@
                 <td>{{ $user->function }}</td>
                 <td class="small">
                     @if($user->establishments->count()<=3)
-                    <table class="table table-sm">
-                        <tbody>
-                            @foreach($user->establishments as $establishment)
-                            <tr><td>{{ $establishment->alias }}</td></tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    <ul>
+                        @foreach($user->establishments as $establishment)
+                        <li>{{ $establishment->alias }}</li>
+                        @endforeach
+                    </ul>
                     @else
                     <a href="#z{{$user->run}}" data-toggle="collapse" >Establecimientos {{$user->establishments->count()}} </a>
                     <!--<button type="button"   class="btn btn-link btn-sm" data-toggle="collapse" data-target="#estab">Cantidad de Establecimientos</button>-->
