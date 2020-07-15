@@ -61,7 +61,7 @@
                 <td>{{ $user->email }}</td>
                 <td>{{ $user->function }}</td>
                 <td>
-                  <a href="#z{{$user->run}}" data-toggle="collapse" >Cantidad {{$user->establishments->count()}} </a>
+                  <a href="#z{{$user->run}}" data-toggle="collapse" >Establecimientos {{$user->establishments->count()}} </a>
                   <!--<button type="button" class="btn btn-link btn-sm" data-toggle="collapse" data-target="#estab">Cantidad de Establecimientos</button>-->
                    <div id="z{{$user->run}}" class="collapse">
                      <ul class="list-group">
