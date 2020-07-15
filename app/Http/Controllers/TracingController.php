@@ -167,14 +167,7 @@ class TracingController extends Controller
             })
             ->where(function ($q) {
                 $q->whereNotIn('status', [
-                    'Fallecido',
-                    'Alta',
-                    'Residencia Sanitaria',
-                    'Hospitalizado Básico',
-                    'Hospitalizado Medio',
-                    'Hospitalizado UCI',
-                    'Hospitalizado UTI',
-                    'Hospitalizado UCI (Ventilador)'
+                    'Fallecido'
                 ])
                     ->orWhereNull('status');
             })
@@ -187,7 +180,7 @@ class TracingController extends Controller
             ->all();
 
         $titulo = 'Fin de Seguimiento';
-        return view('patients.tracing.index', compact('patients', 'titulo'));
+        return view('patients.tracing.completed', compact('patients', 'titulo'));
     }
 
     /**

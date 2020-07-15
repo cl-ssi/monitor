@@ -19,29 +19,29 @@
     @csrf
     @method('POST')
 <!--------------------------->
-    <div class="form-row">
-        <fieldset class="form-group col-10 col-sm-4 col-md-2">
+    <div class="form-row align-items-end">
+        <fieldset class="form-group col-5 col-sm-4 col-md-4 col-lg-2">
             <label for="for_run">Run</label>
             <input type="number" class="form-control" id="for_run" name="run" autocomplete="off" max="50000000">
         </fieldset>
 
-        <fieldset class="form-group col-2 col-sm-2 col-md-1">
+        <fieldset class="form-group col-2 col-sm-2 col-md-1 col-lg-1">
             <label for="for_dv">DV</label>
             <input type="text" class="form-control" id="for_dv" name="dv" autocomplete="off" readonly>
         </fieldset>
 
-        <fieldset class="form-group col-1 col-md-1">
+        <fieldset class="form-group col-5 col-sm-6 col-md-2 col-lg-1">
             <label for="">&nbsp;</label>
             <button type="button" id="btn_fonasa" class="btn btn-outline-success">Fonasa&nbsp;</button>
         </fieldset>
 
-        <fieldset class="form-group col-12 col-sm-6 col-md-3">
+        <fieldset class="form-group col-6 col-sm-4 col-md-4 col-lg-3">
             <label for="for_other_identification">Otra identificación</label>
             <input type="text" class="form-control" id="for_other_identification"
                 placeholder="Extranjeros sin run" name="other_identification" autocomplete="off">
         </fieldset>
 
-        <fieldset class="form-group col-6 col-sm-4 col-md-3">
+        <fieldset class="form-group col-6 col-sm-4 col-md-3 col-lg-2">
             <label for="for_gender">Genero</label>
             <select name="gender" id="for_gender" class="form-control">
                 <option value="male">Masculino</option>
@@ -51,7 +51,7 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-7 col-sm-4 col-md-3">
+        <fieldset class="form-group col-7 col-sm-4 col-md-3 col-lg-2">
             <label for="for_birthday">Fecha Nacimiento</label>
             <input type="date" class="form-control" id="for_birthday"
                 name="birthday" required>
