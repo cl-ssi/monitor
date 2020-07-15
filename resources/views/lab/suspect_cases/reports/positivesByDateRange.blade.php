@@ -19,7 +19,19 @@
                value="{{ Carbon\Carbon::parse($to)->format('Y-m-d') }}">
     </div>
 
-    <div class="form-group">
+    <div class="form-group ">
+        <label for="for_commune">Comuna</label>
+        <select name="commune" id="for_commune" class="form-control ml-3">
+            <option value="">Todas</option>
+            @foreach($communes as $commune)
+                <option
+                    value="{{ $commune->id }}" {{($selectedCommune == $commune->id) ? 'selected' : '' }}  >{{ $commune->name }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+
+    <div class="form-group ml-3">
         <button type="submit" class="btn btn-primary">Buscar</button>
     </div>
 
