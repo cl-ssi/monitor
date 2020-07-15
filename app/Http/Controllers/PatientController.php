@@ -95,7 +95,32 @@ class PatientController extends Controller
      */
     public function edit(Patient $patient)
     {
-        // dd($patient);
+        // obtiene linea de tiempo
+        $timeline = array();
+        foreach ($patient->audits as $key => $audit) {
+            // print_r($audit->created_at->format('Y-m-d H:m'));
+            // print_r($audit->old_values);
+            // print_r($audit->new_values);
+            // print_r("***<br />");
+            if ($key == 0) {
+                if (array_key_exists('status',$audit->old_values)) {
+                    $timeline[$audit->created_at->format('Y-m-d H:m')] = 'Paciente creado - ' . $audit->new_values['status'];
+                }else{
+                    $timeline[$audit->created_at->format('Y-m-d H:m')] = 'Paciente creado';
+                }
+
+            }else{
+                if (array_key_exists('status',$audit->new_values)) {
+                    if ($audit->new_values['status'] == NULL || $audit->new_values['status'] == '') {
+                        $timeline[$audit->created_at->format('Y-m-d H:m')] = 'Ambulatorio';
+                    }else{
+                        $timeline[$audit->created_at->format('Y-m-d H:m')] = $audit->new_values['status'];
+                    }
+                }
+            }
+        }
+        // dd($timeline);
+
         $regions = Region::orderBy('id','ASC')->get();
         $communes = Commune::orderBy('id','ASC')->get();
         $countries = Country::select('name')->orderBy('id', 'ASC')->get();
@@ -104,7 +129,7 @@ class PatientController extends Controller
         $env_communes = array_map('trim',explode(",",env('COMUNAS')));
         $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
         $symptoms = Symptom::All();
-        return view('patients.edit',compact('patient', 'regions', 'communes','event_types', 'request_types','establishments','symptoms', 'countries'));
+        return view('patients.edit',compact('patient', 'regions', 'communes','event_types', 'request_types','establishments','symptoms', 'countries', 'timeline'));
     }
 
     /**
