@@ -299,6 +299,33 @@
 
                 </div>
                 <!--**********************************-->
+
+
+
+                <div class="form-row">
+
+                    <fieldset class="form-group col-4 col-sm-4">
+                        <label for="for_employer_name">Nombre Empleador</label>
+                        <input type="text" class="form-control" name="employer_name"
+                                  id="for_employer_name" value ="{{ $patient->tracing->employer_name }}"></input>
+                    </fieldset>
+
+                    <fieldset class="form-group col-3 col-sm-4">
+                        <label for="for_last_day_worked">Fecha Último Día Trabajado</label>
+                        <input type="date" class="form-control" name="last_day_worked"
+                                  id="for_last_day_worked" value="{{ $patient->tracing->last_day_worked }}"></input>
+                    </fieldset>
+
+                    <fieldset class="form-group col-5 col-sm-4">
+                        <label for="for_employer_contact">Contacto Empleador (Teléfono o Dirección)</label>
+                        <input type="text" class="form-control" name="employer_contact"
+                                  id="for_employer_contact" value="{{ $patient->tracing->employer_contact }}"></input>
+                    </fieldset>
+
+                </div>
+
+                <!--**********************************-->
+
                 <button type="submit" class="btn btn-primary ">Guardar</button>
 
             </form>

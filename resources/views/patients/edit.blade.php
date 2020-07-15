@@ -128,9 +128,15 @@
                                 Hospitalizado UCI (Ventilador)
                             </option>
                             <option
+                                value="Otra Institución" {{ ($patient->status == 'Otra Institución')?'selected':'' }}>
+                                Otras instituciones (SENAME, Penitenciaria, etc.)
+                            </option>
+                            <option
                                 value="Residencia Sanitaria" {{ ($patient->status == 'Residencia Sanitaria')?'selected':'' }}>
                                 Residencia Sanitaria
                             </option>
+
+
                         </select>
                     </fieldset>
 

@@ -49,6 +49,8 @@
                 <th>Run</th>
                 <th>Nombre</th>
                 <th>Email</th>
+                <th>Función</th>
+                <th>Establecimientos</th>
             </tr>
         </thead>
         <tbody>
@@ -57,6 +59,18 @@
                 <td nowrap>{{ $user->run }}-{{$user->dv}}</td>
                 <td nowrap><a href="{{ route('users.edit', $user) }}">{{ $user->name }}</a></td>
                 <td>{{ $user->email }}</td>
+                <td>{{ $user->function }}</td>
+                <td>
+                  <a href="#z{{$user->run}}" data-toggle="collapse" >Establecimientos {{$user->establishments->count()}} </a>
+                  <!--<button type="button" class="btn btn-link btn-sm" data-toggle="collapse" data-target="#estab">Cantidad de Establecimientos</button>-->
+                   <div id="z{{$user->run}}" class="collapse">
+                     <ul class="list-group">
+                         @foreach($user->establishments as $establishment)
+                         <li class="list-group-item">{{ $establishment->alias }}</li>
+                         @endforeach
+                     </ul>
+                   </div>
+                </td>
             </tr>
             @endforeach
         </tbody>
