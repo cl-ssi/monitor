@@ -211,7 +211,7 @@
 
                     <fieldset class="form-group col-5 col-sm-4 col-md-3 col-lg-3">
                         <label for="for_gestation_week">Semanas de gestación</label>
-                        <input type="text" class="form-control" name="gestation_week"
+                        <input type="number" class="form-control" name="gestation_week"
                                id="for_gestation_week" value="{{ $patient->tracing->gestation_week }}">
                     </fieldset>
 
