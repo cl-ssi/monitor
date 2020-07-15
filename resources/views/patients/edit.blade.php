@@ -485,6 +485,10 @@
         </table>
     @endcan
 
+    <hr>
+
+    @include('patients.partials.timeline', ['timeline' => $timeline])
+
 @endsection
 
 @section('custom_js')
@@ -583,4 +587,8 @@
         });
 
     </script>
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/timeline/css/timeline.css') }}">
+    {{-- <script src="{{ asset('assets/timeline/js/timeline.js') }}"></script> --}}
+
 @endsection
