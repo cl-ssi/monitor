@@ -91,8 +91,8 @@
             </fieldset>
 
             <fieldset class="form-group col-12 col-md-3">
-                <label for="for_establishment_id">Establecimiento</label>
-                <select name="establishment_id" id="for_establishment_id" class="form-control">
+                <label for="for_establishment_id">Establecimiento *</label>
+                <select name="establishment_id" id="for_establishment_id" class="form-control" required>
                     <option value=""></option>
                     @foreach($establishments as $establishment)
                         <option
