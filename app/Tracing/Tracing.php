@@ -76,12 +76,19 @@ class Tracing extends Model  implements Auditable
 
     }
 
+    public function getIndexDescAttribute(){
+      switch($this->index) {
+          case 0: return 'CAR'; break;
+          case 1: return 'Indice'; break;
+          case 2: return 'Probable'; break;
+      }
+    }
+
     public function getRequiresLicenceDescAttribute(){
       switch($this->requires_licence) {
           case 1: return 'SI'; break;
           case 0: return 'NO'; break;
       }
-
     }
 
     public function getSymptomsDescAttribute(){

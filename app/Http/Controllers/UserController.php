@@ -21,8 +21,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
 
-        $users = User::orderby('name', 'asc')
-                ->get();
+        $users = User::orderBy('name', 'asc')->get();
 
         if ($request) {
 
