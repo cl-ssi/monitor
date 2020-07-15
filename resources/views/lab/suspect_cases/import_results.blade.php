@@ -5,6 +5,64 @@
 @section('content')
 
 <div class="card">
+    <div class="card-body">
+        <h5>Formato de archivo excel</h5>
+        <em>Debe respetar el nombre de las columnas.</em><br>
+
+        <div class="container-fluid">
+        <table id="productSizes" class="table table-sm">
+            <thead>
+                <tr class="d-flex">
+                    <th class="col-3"></th>
+                    <th class="col-2">id esmeralda</th>
+                    <th class="col-2">resultado</th>
+                    <th class="col-2">fecha resultado</th>
+                    <th class="col-3"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="d-flex">
+                    <td class="col-3"></td>
+                    <td class="col-2">1</td>
+                    <td class="col-2">pending</td>
+                    <td class="col-2">13-07-2020</td>
+                    <td class="col-3"></td>
+                </tr>
+                <tr class="d-flex">
+                    <td class="col-3"></td>
+                    <td class="col-2">2</td>
+                    <td class="col-2">negative</td>
+                    <td class="col-2">14-07-2020</td>
+                    <td class="col-3"></td>
+                </tr>
+                <tr class="d-flex">
+                    <td class="col-3"></td>
+                    <td class="col-2">3</td>
+                    <td class="col-2">positive</td>
+                    <td class="col-2">15-07-2020</td>
+                    <td class="col-3"></td>
+                </tr>
+                <tr class="d-flex">
+                    <td class="col-3"></td>
+                    <td class="col-2">4</td>
+                    <td class="col-2">undetermined</td>
+                    <td class="col-2">11-07-2020</td>
+                    <td class="col-3"></td>
+                </tr>
+                <tr class="d-flex">
+                    <td class="col-3"></td>
+                    <td class="col-2">5</td>
+                    <td class="col-2">rejected</td>
+                    <td class="col-2">01-07-2020</td>
+                    <td class="col-3"></td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div><br />
+
+<div class="card">
   <div class="card-body">
     <h5>Carga Masiva Resultados</h5>
     <br>
@@ -16,11 +74,6 @@
             <input type="file" class="custom-file-input"  name="file" required>
             <label class="custom-file-label" for="customFile" data-browse="Elegir">Seleccione el archivo excel...</label>
         </div>
-
-        {{-- <div class="form-group">
-            <label for="fordescription">Descripción:</label>
-            <input type="text" class="form-control" id="fordescription" name="description">
-        </div> --}}
 
         <div class="mb-3">
             <button class="btn btn-primary float-right mb-3"><i class="fas fa-upload"></i> Cargar</button>
