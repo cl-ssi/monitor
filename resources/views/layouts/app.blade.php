@@ -127,9 +127,9 @@
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing') }}">Seguimiento (Antiguo)</a>
                                 @endcan
 
-                                <!-- @can('SuspectCase: bulk load')
+                                @can('SuspectCase: bulk load')
                                 <a class="dropdown-item" href="{{ route('lab.bulk_load.index') }}">Carga Masiva</a>
-                                @endcan -->
+                                @endcan
 
                             </div>
                         </li>
@@ -321,6 +321,10 @@
 
                                 @can('Report: requires licence')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.requires_licence') }}">Reporte de pacientes que requieren licencia médica</a>
+                                @endcan
+
+                                @can('Report: user performance')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.user_performance') }}">Reporte de rendimiento usuario</a>
                                 @endcan
 
                             </div>
