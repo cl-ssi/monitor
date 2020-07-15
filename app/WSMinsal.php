@@ -138,8 +138,10 @@ class WSMinsal extends Model
                     'multipart' => [
                         [
                             'name'     => 'upfile',
-                            'contents' => Storage::get($suspectCase->files->first()->file),
-                            'filename' => $suspectCase->files->first()->name
+                            // 'contents' => Storage::get($suspectCase->files->first()->file),
+                            // 'filename' => $suspectCase->files->first()->name
+                            'contents' => Storage::get('suspect_cases/' . $suspectCase->id . '.pdf'),
+                            'filename' => $suspectCase->id . '.pdf'
                         ],
                         [
                             'name'     => 'parametros',

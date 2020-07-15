@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Seguimiento')
+@section('title', 'SeguimientoS Finalizados')
 
 @section('content')
 
-    <div class="row">
+<div class="row">
         <div class="col-12 col-sm-3">
             @isset($titulo)
                 <h3 class="mb-3">{{$titulo}}</h3>
@@ -25,15 +25,13 @@
         </div>
     </div>
 
-
-
-
-<table class="table table-sm table-bordered small">
+    <table class="table table-sm table-bordered small">
     <thead>
         <tr>
             <th>ID</th>
             <th>Indice</th>
             <th>Nombre</th>
+            <th>Estado</th>
             <th>Comuna</th>
             <th>Establecimiento Muestra</th>
             <th>Inicio Cuarentena</th>
@@ -48,7 +46,7 @@
         @foreach($patients as $key => $patient)
         @if($fecha != $patient->tracing->next_control_at->format('Y-m-d'))
         <tr>
-            <td colspan="10" class="table-active">
+            <td colspan="11" class="table-active">
                 <h5>Siguiente Control: {{ $patient->tracing->next_control_at->format('Y-m-d') }}</h5>
             </td>
         </tr>
@@ -71,6 +69,7 @@
                 {{ $patient->fullName }}
 
             </td>
+            <td> {{ $patient->status }} </td>
             <td>{{ ($patient->demographic AND $patient->demographic->commune) ?
                     $patient->demographic->commune->name : '' }}</td>
             <td>{{ ($patient->tracing->establishment) ? $patient->tracing->establishment->alias : '' }}</td>
