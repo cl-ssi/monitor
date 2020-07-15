@@ -6,7 +6,7 @@ use App\SuspectCase;
 use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Rule;
 
-class uniqueSampleDateByPatient implements Rule
+class UniqueSampleDateByPatient implements Rule
 {
     /**
      * Create a new rule instance.
