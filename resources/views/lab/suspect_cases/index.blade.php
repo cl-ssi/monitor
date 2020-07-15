@@ -14,15 +14,15 @@
 
 <div class="row">
     @can('SuspectCase: create')
-    <div class="col-5 col-sm-3">
+    <div class="col-10 col-sm-6">
         <a class="btn btn-primary mb-3" href="{{ route('lab.suspect_cases.admission') }}">
             Crear nueva sospecha
         </a>
     </div>
     @endcan
-
 </div>
 
+<div class="table-responsive">
 <table class="table table-sm table-bordered">
     <thead>
         <tr class="text-center">
@@ -45,19 +45,29 @@
         </tr>
     </tbody>
 </table>
+</div>
 
 
+<!--------------------------------->
 @if($laboratory)
-<a type="button" class="btn btn-success" href="{{ route('lab.suspect_cases.export', $laboratory->id) }}">Descargar <i class="far fa-file-excel"></i></a>
-<a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.minsal',$laboratory) }}">
-    Reporte MINSAL
-</a>
-<a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.seremi',$laboratory) }}">
-    Reporte SEREMI
-</a>
-<a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.report.estadistico_diario_covid19',$laboratory) }}">
-    Reporte estadistico diario
-</a>
+<div class="row">
+  <div class="col-12 col-sm-12 col-md-6">
+      <div class="row align-items-end">
+        <div class="col-6 col-sm-3">
+            <a type="button" class="btn btn-success mb-3" href="{{ route('lab.suspect_cases.export', $laboratory->id) }}">Descargar <i class="far fa-file-excel"></i></a>
+        </div>
+        <div class="col-6 col-sm-3">
+            <a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.minsal',$laboratory) }}">Reporte MINSAL</a>
+        </div>
+        <div class="col-6 col-sm-3">
+            <a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.seremi',$laboratory) }}">Reporte SEREMI</a>
+        </div>
+        <div class="col-6 col-sm-3">
+            <a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.report.estadistico_diario_covid19',$laboratory) }}">Reporte estadistico diario</a>
+        </div>
+      </div><!---END row--->
+  </div><!---END COL--->
+
 @else
 
 {{--    <form method="POST" action="{{route('lab.suspect_cases.export', 'all')}}" target="_blank">--}}
@@ -88,30 +98,32 @@
 
 @endif
 
+<div class="col-12 col-sm-12 col-md-6">
+    <form method="get" action="{{ route('lab.suspect_cases.index',$laboratory) }}">
 
-<div align="right">
-<form method="get" action="{{ route('lab.suspect_cases.index',$laboratory) }}">
+            <input type="checkbox" name="positivos" id="chk_positivos" v="Positivos" {{ ($request->positivos)?'checked':'' }} /> Positivos
+            <input type="checkbox" name="negativos" id="chk_negativos" v="Negativos" {{ ($request->negativos)?'checked':'' }} /> Negativos
+            <input type="checkbox" name="pendientes" id="chk_pendientes" v="Pendientes" {{ ($request->pendientes)?'checked':'' }} /> Pendientes
+            <input type="checkbox" name="rechazados" id="chk_rechazados" v="Rechazados" {{ ($request->rechazados)?'checked':'' }} /> Rechazados
+            <input type="checkbox" name="indeterminados" id="chk_indeterminados" v="Indeterminados" {{ ($request->indeterminados)?'checked':'' }} /> Indeterminados
 
-    <input type="checkbox" name="positivos" id="chk_positivos" v="Positivos" {{ ($request->positivos)?'checked':'' }} /> Positivos
-    <input type="checkbox" name="negativos" id="chk_negativos" v="Negativos" {{ ($request->negativos)?'checked':'' }} /> Negativos
-    <input type="checkbox" name="pendientes" id="chk_pendientes" v="Pendientes" {{ ($request->pendientes)?'checked':'' }} /> Pendientes
-    <input type="checkbox" name="rechazados" id="chk_rechazados" v="Rechazados" {{ ($request->rechazados)?'checked':'' }} /> Rechazados
-    <input type="checkbox" name="indeterminados" id="chk_indeterminados" v="Indeterminados" {{ ($request->indeterminados)?'checked':'' }} /> Indeterminados
+            <div class="input-group mb-3">
+              <div class="input-group-prepend"><span class="input-group-text">Búsqueda</span></div>
+              <input class="form-control" type="text" name="text" value="{{$request->text}}" placeholder="Rut / Nombre">
+              <div class="input-group-append"><button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button></div>
+            </div>
+    </form>
+</div><!---END COL--->
 
-    <div class="input-group mb-3 col-12 col-sm-5">
-    <div class="input-group-prepend">
-        <span class="input-group-text">Búsqueda</span>
-    </div>
-
-    <input class="form-control" type="text" name="text" value="{{$request->text}}" placeholder="Rut / Nombre">
-    <div class="input-group-append">
-        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
-    </div>
-  </div>
-
-</form>
+<div class="col-12 col-sm-12 col-md-6" align="right">
 @include('lab.suspect_cases.partials.search_id')
 </div>
+
+</div><!---END ROW--->
+
+<!--------------------------------->
+
+
 
 <div class="table-responsive">
 <table class="table table-sm table-bordered" id="tabla_casos">
