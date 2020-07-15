@@ -186,7 +186,7 @@
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_gestation_week">Semanas de gestación</label>
-            <input type="text" class="form-control" name="gestation_week" value="{{old('gestation_week')}}"
+            <input type="number" class="form-control" name="gestation_week" value="{{old('gestation_week')}}"
                 id="for_gestation_week">
         </fieldset>
 
