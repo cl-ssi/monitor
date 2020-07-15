@@ -13,6 +13,7 @@ use App\Ventilator;
 use App\File;
 use App\EstablishmentUser;
 use App\Tracing\Event;
+use App\Tracing\EventType;
 use App\SanitaryResidence\Residence;
 use App\SanitaryResidence\Booking;
 use Carbon\Carbon;
@@ -820,6 +821,7 @@ class SuspectCaseReportController extends Controller
         $users = User::whereHas('establishments', function ($q) {
                     $q->whereIn('establishment_id', auth()->user()->establishments->pluck('id'));
                   })
+                  ->has('events')
                   ->orderBy('name', 'ASC')
                   ->get();
 
@@ -827,8 +829,19 @@ class SuspectCaseReportController extends Controller
             ->where('user_id', $request->user)
             ->get();
 
-        // dd($events);
+        /* CREAR ARRAY DE RESUMEN */
+        $events_type = EventType::all();
+        foreach ($events_type as $key => $type) {
+            $events_resume[$type->name] = 0;
+        }
+        $events_resume['total'] = 0;
 
-        return view('lab.suspect_cases.reports.user_performance', compact('users', 'request', 'events'));
+        foreach ($events as $key => $event) {
+            $events_resume[$event->type->name] += 1;
+            $events_resume['total'] += 1;
+        }
+        /* ---------------------- */
+
+        return view('lab.suspect_cases.reports.user_performance', compact('users', 'request', 'events', 'events_resume'));
     }
 }

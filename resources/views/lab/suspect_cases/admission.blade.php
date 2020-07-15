@@ -52,8 +52,9 @@
         </fieldset> --}}
 
         <fieldset class="form-group col-6 col-md-2">
-            <label for="for_gender">Genero</label>
-            <select name="gender" id="for_gender" class="form-control">
+            <label for="for_gender">Género *</label>
+            <select name="gender" id="for_gender" class="form-control" required>
+                <option disabled selected value></option>
                 <option value="male" {{(old('gender') == 'male') ? 'selected' : '' }} >Masculino</option>
                 <option value="female" {{(old('gender') == 'female') ? 'selected' : '' }} >Femenino</option>
                 <option value="other" {{(old('gender') == 'other') ? 'selected' : '' }} >Otro</option>
@@ -148,8 +149,8 @@
 
     </div>
 
-    <div class="form-row">
-
+    <div class="form-row align-items-end">
+<!-------------------------------->
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_functionary">Funcionario de Salud</label>
             <select name="functionary" id="for_functionary" class="form-control">
@@ -168,13 +169,13 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-5 col-md-3">
+        <fieldset class="form-group col-8 col-md-3">
             <label for="for_symptoms_at">Fecha Inicio de Sintomas</label>
             <input type="datetime-local" class="form-control" id="for_symptoms_at" value="{{old('symptoms_at')}}"
                 name="symptoms_at" min="{{ date('Y-m-d\TH:i', strtotime("-4 week")) }}" max="{{ date('Y-m-d\TH:i:s') }}">
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-1">
+        <fieldset class="form-group col-4 col-md-1">
             <label for="for_gestation">Gestante *</label>
             <select name="gestation" id="for_gestation" class="form-control" required>
                 <option value="" {{(old('gestation') == '') ? 'selected' : '' }}></option>
@@ -208,7 +209,7 @@
         </fieldset--> --}}
 
     </div>
-
+<!-------------------------------->
     <hr>
 
 
@@ -446,16 +447,14 @@ $(document).ready(function(){
         var selectedcategory = $(this).children("option:selected").val();
         if(selectedcategory =='male')
         {
-            $('#for_gestation').val('');
-            $('#for_gestation').prop('disabled', true);
+            $('#for_gestation').val('0');
+            $('#for_gestation option:not(:selected)').attr('disabled', 'disabled');
         }
         else
         {
-            $('#for_gestation').prop('disabled', false);
-            $('#for_gestation').prop("required", true);
+            $('#for_gestation').val('');
+            $('#for_gestation option').removeAttr('disabled', 'disabled');
         }
-
-
     });
 });
 
