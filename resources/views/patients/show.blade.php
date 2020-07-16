@@ -20,7 +20,7 @@
     </fieldset>
 
     <fieldset class="form-group col-6 col-md-2">
-        <label for="for_gender">Genero</label>
+        <label for="for_gender">Género</label>
         <select class="form-control" readonly disabled>
             <option value="male"
                 {{($suspectCase->patient->gender == 'male')?'selected':''}}>

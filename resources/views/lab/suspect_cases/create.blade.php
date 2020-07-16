@@ -27,7 +27,7 @@
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
-            <label for="for_gender">Genero</label>
+            <label for="for_gender">Género</label>
             <select name="gender" id="for_gender" class="form-control genero">
                 <option value="male">Masculino</option>
                 <option value="female">Femenino</option>
@@ -312,7 +312,7 @@ jQuery(document).ready(function($){
     $('input[name=run]').keyup(function(e) {
         var str = $("#for_run").val();
         $('#for_dv').val($.rut.dv(str));
-    });    
+    });
 
 
     $('input[name=run]').change(function() {
@@ -362,7 +362,7 @@ jQuery(document).ready(function($){
             }
         });
     });
-    
+
 
 });
 
@@ -379,7 +379,7 @@ $(document).ready(function(){
             alert('entre al male');
             $('#for_gestation').val('');
             $('#for_gestation').prop('disabled', true);
-            
+
         }
         else
         {

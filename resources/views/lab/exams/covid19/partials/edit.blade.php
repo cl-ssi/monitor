@@ -5,7 +5,7 @@
     <div class="form-row">
         <fieldset class="form-group col-md-2">
             <label for="for_run">Run (sin digito)</label>
-            <input type="text" class="form-control" name="run" id="for_run"
+            <input type="number" max="50000000" class="form-control" name="run" id="for_run"
                 value="{{ $covid19->run }}">
         </fieldset>
 
@@ -49,13 +49,13 @@
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
-            <label for="for_gender">Genero *</label>
+            <label for="for_gender">Género *</label>
             <select name="gender" id="for_gender" class="form-control" required>
                 <option value=""></option>
-                <option value="male">Masculino</option>
-                <option value="female">Femenino</option>
-                <option value="other">Otro</option>
-                <option value="unknown">Desconocido</option>
+                <option value="male" {{($covid19->gender == 'male') ? 'selected' : '' }} >Masculino</option>
+                <option value="female" {{($covid19->gender == 'female') ? 'selected' : '' }} >Femenino</option>
+                <option value="other" {{($covid19->gender == 'other') ? 'selected' : '' }} >Otro</option>
+                <option value="unknown" {{($covid19->gender == 'unknown') ? 'selected' : '' }}>Desconocido</option>
             </select>
         </fieldset>
 
