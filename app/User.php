@@ -63,6 +63,10 @@ class User extends Authenticatable
         return $this->hasMany('App\Tracing\Event');
     }
 
+    public function bulkLoadRecord() {
+      return $this->hasMany('\App\BulkLoadRecord');
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *
