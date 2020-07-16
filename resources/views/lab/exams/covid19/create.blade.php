@@ -61,10 +61,10 @@
             <label for="for_gender">Género *</label>
             <select name="gender" id="for_gender" class="form-control" required>
                 <option value=""></option>
-                <option value="Masculino">Masculino</option>
-                <option value="Femenino">Femenino</option>
-                <option value="Otro">Otro</option>
-                <option value="Desconocido">Desconocido</option>
+                <option value="male">Masculino</option>
+                <option value="female">Femenino</option>
+                <option value="other">Otro</option>
+                <option value="unknown">Desconocido</option>
             </select>
         </fieldset>
 
