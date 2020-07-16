@@ -48,7 +48,7 @@ class SARSCoV2ExternalController extends Controller
         $covid19->user_id = Auth::id();
         $covid19->save();
 
-        session()->flash('info', 'La mustra ha sido ingresada: '.$covid19->id);
+        session()->flash('info', 'La muestra ha sido ingresada: '.$covid19->id);
 
         return redirect()->route('lab.exams.covid19.index');
     }
@@ -75,7 +75,12 @@ class SARSCoV2ExternalController extends Controller
         $regions = Region::orderBy('id','ASC')->get();
         $communes = Commune::orderBy('id','ASC')->get();
         $establishments = Establishment::orderBy('id','ASC')->get();
-        return view('lab.exams.covid19.edit', compact('covid19', 'establishments', 'communes', 'regions'));
+
+        $communesRegion = Commune::where('region_id', $covid19->commune->region_id)->get();
+        $communesRegionOrigin = Commune::where('region_id', $covid19->establishment->commune->region_id)->get();
+        $establishmentsCommune = Establishment::where('commune_id', $covid19->commune->id)->get();
+
+        return view('lab.exams.covid19.edit', compact('covid19', 'establishments', 'communes', 'regions', 'communesRegion', 'communesRegionOrigin', 'establishmentsCommune'));
     }
 
     /**
