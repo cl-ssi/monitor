@@ -34,7 +34,7 @@
                     </fieldset>
 
                     <fieldset class="form-group col-12 col-sm-4 col-md-3 col-lg-3">
-                        <label for="for_gender">Genero</label>
+                        <label for="for_gender">Género</label>
                         <select name="gender" id="for_gender" class="form-control">
                             <option value="male"
                                 {{($patient->gender == 'male')?'selected':''}}>
