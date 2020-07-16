@@ -968,6 +968,10 @@ class SuspectCaseController extends Controller
         return view('lab.bulk_load.import');
     }
 
+    public function index_import_results(){
+        return view('lab.suspect_cases.import_results');
+    }
+
     public function bulk_load_import(Request $request){
         $file = $request->file('file');
 
@@ -1119,6 +1123,41 @@ class SuspectCaseController extends Controller
 
 
         return view('lab.bulk_load.import');
+    }
+
+    public function results_import(Request $request){
+        $file = $request->file('file');
+
+        $patientsCollection = Excel::toCollection(new PatientImport, $file);
+        $cont = 0;
+        foreach ($patientsCollection[0] as $data) {
+            $id_esmeralda = NULL;
+            $resultado = NULL;
+            $fecha_resultado = NULL;
+
+            $id_esmeralda = $data['id esmeralda'];
+            $resultado = $data['resultado'];
+            $fecha_resultado = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($data['fecha resultado']))->format('Y-m-d H:i:s');
+
+            if($resultado == "negativo"){$resultado = "negative";}
+            if($resultado == "pendiente"){$resultado = "pending";}
+            if($resultado == "positivo"){$resultado = "positive";}
+            if($resultado == "rechazado"){$resultado = "rejected";}
+            if($resultado == "indeterminado"){$resultado = "undetermined";}
+
+            if ($id_esmeralda != NULL && $resultado != NULL && $fecha_resultado != NULL) {
+                $suspectCase = SuspectCase::find($id_esmeralda);
+                if ($suspectCase) {
+                    $suspectCase->pscr_sars_cov_2 = $resultado;
+                    $suspectCase->pscr_sars_cov_2_at = $fecha_resultado;
+                    $suspectCase->save();
+                    $cont += 1;
+                }
+            }
+        }
+
+        session()->flash('success', 'Se han modificado ' . $cont . ' casos.');
+        return view('lab.suspect_cases.import_results');
     }
 
 }

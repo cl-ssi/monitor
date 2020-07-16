@@ -200,6 +200,9 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::delete('/{suspect_case}','SuspectCaseController@destroy')->name('destroy')->middleware('auth','can:SuspectCase: delete');
         Route::get('/{suspect_case}/notificationForm','SuspectCaseController@notificationForm')->name('notificationForm')->middleware('auth','can:SuspectCase: admission');
 
+        Route::get('/index_import_results','SuspectCaseController@index_import_results')->name('index_import_results')->middleware('auth');
+        Route::post('/results_import', 'SuspectCaseController@results_import')->name('results_import');
+
         Route::prefix('reports')->name('reports.')->group(function () {
             Route::get('/tracingbycommunes','SuspectCaseReportController@tracingByCommunes')->name('tracingbycommunes');
             Route::get('/positives','SuspectCaseReportController@positives')->name('positives')->middleware('auth','can:Report: positives');
