@@ -333,7 +333,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
         Route::post('/', 'RoomController@store')->name('store');
         Route::get('/{room}/edit', 'RoomController@edit')->name('edit');
         Route::put('/{room}', 'RoomController@update')->name('update');
-        // Route::delete('/{room}', 'RoomController@destroy')->name('destroy');
+        Route::delete('/{room}', 'RoomController@destroy')->name('destroy');
     });
 
     Route::prefix('bookings')->name('bookings.')->group(function () {

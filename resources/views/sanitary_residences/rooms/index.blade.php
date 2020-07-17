@@ -18,6 +18,7 @@
             <th>N° Camas Single</th>
             <th>N° Camas Doble</th>
             <th>Editar</th>
+            <th>Eliminar</th>
         </tr>
     </thead>
     <tbody>
@@ -30,7 +31,14 @@
             <td>{{ $room->double }}</td>
             <td>
                 <a href="{{ route('sanitary_residences.rooms.edit', $room) }}" class="btn btn-secondary float-left"><i class="fas fa-edit"></i></a>
-            </td>            
+            </td>
+            <td>            
+                    <form method="POST" class="form-horizontal" action="{{ route('sanitary_residences.rooms.destroy', $room) }}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger float-left" onclick="return confirm('Recuerde que no debe existir ningún paciente en el cuarto que desea eliminar' )"><i class="fas fa-trash-alt"></i></button>
+                    </form>                
+            </td>
         </tr>
         @endforeach
     </tbody>
