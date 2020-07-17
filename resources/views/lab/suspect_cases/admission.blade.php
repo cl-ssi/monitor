@@ -470,12 +470,11 @@ $(document).ready(function(){
         }
     });
 
-
+    //Run y otra identificación excluyentes
     $("#for_other_identification").click(function () {
         $("#for_run").val("");
         $("#for_dv").val("");
         $("#for_run").attr('readonly', 'readonly');
-        $("#for_dv").attr('readonly', 'readonly');
         $("#for_other_identification").removeAttr('readonly', 'readonly');
     })
 
@@ -483,7 +482,6 @@ $(document).ready(function(){
         $("#for_other_identification").val("");
         $("#for_other_identification").attr('readonly', 'readonly');
         $("#for_run").removeAttr('readonly', 'readonly');
-        $("#for_dv").removeAttr('readonly', 'readonly');
     })
 
 });
