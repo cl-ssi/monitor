@@ -93,5 +93,9 @@ class RoomController extends Controller
     public function destroy(Room $room)
     {
         //
+
+        $room->delete();
+        session()->flash('success', 'Cuarto Eliminado Exitosamente');
+        return redirect()->route('sanitary_residences.rooms.index');
     }
 }
