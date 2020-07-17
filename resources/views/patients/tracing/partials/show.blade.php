@@ -89,17 +89,22 @@
                         </select>
                     </fieldset>
 
-                    @can('Tracing: change')
-                        <fieldset class="form-group col-12 col-sm-12 col-md-9 col-lg-4 order-5 order-lg-4">
-                            <label for="for_establishment_id">Establecimiento que realiza seguimiento</label>
-                            <select name="establishment_id" id="for_establishment_id" class="form-control">
-                                @foreach($establishments as $estab)
-                                    <option
-                                        value="{{ $estab->id }}" {{ ($patient->tracing->establishment_id == $estab->id) ? 'selected' : '' }}>{{ $estab->alias }}</option>
-                                @endforeach
-                            </select>
-                        </fieldset>
-                    @endcan
+
+                    <fieldset class="form-group col-12 col-sm-12 col-md-9 col-lg-4 order-5 order-lg-4">
+                        <label for="for_establishment_id">Establecimiento que realiza seguimiento *</label>
+                        <select name="establishment_id" id="for_establishment_id" class="form-control" required
+                            @if(auth()->user()->cannot('Tracing: change') AND $patient->tracing->establishment_id)
+                                disabled
+                            @endif
+                            >
+                            <option value=""></option>
+                            @foreach($establishments as $estab)
+                                <option
+                                    value="{{ $estab->id }}" {{ ($patient->tracing->establishment_id == $estab->id) ? 'selected' : '' }}>{{ $estab->alias }}</option>
+                            @endforeach
+                        </select>
+                    </fieldset>
+
 
                     <fieldset class="form-group col-4 col-sm-3 col-md-2 col-lg-2 order-4 order-lg-5">
                         <label for="for_functionary">Func. Salud</label>
@@ -280,7 +285,7 @@
                             <option value="0" {{ ($patient->tracing->requires_licence === 0) ? 'selected' : '' }}>No</option>
                         </select>
                     </fieldset>
-                    
+
                 </div-->
                 <!--**********************************-->
                 <div class="form-row">
