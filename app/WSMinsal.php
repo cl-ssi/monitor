@@ -48,7 +48,6 @@ class WSMinsal extends Model
         }else{
             $medic = $suspectCase->run_medic;
         }
-        dd($medic);
 
         $array = array(
             'raw' => array(
