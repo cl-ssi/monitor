@@ -43,7 +43,7 @@ class WSMinsal extends Model
         }
 
         $medic = '';
-        if ($suspectCase->run_medic == "13867622-6") {
+        if ($suspectCase->run_medic == "13867622-6" || $suspectCase->run_medic == "26613415-0") {
             $medic = '16350555-K';
         }else{
             $medic = $suspectCase->run_medic;
