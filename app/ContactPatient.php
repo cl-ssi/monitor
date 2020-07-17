@@ -62,13 +62,16 @@ class ContactPatient extends Model implements Auditable
               return 'Sala de Espera';
               break;
           case "family":
-              return 'Familiar';
+              return 'Familiar/domiciliario';
               break;
 
           case "intradomiciliary":
-              return 'Intradomiciliario';
+              return 'Familiar/domiciliario';
               break;
 
+          case "functionary":
+              return 'Personal de Salud';
+              break;
       }
     }
 

@@ -118,7 +118,7 @@
     <div class="form-row">
         <fieldset class="form-group col-md-2">
             <label for="for_mothers_family">Comuna: </label>
-            <input type="text" class="form-control" value="{{ ($patient->demographic->commune)?$patient->demographic->commune->name:'' }}" style="text-transform: uppercase;" readonly>
+            <input type="text" class="form-control" value="{{ ($patient->demographic)?$patient->demographic->commune->name:'' }}" style="text-transform: uppercase;" readonly>
         </fieldset>
 
         <fieldset class="form-group col-md-4">
@@ -160,8 +160,9 @@
                       <option value="passenger">Pasajero</option>
                       <option value="social">Social</option>
                       <option value="waiting room">Sala de espera</option>
-                      <option value="family">Familiar</option>
-                      <option value="intradomiciliary">Intradomiciliario</option>
+                      <option value="family">Familiar/domiciliario</option>
+                      <option value="functionary">Personal de salud</option>
+                      <!-- <option value="intradomiciliary">Intradomiciliario</option> -->
                   </select>
               </fieldset>
 
