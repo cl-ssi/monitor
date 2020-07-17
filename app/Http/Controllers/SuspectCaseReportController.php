@@ -513,15 +513,14 @@ class SuspectCaseReportController extends Controller
 
         // $externos = SARSCoV2External::whereBetween('result_at', [$from, $to])->get();
 
-        $cases = SuspectCase::where('external_laboratory','Laboratorio Universidad San Sebastian')
-                //   where('laboratory_id',$laboratory_id)
-                // ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
-                // ->whereNull('external_laboratory')
+        $cases = SuspectCase::where('laboratory_id',$laboratory_id)
+                ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
+                ->whereNull('external_laboratory')
                 ->whereNULL('minsal_ws_id')
+                // ->where('id',20370)
                 ->get()
                 ->sortByDesc('pscr_sars_cov_2_at');
-
-                // dd($cases);
+                // ->paginate(15);
 
         // //obtiene datos que faltan
         // foreach ($cases as $key => $case) {
@@ -571,22 +570,19 @@ class SuspectCaseReportController extends Controller
         // $externos = SARSCoV2External::whereBetween('result_at', [$from, $to])->get();
         $laboratories = Laboratory::all();
 
-        $cases = SuspectCase::where('external_laboratory','Laboratorio Universidad San Sebastian')
-                //   where('laboratory_id',$request->laboratory_id)
-                // ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
-                // ->whereNull('external_laboratory')
+        $cases = SuspectCase::where('laboratory_id',$request->laboratory_id)
+                ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
+                ->whereNull('external_laboratory')
                 ->whereNULL('minsal_ws_id')
+                // ->where('id',20370)
                 ->get()
                 ->sortByDesc('pscr_sars_cov_2_at');
-
-                // dd($cases);
 
                 // $cases = SuspectCase::where('id',13784)->get();
                 // dd($cases);
 
         // dd($cases);
         foreach ($cases as $key => $case) {
-            // dd($case->laboratory->cod_deis);
             // if ($case->run_medic != 0) {
                 if ($case->patient->demographic) {
                     $response = WSMinsal::crea_muestra($case);
@@ -601,24 +597,15 @@ class SuspectCaseReportController extends Controller
                             return redirect()->back();
                             // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'request','laboratories'));
                         }else{
-                            $response = WSMinsal::cambia_laboratorio($case, 936);
+                            $response = WSMinsal::resultado_muestra($case);
                             if ($response['status'] == 0) {
-                                session()->flash('info', 'Error al cambiar laboratorio de la muestra ' . $case->id . ' en MINSAL. ' . $response['msg']);
+                                session()->flash('info', 'Error al subir resultado de muestra ' . $case->id . ' en MINSAL. ' . $response['msg']);
                                 return redirect()->back();
                                 // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'request','laboratories'));
                             }
-                        //     else{
-                        //         $response = WSMinsal::resultado_muestra($case);
-                        //         if ($response['status'] == 0) {
-                        //             session()->flash('info', 'Error al subir resultado de muestra ' . $case->id . ' en MINSAL. ' . $response['msg']);
-                        //             return redirect()->back();
-                        //             // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'request','laboratories'));
-                        //         }
                         }
                     }
                 }
-
-                // dd("termino 1");
             // }else{
             //     session()->flash('info', 'No se detectó run de médico registrado en muestra:  ' . $case->id);
             //     return redirect()->back();
