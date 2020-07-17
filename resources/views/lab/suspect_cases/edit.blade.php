@@ -287,8 +287,8 @@
                 <label for="for_symptoms">Sintomas</label>
                 <select name="symptoms" id="for_symptoms" class="form-control">
                     <option value=""></option>
-                    <option value="Si" {{ ($suspectCase->symptoms == 'Si') ? 'selected' : '' }}>Si</option>
-                    <option value="No" {{ ($suspectCase->symptoms == 'No') ? 'selected' : '' }}>No</option>
+                    <option value="1" {{ ($suspectCase->symptoms == '1') ? 'selected' : '' }}>Si</option>
+                    <option value="0" {{ ($suspectCase->symptoms == '0') ? 'selected' : '' }}>No</option>
                 </select>
             </fieldset>
 
