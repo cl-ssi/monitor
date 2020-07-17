@@ -35,7 +35,7 @@
             <td class="text-center">{{ (isset($case->sample_at))? $case->sample_at->format('Y-m-d'):'' }}</td>
             <td class="text-center">{{ $case->origin }}</td>
             <td class="text-center">{{ $case->patient->fullname }}</td>
-            <td class="text-center">{{ $case->patient->run }}-{{ $case->patient->dv }}</td>
+            <td class="text-center">{{ $case->patient->getIdentifierAttribute() }}</td>
             <td class="text-center">{{ $case->age }}</td>
             <td class="text-center">{{ strtoupper($case->gender[0]) }}</td>
             <td class="text-center">{{ $case->patient->status }}</td>
