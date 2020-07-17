@@ -455,11 +455,12 @@ class SuspectCaseController extends Controller
                 $tracing->notification_mechanism = $suspectCase->notification_mechanism;
                 $tracing->discharged_at     = $suspectCase->discharged_at;
                 $tracing->symptoms_start_at = $suspectCase->symptoms_at;
-                switch ($suspectCase->symptoms) {
-                    case 'Si': $tracing->symptoms = 1; break;
-                    case 'No': $tracing->symptoms = 0; break;
-                    default:   $tracing->symptoms = null; break;
-                }
+//                switch ($suspectCase->symptoms) {
+//                    case 'Si': $tracing->symptoms = 1; break;
+//                    case 'No': $tracing->symptoms = 0; break;
+//                    default:   $tracing->symptoms = null; break;
+//                }
+                $tracing->symptoms = $suspectCase->symptoms;
                 $tracing->status            = ($suspectCase->patient->status == 'Fallecido') ? 0:1;
                 $tracing->save();
             }
