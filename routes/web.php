@@ -221,6 +221,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::get('deceased','SuspectCaseReportController@deceased')->name('deceased')->middleware('auth','can:Report: deceased');
             Route::get('requires_licence','SuspectCaseReportController@requires_licence')->name('requires_licence')->middleware('auth', 'can:Report: requires licence');
             Route::get('user_performance','SuspectCaseReportController@user_performance')->name('user_performance')->middleware('auth', 'can:Report: user performance');
+            Route::get('without_reception','SuspectCaseReportController@withoutReception')->name('without_reception')->middleware('auth');
         });
         Route::prefix('report')->name('report.')->group(function () {
             Route::get('/','SuspectCaseReportController@positives')->name('index')->middleware('auth','can:Report: other');

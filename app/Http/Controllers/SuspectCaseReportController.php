@@ -858,4 +858,19 @@ class SuspectCaseReportController extends Controller
 
         return view('lab.suspect_cases.reports.user_performance', compact('users', 'request', 'events', 'events_resume'));
     }
+
+
+    /**
+     * Listado de Casos Sospechosos que no han sido
+     * recepcionados
+     * @return Application|Factory|View
+     */
+    public function withoutReception(){
+      $cases = SuspectCase::whereNull('receptor_id')->get();
+      return view('lab.suspect_cases.reports.without_reception', compact('cases'));
+    }
+
+
+
+
 }
