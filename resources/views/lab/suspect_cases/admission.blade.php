@@ -291,6 +291,14 @@ $('input[name=run]').change(function() {
             document.getElementById("for_name").value = data.name;
             document.getElementById("for_fathers_family").value = data.fathers_family;
             document.getElementById("for_mothers_family").value = data.mothers_family;
+            if(data.gender === 'male'){
+                $('#for_gestation').val('0');
+                $('#for_gestation option:not(:selected)').attr('disabled', 'disabled');
+            }
+            else{
+                $('#for_gestation').val('');
+                $('#for_gestation option').removeAttr('disabled', 'disabled');
+            }
             document.getElementById("for_status").value = data.status;
         } else {
             document.getElementById("for_id").value = "";
@@ -300,6 +308,10 @@ $('input[name=run]').change(function() {
             document.getElementById("for_name").value = "";
             document.getElementById("for_fathers_family").value = "";
             document.getElementById("for_mothers_family").value = "";
+            document.getElementById("for_gestation").value = "";
+            $('#for_gestation').val('');
+            $('#for_gestation option').removeAttr('disabled', 'disabled');
+
         }
     });
 });
@@ -315,6 +327,14 @@ $('input[name=other_identification]').change(function() {
             document.getElementById("for_name").value = data.name;
             document.getElementById("for_fathers_family").value = data.fathers_family;
             document.getElementById("for_mothers_family").value = data.mothers_family;
+            if(data.gender === 'male'){
+                $('#for_gestation').val('0');
+                $('#for_gestation option:not(:selected)').attr('disabled', 'disabled');
+            }
+            else{
+                $('#for_gestation').val('');
+                $('#for_gestation option').removeAttr('disabled', 'disabled');
+            }
             document.getElementById("for_status").value = data.status;
         } else {
             document.getElementById("for_id").value = "";
@@ -324,6 +344,9 @@ $('input[name=other_identification]').change(function() {
             document.getElementById("for_name").value = "";
             document.getElementById("for_fathers_family").value = "";
             document.getElementById("for_mothers_family").value = "";
+            document.getElementById("for_gestation").value = "";
+            $('#for_gestation').val('');
+            $('#for_gestation option').removeAttr('disabled', 'disabled');
         }
     });
 });
@@ -425,16 +448,6 @@ jQuery(document).ready(function () {
     }
 
   });
-
-  // jQuery('#for_run').click(function () {
-  //   $("#for_country_id").val(41);
-  //   $('#for_country_id').attr('readonly', true);
-  // });
-  //
-  // jQuery('#for_other_identification').click(function () {
-  //   $("#for_country_id").val(1);
-  //   $('#for_country_id').attr('readonly', false);
-  // });
 
 });
 </script>
