@@ -5,7 +5,7 @@
     <div class="form-row">
         <fieldset class="form-group col-md-2">
             <label for="for_run">Run (sin digito)</label>
-            <input type="text" class="form-control" name="run" id="for_run"
+            <input type="number" max="50000000" class="form-control" name="run" id="for_run"
                 value="{{ $covid19->run }}">
         </fieldset>
 
@@ -49,13 +49,13 @@
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
-            <label for="for_gender">Genero *</label>
+            <label for="for_gender">Género *</label>
             <select name="gender" id="for_gender" class="form-control" required>
                 <option value=""></option>
-                <option value="male">Masculino</option>
-                <option value="female">Femenino</option>
-                <option value="other">Otro</option>
-                <option value="unknown">Desconocido</option>
+                <option value="male" {{($covid19->gender == 'male') ? 'selected' : '' }} >Masculino</option>
+                <option value="female" {{($covid19->gender == 'female') ? 'selected' : '' }} >Femenino</option>
+                <option value="other" {{($covid19->gender == 'other') ? 'selected' : '' }} >Otro</option>
+                <option value="unknown" {{($covid19->gender == 'unknown') ? 'selected' : '' }}>Desconocido</option>
             </select>
         </fieldset>
 
@@ -94,14 +94,20 @@
             <select class="form-control" name="region_id_demo" id="regiones_demo">
                 <option>Seleccione Región</option>
                 @foreach ($regions as $key => $region)
-                    <option value="{{$region->id}}" {{(old('region_id') == $region->id) ? 'selected' : '' }} >{{$region->name}}</option>
+                    <option value="{{$region->id}}" {{($covid19->commune->region_id == $region->id) ? 'selected' : '' }} >{{$region->name}}</option>
                 @endforeach
             </select>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_commune_id">Comuna *</label>
-            <select class="form-control" name="commune_id" id="for_commune_id" required></select>
+            <select class="form-control" name="commune_id" id="for_commune_id" required>
+                <option>Seleccione Comuna</option>
+                @foreach ($communesRegion as $key => $commune)
+                    <option value="{{$commune->id}}" {{($covid19->commune->id == $commune->id) ? 'selected' : '' }} >{{$commune->name}}</option>
+                @endforeach
+
+            </select>
         </fieldset>
 
 
@@ -116,7 +122,7 @@
             <select class="form-control" name="region_id" id="regiones">
                 <option>Seleccione Región</option>
                 @foreach ($regions as $key => $region)
-                    <option value="{{$region->id}}" {{(old('region_id') == $region->id) ? 'selected' : '' }} >{{$region->name}}</option>
+                    <option value="{{$region->id}}" {{($covid19->establishment->commune->region_id == $region->id) ? 'selected' : '' }} >{{$region->name}}</option>
                 @endforeach
             </select>
         </fieldset>
@@ -124,22 +130,30 @@
 
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_origin_commune">Comuna Origen *</label>
-            <select class="form-control" name="origin_commune" id="for_origin_commune" required></select>
+            <select class="form-control" name="origin_commune" id="for_origin_commune" required>
+                @foreach ($communesRegionOrigin as $key => $commune)
+                    <option value="{{$commune->id}}" {{($covid19->commune->id == $commune->id) ? 'selected' : '' }} >{{$commune->name}}</option>
+                @endforeach
+            </select>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_establishment_id">Establecimiento Origen *</label>
-            <select class="form-control" name="establishment_id" id="for_establishment_id" required></select>
+            <select class="form-control" name="establishment_id" id="for_establishment_id" required>
+                @foreach ($establishmentsCommune as $key => $establishment)
+                    <option value="{{$establishment->id}}" {{($covid19->establishment->id == $establishment->id) ? 'selected' : '' }} >{{$establishment->name}}</option>
+                @endforeach
+            </select>
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-3">
             <label for="for_sample_type">Tipo de Muestra *</label>
             <select name="sample_type" id="for_sample_type" class="form-control" required>
                 <option value=""></option>
-                <option value="TÓRULAS NASOFARÍNGEAS">TORULAS NASOFARINGEAS</option>
-                <option value="ESPUTO">ESPUTO</option>
-                <option value="TÓRULAS NASOFARÍNGEAS/ESPUTO">TÓRULAS NASOFARÍNGEAS/ESPUTO</option>
-                <option value="ASPIRADO NASOFARÍNGEO">ASPIRADO NASOFARÍNGEO</option>
+                <option value="TÓRULAS NASOFARÍNGEAS" {{($covid19->sample_type == "TÓRULAS NASOFARÍNGEAS") ? 'selected' : '' }}>TORULAS NASOFARINGEAS  </option>
+                <option value="ESPUTO" {{($covid19->sample_type == "ESPUTO") ? 'selected' : '' }}>ESPUTO</option>
+                <option value="TÓRULAS NASOFARÍNGEAS/ESPUTO" {{($covid19->sample_type == "TÓRULAS NASOFARÍNGEAS/ESPUTO") ? 'selected' : '' }}>TÓRULAS NASOFARÍNGEAS/ESPUTO</option>
+                <option value="ASPIRADO NASOFARÍNGEO" {{($covid19->sample_type == "ASPIRADO NASOFARÍNGEO") ? 'selected' : '' }}>ASPIRADO NASOFARÍNGEO</option>
             </select>
         </fieldset>
 

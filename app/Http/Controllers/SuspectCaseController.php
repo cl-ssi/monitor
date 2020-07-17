@@ -19,6 +19,7 @@ use App\ReportBackup;
 use App\SampleOrigin;
 use App\Country;
 use App\Tracing\Tracing;
+use App\BulkLoadRecord;
 use Carbon\CarbonPeriod;
 use Carbon\Carbon;
 use App\Mail\NewPositive;
@@ -454,11 +455,12 @@ class SuspectCaseController extends Controller
                 $tracing->notification_mechanism = $suspectCase->notification_mechanism;
                 $tracing->discharged_at     = $suspectCase->discharged_at;
                 $tracing->symptoms_start_at = $suspectCase->symptoms_at;
-                switch ($suspectCase->symptoms) {
-                    case 'Si': $tracing->symptoms = 1; break;
-                    case 'No': $tracing->symptoms = 0; break;
-                    default:   $tracing->symptoms = null; break;
-                }
+//                switch ($suspectCase->symptoms) {
+//                    case 'Si': $tracing->symptoms = 1; break;
+//                    case 'No': $tracing->symptoms = 0; break;
+//                    default:   $tracing->symptoms = null; break;
+//                }
+                $tracing->symptoms = $suspectCase->symptoms;
                 $tracing->status            = ($suspectCase->patient->status == 'Fallecido') ? 0:1;
                 $tracing->save();
             }
@@ -965,7 +967,12 @@ class SuspectCaseController extends Controller
     }
 
     public function index_bulk_load(){
-        return view('lab.bulk_load.import');
+        $bulkLoadRecords = BulkLoadRecord::orderBy('id', 'Desc')->get();
+        return view('lab.bulk_load.import', compact('bulkLoadRecords'));
+    }
+
+    public function index_import_results(){
+        return view('lab.suspect_cases.import_results', compact('bulkLoadRecords'));
     }
 
     public function bulk_load_import(Request $request){
@@ -992,7 +999,20 @@ class SuspectCaseController extends Controller
                     $new_patient->name            = $patient['Nombres'];
                     $new_patient->fathers_family  = $patient['Apellido Paterno'];
                     $new_patient->mothers_family  = $patient['Apellido Materno'];
-                    $new_patient->gender          = $patient['Sexo'];
+
+                    if($patient['Sexo'] == 'Masculino'){
+                        $new_patient->gender = 'male';
+                    }
+                    if($patient['Sexo'] == 'Femenino'){
+                        $new_patient->gender = 'male';
+                    }
+                    if($patient['Sexo'] == 'Otro'){
+                        $new_patient->gender = 'other';
+                    }
+                    if($patient['Sexo'] == 'Desconocido'){
+                        $new_patient->gender = 'unknown';
+                    }
+
                     $new_patient->birthday        = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Nacimiento']))->format('Y-m-d H:i:s');
 
                     $new_patient->save();
@@ -1115,10 +1135,52 @@ class SuspectCaseController extends Controller
 
                     $new_suspect_case->save();
                 }
+
+                //AGREGAR EVENTO DE INGRESA QUIEN SOLICITA.
+                $bulkLoadRecord = new BulkLoadRecord();
+                $bulkLoadRecord->description = $request->description;
+                $bulkLoadRecord->user()->associate(Auth::user());
+                $bulkLoadRecord->save();
+
             }
 
+        session()->flash('success', 'El archivo fue cargado exitosamente.');
+        return redirect()->route('lab.bulk_load.index');
+    }
 
-        return view('lab.bulk_load.import');
+    public function results_import(Request $request){
+        $file = $request->file('file');
+
+        $patientsCollection = Excel::toCollection(new PatientImport, $file);
+        $cont = 0;
+        foreach ($patientsCollection[0] as $data) {
+            $id_esmeralda = NULL;
+            $resultado = NULL;
+            $fecha_resultado = NULL;
+
+            $id_esmeralda = $data['id esmeralda'];
+            $resultado = $data['resultado'];
+            $fecha_resultado = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($data['fecha resultado']))->format('Y-m-d H:i:s');
+
+            if($resultado == "negativo"){$resultado = "negative";}
+            if($resultado == "pendiente"){$resultado = "pending";}
+            if($resultado == "positivo"){$resultado = "positive";}
+            if($resultado == "rechazado"){$resultado = "rejected";}
+            if($resultado == "indeterminado"){$resultado = "undetermined";}
+
+            if ($id_esmeralda != NULL && $resultado != NULL && $fecha_resultado != NULL) {
+                $suspectCase = SuspectCase::find($id_esmeralda);
+                if ($suspectCase) {
+                    $suspectCase->pscr_sars_cov_2 = $resultado;
+                    $suspectCase->pscr_sars_cov_2_at = $fecha_resultado;
+                    $suspectCase->save();
+                    $cont += 1;
+                }
+            }
+        }
+
+        session()->flash('success', 'Se han modificado ' . $cont . ' casos.');
+        return view('lab.suspect_cases.import_results');
     }
 
 }

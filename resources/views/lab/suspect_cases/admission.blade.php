@@ -164,8 +164,8 @@
             <label for="for_symptoms">Sintomas</label>
             <select name="symptoms" id="for_symptoms" class="form-control">
                 <option value="" {{(old('symptoms') == '') ? 'selected' : '' }}></option>
-                <option value="Si" {{(old('symptoms') == 'Si') ? 'selected' : '' }}>Si</option>
-                <option value="No" {{(old('symptoms') == 'No') ? 'selected' : '' }}>No</option>
+                <option value="1" {{(old('symptoms') == '1') ? 'selected' : '' }}>Si</option>
+                <option value="0" {{(old('symptoms') == '0') ? 'selected' : '' }}>No</option>
             </select>
         </fieldset>
 
@@ -186,7 +186,7 @@
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_gestation_week">Semanas de gestación</label>
-            <input type="text" class="form-control" name="gestation_week" value="{{old('gestation_week')}}"
+            <input type="number" class="form-control" name="gestation_week" value="{{old('gestation_week')}}"
                 id="for_gestation_week">
         </fieldset>
 
@@ -291,6 +291,14 @@ $('input[name=run]').change(function() {
             document.getElementById("for_name").value = data.name;
             document.getElementById("for_fathers_family").value = data.fathers_family;
             document.getElementById("for_mothers_family").value = data.mothers_family;
+            if(data.gender === 'male'){
+                $('#for_gestation').val('0');
+                $('#for_gestation option:not(:selected)').attr('disabled', 'disabled');
+            }
+            else{
+                $('#for_gestation').val('');
+                $('#for_gestation option').removeAttr('disabled', 'disabled');
+            }
             document.getElementById("for_status").value = data.status;
         } else {
             document.getElementById("for_id").value = "";
@@ -300,6 +308,10 @@ $('input[name=run]').change(function() {
             document.getElementById("for_name").value = "";
             document.getElementById("for_fathers_family").value = "";
             document.getElementById("for_mothers_family").value = "";
+            document.getElementById("for_gestation").value = "";
+            $('#for_gestation').val('');
+            $('#for_gestation option').removeAttr('disabled', 'disabled');
+
         }
     });
 });
@@ -315,6 +327,14 @@ $('input[name=other_identification]').change(function() {
             document.getElementById("for_name").value = data.name;
             document.getElementById("for_fathers_family").value = data.fathers_family;
             document.getElementById("for_mothers_family").value = data.mothers_family;
+            if(data.gender === 'male'){
+                $('#for_gestation').val('0');
+                $('#for_gestation option:not(:selected)').attr('disabled', 'disabled');
+            }
+            else{
+                $('#for_gestation').val('');
+                $('#for_gestation option').removeAttr('disabled', 'disabled');
+            }
             document.getElementById("for_status").value = data.status;
         } else {
             document.getElementById("for_id").value = "";
@@ -324,6 +344,9 @@ $('input[name=other_identification]').change(function() {
             document.getElementById("for_name").value = "";
             document.getElementById("for_fathers_family").value = "";
             document.getElementById("for_mothers_family").value = "";
+            document.getElementById("for_gestation").value = "";
+            $('#for_gestation').val('');
+            $('#for_gestation option').removeAttr('disabled', 'disabled');
         }
     });
 });
@@ -426,16 +449,6 @@ jQuery(document).ready(function () {
 
   });
 
-  // jQuery('#for_run').click(function () {
-  //   $("#for_country_id").val(41);
-  //   $('#for_country_id').attr('readonly', true);
-  // });
-  //
-  // jQuery('#for_other_identification').click(function () {
-  //   $("#for_country_id").val(1);
-  //   $('#for_country_id').attr('readonly', false);
-  // });
-
 });
 </script>
 
@@ -456,6 +469,23 @@ $(document).ready(function(){
             $('#for_gestation option').removeAttr('disabled', 'disabled');
         }
     });
+
+
+    $("#for_other_identification").click(function () {
+        $("#for_run").val("");
+        $("#for_dv").val("");
+        $("#for_run").attr('readonly', 'readonly');
+        $("#for_dv").attr('readonly', 'readonly');
+        $("#for_other_identification").removeAttr('readonly', 'readonly');
+    })
+
+    $("#for_run").click(function () {
+        $("#for_other_identification").val("");
+        $("#for_other_identification").attr('readonly', 'readonly');
+        $("#for_run").removeAttr('readonly', 'readonly');
+        $("#for_dv").removeAttr('readonly', 'readonly');
+    })
+
 });
 
 

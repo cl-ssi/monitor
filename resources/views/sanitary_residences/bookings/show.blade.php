@@ -15,11 +15,11 @@
     </div>
     @can('SanitaryResidence: admin')
         <div class="col-3 col-md-3 font-weight-bold p-2">
-            <form method="POST" class="form-horizontal" action="{{ route('sanitary_residences.bookings.destroy', $booking) }}">        
+            <form method="POST" class="form-horizontal" action="{{ route('sanitary_residences.bookings.destroy', $booking) }}">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-danger" onclick="return confirm('¿Está seguro que desea ELIMINAR el Booking del paciente {{ $booking->patient->fullName }} para la habitación {{$booking->room->number}} de la Residencia {{$booking->room->residence->name}}? ' )">Eliminar Booking</button>
-            </form>        
+            </form>
         </div>
     @endcan
 </div>
@@ -51,7 +51,7 @@
     </div>
 
     <div class="col-6 col-md-2 p-2">
-        <strong>Genero: </strong>
+        <strong>Género: </strong>
         {{ $booking->patient->sexEsp }}
     </div>
 
@@ -170,7 +170,7 @@
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_to">Hasta (Estimado)</label>
             <input type="datetime-local" class="form-control date" name="to" id="for_to"  @if($booking->to) value="{{$booking->to->format('Y-m-d\TH:i:s')}}" @endif >
-            
+
         </fieldset>
 
         <fieldset class="form-group col-5 col-md-2">

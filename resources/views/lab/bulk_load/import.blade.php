@@ -34,17 +34,24 @@
 <br>
 <h5 class="mb-3">Historial de cargas.</h5>
 
-<table class="table table-striped table-sm">
+<table class="table table-sm table-bordered table-striped small">
 	<thead>
-		<tr>
+		<tr class="text-center">
       <th>Fecha de Carga</th>
       <th>Usuario</th>
       <th>Descripción</th>
-      <th>Resumen Plan Recuperación</th>
+      <th>Fecha de carga</th>
 		</tr>
 	</thead>
 	<tbody>
-
+    @foreach($bulkLoadRecords as $key => $bulkLoadRecord)
+    <tr>
+      <td>{{ $bulkLoadRecord->id }}</td>
+      <td>{{ $bulkLoadRecord->user->name }}</td>
+      <td>{{ $bulkLoadRecord->description }}</td>
+      <td>{{ $bulkLoadRecord->created_at->format('d-m-Y H:i:s') }}</td>
+    </tr>
+    @endforeach
 	</tbody>
 </table>
 

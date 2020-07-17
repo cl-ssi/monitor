@@ -110,10 +110,14 @@
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.notificationInbox') }}">Notificación (excepto positivos)</a>
 
                                 <a class="dropdown-item" href="{{ route('patients.tracings.communes') }}">Seguimiento de mis comunas</a>
+
                                 <a class="dropdown-item" href="{{ route('patients.tracings.establishments') }}">Seguimiento de mis establecimientos</a>
+
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.tracing_minsal') }}">Seguimiento SEREMI</a>
 
                                 <a class="dropdown-item" href="{{ route('patients.tracings.withoutevents') }}">Pacientes sin seguimiento</a>
+
+                                <a class="dropdown-item" href="{{ route('patients.tracings.notifications_report') }}">Notificados en mis establecimientos</a>
 
                                 @canany(['SocialTracing: seremi', 'SocialTracing: aps'])
                                 <a class="dropdown-item" href="{{ route('patients.tracings.requests.social_index') }}">Seguimiento de solicitudes</a>
@@ -129,6 +133,10 @@
 
                                 @can('SuspectCase: bulk load')
                                 <a class="dropdown-item" href="{{ route('lab.bulk_load.index') }}">Carga Masiva</a>
+                                @endcan
+
+                                @can('SuspectCase: import results')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.index_import_results') }}">Carga Masiva - Resultados</a>
                                 @endcan
 
                             </div>
