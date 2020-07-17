@@ -164,8 +164,8 @@
             <label for="for_symptoms">Sintomas</label>
             <select name="symptoms" id="for_symptoms" class="form-control">
                 <option value="" {{(old('symptoms') == '') ? 'selected' : '' }}></option>
-                <option value="Si" {{(old('symptoms') == 'Si') ? 'selected' : '' }}>Si</option>
-                <option value="No" {{(old('symptoms') == 'No') ? 'selected' : '' }}>No</option>
+                <option value="1" {{(old('symptoms') == '1') ? 'selected' : '' }}>Si</option>
+                <option value="0" {{(old('symptoms') == '0') ? 'selected' : '' }}>No</option>
             </select>
         </fieldset>
 
