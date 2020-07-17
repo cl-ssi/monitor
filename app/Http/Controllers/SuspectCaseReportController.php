@@ -618,7 +618,7 @@ class SuspectCaseReportController extends Controller
                     }
                 }
 
-                dd("termino 1");
+                // dd("termino 1");
             // }else{
             //     session()->flash('info', 'No se detectó run de médico registrado en muestra:  ' . $case->id);
             //     return redirect()->back();
