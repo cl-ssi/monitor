@@ -54,7 +54,7 @@ class WSMinsal extends Model
                 'codigo_muestra_cliente' => $suspectCase->id,
                 'rut_responsable' => '15980951-K', //Claudia Caronna //Auth::user()->run . "-" . Auth::user()->dv, //se va a enviar rut de enfermo del servicio
                 'cod_deis' => '102100', //$request->establishment_id
-                'rut_medico' => $medic,//$suspectCase->run_medic, //'16350555-K', //Pedro Valjalo
+                'rut_medico' => '16350555-K', //Pedro Valjalo
                 'paciente_run' => $suspectCase->patient->run,
                 'paciente_dv' => $suspectCase->patient->dv,
                 'paciente_nombres' => $suspectCase->patient->name,
