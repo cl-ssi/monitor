@@ -23,7 +23,7 @@
     <tbody>
         @foreach($tracings->reverse() as $key => $tracing)
         <tr>
-            <td>{{ $key-- }}</td>
+            <td>{{ ++$key }}</td>
             <td>
                 <a href="{{ route('patients.edit', $tracing->patient) }}">
                     {{ $tracing->patient->id }}
