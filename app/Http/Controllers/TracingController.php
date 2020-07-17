@@ -45,6 +45,16 @@ class TracingController extends Controller
         return view('patients.tracing.withouttracing', compact('patients', 'request'));
     }
 
+    public function notificationsReport()
+    {
+        $tracings = Tracing::whereNotNull('notification_at')
+                            ->orderBy('notification_at')
+                            ->whereIn('establishment_id',auth()->user()->establishments->pluck('id'))
+                            ->get();
+        //dd($tracings);
+        return view('patients.tracing.notifications_report', compact('tracings'));
+    }
+
 
     public function indexByCommune()
     {
@@ -317,16 +327,8 @@ class TracingController extends Controller
         //dd($report);
 
 
-
-
-
-
-
-
         $communes_ids = array_map('trim', explode(",", env('COMUNAS')));
         $communes = Commune::whereIn('id', $communes_ids)->get();
-
-
 
         return view('patients.tracing.reportbycommune', compact('request', 'communes', 'patients'));
     }
