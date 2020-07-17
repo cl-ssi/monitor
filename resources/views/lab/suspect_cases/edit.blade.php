@@ -91,8 +91,8 @@
             </fieldset>
 
             <fieldset class="form-group col-12 col-md-3">
-                <label for="for_establishment_id">Establecimiento</label>
-                <select name="establishment_id" id="for_establishment_id" class="form-control">
+                <label for="for_establishment_id">Establecimiento *</label>
+                <select name="establishment_id" id="for_establishment_id" class="form-control" required>
                     <option value=""></option>
                     @foreach($establishments as $establishment)
                         <option
@@ -287,8 +287,8 @@
                 <label for="for_symptoms">Sintomas</label>
                 <select name="symptoms" id="for_symptoms" class="form-control">
                     <option value=""></option>
-                    <option value="Si" {{ ($suspectCase->symptoms == 'Si') ? 'selected' : '' }}>Si</option>
-                    <option value="No" {{ ($suspectCase->symptoms == 'No') ? 'selected' : '' }}>No</option>
+                    <option value="1" {{ ($suspectCase->symptoms == '1') ? 'selected' : '' }}>Si</option>
+                    <option value="0" {{ ($suspectCase->symptoms == '0') ? 'selected' : '' }}>No</option>
                 </select>
             </fieldset>
 
@@ -312,7 +312,7 @@
 
             <fieldset class="form-group col-6 col-md-2">
                 <label for="for_gestation_week">Semanas de gestación</label>
-                <input type="text" class="form-control" name="gestation_week"
+                <input type="number" class="form-control" name="gestation_week"
                        id="for_gestation_week" value="{{ $suspectCase->gestation_week }}">
             </fieldset>
 

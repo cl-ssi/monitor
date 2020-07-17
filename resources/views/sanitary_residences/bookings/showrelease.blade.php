@@ -8,9 +8,9 @@
 
 
 <div class="row">
-    <div class="col-12 col-md-12 font-weight-bold p-2">        
+    <div class="col-12 col-md-12 font-weight-bold p-2">
         <h4>{{ $booking->patient->fullName }}</h4>
-        
+
     </div>
 </div>
 
@@ -41,7 +41,7 @@
     </div>
 
     <div class="col-6 col-md-2 p-2">
-        <strong>Genero: </strong>
+        <strong>Género: </strong>
         {{ $booking->patient->sexEsp }}
     </div>
 
@@ -62,7 +62,7 @@
     <div class="col-12 col-md-12 p-2">
         <strong>Dirección: </strong>
         {{ ($booking->patient->demographic)?$booking->patient->demographic->address:'' }}
-        {{ ($booking->patient->demographic)?$booking->patient->demographic->number:'' }} - 
+        {{ ($booking->patient->demographic)?$booking->patient->demographic->number:'' }} -
         {{ ($booking->patient->demographic)?$booking->patient->demographic->commune->name:'' }}
     </div>
 
@@ -116,23 +116,23 @@
     <div class="form-row">
         <fieldset class="form-group col-12 col-md-6">
             <label for="for_patient_id">Paciente</label>
-            <select name="patient_id" id="for_patient_id" class="form-control" readonly>                
+            <select name="patient_id" id="for_patient_id" class="form-control" readonly>
                 <option value="{{ $booking->patient->id }}">{{ $booking->patient->fullName }}</option>
             </select>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-4">
             <label for="for_room_id">Residencia - Habitación</label>
-            <select name="room_id" id="for_room_id" class="form-control" readonly>                
+            <select name="room_id" id="for_room_id" class="form-control" readonly>
                 <option >{{ $booking->room->residence->name }} - Habitación {{ $booking->room->number }}</option>
-                
+
             </select>
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_prevision">Previsión</label>
             <select name="prevision" id="for_prevision" class="form-control" readonly>
-                <option >{{ $booking->prevision }}</option>                
+                <option >{{ $booking->prevision }}</option>
             </select>
         </fieldset>
 
@@ -251,6 +251,6 @@
 @endsection
 
 @section('custom_js')
-  
+
 
 @endsection

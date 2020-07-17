@@ -34,7 +34,7 @@
                     </fieldset>
 
                     <fieldset class="form-group col-12 col-sm-4 col-md-3 col-lg-3">
-                        <label for="for_gender">Genero</label>
+                        <label for="for_gender">Género</label>
                         <select name="gender" id="for_gender" class="form-control">
                             <option value="male"
                                 {{($patient->gender == 'male')?'selected':''}}>
@@ -589,6 +589,21 @@
                 }
 
             });
+
+            $("#for_other_identification").click(function () {
+                $("#for_run").val("");
+                $("#for_dv").val("");
+                $("#for_run").attr('readonly', 'readonly');
+                $("#for_dv").attr('readonly', 'readonly');
+                $("#for_other_identification").removeAttr('readonly', 'readonly');
+            })
+
+            $("#for_run").click(function () {
+                $("#for_other_identification").val("");
+                $("#for_other_identification").attr('readonly', 'readonly');
+                $("#for_run").removeAttr('readonly', 'readonly');
+                $("#for_dv").removeAttr('readonly', 'readonly');
+            })
 
         });
 

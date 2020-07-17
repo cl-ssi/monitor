@@ -45,7 +45,7 @@
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
-            <label for="for_gender">Genero *</label>
+            <label for="for_gender">Género *</label>
             <select name="gender" id="for_gender" class="form-control" disabled>
                 <option value="">{{ $covid19->gender }}</option>
             </select>

@@ -12,7 +12,7 @@
     <div class="form-row">
         <fieldset class="form-group col-md-2">
             <label for="for_run">Run (sin digito)</label>
-            <input type="text" class="form-control" name="run" id="for_run">
+            <input type="number" max="50000000" class="form-control" name="run" id="for_run">
         </fieldset>
 
         <fieldset class="form-group col-md-1">
@@ -58,13 +58,13 @@
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
-            <label for="for_gender">Genero *</label>
+            <label for="for_gender">Género *</label>
             <select name="gender" id="for_gender" class="form-control" required>
                 <option value=""></option>
-                <option value="Masculino">Masculino</option>
-                <option value="Femenino">Femenino</option>
-                <option value="Otro">Otro</option>
-                <option value="Desconocido">Desconocido</option>
+                <option value="male">Masculino</option>
+                <option value="female">Femenino</option>
+                <option value="other">Otro</option>
+                <option value="unknown">Desconocido</option>
             </select>
         </fieldset>
 

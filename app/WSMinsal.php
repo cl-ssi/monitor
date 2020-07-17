@@ -178,4 +178,30 @@ class WSMinsal extends Model
 
         return $response;
     }
+
+    public static function cambia_laboratorio(SuspectCase $suspectCase, $laboratory_id) {
+
+        $minsal_ws_id = $suspectCase->minsal_ws_id;
+        $response = [];
+        $client = new \GuzzleHttp\Client();
+        $array = array('raw' => array('id_muestra' => $minsal_ws_id,
+                                      'id_nuevo_laboratorio' => $laboratory_id));
+
+        try {
+            $response = $client->request('POST', env('WS_CAMBIA_LABORATORIO'), [
+                  'json' => $array,
+                  'headers'  => [ 'ACCESSKEY' => $suspectCase->laboratory->token_ws]
+            ]);
+
+            $response = ['status' => 1, 'msg' => 'OK'];
+
+        } catch (RequestException $e) {
+            $response = $e->getResponse();
+            $responseBodyAsString = $response->getBody()->getContents();
+            $decode = json_decode($responseBodyAsString);
+            $response = ['status' => 0, 'msg' => $decode->error];
+        }
+
+        return $response;
+    }
 }

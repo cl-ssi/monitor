@@ -42,7 +42,7 @@
         </fieldset>
 
         <fieldset class="form-group col-6 col-sm-4 col-md-3 col-lg-2">
-            <label for="for_gender">Genero</label>
+            <label for="for_gender">Género</label>
             <select name="gender" id="for_gender" class="form-control">
                 <option value="male">Masculino</option>
                 <option value="female">Femenino</option>
