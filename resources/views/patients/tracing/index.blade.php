@@ -66,6 +66,13 @@
                     @case(1) Indice   @break
                     @case(2) Probable @break
                 @endswitch
+                
+                {!! $patient->tracing->flagrisk !!}            
+
+                
+                
+                
+
             </td>
             <td>
                 {{ $patient->fullName }}
