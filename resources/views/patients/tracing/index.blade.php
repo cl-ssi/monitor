@@ -66,8 +66,13 @@
                     @case(1) Indice   @break
                     @case(2) Probable @break
                 @endswitch
+                
+                {!! $patient->tracing->flagrisk !!}            
 
-                <i class="fas fa-flag" style="color:#28a745;"></i>
+                
+                
+                
+
             </td>
             <td>
                 {{ $patient->fullName }}
