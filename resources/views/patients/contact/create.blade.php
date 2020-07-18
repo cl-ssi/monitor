@@ -41,7 +41,7 @@
         <span class="input-group-text">Búsqueda</span>
     </div>
 
-    <input class="form-control" type="number" name="search" autocomplete="off" id="for_search" style="text-transform: uppercase;" placeholder="RUN (sin dígito verificador) o OTRA IDENTIFICACION" value="{{$request->search}}" required>
+    <input class="form-control" type="text" name="search" autocomplete="off" id="for_search" placeholder="RUN (sin dígito verificador) o OTRA IDENTIFICACION" value="{{$request->search}}" required>
 
     <input class="form-control" type="text" name="dv" id="for_dv" style="text-transform: uppercase;" placeholder="DV" readonly hidden>
 
