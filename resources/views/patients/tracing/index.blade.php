@@ -60,7 +60,7 @@
                 {{ $patient->id }}
                 </a>
             </td>
-            <td>
+            <td nowrap>
                 @switch($patient->tracing->index)
                     @case(0) CAR      @break
                     @case(1) Indice   @break
