@@ -411,7 +411,7 @@ class SuspectCaseReportController extends Controller
             $casos[$key][] = $patient->suspectCases->first()->paho_flu;
             $casos[$key][] = ($patient->suspectCases->first()->gestation == 1) ? 'Sí' : '';
             $casos[$key][] = ($patient->suspectCases->first()->close_contact == 1) ? 'Sí':'';
-            $casos[$key][] = ($patient->suspectCases->first()->sent_isp_at) ? $patient->suspectCases->first()->sent_isp_at->format('Y-m-d') : '';
+            $casos[$key][] = ($patient->suspectCases->first()->sent_external_lab_at) ? $patient->suspectCases->first()->sent_external_lab_at->format('Y-m-d') : '';
             $casos[$key][] = $patient->suspectCases->first()->procesingLab ;
             $casos[$key][] = ($patient->suspectCases->first()->notification_at) ? $patient->suspectCases->first()->notification_at->format('Y-m-d') : '';
             $casos[$key][] = $patient->suspectCases->first()->notification_mechanism;
