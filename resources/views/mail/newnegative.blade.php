@@ -27,7 +27,7 @@
                         <br>
 
                         <p>Se le realizará seguimiento telefónico diario por parte
-                            del equipo de la unidad de epidemiologia de su
+                            del equipo de la unidad de epidemiología de su
                             Establecimiento de Salud.</p>
                         <br>
 
@@ -46,7 +46,7 @@
                     @endif
 
                     <p>De ser necesario licencia médica de quienes sean
-                        designados como contacto de alto riesgo, ésta será
+                        designados como contacto de alto riesgo, esta será
                         emitida por la SEREMI de Salud.</p>
 
                     <p>Ante la aparición de síntomas tales como:</p>
