@@ -54,7 +54,7 @@
   <div class="col-12 col-sm-12 col-md-6"> <!-- START COL 1 PRINCIPAL -->
       <div class="row align-items-end">
         <div class="col-12 col-sm-12">
-            <a type="button" class="btn btn-success mb-3" href="{{ route('lab.suspect_cases.export', $laboratory->id) }}">Descargar <i class="far fa-file-excel"></i></a>
+            <a type="button" class="btn btn-sm btn-success mb-3" href="{{ route('lab.suspect_cases.export', $laboratory->id) }}">Descargar <i class="far fa-file-excel"></i></a>
         <!--</div>
         <div class="col-6 col-sm-3">-->
             <a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.minsal',$laboratory) }}">Reporte MINSAL</a>
@@ -92,7 +92,20 @@
 {{--            <input type="month" class="form-control" id="for_month" name="month" required> --}}
 {{--        </div>--}}
 {{--        <div class="col-5 col-sm-3">--}}
-            <a type="button" class="btn btn-success" href="{{ route('lab.suspect_cases.export', 'all') }}">Descargar <i class="far fa-file-excel"></i></a>
+    <div class="row row align-items-end"> <!---START ROW PRINCIPAL--->
+      <div class="col-12 col-sm-12 col-md-6"> <!-- START COL 1 PRINCIPAL -->
+          <div class="row align-items-end">
+            <div class="col-12 col-sm-12">
+            <a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.export', 'all') }}">Descargar <i class="far fa-file-excel"></i></a>
+        </div>
+      </div><!---END row--->
+      <div class="row">
+          <div class="col-12 col-sm-12 col-md-12" align="right">
+              @include('lab.suspect_cases.partials.search_id')
+          </div>
+      </div><!---END row--->
+
+  </div><!---END COL 1 PRINCIPAL--->
 {{--        </div>--}}
 {{--    </div>--}}
 @endif
