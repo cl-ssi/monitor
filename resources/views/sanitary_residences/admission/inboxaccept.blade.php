@@ -6,7 +6,7 @@
 
 @include('sanitary_residences.nav')
 
-<h3 class="mb-3">Listado de Encuestas Aprobadas</h3>
+<h3 class="mb-3">Listado de Encuestas Aprobadas y Asignados con Residencia Sanitaria</h3>
 <a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel <i class="far fa-file-excel"></i></a>
 <div class="table-responsive">
 <table class="table table-sm table-bordered text-center align-middle" id="tabla_encuestas_aceptadas_vb">
@@ -20,20 +20,34 @@
       <th>¿Califica Residencia?</th>
       <th>Resultado</th>
       <th>Resultado Final</th>
+      <th>(Alta) Hotel - Habitación</th>
       <th>Ver encuesta</th>
     </tr>
   </thead>
   <tbody>
     @foreach($admissions as $admission)
     <tr>
-      <td class="text-center align-middle">{{ $admission->patient->full_name }}</td>
+      <td class="text-center align-middle">{{ $admission->patient->full_name }} : ID es {{ $admission->patient->id }}</td>
       <td class="text-center align-middle">{{ $admission->created_at }}</td>
       <td class="text-center align-middle">{{ $admission->updated_at }}</td>
       <td class="text-center align-middle">{{ $admission->user->name }}</td>
       <td class="text-center align-middle">{{ $admission->isolate_text }}</td>
       <td class="text-center align-middle">{{ $admission->residency_text }}</td>
       <td class="text-center align-middle" nowrap>{!! $admission->result !!}</td>
-      <td class="text-center align-middle">{{ $admission->status }}</td>      
+      <td class="text-center align-middle">{{ $admission->status }}</td>
+      @if($admission->patient->bookings->last() )
+      <td class="text-center align-middle">
+      <a target="_blank" href="{{ route('sanitary_residences.bookings.showrelease', $admission->patient->bookings->last()) }}">
+      @if($admission->patient->bookings->last()->status =='Alta')
+      Alta
+      @endif
+      {{ ($admission->patient->bookings->last()->room->residence->name) }}
+      {{  ($admission->patient->bookings->last()->room->number) }}</td>
+      </a>
+      @else
+      <td></td>
+      @endif
+
       <td class="text-center align-middle"><a class="btn btn-success btn-sm" href="{{ route('sanitary_residences.admission.show', $admission) }}">
           <i class="fas fa-poll-h"></i> Revisar Encuesta
         </a></td>

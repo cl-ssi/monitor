@@ -24,11 +24,12 @@
     </div>
 
     <div class="col-6 col-md-3 p-2">
-        <strong>Ingreso: </strong>{{ $booking->from->format('d-m-Y H:i') }}
+        <strong>Ingreso: </strong>{{ $booking->from }}
     </div>
+    
 
     <div class="col-6 col-md-3 p-2">
-        <strong>Salida: </strong>{{ $booking->to->format('d-m-Y H:i') }}
+        <strong>Salida Real: </strong>{{ ($booking->real_to)?($booking->real_to):'Paciente No Ha Sido Egresado de Residencia Sanitaria' }}
     </div>
 
 </div>
@@ -147,7 +148,7 @@
 
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_to">Hasta (Estimado)</label>
-            <input type="datetime-local" class="form-control date" name="to" id="for_to" value="{{$booking->to->format('Y-m-d\TH:i:s')}}" required readonly>
+            <input type="datetime-local" class="form-control date" name="to" id="for_to" @if($booking->to) value="{{$booking->to->format('Y-m-d\TH:i:s')}}" @endif required readonly>
         </fieldset>
 
         <fieldset class="form-group col-5 col-md-2">
