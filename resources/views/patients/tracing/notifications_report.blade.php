@@ -40,7 +40,7 @@
         @endforeach
     </tbody>
 </table>
-
+{{ $tracings->links() }}
 
 @endsection
 

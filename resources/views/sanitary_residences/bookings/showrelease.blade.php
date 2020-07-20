@@ -26,7 +26,7 @@
     <div class="col-6 col-md-3 p-2">
         <strong>Ingreso: </strong>{{ $booking->from }}
     </div>
-    
+
 
     <div class="col-6 col-md-3 p-2">
         <strong>Salida Real: </strong>{{ ($booking->real_to)?($booking->real_to):'Paciente No Ha Sido Egresado de Residencia Sanitaria' }}
@@ -97,7 +97,7 @@
 
     <div class="col-6 col-md-5 p-2">
         <strong>Fecha Resultado: </strong>
-        {{ ($booking->patient->suspectCases->where('pscr_sars_cov_2', 'positive')->last())? $booking->patient->suspectCases->where('pscr_sars_cov_2', 'positive')->last()->pscr_sars_cov_2_at->format('d-m-Y'):''  }}
+        {{ ($booking->patient->suspectCases->where('pscr_sars_cov_2', 'positive')->last())? $booking->patient->suspectCases->where('pscr_sars_cov_2', 'positive')->last()->pcr_sars_cov_2_at->format('d-m-Y'):''  }}
     </div>
 
     <div class="col-12 col-md-4 p-2">

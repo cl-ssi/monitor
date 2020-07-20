@@ -60,7 +60,7 @@
             <td class="small">{{ $case->patient->demographic->email }}</td>
             <td>{{ $case->establishment->alias }}</td>
             <td nowrap class="small">{{ (isset($case->sample_at))? $case->sample_at->format('Y-m-d'):'' }}</td>
-            <td nowrap class="small">{{ (isset($case->pscr_sars_cov_2_at))? $case->pscr_sars_cov_2_at->format('Y-m-d'):'' }}</td>
+            <td nowrap class="small">{{ (isset($case->pcr_sars_cov_2_at))? $case->pcr_sars_cov_2_at->format('Y-m-d'):'' }}</td>
 
             <td nowrap>
                 @if($case->laboratory)

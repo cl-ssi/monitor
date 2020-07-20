@@ -55,7 +55,7 @@ class ReportBackup extends Command
         //$comunas = env('COMUNAS');
 
         // $patients = Patient::whereHas('suspectCases', function ($q) {
-        //     $q->where('pscr_sars_cov_2','positive');
+        //     $q->where('pcr_sars_cov_2','positive');
         // })->with('suspectCases')->with('demographic')->get();
 
         $patients = Patient::positivesList();
@@ -64,8 +64,8 @@ class ReportBackup extends Command
         // $patients = $patients->whereNotIn('demographic.region_id', $region_not);
 
         /* Calculo de gráfico de evolución */
-        $begin = SuspectCase::where('pscr_sars_cov_2','positive')->orderBy('sample_at')->first()->sample_at;
-        $end   = SuspectCase::where('pscr_sars_cov_2','positive')->orderByDesc('sample_at')->first()->sample_at;
+        $begin = SuspectCase::where('pcr_sars_cov_2','positive')->orderBy('sample_at')->first()->sample_at;
+        $end   = SuspectCase::where('pcr_sars_cov_2','positive')->orderByDesc('sample_at')->first()->sample_at;
 
         $communes = Region::find(env('REGION'))->communes;
 
@@ -77,13 +77,13 @@ class ReportBackup extends Command
         }
 
         foreach($patients as $patient) {
-            $casos['Region'][$patient->suspectCases->where('pscr_sars_cov_2','positive')->first()->sample_at->format('Y-m-d')] += 1;
+            $casos['Region'][$patient->suspectCases->where('pcr_sars_cov_2','positive')->first()->sample_at->format('Y-m-d')] += 1;
             if($patient->demographic AND $patient->demographic->commune) {
-                $casos[$patient->demographic->commune->name][$patient->suspectCases->where('pscr_sars_cov_2','positive')->first()->sample_at->format('Y-m-d')] += 1;
+                $casos[$patient->demographic->commune->name][$patient->suspectCases->where('pcr_sars_cov_2','positive')->first()->sample_at->format('Y-m-d')] += 1;
             }
 
             if($patient->demographic != NULL && $patient->demographic->commune != NULL) {
-                $casos[$patient->demographic->commune->name][$patient->suspectCases->where('pscr_sars_cov_2','positive')->first()->sample_at->format('Y-m-d')] += 1;
+                $casos[$patient->demographic->commune->name][$patient->suspectCases->where('pcr_sars_cov_2','positive')->first()->sample_at->format('Y-m-d')] += 1;
             }
         }
 
@@ -99,11 +99,11 @@ class ReportBackup extends Command
 
         /* Exámenes */
         $exams['total'] = SuspectCase::all()->count();
-        $exams['positives'] = SuspectCase::where('pscr_sars_cov_2','positive')->get()->count();
-        $exams['negatives'] = SuspectCase::where('pscr_sars_cov_2','negative')->get()->count();
-        $exams['pending'] = SuspectCase::where('pscr_sars_cov_2','pending')->get()->count();
-        $exams['undetermined'] = SuspectCase::where('pscr_sars_cov_2','undetermined')->get()->count();
-        $exams['rejected'] = SuspectCase::where('pscr_sars_cov_2','rejected')->get()->count();
+        $exams['positives'] = SuspectCase::where('pcr_sars_cov_2','positive')->get()->count();
+        $exams['negatives'] = SuspectCase::where('pcr_sars_cov_2','negative')->get()->count();
+        $exams['pending'] = SuspectCase::where('pcr_sars_cov_2','pending')->get()->count();
+        $exams['undetermined'] = SuspectCase::where('pcr_sars_cov_2','undetermined')->get()->count();
+        $exams['rejected'] = SuspectCase::where('pcr_sars_cov_2','rejected')->get()->count();
 
         /* Ventiladores */
         $ventilator = Ventilator::first();

@@ -55,7 +55,7 @@ class SeremiSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
             Date::dateTimeToExcel($suspectCase->sample_at),
             $suspectCase->SentExternalAt,
             $suspectCase->ProcesingLab,
-            $suspectCase->pscr_sars_cov_2_at,
+            $suspectCase->pcr_sars_cov_2_at,
             $suspectCase->Covid19,
         ];
     }

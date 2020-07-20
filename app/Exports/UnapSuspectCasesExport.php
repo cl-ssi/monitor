@@ -29,7 +29,7 @@ class UnapSuspectCasesExport implements FromCollection, WithHeadings, WithMappin
     public function collection()
     {
         return SuspectCase::select('id', 'sample_at', 'origin', 'patient_id', 'patient_id',
-            'age', 'gender', 'result_ifd', 'pscr_sars_cov_2', 'epidemiological_week',
+            'age', 'gender', 'result_ifd', 'pcr_sars_cov_2', 'epidemiological_week',
             'epivigila', 'paho_flu', 'status', 'observation')
             ->with('patient')
             ->where('laboratory_id', 2)
