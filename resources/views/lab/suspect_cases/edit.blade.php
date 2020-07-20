@@ -522,6 +522,30 @@
                 alert("Solo se permite adjuntar un archivo.");
                 @endif
             });
+
+            var selectedSampleType = $("#for_sample_type").children("option:selected").val();
+            if(selectedSampleType ==='TÓRULAS NASOFARÍNGEAS')
+            {
+                $('#for_result_ifd_at').attr('disabled', 'disabled');
+                $('#for_result_ifd').attr('disabled', 'disabled');
+                $('#for_subtype').attr('disabled', 'disabled');
+            }
+
+            $("#for_sample_type").change(function(){
+                var selectedSampleType = $(this).children("option:selected").val();
+                if(selectedSampleType ==='TÓRULAS NASOFARÍNGEAS')
+                {
+                    $('#for_result_ifd_at').attr('disabled', 'disabled');
+                    $('#for_result_ifd').attr('disabled', 'disabled');
+                    $('#for_subtype').attr('disabled', 'disabled');
+                }
+                else
+                {
+                    $('#for_result_ifd_at').removeAttr('disabled', 'disabled');
+                    $('#for_result_ifd').removeAttr('disabled', 'disabled');
+                    $('#for_subtype').removeAttr('disabled', 'disabled');
+                }
+            });
         });
 
         $('input[type="file"]').change(function (e) {
