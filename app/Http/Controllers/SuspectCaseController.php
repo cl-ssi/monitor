@@ -972,7 +972,7 @@ class SuspectCaseController extends Controller
     }
 
     public function index_import_results(){
-        return view('lab.suspect_cases.import_results', compact('bulkLoadRecords'));
+        return view('lab.suspect_cases.import_results');
     }
 
     public function bulk_load_import(Request $request){
