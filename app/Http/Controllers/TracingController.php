@@ -47,10 +47,11 @@ class TracingController extends Controller
 
     public function notificationsReport()
     {
-        $tracings = Tracing::whereNotNull('notification_at')
+        $tracings = Tracing::whereNotNull('notification_at')                            
                             ->orderBy('notification_at')
                             ->whereIn('establishment_id',auth()->user()->establishments->pluck('id'))
-                            ->get();
+                            ->paginate(100);
+                            //->get();
         //dd($tracings);
         return view('patients.tracing.notifications_report', compact('tracings'));
     }
