@@ -30,7 +30,7 @@ class AdmissionSurveyController extends Controller
 
     public function inboxaccept()
     {
-        $admissions = AdmissionSurvey::where('status','Aceptado')->orderBy('created_at', 'asc')->get();
+        $admissions = AdmissionSurvey::where('status','Aceptado')->has('patient.bookings')->orderBy('created_at', 'asc')->get();
         return view('sanitary_residences.admission.inboxaccept', compact('admissions'));
     }
 
