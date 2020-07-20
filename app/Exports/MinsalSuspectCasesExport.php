@@ -30,11 +30,11 @@ class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
     public function collection()
     {
         return SuspectCase::where('laboratory_id',$this->cod_lab)
-                ->whereBetween('pscr_sars_cov_2_at', [$this->from, $this->to])
+                ->whereBetween('pcr_sars_cov_2_at', [$this->from, $this->to])
 
                 ->whereNull('external_laboratory')
                 ->get()
-                ->sortByDesc('pscr_sars_cov_2_at');
+                ->sortByDesc('pcr_sars_cov_2_at');
     }
 
     public function headings(): array
@@ -99,7 +99,7 @@ class MinsalSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
             strtoupper($suspectCase->Covid19),
             Date::dateTimeToExcel($suspectCase->sample_at),
             Date::dateTimeToExcel($suspectCase->created_at),
-            Date::dateTimeToExcel($suspectCase->pscr_sars_cov_2_at),
+            Date::dateTimeToExcel($suspectCase->pcr_sars_cov_2_at),
             //strtoupper($suspectCase->origin),
             ($suspectCase->establishment)?$suspectCase->establishment->alias.' - '.$suspectCase->origin: '',
 

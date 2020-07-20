@@ -193,16 +193,16 @@
             <div class="form-row">
 
                 <fieldset class="form-group col-6 col-md-3 alert-danger">
-                    <label for="for_pscr_sars_cov_2_at">Fecha Resultado PCR</label>
-                    <input type="datetime-local" class="form-control" id="for_pscr_sars_cov_2_at"
-                           name="pscr_sars_cov_2_at"
-                           value="{{ isset($suspectCase->pscr_sars_cov_2_at)? $suspectCase->pscr_sars_cov_2_at->format('Y-m-d\TH:i:s'):'' }}"
+                    <label for="for_pcr_sars_cov_2_at">Fecha Resultado PCR</label>
+                    <input type="datetime-local" class="form-control" id="for_pcr_sars_cov_2_at"
+                           name="pcr_sars_cov_2_at"
+                           value="{{ isset($suspectCase->pcr_sars_cov_2_at)? $suspectCase->pcr_sars_cov_2_at->format('Y-m-d\TH:i:s'):'' }}"
                            max="{{ date('Y-m-d\T23:59:59') }}"
-                           @if(($suspectCase->pscr_sars_cov_2_at AND auth()->user()->cannot('SuspectCase: tecnologo edit'))) disabled @endif>
+                           @if(($suspectCase->pcr_sars_cov_2_at AND auth()->user()->cannot('SuspectCase: tecnologo edit'))) disabled @endif>
                 </fieldset>
 
                 <fieldset class="form-group col-6 col-md-2 alert-danger">
-                    <label for="for_pscr_sars_cov_2">PCR SARS-Cov2</label>
+                    <label for="for_pcr_sars_cov_2">PCR SARS-Cov2</label>
                     <select name="pscr_sars_cov_2" id="for_pscr_sars_cov_2"
                             class="form-control"
                             @if(($suspectCase->pscr_sars_cov_2 != 'pending' AND auth()->user()->cannot('SuspectCase: tecnologo edit'))) disabled @endif>
@@ -469,7 +469,7 @@
                 </td>
                 <td>{{ ($case->establishment) ? $case->establishment->alias : '' }}</td>
                 <td>{{ $case->sample_at }}</td>
-                <td>{{ $case->pscr_sars_cov_2_at }}</td>
+                <td>{{ $case->pcr_sars_cov_2_at }}</td>
                 <td>{{ $case->covid19 }}</td>
                 <td>{{ $case->epivigila }}</td>
                 <td>{{ $case->observation }}</td>

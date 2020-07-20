@@ -126,7 +126,7 @@
                     @endcan
                 </td>
                 <td nowrap>{{ $suspectCase->sample_at->format('Y-m-d') }}</td>
-                <td nowrap>{{ ($suspectCase->pscr_sars_cov_2_at) ? $suspectCase->pscr_sars_cov_2_at->format('Y-m-d') : '' }}</td>
+                <td nowrap>{{ ($suspectCase->pcr_sars_cov_2_at) ? $suspectCase->pcr_sars_cov_2_at->format('Y-m-d') : '' }}</td>
                 <td nowrap>
                     {{ $suspectCase->covid19 }}
                 </td>
