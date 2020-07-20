@@ -472,6 +472,7 @@ class TracingController extends Controller
                    ->whereDoesntHave('events')
                    ->orderBy('quarantine_start_at')
                    ->get();
+        //dd($tracingsWithoutEvents);
 
         return view('patients.tracing.without_events', compact('tracingsWithoutEvents'));
     }
