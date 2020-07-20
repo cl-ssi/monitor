@@ -19,7 +19,7 @@ class VentilatorController extends Controller
         $ventilator = Ventilator::first();
 
         $patients = Patient::whereHas('suspectCases', function ($q) {
-            $q->where('pscr_sars_cov_2','positive');
+            $q->where('pcr_sars_cov_2','positive');
         })->with('suspectCases')->with('demographic')->get();
 
         $patients = $patients->whereNotIn('demographic.region',

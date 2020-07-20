@@ -43,7 +43,7 @@
     </thead>
     <tbody id="tableCases">
         @foreach($suspectCases->reverse() as $case)
-        <tr class="row_{{$case->covid19}} {{ ($case->pscr_sars_cov_2 == 'positive')?'table-danger':''}}">
+        <tr class="row_{{$case->covid19}} {{ ($case->pcr_sars_cov_2 == 'positive')?'table-danger':''}}">
             <td class="text-center">{{ $case->patient->id }}</td>
             <td>
                 @if($case->patient)
@@ -71,7 +71,7 @@
                     </a>
                     @endif
 
-                    @if ($case->laboratory->pdf_generate == 1 && $case->pscr_sars_cov_2 <> 'pending')
+                    @if ($case->laboratory->pdf_generate == 1 && $case->pcr_sars_cov_2 <> 'pending')
                     <a href="{{ route('lab.print', $case) }}"
                         target="_blank"><i class="fas fa-paperclip"></i>&nbsp
                     </a>

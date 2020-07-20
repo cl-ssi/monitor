@@ -72,52 +72,52 @@
                 <tr>
                     <td>Negativos</td>
                     <td class="text-center">
-                        {{ $cases->where('pscr_sars_cov_2','negative')->count() }}
+                        {{ $cases->where('pcr_sars_cov_2','negative')->count() }}
                     </td>
                     <td class="text-center">
-                        {{ $cases->where('patient.gender','male')->where('pscr_sars_cov_2','negative')->count() }}
+                        {{ $cases->where('patient.gender','male')->where('pcr_sars_cov_2','negative')->count() }}
                     </td>
                     <td class="text-center">
-                        {{ $cases->where('patient.gender','female')->where('pscr_sars_cov_2','negative')->count() }}
+                        {{ $cases->where('patient.gender','female')->where('pcr_sars_cov_2','negative')->count() }}
                     </td>
                 </tr>
 
                 <tr>
                     <td>Pendiente resultado</td>
                     <td class="text-center">
-                        {{ $cases->where('pscr_sars_cov_2','pending')->count() }}
+                        {{ $cases->where('pcr_sars_cov_2','pending')->count() }}
                     </td>
                     <td class="text-center">
-                        {{ $cases->where('patient.gender','male')->where('pscr_sars_cov_2','pending')->count() }}
+                        {{ $cases->where('patient.gender','male')->where('pcr_sars_cov_2','pending')->count() }}
                     </td>
                     <td class="text-center">
-                        {{ $cases->where('patient.gender','female')->where('pscr_sars_cov_2','pending')->count() }}
+                        {{ $cases->where('patient.gender','female')->where('pcr_sars_cov_2','pending')->count() }}
                     </td>
                 </tr>
 
                 <tr>
                     <td>Muestra rechazada</td>
                     <td class="text-center">
-                        {{ $cases->where('pscr_sars_cov_2','rejected')->count() }}
+                        {{ $cases->where('pcr_sars_cov_2','rejected')->count() }}
                     </td>
                     <td class="text-center">
-                        {{ $cases->where('patient.gender','male')->where('pscr_sars_cov_2','rejected')->count() }}
+                        {{ $cases->where('patient.gender','male')->where('pcr_sars_cov_2','rejected')->count() }}
                     </td>
                     <td class="text-center">
-                        {{ $cases->where('patient.gender','female')->where('pscr_sars_cov_2','rejected')->count() }}
+                        {{ $cases->where('patient.gender','female')->where('pcr_sars_cov_2','rejected')->count() }}
                     </td>
                 </tr>
 
                 <tr>
                     <td>Resultado indeterminado</td>
                     <td class="text-center">
-                        {{ $cases->where('pscr_sars_cov_2','undetermined')->count() }}
+                        {{ $cases->where('pcr_sars_cov_2','undetermined')->count() }}
                     </td>
                     <td class="text-center">
-                        {{ $cases->where('patient.gender','male')->where('pscr_sars_cov_2','undetermined')->count() }}
+                        {{ $cases->where('patient.gender','male')->where('pcr_sars_cov_2','undetermined')->count() }}
                     </td>
                     <td class="text-center">
-                        {{ $cases->where('patient.gender','female')->where('pscr_sars_cov_2','undetermined')->count() }}
+                        {{ $cases->where('patient.gender','female')->where('pcr_sars_cov_2','undetermined')->count() }}
                     </td>
                 </tr>
             </tbody>
@@ -284,7 +284,7 @@
                     </td>
                     <td class="text-center">
                         <span class="text-danger">
-                            {{ $cases->where('origin','HOSPITAL Ernesto Torres Galdames')->where('pscr_sars_cov_2','positive')->count() }}
+                            {{ $cases->where('origin','HOSPITAL Ernesto Torres Galdames')->where('pcr_sars_cov_2','positive')->count() }}
                         </span>
                     </td>
                 </tr>
@@ -296,7 +296,7 @@
                     </td>
                     <td class="text-center">
                         <span class="text-danger">
-                            {{ $cases->whereNotIn('origin',['HOSPITAL Ernesto Torres Galdames','Clínica Tarapacá','Clínica Iquique'])->where('pscr_sars_cov_2','positive')->count() }}
+                            {{ $cases->whereNotIn('origin',['HOSPITAL Ernesto Torres Galdames','Clínica Tarapacá','Clínica Iquique'])->where('pcr_sars_cov_2','positive')->count() }}
                         </span>
                     </td>
                 </tr>
@@ -307,7 +307,7 @@
                     </td>
                     <td class="text-center">
                         <span class="text-danger">
-                            {{ $cases->whereIn('origin',['Clínica Tarapacá','Clínica Iquique','Particular (SEREMI)'])->where('pscr_sars_cov_2','positive')->count() }}
+                            {{ $cases->whereIn('origin',['Clínica Tarapacá','Clínica Iquique','Particular (SEREMI)'])->where('pcr_sars_cov_2','positive')->count() }}
                         </span>
                     </td>
                 </tr>

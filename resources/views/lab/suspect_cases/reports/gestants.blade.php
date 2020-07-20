@@ -20,7 +20,7 @@
     </thead>
     <tbody>
         @foreach($patients as $key => $patient)
-        <tr class="{{ ($covid = $patient->suspectCases->where('pscr_sars_cov_2','positive')->count() > 0)?'table-active':'' }}">
+        <tr class="{{ ($covid = $patient->suspectCases->where('pcr_sars_cov_2','positive')->count() > 0)?'table-active':'' }}">
             <td>{{ ++$key }}</td>
             <td>
                 <a href="{{ route('patients.edit', $patient)}}">

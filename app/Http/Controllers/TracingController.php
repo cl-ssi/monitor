@@ -39,7 +39,7 @@ class TracingController extends Controller
     {
         //
         $patients = Patient::search($request->input('search'))->doesntHave('tracing')->whereHas('suspectCases', function ($q) {
-            $q->where('pscr_sars_cov_2','positive')
+            $q->where('pcr_sars_cov_2','positive')
               ->where('pcr_sars_cov_2_at', '>=', now()->subDays(14));
         })->paginate(200);
         return view('patients.tracing.withouttracing', compact('patients', 'request'));
@@ -47,7 +47,7 @@ class TracingController extends Controller
 
     public function notificationsReport()
     {
-        $tracings = Tracing::whereNotNull('notification_at')                            
+        $tracings = Tracing::whereNotNull('notification_at')
                             ->orderBy('notification_at')
                             ->whereIn('establishment_id',auth()->user()->establishments->pluck('id'))
                             ->paginate(100);
@@ -289,7 +289,7 @@ class TracingController extends Controller
 
 
         $patients = Patient::whereHas('suspectCases', function ($q) use ($date) {
-            $q->where('pscr_sars_cov_2', 'positive')
+            $q->where('pcr_sars_cov_2', 'positive')
                 ->whereDate('pcr_sars_cov_2_at', $date);
         })
             ->whereHas('demographic', function ($q) {
@@ -387,7 +387,7 @@ class TracingController extends Controller
     public function migrate()
     {
         $patients = Patient::whereHas('suspectCases', function ($q) {
-            $q->where('pscr_sars_cov_2', 'positive');
+            $q->where('pcr_sars_cov_2', 'positive');
         })->with('suspectCases')->get();
 
         foreach ($patients as $patient) {
@@ -397,7 +397,7 @@ class TracingController extends Controller
                 $patient->demographic->commune->id == 10 or
                 $patient->demographic->commune->id == 11
             ) {
-                $suspectCase                = $patient->suspectCases->where('pscr_sars_cov_2', 'positive')->first();
+                $suspectCase                = $patient->suspectCases->where('pcr_sars_cov_2', 'positive')->first();
                 $tracing                    = new Tracing();
                 $tracing->patient_id        = $suspectCase->patient_id;
                 $tracing->user_id           = ($suspectCase->user_id === 0) ? null : $suspectCase->user_id;

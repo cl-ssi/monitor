@@ -93,7 +93,7 @@ var scalebar = ui.getControl('scalebar');
         markerType = iconBlue;
         @foreach ($data1 as $key2 => $data2)
           @foreach ($data2 as $key3 => $data3)
-            @if($data3->pscr_sars_cov_2 == 'positive')
+            @if($data3->pcr_sars_cov_2 == 'positive')
               //marker = new H.map.Marker(position, {icon: iconRed});
               markerType = iconRed;
             @endif

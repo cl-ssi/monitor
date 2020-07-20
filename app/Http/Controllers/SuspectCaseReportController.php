@@ -143,8 +143,8 @@ class SuspectCaseReportController extends Controller
         $from = Carbon::now()->subDays(30);
         $to = Carbon::now();
 
-        $suspectcases = SuspectCase::where('pscr_sars_cov_2','positive')
-                                ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
+        $suspectcases = SuspectCase::where('pcr_sars_cov_2','positive')
+                                ->whereBetween('pcr_sars_cov_2_at', [$from, $to])
                                 // ->whereHas('patient', function ($q){
                                 //     $q->whereHas('demographic', function ($q){
                                 //         $q->whereIn('commune_id', Auth::user()->communes());
@@ -156,11 +156,11 @@ class SuspectCaseReportController extends Controller
                                 // dd($suspectcases);
 
         foreach ($suspectcases as $key => $suspectcase) {
-            $positives[$suspectcase->pscr_sars_cov_2_at->format('d-m-Y')] = 0;
+            $positives[$suspectcase->pcr_sars_cov_2_at->format('d-m-Y')] = 0;
         }
 
         foreach ($suspectcases as $key => $suspectcase) {
-            $positives[$suspectcase->pscr_sars_cov_2_at->format('d-m-Y')] += 1;
+            $positives[$suspectcase->pcr_sars_cov_2_at->format('d-m-Y')] += 1;
         }
 
         // dd($positives);

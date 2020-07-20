@@ -55,12 +55,12 @@
 
         <fieldset class="form-group col-4 col-md-4">
             <label for="for_name">Fecha de Confirmación de COVID 19- Positivo</label>
-            <input type="text" class="form-control" name="name" id="for_name" required placeholder="" autocomplete="off" value="{{ ($admission->patient->suspectCases->where('pscr_sars_cov_2', 'positive')->last())? $admission->patient->suspectCases->where('pscr_sars_cov_2', 'positive')->last()->pcr_sars_cov_2_at->format('d-m-Y H:i'):''  }}" readonly>
+            <input type="text" class="form-control" name="name" id="for_name" required placeholder="" autocomplete="off" value="{{ ($admission->patient->suspectCases->where('pcr_sars_cov_2', 'positive')->last())? $admission->patient->suspectCases->where('pcr_sars_cov_2', 'positive')->last()->pcr_sars_cov_2_at->format('d-m-Y H:i'):''  }}" readonly>
         </fieldset>
 
         <fieldset class="form-group col-3 col-md-3">
             <label for="for_address">Centro de Salud de Origen</label>
-            <input type="text" class="form-control" name="address" id="for_address" required placeholder="" autocomplete="off" value="{{ ($admission->patient->suspectCases->where('pscr_sars_cov_2', 'positive')->last())? $admission->patient->suspectCases->where('pscr_sars_cov_2', 'positive')->last()->origin:''  }}" readonly>
+            <input type="text" class="form-control" name="address" id="for_address" required placeholder="" autocomplete="off" value="{{ ($admission->patient->suspectCases->where('pcr_sars_cov_2', 'positive')->last())? $admission->patient->suspectCases->where('pcr_sars_cov_2', 'positive')->last()->origin:''  }}" readonly>
         </fieldset>
 
     </div>

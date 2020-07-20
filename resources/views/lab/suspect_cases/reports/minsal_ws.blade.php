@@ -91,7 +91,7 @@
             <td nowrap>RT-PCR</td>
             <td nowrap>{{ $case->sample_type }}</td>
             <td nowrap>{{ $case->pcr_sars_cov_2_at }}</td>
-            <td nowrap>{{ $case->pscr_sars_cov_2 }}</td>
+            <td nowrap>{{ $case->pcr_sars_cov_2 }}</td>
             <td nowrap>
                 @if($case->file)
                     <a href="{{ route('lab.suspect_cases.download', $case->id) }}"
