@@ -303,8 +303,6 @@ class SuspectCaseController extends Controller
     public function storeAdmission(Request $request)
     {
 
-//        dd($request);
-
         $request->validate([
            'id' => new UniqueSampleDateByPatient($request->sample_at)
         ]);
@@ -381,6 +379,7 @@ class SuspectCaseController extends Controller
      */
     public function edit(SuspectCase $suspectCase)
     {
+        //dd(request()::route()->getName());
         $external_labs = Laboratory::where('external',1)->orderBy('name')->get();
         $local_labs = Laboratory::where('external',0)->orderBy('name')->get();
 
@@ -511,7 +510,8 @@ class SuspectCaseController extends Controller
             }
         }
 
-        return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
+        return redirect($request->input('referer'));
+        //return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
     }
 
 

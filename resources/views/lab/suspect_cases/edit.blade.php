@@ -426,6 +426,7 @@
 
         </div>
 
+        <input type="hidden" name="referer" value="{{ request()->headers->get('referer') }}">
 
         <button type="submit" class="btn btn-primary">Guardar</button>
 
