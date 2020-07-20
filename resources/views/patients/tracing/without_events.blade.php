@@ -23,7 +23,7 @@
     <tbody>
         @foreach($tracingsWithoutEvents->reverse() as $key => $tracing)
         <tr>
-            <td>{{ ++$key }}- {{ $tracing->id }}</td>
+            <td>{{ ++$key }}</td>
             @if($tracing->patient)
             <td>
 
