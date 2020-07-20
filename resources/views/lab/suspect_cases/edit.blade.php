@@ -197,7 +197,7 @@
                     <input type="datetime-local" class="form-control" id="for_pcr_sars_cov_2_at"
                            name="pcr_sars_cov_2_at"
                            value="{{ isset($suspectCase->pcr_sars_cov_2_at)? $suspectCase->pcr_sars_cov_2_at->format('Y-m-d\TH:i:s'):'' }}"
-                           max="{{ date('Y-m-d\T23:59:59') }}"
+                           min="{{ date('Y-m-d\TH:i', strtotime("-4 week")) }}" max="{{ date('Y-m-d\T23:59:59') }}"
                            @if(($suspectCase->pcr_sars_cov_2_at AND auth()->user()->cannot('SuspectCase: tecnologo edit'))) disabled @endif>
                 </fieldset>
 
