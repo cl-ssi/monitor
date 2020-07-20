@@ -13,6 +13,7 @@ class NewNegative extends Mailable
     use Queueable, SerializesModels;
 
     public $suspectCase;
+    public $pdf;
 
     /**
      * Create a new message instance.
@@ -22,6 +23,14 @@ class NewNegative extends Mailable
     public function __construct(SuspectCase $suspectCase)
     {
         $this->suspectCase = $suspectCase;
+        // if ($this->suspectCase->laboratory) {
+        //     if ($this->suspectCase->laboratory->pdf_generate == 1) {
+        //         $case = $this->suspectCase;
+        //         $this->pdf = \PDF::loadView('lab.results.result', compact('case'));
+        //         $this->file_name = $suspectCase->id . '.pdf';
+        //     }
+        // }
+
     }
 
     /**
@@ -31,6 +40,7 @@ class NewNegative extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.newnegative')->subject('Resultado de Examen');
+        return $this->view('mail.newnegative')
+                    ->subject('Resultado de Examen');
     }
 }

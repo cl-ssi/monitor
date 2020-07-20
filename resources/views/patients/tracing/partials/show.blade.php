@@ -118,40 +118,6 @@
 
                 <!--**********************************-->
                 <div class="form-row">
-
-                    <!-- <fieldset class="form-group col-4 col-sm-3 col-md-2 col-lg-2">
-                        <label for="for_symptoms">Síntomas</label>
-                        <select name="symptoms" id="for_symptoms" class="form-control">
-                            <option value=""></option>
-                            <option value="0" {{ ($patient->tracing->symptoms === 0) ? 'selected' : '' }}>No</option>
-                            <option value="1" {{ ($patient->tracing->symptoms === 1) ? 'selected' : '' }}>Si</option>
-                        </select>
-                    </fieldset>
-
-                    <fieldset class="form-group col-10 col-sm-6 col-md-4 col-lg-3">
-                        <label for="for_symptoms_start_at">Inicio de síntomas</label>
-                        <input type="datetime-local" class="form-control" name="symptoms_start_at"
-                               id="for_symptoms_start_at"
-                               value="{{ ($patient->tracing->symptoms_start_at) ? $patient->tracing->symptoms_start_at->format('Y-m-d\TH:i:s') : '' }}">
-                    </fieldset>
-
-                    <fieldset class="form-group col-10 col-sm-6 col-md-4 col-lg-3">
-                        <label for="for_symptoms_end_at">Fin de síntomas</label>
-                        <input type="datetime-local" class="form-control" name="symptoms_end_at"
-                               id="for_symptoms_end_at"
-                               value="{{ ($patient->tracing->symptoms_end_at) ? $patient->tracing->symptoms_end_at->format('Y-m-d\TH:i:s') : '' }}">
-                    </fieldset>
-
-                    <fieldset class="form-group col-10 col-sm-6 col-md-4 col-lg-3">
-                        <label for="for_risk_rating">Riesgo</label>
-                        <select name="risk_rating" id="for_risk_rating" class="form-control">
-                            <option value=""></option>
-                            <option value="0" {{ ($patient->tracing->risk_rating === 0) ? 'selected' : '' }}>Bajo</option>
-                            <option value="1" {{ ($patient->tracing->risk_rating === 1) ? 'selected' : '' }}>Medio</option>
-                            <option value="2" {{ ($patient->tracing->risk_rating === 2) ? 'selected' : '' }}>Alto</option>
-                        </select>
-                    </fieldset> -->
-
                     <fieldset class="form-group col-md-3">
                         <label for="for_symptoms">Síntomas</label>
                         <select name="symptoms" id="for_symptoms" class="form-control">
