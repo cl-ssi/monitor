@@ -1031,6 +1031,8 @@ class SuspectCaseController extends Controller
 
                     $new_patient->birthday        = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Nacimiento']))->format('Y-m-d H:i:s');
 
+                    $new_patient->status          = $patient['Estado'];
+
                     $new_patient->save();
                 }
 
@@ -1063,7 +1065,6 @@ class SuspectCaseController extends Controller
                 if($patient_create){
                     $new_suspect_case = new SuspectCase();
 
-                    $new_suspect_case->status             = $patient['Estado'];
                     $new_suspect_case->laboratory_id      = $patient['Laboratorio'];
                     $new_suspect_case->sample_type        = $patient['Tipo Muestra'];
                     $new_suspect_case->sample_at          = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Muestra']))->format('Y-m-d H:i:s');
