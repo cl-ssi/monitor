@@ -527,7 +527,8 @@
             if(selectedSampleType ==='TÓRULAS NASOFARÍNGEAS')
             {
                 $('#for_result_ifd_at').attr('disabled', 'disabled');
-                $('#for_result_ifd').attr('disabled', 'disabled');
+                $('#for_result_ifd').val('No solicitado');
+                $('#for_result_ifd option:not(:selected)').attr('disabled', 'disabled');
                 $('#for_subtype').attr('disabled', 'disabled');
             }
 
@@ -535,14 +536,16 @@
                 var selectedSampleType = $(this).children("option:selected").val();
                 if(selectedSampleType ==='TÓRULAS NASOFARÍNGEAS')
                 {
+                    $('#for_result_ifd').val('No solicitado');
+                    $('#for_result_ifd option:not(:selected)').attr('disabled', 'disabled');
+
                     $('#for_result_ifd_at').attr('disabled', 'disabled');
-                    $('#for_result_ifd').attr('disabled', 'disabled');
                     $('#for_subtype').attr('disabled', 'disabled');
                 }
                 else
                 {
                     $('#for_result_ifd_at').removeAttr('disabled', 'disabled');
-                    $('#for_result_ifd').removeAttr('disabled', 'disabled');
+                    $('#for_result_ifd option').removeAttr('disabled', 'disabled');
                     $('#for_subtype').removeAttr('disabled', 'disabled');
                 }
             });
