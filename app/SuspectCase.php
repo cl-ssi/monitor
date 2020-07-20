@@ -31,7 +31,7 @@ class SuspectCase extends Model implements Auditable
         'origin', 'run_medic', 'symptoms', 'symptoms_at',
         'reception_at', 'receptor_id',
         'result_ifd_at', 'result_ifd', 'subtype',
-        'pscr_sars_cov_2_at', 'pscr_sars_cov_2', 'sample_type', 'validator_id',
+        'pcr_sars_cov_2_at', 'pcr_sars_cov_2', 'sample_type', 'validator_id',
         'sent_external_lab_at', 'external_laboratory', 'paho_flu', 'epivigila',
         'gestation', 'gestation_week', 'close_contact', 'functionary',
         'notification_at', 'notification_mechanism',
@@ -66,7 +66,7 @@ class SuspectCase extends Model implements Auditable
     }
 
     function getCovid19Attribute(){
-        switch($this->pscr_sars_cov_2) {
+        switch($this->pcr_sars_cov_2) {
             case 'pending': return 'Pendiente'; break;
             case 'positive': return 'Positivo'; break;
             case 'negative': return 'Negativo'; break;
@@ -139,7 +139,7 @@ class SuspectCase extends Model implements Auditable
      * @var array
      */
     protected $dates = [
-        'sample_at', 'symptoms_at', 'reception_at', 'result_ifd_at', 'pscr_sars_cov_2_at', 'sent_external_lab_at',
+        'sample_at', 'symptoms_at', 'reception_at', 'result_ifd_at', 'pcr_sars_cov_2_at', 'sent_external_lab_at',
         'notification_at', 'discharged_at', 'deleted_at'
     ];
 
@@ -147,11 +147,11 @@ class SuspectCase extends Model implements Auditable
     // {
     //     /* this is executed after ->save() method */
     //     static::created(function ($suspectCase) {
-    //         $suspectCase->pscr_sars_cov_2_at->addHour(date('H'))->addMinute(date('i'))->addSecond(date('s'));
+    //         $suspectCase->pcr_sars_cov_2_at->addHour(date('H'))->addMinute(date('i'))->addSecond(date('s'));
     //     });
     //     /* this is executed after ->save() method */
     //     static::updated(function ($suspectCase) {
-    //         $suspectCase->pscr_sars_cov_2_at->addHour(date('H'))->addMinute(date('i'))->addSecond(date('s'));
+    //         $suspectCase->pcr_sars_cov_2_at->addHour(date('H'))->addMinute(date('i'))->addSecond(date('s'));
     //     });
     // }
 

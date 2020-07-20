@@ -67,7 +67,7 @@
             <td nowrap>{{ $case->covid19 }}</td>
             <td nowrap>{{ $case->sample_at->format('d-m-Y') }}</td>
             <td nowrap>{{ ($case->created_at)? $case->created_at->format('d-m-Y'): '' }}</td>
-            <td nowrap>{{ ($case->pscr_sars_cov_2_at) ? $case->pscr_sars_cov_2_at->format('d-m-Y') : '' }}</td>
+            <td nowrap>{{ ($case->pcr_sars_cov_2_at) ? $case->pcr_sars_cov_2_at->format('d-m-Y') : '' }}</td>
             <td nowrap>{{ strtoupper($case->establishment)?$case->establishment->alias.' - '.$case->origin: '' }}</td>
             <td nowrap>{{($case->establishment) ? $case->establishment->commune->region->name : ''}}</td>
             <td nowrap class="text-uppercase">{{ $laboratory->alias }}</td>

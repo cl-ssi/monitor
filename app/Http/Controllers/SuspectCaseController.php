@@ -91,7 +91,7 @@ class SuspectCaseController extends Controller
                                                 ->orWhere('run','LIKE','%'.$text.'%');
                                       })
                                       ->whereNotNull('laboratory_id')
-                                      ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
+                                      ->whereIn('pcr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
                                       ->paginate(200);//->appends(request()->query());
         }
         else {
@@ -106,7 +106,7 @@ class SuspectCaseController extends Controller
                                                 ->orWhere('run','LIKE','%'.$text.'%');
                                       })
                                       ->whereNotNull('laboratory_id')
-                                      ->whereIn('pscr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
+                                      ->whereIn('pcr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
                                       ->paginate(200);//->appends(request()->query());
         }
         return view('lab.suspect_cases.index', compact('suspectCases','request','suspectCasesTotal','laboratory'));
@@ -133,7 +133,7 @@ class SuspectCaseController extends Controller
                 ->orWhere('user_id', Auth::user()->id);
         })
             ->patientTextFilter($searchText)
-            ->whereIn('pscr_sars_cov_2', $arrayFilter)
+            ->whereIn('pcr_sars_cov_2', $arrayFilter)
             ->paginate(200);
 
         return view('lab.suspect_cases.ownIndex', compact('suspectCases', 'arrayFilter', 'searchText', 'laboratory', 'suspectCasesTotal'));
@@ -160,7 +160,7 @@ class SuspectCaseController extends Controller
                                         $q->whereIn('commune_id',auth()->user()->communes());
                                 });
                         })
-                        ->whereNotIn('pscr_sars_cov_2', ['pending','positive','undetermined'])
+                        ->whereNotIn('pcr_sars_cov_2', ['pending','positive','undetermined'])
                         ->whereNull('notification_at')
                         ->whereBetween('created_at', [$from, $to])
                         ->get();
@@ -252,12 +252,12 @@ class SuspectCaseController extends Controller
 
         $suspectCase->reception_at = date('Y-m-d H:i:s');
 
-        if(!$request->input('pscr_sars_cov_2')) {
-            $suspectCase->pscr_sars_cov_2 = 'pending';
+        if(!$request->input('pcr_sars_cov_2')) {
+            $suspectCase->pcr_sars_cov_2 = 'pending';
         }
 
-        if($request->input('pscr_sars_cov_2_at')){
-            $suspectCase->pscr_sars_cov_2_at = $request->input('pscr_sars_cov_2_at').' '.date('H:i:s');
+        if($request->input('pcr_sars_cov_2_at')){
+            $suspectCase->pcr_sars_cov_2_at = $request->input('pcr_sars_cov_2_at').' '.date('H:i:s');
         }
 
         $suspectCase->sample_at = $request->input('sample_at').' '.date('H:i:s');
@@ -277,7 +277,7 @@ class SuspectCaseController extends Controller
         }
 
         if (env('APP_ENV') == 'production') {
-            if ($suspectCase->pscr_sars_cov_2 == 'positive') {
+            if ($suspectCase->pcr_sars_cov_2 == 'positive') {
                 $emails  = explode(',', env('EMAILS_ALERT'));
                 $emails_bcc  = explode(',', env('EMAILS_ALERT_BCC'));
                 Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($suspectCase));
@@ -303,8 +303,6 @@ class SuspectCaseController extends Controller
     public function storeAdmission(Request $request)
     {
 
-//        dd($request);
-
         $request->validate([
            'id' => new UniqueSampleDateByPatient($request->sample_at)
         ]);
@@ -327,7 +325,7 @@ class SuspectCaseController extends Controller
                                                     ->add(1, 'days')->weekOfYear;
 
         /* Marca como pendiente el resultado, no viene en el form */
-        $suspectCase->pscr_sars_cov_2 = 'pending';
+        $suspectCase->pcr_sars_cov_2 = 'pending';
 
         /* Si viene la fecha de nacimiento entonces calcula la edad y la almaceno en suspectCase */
         if($request->input('birthday')) {
@@ -381,6 +379,7 @@ class SuspectCaseController extends Controller
      */
     public function edit(SuspectCase $suspectCase)
     {
+        //dd(request()::route()->getName());
         $external_labs = Laboratory::where('external',1)->orderBy('name')->get();
         $local_labs = Laboratory::where('external',0)->orderBy('name')->get();
 
@@ -403,7 +402,7 @@ class SuspectCaseController extends Controller
      */
     public function update(Request $request, SuspectCase $suspectCase)
     {
-        $old_pcr = $suspectCase->pscr_sars_cov_2;
+        $old_pcr = $suspectCase->pcr_sars_cov_2;
 
         $suspectCase->fill($request->all());
 
@@ -411,7 +410,7 @@ class SuspectCaseController extends Controller
             $suspectCase->sample_at->format('Y-m-d'))->add(1, 'days')->weekOfYear;
 
         /* Setar el validador */
-        if ($old_pcr == 'pending' and $suspectCase->pscr_sars_cov_2 != 'pending') {
+        if ($old_pcr == 'pending' and $suspectCase->pcr_sars_cov_2 != 'pending') {
             $suspectCase->validator_id = Auth::id();
         }
 
@@ -424,14 +423,14 @@ class SuspectCaseController extends Controller
         $suspectCase->save();
 
         /* Crea un TRACING si el resultado es positivo o indeterminado */
-        if ($old_pcr == 'pending' and ($suspectCase->pscr_sars_cov_2 == 'positive' OR $suspectCase->pscr_sars_cov_2 == 'undetermined')) {
+        if ($old_pcr == 'pending' and ($suspectCase->pcr_sars_cov_2 == 'positive' OR $suspectCase->pcr_sars_cov_2 == 'undetermined')) {
             /* Si el paciente no tiene Tracing */
             if($suspectCase->patient->tracing) {
                 $suspectCase->patient->tracing->index = 1;
                 $suspectCase->patient->tracing->status = ($suspectCase->patient->status == 'Fallecido') ? 0:1;
                 $suspectCase->patient->tracing->quarantine_start_at = ($suspectCase->symptoms_at) ?
                                                 $suspectCase->symptoms_at :
-                                                $suspectCase->pscr_sars_cov_2_at;
+                                                $suspectCase->pcr_sars_cov_2_at;
                 $suspectCase->patient->tracing->quarantine_end_at = $suspectCase->patient->tracing->quarantine_start_at->add(13,'days');
                 $suspectCase->patient->tracing->next_control_at   = now();
                 $suspectCase->patient->tracing->save();
@@ -445,10 +444,10 @@ class SuspectCaseController extends Controller
                 $tracing->functionary       = $suspectCase->functionary;
                 $tracing->gestation         = $suspectCase->gestation;
                 $tracing->gestation_week    = $suspectCase->gestation_week;
-                $tracing->next_control_at   = now(); //$suspectCase->pscr_sars_cov_2_at;
+                $tracing->next_control_at   = now(); //$suspectCase->pcr_sars_cov_2_at;
                 $tracing->quarantine_start_at = ($suspectCase->symptoms_at) ?
                                                 $suspectCase->symptoms_at :
-                                                $suspectCase->pscr_sars_cov_2_at;
+                                                $suspectCase->pcr_sars_cov_2_at;
                 $tracing->quarantine_end_at = $tracing->quarantine_start_at->add(13,'days');
                 $tracing->observations      = $suspectCase->observation;
                 $tracing->notification_at   = $suspectCase->notification_at;
@@ -467,15 +466,15 @@ class SuspectCaseController extends Controller
         }
 
         if (env('APP_ENV') == 'production') {
-            if ($old_pcr == 'pending' and $suspectCase->pscr_sars_cov_2 == 'positive') {
+            if ($old_pcr == 'pending' and $suspectCase->pcr_sars_cov_2 == 'positive') {
                 $emails  = explode(',', env('EMAILS_ALERT'));
                 $emails_bcc  = explode(',', env('EMAILS_ALERT_BCC'));
                 Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($suspectCase));
             }
 
             /* Enviar resultado al usuario, solo si tiene registrado un correo electronico */
-            if($old_pcr == 'pending' && ($suspectCase->pscr_sars_cov_2 == 'negative' || $suspectCase->pscr_sars_cov_2 == 'undetermined' ||
-                                          $suspectCase->pscr_sars_cov_2 == 'rejected' || $suspectCase->pscr_sars_cov_2 == 'positive')
+            if($old_pcr == 'pending' && ($suspectCase->pcr_sars_cov_2 == 'negative' || $suspectCase->pcr_sars_cov_2 == 'undetermined' ||
+                                          $suspectCase->pcr_sars_cov_2 == 'rejected' || $suspectCase->pcr_sars_cov_2 == 'positive')
                                       && $suspectCase->patient->demographic != NULL){
                 if($suspectCase->patient->demographic->email != NULL){
                     $email  = $suspectCase->patient->demographic->email;
@@ -511,7 +510,8 @@ class SuspectCaseController extends Controller
             }
         }
 
-        return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
+        return redirect($request->input('referer'));
+        //return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
     }
 
 
@@ -647,14 +647,14 @@ class SuspectCaseController extends Controller
 
         //CARGA ARRAY CASOS
         foreach ($suspectCases as $suspectCase) {
-          if($suspectCase->pscr_sars_cov_2_at != null){
+          if($suspectCase->pcr_sars_cov_2_at != null){
             if($suspectCase->external_laboratory){
-              $cases_by_days[$suspectCase->pscr_sars_cov_2_at->format('d-m-Y')]['laboratories'][$suspectCase->external_laboratory] += 1;
+              $cases_by_days[$suspectCase->pcr_sars_cov_2_at->format('d-m-Y')]['laboratories'][$suspectCase->external_laboratory] += 1;
             }
             else{
-              $cases_by_days[$suspectCase->pscr_sars_cov_2_at->format('d-m-Y')]['laboratories'][$suspectCase->laboratory->name] += 1;
+              $cases_by_days[$suspectCase->pcr_sars_cov_2_at->format('d-m-Y')]['laboratories'][$suspectCase->laboratory->name] += 1;
             }
-            $cases_by_days[$suspectCase->pscr_sars_cov_2_at->format('d-m-Y')]['cases'] += 1;
+            $cases_by_days[$suspectCase->pcr_sars_cov_2_at->format('d-m-Y')]['cases'] += 1;
             $total_cases_by_days['cases'] += 1;
           }
         }
@@ -695,7 +695,7 @@ class SuspectCaseController extends Controller
 
         foreach ($suspectCases as $suspectCase) {
           $total_cases_by_days['cases'] = 0;
-          $total_cases_by_days[$suspectCase->pscr_sars_cov_2] = 0;
+          $total_cases_by_days[$suspectCase->pcr_sars_cov_2] = 0;
         }
 
 
@@ -705,14 +705,14 @@ class SuspectCaseController extends Controller
 
           $cases_by_days[$suspectCase->sample_at->format('d-m-Y')]['cases'] += 1;
           if($suspectCase->reception_at != null){
-            $cases_by_days[$suspectCase->sample_at->format('d-m-Y')][$suspectCase->pscr_sars_cov_2] += 1;
+            $cases_by_days[$suspectCase->sample_at->format('d-m-Y')][$suspectCase->pcr_sars_cov_2] += 1;
           }
-          if($suspectCase->pscr_sars_cov_2_at != null){
-            $cases_by_days[$suspectCase->pscr_sars_cov_2_at->format('d-m-Y')]['procesing'] += 1;
+          if($suspectCase->pcr_sars_cov_2_at != null){
+            $cases_by_days[$suspectCase->pcr_sars_cov_2_at->format('d-m-Y')]['procesing'] += 1;
           }
 
           $total_cases_by_days['cases'] += 1;
-          $total_cases_by_days[$suspectCase->pscr_sars_cov_2] += 1;
+          $total_cases_by_days[$suspectCase->pcr_sars_cov_2] += 1;
         }
 
         return view('lab.suspect_cases.reports.diary_lab_report', compact('cases_by_days', 'total_cases_by_days'));
@@ -741,26 +741,26 @@ class SuspectCaseController extends Controller
         }
 
         foreach ($cases as $key => $case) {
-          if($case->pscr_sars_cov_2 == "pending"){
+          if($case->pcr_sars_cov_2 == "pending"){
             $array[$case->laboratory->name]['muestras_en_espera'] += 1;
           }
           $array[$case->laboratory->name]['muestras_recibidas'] += 1;
-          if($case->pscr_sars_cov_2 != "pending" || $case->pscr_sars_cov_2 != "rejected"){
+          if($case->pcr_sars_cov_2 != "pending" || $case->pcr_sars_cov_2 != "rejected"){
             $array[$case->laboratory->name]['muestras_procesadas'] += 1;
           }
-          if($case->pscr_sars_cov_2 == "positive"){
+          if($case->pcr_sars_cov_2 == "positive"){
             $array[$case->laboratory->name]['muestras_positivas'] += 1;
           }
 
           $array[$case->laboratory->name]['muestras_procesadas_acumulados'] = SuspectCase::where('external_laboratory',NULL)
                                                                                          ->where('laboratory_id',$case->laboratory_id)
-                                                                                         ->where('pscr_sars_cov_2','<>','pending')
-                                                                                         ->where('pscr_sars_cov_2','<>','rejected')
+                                                                                         ->where('pcr_sars_cov_2','<>','pending')
+                                                                                         ->where('pcr_sars_cov_2','<>','rejected')
                                                                                          ->count();
 
           $array[$case->laboratory->name]['muestras_procesadas_positivo'] = SuspectCase::where('external_laboratory',NULL)
                                                                                          ->where('laboratory_id',$case->laboratory_id)
-                                                                                         ->where('pscr_sars_cov_2','positive')
+                                                                                         ->where('pcr_sars_cov_2','positive')
                                                                                          ->count();
           $array[$case->laboratory->name]['commune'] = $case->laboratory->commune->name;
         }
@@ -988,7 +988,7 @@ class SuspectCaseController extends Controller
     }
 
     public function index_import_results(){
-        return view('lab.suspect_cases.import_results', compact('bulkLoadRecords'));
+        return view('lab.suspect_cases.import_results');
     }
 
     public function bulk_load_import(Request $request){
@@ -1073,23 +1073,23 @@ class SuspectCaseController extends Controller
                     }
 
                     if($patient['Fecha Resultado'] != null){
-                        $new_suspect_case->pscr_sars_cov_2_at       = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Resultado']))->format('Y-m-d H:i:s');
+                        $new_suspect_case->pcr_sars_cov_2_at       = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Resultado']))->format('Y-m-d H:i:s');
                     }
 
                     if($patient['Resultado'] == 'Positivo'){
-                        $new_suspect_case->pscr_sars_cov_2 = 'positive';
+                        $new_suspect_case->pcr_sars_cov_2 = 'positive';
                     }
                     if($patient['Resultado'] == 'Negativo'){
-                        $new_suspect_case->pscr_sars_cov_2 = 'negative';
+                        $new_suspect_case->pcr_sars_cov_2 = 'negative';
                     }
                     if($patient['Resultado'] == 'Indeterminado'){
-                        $new_suspect_case->pscr_sars_cov_2 = 'undetermined';
+                        $new_suspect_case->pcr_sars_cov_2 = 'undetermined';
                     }
                     if($patient['Resultado'] == 'Rechazado '){
-                        $new_suspect_case->pscr_sars_cov_2 = 'rejected';
+                        $new_suspect_case->pcr_sars_cov_2 = 'rejected';
                     }
                     if($patient['Resultado'] == 'Pendiente '){
-                        $new_suspect_case->pscr_sars_cov_2 = 'pending';
+                        $new_suspect_case->pcr_sars_cov_2 = 'pending';
                     }
 
                     $establishment = Establishment::where('name', $patient['Establecimiento Muestra'])
@@ -1187,8 +1187,8 @@ class SuspectCaseController extends Controller
             if ($id_esmeralda != NULL && $resultado != NULL && $fecha_resultado != NULL) {
                 $suspectCase = SuspectCase::find($id_esmeralda);
                 if ($suspectCase) {
-                    $suspectCase->pscr_sars_cov_2 = $resultado;
-                    $suspectCase->pscr_sars_cov_2_at = $fecha_resultado;
+                    $suspectCase->pcr_sars_cov_2 = $resultado;
+                    $suspectCase->pcr_sars_cov_2_at = $fecha_resultado;
                     $suspectCase->save();
                     $cont += 1;
                 }

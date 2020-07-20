@@ -203,7 +203,7 @@ class PatientController extends Controller
     public function positives(Request $request)
     {
         $patients = Patient::whereHas('suspectCases', function ($q) {
-            $q->where('pscr_sars_cov_2','positive');
+            $q->where('pcr_sars_cov_2','positive');
         })->with('demographic')->get();
 
         $patients = $patients->whereNotIn('demographic.region',
@@ -238,8 +238,8 @@ class PatientController extends Controller
         $date = \Carbon\Carbon::today()->subDays(30);
         // $users = User::where('created_at', '>=', $date)->get();
         // $suspectCases = SuspectCase::latest('id')->get();
-        $suspectCases = SuspectCase::where('pscr_sars_cov_2_at', '>=', $date)
-                                   ->where('pscr_sars_cov_2', 'positive')
+        $suspectCases = SuspectCase::where('pcr_sars_cov_2_at', '>=', $date)
+                                   ->where('pcr_sars_cov_2', 'positive')
                                    ->whereHas('patient', function ($q) {
                                         $q->whereIn('status',['Ambulatorio',''])
                                           ->OrWhereNULL('status');
@@ -249,7 +249,7 @@ class PatientController extends Controller
 
         $data = array();
         foreach ($suspectCases as $key => $case) {
-          if ($case->pscr_sars_cov_2 == 'positive'){// || $case->pscr_sars_cov_2 == 'pending') {
+          if ($case->pcr_sars_cov_2 == 'positive'){// || $case->pcr_sars_cov_2 == 'pending') {
               // FIX , pendiente ver que pasó que hay un caso sin paciente asociado
               if($case->patient) {
                   if ($case->patient->demographic != null) {
@@ -314,7 +314,7 @@ class PatientController extends Controller
                     $fila->mothers_family,
                     $fila->gender,
                     ($fila->birthday)?$fila->birthday->format('d-m-Y'):'',
-                    ($fila->suspectCases->where('pscr_sars_cov_2','positive')->first())?'Si':'No',
+                    ($fila->suspectCases->where('pcr_sars_cov_2','positive')->first())?'Si':'No',
                     ($fila->demographic)?$fila->demographic->commune:'',
                     ($fila->demographic)?$fila->demographic->address.' '.$fila->demographic->number:''
                 ),';');

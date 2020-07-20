@@ -73,7 +73,7 @@ class Patient extends Model implements Auditable //Authenticatable
 
     public function lastExam() {
         return $this->hasOne('App\SuspectCase')
-            ->whereIn('pscr_sars_cov_2',['positive','negative','pending'])
+            ->whereIn('pcr_sars_cov_2',['positive','negative','pending'])
             ->latest();
     }
 
@@ -169,7 +169,7 @@ class Patient extends Model implements Auditable //Authenticatable
      */
     static function positivesList(){
         $patients = Patient::whereHas('suspectCases', function ($q) {
-            $q->where('pscr_sars_cov_2','positive');
+            $q->where('pcr_sars_cov_2','positive');
         })->with('suspectCases')->with('demographic')->get();
 
         $communesAll = Commune::all('id');

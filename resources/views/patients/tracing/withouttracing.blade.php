@@ -61,8 +61,8 @@
                 <!--td>{{ ($patient->demographic)?$patient->demographic->telephone:'' }}</td-->
                 <!--td>{{ ($patient->demographic)?$patient->demographic->email:'' }}</td-->
                 <td>{{ $patient->created_at->format('d-m-Y')  }}</td>
-                <td>{{ ($patient->suspectCases->last()->pscr_sars_cov_2_at) ?
-                    $patient->suspectCases->last()->pscr_sars_cov_2_at->format('d-m-Y H:i') : '' }}</td>
+                <td>{{ ($patient->suspectCases->last()->pcr_sars_cov_2_at) ?
+                    $patient->suspectCases->last()->pcr_sars_cov_2_at->format('d-m-Y H:i') : '' }}</td>
 
             </tr>
             @endforeach
