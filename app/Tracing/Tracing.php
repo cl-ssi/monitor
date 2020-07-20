@@ -26,7 +26,7 @@ class Tracing extends Model  implements Auditable
     protected $fillable = [
         'patient_id','index','functionary',
         'notification_at','notification_mechanism',
-        'next_control_at','status','discharged_at','category',
+        'next_control_at','status','risk_rating','discharged_at','category',
         'responsible_family_member',
         'prevision','establishment_id',
         'gestation','gestation_week',
@@ -75,6 +75,21 @@ class Tracing extends Model  implements Auditable
       }
 
     }
+
+    public function getFlagRiskAttribute(){
+        if(is_null($this->risk_rating) )
+        {
+            return'';
+
+        }
+        else{
+        switch($this->risk_rating) {                        
+            case 0: return '<i class="fas fa-flag" style="color:#28a745;"></i>'; break;
+            case 1: return '<i class="fas fa-flag" style="color:#ffc107;"></i>'; break;
+            case 2: return '<i class="fas fa-flag" style="color:#dc3545;"></i>'; break;
+            }
+        }   
+      }
 
     public function getIndexDescAttribute(){
       switch($this->index) {

@@ -479,20 +479,36 @@ class SuspectCaseController extends Controller
                                       && $suspectCase->patient->demographic != NULL){
                 if($suspectCase->patient->demographic->email != NULL){
                     $email  = $suspectCase->patient->demographic->email;
-                    Mail::to($email)->send(new NewNegative($suspectCase));
+                    /*PDF SI ES DE */
+                    if ($suspectCase->laboratory) {
+                        if ($suspectCase->laboratory->pdf_generate == 1) {
+                            $case = $suspectCase;
+                            $pdf = \PDF::loadView('lab.results.result', compact('case'));
+                            $message = new NewNegative($suspectCase);
+                            $message->attachData($pdf->output(), $suspectCase->id.'.pdf');
+                            Mail::to($email)->send($message);
+                        }
+                        else{
+                          if($suspectCase->file == 1){
+                              // $exists = Storage::disk('local')->exists('suspect_cases/'.$suspectCase->id.'.pdf');
+                              // dd($exists);
+
+                              $message = new NewNegative($suspectCase);
+                              $message->attachFromStorage('suspect_cases/'.$suspectCase->id.'.pdf', $suspectCase->id.'.pdf', [
+                                          'mime' => 'application/pdf',
+                                        ]);
+                              Mail::to($email)->send($message);
+
+                          }
+                          else{
+                              $message = new NewNegative($suspectCase);
+                              Mail::to($email)->send($message);
+                          }
+                        }
+                    }
+
                 }
             }
-
-            /* Si el resultado es negativo y el usuario tiene email, enviar resultado al usuario */
-            // if($old_pcr == 'pending' && ($suspectCase->pscr_sars_cov_2 == 'negative' ||
-            //                               $suspectCase->pscr_sars_cov_2 == 'undetermined' ||
-            //                               $suspectCase->pscr_sars_cov_2 == 'rejected') &&
-            //     $suspectCase->patient->demographic != NULL){
-            //     if($suspectCase->patient->demographic->email != NULL){
-            //         $email  = $suspectCase->patient->demographic->email;
-            //         Mail::to($email)->send(new NewNegative($suspectCase));
-            //     }
-            // }
         }
 
         return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);

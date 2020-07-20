@@ -32,7 +32,7 @@ class SuspectCase extends Model implements Auditable
         'reception_at', 'receptor_id',
         'result_ifd_at', 'result_ifd', 'subtype',
         'pscr_sars_cov_2_at', 'pscr_sars_cov_2', 'sample_type', 'validator_id',
-        'sent_isp_at', 'external_laboratory', 'paho_flu', 'epivigila',
+        'sent_external_lab_at', 'external_laboratory', 'paho_flu', 'epivigila',
         'gestation', 'gestation_week', 'close_contact', 'functionary',
         'notification_at', 'notification_mechanism',
         'discharged_at',
@@ -76,8 +76,8 @@ class SuspectCase extends Model implements Auditable
     }
 
     function getSentExternalAtAttribute() {
-        return ($this->sent_isp_at)?
-            $this->sent_isp_at->format('d-m-Y'):'';
+        return ($this->sent_external_lab_at)?
+            $this->sent_external_lab_at->format('d-m-Y'):'';
     }
 
     function getProcesingLabAttribute() {
@@ -139,7 +139,7 @@ class SuspectCase extends Model implements Auditable
      * @var array
      */
     protected $dates = [
-        'sample_at', 'symptoms_at', 'reception_at', 'result_ifd_at', 'pscr_sars_cov_2_at', 'sent_isp_at',
+        'sample_at', 'symptoms_at', 'reception_at', 'result_ifd_at', 'pscr_sars_cov_2_at', 'sent_external_lab_at',
         'notification_at', 'discharged_at', 'deleted_at'
     ];
 

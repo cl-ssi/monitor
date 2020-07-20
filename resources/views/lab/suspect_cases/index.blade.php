@@ -50,76 +50,91 @@
 
 <!--------------------------------->
 @if($laboratory)
-<div class="row">
-  <div class="col-12 col-sm-12 col-md-6">
+<div class="row row align-items-end"> <!---START ROW PRINCIPAL--->
+  <div class="col-12 col-sm-12 col-md-6"> <!-- START COL 1 PRINCIPAL -->
       <div class="row align-items-end">
-        <div class="col-6 col-sm-3">
-            <a type="button" class="btn btn-success mb-3" href="{{ route('lab.suspect_cases.export', $laboratory->id) }}">Descargar <i class="far fa-file-excel"></i></a>
-        </div>
-        <div class="col-6 col-sm-3">
+        <div class="col-12 col-sm-12">
+            <a type="button" class="btn btn-sm btn-success mb-3" href="{{ route('lab.suspect_cases.export', $laboratory->id) }}">Descargar <i class="far fa-file-excel"></i></a>
+        <!--</div>
+        <div class="col-6 col-sm-3">-->
             <a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.minsal',$laboratory) }}">Reporte MINSAL</a>
-        </div>
-        <div class="col-6 col-sm-3">
+        <!--</div>
+        <div class="col-6 col-sm-6 float-left">-->
             <a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.seremi',$laboratory) }}">Reporte SEREMI</a>
-        </div>
-        <div class="col-6 col-sm-3">
+        <!--</div>
+        <div class="col-6 col-sm-3">-->
             <a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.report.estadistico_diario_covid19',$laboratory) }}">Reporte estadistico diario</a>
         </div>
       </div><!---END row--->
-  </div><!---END COL--->
+      <div class="row">
+          <div class="col-12 col-sm-12 col-md-12" align="right">
+              @include('lab.suspect_cases.partials.search_id')
+          </div>
+      </div><!---END row--->
+
+  </div><!---END COL 1 PRINCIPAL--->
 
 @else
-
 {{--    <form method="POST" action="{{route('lab.suspect_cases.export', 'all')}}" target="_blank">--}}
 {{--        @method('POST')--}}
 {{--        @csrf--}}
-
 {{--        <div class="row">--}}
 {{--            <div class="col-5 col-sm-3">--}}
-{{--                <input type="month" class="form-control" id="for_date_filter"--}}
-{{--                       name="date_filter" required>--}}
+{{--                <input type="month" class="form-control" id="for_date_filter" name="date_filter" required>--}}
 {{--            </div>--}}
 {{--            <div class="col-5 col-sm-3">--}}
 {{--                <button type="submit" class="btn btn-success">Descargar <i class="far fa-file-excel"></i></button>--}}
 {{--            </div>--}}
 {{--        </div>--}}
-
 {{--    </form>--}}
-
 {{--    <div class="row">--}}
 {{--        <div class="col-5 col-sm-3">--}}
-{{--            <input type="month" class="form-control" id="for_month"--}}
-{{--                   name="month" required>--}}
+{{--            <input type="month" class="form-control" id="for_month" name="month" required> --}}
 {{--        </div>--}}
 {{--        <div class="col-5 col-sm-3">--}}
-            <a type="button" class="btn btn-success" href="{{ route('lab.suspect_cases.export', 'all') }}">Descargar <i class="far fa-file-excel"></i></a>
+    <div class="row row align-items-end"> <!---START ROW PRINCIPAL--->
+      <div class="col-12 col-sm-12 col-md-6"> <!-- START COL 1 PRINCIPAL -->
+          <div class="row align-items-end">
+            <div class="col-12 col-sm-12">
+            <a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.export', 'all') }}">Descargar <i class="far fa-file-excel"></i></a>
+        </div>
+      </div><!---END row--->
+      <div class="row">
+          <div class="col-12 col-sm-12 col-md-12" align="right">
+              @include('lab.suspect_cases.partials.search_id')
+          </div>
+      </div><!---END row--->
+
+  </div><!---END COL 1 PRINCIPAL--->
 {{--        </div>--}}
 {{--    </div>--}}
-
 @endif
 
-<div class="col-12 col-sm-12 col-md-6">
-    <form method="get" action="{{ route('lab.suspect_cases.index',$laboratory) }}">
-
+    <div class="col-12 col-sm-12 col-md-6"> <!-- START COL 2 PRINCIPAL -->
+      <div class="row"> <!-- START ROW 1 -->
+        <div class="col-12 mb-3">
+          <form method="get" action="{{ route('lab.suspect_cases.index',$laboratory) }}">
             <input type="checkbox" name="positivos" id="chk_positivos" v="Positivos" {{ ($request->positivos)?'checked':'' }} /> Positivos
             <input type="checkbox" name="negativos" id="chk_negativos" v="Negativos" {{ ($request->negativos)?'checked':'' }} /> Negativos
             <input type="checkbox" name="pendientes" id="chk_pendientes" v="Pendientes" {{ ($request->pendientes)?'checked':'' }} /> Pendientes
             <input type="checkbox" name="rechazados" id="chk_rechazados" v="Rechazados" {{ ($request->rechazados)?'checked':'' }} /> Rechazados
             <input type="checkbox" name="indeterminados" id="chk_indeterminados" v="Indeterminados" {{ ($request->indeterminados)?'checked':'' }} /> Indeterminados
-
+        </div>
+      </div> <!-- END ROW 1 -->
+      <div class="row"> <!-- START ROW 2 -->
+        <div class="col-12">
             <div class="input-group mb-3">
               <div class="input-group-prepend"><span class="input-group-text">Búsqueda</span></div>
               <input class="form-control" type="text" name="text" value="{{$request->text}}" placeholder="Rut / Nombre">
               <div class="input-group-append"><button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button></div>
             </div>
-    </form>
-</div><!---END COL--->
+          </div>
+      </div> <!-- END ROW 2 -->
+          </form>
+</div><!---END COL 2 PRINCIPAL--->
+</div><!---END ROW PRINCIPAL--->
 
-<div class="col-12 col-sm-12 col-md-6" align="right">
-@include('lab.suspect_cases.partials.search_id')
-</div>
 
-</div><!---END ROW--->
 
 <!--------------------------------->
 

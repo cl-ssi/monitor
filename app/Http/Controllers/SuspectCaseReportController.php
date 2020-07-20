@@ -411,7 +411,7 @@ class SuspectCaseReportController extends Controller
             $casos[$key][] = $patient->suspectCases->first()->paho_flu;
             $casos[$key][] = ($patient->suspectCases->first()->gestation == 1) ? 'Sí' : '';
             $casos[$key][] = ($patient->suspectCases->first()->close_contact == 1) ? 'Sí':'';
-            $casos[$key][] = ($patient->suspectCases->first()->sent_isp_at) ? $patient->suspectCases->first()->sent_isp_at->format('Y-m-d') : '';
+            $casos[$key][] = ($patient->suspectCases->first()->sent_external_lab_at) ? $patient->suspectCases->first()->sent_external_lab_at->format('Y-m-d') : '';
             $casos[$key][] = $patient->suspectCases->first()->procesingLab ;
             $casos[$key][] = ($patient->suspectCases->first()->notification_at) ? $patient->suspectCases->first()->notification_at->format('Y-m-d') : '';
             $casos[$key][] = $patient->suspectCases->first()->notification_mechanism;
@@ -858,4 +858,19 @@ class SuspectCaseReportController extends Controller
 
         return view('lab.suspect_cases.reports.user_performance', compact('users', 'request', 'events', 'events_resume'));
     }
+
+
+    /**
+     * Listado de Casos Sospechosos que no han sido
+     * recepcionados
+     * @return Application|Factory|View
+     */
+    public function withoutReception(){
+      $cases = SuspectCase::whereNull('receptor_id')->get();
+      return view('lab.suspect_cases.reports.without_reception', compact('cases'));
+    }
+
+
+
+
 }

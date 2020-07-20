@@ -175,9 +175,9 @@
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2">
-            <label for="for_sent_isp_at">Fecha envío lab externo</label>
-            <input type="date" class="form-control" id="for_sent_isp_at"
-                name="sent_isp_at">
+            <label for="for_sent_external_lab_at">Fecha envío lab externo</label>
+            <input type="date" class="form-control" id="for_sent_external_lab_at"
+                name="sent_external_lab_at">
         </fieldset>
 
         @endcan

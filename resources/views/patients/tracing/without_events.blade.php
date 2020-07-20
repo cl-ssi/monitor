@@ -24,10 +24,13 @@
         @foreach($tracingsWithoutEvents->reverse() as $key => $tracing)
         <tr>
             <td>{{ ++$key }}</td>
+            @if($tracing->patient)
             <td>
+
                 <a href="{{ route('patients.edit', $tracing->patient) }}">
                     {{ $tracing->patient->id }}
                 </a>
+
             </td>
             <td>{{ $tracing->patient->identifier }}</td>
             <td>{{ $tracing->patient->fullName }}</td>
@@ -36,6 +39,9 @@
             <td>{{ $tracing->quarantine_start_at->format('Y-m-d') }}</td>
             <td nowrap>{{ $tracing->quarantine_end_at->format('Y-m-d') }} ({{ $tracing->quarantine_start_at->diffInDays(now()) }})</td>
             <td>{{ ($tracing->patient->status == '') ? 'Ambulatorio' : $tracing->patient->status }}</td>
+            @endif
+
+
         </tr>
         @endforeach
     </tbody>

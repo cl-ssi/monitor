@@ -37,8 +37,8 @@ class ContactPatientController extends Controller
                     ->get();
 
         //BUSQUEDA DE CONTACTO
-        if($request->input('search') != null){
-          $run = $request->input('search');
+        if($request->input('run') != null){
+          $run = $request->input('run');
         }
         else {
           $run = '';

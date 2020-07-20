@@ -60,12 +60,19 @@
                 {{ $patient->id }}
                 </a>
             </td>
-            <td>
+            <td nowrap>
                 @switch($patient->tracing->index)
                     @case(0) CAR      @break
                     @case(1) Indice   @break
                     @case(2) Probable @break
                 @endswitch
+                
+                {!! $patient->tracing->flagrisk !!}            
+
+                
+                
+                
+
             </td>
             <td>
                 {{ $patient->fullName }}
