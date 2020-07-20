@@ -137,7 +137,37 @@ class SuspectCaseReportController extends Controller
 
         /* Fin de cálculo de evolución */
 
-        return view('lab.suspect_cases.reports.positives_own', compact('patients','evolucion', 'communes'));
+        /* cálculo de positivos */
+
+
+        $from = Carbon::now()->subDays(30);
+        $to = Carbon::now();
+
+        $suspectcases = SuspectCase::where('pscr_sars_cov_2','positive')
+                                ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
+                                ->whereHas('patient', function ($q){
+                                    $q->whereHas('demographic', function ($q){
+                                        $q->whereIn('commune_id', Auth::user()->communes());
+                                    });
+                                })
+                                ->orderByDesc('sample_at')
+                                ->get();
+
+                                // dd($suspectcases);
+
+        foreach ($suspectcases as $key => $suspectcase) {
+            $positives[$suspectcase->pscr_sars_cov_2_at->format('d-m-Y')] = 0;
+        }
+
+        foreach ($suspectcases as $key => $suspectcase) {
+            $positives[$suspectcase->pscr_sars_cov_2_at->format('d-m-Y')] += 1;
+        }
+
+        // dd($positives);
+
+        /* Fin de cálculo de positivos */
+
+        return view('lab.suspect_cases.reports.positives_own', compact('patients','evolucion', 'communes', 'positives'));
 
     }
 
