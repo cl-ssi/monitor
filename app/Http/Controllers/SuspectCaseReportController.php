@@ -145,11 +145,11 @@ class SuspectCaseReportController extends Controller
 
         $suspectcases = SuspectCase::where('pscr_sars_cov_2','positive')
                                 ->whereBetween('pscr_sars_cov_2_at', [$from, $to])
-                                ->whereHas('patient', function ($q){
-                                    $q->whereHas('demographic', function ($q){
-                                        $q->whereIn('commune_id', Auth::user()->communes());
-                                    });
-                                })
+                                // ->whereHas('patient', function ($q){
+                                //     $q->whereHas('demographic', function ($q){
+                                //         $q->whereIn('commune_id', Auth::user()->communes());
+                                //     });
+                                // })
                                 ->orderByDesc('sample_at')
                                 ->get();
 
