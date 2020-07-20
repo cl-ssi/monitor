@@ -37,7 +37,7 @@
             <td nowrap>{{ $case->sample_at->format('d-m-Y') }}</td>
             <td nowrap>{{ $case->SentExternalAt }}</td>
             <td nowrap>{{ $case->ProcesingLab }}</td>
-            <td nowrap>{{ ($case->pscr_sars_cov_2_at)?$case->pscr_sars_cov_2_at->format('d-m-Y'):'' }}</td>
+            <td nowrap>{{ ($case->pcr_sars_cov_2_at)?$case->pcr_sars_cov_2_at->format('d-m-Y'):'' }}</td>
             <td nowrap>{{ $case->covid19 }}</td>
         </tr>
         @endforeach

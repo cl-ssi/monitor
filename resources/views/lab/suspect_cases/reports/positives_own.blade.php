@@ -17,6 +17,8 @@
 
         <div id="evolution" style="width: 480px; height: 400"></div>
 
+        <div id="positives" style="width: 480px; height: 400"></div>
+
         <!-- <table class="table table-sm table-bordered">
             <thead>
                 <tr>
@@ -102,7 +104,7 @@
                 </tr>
             </thead>
             <tbody>
-                
+
                 @foreach($communes as $commune)
                 <tr>
                     <td>{{ $commune->name }} ({{ $commune->population }}*)</td>
@@ -280,6 +282,7 @@
         </table>
 
         <div id="chart_ages" style="width: 400px; height: 400px"></div>
+
     </div>
 </div>
 
@@ -292,6 +295,7 @@
 
     google.charts.setOnLoadCallback(drawChartAges);
     google.charts.setOnLoadCallback(drawChartEvolution);
+    google.charts.setOnLoadCallback(drawChartPositives);
 
     function drawChartAges() {
         var data = new google.visualization.DataTable();
@@ -360,9 +364,46 @@
                 textPosition: '50',
             },
             chartArea: {'width': '80%', 'height': '80%'},
-
+            colors: ['#00ff00'],
         };
         var chart = new google.visualization.LineChart(document.getElementById('evolution'));
+        chart.draw(dataTable, options);
+    }
+
+    function drawChartPositives() {
+        var dataTable = new google.visualization.DataTable();
+        // dataTable.addColumn('number', 'Día');
+        dataTable.addColumn('date', 'Día');
+        dataTable.addColumn('number', 'Positivos');
+        // A column for custom tooltip content
+        dataTable.addColumn({type: 'string', role: 'tooltip'});
+        dataTable.addRows([
+            @foreach($positives as $key => $total)
+                [new Date({{\Carbon\Carbon::parse($key)->format('Y')}},
+                          {{\Carbon\Carbon::parse($key)->format('m')}},
+                          {{\Carbon\Carbon::parse($key)->format('d')}}),{{ $total }},'{{ $key }} ({{ $total }})'],
+            @endforeach
+        ]);
+
+        var options = {
+            title: "Cantidad de casos positivos - últimos 30 días",
+            curveType: 'function',
+            width: 380,
+            height: 400,
+            legend: { position: "none" },
+            backgroundColor: '#f8fafc',
+            hAxis: {
+                textStyle : {
+                    fontSize: 9 // or the number you want
+                },
+                gridlines:{count: {{ count($evolucion) }} },
+                textPosition: '50',
+                format: 'dd/MM/yyyy'
+            },
+            chartArea: {'width': '80%', 'height': '80%'},
+
+        };
+        var chart = new google.visualization.LineChart(document.getElementById('positives'));
         chart.draw(dataTable, options);
     }
 

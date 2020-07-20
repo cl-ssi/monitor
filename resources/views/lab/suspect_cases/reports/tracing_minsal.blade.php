@@ -170,8 +170,8 @@
                             <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->chronic_diseases : '' }}</td>
 
                             <td>
-                                @foreach($contact->patient->suspectCases->where('pscr_sars_cov_2', 'positive') as $suspectCase)
-                                    @if($suspectCase->pscr_sars_cov_2 == 'positive')
+                                @foreach($contact->patient->suspectCases->where('pcr_sars_cov_2', 'positive') as $suspectCase)
+                                    @if($suspectCase->pcr_sars_cov_2 == 'positive')
                                         SI
                                     @endif
                                 @endforeach

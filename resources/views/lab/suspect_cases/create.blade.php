@@ -157,14 +157,14 @@
     <div class="form-row">
 
         <fieldset class="form-group col-6 col-md-2 alert-danger">
-            <label for="for_pscr_sars_cov_2_at">Fecha Resultado PCR</label>
-            <input type="date" class="form-control" id="for_pscr_sars_cov_2_at"
-                name="pscr_sars_cov_2_at" max="{{ date('Y-m-d') }}">
+            <label for="for_pcr_sars_cov_2_at">Fecha Resultado PCR</label>
+            <input type="date" class="form-control" id="for_pcr_sars_cov_2_at"
+                name="pcr_sars_cov_2_at" max="{{ date('Y-m-d') }}">
         </fieldset>
 
         <fieldset class="form-group col-6 col-md-2 alert-danger">
-            <label for="for_pscr_sars_cov_2">PCR SARS-Cov2</label>
-            <select name="pscr_sars_cov_2" id="for_pscr_sars_cov_2"
+            <label for="for_pcr_sars_cov_2">PCR SARS-Cov2</label>
+            <select name="pcr_sars_cov_2" id="for_pcr_sars_cov_2"
                 class="form-control">
                 <option value="pending">Pendiente</option>
                 <option value="negative">Negativo</option>

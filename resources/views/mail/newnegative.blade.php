@@ -16,7 +16,7 @@
                     <br>
 
                     <p><strong>Resultado: {{ $suspectCase->Covid19 }}</strong></p>
-                    <p><strong>Fecha de resultado</strong>: {{ $suspectCase->pscr_sars_cov_2_at->format('d-m-Y') }}</p>
+                    <p><strong>Fecha de resultado</strong>: {{ $suspectCase->pcr_sars_cov_2_at->format('d-m-Y') }}</p>
                     <br>
 
                     @if($suspectCase->Covid19 == 'Positivo')

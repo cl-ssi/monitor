@@ -15,12 +15,12 @@
             <th>Comuna</th>
             <th>Nacionalidad</th>
             <th>Estado</th>
-            <th>Exámenes</th>            
+            <th>Exámenes</th>
         </tr>
     </thead>
     <tbody>
         @foreach($patients as $key => $patient)
-        <tr class="{{ ($covid = $patient->suspectCases->where('pscr_sars_cov_2','positive')->count() > 0)?'table-active':'' }}">
+        <tr class="{{ ($covid = $patient->suspectCases->where('pcr_sars_cov_2','positive')->count() > 0)?'table-active':'' }}">
             <td>{{ ++$key }}</td>
             <td>
                 <a href="{{ route('patients.edit', $patient)}}">
@@ -34,12 +34,12 @@
             <td>{{ $patient->status }}</td>
             <td>
                 @foreach($patient->suspectCases as $case)
-                <a href="{{ route('lab.suspect_cases.edit', $case) }}" target="_blank">                    
-                    {{ ($case->pscr_sars_cov_2_at)?$case->pscr_sars_cov_2_at->format('Y-m-d'):'' }}
+                <a href="{{ route('lab.suspect_cases.edit', $case) }}" target="_blank">
+                    {{ ($case->pcr_sars_cov_2_at)?$case->pcr_sars_cov_2_at->format('Y-m-d'):'' }}
                     {{ $case->covid19 }}
                 </a> <br>
                 @endforeach
-            </td>            
+            </td>
         </tr>
         @endforeach
     </tbody>

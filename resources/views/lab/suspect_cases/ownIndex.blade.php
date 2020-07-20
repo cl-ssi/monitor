@@ -22,11 +22,11 @@
     <tbody>
         <tr class="text-center">
             <td>{{ $suspectCasesTotal->count() }}</td>
-            <th class="text-danger">{{ $suspectCasesTotal->where('pscr_sars_cov_2','positive')->count() }}</th>
-            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','negative')->count() }}</td>
-            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','pending')->count() }}</td>
-            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','rejected')->count() }}</td>
-            <td>{{ $suspectCasesTotal->where('pscr_sars_cov_2','undetermined')->count() }}</td>
+            <th class="text-danger">{{ $suspectCasesTotal->where('pcr_sars_cov_2','positive')->count() }}</th>
+            <td>{{ $suspectCasesTotal->where('pcr_sars_cov_2','negative')->count() }}</td>
+            <td>{{ $suspectCasesTotal->where('pcr_sars_cov_2','pending')->count() }}</td>
+            <td>{{ $suspectCasesTotal->where('pcr_sars_cov_2','rejected')->count() }}</td>
+            <td>{{ $suspectCasesTotal->where('pcr_sars_cov_2','undetermined')->count() }}</td>
         </tr>
     </tbody>
 </table>
@@ -105,7 +105,7 @@
     </thead>
     <tbody id="tableCases">
         @foreach($suspectCases->sortByDesc('created_at') as $case)
-        <tr class="row_{{$case->covid19}} {{ ($case->pscr_sars_cov_2 == 'positive')?'table-danger':''}}">
+        <tr class="row_{{$case->covid19}} {{ ($case->pcr_sars_cov_2 == 'positive')?'table-danger':''}}">
             <td class="text-center">
                 {{ $case->id }}<br>
                 <small>{{ ($case->laboratory) ? $case->laboratory->alias : ''}}</small>
@@ -144,7 +144,7 @@
                     </a>
                     @endif
 
-                    @if ($case->laboratory->pdf_generate == 1 && $case->pscr_sars_cov_2 <> 'pending')
+                    @if ($case->laboratory->pdf_generate == 1 && $case->pcr_sars_cov_2 <> 'pending')
                     <a href="{{ route('lab.print', $case) }}"
                         target="_blank"><i class="fas fa-paperclip"></i>&nbsp
                     </a>
