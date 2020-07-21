@@ -534,21 +534,29 @@
 
             $("#for_sample_type").change(function(){
                 var selectedSampleType = $(this).children("option:selected").val();
-                if(selectedSampleType ==='TÓRULAS NASOFARÍNGEAS')
-                {
+                if (selectedSampleType === 'TÓRULAS NASOFARÍNGEAS') {
                     $('#for_result_ifd').val('No solicitado');
                     $('#for_result_ifd option:not(:selected)').attr('disabled', 'disabled');
 
                     $('#for_result_ifd_at').attr('disabled', 'disabled');
                     $('#for_subtype').attr('disabled', 'disabled');
-                }
-                else
-                {
+                } else {
                     $('#for_result_ifd_at').removeAttr('disabled', 'disabled');
                     $('#for_result_ifd option').removeAttr('disabled', 'disabled');
                     $('#for_subtype').removeAttr('disabled', 'disabled');
                 }
             });
+
+            $("#for_pcr_sars_cov_2").change(function(){
+                var selectedPcrSarsCov2 = $(this).children("option:selected").val();
+                if(selectedPcrSarsCov2 === 'pending'){
+                    $('#for_pcr_sars_cov_2_at').prop('required',false);
+                }
+                else{
+                    $('#for_pcr_sars_cov_2_at').prop('required',true);
+                }
+            });
+
         });
 
         $('input[type="file"]').change(function (e) {
