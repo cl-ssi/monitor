@@ -889,6 +889,14 @@ class SuspectCaseReportController extends Controller
         return view('lab.suspect_cases.reports.user_performance', compact('users', 'request', 'events', 'events_resume'));
     }
 
+    public function pendingMoreThanTwoDays(){
+        $suspectCases = SuspectCase::where('pcr_sars_cov_2', 'pending')
+            ->where('reception_at', '<=', Carbon::now()->subDays(2))
+            ->get();
+
+        return view('lab.suspect_cases.reports.pending_more_than_two_days', compact('suspectCases'));
+    }
+
 
     /**
      * Listado de Casos Sospechosos que no han sido

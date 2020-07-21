@@ -191,6 +191,11 @@ class PermissionSeeder extends Seeder
         ]);
 
         $permission = Permission::create([
+            'name' => 'Report: more than two days',
+            'description' => 'Reporte de casos pendientes mayor a 48 horas'
+        ]);
+
+        $permission = Permission::create([
             'name' => 'Epp: list',
             'description' => 'Movimientos de EPP'
         ]);
