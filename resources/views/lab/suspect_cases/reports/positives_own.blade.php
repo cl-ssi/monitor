@@ -364,7 +364,6 @@
                 textPosition: '50',
             },
             chartArea: {'width': '80%', 'height': '80%'},
-            colors: ['#00ff00'],
         };
         var chart = new google.visualization.LineChart(document.getElementById('evolution'));
         chart.draw(dataTable, options);
