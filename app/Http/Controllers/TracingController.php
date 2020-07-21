@@ -470,6 +470,7 @@ class TracingController extends Controller
         $tracingsWithoutEvents =
             Tracing::where('quarantine_start_at','<=',now())
                    ->where('quarantine_end_at','>=',now())
+                   ->where('status',1)
                    ->whereDoesntHave('events')
                    ->orderBy('quarantine_start_at')
                    ->get();
