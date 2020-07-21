@@ -40,8 +40,8 @@ class SuspectCaseReportController extends Controller
         }
 
         /* Calculo de gráfico de evolución */
-        $begin = SuspectCase::where('pcr_sars_cov_2','positive')->orderBy('sample_at')->first()->sample_at;
-        $end   = SuspectCase::where('pcr_sars_cov_2','positive')->orderByDesc('sample_at')->first()->sample_at;
+        $begin = SuspectCase::where('pcr_sars_cov_2','positive')->orderBy('sample_at')->first()->sample_at->startOfDay();
+        $end   = SuspectCase::where('pcr_sars_cov_2','positive')->orderByDesc('sample_at')->first()->sample_at->endOfDay();
 
 //        $communes = Region::find(env('REGION'))->communes;
 
