@@ -294,6 +294,10 @@
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.hospitalized') }}">Hospitalizados</a>
                                 @endcan
 
+                                @can('Report: hospitalized commune')
+                                    <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.hospitalizedByUserCommunes') }}">Hospitalizados de mis comunas</a>
+                                @endcan
+
                                 @can('Report: deceased')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.deceased') }}">Fallecidos</a>
                                 @endcan

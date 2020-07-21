@@ -813,6 +813,30 @@ class SuspectCaseReportController extends Controller
     }
 
     /*****************************************************/
+    /*     REPORTE HOSPITALIZADOS POR COMUNAS USUARIO    */
+    /*****************************************************/
+    public function hospitalizedByUserCommunes() {
+
+        $patients = Patient::whereHas('suspectCases', function ($q) {
+            $q->where('pcr_sars_cov_2','positive');
+        })->whereIn('status',[
+            'Hospitalizado Básico',
+            'Hospitalizado Medio',
+            'Hospitalizado UTI',
+            'Hospitalizado UCI',
+            'Hospitalizado UCI (Ventilador)'
+        ])->whereHas('demographic', function ($q){
+            $q->whereIn('commune_id', auth()->user()->communes());
+        })
+            ->orderBy('status')
+            ->get();
+
+        $byUserCommune = true;
+
+        return view('lab.suspect_cases.reports.hospitalized', compact('patients', 'byUserCommune'));
+    }
+
+    /*****************************************************/
     /*            REPORTE FALLECIDOS                     */
     /*****************************************************/
     public function deceased() {
