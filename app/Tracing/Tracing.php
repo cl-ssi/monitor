@@ -45,7 +45,8 @@ class Tracing extends Model  implements Auditable
      * @var array
      */
     protected $dates = [
-        'notification_at', 'next_control_at','symptoms_start_at','symptoms_end_at','quarantine_start_at','quarantine_end_at'
+        'discharged_at', 'notification_at', 'next_control_at','symptoms_start_at',
+        'symptoms_end_at','quarantine_start_at','quarantine_end_at'
     ];
 
     public function events() {
@@ -76,27 +77,38 @@ class Tracing extends Model  implements Auditable
 
     }
 
-    public function getFlagRiskAttribute(){
-        if(is_null($this->risk_rating) )
-        {
-            return'';
+    /* WTF */
+    // public function getFlagRiskAttribute(){
+    //     if(is_null($this->risk_rating) )
+    //     {
+    //         return'';
+    //
+    //     }
+    //     else{
+    //     switch($this->risk_rating) {
+    //         case 0: return '<i class="fas fa-flag" style="color:#28a745;"></i>'; break;
+    //         case 1: return '<i class="fas fa-flag" style="color:#ffc107;"></i>'; break;
+    //         case 2: return '<i class="fas fa-flag" style="color:#dc3545;"></i>'; break;
+    //         }
+    //     }
+    // }
 
-        }
-        else{
-        switch($this->risk_rating) {                        
+    public function getFlagRiskAttribute(){
+        if(is_null($this->risk_rating))
+            return '';
+        switch($this->risk_rating) {
             case 0: return '<i class="fas fa-flag" style="color:#28a745;"></i>'; break;
             case 1: return '<i class="fas fa-flag" style="color:#ffc107;"></i>'; break;
             case 2: return '<i class="fas fa-flag" style="color:#dc3545;"></i>'; break;
-            }
-        }   
-      }
+        }
+    }
 
     public function getIndexDescAttribute(){
-      switch($this->index) {
-          case 0: return 'CAR'; break;
-          case 1: return 'Indice'; break;
-          case 2: return 'Probable'; break;
-      }
+        switch($this->index) {
+            case 0: return 'CAR'; break;
+            case 1: return 'Indice'; break;
+            case 2: return 'Probable'; break;
+        }
     }
 
     public function getRequiresLicenceDescAttribute(){

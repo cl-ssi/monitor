@@ -26,15 +26,15 @@
 <div class="form-row">
 
     <fieldset class="form-group col-6 col-md-3 alert-danger">
-        <label for="for_pscr_sars_cov_2_at">Fecha Resultado PCR</label>
-        <input type="datetime-local" class="form-control" id="for_pscr_sars_cov_2_at"
-               value="{{ isset($suspectCase->pscr_sars_cov_2_at)? $suspectCase->pscr_sars_cov_2_at->format('Y-m-d\TH:i:s'):'' }}"
+        <label for="for_pcr_sars_cov_2_at">Fecha Resultado PCR</label>
+        <input type="datetime-local" class="form-control" id="for_pcr_sars_cov_2_at"
+               value="{{ isset($suspectCase->pcr_sars_cov_2_at)? $suspectCase->pcr_sars_cov_2_at->format('Y-m-d\TH:i:s'):'' }}"
                disabled>
     </fieldset>
 
     <fieldset class="form-group col-6 col-md-2 alert-danger">
-        <label for="for_pscr_sars_cov_2">PCR SARS-Cov2</label>
-        <select id="for_pscr_sars_cov_2" class="form-control" disabled>
+        <label for="for_pcr_sars_cov_2">PCR SARS-Cov2</label>
+        <select id="for_pcr_sars_cov_2" class="form-control" disabled>
             <option>{{ $suspectCase->covid19 }}</option>
         </select>
     </fieldset>

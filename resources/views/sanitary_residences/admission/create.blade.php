@@ -47,7 +47,7 @@
 
 
     <div class="form-row">
-        
+
 
         <fieldset class="form-group col-2 col-md-2">
             <label for="for_name">Telefono</label>
@@ -61,16 +61,16 @@
 
         <fieldset class="form-group col-4 col-md-4">
             <label for="for_name">Fecha de Confirmación de COVID 19- Positivo</label>
-            <input type="text" class="form-control" name="name" id="for_name" required placeholder="" autocomplete="off" @if($patient->suspectCases) value="{{ ($patient->suspectCases->where('pscr_sars_cov_2', 'positive')->last())? $patient->suspectCases->where('pscr_sars_cov_2', 'positive')->last()->pscr_sars_cov_2_at:''  }}" @endif readonly>
+            <input type="text" class="form-control" name="name" id="for_name" required placeholder="" autocomplete="off" @if($patient->suspectCases) value="{{ ($patient->suspectCases->where('pcr_sars_cov_2', 'positive')->last())? $patient->suspectCases->where('pcr_sars_cov_2', 'positive')->last()->pcr_sars_cov_2_at:''  }}" @endif readonly>
         </fieldset>
 
         <fieldset class="form-group col-3 col-md-3">
             <label for="for_address">Centro de Salud de Origen</label>
-            <input type="text" class="form-control" name="address" id="for_address" required placeholder="" autocomplete="off" value="{{ ($patient->suspectCases->where('pscr_sars_cov_2', 'positive')->last())? $patient->suspectCases->where('pscr_sars_cov_2', 'positive')->last()->origin:''  }}" readonly>
+            <input type="text" class="form-control" name="address" id="for_address" required placeholder="" autocomplete="off" value="{{ ($patient->suspectCases->where('pcr_sars_cov_2', 'positive')->last())? $patient->suspectCases->where('pcr_sars_cov_2', 'positive')->last()->origin:''  }}" readonly>
         </fieldset>
 
 
-        
+
     </div>
 
     <div class="form-row">
@@ -83,9 +83,9 @@
         <fieldset class="form-group col-3 col-md-3">
             <label for="for_address">Telefono(s) Contacto Emergencia</label>
             <input type="text" class="form-control" name="contactnumber" id="for_contactnumber" placeholder="" autocomplete="off">
-        </fieldset>      
+        </fieldset>
 
-        
+
 
     </div>
     <div class="form-row">
@@ -151,7 +151,7 @@
     <hr>
 
     <div id="dvPinNo" style="display: none">
-    
+
         <h5 class="mb-6">Criterios de Inclusión/Exclusión</h5>
         <table class="table table-sm table-bordered">
             <thead>
@@ -199,10 +199,10 @@
                 </tr>
             </tbody>
         </table>
-        <hr>    
+        <hr>
     </div>
 
-    
+
     <div class="form-check">
             <h5 class="mb-6">¿CALIFICA RESIDENCIA?</h5>
             <input class="form-check-input" type="radio" name="residency" id="exampleRadios1" value="1" required>

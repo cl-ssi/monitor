@@ -53,22 +53,22 @@ class AdmissionSurvey extends Model implements Auditable //Authenticatable
     function getResultAttribute(){
         if ($this->isolate == 1 and $this->residency == 1)
         {
-                 return '<span class="bg-success text-white">SE PUEDE AISLAR</span> <span class="bg-danger text-white"><br> CALIFICADOR APRUEBA R.S. </span>';
+                 return '<span class="text-success">SE PUEDE AISLAR</span> <span class="text-danger"><br> CALIFICADOR APRUEBA R.S. </span>';
         }
 
         if ($this->isolate == 1 and $this->residency == 0)
         {
-                 return '<span class="bg-success text-white">SE PUEDE AISLAR<br>  CALIFICADOR RECHAZA R.S. </span>';
+                 return '<span class="text-success">SE PUEDE AISLAR<br>  CALIFICADOR RECHAZA R.S. </span>';
         }
 
         if ($this->isolate == 0 and $this->residency == 1)
         {
-            return '<span class="bg-danger text-white">NO SE PUEDE AISLAR <br> CALIFICADOR APRUEBA R.S. </span>';
+            return '<span class="text-danger">NO SE PUEDE AISLAR <br> CALIFICADOR APRUEBA R.S. </span>';
         }
 
         if ($this->isolate == 0 and $this->residency == 0)
         {
-            return '<span class="bg-danger text-white">NO SE PUEDE AISLAR </span> <span class="bg-success text-white"><br>CALIFICADOR RECHAZA R.S. </span></></spam>';
+            return '<span class="text-danger">NO SE PUEDE AISLAR </span> <span class="text-success"><br>CALIFICADOR RECHAZA R.S. </span></></span>';
         }
         
     }

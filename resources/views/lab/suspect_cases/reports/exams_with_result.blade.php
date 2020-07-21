@@ -30,7 +30,7 @@
                         @endif
                     </td>
                     <td>{{ $suspectCase->sample_at }}</td>
-                    <td>{{ $suspectCase->pscr_sars_cov_2_at }}</td>
+                    <td>{{ $suspectCase->pcr_sars_cov_2_at }}</td>
                     <td>
                         <a href="{{ route('lab.suspect_cases.download', $suspectCase->id) }}"
                            target="_blank" data-toggle="tooltip" data-placement="top"

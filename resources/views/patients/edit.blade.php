@@ -305,7 +305,7 @@
                             </td>
                             <td>{{ $case->establishment?$case->establishment->alias.' - '.$case->origin: '' }}</td>
                             <td>{{ $case->sample_at }}</td>
-                            <td>{{ $case->pscr_sars_cov_2_at }}</td>
+                            <td>{{ $case->pcr_sars_cov_2_at }}</td>
                             <td>{{ $case->covid19 }}
                                 @if($case->file)
                                 <a href="{{ route('lab.suspect_cases.download', $case->id) }}"
@@ -314,7 +314,7 @@
                                 @endif
 
                                 @if ($case->laboratory)
-                                @if ($case->laboratory->pdf_generate == 1 && $case->pscr_sars_cov_2 <> 'pending')
+                                @if ($case->laboratory->pdf_generate == 1 && $case->pcr_sars_cov_2 <> 'pending')
                                 <a href="{{ route('lab.print', $case) }}"
                                     target="_blank"><i class="fas fa-paperclip"></i>&nbsp
                                 </a>

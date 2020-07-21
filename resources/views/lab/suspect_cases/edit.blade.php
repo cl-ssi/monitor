@@ -193,33 +193,33 @@
             <div class="form-row">
 
                 <fieldset class="form-group col-6 col-md-3 alert-danger">
-                    <label for="for_pscr_sars_cov_2_at">Fecha Resultado PCR</label>
-                    <input type="datetime-local" class="form-control" id="for_pscr_sars_cov_2_at"
-                           name="pscr_sars_cov_2_at"
-                           value="{{ isset($suspectCase->pscr_sars_cov_2_at)? $suspectCase->pscr_sars_cov_2_at->format('Y-m-d\TH:i:s'):'' }}"
-                           max="{{ date('Y-m-d\T23:59:59') }}"
-                           @if(($suspectCase->pscr_sars_cov_2_at AND auth()->user()->cannot('SuspectCase: tecnologo edit'))) disabled @endif>
+                    <label for="for_pcr_sars_cov_2_at">Fecha Resultado PCR</label>
+                    <input type="datetime-local" class="form-control" id="for_pcr_sars_cov_2_at"
+                           name="pcr_sars_cov_2_at"
+                           value="{{ isset($suspectCase->pcr_sars_cov_2_at)? $suspectCase->pcr_sars_cov_2_at->format('Y-m-d\TH:i:s'):'' }}"
+                           min="{{ date('Y-m-d\TH:i', strtotime("-4 week")) }}" max="{{ date('Y-m-d\T23:59:59') }}"
+                           @if(($suspectCase->pcr_sars_cov_2_at AND auth()->user()->cannot('SuspectCase: tecnologo edit'))) disabled @endif>
                 </fieldset>
 
                 <fieldset class="form-group col-6 col-md-2 alert-danger">
-                    <label for="for_pscr_sars_cov_2">PCR SARS-Cov2</label>
-                    <select name="pscr_sars_cov_2" id="for_pscr_sars_cov_2"
+                    <label for="for_pcr_sars_cov_2">PCR SARS-Cov2</label>
+                    <select name="pcr_sars_cov_2" id="for_pcr_sars_cov_2"
                             class="form-control"
-                            @if(($suspectCase->pscr_sars_cov_2 != 'pending' AND auth()->user()->cannot('SuspectCase: tecnologo edit'))) disabled @endif>
-                        <option value="pending" {{ ($suspectCase->pscr_sars_cov_2 == 'pending')?'selected':'' }}>
+                            @if(($suspectCase->pcr_sars_cov_2 != 'pending' AND auth()->user()->cannot('SuspectCase: tecnologo edit'))) disabled @endif>
+                        <option value="pending" {{ ($suspectCase->pcr_sars_cov_2 == 'pending')?'selected':'' }}>
                             Pendiente
                         </option>
-                        <option value="negative" {{ ($suspectCase->pscr_sars_cov_2 == 'negative')?'selected':'' }}>
+                        <option value="negative" {{ ($suspectCase->pcr_sars_cov_2 == 'negative')?'selected':'' }}>
                             Negativo
                         </option>
-                        <option value="positive" {{ ($suspectCase->pscr_sars_cov_2 == 'positive')?'selected':'' }}>
+                        <option value="positive" {{ ($suspectCase->pcr_sars_cov_2 == 'positive')?'selected':'' }}>
                             Positivo
                         </option>
-                        <option value="rejected" {{ ($suspectCase->pscr_sars_cov_2 == 'rejected')?'selected':'' }}>
+                        <option value="rejected" {{ ($suspectCase->pcr_sars_cov_2 == 'rejected')?'selected':'' }}>
                             Rechazado
                         </option>
                         <option
-                            value="undetermined" {{ ($suspectCase->pscr_sars_cov_2 == 'undetermined')?'selected':'' }}>
+                            value="undetermined" {{ ($suspectCase->pcr_sars_cov_2 == 'undetermined')?'selected':'' }}>
                             Indeterminado
                         </option>
                     </select>
@@ -469,7 +469,7 @@
                 </td>
                 <td>{{ ($case->establishment) ? $case->establishment->alias : '' }}</td>
                 <td>{{ $case->sample_at }}</td>
-                <td>{{ $case->pscr_sars_cov_2_at }}</td>
+                <td>{{ $case->pcr_sars_cov_2_at }}</td>
                 <td>{{ $case->covid19 }}</td>
                 <td>{{ $case->epivigila }}</td>
                 <td>{{ $case->observation }}</td>
@@ -522,6 +522,41 @@
                 alert("Solo se permite adjuntar un archivo.");
                 @endif
             });
+
+            var selectedSampleType = $("#for_sample_type").children("option:selected").val();
+            if(selectedSampleType ==='TÓRULAS NASOFARÍNGEAS')
+            {
+                $('#for_result_ifd_at').attr('disabled', 'disabled');
+                $('#for_result_ifd').val('No solicitado');
+                $('#for_result_ifd option:not(:selected)').attr('disabled', 'disabled');
+                $('#for_subtype').attr('disabled', 'disabled');
+            }
+
+            $("#for_sample_type").change(function(){
+                var selectedSampleType = $(this).children("option:selected").val();
+                if (selectedSampleType === 'TÓRULAS NASOFARÍNGEAS') {
+                    $('#for_result_ifd').val('No solicitado');
+                    $('#for_result_ifd option:not(:selected)').attr('disabled', 'disabled');
+
+                    $('#for_result_ifd_at').attr('disabled', 'disabled');
+                    $('#for_subtype').attr('disabled', 'disabled');
+                } else {
+                    $('#for_result_ifd_at').removeAttr('disabled', 'disabled');
+                    $('#for_result_ifd option').removeAttr('disabled', 'disabled');
+                    $('#for_subtype').removeAttr('disabled', 'disabled');
+                }
+            });
+
+            $("#for_pcr_sars_cov_2").change(function(){
+                var selectedPcrSarsCov2 = $(this).children("option:selected").val();
+                if(selectedPcrSarsCov2 === 'pending'){
+                    $('#for_pcr_sars_cov_2_at').prop('required',false);
+                }
+                else{
+                    $('#for_pcr_sars_cov_2_at').prop('required',true);
+                }
+            });
+
         });
 
         $('input[type="file"]').change(function (e) {

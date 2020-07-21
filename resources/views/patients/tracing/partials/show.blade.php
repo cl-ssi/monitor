@@ -50,7 +50,7 @@
                     <fieldset class="form-group col-8 col-sm-5 col-md-3 col-lg-2">
                         <label for="for_discharged_at">Fecha alta médica</label>
                         <input type="date" class="form-control" name="discharged_at"
-                               id="for_discharged_at" value="{{ $patient->tracing->discharged_at }}">
+                               id="for_discharged_at" value="{{ ($patient->tracing->discharged_at) ? $patient->tracing->discharged_at->format('Y-m-d') : '' }}">
                     </fieldset>
 
                 </div>
