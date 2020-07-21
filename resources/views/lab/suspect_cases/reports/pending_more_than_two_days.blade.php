@@ -11,6 +11,7 @@
     <table class="table table-sm table-bordered table-striped small">
       <thead>
         <tr class="text-center">
+          <th></th>
           <th>Monitor #</th>
           <th>Fecha de Recepción</th>
           <th>Origen</th>
@@ -23,9 +24,10 @@
       </thead>
       <tbody>
         @foreach($suspectCases as $key => $suspectCase)
-        <tr>
+        <tr class="text-right">
           <td>{{ $key + 1 }}</td>
-          <td>{{ $suspectCase->reception_at }}</td>
+          <td>{{ $suspectCase->id }}</td>
+          <td>{{ $suspectCase->reception_at->format('d-m-Y H:i:s') }}</td>
           <td>{{ ($suspectCase->establishment) ? $suspectCase->establishment->alias . ' - ': '' }} {{ $suspectCase->origin }}</td>
           <td>{{ $suspectCase->patient->fullName }}</td>
           <td>{{ $suspectCase->patient->identifier }}</td>
