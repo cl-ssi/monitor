@@ -8,10 +8,10 @@
         <div class="col-md-2">
             <img src="{{ asset('/images/256px_logo_isp.png') }}" class="img-fluid" alt="Instituto de Salud Pública de Chile" width="70%">
         </div>
-        <div class="col-md-8">
+        <div class="col-md-10">
             <h3 class="mb-3">Formulario notificación inmediata y envío de muestras
-                a confirmación IRA grave y 2019-nCoV </h3>
-            <h4 class="mb3">Número de ingreso: {{$suspectCase->id}}</h4>
+                <br>a confirmación IRA grave y 2019-nCoV </h3><input type="button" class="d-print-none" value="Imprimir" onclick="javascript:window.print()">
+            <h3 class="mb3 float-right"> Número de ingreso: {{$suspectCase->id}}</h3>
         </div>
         <div class="col-md-2"></div>
     </div>
