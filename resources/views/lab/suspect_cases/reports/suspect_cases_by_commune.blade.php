@@ -36,13 +36,13 @@
     </div>
 
     <div class="form-group ml-3">
-        <a class="btn btn-outline-success" id="downloadLink" onclick="download_table_as_csv('tabla_positivos_por_fecha');">Descargar en excel</a>
+        <a class="btn btn-outline-success" id="downloadLink" onclick="download_table_as_csv('tabla_examenes_por_comuna');">Descargar en excel</a>
     </div>
 </form>
 
 
 <div class="table-responsive">
-    <table class="table table-sm table-bordered table-responsive small" id="tabla_positivos_por_fecha">
+    <table class="table table-sm table-bordered table-responsive small" id="tabla_examenes_por_comuna">
         <thead>
             <td>°</td>
             <th nowrap>id</th>
