@@ -120,7 +120,7 @@
                             <td>{{ ($contact->patient->demographic)? $contact->patient->demographic->suburb : '' }}</td>
                             <td>{{ ($contact->patient->demographic)? $contact->patient->demographic->email : '' }}</td>
                             <td>{{ ($contact->patient->demographic)? $contact->patient->demographic->commune->name : '' }}</td>
-                            <td>{{ ($contact->patient->demographic)? $contact->patient->demographic->region->name }}</td>
+                            <td>{{ ($contact->patient->demographic)? $contact->patient->demographic->region->name : '' }}</td>
                             <td>{{ $contact->last_contact_at }}</td>
 
                             @if($contact->patient->tracing)
