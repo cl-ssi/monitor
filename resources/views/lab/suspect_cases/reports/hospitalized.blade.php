@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'Listado de hospitalizados')
+@section('title', 'Listado de hospitalizados' . (isset($byUserCommune) ? ' en mis comunas' : ''))
 
 @section('content')
-<h3 class="mb-3">Listado de hospitalizados</h3>
+<h3 class="mb-3">Listado de hospitalizados {{isset($byUserCommune) ? 'en mis comunas' : '' }} </h3>
 
 <table class="table table-sm table-bordered">
     <thead>

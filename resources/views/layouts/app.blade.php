@@ -272,7 +272,8 @@
                         'Report: positives demographics',
                         'Report: residences',
                         'Report: positives by range',
-                        'Report: user performance'
+                        'Report: user performance',
+                        'Report: more than two days'
                         ])
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -291,6 +292,10 @@
 
                                 @can('Report: hospitalized')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.hospitalized') }}">Hospitalizados</a>
+                                @endcan
+
+                                @can('Report: hospitalized commune')
+                                    <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.hospitalizedByUserCommunes') }}">Hospitalizados de mis comunas</a>
                                 @endcan
 
                                 @can('Report: deceased')
@@ -334,6 +339,10 @@
 
                                 @can('Report: user performance')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.user_performance') }}">Reporte de rendimiento usuario</a>
+                                @endcan
+
+                                @can('Report: more than two days')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.pending_more_than_two_days') }}">Reporte de casos pendientes mayores a 48 hrs.</a>
                                 @endcan
 
                             </div>

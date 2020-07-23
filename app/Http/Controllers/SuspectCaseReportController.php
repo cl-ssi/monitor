@@ -40,8 +40,8 @@ class SuspectCaseReportController extends Controller
         }
 
         /* Calculo de gráfico de evolución */
-        $begin = SuspectCase::where('pcr_sars_cov_2','positive')->orderBy('sample_at')->first()->sample_at;
-        $end   = SuspectCase::where('pcr_sars_cov_2','positive')->orderByDesc('sample_at')->first()->sample_at;
+        $begin = SuspectCase::where('pcr_sars_cov_2','positive')->orderBy('sample_at')->first()->sample_at->startOfDay();
+        $end   = SuspectCase::where('pcr_sars_cov_2','positive')->orderByDesc('sample_at')->first()->sample_at->endOfDay();
 
 //        $communes = Region::find(env('REGION'))->communes;
 
@@ -813,6 +813,30 @@ class SuspectCaseReportController extends Controller
     }
 
     /*****************************************************/
+    /*     REPORTE HOSPITALIZADOS POR COMUNAS USUARIO    */
+    /*****************************************************/
+    public function hospitalizedByUserCommunes() {
+
+        $patients = Patient::whereHas('suspectCases', function ($q) {
+            $q->where('pcr_sars_cov_2','positive');
+        })->whereIn('status',[
+            'Hospitalizado Básico',
+            'Hospitalizado Medio',
+            'Hospitalizado UTI',
+            'Hospitalizado UCI',
+            'Hospitalizado UCI (Ventilador)'
+        ])->whereHas('demographic', function ($q){
+            $q->whereIn('commune_id', auth()->user()->communes());
+        })
+            ->orderBy('status')
+            ->get();
+
+        $byUserCommune = true;
+
+        return view('lab.suspect_cases.reports.hospitalized', compact('patients', 'byUserCommune'));
+    }
+
+    /*****************************************************/
     /*            REPORTE FALLECIDOS                     */
     /*****************************************************/
     public function deceased() {
@@ -887,6 +911,14 @@ class SuspectCaseReportController extends Controller
         /* ----------------------------------------------------------------- */
 
         return view('lab.suspect_cases.reports.user_performance', compact('users', 'request', 'events', 'events_resume'));
+    }
+
+    public function pendingMoreThanTwoDays(){
+        $suspectCases = SuspectCase::where('pcr_sars_cov_2', 'pending')
+            ->where('reception_at', '<=', Carbon::now()->subDays(2))
+            ->get();
+
+        return view('lab.suspect_cases.reports.pending_more_than_two_days', compact('suspectCases'));
     }
 
 

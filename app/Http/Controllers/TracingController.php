@@ -254,18 +254,24 @@ class TracingController extends Controller
      */
     public function store(Request $request)
     {
-        $tracing = new tracing($request->All());
-        $tracing->user_id = auth()->id();
-        //$tracing->status = 1;
-        $tracing->next_control_at = Carbon::now();
-        $tracing->quarantine_start_at = Carbon::now();
-        $tracing->quarantine_end_at = Carbon::now()->add(13, 'days');
-        $tracing->save();
+        $patient = Patient::find($request->patient_id);
 
+        if ($patient->tracing) {
+            $tracing = $patient->tracing;
+            $tracing->fill($request->all());
+            $tracing->save();
+            session()->flash('info', 'Los datos de seguimiento se actualizaron');
+        } else {
+            $tracing = new tracing($request->All());
+            $tracing->user_id = auth()->id();
+            //$tracing->status = 1;
+            $tracing->next_control_at = Carbon::now();
+            $tracing->quarantine_start_at = Carbon::now();
+            $tracing->quarantine_end_at = Carbon::now()->add(13, 'days');
+            $tracing->save();
+        }
         return redirect()->back();
     }
-
-
 
     public function reportByCommune(Request $request)
     {
@@ -470,6 +476,7 @@ class TracingController extends Controller
         $tracingsWithoutEvents =
             Tracing::where('quarantine_start_at','<=',now())
                    ->where('quarantine_end_at','>=',now())
+                   ->where('status',1)
                    ->whereDoesntHave('events')
                    ->orderBy('quarantine_start_at')
                    ->get();

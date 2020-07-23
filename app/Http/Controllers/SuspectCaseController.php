@@ -857,24 +857,43 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.reception_inbox', compact('suspectCases', 'establishments', 'selectedEstablishment'));
     }
 
-    public function exportExcel($cod_lab){
-//    public function exportExcel(Request $request, $cod_lab){
+//    public function exportExcel($cod_lab){
+////    public function exportExcel(Request $request, $cod_lab){
+//
+//        //        return Excel::download(new SuspectCasesExport($cod_lab, $request->get('date_filter')), 'lista-examenes.xlsx');
+//        return Excel::download(new SuspectCasesExport($cod_lab), 'lista-examenes.xlsx');
+//    }
 
-        //        return Excel::download(new SuspectCasesExport($cod_lab, $request->get('date_filter')), 'lista-examenes.xlsx');
-        return Excel::download(new SuspectCasesExport($cod_lab), 'lista-examenes.xlsx');
-    }
-
-    public function exportAllCasesCsv(){
+    public function exportExcel($cod_lab, $date = null){
         $headers = array(
             "Content-type" => "text/csv",
-            "Content-Disposition" => "attachment; filename=allCases.csv",
+            "Content-Disposition" => "attachment; filename=lista-examenes.csv",
             "Pragma" => "no-cache",
             "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
             "Expires" => "0"
         );
 
-        $filas = SuspectCase::orderBy('suspect_cases.id', 'desc')
-            ->get();
+        $filas = null;
+        if ($cod_lab == 'own') {
+            $filas = SuspectCase::where(function ($q) {
+                $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
+                    ->orWhere('user_id', Auth::user()->id);
+            })->orderBy('suspect_cases.id', 'desc')->get();
+
+        } elseif ($cod_lab == 'all') {
+            $month = Carbon::parse($date)->month;
+            $year = Carbon::parse($date)->year;
+
+            $filas = SuspectCase::whereYear('sample_at', '=', $year)
+                ->whereMonth('sample_at', '=', $month)
+                ->orderBy('suspect_cases.id', 'desc')
+                ->get();
+
+        } else {
+            $filas = SuspectCase::where('laboratory_id', $cod_lab)
+                ->orderBy('suspect_cases.id', 'desc')
+                ->get();
+        }
 
         $columnas = array(
             '#',
