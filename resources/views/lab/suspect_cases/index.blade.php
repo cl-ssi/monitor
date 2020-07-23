@@ -75,39 +75,26 @@
   </div><!---END COL 1 PRINCIPAL--->
 
 @else
-{{--    <form method="POST" action="{{route('lab.suspect_cases.export', 'all')}}" target="_blank">--}}
-{{--        @method('POST')--}}
-{{--        @csrf--}}
-{{--        <div class="row">--}}
-{{--            <div class="col-5 col-sm-3">--}}
-{{--                <input type="month" class="form-control" id="for_date_filter" name="date_filter" required>--}}
-{{--            </div>--}}
-{{--            <div class="col-5 col-sm-3">--}}
-{{--                <button type="submit" class="btn btn-success">Descargar <i class="far fa-file-excel"></i></button>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </form>--}}
-{{--    <div class="row">--}}
-{{--        <div class="col-5 col-sm-3">--}}
-{{--            <input type="month" class="form-control" id="for_month" name="month" required> --}}
-{{--        </div>--}}
-{{--        <div class="col-5 col-sm-3">--}}
     <div class="row row align-items-end"> <!---START ROW PRINCIPAL--->
-      <div class="col-12 col-sm-12 col-md-6"> <!-- START COL 1 PRINCIPAL -->
-          <div class="row align-items-end">
-            <div class="col-12 col-sm-12">
-            <a type="button" class="btn btn-success btn-sm mb-3" href="{{ route('lab.suspect_cases.export', 'all') }}">Descargar <i class="far fa-file-excel"></i></a>
-        </div>
-      </div><!---END row--->
-      <div class="row">
-          <div class="col-12 col-sm-12 col-md-12" align="right">
-              @include('lab.suspect_cases.partials.search_id')
-          </div>
-      </div><!---END row--->
+        <div class="col-12 col-sm-12 col-md-6"> <!-- START COL 1 PRINCIPAL -->
+            <div class="row align-items-end">
+                <div class="col-12 col-sm-12 col-md-6">
+                    <input type="month" class="form-control mb-3" id="for_month"
+                           name="month" value="{{ Carbon\Carbon::now()->format('Y-m') }}" required>
+                </div>
+                <div class="col-12 col-sm-12 col-md-6">
+                    <a type="button" class="btn btn-success mb-3" id="btn_download"
+                       href="{{ route('lab.suspect_cases.export', ['all', Carbon\Carbon::now()->format('Y-m')]) }}">Descargar
+                        <i class="far fa-file-excel"></i></a>
+                </div>
+            </div><!---END row--->
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12" align="right">
+                    @include('lab.suspect_cases.partials.search_id')
+                </div>
+            </div><!---END row--->
+        </div><!---END COL 1 PRINCIPAL--->
 
-  </div><!---END COL 1 PRINCIPAL--->
-{{--        </div>--}}
-{{--    </div>--}}
 @endif
 
     <div class="col-12 col-sm-12 col-md-6"> <!-- START COL 2 PRINCIPAL -->
@@ -226,32 +213,9 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-    // $("#inputSearch").on("keyup", function() {
-    //     var value = $(this).val().toLowerCase();
-    //     $("#tableCases tr").filter(function() {
-    //         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    //     });
-    // });
-    // //oculta segun checkbox
-    // $("#chk_positivos").change(function(){
-    //     $(".row_Positivo").toggle();
-    // });
-    // $("#chk_negativos").change(function(){
-    //     var self = this;
-    //     $(".row_Negativo").toggle();
-    // });
-    // $("#chk_pendientes").change(function(){
-    //     var self = this;
-    //     $(".row_Pendiente").toggle();
-    // });
-    // $("#chk_rechazados").change(function(){
-    //     var self = this;
-    //     $(".row_Rechazado").toggle();
-    // });
-    // $("#chk_indeterminados").change(function(){
-    //     var self = this;
-    //     $(".row_Indeterminado").toggle();
-    // });
+    $('#for_month').on('change', function() {
+        $('#btn_download').attr('href', '{{route('lab.suspect_cases.export', 'all')}}' + '/' + this.value);
+    });
 });
 
 function exportF(elem) {
