@@ -50,6 +50,9 @@ class Patient extends Model implements Auditable //Authenticatable
 
     protected $dates = [ 'deceased_at'];
 
+    public function firstPositive() {
+        return $this->hasOne('App\SuspectCase')->where('pcr_sars_cov_2','positive');
+    }
 
     public function suspectCases() {
         return $this->hasMany('App\SuspectCase');

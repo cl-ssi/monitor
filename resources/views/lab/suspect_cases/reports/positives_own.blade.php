@@ -19,7 +19,7 @@
 
         <div id="positives" style="width: 480px; height: 400"></div>
 
-        <!-- <table class="table table-sm table-bordered">
+        {{-- <table class="table table-sm table-bordered">
             <thead>
                 <tr>
                     <th class="table-active">Hospitalizados</th>
@@ -57,7 +57,7 @@
                     <th class="text-right">{{ $hbasico + $hmedio + $huti + $huci + $huciv }}</th>
                 </tr>
             </tbody>
-        </table> -->
+        </table> --}}
 
 
 

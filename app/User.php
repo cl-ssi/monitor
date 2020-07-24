@@ -52,10 +52,11 @@ class User extends Authenticatable
     }
 
     public function communes() {
-        $ids[] = null;
+        $ids = array();
         foreach($this->establishments as $estab) {
             $ids[] = $estab->commune->id;
         }
+        //print_r($ids);
         return array_values(array_unique($ids));
     }
 
