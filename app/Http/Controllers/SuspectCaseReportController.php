@@ -78,6 +78,63 @@ class SuspectCaseReportController extends Controller
     }
 
     /**
+     * Obtiene positivos y acumulados por día.
+     * @return Application|Factory|View
+     */
+    public function positivesOwn() {
+        $communes_ids = Auth::user()->communes();
+        $communes = Commune::find(Auth::user()->communes());
+
+        $totalPatients = $this->getTotalPatientsOwn();
+
+        /* Evolución */
+        $evolucion = $this->getEvolucionOwn($communes_ids);
+
+        /* cálculo de positivos */
+        $from = Carbon::now()->subDays(30);
+        $to = Carbon::now();
+
+        $suspectcases = SuspectCase::select('pcr_sars_cov_2_at')
+                                ->where('pcr_sars_cov_2','positive')
+                                ->whereBetween('pcr_sars_cov_2_at', [$from, $to])
+                                ->orderByDesc('sample_at')
+                                ->get();
+
+        foreach ($suspectcases as $key => $suspectcase) {
+            $positives[$suspectcase->pcr_sars_cov_2_at->format('d-m-Y')] = 0;
+        }
+
+        foreach ($suspectcases as $key => $suspectcase) {
+            $positives[$suspectcase->pcr_sars_cov_2_at->format('d-m-Y')] += 1;
+        }
+
+        /* Fallecidos */
+        $totalDeceasedArray = $this->getDeceasedPatients($communes_ids);
+
+        /*Se calcula número pacientes por rango edades */
+        $ageRangeArray = $this->getRangeArray($communes_ids);
+
+        /* Casos por comuna */
+        $casesByCommuneArray = $this->getCasesByCommuneByGender($communes);
+
+        return view('lab.suspect_cases.reports.positives_own', compact('evolucion', 'communes', 'positives', 'ageRangeArray', 'totalPatients', 'totalDeceasedArray', 'casesByCommuneArray'));
+
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalPatientsOwn(): int
+    {
+        $totalPatients = Patient::whereHas('suspectCases', function ($q) {
+            $q->where('pcr_sars_cov_2', 'positive');
+        })->whereHas('demographic', function ($q) {
+            $q->whereIn('commune_id', Auth::user()->communes());
+        })->count();
+        return $totalPatients;
+    }
+
+    /**
      * @param array $communes_ids
      * @return array
      */
@@ -152,6 +209,48 @@ class SuspectCaseReportController extends Controller
                 ->where('pcr_sars_cov_2', 'positive')
                 ->take(1)])
             ->get();
+
+        foreach ($patients as $patient) {
+            $days[$patient->sample_at] += 1;
+        }
+
+        $acumulado = 0;
+        foreach ($days as $day => $total) {
+            $acumulado += $total;
+            $evolucion[$day] = $acumulado;
+        }
+        return $evolucion;
+    }
+
+    /**
+     * @param array $communes_ids
+     */
+    public function getEvolucionOwn($communes_ids)
+    {
+        $patients = Patient::has('firstPositive')
+            ->select('id')
+            ->whereHas('demographic', function ($q) use ($communes_ids) {
+                $q->whereIn('commune_id', $communes_ids);
+            })
+            ->addSelect(['sample_at' => SuspectCase::selectRaw('DATE(sample_at) as sample_at')
+                ->whereColumn('patient_id', 'patients.id')
+                ->where('pcr_sars_cov_2', 'positive')
+                ->take(1)])
+            ->get();
+
+        $begin = SuspectCase::where('pcr_sars_cov_2', 'positive')
+            ->whereIn('patient_id', $patients->pluck('id')->toArray())
+            ->orderBy('sample_at')
+            ->first()->sample_at->startOfDay();
+        $end = SuspectCase::where('pcr_sars_cov_2', 'positive')
+            ->whereIn('patient_id', $patients->pluck('id')->toArray())
+            ->orderByDesc('sample_at')
+            ->first()->sample_at->endOfDay();
+
+        $days = array();
+        for ($i = $begin; $i <= $end; $i->modify('+1 day')) {
+            $days[$i->format("Y-m-d")] = 0;
+        }
 
         foreach ($patients as $patient) {
             $days[$patient->sample_at] += 1;
@@ -243,6 +342,36 @@ class SuspectCaseReportController extends Controller
     }
 
     /**
+     * @param $communes
+     * @return array
+     */
+    public function getCasesByCommuneByGender($communes): array
+    {
+        $casesByCommuneArray = array();
+        foreach ($communes as $commune) {
+            $cantMale = Patient::whereHas('suspectCases', function ($q) {
+                $q->where('pcr_sars_cov_2', 'positive');
+            })->whereHas('demographic', function ($q) use ($commune) {
+                $q->where('commune_id', $commune->id);
+            })->where('gender', 'male')
+                ->count();
+
+            $cantFemale = Patient::whereHas('suspectCases', function ($q) {
+                $q->where('pcr_sars_cov_2', 'positive');
+            })->whereHas('demographic', function ($q) use ($commune) {
+                $q->where('commune_id', $commune->id);
+            })->where('gender', 'female')
+                ->count();
+
+            $casesByCommuneArray[$commune->id]['male'] = $cantMale;
+            $casesByCommuneArray[$commune->id]['female'] = $cantFemale;
+
+        }
+
+        return $casesByCommuneArray;
+    }
+
+    /**
      * @param array $communes_ids
      * @return array
      */
@@ -256,106 +385,6 @@ class SuspectCaseReportController extends Controller
             $q->whereIn('commune_id', $communes_ids);
         })->where('status', 'Hospitalizado UCI (Ventilador)')->count();
         return array($ventilator, $UciPatients);
-    }
-
-
-    /**
-     * Obtiene positivos y acumulados por día.
-     * @return Application|Factory|View
-     */
-    public function positivesOwn() {
-
-        $patients = Patient::whereHas('suspectCases', function ($q){
-            $q->where('pcr_sars_cov_2', 'positive');
-        })->whereHas('demographic', function ($q){
-            $q->whereIn('commune_id', Auth::user()->communes());
-        })->with('suspectCases')->with('demographic')->get();
-
-        /* Calculo de gráfico de evolución */
-        $begin = SuspectCase::where('pcr_sars_cov_2','positive')
-            ->whereIn('patient_id', $patients->pluck('id')->toArray())
-            ->orderBy('sample_at')
-            ->first()->sample_at;
-
-        $end = SuspectCase::where('pcr_sars_cov_2','positive')
-            ->whereIn('patient_id', $patients->pluck('id')->toArray())
-            ->orderByDesc('sample_at')
-            ->first()->sample_at;
-
-        $begin = $begin->setTime(00, 00, 00);
-        $end = $end->setTime(00, 00, 00);
-
-        $communes = Commune::find(Auth::user()->communes());
-
-        for ($i = $begin; $i <= $end; $i->modify('+1 day')) {
-            $casos[$i->format("Y-m-d")] = 0;
-        }
-
-        foreach($patients as $patient) {
-            $casos[$patient->suspectCases->where('pcr_sars_cov_2','positive')->first()->sample_at->format('Y-m-d')] += 1;
-        }
-
-        $acumulado = 0;
-        foreach($casos as $dia => $valor) {
-            $acumulado += $valor;
-            $evolucion[$dia] = $acumulado;
-        }
-        /* Fin de cálculo de evolución */
-
-        /* cálculo de positivos */
-        $from = Carbon::now()->subDays(30);
-        $to = Carbon::now();
-
-        $suspectcases = SuspectCase::where('pcr_sars_cov_2','positive')
-                                ->whereBetween('pcr_sars_cov_2_at', [$from, $to])
-                                ->orderByDesc('sample_at')
-                                ->get();
-
-                                // dd($suspectcases);
-
-        foreach ($suspectcases as $key => $suspectcase) {
-            $positives[$suspectcase->pcr_sars_cov_2_at->format('d-m-Y')] = 0;
-        }
-
-        foreach ($suspectcases as $key => $suspectcase) {
-            $positives[$suspectcase->pcr_sars_cov_2_at->format('d-m-Y')] += 1;
-        }
-
-        /*Se calcula número pacientes por rango edades */
-        $ageRangeArray = array();
-        for ($i = 10; $i <= 90 ; $i+=10) {
-
-            $malePatients = Patient::whereHas('suspectCases', function ($q) {
-                $q->where('pcr_sars_cov_2', 'positive');
-            })->whereHas('demographic', function ($q) {
-                $q->whereIn('commune_id', Auth::user()->communes());
-            })->where('gender', 'male');
-
-            $femalePatients = Patient::whereHas('suspectCases', function ($q) {
-                $q->where('pcr_sars_cov_2', 'positive');
-            })->whereHas('demographic', function ($q) {
-                $q->whereIn('commune_id', Auth::user()->communes());
-            })->where('gender', 'female');
-
-            $subYearsBegin = $i . ' years';
-            $subYearsEnd = $i - 10 . ' years';
-
-            if ($i == 90) $subYearsBegin = $i + 60 . ' years';
-
-            $begin = Carbon::now()->sub($subYearsBegin);
-            $end = Carbon::now()->sub($subYearsEnd);
-
-            $cantMale = $malePatients->whereBetween('birthday', [$begin, $end])->count();
-            $cantFemale = $femalePatients->whereBetween('birthday', [$begin, $end])->count();
-
-            array_push($ageRangeArray,
-                array('male' => $cantMale,
-                    'female' => $cantFemale));
-        }
-
-        /* Fin de cálculo de positivos */
-        return view('lab.suspect_cases.reports.positives_own', compact('patients','evolucion', 'communes', 'positives', 'ageRangeArray'));
-
     }
 
     /*****************************************************/
@@ -1144,8 +1173,5 @@ class SuspectCaseReportController extends Controller
       $cases = SuspectCase::whereNull('receptor_id')->get();
       return view('lab.suspect_cases.reports.without_reception', compact('cases'));
     }
-
-
-
 
 }

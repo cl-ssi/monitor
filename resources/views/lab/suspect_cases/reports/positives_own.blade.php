@@ -8,13 +8,6 @@
 <div class="row">
     <div class="col-12 col-md-4 mb-3">
 
-        @php
-            $total_male = $patients->where('gender','male')->count();
-            $total_female = $patients->where('gender','female')->count();
-            $total_male_female = $total_male + $total_female;
-            $region = $total_male + $total_female
-        @endphp
-
         <div id="evolution" style="width: 480px; height: 400"></div>
 
         <div id="positives" style="width: 480px; height: 400"></div>
@@ -80,13 +73,13 @@
                 <tr>
                     <td>{{ $commune->name }}</td>
                     <td class="text-center">
-                        {{ $malesCommune = $patients->where('demographic.commune_id',$commune->id)->where('gender', 'male')->count()}}
+                        {{ $malesCommune = $casesByCommuneArray[$commune->id]['male'] }}
                     </td>
                     <td class="text-center">
-                        {{ $femalesCommune = $patients->where('demographic.commune_id',$commune->id)->where('gender', 'female')->count()}}
+                        {{ $femalesCommune = $casesByCommuneArray[$commune->id]['female'] }}
                     </td>
                     <td class="text-center">
-                        {{ $totalCommune = $malesCommune + $femalesCommune }}
+                        {{ $commune->count = $malesCommune + $femalesCommune }}
                     </td>
                 </tr>
                 @endforeach
@@ -109,12 +102,7 @@
                 <tr>
                     <td>{{ $commune->name }} ({{ $commune->population }}*)</td>
                     <td class="text-right">
-                        @php
-                        $malesCommune = $patients->where('demographic.commune_id',$commune->id)->where('gender', 'male')->count();
-                        $femalesCommune = $patients->where('demographic.commune_id',$commune->id)->where('gender', 'female')->count();
-                        $totalCommune = $malesCommune + $femalesCommune;
-                        @endphp
-                        {{ number_format(($totalCommune/ $commune->population) * 100000 ,2)  }}
+                        {{ number_format(($commune->count/ $commune->population) * 100000 ,2)  }}
                     </td>
                 </tr>
                 @endforeach
@@ -122,7 +110,7 @@
                 <tr>
                     <th>Total ({{ $communes->sum('population') }}*)</th>
                     <th class="text-right">
-                        {{ number_format($region/ $communes->sum('population') * 100000 ,2) }}
+                        {{ number_format($totalPatients/ $communes->sum('population') * 100000 ,2) }}
                     </th>
                 </tr>
             </tbody>
@@ -141,10 +129,10 @@
             <tr>
                 <th>Fallecidos</th>
                 <td class="text-right">
-                    {{ $fallecido_male = $patients->where('gender','male')->where('status','Fallecido')->count() }}
+                    {{ $fallecido_male = $totalDeceasedArray['male'] }}
                 </td>
                 <td class="text-right">
-                    {{ $fallecido_female = $patients->where('gender','female')->where('status','Fallecido')->count() }}
+                    {{ $fallecido_female = $totalDeceasedArray['female'] }}
                 </td>
                 <th class="text-right">
                     {{ $fallecido_male + $fallecido_female}}
