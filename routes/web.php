@@ -311,6 +311,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
     Route::get('/{admission}/seremiadmission', 'AdmissionSurveyController@seremiadmission')->name('seremiadmission');
     Route::put('update/{admission}', 'AdmissionSurveyController@update')->name('update');
     Route::get('/{admission}', 'AdmissionSurveyController@show')->name('show');
+    Route::delete('/{admission}', 'AdmissionSurveyController@destroy')->name('destroy');
 
     });
 
