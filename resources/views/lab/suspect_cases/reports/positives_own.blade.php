@@ -172,10 +172,10 @@
                 <tr class="text-center">
                     <td>0-9</td>
                     <td>
-                        {{ $age0male = $patients->whereBetween('age',[0,9])->where('gender','male')->count() }}
+                        {{ $age0male = $ageRangeArray[0]['male'] }}
                     </td>
                     <td>
-                        {{ $age0female = $patients->whereBetween('age',[0,9])->where('gender','female')->count() }}
+                        {{ $age0female = $ageRangeArray[0]['female'] }}
                     </td>
                     <td>
                         {{ $age0total = $age0male + $age0female }}
@@ -184,10 +184,10 @@
                 <tr class="text-center">
                     <td>10-19</td>
                     <td>
-                        {{ $age1male = $patients->whereBetween('age',[10,19])->where('gender','male')->count() }}
+                        {{ $age1male = $ageRangeArray[1]['male'] }}
                     </td>
                     <td>
-                        {{ $age1female = $patients->whereBetween('age',[10,19])->where('gender','female')->count() }}
+                        {{ $age1female = $ageRangeArray[1]['female'] }}
                     </td>
                     <td>
                         {{ $age1total = $age1male + $age1female }}
@@ -196,10 +196,10 @@
                 <tr class="text-center">
                     <td>20-29</td>
                     <td>
-                        {{ $age2male = $patients->whereBetween('age',[20,29])->where('gender','male')->count() }}
+                        {{ $age2male = $ageRangeArray[2]['male'] }}
                     </td>
                     <td>
-                        {{ $age2female = $patients->whereBetween('age',[20,29])->where('gender','female')->count() }}
+                        {{ $age2female = $ageRangeArray[2]['female'] }}
                     </td>
                     <td>
                         {{ $age2total = $age2male + $age2female }}
@@ -208,10 +208,10 @@
                 <tr class="text-center">
                     <td>30-39</td>
                     <td>
-                        {{ $age3male = $patients->whereBetween('age',[30,39])->where('gender','male')->count() }}
+                        {{ $age3male = $ageRangeArray[3]['male'] }}
                     </td>
                     <td>
-                        {{ $age3female = $patients->whereBetween('age',[30,39])->where('gender','female')->count() }}
+                        {{ $age3female = $ageRangeArray[3]['female'] }}
                     </td>
                     <td>
                         {{ $age3total = $age3male + $age3female }}
@@ -220,10 +220,10 @@
                 <tr class="text-center">
                     <td>40-49</td>
                     <td>
-                        {{ $age4male = $patients->whereBetween('age',[40,49])->where('gender','male')->count() }}
+                        {{ $age4male = $ageRangeArray[4]['male'] }}
                     </td>
                     <td>
-                        {{ $age4female = $patients->whereBetween('age',[40,49])->where('gender','female')->count() }}
+                        {{ $age4female = $ageRangeArray[4]['female'] }}
                     </td>
                     <td>
                         {{ $age4total = $age4male + $age4female }}
@@ -232,10 +232,10 @@
                 <tr class="text-center">
                     <td>50-59</td>
                     <td>
-                        {{ $age5male = $patients->whereBetween('age',[50,59])->where('gender','male')->count() }}
+                        {{ $age5male = $ageRangeArray[5]['male'] }}
                     </td>
                     <td>
-                        {{ $age5female = $patients->whereBetween('age',[50,59])->where('gender','female')->count() }}
+                        {{ $age5female = $ageRangeArray[5]['female'] }}
                     </td>
                     <td>
                         {{ $age5total = $age5male + $age5female }}
@@ -244,10 +244,10 @@
                 <tr class="text-center">
                     <td>60-69</td>
                     <td>
-                        {{ $age6male = $patients->whereBetween('age',[60,69])->where('gender','male')->count() }}
+                        {{ $age6male = $ageRangeArray[6]['male'] }}
                     </td>
                     <td>
-                        {{ $age6female = $patients->whereBetween('age',[60,69])->where('gender','female')->count() }}
+                        {{ $age6female = $ageRangeArray[6]['female'] }}
                     </td>
                     <td>
                         {{ $age6total = $age6male + $age6female }}
@@ -256,10 +256,10 @@
                 <tr class="text-center">
                     <td>70-79</td>
                     <td>
-                        {{ $age7male = $patients->whereBetween('age',[70,79])->where('gender','male')->count() }}
+                        {{ $age7male = $ageRangeArray[7]['male'] }}
                     </td>
                     <td>
-                        {{ $age7female = $patients->whereBetween('age',[70,79])->where('gender','female')->count() }}
+                        {{ $age7female = $ageRangeArray[7]['female'] }}
                     </td>
                     <td>
                         {{ $age7total = $age7male + $age7female }}
@@ -268,10 +268,10 @@
                 <tr class="text-center">
                     <td>80-></td>
                     <td>
-                        {{ $age8male = $patients->whereBetween('age',[80,999])->where('gender','male')->count() }}
+                        {{ $age8male = $ageRangeArray[8]['male'] }}
                     </td>
                     <td>
-                        {{ $age8female = $patients->whereBetween('age',[80,999])->where('gender','female')->count() }}
+                        {{ $age8female = $ageRangeArray[8]['female'] }}
                     </td>
                     <td>
                         {{ $age8total = $age8male + $age8female }}

@@ -77,6 +77,8 @@
             <td>
                 {{ $patient->fullName }}
 
+                @if($patient->tracing->gestation == "1") <img align="center" src="{{ asset('images/pregnant.png') }}" width="24"> @endif
+
             </td>
             <td>{{ ($patient->demographic AND $patient->demographic->commune) ?
                     $patient->demographic->commune->name : '' }}</td>

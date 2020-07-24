@@ -111,16 +111,16 @@
                             <td>{{ $contact->patient->mothers_family }}</td>
                             <td>{{ $contact->patient->fullName }}</td>
                             <td>{{ $contact->patient->birthday->format('d-m-Y') }}</td>
-                            <td>{{ $contact->patient->demographic->telephone }}</td>
-                            <td>{{ $contact->patient->demographic->telephone2 }}</td>
-                            <td>{{ $contact->patient->demographic->street_type }}</td>
-                            <td>{{ $contact->patient->demographic->address }}</td>
-                            <td>{{ $contact->patient->demographic->number }}</td>
-                            <td>{{ $contact->patient->demographic->department }}</td>
-                            <td>{{ $contact->patient->demographic->suburb }}</td>
-                            <td>{{ $contact->patient->demographic->email }}</td>
-                            <td>{{ $contact->patient->demographic->commune->name }}</td>
-                            <td>{{ $contact->patient->demographic->region->name }}</td>
+                            <td>{{ ($contact->patient->demographic)? $contact->patient->demographic->telephone : '' }}</td>
+                            <td>{{ ($contact->patient->demographic)? $contact->patient->demographic->telephone2 : '' }}</td>
+                            <td>{{ ($contact->patient->demographic)? $contact->patient->demographic->street_type : '' }}</td>
+                            <td>{{ ($contact->patient->demographic)? $contact->patient->demographic->address : '' }}</td>
+                            <td>{{ ($contact->patient->demographic)? $contact->patient->demographic->number : '' }}</td>
+                            <td>{{ ($contact->patient->demographic)? $contact->patient->demographic->department : '' }}</td>
+                            <td>{{ ($contact->patient->demographic)? $contact->patient->demographic->suburb : '' }}</td>
+                            <td>{{ ($contact->patient->demographic)? $contact->patient->demographic->email : '' }}</td>
+                            <td>{{ ($contact->patient->demographic)? $contact->patient->demographic->commune->name : '' }}</td>
+                            <td>{{ ($contact->patient->demographic)? $contact->patient->demographic->region->name : '' }}</td>
                             <td>{{ $contact->last_contact_at }}</td>
 
                             @if($contact->patient->tracing)

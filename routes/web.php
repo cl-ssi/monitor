@@ -187,10 +187,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/ownIndex/{laboratory?}','SuspectCaseController@ownIndex')->name('ownIndex')->middleware('auth','can:SuspectCase: own');
         Route::get('/notification','SuspectCaseController@notificationInbox')->name('notificationInbox')->middleware('auth','can:Patient: tracing');
 
-        Route::get('/exportSuspectCases/{lab}','SuspectCaseController@exportExcel')->name('export')->middleware('auth');
-
-//        pruebas
-        Route::get('/exportAllCasesCsv','SuspectCaseController@exportAllCasesCsv')->name('exportAllCasesCsv')->middleware('auth');
+        Route::get('/exportSuspectCases/{lab}/{date?}','SuspectCaseController@exportExcel')->name('export')->middleware('auth');
 
         //Route::get('/create','SuspectCaseController@create')->name('create')->middleware('auth','can:SuspectCase: create');
         //Route::post('/','SuspectCaseController@store')->name('store')->middleware('auth','can:SuspectCase: create');
@@ -222,11 +219,13 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::get('/positivesByDateRange','SuspectCaseReportController@positivesByDateRange')->name('positivesByDateRange')->middleware('auth');
             Route::get('/positives_own','SuspectCaseReportController@positivesOwn')->name('positives_own')->middleware('auth');
             Route::get('hospitalized','SuspectCaseReportController@hospitalized')->name('hospitalized')->middleware('auth','can:Report: hospitalized');
+            Route::get('hospitalizedByUserCommunes','SuspectCaseReportController@hospitalizedByUserCommunes')->name('hospitalizedByUserCommunes')->middleware('auth','can:Report: hospitalized commune');
             Route::get('deceased','SuspectCaseReportController@deceased')->name('deceased')->middleware('auth','can:Report: deceased');
             Route::get('requires_licence','SuspectCaseReportController@requires_licence')->name('requires_licence')->middleware('auth', 'can:Report: requires licence');
             Route::get('user_performance','SuspectCaseReportController@user_performance')->name('user_performance')->middleware('auth', 'can:Report: user performance');
             Route::get('without_reception','SuspectCaseReportController@withoutReception')->name('without_reception')->middleware('auth');
             Route::get('pending_more_than_two_days','SuspectCaseReportController@pendingMoreThanTwoDays')->name('pending_more_than_two_days')->middleware('auth', 'can:Report: more than two days');
+            Route::get('suspect_case_by_commune','SuspectCaseReportController@suspectCaseByCommune')->name('suspect_case_by_commune')->middleware('auth', 'can:Report: suspect cases by commune');
         });
         Route::prefix('report')->name('report.')->group(function () {
             Route::get('/','SuspectCaseReportController@positives')->name('index')->middleware('auth','can:Report: other');

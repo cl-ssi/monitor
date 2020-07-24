@@ -77,19 +77,49 @@ class SuspectCaseReportController extends Controller
 
 
         /* Exámenes */
-        $exams['total'] = SuspectCase::all()->count();
-        $exams['positives'] = SuspectCase::where('pcr_sars_cov_2','positive')->get()->count();
-        $exams['negatives'] = SuspectCase::where('pcr_sars_cov_2','negative')->get()->count();
-        $exams['pending'] = SuspectCase::where('pcr_sars_cov_2','pending')->get()->count();
-        $exams['undetermined'] = SuspectCase::where('pcr_sars_cov_2','undetermined')->get()->count();
-        $exams['rejected'] = SuspectCase::where('pcr_sars_cov_2','rejected')->get()->count();
+        $exams['total'] = SuspectCase::count();
+        $exams['positives'] = SuspectCase::where('pcr_sars_cov_2','positive')->count();
+        $exams['negatives'] = SuspectCase::where('pcr_sars_cov_2','negative')->count();
+        $exams['pending'] = SuspectCase::where('pcr_sars_cov_2','pending')->count();
+        $exams['undetermined'] = SuspectCase::where('pcr_sars_cov_2','undetermined')->count();
+        $exams['rejected'] = SuspectCase::where('pcr_sars_cov_2','rejected')->count();
 
         /* Ventiladores */
         $ventilator = Ventilator::first();
 
-        //echo '<pre>'; print_r($patients->where('status','Hospitalizado UCI (Ventilador)')->count()); die();
-        //echo '<pre>'; print_r($evolucion); die();
-        return view('lab.suspect_cases.reports.positives', compact('patients','evolucion','ventilator','exams','communes'));
+        /*Se calcula número pacientes por rango edades */
+        $ageRangeArray = array();
+        for ($i = 10; $i <= 90 ; $i+=10) {
+
+            $malePatients = Patient::whereHas('suspectCases', function ($q) {
+                $q->where('pcr_sars_cov_2', 'positive');
+            })->whereHas('demographic', function ($q) use ($communes_ids) {
+                $q->whereIn('commune_id', $communes_ids);
+            })->where('gender', 'male');
+
+            $femalePatients = Patient::whereHas('suspectCases', function ($q) {
+                $q->where('pcr_sars_cov_2', 'positive');
+            })->whereHas('demographic', function ($q) use($communes_ids) {
+                $q->whereIn('commune_id', $communes_ids);
+            })->where('gender', 'female');
+
+            $subYearsBegin = $i . ' years';
+            $subYearsEnd = $i - 10 . ' years';
+
+            if ($i == 90) $subYearsBegin = $i + 60 . ' years';
+
+            $begin = Carbon::now()->sub($subYearsBegin);
+            $end = Carbon::now()->sub($subYearsEnd);
+
+            $cantMale = $malePatients->whereBetween('birthday', [$begin, $end])->count();
+            $cantFemale = $femalePatients->whereBetween('birthday', [$begin, $end])->count();
+
+            array_push($ageRangeArray,
+                array('male' => $cantMale,
+                    'female' => $cantFemale));
+        }
+
+        return view('lab.suspect_cases.reports.positives', compact('patients','evolucion','ventilator','exams','communes', 'ageRangeArray'));
 
     }
 
@@ -134,22 +164,14 @@ class SuspectCaseReportController extends Controller
             $acumulado += $valor;
             $evolucion[$dia] = $acumulado;
         }
-
         /* Fin de cálculo de evolución */
 
         /* cálculo de positivos */
-
-
         $from = Carbon::now()->subDays(30);
         $to = Carbon::now();
 
         $suspectcases = SuspectCase::where('pcr_sars_cov_2','positive')
                                 ->whereBetween('pcr_sars_cov_2_at', [$from, $to])
-                                // ->whereHas('patient', function ($q){
-                                //     $q->whereHas('demographic', function ($q){
-                                //         $q->whereIn('commune_id', Auth::user()->communes());
-                                //     });
-                                // })
                                 ->orderByDesc('sample_at')
                                 ->get();
 
@@ -163,14 +185,42 @@ class SuspectCaseReportController extends Controller
             $positives[$suspectcase->pcr_sars_cov_2_at->format('d-m-Y')] += 1;
         }
 
-        // dd($positives);
+        /*Se calcula número pacientes por rango edades */
+        $ageRangeArray = array();
+        for ($i = 10; $i <= 90 ; $i+=10) {
+
+            $malePatients = Patient::whereHas('suspectCases', function ($q) {
+                $q->where('pcr_sars_cov_2', 'positive');
+            })->whereHas('demographic', function ($q) {
+                $q->whereIn('commune_id', Auth::user()->communes());
+            })->where('gender', 'male');
+
+            $femalePatients = Patient::whereHas('suspectCases', function ($q) {
+                $q->where('pcr_sars_cov_2', 'positive');
+            })->whereHas('demographic', function ($q) {
+                $q->whereIn('commune_id', Auth::user()->communes());
+            })->where('gender', 'female');
+
+            $subYearsBegin = $i . ' years';
+            $subYearsEnd = $i - 10 . ' years';
+
+            if ($i == 90) $subYearsBegin = $i + 60 . ' years';
+
+            $begin = Carbon::now()->sub($subYearsBegin);
+            $end = Carbon::now()->sub($subYearsEnd);
+
+            $cantMale = $malePatients->whereBetween('birthday', [$begin, $end])->count();
+            $cantFemale = $femalePatients->whereBetween('birthday', [$begin, $end])->count();
+
+            array_push($ageRangeArray,
+                array('male' => $cantMale,
+                    'female' => $cantFemale));
+        }
 
         /* Fin de cálculo de positivos */
-
-        return view('lab.suspect_cases.reports.positives_own', compact('patients','evolucion', 'communes', 'positives'));
+        return view('lab.suspect_cases.reports.positives_own', compact('patients','evolucion', 'communes', 'positives', 'ageRangeArray'));
 
     }
-
 
     /*****************************************************/
     /*                 SEGUIMIENTO CASOS                 */
@@ -813,6 +863,30 @@ class SuspectCaseReportController extends Controller
     }
 
     /*****************************************************/
+    /*     REPORTE HOSPITALIZADOS POR COMUNAS USUARIO    */
+    /*****************************************************/
+    public function hospitalizedByUserCommunes() {
+
+        $patients = Patient::whereHas('suspectCases', function ($q) {
+            $q->where('pcr_sars_cov_2','positive');
+        })->whereIn('status',[
+            'Hospitalizado Básico',
+            'Hospitalizado Medio',
+            'Hospitalizado UTI',
+            'Hospitalizado UCI',
+            'Hospitalizado UCI (Ventilador)'
+        ])->whereHas('demographic', function ($q){
+            $q->whereIn('commune_id', auth()->user()->communes());
+        })
+            ->orderBy('status')
+            ->get();
+
+        $byUserCommune = true;
+
+        return view('lab.suspect_cases.reports.hospitalized', compact('patients', 'byUserCommune'));
+    }
+
+    /*****************************************************/
     /*            REPORTE FALLECIDOS                     */
     /*****************************************************/
     public function deceased() {
@@ -895,6 +969,33 @@ class SuspectCaseReportController extends Controller
             ->get();
 
         return view('lab.suspect_cases.reports.pending_more_than_two_days', compact('suspectCases'));
+    }
+
+    public function suspectCaseByCommune(Request $request){
+        if($from = $request->has('from')){
+            $from = $request->get('from'). ' 00:00:00';
+            $to = $request->get('to'). ' 23:59:59';
+        }else{
+            $from = Carbon::yesterday();
+            $to = Carbon::now();
+        }
+
+        $communes_ids = Auth()->user()->communes();
+        $communes = Commune::whereIn('id', $communes_ids)->get();
+        $selectedCommune = $request->get('commune');
+
+        $suspectCases = SuspectCase::whereBetween('pcr_sars_cov_2_at', [$from, $to])
+            ->when($selectedCommune, function ($q) use ($selectedCommune){
+                return $q->whereHas('patient', function($q) use ($selectedCommune){
+                        $q->whereHas('demographic', function ($q) use ($selectedCommune){
+                        $q->where('commune_id', $selectedCommune);
+                    });
+                });
+            })
+            ->orderBy('pcr_sars_cov_2_at')
+            ->get();
+
+        return view('lab.suspect_cases.reports.suspect_cases_by_commune', compact('suspectCases', 'from', 'to', 'communes', 'selectedCommune'));
     }
 
 
