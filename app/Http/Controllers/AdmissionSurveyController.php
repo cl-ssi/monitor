@@ -164,8 +164,16 @@ class AdmissionSurveyController extends Controller
      * @param  \App\SanitaryResidence\AdmissionSurvey  $admissionSurvey
      * @return \Illuminate\Http\Response
      */
-    public function destroy(AdmissionSurvey $admissionSurvey)
+    public function destroy(AdmissionSurvey $admission)
     {
         //
+        //dd($admission);
+
+        $admission->delete();
+        session()->flash('success', 'Encuesta de '.$admission->patient->fullname.' Eliminada exitosamente');
+        return redirect()->route('sanitary_residences.admission.index');
+        
+
+        
     }
 }
