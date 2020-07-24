@@ -21,10 +21,10 @@
                 <tr>
                     <td>Positivos</td>
                     <th class="text-center">
-                        {{ $total_male = $patients->where('gender','male')->count() }}
+                        {{ $total_male = $casosTotalesArray['male'] }}
                     </th>
                     <th class="text-center">
-                        {{ $total_female = $patients->where('gender','female')->count() }}
+                        {{ $total_female = $casosTotalesArray['female'] }}
                     </th>
                     <th class="text-center text-danger">
                         {{ $region = $total_male + $total_female }}
@@ -47,7 +47,7 @@
             <tbody>
                 <tr>
                     <td style="color: red;">Covid-19+</td>
-                    <th class="text-center">{{ $huciv = $patients->where('status','Hospitalizado UCI (Ventilador)')->count() }}</th>
+                    <th class="text-center">{{ $huciv = $UciPatients }}</th>
                     <td>No Covid-19</td>
                     <th class="text-center">{{ $ventilator->no_covid }}</th>
                     <td>Disponibles</td>
@@ -71,10 +71,10 @@
                 <tr>
                     <th>Fallecidos</th>
                     <td class="text-right">
-                        {{ $fallecido_male = $patients->where('gender','male')->where('status','Fallecido')->count() }}
+                        {{ $fallecido_male = $totalDeceasedArray['male'] }}
                     </td>
                     <td class="text-right">
-                        {{ $fallecido_female = $patients->where('gender','female')->where('status','Fallecido')->count() }}
+                        {{ $fallecido_female = $totalDeceasedArray['female'] }}
                     </td>
                     <th class="text-right">
                         {{ $fallecido_male + $fallecido_female}}
@@ -82,7 +82,6 @@
                 </tr>
             </tbody>
         </table>
-
 
         <table class="table table-sm table-bordered">
             <thead>
@@ -132,11 +131,12 @@
             </thead>
             <tbody>
 
+
                 @foreach($communes as $commune)
                 <tr>
                     <td>{{ $commune->name }}</td>
                     <td class="text-center">
-                        {{ $commune->count = $patients->where('demographic.commune_id',$commune->id)->count() }}
+                        {{ $commune->count = $casesByCommuneArray[$commune->id] }}
                     </td>
                 </tr>
                 @endforeach
@@ -144,9 +144,25 @@
                 <tr>
                     <td>Sin registro</td>
                     <td class="text-center">
-                        {{ $sin_registro = $patients->whereIn('demographic.commune',['sin-comuna',null])->count() }}
+                        {{ $sin_registro = $casesByCommuneArray['Sin Registro'] }}
                     </td>
                 </tr>
+
+{{--                @foreach($communes as $commune)--}}
+{{--                    <tr>--}}
+{{--                        <td>{{ $commune->name }}</td>--}}
+{{--                        <td class="text-center">--}}
+{{--                            {{ $commune->count = $patients->where('demographic.commune_id',$commune->id)->count() }}--}}
+{{--                        </td>--}}
+{{--                    </tr>--}}
+{{--                @endforeach--}}
+
+{{--                <tr>--}}
+{{--                    <td>Sin registro</td>--}}
+{{--                    <td class="text-center">--}}
+{{--                        {{ $sin_registro = $patients->whereIn('demographic.commune',['sin-comuna',null])->count() }}--}}
+{{--                    </td>--}}
+{{--                </tr>--}}
 
             </tbody>
         </table>
@@ -315,7 +331,7 @@
                     <td></td>
                     <td></td>
                     <td>
-                        {{ $patients->whereNull('age')->count() }}
+                        {{ $ageRangeArray[9]['null'] }}
                     </td>
 
                 </tr>
@@ -387,7 +403,7 @@
         // A column for custom tooltip content
         dataTable.addColumn({type: 'string', role: 'tooltip'});
         dataTable.addRows([
-            @foreach($evolucion['Region'] as $key => $total)
+            @foreach($evolucion as $key => $total)
                 [{{ $loop->iteration }},{{ $total }},'{{ $key }} ({{ $total }})'],
             @endforeach
         ]);
@@ -403,7 +419,7 @@
                 textStyle : {
                     fontSize: 9 // or the number you want
                 },
-                gridlines:{count: {{ count($evolucion['Region']) }} },
+                gridlines:{count: {{ count($evolucion) }} },
                 textPosition: '50',
             },
             chartArea: {'width': '80%', 'height': '80%'},

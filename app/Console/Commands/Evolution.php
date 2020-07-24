@@ -61,6 +61,7 @@ class Evolution extends Command
         $comunas = [5,6];
 
         $patients = Patient::has('firstPositive')
+                    ->select('id')
                     ->whereHas('demographic', function ($q) use ($comunas){
                         $q->whereIn('commune_id', $comunas); // Hay que reemplazar las comunas
                     })
