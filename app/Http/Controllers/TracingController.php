@@ -74,7 +74,7 @@ class TracingController extends Controller
             ->where(function ($q) {
                 $q->whereNotIn('status', [
                     'Fallecido',
-                    'Alta',
+                    //'Alta',
                     'Residencia Sanitaria',
                     'Hospitalizado Básico',
                     'Hospitalizado Medio',
