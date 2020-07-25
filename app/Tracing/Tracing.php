@@ -202,77 +202,69 @@ class Tracing extends Model  implements Auditable
     {
         /* this is executed after ->save() method */
         static::created(function ($tracing) {
-            // $birthday = Carbon::parse($tracing->patient->birthday);
-            // $year_birthday = $birthday->year;
-            // $query = "NUEVO_CASO";
-            //
-            // if($tracing->patient->demographic){
-            //   $geo_address = $tracing->patient->demographic->latitude.';'.$tracing->patient->demographic->longitude;
-            // }
-            // else{
-            //   $geo_address = '';
-            // }
-            //
-            // $data = [
-            //     'id'=> $tracing->patient->id.'-'.$year_birthday,
-            //     'direccion'=> $geo_address,
-            //     'comuna'=> $tracing->patient->demographic->commune->id,
-            //     'fecha_inicio'=> $tracing->quarantine_start_at->format('Y-m-d'),
-            //     'fecha_termino'=> $tracing->quarantine_end_at->format('Y-m-d'),
-            //     'app' => env('APP_WS_UNAP'),
-            //     'key' => env('KEY_WS_UNAP'),
-            //     'query' => 'NUEVO_CASO'
-            // ];
-            //
-            // // $final = "?" . http_build_query($data);
-            //
-            // $client = new \GuzzleHttp\Client();
-            //
-            // $response = $client->request('GET', env('WS_UNAP'), [
-            //     'query' => $data
-            // ]);
-            //
-            // $responseJson = $response->getBody()->getContents();
+            if(env('WS_UNAP_ON') == 'true'){
+                $birthday = Carbon::parse($tracing->patient->birthday);
+                $year_birthday = $birthday->year;
+
+                if($tracing->patient->demographic){
+                  $geo_address = $tracing->patient->demographic->address.' '.
+                                  $tracing->patient->demographic->number.' '.
+                                  $tracing->patient->demographic->department;
+                }
+                else{
+                  $geo_address = '';
+                }
+
+                $data = [
+                    'id'=> $tracing->patient->id.'-'.$year_birthday,
+                    'direccion'=> $geo_address,
+                    'comuna'=> $tracing->patient->demographic->commune->id,
+                    'fecha_inicio'=> $tracing->quarantine_start_at->format('Y-m-d'),
+                    'fecha_termino'=> $tracing->quarantine_end_at->format('Y-m-d'),
+                    'app' => env('APP_WS_UNAP'),
+                    'key' => env('KEY_WS_UNAP'),
+                    'query' => 'NUEVO_CASO'
+                ];
+
+                // $final = "?" . http_build_query($data);
+
+                $client = new \GuzzleHttp\Client();
+
+                $response = $client->request('GET', env('WS_UNAP'), [
+                    'query' => $data
+                ]);
+
+                $responseJson = $response->getBody()->getContents();
+
+                // dd(json_decode($responseJson));
+            }
         });
 
         /* this is executed after ->save() method */
         static::updated(function ($tracing) {
-            // dd($tracing);
-            //
-            //
-            //
-            // //'https://www.asistenciacovid19.cl/webservice/presentacion/covid_19_ws_act.php?app=00010001&key=6j8nLnfXnS&query=ACTUALIZA_CASO&id=123456-1990&fecha_inicio=2020-01-01&fecha_termino=2020-01-30'
-            //
-            // $birthday = Carbon::parse($tracing->patient->birthday);
-            // $year_birthday = $birthday->year;
-            // $query = "NUEVO_CASO";
-            //
-            // if($tracing->patient->demographic){
-            //   $geo_address = $tracing->patient->demographic->latitude.';'.$tracing->patient->demographic->longitude;
-            // }
-            // else{
-            //   $geo_address = '';
-            // }
-            //
-            // $data = [
-            //     'id'=> $tracing->patient->id.'-'.$year_birthday,
-            //     'direccion'=> $geo_address,
-            //     'comuna'=> $tracing->patient->demographic->commune->id,
-            //     'fecha_inicio'=> $tracing->quarantine_start_at->format('Y-m-d'),
-            //     'fecha_termino'=> $tracing->quarantine_end_at->format('Y-m-d'),
-            //     'app' => env('APP_WS_UNAP'),
-            //     'key' => env('KEY_WS_UNAP'),
-            //     'query' => 'NUEVO_CASO'
-            // ];
-            //
-            // $client = new \GuzzleHttp\Client();
-            //
-            // $response = $client->request('GET', env('WS_UNAP'), [
-            //     'query' => $data
-            // ]);
-            //
-            // $responseJson = $response->getBody()->getContents();
+            if(env('WS_UNAP_ON') == 'true'){
+                $birthday = Carbon::parse($tracing->patient->birthday);
+                $year_birthday = $birthday->year;
+
+                $data = [
+                    'app'           => env('APP_WS_UNAP'),
+                    'key'           => env('KEY_WS_UNAP'),
+                    'query'         => 'ACTUALIZA_CASO',
+                    'id'            => $tracing->patient->id.'-'.$year_birthday,
+                    'fecha_inicio'  => $tracing->quarantine_start_at->format('Y-m-d'),
+                    'fecha_termino' => $tracing->quarantine_end_at->format('Y-m-d'),
+                ];
+
+                $client = new \GuzzleHttp\Client();
+
+                $response = $client->request('GET', env('WS_UNAP_ACT'), [
+                    'query' => $data
+                ]);
+
+                $responseJson = $response->getBody()->getContents();
+
+                // dd(json_decode($responseJson));
+            }
         });
     }
-
 }
