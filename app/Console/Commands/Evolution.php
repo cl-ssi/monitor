@@ -40,58 +40,78 @@ class Evolution extends Command
      */
     public function handle()
     {
-        auth()->loginUsingId(1);
-        //$communes = [5,6,7,8,9,10,11];
-        //$communes = Auth::user()->communes();
-        //$ids = Patient::whereHas('suspectCases', function ($q){$q->where('pcr_sars_cov_2', 'positive'); })->whereHas('demographic', function ($q) use($communes) {$q->whereIn('commune_id', $communes);})->pluck('id');
 
+        $search = 'SAAVEDRA NICOLAS';
+        $array_search = explode(' ', $search);
 
-        $begin = SuspectCase::where('pcr_sars_cov_2','positive')
-                ->orderBy('sample_at')
-                ->first()->sample_at->startOfDay();
-        $end   = SuspectCase::where('pcr_sars_cov_2','positive')
-                ->orderByDesc('sample_at')
-                ->first()->sample_at->endOfDay();
+        $p = Patient::query();
 
-        $days = array();
-        for ($i = $begin; $i <= $end; $i->modify('+1 day')) {
-            $days[$i->format("Y-m-d")]=0;
+        foreach($array_search as $word) {
+            $p->where(function ($q) use($word) {
+                $q->where('name','LIKE','%'.$word.'%')
+                  ->orwhere('fathers_family','LIKE','%'.$word.'%')
+                  ->orwhere('mothers_family','LIKE','%'.$word.'%');
+            });
         }
 
-        $comunas = [5,6];
+        dd($p->get()->toArray());
 
-        $patients = Patient::has('firstPositive')
-                    ->select('id')
-                    ->whereHas('demographic', function ($q) use ($comunas){
-                        $q->whereIn('commune_id', $comunas); // Hay que reemplazar las comunas
-                    })
-                    ->addSelect(['sample_at' => SuspectCase::selectRaw('DATE(sample_at) as sample_at')
-                        ->whereColumn('patient_id','patients.id')
-                        ->where('pcr_sars_cov_2','positive')
-                        ->take(1)])
-                    ->get();
 
-        foreach($patients as $patient) {
-            $days[$patient->sample_at] += 1;
-        }
-
-        $acumulado = 0;
-        foreach($days as $day => $total) {
-            $acumulado += $total;
-            $evolucion[$day] = $acumulado;
-        }
-
-        print_r($evolucion);
-        die();
-
-        $evo = array();
-        $acumulado = 0;
-        for ($i = $begin; $i <= $end; $i->modify('+1 day')) {
-            $acumulado += SuspectCase::distinct('patient_id')->whereIn('patient_id', $ids)->where('pcr_sars_cov_2','positive')->where('sample_at',$i->format("Y-m-d"))->count();
-            $evo[$i->format("Y-m-d")] = $acumulado;
-        }
-
-        print_r($evo);
-        return 0;
+        // die();
+        //
+        //
+        // auth()->loginUsingId(1);
+        // //$communes = [5,6,7,8,9,10,11];
+        // //$communes = Auth::user()->communes();
+        // //$ids = Patient::whereHas('suspectCases', function ($q){$q->where('pcr_sars_cov_2', 'positive'); })->whereHas('demographic', function ($q) use($communes) {$q->whereIn('commune_id', $communes);})->pluck('id');
+        //
+        //
+        // $begin = SuspectCase::where('pcr_sars_cov_2','positive')
+        //         ->orderBy('sample_at')
+        //         ->first()->sample_at->startOfDay();
+        // $end   = SuspectCase::where('pcr_sars_cov_2','positive')
+        //         ->orderByDesc('sample_at')
+        //         ->first()->sample_at->endOfDay();
+        //
+        // $days = array();
+        // for ($i = $begin; $i <= $end; $i->modify('+1 day')) {
+        //     $days[$i->format("Y-m-d")]=0;
+        // }
+        //
+        // $comunas = [5,6];
+        //
+        // $patients = Patient::has('firstPositive')
+        //             ->select('id')
+        //             ->whereHas('demographic', function ($q) use ($comunas){
+        //                 $q->whereIn('commune_id', $comunas); // Hay que reemplazar las comunas
+        //             })
+        //             ->addSelect(['sample_at' => SuspectCase::selectRaw('DATE(sample_at) as sample_at')
+        //                 ->whereColumn('patient_id','patients.id')
+        //                 ->where('pcr_sars_cov_2','positive')
+        //                 ->take(1)])
+        //             ->get();
+        //
+        // foreach($patients as $patient) {
+        //     $days[$patient->sample_at] += 1;
+        // }
+        //
+        // $acumulado = 0;
+        // foreach($days as $day => $total) {
+        //     $acumulado += $total;
+        //     $evolucion[$day] = $acumulado;
+        // }
+        //
+        // print_r($evolucion);
+        // die();
+        //
+        // $evo = array();
+        // $acumulado = 0;
+        // for ($i = $begin; $i <= $end; $i->modify('+1 day')) {
+        //     $acumulado += SuspectCase::distinct('patient_id')->whereIn('patient_id', $ids)->where('pcr_sars_cov_2','positive')->where('sample_at',$i->format("Y-m-d"))->count();
+        //     $evo[$i->format("Y-m-d")] = $acumulado;
+        // }
+        //
+        // print_r($evo);
+        // return 0;
     }
 }
