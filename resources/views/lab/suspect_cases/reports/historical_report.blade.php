@@ -6,7 +6,6 @@
 <h3 class="mb-3">Reporte histórico COVID-19</h3>
 
 <form class="form-inline" method="get" action="{{ route('lab.suspect_cases.report.historical_report') }}">
-	@csrf
 	<div class="form-group ml-3">
 		<label for="for_from">Fecha</label>
 		<input type="date" class="form-control mx-sm-3" id="for_date" name="date"
