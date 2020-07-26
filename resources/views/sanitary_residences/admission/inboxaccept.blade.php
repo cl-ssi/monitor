@@ -35,18 +35,20 @@
       <td class="text-center align-middle">{{ $admission->residency_text }}</td>
       <td class="text-center align-middle" nowrap>{!! $admission->result !!}</td>
       <td class="text-center align-middle">{{ $admission->status }}</td>
-      @if($admission->patient->bookings->last() )
-      <td class="text-center align-middle">
-      <a target="_blank" href="{{ route('sanitary_residences.bookings.showrelease', $admission->patient->bookings->last()) }}">
+      @if($admission->patient->bookings->last() and $admission->patient->bookings->last()->room )
+      <td class="text-center align-middle">      
+      <a target="_blank" href="{{ route('sanitary_residences.bookings.showrelease', $admission->patient->bookings->last()) }}">        
       @if($admission->patient->bookings->last()->status =='Alta')
       Alta
       @endif
       {{ ($admission->patient->bookings->last()->room->residence->name) }}
-      {{  ($admission->patient->bookings->last()->room->number) }}</td>
+      {{  ($admission->patient->bookings->last()->room->number) }}
       </a>
       @else
-      <td></td>
-      @endif
+      <td class="text-center align-middle">Última habitación que estuvo está Eliminada</td>
+      @endif      
+      
+
 
       <td class="text-center align-middle"><a class="btn btn-success btn-sm" href="{{ route('sanitary_residences.admission.show', $admission) }}">
           <i class="fas fa-poll-h"></i> Revisar Encuesta
