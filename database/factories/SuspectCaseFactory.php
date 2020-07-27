@@ -53,7 +53,7 @@ $factory->define(SuspectCase::class, function (Faker $faker) {
         'subtype' => null,
         //fechas entre 1 y 3 dias despues de reception_at
         'pcr_sars_cov_2_at' => $pcr_sars_cov_2_at,
-        'pcr_sars_cov_2' => $faker->randomElement(['PENDING', 'POSITIVE', 'NEGATIVE', 'UNDETERMINED', 'REJECTED']),
+        'pcr_sars_cov_2' => $faker->randomElement(['pending', 'positive', 'negative', 'undetermined', 'rejected']),
         'sample_type' => $faker->randomElement(['TORULAS NASOFARINGEAS', 'ESPUTO', 'ASPIRADO NASOFARÍNGEO', 'LAVADO BRONCOALVEOLAR', 'ASPIRADO TRAQUEAL', 'MUESTRA SANGUÍNEA', 'TEJIDO PULMONAR', 'SALIVA', 'OTRO']),
         'validator_id' => 1,
         'sent_external_lab_at' => null,

@@ -17,7 +17,7 @@ $factory->define(Patient::class, function (Faker $faker) {
         'mothers_family' => $faker->lastName(),
         'gender' => $faker->randomElement(['male', 'female']),
         'birthday' => $faker->dateTimeBetween('-95 years', '-1 days'),
-        'status' => "Ambulatorio",
+        'status' => $faker->randomElement(['Ambulatorio','Fallecido','Hospitalizado Básico','Hospitalizado Básico','Hospitalizado UCI (Ventilador)','Alta']),
         'deceased_at' => null
     ];
 });
