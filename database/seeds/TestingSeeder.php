@@ -11,7 +11,11 @@ class TestingSeeder extends Seeder
      */
     public function run()
     {
-        //
+        /*
+        $seed = new TestingSeeder()
+        $seed->create(10000,70,20,10)
+        */
+
         //$this->makeData(10,2);
     }
 

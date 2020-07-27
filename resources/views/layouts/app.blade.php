@@ -132,11 +132,11 @@
                                 @endcan
 
                                 @can('SuspectCase: bulk load')
-                                <a class="dropdown-item" href="{{ route('lab.bulk_load.index') }}">Carga Masiva</a>
+                                <a class="dropdown-item" href="{{ route('lab.bulk_load.index') }}">Carga Masiva Casos</a>
                                 @endcan
 
                                 @can('SuspectCase: import results')
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.index_import_results') }}">Carga Masiva - Resultados</a>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.index_import_results') }}">Carga Masiva Resultados</a>
                                 @endcan
 
                             </div>
