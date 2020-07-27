@@ -239,6 +239,11 @@ class PermissionSeeder extends Seeder
             'description' => 'Reporte de Listado de hospitalizados por comunas asociadas a los establecimientos del usuario'
         ]);
 
+        $permission = Permission::create([
+            'name' => 'Patient: tracing',
+            'description' => 'Seguimiento a Paciente'
+        ]);
+
 
 /*
         $users = User::all();
