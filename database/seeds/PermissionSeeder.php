@@ -244,6 +244,11 @@ class PermissionSeeder extends Seeder
             'description' => 'Seguimiento a Paciente'
         ]);
 
+        $permission = Permission::create([
+            'name' => 'Patient: tracing old',
+            'description' => 'Antiguo permiso de Tracing, ya no se utiliza'
+        ]);
+
 
 /*
         $users = User::all();
