@@ -98,16 +98,27 @@ class Patient extends Model implements Auditable //Authenticatable
         return $this->hasMany('App\SanitaryResidence\VitalSign');
     }
 
+
     public function scopeSearch($query, $search)
     {
-        if ($search) {
-            $query->where('name','LIKE', '%'.$search.'%')
-                ->orWhere('fathers_family','LIKE', '%'.$search.'%')
-                ->orWhere('mothers_family','LIKE', '%'.$search.'%')
-                ->orWhere('run','LIKE', '%'.$search.'%')
-                ->orWhere('other_identification','LIKE', '%'.$search.'%');
-        }
+          if ($search) {
+                $array_search = explode(' ', $search);
+                foreach($array_search as $word){
+                    $query->where(function($query) use($word){
+                          $query->where('name', 'LIKE', '%'.$word.'%')
+                          ->orwhere('fathers_family','LIKE', '%'.$word.'%')
+                          ->orwhere('mothers_family','LIKE', '%'.$word.'%')
+                          ->orwhere('run','LIKE', '%'.$word.'%')
+                          ->orwhere('other_identification','LIKE', '%'.$word.'%');
+                    });
+                }
+              }
+          //dd($query->get()->toArray);
     }
+
+
+
+
 
     function getFullNameAttribute(){
         return mb_strtoupper($this->name . ' ' . $this->fathers_family . ' ' . $this->mothers_family);

@@ -236,7 +236,10 @@ class Tracing extends Model  implements Auditable
 
                 $responseJson = $response->getBody()->getContents();
 
-                // dd(json_decode($responseJson));
+                if (env('APP_ENV') != 'production'){
+                    dd(json_decode($responseJson));
+                }
+
             }
         });
 
@@ -263,7 +266,9 @@ class Tracing extends Model  implements Auditable
 
                 $responseJson = $response->getBody()->getContents();
 
-                // dd(json_decode($responseJson));
+                if (env('APP_ENV') != 'production'){
+                    dd(json_decode($responseJson));
+                }
             }
         });
     }

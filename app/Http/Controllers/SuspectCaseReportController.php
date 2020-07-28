@@ -36,20 +36,21 @@ class SuspectCaseReportController extends Controller
         $communes_ids = array_map('trim', explode(",", env('COMUNAS')));
         $communes = Commune::whereIn('id', $communes_ids)->get();
 
-        /* Valida que existan casos positivos */
+        /* Consulta base para las demás consultas de pacientes*/
         $patients = Patient::whereHas('suspectCases', function ($q) {
             $q->where('pcr_sars_cov_2', 'positive');
         })->whereHas('demographic', function ($q) use ($communes_ids) {
             $q->whereIn('commune_id', $communes_ids);
         });
 
+        /* Valida que existan casos positivos */
         if ($patients->count() == 0){
             session()->flash('info', 'No existen casos positivos o no hay casos con dirección.');
             return redirect()->route('home');
         }
 
         /* Total casos */
-        $casosTotalesArray = $this->getTotalPatients($communes_ids);
+        $casosTotalesArray = $this->getTotalPatients($patients);
 
         /* Evolución */
         $evolucion = $this->getEvolucion($communes_ids);
@@ -63,13 +64,13 @@ class SuspectCaseReportController extends Controller
         $exams['rejected'] = SuspectCase::where('pcr_sars_cov_2','rejected')->count();
 
         /* Ventiladores */
-        list($ventilator, $UciPatients) = $this->getVentilatorStats($communes_ids);
+        list($ventilator, $UciPatients) = $this->getVentilatorStats($patients);
 
         /* Fallecidos */
-        $totalDeceasedArray = $this->getDeceasedPatients($communes_ids);
+        $totalDeceasedArray = $this->getDeceasedPatients($patients);
 
         /* Pacientes por rango edades */
-        $ageRangeArray = $this->getRangeArray($communes_ids);
+        $ageRangeArray = $this->getRangeArray($patients);
 
         /* Casos por comuna */
         $casesByCommuneArray = $this->getCasesByCommune($communes);
@@ -85,7 +86,14 @@ class SuspectCaseReportController extends Controller
         $communes_ids = Auth::user()->communes();
         $communes = Commune::find(Auth::user()->communes());
 
-        $totalPatients = $this->getTotalPatientsOwn();
+        /* Consulta base para las demás consultas de pacientes */
+        $patients = Patient::whereHas('suspectCases', function ($q) {
+            $q->where('pcr_sars_cov_2', 'positive');
+        })->whereHas('demographic', function ($q) {
+            $q->whereIn('commune_id', Auth::user()->communes());
+        });
+
+        $totalPatients = $this->getTotalPatientsOwn($patients);
 
         /* Evolución */
         $evolucion = $this->getEvolucionOwn($communes_ids);
@@ -109,10 +117,10 @@ class SuspectCaseReportController extends Controller
         }
 
         /* Fallecidos */
-        $totalDeceasedArray = $this->getDeceasedPatients($communes_ids);
+        $totalDeceasedArray = $this->getDeceasedPatients($patients);
 
         /*Se calcula número pacientes por rango edades */
-        $ageRangeArray = $this->getRangeArray($communes_ids);
+        $ageRangeArray = $this->getRangeArray($patients);
 
         /* Casos por comuna */
         $casesByCommuneArray = $this->getCasesByCommuneByGender($communes);
@@ -124,36 +132,27 @@ class SuspectCaseReportController extends Controller
     /**
      * @return int
      */
-    public function getTotalPatientsOwn(): int
+    public function getTotalPatientsOwn($patients): int
     {
-        $totalPatients = Patient::whereHas('suspectCases', function ($q) {
-            $q->where('pcr_sars_cov_2', 'positive');
-        })->whereHas('demographic', function ($q) {
-            $q->whereIn('commune_id', Auth::user()->communes());
-        })->count();
+        $totalPatients = $patients->count();
         return $totalPatients;
     }
 
     /**
      * @param array $communes_ids
+     * @param $patients
      * @return array
      */
-    public function getRangeArray(array $communes_ids): array
+    public function getRangeArray($patients): array
     {
         $ageRangeArray = array();
         for ($i = 10; $i <= 90; $i += 10) {
 
-            $malePatients = Patient::whereHas('suspectCases', function ($q) {
-                $q->where('pcr_sars_cov_2', 'positive');
-            })->whereHas('demographic', function ($q) use ($communes_ids) {
-                $q->whereIn('commune_id', $communes_ids);
-            })->where('gender', 'male');
+            $patients1 = clone $patients;
+            $patients2 = clone $patients;
 
-            $femalePatients = Patient::whereHas('suspectCases', function ($q) {
-                $q->where('pcr_sars_cov_2', 'positive');
-            })->whereHas('demographic', function ($q) use ($communes_ids) {
-                $q->whereIn('commune_id', $communes_ids);
-            })->where('gender', 'female');
+            $malePatients = $patients1->where('gender', 'male');
+            $femalePatients = $patients2->where('gender', 'female');
 
             $subYearsBegin = $i . ' years';
             $subYearsEnd = $i - 10 . ' years';
@@ -170,11 +169,9 @@ class SuspectCaseReportController extends Controller
                 array('male' => $cantMale,
                     'female' => $cantFemale));
         }
-        $birthdayNullPatients = Patient::whereHas('suspectCases', function ($q) {
-            $q->where('pcr_sars_cov_2', 'positive');
-        })->whereHas('demographic', function ($q) use ($communes_ids) {
-            $q->whereIn('commune_id', $communes_ids);
-        })->whereNull('birthday')->count();
+
+        $patients3 = clone $patients;
+        $birthdayNullPatients = $patients3->whereNull('birthday')->count();
 
         array_push($ageRangeArray,
             array('null' => $birthdayNullPatients));
@@ -266,21 +263,15 @@ class SuspectCaseReportController extends Controller
 
     /**
      * @param array $communes_ids
+     * @param $patientBase
      * @return array
      */
-    public function getTotalPatients(array $communes_ids): array
+    public function getTotalPatients($patients): array
     {
-        $patientsMale = Patient::whereHas('suspectCases', function ($q) {
-            $q->where('pcr_sars_cov_2', 'positive');
-        })->whereHas('demographic', function ($q) use ($communes_ids) {
-            $q->whereIn('commune_id', $communes_ids);
-        })->where('gender', 'male')->count();
-
-        $patientsFemale = Patient::whereHas('suspectCases', function ($q) {
-            $q->where('pcr_sars_cov_2', 'positive');
-        })->whereHas('demographic', function ($q) use ($communes_ids) {
-            $q->whereIn('commune_id', $communes_ids);
-        })->where('gender', 'female')->count();
+        $patients1 = clone $patients;
+        $patients2 = clone $patients;
+        $patientsMale = $patients1->where('gender', 'male')->count();
+        $patientsFemale = $patients2->where('gender', 'female')->count();
 
         $casosTotalesArray = array();
         $casosTotalesArray['male'] = $patientsMale;
@@ -291,21 +282,18 @@ class SuspectCaseReportController extends Controller
 
     /**
      * @param array $communes_ids
+     * @param $patients
+     * @return array
      */
-    public function getDeceasedPatients(array $communes_ids): array
+    public function getDeceasedPatients($patients): array
     {
-        $malePatients = Patient::whereHas('suspectCases', function ($q) {
-            $q->where('pcr_sars_cov_2', 'positive');
-        })->whereHas('demographic', function ($q) use ($communes_ids) {
-            $q->whereIn('commune_id', $communes_ids);
-        })->where('gender', 'male')
+        $patients1 = clone $patients;
+        $patients2 = clone $patients;
+
+        $malePatients = $patients1->where('gender', 'male')
             ->where('status', 'Fallecido')->count();
 
-        $femalePatients = Patient::whereHas('suspectCases', function ($q) {
-            $q->where('pcr_sars_cov_2', 'positive');
-        })->whereHas('demographic', function ($q) use ($communes_ids) {
-            $q->whereIn('commune_id', $communes_ids);
-        })->where('gender', 'female')
+        $femalePatients = $patients2->where('gender', 'female')
             ->where('status', 'Fallecido')->count();
 
         $totalDeceasedArray = array();
@@ -329,7 +317,6 @@ class SuspectCaseReportController extends Controller
             })->count();
 
             $casesByCommuneArray[$commune->id] = $cant;
-
         }
 
         $cant = Patient::whereHas('suspectCases', function ($q) {
@@ -373,17 +360,15 @@ class SuspectCaseReportController extends Controller
 
     /**
      * @param array $communes_ids
+     * @param $param
      * @return array
      */
-    public function getVentilatorStats(array $communes_ids): array
+    public function getVentilatorStats($patients): array
     {
+        $patients1 = clone $patients;
         $ventilator = Ventilator::first();
 
-        $UciPatients = Patient::whereHas('suspectCases', function ($q) {
-            $q->where('pcr_sars_cov_2', 'positive');
-        })->whereHas('demographic', function ($q) use ($communes_ids) {
-            $q->whereIn('commune_id', $communes_ids);
-        })->where('status', 'Hospitalizado UCI (Ventilador)')->count();
+        $UciPatients = $patients1->where('status', 'Hospitalizado UCI (Ventilador)')->count();
         return array($ventilator, $UciPatients);
     }
 

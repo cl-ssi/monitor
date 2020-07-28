@@ -41,7 +41,7 @@ class Evolution extends Command
     public function handle()
     {
 
-        $search = 'SAAVEDRA NICOLAS';
+        $search = 'TORRES ALVARO FUCHSLOCHER';
         $array_search = explode(' ', $search);
 
         $p = Patient::query();

@@ -16,10 +16,11 @@ class RenameCovid19sTable extends Migration
         Schema::rename('covid19s', 'SARS_CoV_2_External');
 
         Schema::table('SARS_CoV_2_External', function (Blueprint $table){
-
             $table->renameColumn('commune', 'commune_id');
-            $table->renameColumn('origin', 'establishment_id');
+        });
 
+        Schema::table('SARS_CoV_2_External', function (Blueprint $table){
+            $table->renameColumn('origin', 'establishment_id');
         });
 
     }
@@ -34,10 +35,11 @@ class RenameCovid19sTable extends Migration
         Schema::rename('SARS_CoV_2_External', 'covid19s');
 
         Schema::table('covid19s', function (Blueprint $table){
-
             $table->renameColumn('commune_id', 'commune');
-            $table->renameColumn('establishment_id', 'origin');
+        });
 
+        Schema::table('covid19s', function (Blueprint $table){
+            $table->renameColumn('establishment_id', 'origin');
         });
     }
 }
