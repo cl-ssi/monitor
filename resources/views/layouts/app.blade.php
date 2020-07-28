@@ -130,20 +130,13 @@
                                 @can('Patient: tracing old')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing') }}">Seguimiento (Antiguo)</a>
                                 @endcan
-
-                                @can('SuspectCase: bulk load')
-                                <a class="dropdown-item" href="{{ route('lab.bulk_load.index') }}">Carga Masiva</a>
-                                @endcan
-
-                                @can('SuspectCase: import results')
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.index_import_results') }}">Carga Masiva - Resultados</a>
-                                @endcan
+                                
 
                             </div>
                         </li>
                         @endcan
 
-                        @canany(['Lab: menu'])
+                        @canany(['Lab: menu','SuspectCase: bulk load','SuspectCase: import results'])
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-vial"></i>
@@ -157,7 +150,20 @@
                                 @endcan
 
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.minsal_ws') }}">WS Minsal</a>
+
+                                <div class="dropdown-divider"></div>
+
+                                @can('SuspectCase: bulk load')
+                                <a class="dropdown-item" href="{{ route('lab.bulk_load.index') }}">Carga Masiva Casos</a>
+                                @endcan
+
+                                @can('SuspectCase: import results')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.index_import_results') }}">Carga Masiva Resultados</a>
+                                @endcan
+
+
                             </div>
+                            
                         </li>
                         @endcan
 

@@ -624,6 +624,8 @@ class SuspectCaseController extends Controller
 
     public function diary_by_lab_report(Request $request)
     {
+        $start = microtime(true);
+
         if (SuspectCase::count() == 0){
             session()->flash('info', 'No existen casos.');
             return redirect()->route('home');
@@ -645,26 +647,36 @@ class SuspectCaseController extends Controller
             $cases_by_days[$period->format('d-m-Y')]['cases'] = 0;
         }
 
-        $suspectCases = SuspectCase::All();
+        $total_cases_by_days['cases'] = $suspectCases = SuspectCase::count();
+
+        $suspectCases = SuspectCase::selectRaw('DATE(pcr_sars_cov_2_at) as pcr_sars_cov_2_at, external_laboratory, count(*) as cantidad')
+                                    // ->addSelect('external_laboratory')
+                                    ->whereNotNull('pcr_sars_cov_2_at')
+                                    ->wherenotnull('external_laboratory')
+                                    ->groupBy('pcr_sars_cov_2_at','external_laboratory')
+                                    ->get();
 
         foreach ($suspectCases as $suspectCase) {
-          $total_cases_by_days['cases'] = 0;
-
+            $cases_by_days[$suspectCase->pcr_sars_cov_2_at->format('d-m-Y')]['laboratories'][$suspectCase->external_laboratory] += $suspectCase->cantidad;
+            $cases_by_days[$suspectCase->pcr_sars_cov_2_at->format('d-m-Y')]['cases'] += $suspectCase->cantidad;
+            $total_cases_by_days['cases'] += $suspectCase->cantidad;
         }
+
+        $suspectCases = SuspectCase::select('laboratories.name',\DB::raw('DATE_FORMAT(suspect_cases.pcr_sars_cov_2_at, "%d-%m-%Y") as pcr_sars_cov_2_at, count(*) as cantidad'))
+                                    ->leftJoin('laboratories', 'laboratories.id', '=', 'suspect_cases.laboratory_id')
+                                    ->groupBy('laboratories.name',\DB::raw('DATE_FORMAT(suspect_cases.pcr_sars_cov_2_at, "%d-%m-%Y")'))
+                                    ->whereNotNull('pcr_sars_cov_2_at')
+                                    ->whereNotNull('laboratories.name')
+                                    ->whereNull('external_laboratory')
+                                    ->get();
 
         //CARGA ARRAY CASOS
         foreach ($suspectCases as $suspectCase) {
-          if($suspectCase->pcr_sars_cov_2_at != null){
-            if($suspectCase->external_laboratory){
-              $cases_by_days[$suspectCase->pcr_sars_cov_2_at->format('d-m-Y')]['laboratories'][$suspectCase->external_laboratory] += 1;
-            }
-            else{
-              $cases_by_days[$suspectCase->pcr_sars_cov_2_at->format('d-m-Y')]['laboratories'][$suspectCase->laboratory->name] += 1;
-            }
-            $cases_by_days[$suspectCase->pcr_sars_cov_2_at->format('d-m-Y')]['cases'] += 1;
-            $total_cases_by_days['cases'] += 1;
-          }
+            $cases_by_days[$suspectCase->pcr_sars_cov_2_at->format('d-m-Y')]['laboratories'][$suspectCase->name] += $suspectCase->cantidad;
+            $cases_by_days[$suspectCase->pcr_sars_cov_2_at->format('d-m-Y')]['cases'] += $suspectCase->cantidad;
+            $total_cases_by_days['cases'] += $suspectCase->cantidad;
         }
+
         return view('lab.suspect_cases.reports.diary_by_lab_report', compact('cases_by_days', 'total_cases_by_days'));
     }
 
@@ -893,6 +905,7 @@ class SuspectCaseController extends Controller
 
             $filas = SuspectCase::whereYear('sample_at', '=', $year)
                 ->whereMonth('sample_at', '=', $month)
+                ->whereNotNull('laboratory_id')
                 ->orderBy('suspect_cases.id', 'desc')
                 ->get();
 
