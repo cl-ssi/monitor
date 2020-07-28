@@ -886,6 +886,7 @@ class SuspectCaseController extends Controller
 
             $filas = SuspectCase::whereYear('sample_at', '=', $year)
                 ->whereMonth('sample_at', '=', $month)
+                ->whereNotNull('laboratory_id')
                 ->orderBy('suspect_cases.id', 'desc')
                 ->get();
 
