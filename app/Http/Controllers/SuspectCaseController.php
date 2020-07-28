@@ -82,32 +82,39 @@ class SuspectCaseController extends Controller
             //$laboratory = Laboratory::find($lab->id);
             $suspectCasesTotal = SuspectCase::where('laboratory_id',$laboratory->id)->latest('id')->get();
 
+
+            $array_search = explode(' ', $text);
+            foreach($array_search as $word){
             $suspectCases = SuspectCase::latest('id')
                                       ->where('laboratory_id',$laboratory->id)
-                                      ->whereHas('patient', function($q) use ($text){
-                                              $q->Where('name', 'LIKE', '%'.$text.'%')
-                                                ->orWhere('fathers_family','LIKE','%'.$text.'%')
-                                                ->orWhere('mothers_family','LIKE','%'.$text.'%')
-                                                ->orWhere('run','LIKE','%'.$text.'%');
+                                      ->whereHas('patient', function($q) use ($word){
+                                              $q->Where('name', 'LIKE', '%'.$word.'%')
+                                                ->orWhere('fathers_family','LIKE','%'.$word.'%')
+                                                ->orWhere('mothers_family','LIKE','%'.$word.'%')
+                                                ->orWhere('run','LIKE','%'.$word.'%');
                                       })
                                       ->whereNotNull('laboratory_id')
                                       ->whereIn('pcr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
                                       ->paginate(200);//->appends(request()->query());
+                                    }
         }
         else {
             $laboratory = null;
             $suspectCasesTotal = SuspectCase::whereNotNull('laboratory_id')->latest('id')->get();
 
+            $array_search = explode(' ', $text);
+            foreach($array_search as $word){
             $suspectCases = SuspectCase::latest('id')
-                                      ->whereHas('patient', function($q) use ($text){
-                                              $q->Where('name', 'LIKE', '%'.$text.'%')
-                                                ->orWhere('fathers_family','LIKE','%'.$text.'%')
-                                                ->orWhere('mothers_family','LIKE','%'.$text.'%')
-                                                ->orWhere('run','LIKE','%'.$text.'%');
+                                      ->whereHas('patient', function($suspectCases) use ($word){
+                                              $suspectCases->where('name', 'LIKE', '%'.$word.'%')
+                                                ->orWhere('fathers_family','LIKE','%'.$word.'%')
+                                                ->orWhere('mothers_family','LIKE','%'.$word.'%')
+                                                ->orWhere('run','LIKE','%'.$word.'%');
                                       })
                                       ->whereNotNull('laboratory_id')
                                       ->whereIn('pcr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
                                       ->paginate(200);//->appends(request()->query());
+                                    }
         }
         return view('lab.suspect_cases.index', compact('suspectCases','request','suspectCasesTotal','laboratory'));
     }
