@@ -31,6 +31,7 @@
         <th>Sexo</th>
         <th>Comuna</th>
         <th>Nacionalidad</th>
+        <th>Teléfonos</th>
 
         <th>Estado</th>
 
@@ -110,6 +111,7 @@
                     {{ $patient->demographic->nationality }}
                 @endif
             </td>
+            <td nowrap>{{ ($patient->demographic) ? $patient->demographic->fullTelephones : '' }}</td>
             <td nowrap>{{ $patient->status }}</td>
 
 
