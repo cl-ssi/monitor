@@ -527,9 +527,7 @@ class SuspectCaseReportController extends Controller
     }
 
     public function case_tracing_export()
-    {
-        set_time_limit(3600);
-        
+    {    
         $env_communes = array_map('trim', explode(",", env('COMUNAS')));
 
         $patients = Patient::whereHas('suspectCases', function ($q) {
