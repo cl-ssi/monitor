@@ -528,6 +528,8 @@ class SuspectCaseReportController extends Controller
 
     public function case_tracing_export()
     {
+        set_time_limit(3600);
+        
         $env_communes = array_map('trim', explode(",", env('COMUNAS')));
 
         $patients = Patient::whereHas('suspectCases', function ($q) {
@@ -557,6 +559,7 @@ class SuspectCaseReportController extends Controller
             'Sexo',
             'Comuna',
             'Nacionalidad',
+            'Telefonos',
             'Estado',
         );
 
@@ -604,6 +607,7 @@ class SuspectCaseReportController extends Controller
             $casos[$key][] = $patient->genderEsp;
             $casos[$key][] = ($patient->demographic AND $patient->demographic->commune)?$patient->demographic->commune->name:'';
             $casos[$key][] = ($patient->demographic)?$patient->demographic->nationality:'';
+            $casos[$key][] = ($patient->demographic)?$patient->demographic->fullTelephones:'';
             $casos[$key][] = $patient->status;
             foreach($patient->suspectCases as $suspectCase) {
                 $casos[$key][] = $suspectCase->id;
