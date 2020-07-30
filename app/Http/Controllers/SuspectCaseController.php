@@ -1188,17 +1188,17 @@ class SuspectCaseController extends Controller
                     $new_suspect_case->epivigila = $patient['Epivigila'];
                     $new_suspect_case->patient_id = $patient_create->id;
                     $new_suspect_case->user_id = Auth::user()->id;
+                    $new_suspect_case->validator_id = Auth::user()->id;
 
                     $new_suspect_case->save();
                 }
-
-                //AGREGAR EVENTO DE INGRESA QUIEN SOLICITA.
-                $bulkLoadRecord = new BulkLoadRecord();
-                $bulkLoadRecord->description = $request->description;
-                $bulkLoadRecord->user()->associate(Auth::user());
-                $bulkLoadRecord->save();
-
             }
+
+            //AGREGAR EVENTO DE INGRESA QUIEN SOLICITA.
+            $bulkLoadRecord = new BulkLoadRecord();
+            $bulkLoadRecord->description = $request->description;
+            $bulkLoadRecord->user()->associate(Auth::user());
+            $bulkLoadRecord->save();
 
         session()->flash('success', 'El archivo fue cargado exitosamente.');
         return redirect()->route('lab.bulk_load.index');
