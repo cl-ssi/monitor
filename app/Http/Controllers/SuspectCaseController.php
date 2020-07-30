@@ -427,6 +427,12 @@ class SuspectCaseController extends Controller
             $suspectCase->file = true;
         }
 
+        if ($request->laboratory_id == null) {
+            $suspectCase->receptor_id = null;
+            $suspectCase->reception_at = null;
+            $suspectCase->laboratory_id = null;        
+        }
+
         $suspectCase->save();
 
         /* Crea un TRACING si el resultado es positivo o indeterminado */
