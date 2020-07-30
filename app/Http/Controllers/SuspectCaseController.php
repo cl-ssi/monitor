@@ -1125,10 +1125,10 @@ class SuspectCaseController extends Controller
                     if($patient['Resultado'] == 'Indeterminado'){
                         $new_suspect_case->pcr_sars_cov_2 = 'undetermined';
                     }
-                    if($patient['Resultado'] == 'Rechazado '){
+                    if($patient['Resultado'] == 'Rechazado'){
                         $new_suspect_case->pcr_sars_cov_2 = 'rejected';
                     }
-                    if($patient['Resultado'] == 'Pendiente '){
+                    if($patient['Resultado'] == 'Pendiente'){
                         $new_suspect_case->pcr_sars_cov_2 = 'pending';
                     }
 
