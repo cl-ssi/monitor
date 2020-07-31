@@ -38,7 +38,7 @@
             <tr class="text-center">
                 <th rowspan="2">°</th>
                 <th colspan="4">Caso Indice</th>
-                <th colspan="33">Contactos</th>
+                <th colspan="40">Contactos</th>
             </tr>
             <tr class="text-center">
                 <th>N°</th>
@@ -84,6 +84,7 @@
                 <th>CUARENTENA</th>
                 <th>CUARENTENA ¿POR QUÉ NO?</th>
                 <th>ACCIONES</th>
+                <th>N° VECES CONTACTADAS</th>
                 <th>AFILIACIÓN</th>
             </tr>
         </thead>
@@ -192,6 +193,13 @@
                             @else
                                 <td></td>
                             @endif
+
+                            @if($contact->patient->tracing && $contact->patient->tracing->events)
+                                <td>{{ $contact->patient->tracing->events->whereIn('event_type_id', array(1,9))->count() }}</td>
+                            @else
+                                <td></td>
+                            @endif
+
 
                             @if($contact->patient->tracing)
                                 <td>{{ ($contact->patient->tracing)? $contact->patient->tracing->prevision : '' }}</td>
