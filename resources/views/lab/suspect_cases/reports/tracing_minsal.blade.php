@@ -37,7 +37,7 @@
         <thead>
             <tr class="text-center">
                 <th rowspan="2">°</th>
-                <th colspan="4">Caso Indice</th>
+                <th colspan="5">Caso Indice</th>
                 <th colspan="40">Contactos</th>
             </tr>
             <tr class="text-center">
@@ -45,6 +45,7 @@
                 <th>FECHA NOTIFICACIÓN</th>
                 <th>RUN o IDENTIFICADOR</th>
                 <th nowrap>NOMBRE UNIDO</th>
+                <th>N° VECES CONTACTADAS</th>
                 <th>RUN o IDENTIFICADOR</th>
                 <th>NOMBRES</th>
                 <th>APELLIDO PATERNO</th>
@@ -104,6 +105,12 @@
                         @endif
                         <td>{{ $patient->identifier }}</td>
                         <td>{{ $patient->fullName }}</td>
+
+                        @if($patient->tracing && $patient->tracing->events)
+                            <td>{{ $patient->tracing->events->whereIn('event_type_id', array(1,9))->count() }}</td>
+                        @else
+                            <td></td>
+                        @endif
 
                         @if($contact->patient)
                             <td>{{ $contact->patient->identifier }}</td>
@@ -221,6 +228,11 @@
                     @endif
                     <td>{{ $patient->identifier }}</td>
                     <td>{{ $patient->fullName }}</td>
+                    @if($patient->tracing && $patient->tracing->events)
+                        <td>{{ $patient->tracing->events->whereIn('event_type_id', array(1,9))->count() }}</td>
+                    @else
+                        <td></td>
+                    @endif
                 </tr>
 
             @endif
