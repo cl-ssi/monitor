@@ -427,11 +427,11 @@ class SuspectCaseController extends Controller
             $suspectCase->file = true;
         }
 
-        if ($request->laboratory_id == null) {
-            $suspectCase->receptor_id = null;
-            $suspectCase->reception_at = null;
-            $suspectCase->laboratory_id = null;        
-        }
+        // if ($request->laboratory_id == null and $​user​->​can​(​'edit articles'​)) {
+        //     $suspectCase->receptor_id = null;
+        //     $suspectCase->reception_at = null;
+        //     $suspectCase->laboratory_id = null;        
+        // }
 
         $suspectCase->save();
 
