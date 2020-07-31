@@ -527,7 +527,7 @@ class SuspectCaseReportController extends Controller
     }
 
     public function case_tracing_export()
-    {    
+    {
         $env_communes = array_map('trim', explode(",", env('COMUNAS')));
 
         $patients = Patient::whereHas('suspectCases', function ($q) {
@@ -889,6 +889,45 @@ class SuspectCaseReportController extends Controller
         }
 
         return $patients->count();
+    }
+
+    /**
+     * En desarrollo
+     * @param Request $request
+     */
+    public function getHl7Files(Request $request)
+    {
+        $patientId = $request->input('patient_id');
+        $patientNames = $request->input('patient_names');
+        $patientFamilyFather = $request->input('patient_family_father');
+        $patientFamilyMother = $request->input('patient_family_mother');
+        $pcrSarsCov2At = Carbon::parse($request->input('observation_datetime'));
+        $pcrSarsCov2 = $request->input('observation_value');
+        $sampleAt = Carbon::parse($request->input('message_datetime'));
+
+        //todo generalizar para mayusculas y minusculas
+        if($pcrSarsCov2 == "negativo"){$pcrSarsCov2 = "negative";}
+        if($pcrSarsCov2 == "pendiente"){$pcrSarsCov2 = "pending";}
+        if($pcrSarsCov2 == "positivo"){$pcrSarsCov2 = "positive";}
+        if($pcrSarsCov2 == "rechazado"){$pcrSarsCov2 = "rejected";}
+        if($pcrSarsCov2 == "indeterminado"){$pcrSarsCov2 = "undetermined";}
+
+        //TODO revisar casos nombres con tilde y ñ
+        $suspectCase = SuspectCase::whereHas('patient', function ($q) use ($patientFamilyFather, $patientFamilyMother, $patientNames) {
+            $q->where('fathers_family', 'LIKE', '%' . $patientFamilyFather . '%')
+                ->where('mothers_family', 'like', '%' . $patientFamilyMother . '%')
+                ->where('name', 'like', '%' . $patientNames . '%');
+        })->whereDate('sample_at', $sampleAt->toDateString())
+            ->orderBy('updated_at', 'desc')->first();
+
+//        $suspectCase->pcr_sars_cov_2 = $pcrSarsCov2;
+//        $suspectCase->pcr_sars_cov_2_at = $pcrSarsCov2At;
+//        $suspectCase->save();
+
+        error_log('WEBSERVICE: HL7 FILES');
+        error_log($suspectCase);
+        error_log($patientId . '|' . $patientNames . '|' . $patientFamilyFather . '|' . $patientFamilyMother . '|' . $sampleAt->toDateString() . '|' . $pcrSarsCov2 .'|' . $pcrSarsCov2At);
+
     }
 
     public function case_chart(Request $request)
