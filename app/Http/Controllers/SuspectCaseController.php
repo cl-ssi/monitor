@@ -428,7 +428,7 @@ class SuspectCaseController extends Controller
         }
 
         
-        if(Auth::user()->can('SuspectCase: tecnologo') or Auth::user()->can('SuspectCase: tecnologo edit')){
+        if(Auth::user()->can('SuspectCase: reception')){
             if ($request->laboratory_id == null) {
             $suspectCase->receptor_id = null;
             $suspectCase->reception_at = null;
