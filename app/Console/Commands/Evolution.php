@@ -40,7 +40,15 @@ class Evolution extends Command
      */
     public function handle()
     {
+        $communes_ids = [3];
+        $patients = Patient::whereHas('suspectCases')
+        ->whereHas('demographic', function ($q) use ($communes_ids) {
+            $q->whereIn('commune_id', $communes_ids);
+        })->count();
 
+        dd($patients);
+
+        /*
         $search = 'TORRES ALVARO FUCHSLOCHER';
         $array_search = explode(' ', $search);
 
@@ -55,7 +63,7 @@ class Evolution extends Command
         }
 
         dd($p->get()->toArray());
-
+        */
 
         // die();
         //
