@@ -130,7 +130,7 @@
                                 @can('Patient: tracing old')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.case_tracing') }}">Seguimiento (Antiguo)</a>
                                 @endcan
-                                
+
 
                             </div>
                         </li>
@@ -163,7 +163,7 @@
 
 
                             </div>
-                            
+
                         </li>
                         @endcan
 
@@ -280,7 +280,8 @@
                         'Report: positives by range',
                         'Report: user performance',
                         'Report: more than two days',
-                        'Report: suspect cases by commune'
+                        'Report: suspect cases by commune',
+                        'Report: positive average by commune'
                         ])
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -331,6 +332,10 @@
 
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.diary_lab_report') }}">Cantidad de muestras diarias</a>
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.diary_by_lab_report') }}">Exámenes realizados por laboratorios</a>
+
+                                @can('Report: positive average by commune')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.report.positive_average_by_commune') }}">Tasa de positividad por comunas</a>
+                                @endcan
 
                                 @can('Report: positives demographics')
                                 <a class="dropdown-item" href="{{ route('patients.exportPositives') }}">Reporte de positivos con dirección</a>
