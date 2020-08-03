@@ -471,6 +471,16 @@ class SuspectCaseController extends Controller
             $suspectCase->file = true;
         }
 
+        
+        if(Auth::user()->can('SuspectCase: reception')){
+            if ($request->laboratory_id == null) {
+            $suspectCase->receptor_id = null;
+            $suspectCase->reception_at = null;
+            $suspectCase->laboratory_id = null;        
+        }
+        }
+        
+
         $suspectCase->save();
 
         /* Crea un TRACING si el resultado es positivo o indeterminado */
@@ -1260,10 +1270,10 @@ class SuspectCaseController extends Controller
                     if($patient['Resultado'] == 'Indeterminado'){
                         $new_suspect_case->pcr_sars_cov_2 = 'undetermined';
                     }
-                    if($patient['Resultado'] == 'Rechazado '){
+                    if($patient['Resultado'] == 'Rechazado'){
                         $new_suspect_case->pcr_sars_cov_2 = 'rejected';
                     }
-                    if($patient['Resultado'] == 'Pendiente '){
+                    if($patient['Resultado'] == 'Pendiente'){
                         $new_suspect_case->pcr_sars_cov_2 = 'pending';
                     }
 
@@ -1323,17 +1333,17 @@ class SuspectCaseController extends Controller
                     $new_suspect_case->epivigila = $patient['Epivigila'];
                     $new_suspect_case->patient_id = $patient_create->id;
                     $new_suspect_case->user_id = Auth::user()->id;
+                    $new_suspect_case->validator_id = Auth::user()->id;
 
                     $new_suspect_case->save();
                 }
-
-                //AGREGAR EVENTO DE INGRESA QUIEN SOLICITA.
-                $bulkLoadRecord = new BulkLoadRecord();
-                $bulkLoadRecord->description = $request->description;
-                $bulkLoadRecord->user()->associate(Auth::user());
-                $bulkLoadRecord->save();
-
             }
+
+            //AGREGAR EVENTO DE INGRESA QUIEN SOLICITA.
+            $bulkLoadRecord = new BulkLoadRecord();
+            $bulkLoadRecord->description = $request->description;
+            $bulkLoadRecord->user()->associate(Auth::user());
+            $bulkLoadRecord->save();
 
         session()->flash('success', 'El archivo fue cargado exitosamente.');
         return redirect()->route('lab.bulk_load.index');

@@ -33,7 +33,7 @@
                 <fieldset class="form-group col-5 col-md-3">
                     <label for="for_laboratory_id">Laboratorio local</label>
                     <select name="laboratory_id" id="for_laboratory_id" class="form-control">
-                        <option value=""></option>
+                        <option value="">No Recepcionado</option>
                         @foreach($local_labs as $local_lab)
                             <option
                                 value="{{ $local_lab->id }}" {{ ($suspectCase->laboratory_id == $local_lab->id)?'selected':'' }}>{{ $local_lab->alias }}</option>
@@ -278,8 +278,8 @@
                 <label for="for_functionary">Funcionario de Salud</label>
                 <select name="functionary" id="for_functionary" class="form-control">
                     <option value=""></option>
-                    <option value="0" {{ ($suspectCase->functionary === '0') ? 'selected' : '' }}>No</option>
-                    <option value="1" {{ ($suspectCase->functionary == '1') ? 'selected' : '' }}>Si</option>
+                    <option value="0" {{ ($suspectCase->functionary === 0) ? 'selected' : '' }}>No</option>
+                    <option value="1" {{ ($suspectCase->functionary == 1) ? 'selected' : '' }}>Si</option>
                 </select>
             </fieldset>
 
@@ -287,8 +287,8 @@
                 <label for="for_symptoms">Sintomas</label>
                 <select name="symptoms" id="for_symptoms" class="form-control">
                     <option value=""></option>
-                    <option value="1" {{ ($suspectCase->symptoms == '1') ? 'selected' : '' }}>Si</option>
-                    <option value="0" {{ ($suspectCase->symptoms == '0') ? 'selected' : '' }}>No</option>
+                    <option value="0" {{ ($suspectCase->symptoms === 0) ? 'selected' : '' }}>No</option>
+                    <option value="1" {{ ($suspectCase->symptoms == 1) ? 'selected' : '' }}>Si</option>
                 </select>
             </fieldset>
 
