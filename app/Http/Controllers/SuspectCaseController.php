@@ -43,6 +43,9 @@ use App\Imports\PatientImport;
 use App\Imports\DemographicImport;
 use App\Imports\SuspectCaseImport;
 
+use App\WSMinsal;
+use Redirect;
+
 class SuspectCaseController extends Controller
 {
   /**
@@ -265,7 +268,6 @@ class SuspectCaseController extends Controller
      */
     public function storeAdmission(Request $request)
     {
-
         $request->validate([
            'id' => new UniqueSampleDateByPatient($request->sample_at)
         ]);
@@ -303,6 +305,15 @@ class SuspectCaseController extends Controller
             $suspectCase->receptor_id   = Auth::id();
         }
 
+        // // ws minsal: previo a guardar, se verifica que la información sea correcta.
+        // $response = WSMinsal::valida_crea_muestra($request);
+        // $ws_minsal_id = $response['msg'];
+        // if ($response['status'] == 0) {
+        //     session()->flash('info', 'Error al subir muestra a MINSAL. ' . $response['msg']);
+        //     // $suspectCase->forceDelete();
+        //     return redirect()->back()->withInput();
+        // }
+
         /* Guarda el caso sospecha */
         $patient->suspectCases()->save($suspectCase);
 
@@ -315,6 +326,39 @@ class SuspectCaseController extends Controller
             $demographic->patient_id = $patient->id;
             $demographic->save();
         }
+
+        // /* Webservice minsal */
+        // /* Si se crea el caso por alguien con laboratorio asignado */
+        // /* La muestra se crea y recepciona inmediatamente en minsal */
+        // if(Auth::user()->laboratory_id) {
+        //     //####### crea muestra en webservice ########
+        //     $response = WSMinsal::crea_muestra($suspectCase);
+        //     $ws_minsal_id = $response['msg'];
+        //     if ($response['status'] == 0) {
+        //         session()->flash('info', 'Error al subir muestra a MINSAL. ' . $response['msg']);
+        //         $suspectCase->forceDelete();
+        //         return redirect()->back()->withInput();
+        //     }
+        //
+        //     $suspectCase->minsal_ws_id = $ws_minsal_id;
+        //     $suspectCase->save();
+        //
+        //     ////####### se recepciona la muestra //#######
+        //     $response = WSMinsal::recepciona_muestra($suspectCase);
+        //     if ($response['status'] == 0) {
+        //         session()->flash('info', 'Error al recepcionar muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg']);
+        //         $suspectCase->laboratory_id = NULL;
+        //         $suspectCase->receptor_id   = NULL;
+        //         $suspectCase->reception_at  = NULL;
+        //         $suspectCase->save();
+        //         return redirect()->back()->withInput();
+        //     }
+        //
+        //     session()->flash('success', 'Se ha creado el caso número: <h3>'. $suspectCase->id. ' <a href="' . route('lab.suspect_cases.notificationForm',$suspectCase)
+        //         . '">Imprimir Formulario</a></h3><br />Se ha creado y recepcionado muestra en Minsal. Id generado: ' .$ws_minsal_id);
+        //
+        //     return redirect()->back();
+        // }
 
         session()->flash('success', 'Se ha creado el caso número: <h3>'
             . $suspectCase->id. ' <a href="' . route('lab.suspect_cases.notificationForm',$suspectCase)
@@ -383,11 +427,15 @@ class SuspectCaseController extends Controller
             $suspectCase->file = true;
         }
 
-        if ($request->laboratory_id == null) {
+        
+        if(Auth::user()->can('SuspectCase: reception')){
+            if ($request->laboratory_id == null) {
             $suspectCase->receptor_id = null;
             $suspectCase->reception_at = null;
             $suspectCase->laboratory_id = null;
         }
+        }
+        
 
         $suspectCase->save();
 
@@ -667,7 +715,15 @@ class SuspectCaseController extends Controller
 
         }
 
-        $suspectCases = SuspectCase::whereNotNull('laboratory_id')->get();
+        $env_communes = array_map('trim',explode(",",env('COMUNAS')));
+        $communes = Commune::whereIn('id',$env_communes)->orderBy('name','ASC')->get();
+        $suspectCases = SuspectCase::whereNotNull('laboratory_id')
+                                    ->whereHas('patient', function($q) use ($env_communes){
+                                            $q->whereHas('demographic', function($q) use ($env_communes){
+                                                    $q->whereIn('commune_id',$env_communes);
+                                            });
+                                     })
+                                    ->get();
 
         if ($suspectCases->count() == 0){
             session()->flash('info', 'No existen casos con laboratorio.');
@@ -697,6 +753,89 @@ class SuspectCaseController extends Controller
         }
 
         return view('lab.suspect_cases.reports.diary_lab_report', compact('cases_by_days', 'total_cases_by_days'));
+    }
+
+    public function positive_average_by_commune(Request $request)
+    {
+        // FIX TIEMPO LIMITE DE EJECUCUCION Y MEMORIA LIMITE EN PHP.INI
+          set_time_limit(3600);
+          ini_set('memory_limit', '1024M');
+
+        if (SuspectCase::count() == 0){
+            session()->flash('info', 'No existen casos.');
+            return redirect()->route('home');
+        }
+
+        $from = Carbon::now()->subDays(30);
+        $to = Carbon::now();
+
+        $env_communes = array_map('trim',explode(",",env('COMUNAS')));
+        $communes = Commune::whereIn('id',$env_communes)->orderBy('name','ASC')->get();
+
+        $beginExamDate = SuspectCase::whereBetween('sample_at',[$from,$to])
+                                    ->whereNotNull('laboratory_id')
+                                    ->whereHas('patient', function($q) use ($env_communes){
+                                            $q->whereHas('demographic', function($q) use ($env_communes){
+                                                    $q->whereIn('commune_id',$env_communes);
+                                            });
+                                     })
+                                    ->orderBy('sample_at')
+                                    ->first()->sample_at;
+
+        $periods = CarbonPeriod::create($beginExamDate, now());
+
+        foreach ($communes as $key => $commune) {
+            foreach ($periods as $key => $period) {
+                $cases_by_days[$period->format('d-m-Y')][$commune->name]['total'] = 0;
+                $cases_by_days[$period->format('d-m-Y')][$commune->name]['total'] = 0;
+                $cases_by_days[$period->format('d-m-Y')][$commune->name]['total'] = 0;
+                $cases_by_days[$period->format('d-m-Y')][$commune->name]['total'] = 0;
+                $cases_by_days[$period->format('d-m-Y')][$commune->name]['total'] = 0;
+                $cases_by_days[$period->format('d-m-Y')][$commune->name]['total'] = 0;
+                $cases_by_days[$period->format('d-m-Y')][$commune->name]['total'] = 0;
+                $cases_by_days[$period->format('d-m-Y')][$commune->name]['positivos'] = 0;
+                $cases_by_days[$period->format('d-m-Y')][$commune->name]['positivos'] = 0;
+                $cases_by_days[$period->format('d-m-Y')][$commune->name]['positivos'] = 0;
+                $cases_by_days[$period->format('d-m-Y')][$commune->name]['positivos'] = 0;
+                $cases_by_days[$period->format('d-m-Y')][$commune->name]['positivos'] = 0;
+                $cases_by_days[$period->format('d-m-Y')][$commune->name]['positivos'] = 0;
+                $cases_by_days[$period->format('d-m-Y')][$commune->name]['positivos'] = 0;
+            }
+            $cases_by_days[$to->format('d-m-Y')][$commune->name]['total'] = 0;
+            $cases_by_days[$to->format('d-m-Y')][$commune->name]['positivos'] = 0;
+        }
+
+        $suspectCases = SuspectCase::whereBetween('sample_at',[$from,$to])
+                                   ->whereNotNull('laboratory_id')
+                                   // ->where('pcr_sars_cov_2','positive')
+                                   ->whereHas('patient', function($q) use ($env_communes){
+                                           $q->whereHas('demographic', function($q) use ($env_communes){
+                                                   $q->whereIn('commune_id',$env_communes);
+                                           });
+                                    })
+                                   ->get();
+
+        if ($suspectCases->count() == 0){
+            session()->flash('info', 'No existen casos con laboratorio.');
+            return redirect()->route('home');
+        }
+
+        //CARGA ARRAY CASOS
+        foreach ($suspectCases as $suspectCase) {
+            //total
+            if ($communes->contains('name',$suspectCase->patient->demographic->commune->name)) {
+                $cases_by_days[$suspectCase->sample_at->format('d-m-Y')][$suspectCase->patient->demographic->commune->name]['total'] += 1;
+            }
+
+            //positivos
+            if ($suspectCase->pcr_sars_cov_2 == "positive") {
+                if ($communes->contains('name',$suspectCase->patient->demographic->commune->name)) {
+                    $cases_by_days[$suspectCase->sample_at->format('d-m-Y')][$suspectCase->patient->demographic->commune->name]['positivos'] += 1;
+                }
+            }
+        }
+
+        return view('lab.suspect_cases.reports.positive_average_by_commune', compact('cases_by_days'));
     }
 
     public function estadistico_diario_covid19(Request $request)

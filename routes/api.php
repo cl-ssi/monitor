@@ -21,3 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('positives', 'SuspectCaseReportController@countPositives')->middleware('auth.basic');
 Route::get('reporte_expertos', 'SuspectCaseReportController@reporteExpertos')->middleware('auth.basic');
+/*
+ * En desarrollo
+ */
+Route::get('hl7_files', 'SuspectCaseReportController@getHl7Files')->middleware('auth.basic');

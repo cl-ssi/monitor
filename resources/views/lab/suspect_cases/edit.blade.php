@@ -278,8 +278,8 @@
                 <label for="for_functionary">Funcionario de Salud</label>
                 <select name="functionary" id="for_functionary" class="form-control">
                     <option value=""></option>
-                    <option value="0" {{ ($suspectCase->functionary === '0') ? 'selected' : '' }}>No</option>
-                    <option value="1" {{ ($suspectCase->functionary == '1') ? 'selected' : '' }}>Si</option>
+                    <option value="0" {{ ($suspectCase->functionary === 0) ? 'selected' : '' }}>No</option>
+                    <option value="1" {{ ($suspectCase->functionary == 1) ? 'selected' : '' }}>Si</option>
                 </select>
             </fieldset>
 
@@ -287,8 +287,8 @@
                 <label for="for_symptoms">Sintomas</label>
                 <select name="symptoms" id="for_symptoms" class="form-control">
                     <option value=""></option>
-                    <option value="1" {{ ($suspectCase->symptoms == '1') ? 'selected' : '' }}>Si</option>
-                    <option value="0" {{ ($suspectCase->symptoms == '0') ? 'selected' : '' }}>No</option>
+                    <option value="0" {{ ($suspectCase->symptoms === 0) ? 'selected' : '' }}>No</option>
+                    <option value="1" {{ ($suspectCase->symptoms == 1) ? 'selected' : '' }}>Si</option>
                 </select>
             </fieldset>
 

@@ -249,6 +249,10 @@ class PermissionSeeder extends Seeder
             'description' => 'Antiguo permiso de Tracing, ya no se utiliza'
         ]);
 
+        $permission = Permission::create([
+            'name' => 'Report: positive average by commune',
+            'description' => 'Reporte de positivos por comuna'
+        ]);
 
 /*
         $users = User::all();
