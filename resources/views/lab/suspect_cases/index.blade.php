@@ -21,7 +21,6 @@
     </div>
     @endcan
 </div>
-
 <div class="table-responsive">
 <table class="table table-sm table-bordered">
     <thead>
@@ -36,17 +35,16 @@
     </thead>
     <tbody>
         <tr class="text-center">
-            <td>{{ $suspectCasesTotal->count() }}</td>
-            <th class="text-danger">{{ $suspectCasesTotal->where('pcr_sars_cov_2','positive')->count() }}</th>
-            <td>{{ $suspectCasesTotal->where('pcr_sars_cov_2','negative')->count() }}</td>
-            <td>{{ $suspectCasesTotal->where('pcr_sars_cov_2','pending')->count() }}</td>
-            <td>{{ $suspectCasesTotal->where('pcr_sars_cov_2','rejected')->count() }}</td>
-            <td>{{ $suspectCasesTotal->where('pcr_sars_cov_2','undetermined')->count() }}</td>
+            <td>{{ $cases['total'] }}</td>
+            <th class="text-danger">{{ $cases['positivos'] }}</th>
+            <td>{{ $cases['negativos'] }}</td>
+            <td>{{ $cases['pendientes'] }}</td>
+            <td>{{ $cases['rechazados'] }}</td>
+            <td>{{ $cases['indeterminados'] }}</td>
         </tr>
     </tbody>
 </table>
 </div>
-
 
 <!--------------------------------->
 @if($laboratory)

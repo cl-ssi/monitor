@@ -1,10 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Rules\UniqueSampleDateByPatient;
 use GuzzleHttp\Client;
-
 use App\SuspectCase;
 use App\Patient;
 use App\Demographic;
@@ -47,105 +45,63 @@ use App\Imports\SuspectCaseImport;
 
 class SuspectCaseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(request $request, Laboratory $laboratory)
-    {
-        //$lab_id = $request->input('lab_id');
+  /**
+   * Display a listing of the resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function index(request $request, Laboratory $laboratory){
+      $collection = collect(['positivos', 'negativos', 'pendientes', 'rechazados', 'indeterminados']);
+      $filtro = collect([]);
+      $collection->each(function ($item, $key) use ($request, $filtro){
+                  switch ($item) {
+              case "positivos":
+                  $request->get('positivos')=="on"?$filtro->push('positive'):true;
+                  break;
+              case "negativos":
+                  $request->get('negativos')=="on"?$filtro->push('negative'):true;
+                  break;
+              case "pendientes":
+                  $request->get('pendientes')=="on"?$filtro->push('pending'):true;
+                  break;
+              case "rechazados":
+                  $request->get('rechazados')=="on"?$filtro->push('rejected'):true;
+                  break;
+              case "indeterminados":
+                  $request->get('indeterminados')=="on"?$filtro->push('undetermined'):true;
+                  break;
+          }
+      });
 
-        if ($request->get('positivos') == "on") {
-            $positivos = "positive";
-        } else {$positivos = NULL;}
-
-        if ($request->get('negativos') == "on") {
-            $negativos = "negative";
-        } else {$negativos = NULL;}
-
-        if ($request->get('pendientes') == "on") {
-            $pendientes = "pending";
-        } else{$pendientes = NULL;}
-
-        if ($request->get('rechazados') == "on") {
-            $rechazados = "rejected";
-        } else{$rechazados = NULL;}
-
-        if ($request->get('indeterminados') == "on") {
-            $indeterminados = "undetermined";
-        }else{$indeterminados = NULL;}
-
-        $text = $request->get('text');
-
-        if($laboratory->id) {
-            //$laboratory = Laboratory::find($lab->id);
-            $suspectCasesTotal = SuspectCase::where('laboratory_id',$laboratory->id)->latest('id')->get();
-
-
-            $array_search = explode(' ', $text);
-            foreach($array_search as $word){
-            $suspectCases = SuspectCase::latest('id')
-                                      ->where('laboratory_id',$laboratory->id)
-                                      ->whereHas('patient', function($q) use ($word){
-                                              $q->Where('name', 'LIKE', '%'.$word.'%')
-                                                ->orWhere('fathers_family','LIKE','%'.$word.'%')
-                                                ->orWhere('mothers_family','LIKE','%'.$word.'%')
-                                                ->orWhere('run','LIKE','%'.$word.'%');
-                                      })
-                                      ->whereNotNull('laboratory_id')
-                                      ->whereIn('pcr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
-                                      ->paginate(200);//->appends(request()->query());
-                                    }
-        }
-        else {
-            $laboratory = null;
-            $suspectCasesTotal = SuspectCase::whereNotNull('laboratory_id')->latest('id')->get();
-
-            $array_search = explode(' ', $text);
-            foreach($array_search as $word){
-            $suspectCases = SuspectCase::latest('id')
-                                      ->whereHas('patient', function($suspectCases) use ($word){
-                                              $suspectCases->where('name', 'LIKE', '%'.$word.'%')
-                                                ->orWhere('fathers_family','LIKE','%'.$word.'%')
-                                                ->orWhere('mothers_family','LIKE','%'.$word.'%')
-                                                ->orWhere('run','LIKE','%'.$word.'%');
-                                      })
-                                      ->whereNotNull('laboratory_id')
-                                      ->whereIn('pcr_sars_cov_2',[$positivos, $negativos, $pendientes, $rechazados, $indeterminados])
-                                      ->paginate(200);//->appends(request()->query());
-                                    }
-        }
-        return view('lab.suspect_cases.index', compact('suspectCases','request','suspectCasesTotal','laboratory'));
-    }
-
-    /**
-     * Muestra exámenes asociados al establishment de usuario actual.
-     * @param Request $request
-     * @param Laboratory $laboratory
-     * @return Application|Factory|View
-     */
-    public function ownIndex(request $request, Laboratory $laboratory)
-    {
-        $searchText = $request->get('text');
-        $arrayFilter = (empty($request->filter)) ? array() : $request->filter;
-
-        $suspectCasesTotal = SuspectCase::where(function($q){
-            $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
-                ->orWhere('user_id', Auth::user()->id);
-        })->get();
-
-        $suspectCases = SuspectCase::where(function($q){
-            $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
-                ->orWhere('user_id', Auth::user()->id);
-        })
-            ->patientTextFilter($searchText)
-            ->whereIn('pcr_sars_cov_2', $arrayFilter)
-            ->paginate(200);
-
-        return view('lab.suspect_cases.ownIndex', compact('suspectCases', 'arrayFilter', 'searchText', 'laboratory', 'suspectCasesTotal'));
-    }
-
+      $patients = Patient::getPatientsBySearch($request->get('text'));
+      if(!empty($laboratory->id)){
+          $cases['total'] = SuspectCase::where('laboratory_id',$laboratory->id)->count();
+          $cases['positivos']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','positive')->count();
+          $cases['negativos']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','negative')->count();
+          $cases['pendientes']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','pending')->count();
+          $cases['rechazados']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','rejected')->count();
+          $cases['indeterminados']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','undetermined')->count();
+          $suspectCases = SuspectCase::getCaseByPatientLaboratory($patients, $laboratory->id)
+                               ->latest('id')
+                               ->whereIn('pcr_sars_cov_2',$filtro)
+                               ->paginate(200);
+     }
+     else{
+          $laboratory = null;
+          $cases['total'] = SuspectCase::whereNotNull('laboratory_id')->count();
+          $cases['positivos']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','positive')->count();
+          $cases['negativos']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','negative')->count();
+          $cases['pendientes']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','pending')->count();
+          $cases['rechazados']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','rejected')->count();
+          $cases['indeterminados']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','undetermined')->count();
+          $suspectCases = SuspectCase::getCaseByPatient($patients)
+                              ->latest('id')
+                              ->whereNotNull('laboratory_id')
+                              ->whereIn('pcr_sars_cov_2',$filtro)
+                              ->paginate(200);
+      }
+      return view('lab.suspect_cases.index', compact('suspectCases','request','laboratory','cases'));
+  }
 
     /**
      * Muestra exámenes asociados a la comunas del usuario.
@@ -430,7 +386,7 @@ class SuspectCaseController extends Controller
         if ($request->laboratory_id == null) {
             $suspectCase->receptor_id = null;
             $suspectCase->reception_at = null;
-            $suspectCase->laboratory_id = null;        
+            $suspectCase->laboratory_id = null;
         }
 
         $suspectCase->save();

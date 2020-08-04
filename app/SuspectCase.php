@@ -133,6 +133,37 @@ class SuspectCase extends Model implements Auditable
 
     }
 
+
+    /**
+     * Obtiene SuspectCase por Patient Collection y Laboratory Id
+     * @param $query
+     * @param $searchText
+     */
+    public static function getCaseByPatientLaboratory($patients, $laboratory_id){
+          $patients_id = $patients->pluck('id');
+          $suspectCases = SuspectCase::latest('id')
+              ->where('laboratory_id',$laboratory_id)
+              ->whereIn('patient_id', $patients_id);
+          return $suspectCases;
+        }// End getSuspectCasesByPatients
+
+        /**
+         * Obtiene SuspectCase por Patient Collection
+         * @param $query
+         * @param $searchText
+         */
+        public static function getCaseByPatient($patients){
+              $patients_id = $patients->pluck('id');
+              $suspectCases = SuspectCase::latest('id')
+                  ->whereIn('patient_id', $patients_id);
+              return $suspectCases;
+            }// End getSuspectCasesByPatients
+
+
+
+
+
+
     /**
      * The attributes that should be mutated to dates.
      *
