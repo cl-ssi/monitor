@@ -305,15 +305,15 @@ class SuspectCaseController extends Controller
             $suspectCase->receptor_id   = Auth::id();
         }
 
-        // // ws minsal: previo a guardar, se verifica que la información sea correcta.
-        // if (env('ACTIVA_WS', false) == true) {
-        //     $response = WSMinsal::valida_crea_muestra($request);
-        //     $ws_minsal_id = $response['msg'];
-        //     if ($response['status'] == 0) {
-        //         session()->flash('info', 'Error al crear muestra . ' . $response['msg']);
-        //         return redirect()->back()->withInput();
-        //     }
-        // }
+        // ws minsal: previo a guardar, se verifica que la información sea correcta.
+        if (env('ACTIVA_WS', false) == true) {
+            $response = WSMinsal::valida_crea_muestra($request);
+            $ws_minsal_id = $response['msg'];
+            if ($response['status'] == 0) {
+                session()->flash('info', 'Error al crear muestra . ' . $response['msg']);
+                return redirect()->back()->withInput();
+            }
+        }
 
         /* Guarda el caso sospecha */
         $patient->suspectCases()->save($suspectCase);
