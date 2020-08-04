@@ -52,7 +52,7 @@ class WSMinsal extends Model
         $array = array(
             'raw' => array(
                 'codigo_muestra_cliente' => $codigo_muestra_cliente,
-                'rut_responsable' => Auth::user()->run . "-" . Auth::user()->dv, //Claudia Caronna //Auth::user()->run . "-" . Auth::user()->dv, //se va a enviar rut de enfermo del servicio
+                'rut_responsable' => '15980951-k', //Claudia Caronna //Auth::user()->run . "-" . Auth::user()->dv, //se va a enviar rut de enfermo del servicio
                 'cod_deis' => '102100', //$request->establishment_id
                 'rut_medico' => $request->run_medic_s_dv . "-" . $request->run_medic_dv, //'16350555-K', //Pedro Valjalo
                 'paciente_run' => $request->run,
@@ -79,7 +79,7 @@ class WSMinsal extends Model
         try {
             $response = $client->request('POST', env('WS_VALIDA_CREAR_MUESTRA'), [
                 'json' => $array,
-                'headers'  => [ 'ACCESSKEY' => Laboratory::find(Auth::user()->laboratory_id)->token_ws]
+                'headers'  => [ 'ACCESSKEY' => Laboratory::whereNotNull('token_ws')->get()->first()->token_ws] //se permite el uso de cualuier access key
             ]);
 
             $array = json_decode($response->getBody()->getContents(), true);
