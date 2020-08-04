@@ -107,6 +107,33 @@ class SuspectCaseController extends Controller
   }
 
     /**
+    * Muestra exámenes asociados al establishment de usuario actual.
+    * @param Request $request
+    * @param Laboratory $laboratory
+    * @return Application|Factory|View
+    */
+    public function ownIndex(request $request, Laboratory $laboratory)
+    {
+      $searchText = $request->get('text');
+      $arrayFilter = (empty($request->filter)) ? array() : $request->filter;
+
+      $suspectCasesTotal = SuspectCase::where(function($q){
+          $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
+              ->orWhere('user_id', Auth::user()->id);
+      })->get();
+
+      $suspectCases = SuspectCase::where(function($q){
+          $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
+              ->orWhere('user_id', Auth::user()->id);
+      })
+          ->patientTextFilter($searchText)
+          ->whereIn('pcr_sars_cov_2', $arrayFilter)
+          ->paginate(200);
+
+      return view('lab.suspect_cases.ownIndex', compact('suspectCases', 'arrayFilter', 'searchText', 'laboratory', 'suspectCasesTotal'));
+    }
+
+    /**
      * Muestra exámenes asociados a la comunas del usuario.
      * @return Application|Factory|View
      */
