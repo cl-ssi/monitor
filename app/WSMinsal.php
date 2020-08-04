@@ -46,13 +46,13 @@ class WSMinsal extends Model
         }
 
         $codigo_muestra_cliente = SuspectCase::max('id') + 1;
-        $cod_deis = Laboratory::find(Auth::user()->laboratory_id);
+        // $cod_deis = Laboratory::find(Auth::user()->laboratory_id);
         // dd($cod_deis);
         // dd($request->run_medic);
         $array = array(
             'raw' => array(
                 'codigo_muestra_cliente' => $codigo_muestra_cliente,
-                'rut_responsable' => Auth::user()->run . "-" . Auth::user()->dv,, //Claudia Caronna //Auth::user()->run . "-" . Auth::user()->dv, //se va a enviar rut de enfermo del servicio
+                'rut_responsable' => Auth::user()->run . "-" . Auth::user()->dv, //Claudia Caronna //Auth::user()->run . "-" . Auth::user()->dv, //se va a enviar rut de enfermo del servicio
                 'cod_deis' => '102100', //$request->establishment_id
                 'rut_medico' => $request->run_medic_s_dv . "-" . $request->run_medic_dv, //'16350555-K', //Pedro Valjalo
                 'paciente_run' => $request->run,
