@@ -305,14 +305,15 @@ class SuspectCaseController extends Controller
             $suspectCase->receptor_id   = Auth::id();
         }
 
-        // // ws minsal: previo a guardar, se verifica que la información sea correcta.
-        // $response = WSMinsal::valida_crea_muestra($request);
-        // $ws_minsal_id = $response['msg'];
-        // if ($response['status'] == 0) {
-        //     session()->flash('info', 'Error al subir muestra a MINSAL. ' . $response['msg']);
-        //     // $suspectCase->forceDelete();
-        //     return redirect()->back()->withInput();
-        // }
+        // ws minsal: previo a guardar, se verifica que la información sea correcta.
+        if (env('ACTIVA_WS', false) == true) {
+            $response = WSMinsal::valida_crea_muestra($request);
+            $ws_minsal_id = $response['msg'];
+            if ($response['status'] == 0) {
+                session()->flash('info', 'Error al crear muestra . ' . $response['msg']);
+                return redirect()->back()->withInput();
+            }
+        }
 
         /* Guarda el caso sospecha */
         $patient->suspectCases()->save($suspectCase);
@@ -427,7 +428,7 @@ class SuspectCaseController extends Controller
             $suspectCase->file = true;
         }
 
-        
+
         if(Auth::user()->can('SuspectCase: reception')){
             if ($request->laboratory_id == null) {
             $suspectCase->receptor_id = null;
@@ -435,7 +436,7 @@ class SuspectCaseController extends Controller
             $suspectCase->laboratory_id = null;
         }
         }
-        
+
 
         $suspectCase->save();
 
