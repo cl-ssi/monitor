@@ -121,8 +121,11 @@ class WSMinsal extends Model
             $paciente_tipodoc = "RUN";
         }
 
+
         if ($suspectCase->run_medic == "0-0" || $suspectCase->run_medic == "25540525-k" || $suspectCase->run_medic == "25540525") {
             $run_medic = "16350555-K";
+        }else{
+            $run_medic = $suspectCase->run_medic;
         }
 
         $array = array(
