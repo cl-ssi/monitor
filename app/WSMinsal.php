@@ -122,9 +122,14 @@ class WSMinsal extends Model
         }
 
 
-        if ($suspectCase->run_medic == "0-0" || $suspectCase->run_medic == "25540525-k"
-        || $suspectCase->run_medic == "25540525" || $suspectCase->run_medic == "26128476-6"
-        || $suspectCase->run_medic == "15685849-8" || $suspectCase->run_medic == "13867622-6") {
+        if ($suspectCase->run_medic == "0-0"
+            || $suspectCase->run_medic == "25540525-k"
+            || $suspectCase->run_medic == "25540525"
+            || $suspectCase->run_medic == "26128476-6"
+            || $suspectCase->run_medic == "15685849-8"
+            || $suspectCase->run_medic == "13867622-6"
+            || $suspectCase->run_medic == "17430962-0"
+        ) {
             $run_medic = "16350555-K";
         }else{
             $run_medic = $suspectCase->run_medic;
