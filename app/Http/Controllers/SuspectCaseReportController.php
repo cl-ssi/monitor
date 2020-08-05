@@ -819,8 +819,8 @@ class SuspectCaseReportController extends Controller
                 if ($case->patient->demographic) {
                     $response = WSMinsal::crea_muestra($case);
                     if ($response['status'] == 0) {
-                        session()->flash('info', 'Error al subir muestra ' . $case->id . ' a MINSAL. ' . $response['msg']);
-                        return redirect()->back();
+                        // session()->flash('info', 'Error al subir muestra ' . $case->id . ' a MINSAL. ' . $response['msg']);
+                        // return redirect()->back();
                         // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'request','laboratories'));
                     }else{
                         $response = WSMinsal::recepciona_muestra($case);
