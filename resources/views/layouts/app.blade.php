@@ -114,6 +114,7 @@
                                 <a class="dropdown-item" href="{{ route('patients.tracings.establishments') }}">Seguimiento de mis establecimientos</a>
 
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.tracing_minsal') }}">Seguimiento SEREMI</a>
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.tracing_minsal_by_patient') }}">Seguimiento SEREMI por paciente</a>
 
                                 <a class="dropdown-item" href="{{ route('patients.tracings.withoutevents') }}">Pacientes sin seguimiento</a>
 
