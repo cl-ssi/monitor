@@ -776,7 +776,7 @@ class SuspectCaseReportController extends Controller
 
         // dd($cases->first());
 
-        $laboratories = Laboratory::all();
+        $laboratories = Laboratory::where('minsal_ws',1)->get();
 
         return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'request','laboratories'));//,'externos'));
     }
@@ -821,7 +821,7 @@ class SuspectCaseReportController extends Controller
                     if ($response['status'] == 0) {
                         // session()->flash('info', 'Error al subir muestra ' . $case->id . ' a MINSAL. ' . $response['msg']);
                         // return redirect()->back();
-                        
+
                         // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'request','laboratories'));
                     }else{
                         $response = WSMinsal::recepciona_muestra($case);
