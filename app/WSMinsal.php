@@ -227,22 +227,35 @@ class WSMinsal extends Model
 
         try {
             if ($pdf == NULL) {
-                $response = $client->request('POST', env('WS_RESULTADO_MUESTRA'), [
-                    'multipart' => [
-                        [
-                            'name'     => 'upfile',
-                            // 'contents' => Storage::get($suspectCase->files->first()->file),
-                            // 'filename' => $suspectCase->files->first()->name
-                            'contents' => Storage::get('suspect_cases/' . $suspectCase->id . '.pdf'),
-                            'filename' => $suspectCase->id . '.pdf'
+                if ($resultado == "Muestra no apta") {
+                    $response = $client->request('POST', env('WS_RESULTADO_MUESTRA'), [
+                        'multipart' => [
+                            [
+                                'name'     => 'parametros',
+                                'contents' => '{"id_muestra":"' . $suspectCase->minsal_ws_id .'","resultado":"' . $resultado .'"}'
+                            ]
                         ],
-                        [
-                            'name'     => 'parametros',
-                            'contents' => '{"id_muestra":"' . $suspectCase->minsal_ws_id .'","resultado":"' . $resultado .'"}'
-                        ]
-                    ],
-                    'headers'  => [ 'ACCESSKEY' => $suspectCase->laboratory->token_ws]
-                ]);
+                        'headers'  => [ 'ACCESSKEY' => $suspectCase->laboratory->token_ws]
+                    ]);
+                }else {
+                    $response = $client->request('POST', env('WS_RESULTADO_MUESTRA'), [
+                        'multipart' => [
+                            [
+                                'name'     => 'upfile',
+                                // 'contents' => Storage::get($suspectCase->files->first()->file),
+                                // 'filename' => $suspectCase->files->first()->name
+                                'contents' => Storage::get('suspect_cases/' . $suspectCase->id . '.pdf'),
+                                'filename' => $suspectCase->id . '.pdf'
+                            ],
+                            [
+                                'name'     => 'parametros',
+                                'contents' => '{"id_muestra":"' . $suspectCase->minsal_ws_id .'","resultado":"' . $resultado .'"}'
+                            ]
+                        ],
+                        'headers'  => [ 'ACCESSKEY' => $suspectCase->laboratory->token_ws]
+                    ]);
+                }
+
             }else{
                 $response = $client->request('POST', env('WS_RESULTADO_MUESTRA'), [
                     'multipart' => [
