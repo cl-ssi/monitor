@@ -448,6 +448,27 @@ class SuspectCaseReportController extends Controller
         return view('lab.suspect_cases.reports.tracing_minsal', compact('patients', 'request'));
     }
 
+    public function tracing_minsal_by_patient(Request $request)
+    {
+        if($request->has('run')){
+            $patients = Patient::whereHas('tracing', function ($q) {
+                  $q->where('index', '1')
+                  ->whereIn('establishment_id', auth()->user()->establishments->pluck('id'));
+                })
+                ->where('run', $request->get('run'))
+                ->orWhere('other_identification', $request->get('run'))
+                ->with('contactPatient')
+                ->with('tracing')
+                ->with('suspectCases')
+                ->get();
+        }
+        else{
+            $patients = collect(new Patient);
+        }
+
+        return view('lab.suspect_cases.reports.tracing_minsal_by_patient', compact('patients', 'request'));
+    }
+
     public function tracingByCommunes(Request $request)
     {
 
