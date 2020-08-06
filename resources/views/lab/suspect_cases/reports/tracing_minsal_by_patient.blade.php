@@ -6,7 +6,7 @@
 
 <h3 class="">Seguimiento de Casos Positivos y Contactos.</h3>
 
-@if($request->date_from && $request->date_to)
+@if($request->run)
     <a class="btn btn-outline-success btn-sm mb-3" type="button" id="downloadLink" onclick="exportF(this)"><i class="far fa-file-excel"></i> Descargar en excel</a>
 @endif
 
