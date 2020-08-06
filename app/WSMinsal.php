@@ -161,7 +161,6 @@ class WSMinsal extends Model
             )
         );
 
-
         try {
             $response = $client->request('POST', env('WS_CREAR_MUESTRA'), [
                 'json' => $array,

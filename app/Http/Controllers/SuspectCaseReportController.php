@@ -763,9 +763,6 @@ class SuspectCaseReportController extends Controller
             $request->laboratory_id = 1;
         }
 
-
-        // $externos = SARSCoV2External::whereBetween('result_at', [$from, $to])->get();
-
         $cases = SuspectCase::where('laboratory_id',$laboratory_id)
                 ->whereBetween('pcr_sars_cov_2_at', [$from, $to])
                 ->whereNull('external_laboratory')
@@ -773,29 +770,7 @@ class SuspectCaseReportController extends Controller
                 // ->where('id',20370)
                 ->get()
                 ->sortByDesc('pcr_sars_cov_2_at');
-                // ->paginate(15);
-
-        // //obtiene datos que faltan
-        // foreach ($cases as $key => $case) {
-        //
-        //     $genero = strtoupper($case->gender[0]);
-        //     //$commune_code_deis = Commune::find($case->patient->demographic->commune_id)->code_deis;
-        //     $paciente_ext_paisorigen = '';
-        //     if($case->patient->run == "") {
-        //         $paciente_tipodoc = "PASAPORTE";
-        //         $country = Country::where('name',$case->patient->demographic->nationality)->get();
-        //         $paciente_ext_paisorigen = $country->first()->id_minsal;
-        //     }
-        //     else {
-        //         $paciente_tipodoc = "RUN";
-        //     }
-        //     $case->genero = $genero;
-        //     $case->commune_code_deis = $case->patient->commune;
-        //     $case->paciente_tipodoc = $paciente_tipodoc;
-        //     $case->paciente_ext_paisorigen = $paciente_ext_paisorigen;
-        // }
-
-        // dd($cases->first());
+                // dd($cases);
 
         $laboratories = Laboratory::where('minsal_ws',1)->get();
 
@@ -820,8 +795,7 @@ class SuspectCaseReportController extends Controller
             $request->laboratory_id = 1;
         }
 
-        // $externos = SARSCoV2External::whereBetween('result_at', [$from, $to])->get();
-        $laboratories = Laboratory::all();
+        $laboratories = Laboratory::where('minsal_ws',1)->get();
 
         $cases = SuspectCase::where('laboratory_id',$request->laboratory_id)
                 ->whereBetween('pcr_sars_cov_2_at', [$from, $to])
@@ -830,19 +804,15 @@ class SuspectCaseReportController extends Controller
                 // ->where('id',20370)
                 ->get()
                 ->sortByDesc('pcr_sars_cov_2_at');
-
-                // $cases = SuspectCase::where('id',13784)->get();
                 // dd($cases);
 
-        // dd($cases);
         foreach ($cases as $key => $case) {
             // if ($case->run_medic != 0) {
                 if ($case->patient->demographic) {
                     $response = WSMinsal::crea_muestra($case);
                     if ($response['status'] == 0) {
-                        // session()->flash('info', 'Error al subir muestra ' . $case->id . ' a MINSAL. ' . $response['msg']);
-                        // return redirect()->back();
-
+                        session()->flash('info', 'Error al subir muestra ' . $case->id . ' a MINSAL. ' . $response['msg']);
+                        return redirect()->back();
                         // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'request','laboratories'));
                     }else{
                         $response = WSMinsal::recepciona_muestra($case);
