@@ -228,6 +228,7 @@ class WSMinsal extends Model
         try {
             if ($pdf == NULL) {
                 if ($resultado == "Muestra no apta") {
+                    print_r("aquí: " . $suspectCase->minsal_ws_id);
                     $response = $client->request('POST', env('WS_RESULTADO_MUESTRA'), [
                         'multipart' => [
                             [
