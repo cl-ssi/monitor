@@ -63,12 +63,8 @@
             <td nowrap>{{$booking->room->residence->name}}</td>
             <td nowrap>{{$booking->room->floor}}</td>
             <td nowrap>{{$booking->room->number}}</td>
-            <td nowrap>{{ ($booking->patient->demographic)?$booking->patient->demographic->commune->name:'' }}</td>
-            @if(is_null($booking->patient->suspectCases->last()->deleted_at))
-            <td nowrap>{{ ($booking->patient->suspectCases->last())? $booking->patient->suspectCases->last()->establishment->alias.' - '.$booking->patient->suspectCases->last()->origin:'' }}</td>            
-            @else
-            <td nowrap> ES EL BORRADO </td>            
-            @endif
+            <td nowrap>{{ ($booking->patient->demographic)?$booking->patient->demographic->commune->name:'' }}</td>            
+            <td nowrap>{{ ($booking->patient->suspectCases->last())? dd($booking->patient->suspectCases->last()->establishment->alias).' - '.$booking->patient->suspectCases->last()->origin:'' }}</td>            
             <td nowrap> {{$booking->doctor}} </td>
             <td nowrap>{{$booking->patient->identifier}}</td>
             <td nowrap>{{$booking->patient->fathers_family}} {{$booking->patient->mothers_family}}</td>
