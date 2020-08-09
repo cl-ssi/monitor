@@ -15,7 +15,7 @@
                     <select name="request_type_id" id="for_request_type_id" required class="form-control">
                         <option value=""></option>
                         @foreach($request_types as $type)
-                          @if($patient->tracing->index == 1)
+                          @if($patient->tracing->index == 1 || $patient->tracing->index == 2)
                           <option value="{{ $type->id }}" @if($type->name == 'Licencia Medica SEREMI') disabled @endif>{{ $type->name }}</option>
                           @else
                           <option value="{{ $type->id }}" @if($type->name == 'Licencia Medica APS') disabled @endif>{{ $type->name }}</option>
