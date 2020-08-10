@@ -284,6 +284,13 @@ Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(functi
     Route::get('/event_type/{eventType}/edit', 'EventTypeController@edit')->name('EventType.edit');
     Route::put('/event_type/update/{eventType}', 'EventTypeController@update')->name('EventType.update');
 
+
+    Route::get('/dialysis_center', 'DialysisCenterController@index')->name('dialysis_center');
+    Route::get('/dialysis_center/create', 'DialysisCenterController@create')->name('dialysis_center.create');
+    Route::post('/dialysis_center/store', 'DialysisCenterController@store')->name('dialysis_center.store');
+    Route::get('/dialysis_center/{dialysis_center}/edit', 'DialysisCenterController@edit')->name('dialysis_center.edit');
+    Route::put('/dialysis_center/update/{dialysis_center}', 'DialysisCenterController@update')->name('dialysis_center.update');
+
     Route::get('/request_type', 'RequestTypeController@index')->name('request_type');
     Route::get('/request_type/create', 'RequestTypeController@create')->name('request_type.create');
     Route::post('/request_type/store', 'RequestTypeController@store')->name('request_type.store');

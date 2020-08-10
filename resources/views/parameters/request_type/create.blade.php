@@ -8,7 +8,7 @@
 
 <h3 class="mb-3">Crear tipo de solicitud</h3>
 
-<form method="POST" class="form-horizontal" action="{{ route('parameters.request_type.store') }}">
+<form method="POST" class="form-horizontal" action="{{ route('parameters.dialysis_center.store') }}">
     @csrf
     @method('POST')
     <div class="form-row">
