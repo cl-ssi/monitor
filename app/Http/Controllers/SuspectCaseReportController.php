@@ -772,7 +772,8 @@ class SuspectCaseReportController extends Controller
                 ->sortByDesc('pcr_sars_cov_2_at');
                 // dd($cases);
 
-        $laboratories = Laboratory::where('minsal_ws',1)->get();
+        // $laboratories = Laboratory::where('minsal_ws',1)->get();
+        $laboratories = Laboratory::where('id',1)->get();
 
         return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'request','laboratories'));//,'externos'));
     }
@@ -795,7 +796,8 @@ class SuspectCaseReportController extends Controller
             $request->laboratory_id = 1;
         }
 
-        $laboratories = Laboratory::where('minsal_ws',1)->get();
+        // $laboratories = Laboratory::where('minsal_ws',1)->get();
+        $laboratories = Laboratory::where('id',1)->get();
 
         $cases = SuspectCase::where('laboratory_id',$request->laboratory_id)
                 ->whereBetween('pcr_sars_cov_2_at', [$from, $to])

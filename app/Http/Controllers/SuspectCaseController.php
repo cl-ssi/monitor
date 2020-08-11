@@ -1358,6 +1358,7 @@ class SuspectCaseController extends Controller
                 if ($suspectCase) {
                     $suspectCase->pcr_sars_cov_2 = $resultado;
                     $suspectCase->pcr_sars_cov_2_at = $fecha_resultado;
+                    $suspectCase->validator_id = Auth::id();
                     $suspectCase->save();
                     $cont += 1;
                 }
