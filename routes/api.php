@@ -19,6 +19,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
+Route::prefix('webservices')->name('webservices.')->group(function () {
+    Route::get('fonasa', 'WebserviceController@fonasa')->middleware('auth.basic')->name('fonasa');
+});
+
 Route::get('positives', 'SuspectCaseReportController@countPositives')->middleware('auth.basic');
 Route::get('reporte_expertos', 'SuspectCaseReportController@reporteExpertos')->middleware('auth.basic');
 /*
