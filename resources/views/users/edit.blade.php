@@ -77,6 +77,20 @@
                     <input type="text" class="form-control" name="function" id="for_function" 
                     value="{{ $user->function }}">
                 </fieldset>
+
+                <fieldset class="form-group col-12 col-md-3">
+                    <label for="for_dialysis_center_id">Centro de Dialisis</label>
+                    <select name="dialysis_center_id" id="for_dialysis_center_id" class="form-control">
+                        <option value=""></option>
+                        @foreach($dialysiscenters as $dialysiscenter)
+                        <option value="{{ $dialysiscenter->id }}" {{ ($user->dialysis_center_id == $dialysiscenter->id)?'selected':'' }}>{{ $dialysiscenter->name }}</option>
+                        @endforeach
+                    </select>
+                    <small id="dialysiscenterHelp" class="form-text text-muted">Sólo para trabajadores en Centro de Dialisis</small>
+                </fieldset>
+
+
+
             </div>
 
 
