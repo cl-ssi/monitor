@@ -48,14 +48,14 @@ class UserController extends Controller
     {
         $laboratories = Laboratory::orderBy('name')->get();
         $permissions = Permission::OrderBy('name')->get();
-        $dialysiscenters = DialysisCenter::OrderBy('name')->get();
+        //$dialysiscenters = DialysisCenter::OrderBy('name')->get();
 
 
 
         $env_communes = array_map('trim',explode(",",env('COMUNAS')));
         $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
 
-        return view('users.create', compact('permissions','laboratories', 'establishments', 'dialysiscenters'));
+        return view('users.create', compact('permissions','laboratories', 'establishments'));
     }
 
     /**
@@ -81,7 +81,7 @@ class UserController extends Controller
         $user->telephone = $request->input('telephone');
         $user->function = $request->input('function');
         $user->laboratory_id = $request->input('laboratory_id');
-        $user->dialysis_center_id = $request->input('dialysis_center_id');
+        //$user->dialysis_center_id = $request->input('dialysis_center_id');
         $user->password = bcrypt($request->input('password'));
 
         $user->save();
@@ -127,7 +127,7 @@ class UserController extends Controller
     {
         $laboratories = Laboratory::orderBy('name')->get();
         $permissions = Permission::OrderBy('name')->get();
-        $dialysiscenters = DialysisCenter::OrderBy('name')->get();
+        //$dialysiscenters = DialysisCenter::OrderBy('name')->get();
 
         $env_communes = array_map('trim',explode(",",env('COMUNAS')));
         $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
@@ -139,7 +139,7 @@ class UserController extends Controller
             $establishment_selected[$key] = $establishment_user->establishment_id;
         }
 
-        return view('users.edit', compact('user','permissions','laboratories', 'establishments', 'establishment_selected', 'establishments_user','dialysiscenters'));
+        return view('users.edit', compact('user','permissions','laboratories', 'establishments', 'establishment_selected', 'establishments_user'));
     }
 
     /**
@@ -157,7 +157,7 @@ class UserController extends Controller
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->laboratory_id = $request->input('laboratory_id');
-        $user->dialysis_center_id = $request->input('dialysis_center_id');
+        //$user->dialysis_center_id = $request->input('dialysis_center_id');
         $user->telephone = $request->input('telephone');
         $user->function = $request->input('function');
         //$user->password = bcrypt($request->input('password'));

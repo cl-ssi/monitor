@@ -89,7 +89,7 @@
                                 @can('SuspectCase: list')
                                 @php
                                 $labs = App\Laboratory::where('external',0)->get();
-                                $dialysiscenters = App\Dialysis\DialysisCenter::where('id',Auth::user()->dialysis_center_id)->get();
+                                
                                 @endphp
 
                                 @foreach($labs as $lab)
@@ -98,9 +98,10 @@
 
                                 <div class="dropdown-divider"></div>
 
-                                @foreach($dialysiscenters as $dialysiscenter)
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.dialysis.index',$dialysiscenter) }}">Centro de Dialisis  {{ $dialysiscenter->name }}</a>
-                                @endforeach
+                                @can('Dialysis Center: User')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.dialysis.index') }}">Centro de Dialisis</a>
+                                @endcan
+                                
                                 
 
 

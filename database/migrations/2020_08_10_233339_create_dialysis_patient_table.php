@@ -16,13 +16,13 @@ class CreateDialysisPatientTable extends Migration
         Schema::create('dialysis_patient', function (Blueprint $table) {
             $table->id();
             $table->foreignId('patient_id');
-            $table->foreignId('dialysis_center_id');
+            $table->foreignId('establishment_id');
 
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('patient_id')->references('id')->on('patients');
-            $table->foreign('dialysis_center_id')->references('id')->on('dialysis_centers');
+            $table->foreign('establishment_id')->references('id')->on('establishments');
         });
     }
 
