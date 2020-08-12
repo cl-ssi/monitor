@@ -318,10 +318,19 @@
 
             <fieldset class="form-group col-6 col-md-2">
                 <label for="for_close_contact">Contacto estrecho</label>
-                <select name="close_contact" id="for_close_contact" class="form-control">
+                <select name="close_contact" id="for_close_contact" class="form-control" required>
                     <option value=""></option>
                     <option value="0" {{ ($suspectCase->close_contact === 0) ? 'selected' : '' }}>No</option>
                     <option value="1" {{ ($suspectCase->close_contact == 1) ? 'selected' : '' }}>Si</option>
+                </select>
+            </fieldset>
+
+            <fieldset class="form-group col-4 col-md-2">
+                <label for="for_case_type">Tipo de caso</label>
+                <select name="case_type" id="for_case_type" class="form-control">
+                    <option value="" {{($suspectCase->case_type == '') ? 'selected' : '' }}></option>
+                    <option value="Atención médica" {{($suspectCase->case_type == 'Atención médica') ? 'selected' : '' }}>Atención médica</option>
+                    <option value="Busqueda activa" {{($suspectCase->case_type == 'Busqueda activa') ? 'selected' : '' }}>Busqueda activa</option>
                 </select>
             </fieldset>
 
@@ -333,8 +342,8 @@
                     <option value="1" {{ ($suspectCase->discharge_test == 1) ? 'selected' : '' }}>Si</option>
                 </select>
             </fieldset> --}}
-
-
+        </div>
+        <div class="form-row">
             <fieldset class="form-group col-6 col-md-4">
                 <label for="for_status">Estado</label>
                 <p>

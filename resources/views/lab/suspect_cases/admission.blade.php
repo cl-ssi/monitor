@@ -184,7 +184,7 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-2">
+        <fieldset class="form-group col-6 col-md-1">
             <label for="for_gestation_week">Semanas de gestación</label>
             <input type="number" class="form-control" name="gestation_week" value="{{old('gestation_week')}}"
                 id="for_gestation_week">
@@ -196,6 +196,15 @@
                 <option value="" {{(old('close_contact') == '') ? 'selected' : '' }}></option>
                 <option value="0" {{(old('close_contact') == '0') ? 'selected' : '' }}>No</option>
                 <option value="1" {{(old('close_contact') == '1') ? 'selected' : '' }}>Si</option>
+            </select>
+        </fieldset>
+
+        <fieldset class="form-group col-4 col-md-2">
+            <label for="for_case_type">Tipo de caso*</label>
+            <select name="case_type" id="for_case_type" class="form-control" required>
+                <option value="" {{(old('case_type') == '') ? 'selected' : '' }}></option>
+                <option value="Atención médica" {{(old('case_type') == 'Atención médica') ? 'selected' : '' }}>Atención médica</option>
+                <option value="Busqueda activa" {{(old('case_type') == 'Busqueda activa') ? 'selected' : '' }}>Busqueda activa</option>
             </select>
         </fieldset>
 
