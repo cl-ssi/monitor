@@ -6,7 +6,7 @@
 
 @include('lab.dialysis.nav')
 
-<h3 class="mb-3">Listado de Pacientes de Centro de Dialisis  con Covid +</h3>
+<h3 class="mb-3">Listado de Pacientes de {{$establishment->alias}} con Covid +</h3>
 <a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel <i class="far fa-file-excel"></i></a>
 
 <div class="table-responsive">
@@ -34,7 +34,7 @@
         <td class="text-center align-middle">{{ $dialysis_patient->patient->birthday }}</td>
         <td class="text-center align-middle">{{ $dialysis_patient->patient->demographic->fulladdress }}</td>
         <td class="text-center align-middle">{{ $dialysis_patient->patient->demographic->commune->name }}</td>
-        <td class="text-center align-middle">{{ $dialysis_patient->dialysisCenter->name }}</td>
+        <td class="text-center align-middle">{{ $dialysis_patient->establishment->alias }}</td>
       </tr>
       @endif
       @endforeach

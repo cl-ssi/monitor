@@ -69,7 +69,7 @@
 
 
 
-                        @canany(['SuspectCase: admission','SuspectCase: reception','SuspectCase: own','SuspectCase: list','Patient: tracing', 'SuspectCase: bulk load'])
+                        @canany(['SuspectCase: admission','SuspectCase: reception','SuspectCase: own','SuspectCase: list','Patient: tracing', 'SuspectCase: bulk load', 'DialysisCenter: user'])
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-lungs-virus"></i>
@@ -88,26 +88,38 @@
 
                                 @can('SuspectCase: list')
                                 @php
-                                $labs = App\Laboratory::where('external',0)->get();
-                                
+                                $labs = App\Laboratory::where('external',0)->get();                                
                                 @endphp
 
                                 @foreach($labs as $lab)
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.index',$lab) }}?&text=&pendientes=on">Laboratorio {{ $lab->alias }}</a>
-                                @endforeach
-
-                                <div class="dropdown-divider"></div>
-
-                                @can('Dialysis Center: User')
-                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.dialysis.index') }}">Centro de Dialisis</a>
-                                @endcan
+                                @endforeach                                
                                 
-                                
-
 
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.index') }}?text=&pendientes=on">Todos los exámenes</a>
+                                <div class="dropdown-divider"></div>
                                 @endcan
+
+                                @can('DialysisCenter: user')
+                                @php
+                                $dialysis = App\EstablishmentUser::where('user_id',Auth::id())->get();
+                                @endphp
+                                @foreach($dialysis as $dialysi)                                
+                                @if(str_contains($dialysi->establishment->alias, 'Diálisis'))
+                                
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.dialysis.index', $dialysi->establishment) }}">{{$dialysi->establishment->alias}}</a>
+                                
+                                @endif
+                                @endforeach                                
+                                <div class="dropdown-divider"></div>
+                                @endcan
+                                
+                                
+
+
+                                
+                                
 
                                 @can('SuspectCase: own')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.ownIndex') }}?text=&filter%5B%5D=pending">Mis exámenes</a>

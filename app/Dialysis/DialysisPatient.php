@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class DialysisPatient extends Model
 {
+    protected $fillable = [
+        'id','patient_id','establishment_id'
+    ];
     //
     protected $table = 'dialysis_patient';
 
@@ -13,7 +16,8 @@ class DialysisPatient extends Model
         return $this->belongsTo('App\Patient');
     }
 
-    public function dialysisCenter() {
-        return $this->belongsTo('App\Dialysis\DialysisCenter');
+    public function establishment() {
+        return $this->belongsTo('App\Establishment');
     }
+    
 }

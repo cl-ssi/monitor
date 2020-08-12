@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Dialysis\DialysisPatient;
+use App\Establishment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,19 +14,22 @@ class DialysisPatientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Establishment $establishment)
     {
         //
-        $dialysis_patients = DialysisPatient::where('dialysis_center_id', Auth::user()->dialysis_center_id)->get();
-        return view('lab.dialysis.index',compact('dialysis_patients'));
+        
+        $dialysis_patients = DialysisPatient::where('establishment_id', $establishment->id)->get();
+        
+
+        return view('lab.dialysis.index',compact('dialysis_patients','establishment'));
     }
 
 
-    public function covid()
+    public function covid(Establishment $establishment)
     {
         //
-        $dialysis_patients = DialysisPatient::where('dialysis_center_id', Auth::user()->dialysis_center_id)->get();
-        return view('lab.dialysis.covid',compact('dialysis_patients'));
+        $dialysis_patients = DialysisPatient::where('establishment_id', $establishment->id)->get();
+        return view('lab.dialysis.covid',compact('dialysis_patients','establishment'));
     }
 
     /**
@@ -47,6 +51,13 @@ class DialysisPatientController extends Controller
     public function store(Request $request)
     {
         //
+        $dialysis_patient = new DialysisPatient($request->All());
+        $dialysis_patient->save();
+
+        session()->flash('success', 'Se añadio exitosamente al Paciente al Centro de Dialisis');
+        return redirect()->route('lab.suspect_cases.dialysis.index', $request->input('establishment_id'));
+
+        
     }
 
     /**

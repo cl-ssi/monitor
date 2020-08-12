@@ -6,7 +6,7 @@
 
 @include('lab.dialysis.nav')
 
-<h3 class="mb-3">Listado de Todos los Pacientes de Centro de Dialisis </h3>
+<h3 class="mb-3">Listado de Todos los Pacientes de {{$establishment->alias}} </h3>
 <a class="btn btn-outline-success btn-sm mb-3" id="downloadLink" onclick="exportF(this)">Descargar en excel <i class="far fa-file-excel"></i></a>
 
 <div class="table-responsive">
@@ -24,7 +24,7 @@
       </tr>
     </thead>
     <tbody>
-      @foreach($dialysis_patients as $dialysis_patient)      
+      @foreach($dialysis_patients as $dialysis_patient)
       <tr class="{{ ($dialysis_patient->patient->lastExam->pcr_sars_cov_2 == 'positive')?'table-danger':''}}">
         <td class="text-center align-middle">{{ $dialysis_patient->patient->name }}</td>
         <td class="text-center align-middle">{{ $dialysis_patient->patient->fathers_family }}</td>
@@ -33,7 +33,7 @@
         <td class="text-center align-middle">{{ $dialysis_patient->patient->birthday }}</td>
         <td class="text-center align-middle">{{ $dialysis_patient->patient->demographic->fulladdress }}</td>
         <td class="text-center align-middle">{{ $dialysis_patient->patient->demographic->commune->name }}</td>
-        <td class="text-center align-middle">{{ $dialysis_patient->dialysisCenter->name }}</td>
+        <td class="text-center align-middle">{{ $dialysis_patient->establishment->alias }}</td>
       </tr>
       @endforeach
   </table>
