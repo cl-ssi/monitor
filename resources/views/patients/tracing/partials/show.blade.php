@@ -44,6 +44,10 @@
                                 {{ ($patient->tracing->notification_mechanism == 'Centro de salud')?'selected':'' }}>
                                 Centro de salud
                             </option>
+                            <option value="Carta certificada"
+                                {{ ($patient->tracing->notification_mechanism == 'Carta certificada')?'selected':'' }}>
+                                Carta certificada
+                            </option>
                         </select>
                     </fieldset>
 

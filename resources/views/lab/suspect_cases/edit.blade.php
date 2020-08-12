@@ -414,6 +414,10 @@
                         {{ ($suspectCase->notification_mechanism == 'Centro de salud')?'selected':'' }}>
                         Centro de salud
                     </option>
+                    <option value="Carta certificada"
+                        {{ ($suspectCase->notification_mechanism == 'Carta certificada')?'selected':'' }}>
+                        Carta certificada
+                    </option>
                 </select>
             </fieldset>
 
