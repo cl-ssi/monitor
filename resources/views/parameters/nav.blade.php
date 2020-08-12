@@ -35,10 +35,6 @@
         <a class="nav-link" href="{{ route('parameters.request_type') }}">
             <i class="fas fa-clipboard-list"></i> Tipos de solicitudes</a>
     </li>    
-
-    <!-- <li class="nav-item">
-        <a class="nav-link" href="{{ route('parameters.dialysis_center') }}">
-            <i class="fas fa-heartbeat"></i> Centro de Dialisis</a>
-    </li> -->
+    
 </ul>
 @endcan
