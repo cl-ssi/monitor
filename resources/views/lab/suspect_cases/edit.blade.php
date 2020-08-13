@@ -272,7 +272,7 @@
         @endif
         <hr>
 
-        <div class="form-row">
+        <div class="form-row align-items-end">
 
             <fieldset class="form-group col-6 col-md-2">
                 <label for="for_functionary">Funcionario de Salud</label>
@@ -292,7 +292,7 @@
                 </select>
             </fieldset>
 
-            <fieldset class="form-group col-5 col-md-3">
+            <fieldset class="form-group col-8 col-md-3">
                 <label for="for_symptoms_at">Fecha Inicio de Sintomas</label>
                 <input type="datetime-local" class="form-control" id="for_symptoms_at"
                        name="symptoms_at"
@@ -301,7 +301,7 @@
                        >
             </fieldset>
 
-            <fieldset class="form-group col-6 col-md-1">
+            <fieldset class="form-group col-4 col-md-1">
                 <label for="for_gestation">Gestante *</label>
                 <select name="gestation" id="for_gestation" class="form-control" required>
                     <option value=""></option>
@@ -310,7 +310,7 @@
                 </select>
             </fieldset>
 
-            <fieldset class="form-group col-6 col-md-2">
+            <fieldset class="form-group col-6 col-md-1">
                 <label for="for_gestation_week">Semanas de gestación</label>
                 <input type="number" class="form-control" name="gestation_week"
                        id="for_gestation_week" value="{{ $suspectCase->gestation_week }}">
@@ -318,7 +318,7 @@
 
             <fieldset class="form-group col-6 col-md-2">
                 <label for="for_close_contact">Contacto estrecho</label>
-                <select name="close_contact" id="for_close_contact" class="form-control" required>
+                <select name="close_contact" id="for_close_contact" class="form-control">
                     <option value=""></option>
                     <option value="0" {{ ($suspectCase->close_contact === 0) ? 'selected' : '' }}>No</option>
                     <option value="1" {{ ($suspectCase->close_contact == 1) ? 'selected' : '' }}>Si</option>
@@ -334,14 +334,14 @@
                 </select>
             </fieldset>
 
-            {{-- <fieldset class="form-group col-6 col-md-2">
+            {{-- <!-- <fieldset class="form-group col-4 col-md-2">
                 <label for="for_discharge_test">Test de salida</label>
                 <select name="discharge_test" id="for_discharge_test" class="form-control">
                     <option value=""></option>
                     <option value="0" {{ ($suspectCase->discharge_test === 0) ? 'selected' : '' }}>No</option>
                     <option value="1" {{ ($suspectCase->discharge_test == 1) ? 'selected' : '' }}>Si</option>
                 </select>
-            </fieldset> --}}
+            </fieldset> --> --}}
         </div>
         <div class="form-row">
             <fieldset class="form-group col-6 col-md-4">
