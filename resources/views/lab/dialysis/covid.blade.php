@@ -25,6 +25,7 @@
     </thead>
     <tbody>
       @foreach($dialysis_patients as $dialysis_patient)
+      @if($dialysis_patient->patient->lastExam)
       @if($dialysis_patient->patient->lastExam->pcr_sars_cov_2 == 'positive')
       <tr class="table-danger">
         <td class="text-center align-middle">{{ $dialysis_patient->patient->name }}</td>
@@ -36,6 +37,7 @@
         <td class="text-center align-middle">{{ $dialysis_patient->patient->demographic->commune->name }}</td>
         <td class="text-center align-middle">{{ $dialysis_patient->establishment->alias }}</td>
       </tr>
+      @endif
       @endif
       @endforeach
   </table>
