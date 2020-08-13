@@ -140,7 +140,7 @@
             <th>Resultado IFD</th>
             <th>Ext. Lab</th>
             <th>Epivigila</th>
-            <th>PAHO FLU</th>
+            <th>Fecha de Resultado</th>
             <th>Estado</th>
             <th>Observación</th>
         </tr>
@@ -193,7 +193,7 @@
             <td class="{{ ($case->result_ifd <> 'Negativo' AND $case->result_ifd <> 'No solicitado')?'text-danger':''}}">{{ $case->result_ifd }} {{ $case->subtype }}</td>
             <td>{{ $case->external_laboratory }}</td>
             <td>{{ $case->epivigila }}</td>
-            <td>{{ $case->paho_flu }}</td>
+            <td>{{ ($case->pcr_sars_cov_2_at)?$case->pcr_sars_cov_2_at->format('d-m-Y'):'' }}</td>
             <td>{{ $case->patient->status }}</td>
             <td class="text-muted small">{{ $case->observation }}</td>
         </tr>
