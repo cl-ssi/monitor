@@ -23,7 +23,7 @@
         <tr>
             <td>{{ $case->establishment->alias }}</td>
             <td>{{ $case->sample_at->format('Y-m-d') }}</td>
-            <td>{{ ($case->pcr_sars_cov_2 != 'positive') ? $case->covid19 : 'Será notificado' }}</td>
+            <td>{{ $case->covid19 }}</td>
             <td>{{ ($case->pcr_sars_cov_2_at) ? $case->pcr_sars_cov_2_at : '' }}</td>
             <td>
                 @if($case->pcr_sars_cov_2 != 'positive')
