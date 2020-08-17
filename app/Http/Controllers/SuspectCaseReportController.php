@@ -832,6 +832,9 @@ class SuspectCaseReportController extends Controller
                             }
                         }
                     }
+                }else{
+                    session()->flash('info', 'Error al subir la muestra ' . $case->id . ' en MINSAL. No existen datos demográficos asociados.');
+                    return redirect()->back();
                 }
             // }else{
             //     session()->flash('info', 'No se detectó run de médico registrado en muestra:  ' . $case->id);
