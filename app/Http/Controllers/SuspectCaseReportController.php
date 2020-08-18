@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use http\Message;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
@@ -23,6 +24,7 @@ use App\Region;
 use App\WSMinsal;
 use App\Commune;
 use App\Country;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 use App\User;
@@ -886,42 +888,55 @@ class SuspectCaseReportController extends Controller
     }
 
     /**
-     * En desarrollo
+     * En desarrollo. Web service que obtiene data de archivos HL7 enviados por herramienta de integración
+     * Mirth Connect.
      * @param Request $request
      */
     public function getHl7Files(Request $request)
     {
-        $patientId = $request->input('patient_id');
-        $patientNames = $request->input('patient_names');
-        $patientFamilyFather = $request->input('patient_family_father');
-        $patientFamilyMother = $request->input('patient_family_mother');
-        $pcrSarsCov2At = Carbon::parse($request->input('observation_datetime'));
-        $pcrSarsCov2 = $request->input('observation_value');
-        $sampleAt = Carbon::parse($request->input('message_datetime'));
 
-        //todo generalizar para mayusculas y minusculas
-        if($pcrSarsCov2 == "negativo"){$pcrSarsCov2 = "negative";}
-        if($pcrSarsCov2 == "pendiente"){$pcrSarsCov2 = "pending";}
-        if($pcrSarsCov2 == "positivo"){$pcrSarsCov2 = "positive";}
-        if($pcrSarsCov2 == "rechazado"){$pcrSarsCov2 = "rejected";}
-        if($pcrSarsCov2 == "indeterminado"){$pcrSarsCov2 = "undetermined";}
+//            $nombreMuestra = $request->input('observation_name');
+//            $patientId = $request->input('patient_id');
+//            $patientNames = $request->input('patient_names');
+//            $patientFamilyFather = $request->input('patient_family_father');
+//            $patientFamilyMother = $request->input('patient_family_mother');
+//            $pcrSarsCov2At = $request->input('observation_datetime');
+//            $pcrSarsCov2 = $request->input('observation_value');
+//            $sampleAt = $request->input('message_datetime');
+            error_log('---------------WEBSERVICE: HL7 FILES TEST----------------');
+//            error_log('nombreMuestra: ' . $nombreMuestra);
+//            error_log('patientId: ' . $patientId);
+//            error_log('patientNames: ' . $patientNames);
+//            error_log('patientFamilyFather: ' . $patientFamilyFather);
+//            error_log('patientFamilyMother: ' . $patientFamilyMother);
+//            error_log('pcrSarsCov2At: ' . $pcrSarsCov2At);
+//            error_log('pcrSarsCov2: ' . $pcrSarsCov2);
+//            error_log('sampleAt: ' . $sampleAt);
 
-        //TODO revisar casos nombres con tilde y ñ
-        $suspectCase = SuspectCase::whereHas('patient', function ($q) use ($patientFamilyFather, $patientFamilyMother, $patientNames) {
-            $q->where('fathers_family', 'LIKE', '%' . $patientFamilyFather . '%')
-                ->where('mothers_family', 'like', '%' . $patientFamilyMother . '%')
-                ->where('name', 'like', '%' . $patientNames . '%');
-        })->whereDate('sample_at', $sampleAt->toDateString())
-            ->orderBy('updated_at', 'desc')->first();
 
-//        $suspectCase->pcr_sars_cov_2 = $pcrSarsCov2;
-//        $suspectCase->pcr_sars_cov_2_at = $pcrSarsCov2At;
-//        $suspectCase->save();
-
-        error_log('WEBSERVICE: HL7 FILES');
-        error_log($suspectCase);
-        error_log($patientId . '|' . $patientNames . '|' . $patientFamilyFather . '|' . $patientFamilyMother . '|' . $sampleAt->toDateString() . '|' . $pcrSarsCov2 .'|' . $pcrSarsCov2At);
-
+//        if(Str::contains(strtoupper($nombreMuestra), 'SARS-COV-2')) {
+//
+//            if(strtoupper($pcrSarsCov2)  == "NEGATIVO"){$pcrSarsCov2 = "negative";}
+//            if(strtoupper($pcrSarsCov2) == "PENDIENTE"){$pcrSarsCov2 = "pending";}
+//            if(strtoupper($pcrSarsCov2) == "POSITIVO"){$pcrSarsCov2 = "positive";}
+//            if(strtoupper($pcrSarsCov2) == "RECHAZADO"){$pcrSarsCov2 = "rejected";}
+//            if(strtoupper($pcrSarsCov2) == "INDETERMINADO"){$pcrSarsCov2 = "undetermined";}
+//
+//            //TODO revisar casos nombres con tilde y ñ
+//            $suspectCase = SuspectCase::whereHas('patient', function ($q) use ($patientFamilyFather, $patientFamilyMother, $patientNames) {
+//                $q->where('fathers_family', 'LIKE', '%' . $patientFamilyFather . '%')
+//                    ->where('mothers_family', 'like', '%' . $patientFamilyMother . '%')
+//                    ->where('name', 'like', '%' . $patientNames . '%');
+//            })->whereDate('sample_at', $sampleAt->toDateString())
+//                ->orderBy('updated_at', 'desc')->first();
+//
+////        $suspectCase->pcr_sars_cov_2 = $pcrSarsCov2;
+////        $suspectCase->pcr_sars_cov_2_at = $pcrSarsCov2At;
+////        $suspectCase->save();
+//
+//
+////            error_log($suspectCase);
+//        }
     }
 
     public function case_chart(Request $request)
