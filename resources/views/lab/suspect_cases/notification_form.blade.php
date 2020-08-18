@@ -157,6 +157,12 @@
                 <input type="text" class="form-control" id="for_fax_origin">
             </div>
         </div>
+        <div class="form-group row">
+            <label for="for_address_origin" class="col-sm-2 col-form-label">Médico</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="for_address_origin" value="{{$suspectCase->run_medic}}">
+            </div>
+        </div>
 
         <hr/>
         <div class="row">
@@ -370,6 +376,7 @@
             <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_establishment">
             </div>
+
         </div>
 
         <hr/>
