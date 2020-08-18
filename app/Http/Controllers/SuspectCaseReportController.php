@@ -774,8 +774,8 @@ class SuspectCaseReportController extends Controller
                 ->sortByDesc('pcr_sars_cov_2_at');
                 // dd($cases);
 
-        // $laboratories = Laboratory::where('minsal_ws',1)->get();
-        $laboratories = Laboratory::where('id',1)->get();
+        $laboratories = Laboratory::where('minsal_ws',1)->get();
+        // $laboratories = Laboratory::where('id',1)->get();
 
         return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'request','laboratories'));//,'externos'));
     }
@@ -798,8 +798,8 @@ class SuspectCaseReportController extends Controller
             $request->laboratory_id = 1;
         }
 
-        // $laboratories = Laboratory::where('minsal_ws',1)->get();
-        $laboratories = Laboratory::where('id',1)->get();
+        $laboratories = Laboratory::where('minsal_ws',1)->get();
+        // $laboratories = Laboratory::where('id',1)->get();
 
         $cases = SuspectCase::where('laboratory_id',$request->laboratory_id)
                 ->whereBetween('pcr_sars_cov_2_at', [$from, $to])
@@ -813,6 +813,7 @@ class SuspectCaseReportController extends Controller
         foreach ($cases as $key => $case) {
             // if ($case->run_medic != 0) {
                 if ($case->patient->demographic) {
+                    // dd("");
                     $response = WSMinsal::crea_muestra($case);
                     if ($response['status'] == 0) {
                         session()->flash('info', 'Error al subir muestra ' . $case->id . ' a MINSAL. ' . $response['msg']);
@@ -833,6 +834,9 @@ class SuspectCaseReportController extends Controller
                             }
                         }
                     }
+                }else{
+                    session()->flash('info', 'Error al subir la muestra ' . $case->id . ' en MINSAL. No existen datos demográficos asociados.');
+                    return redirect()->back();
                 }
             // }else{
             //     session()->flash('info', 'No se detectó run de médico registrado en muestra:  ' . $case->id);
