@@ -372,9 +372,20 @@
                     </label>
                 </div>
             </div>
-            <label for="for_sample_type" class="col-sm-2 col-form-label">Otro</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_establishment">
+            <div class="col-sm-6">
+                <div class="row form-group">
+                    <label for="for_sample_type" class="col-sm-4">Otro</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="for_establishment">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label for="for_establishment_sample" class="col-sm-4">Establecimiento</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="for_establishment_sample" value="{{$suspectCase->establishment->alias}}">
+                    </div>
+                </div>
+
             </div>
 
         </div>
