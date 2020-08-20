@@ -28,8 +28,8 @@
         <th nowrap>Centro de Salud (CESFAM u Hosp. de origen)</th>
         <th nowrap>Nombre y Apellido del médico tratante</th>
         <th nowrap>Rut / DNI / Pasaporte/ Otro</th>
-        <th nowrap>Apellidos</th>
         <th nowrap>Nombres</th>
+        <th nowrap>Apellidos</th>        
         <th nowrap>Sexo</th>
         <th nowrap>Fecha de Nacimiento (dd/mm/aaaa)</th>
         <th nowrap>Edad</th>
@@ -67,6 +67,7 @@
             <td nowrap>{{ ($booking->patient->suspectCases->last())? $booking->patient->suspectCases->last()->establishment->alias.' - '.$booking->patient->suspectCases->last()->origin:'' }}</td>            
             <td nowrap> {{$booking->doctor}} </td>
             <td nowrap>{{$booking->patient->identifier}}</td>
+            <td nowrap>{{$booking->patient->name}}</td>
             <td nowrap>{{$booking->patient->fathers_family}} {{$booking->patient->mothers_family}}</td>
             <td nowrap>{{$booking->patient->sexEsp}}</td>
             <td nowrap>{{ ($booking->patient->birthday)? $booking->patient->birthday->format('d/m/Y') :''}}</td>
