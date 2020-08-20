@@ -193,10 +193,14 @@ class SuspectCaseController extends Controller
         $countries = Country::select('name')->orderBy('id', 'ASC')->get();
 
         $env_communes = array_map('trim',explode(",",env('COMUNAS')));
-        $establishments = Establishment::whereIn('commune_id',$env_communes)->where('name','<>','Otros')->orderBy('name','ASC')->get();
+        //$establishments = Establishment::whereIn('commune_id',$env_communes)->where('name','<>','Otros')->orderBy('name','ASC')->get();
+        
+        $establishmentsusers = EstablishmentUser::where('user_id',Auth::id())->get();
+        
+        //dd($establishmentsusers);
 
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
-        return view('lab.suspect_cases.admission',compact('sampleOrigins','regions', 'communes','establishments', 'countries'));
+        return view('lab.suspect_cases.admission',compact('sampleOrigins','regions', 'communes','establishmentsusers', 'countries'));
     }
 
 
