@@ -1,4 +1,4 @@
-## Instalación monitor Esmeralda
+## Instalación
 
 ### Programas
 
@@ -57,7 +57,7 @@
 
 
 ## Para consultas e información sobre actualizaciones del sistema
-- http://monitor-esmeralda.slack.com/
+- http://monitor-esmeralda.slack.com
 - esmeralda.ssi@redsalud.gob.cl
 
 ## Otros comandos
