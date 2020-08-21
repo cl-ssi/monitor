@@ -1,4 +1,5 @@
-## Instalación monitor Esmeralda
+## Instalación Monitor Esmeralda :ship:
+=======
 
 ### Programas
 
@@ -67,4 +68,4 @@
 - $ composer dump-autoload
 
 ## Contribución
-- El sistema está abierto a quien quiera colaborar.
+- :smiley: El sistema está abierto a quien quiera colaborar. :smiley:

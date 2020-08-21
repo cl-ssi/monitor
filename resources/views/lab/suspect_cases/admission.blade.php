@@ -131,8 +131,8 @@
             <label for="for_establishment_id">Establecimiento *</label>
             <select name="establishment_id" id="for_establishment_id" class="form-control" required>
                 <option value="">Seleccionar Establecimiento</option>
-                @foreach($establishments as $establishment)
-                    <option value="{{ $establishment->id }}" {{(old('establishment_id') == $establishment->id) ? 'selected' : '' }} >{{ $establishment->alias }}</option>
+                @foreach($establishmentsusers as $establishmentsusers)
+                    <option value="{{ $establishmentsusers->establishment->id }}" {{(old('establishment_id') == $establishmentsusers->establishment->id) ? 'selected' : '' }} >{{ $establishmentsusers->establishment->alias }}</option>
                 @endforeach
             </select>
         </fieldset>
