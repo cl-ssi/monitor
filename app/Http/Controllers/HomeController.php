@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\EstablishmentUser;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $establishmentsusers = EstablishmentUser::where('user_id',Auth::id())->get();
+        return view('home',compact('establishmentsusers'));
     }
 }
