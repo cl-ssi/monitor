@@ -305,6 +305,13 @@ Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(functi
     Route::get('/request_type/{request_type}/edit', 'RequestTypeController@edit')->name('request_type.edit');
     Route::put('/request_type/update/{request_type}', 'RequestTypeController@update')->name('request_type.update');
 
+
+    Route::get('/establishment', 'EstablishmentController@index')->name('establishment');
+    Route::get('/establishment/create', 'EstablishmentController@create')->name('establishment.create');
+    Route::post('/establishment/store', 'EstablishmentController@store')->name('establishment.store');
+    Route::get('/establishment/{establishment}/edit', 'EstablishmentController@edit')->name('establishment.edit');
+    Route::put('/establishment/update/{establishment}', 'EstablishmentController@update')->name('establishment.update');
+
 });
 
 Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('auth')->group(function () {

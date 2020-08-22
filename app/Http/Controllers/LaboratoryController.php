@@ -27,7 +27,9 @@ class LaboratoryController extends Controller
      */
     public function create()
     {
-        $communes = Commune::All();
+        //$communes = Commune::All();
+        $communes_ids = array_map('trim', explode(",", env('COMUNAS')));
+        $communes = Commune::whereIn('id', $communes_ids)->get();
         $users = User::All();
         return view('parameters.lab.create', compact('communes', 'users'));
     }
@@ -65,7 +67,9 @@ class LaboratoryController extends Controller
      */
     public function edit(Laboratory $laboratory)
     {
-        $communes = Commune::All();
+        //$communes = Commune::All();
+        $communes_ids = array_map('trim', explode(",", env('COMUNAS')));
+        $communes = Commune::whereIn('id', $communes_ids)->get();
         $users = User::All();
         return view('parameters.lab.edit', compact('laboratory','communes', 'users'));
     }

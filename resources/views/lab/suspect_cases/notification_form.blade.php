@@ -134,7 +134,7 @@
             </div>
             <label for="for_email_origin" class="col-sm-2 col-form-label">Correo Electrónico</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_email_origin">
+                <input type="text" class="form-control" id="for_email_origin" value="{{$suspectCase->establishment->email}}">
             </div>
         </div>
         <div class="form-group row">
@@ -144,13 +144,13 @@
             </div>
             <label for="for_telephone_origin" class="col-sm-2 col-form-label">Fono</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_telephone_origin">
+                <input type="text" class="form-control" id="for_telephone_origin" value="{{$suspectCase->establishment->telephone}}">
             </div>
         </div>
         <div class="form-group row">
             <label for="for_address_origin" class="col-sm-2 col-form-label">Dirección</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_address_origin">
+                <input type="text" class="form-control" id="for_address_origin" value="{{$suspectCase->establishment->address}}">
             </div>
             <label for="for_fax_origin" class="col-sm-2 col-form-label">Fax</label>
             <div class="col-sm-4">
