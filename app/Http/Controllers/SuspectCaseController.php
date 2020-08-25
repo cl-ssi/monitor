@@ -1049,22 +1049,13 @@ class SuspectCaseController extends Controller
         }
 
         $columnas = array(
-            '#',
+            'folio',
+		   'run',
+		   'nombre',
             'fecha_muestra',
-            'origen',
-            'nombre',
-            'run',
-            'edad',
-            'sexo',
-            'resultado_ifd',
-            'pcr_sars_cov2',
-            'sem',
-            'epivigila',
-            'fecha de resultado',
-            'observación',
-            'teléfono',
-            'dirección',
-            'comuna'
+			'origen',
+			'estrategia',
+			'laboratorio',
         );
 
         $callback = function() use ($filas, $columnas)
@@ -1074,23 +1065,18 @@ class SuspectCaseController extends Controller
             fputcsv($file, $columnas,';');
 
             foreach($filas as $fila) {
+                if($fila->laboratory_id!="")
+				    $laboratorio=$fila->laboratory->name;
+			    else
+				    $laboratorio="";
                 fputcsv($file, array(
                     $fila->id,
+					($fila->patient)?$fila->patient->Identifier:'',
+					($fila->patient)?$fila->patient->fullName:'',
                     $fila->sample_at,
-                    ($fila->establishment)?$fila->establishment->alias.' - '.$fila->origin: '',
-                    ($fila->patient)?$fila->patient->fullName:'',
-                    ($fila->patient)?$fila->patient->Identifier:'',
-                    $fila->age,
-                    strtoupper($fila->gender[0]),
-                    $fila->result_ifd,
-                    $fila->Covid19,
-                    $fila->epidemiological_week,
-                    $fila->epivigila,
-                    $fila->pcr_sars_cov_2_at,
-                    $fila->observation,
-                    ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->telephone:'',
-                    ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->fullAddress:'',
-                    ($fila->patient && $fila->patient->demographic && $fila->patient->demographic->commune)?$fila->patient->demographic->commune->name:'',
+                   ($fila->establishment)?$fila->establishment->alias:'',
+				   $fila->origin,
+				   $laboratorio,
                 ),';');
             }
             fclose($file);
@@ -1351,11 +1337,11 @@ class SuspectCaseController extends Controller
             $resultado = $data['resultado'];
             $fecha_resultado = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($data['fecha resultado']))->format('Y-m-d H:i:s');
 
-            if($resultado == "negativo"){$resultado = "negative";}
-            if($resultado == "pendiente"){$resultado = "pending";}
-            if($resultado == "positivo"){$resultado = "positive";}
-            if($resultado == "rechazado"){$resultado = "rejected";}
-            if($resultado == "indeterminado"){$resultado = "undetermined";}
+            if($resultado == "negativo" || $resultado == "NEGATIVO"){$resultado = "negative";}
+            if($resultado == "pendiente" || $resultado == "PENDIENTE"){$resultado = "pending";}
+            if($resultado == "positivo" || $resultado == "POSITIVO"){$resultado = "positive";}
+            if($resultado == "rechazado" || $resultado == "RECHAZADO"){$resultado = "rejected";}
+            if($resultado == "indeterminado" || $resultado == "INDETERMINADO"){$resultado = "undetermined";}
 
             if ($id_esmeralda != NULL && $resultado != NULL && $fecha_resultado != NULL) {
                 $suspectCase = SuspectCase::find($id_esmeralda);

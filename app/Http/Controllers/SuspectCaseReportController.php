@@ -1033,7 +1033,7 @@ class SuspectCaseReportController extends Controller
         $selectedCommune = $request->get('commune');
 
         $suspectCases = SuspectCase::whereBetween('pcr_sars_cov_2_at', [$from, $to])
-            ->where('pcr_sars_cov_2', 'positive')
+            ->whereIn('pcr_sars_cov_2', ['positive','negative','rejected','undetermined'])
             ->when($selectedCommune, function ($q) use ($selectedCommune){
                 return $q->whereHas('patient', function($q) use ($selectedCommune){
                     $q->whereHas('demographic', function ($q) use ($selectedCommune){

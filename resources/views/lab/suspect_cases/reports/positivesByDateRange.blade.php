@@ -50,9 +50,13 @@
             <th nowrap>Nombre</th>
             <th nowrap>Sexo</th>
             <th nowrap>Edad</th>
-            <th nowrap>Estado</th>
+            <th nowrap>Estado Paciente</th>
             <th nowrap>Epivigila</th>
+			<th nowrap>Fecha Muestra</th>
+			<th nowrap>Tipo Muestra</th>
+			<th nowrap>Fecha Recepcion</th>
             <th nowrap>Fecha Resultado</th>
+			<th nowrap>Resultado</th>
             <th nowrap>Comuna</th>
             <th nowrap>Tipo Calle</th>
             <th nowrap>Dirección</th>
@@ -62,7 +66,10 @@
             <th nowrap>Latitud</th>
             <th nowrap>Longitud</th>
             <th nowrap>Gestante</th>
+			<th nowrap>Semanas Gestante</th>
             <th nowrap>Establecimiento</th>
+			<th nowrap>Estrategia</th>
+			<th nowrap>Laboratorio</th>
         </thead>
 
         <tbody>
@@ -76,7 +83,11 @@
                     <td nowrap>{{ $suspectCase->patient->age }}</td>
                     <td nowrap>{{ $suspectCase->patient->status }}</td>
                     <td nowrap>{{ $suspectCase->epivigila }}</td>
+					<td nowrap>{{ $suspectCase->sample_at }}</td>
+					<td nowrap>{{ $suspectCase->sample_type}}</td>
+					<td nowrap>{{ $suspectCase->reception_at}}</td>	
                     <td nowrap>{{ $suspectCase->pcr_sars_cov_2_at }}</td>
+					<td nowrap>{{ $suspectCase->pcr_sars_cov_2 }}</td>
                     <td nowrap>{{ ($suspectCase->patient->demographic AND $suspectCase->patient->demographic->commune)? $suspectCase->patient->demographic->commune->name : '' }}</td>
                     <td nowrap>{{ ($suspectCase->patient->demographic)? $suspectCase->patient->demographic->street_type : '' }}</td>
                     <td nowrap class="text-uppercase">{{ ($suspectCase->patient->demographic)? $suspectCase->patient->demographic->address : '' }}</td>
@@ -86,7 +97,10 @@
                     <td nowrap>{{ ($suspectCase->patient->demographic)? $suspectCase->patient->demographic->latitude : '' }}</td>
                     <td nowrap>{{ ($suspectCase->patient->demographic)? $suspectCase->patient->demographic->longitude : '' }}</td>
                     <td nowrap>{{ ($suspectCase->gestation == 1) ? 'Sí' : '' }}</td>
+					<td nowrap>{{ $suspectCase->gestation_week}}</td>
                     <td nowrap>{{ ($suspectCase->establishment) ? $suspectCase->establishment->alias : '' }}</td>
+					<td nowrap>{{ $suspectCase->origin}}</td>
+					<td nowrap>{{ ($suspectCase->laboratory) ? $suspectCase->laboratory->name : '' }}</td>
 
                 </tr>
         @endforeach

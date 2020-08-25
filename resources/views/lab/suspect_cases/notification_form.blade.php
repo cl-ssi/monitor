@@ -52,19 +52,19 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="for_fathers_family" class="col-sm-2 col-form-label">Apellido Paterno</label>
+            <label for="for_fathers_family" class="col-sm-2 col-form-label">Nombre Social</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_fathers_family" value="{{$suspectCase->patient->fathers_family}}">
             </div>
             <label for="for_city" class="col-sm-2 col-form-label">Ciudad</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_city">
+                <input type="text" class="form-control" id="for_city" value="{{$suspectCase->patient->demographic->city}}">
             </div>
         </div>
         <div class="form-group row">
-            <label for="for_mothers_family" class="col-sm-2 col-form-label">Apellido Materno</label>
+            <label for="for_fathers_family" class="col-sm-2 col-form-label">Apellido Paterno</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_mothers_family" value="{{$suspectCase->patient->mothers_family}}">
+                <input type="text" class="form-control" id="for_fathers_family" value="{{$suspectCase->patient->fathers_family}}">
             </div>
             <label for="for_commune" class="col-sm-2 col-form-label">Comuna</label>
             <div class="col-sm-4">
@@ -72,11 +72,22 @@
             </div>
         </div>
         <div class="form-group row">
+            <label for="for_mothers_family" class="col-sm-2 col-form-label">Apellido Materno</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="for_mothers_family" value="{{$suspectCase->patient->mothers_family}}">
+            </div>
+        <label for="for_telephone" class="col-sm-2 col-form-label">Teléfono1</label>
+        <div class="col-sm-4">
+                <input type="text" class="form-control" id="for_telephone" value="{{$suspectCase->patient->demographic->telephone}}">
+        </div>
+            
+        </div>
+        <div class="form-group row">
             <label for="for_gender" class="col-sm-2 col-form-label">Sexo</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_gender" value="{{$suspectCase->patient->sexEsp}}">
             </div>
-            <label for="for_telephone" class="col-sm-2 col-form-label">Teléfono</label>
+            <label for="for_telephone" class="col-sm-2 col-form-label">Teléfono2</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_telephone" value="{{$suspectCase->patient->demographic->telephone}}">
             </div>
@@ -114,7 +125,7 @@
             </div>
             <label for="for_laboratory" class="col-sm-2 col-form-label">Laboratorio</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_laboratory">
+                <input type="text" class="form-control" id="for_laboratory" value="{{$suspectCase->Establishment->name}}">
             </div>
         </div>
         <div class="form-group row">
@@ -130,7 +141,7 @@
         <div class="form-group row">
             <label for="for_province_origin" class="col-sm-2 col-form-label">Provincia</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_province_origin">
+                <input type="text" class="form-control" id="for_province_origin" value="Llanquihue">
             </div>
             <label for="for_email_origin" class="col-sm-2 col-form-label">Correo Electrónico</label>
             <div class="col-sm-4">
@@ -152,10 +163,7 @@
             <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_address_origin" value="{{$suspectCase->establishment->address}}">
             </div>
-            <label for="for_fax_origin" class="col-sm-2 col-form-label">Fax</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_fax_origin">
-            </div>
+            
         </div>
         <div class="form-group row">
             <label for="for_address_origin" class="col-sm-2 col-form-label">Médico</label>
@@ -175,7 +183,7 @@
         <div class="form-group row">
             <label for="for_sample_at" class="col-sm-1 col-form-label">Obtención</label>
             <div class="col-sm-5">
-                <input type="text" class="form-control" id="for_sample_at" value="{{Carbon\Carbon::parse($suspectCase->sample_at)->format('d/m/Y')  }}">
+                <input type="text" class="form-control" id="for_sample_at" value="{{Carbon\Carbon::parse($suspectCase->sample_at)->format('d/m/Y h:m')  }}">
             </div>
             <div class="col-sm-6">
                 <h5>Virus detectado localmente</h5>
@@ -240,7 +248,7 @@
             </div>
             <label for="for_establishment" class="col-sm-2 col-form-label">Establecimiento</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_establishment">
+                <input type="text" class="form-control" id="for_establishment" value="{{$suspectCase->Establishment->name}}">
             </div>
         </div>
 
@@ -263,7 +271,7 @@
             </div>
             <label for="for_establishment" class="col-sm-2 col-form-label">Establecimiento</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_establishment">
+                <input type="text" class="form-control" id="for_establishment" value="{{$suspectCase->Establishment->name}}">
             </div>
         </div>
 
@@ -321,11 +329,13 @@
                     <label class="form-check-label" for="defaultCheck2">
                         Otro
                     </label>
+                    </label><input type="text" class="form-control" id="for_otro" style="width:200px">
+
                 </div>
             </div>
             <label for="for_establishment" class="col-sm-2 col-form-label">Establecimiento</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_establishment">
+                <input type="text" class="form-control" id="for_establishment" value="{{$suspectCase->Establishment->name}}">
             </div>
         </div>
 
@@ -379,12 +389,7 @@
                         <input type="text" class="form-control" id="for_establishment">
                     </div>
                 </div>
-                <div class="row form-group">
-                    <label for="for_establishment_sample" class="col-sm-4">Establecimiento</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="for_establishment_sample" value="{{$suspectCase->establishment->alias}}">
-                    </div>
-                </div>
+                
 
             </div>
 
@@ -399,15 +404,28 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="for_first_symptoms" class="col-sm-2 col-form-label">Inicio síntomas</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_first_symptoms">
+            <label for="for_first_symptoms" class="col-sm-2 col-form-label">Inicio sÃ­ntomas</label>
+            <div>
+                <input type="text" class="form-control" id="for_first_symptoms" style="width:50px">dia
+             </div>
+             <div> 
+                 <input type="text" class="form-control" id="for_first_symptoms" style="width:50px">mes
+             </div>
+             <div>
+                  <input type="text" class="form-control" id="for_first_symptoms" style="width:50px">año
             </div>
-            <label for="for_first_medical_appointment" class="col-sm-2 col-form-label">Primera consulta</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_first_medical_appointment">
+            <label for="for_first_medical_appointment" class="col-sm-2 col-form-label">Primera consulta</label><div>
+                <input type="text" class="form-control" id="for_first_symptoms" style="width:50px">dia
+             </div>
+             <div> 
+                 <input type="text" class="form-control" id="for_first_symptoms" style="width:50px">mes
+             </div>
+             <div>
+                  <input type="text" class="form-control" id="for_first_symptoms" style="width:50px">año
             </div>
+
         </div>
+
         <div class="form-group row">
             <div class="col-sm-8">
                 <div class="form-check form-check-inline">
@@ -684,8 +702,11 @@
                 <input type="text" class="form-control" id="for_vaccination_year" >
             </div>
             <label for="for_vaccination_year" class="col-sm-1 col-form-label">Año</label>
-            <label for="for_vaccination_year" class="col-sm-1 col-form-label">Antiviral</label>
             <div class="col-sm-2">
+            	 <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                    <label class="form-check-label" for="inlineCheckbox1">Antiviral</label>
+                </div>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
                     <label class="form-check-label" for="inlineCheckbox1">Oseltamivir</label>
@@ -695,6 +716,7 @@
                     <label class="form-check-label" for="inlineCheckbox2">Zanamivir</label>
                 </div>
             </div>
+
         </div>
 
         <hr/>
@@ -745,13 +767,17 @@
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <ol>
-                    <li>Recepción Lunes a Jueves de 08:00 a 16:00 hrs. Viernes de 08:00 a 12:00 hrs.</li>
-                    <li>El transporte debe realizarse según Normativa de transporte de muestras ISP.</li>
-                    <li>En caso de dudas consultar a Unidad de Recepción de Muestras (02) 5755187.</li>
-                </ol>
+             <label for="for_diagnosis" class="">1. Correo electrónico INSTITUCIONAL para recepción de examen.</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="for_diagnosis">
             </div>
+             <label for="for_diagnosis" class="">2. Número de folio Notificación a Epivigila.</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="for_diagnosis">
+            </div>
+          </div>
         </div>
+
     </form>
 
 @endsection
