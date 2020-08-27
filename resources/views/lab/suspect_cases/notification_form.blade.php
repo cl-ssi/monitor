@@ -773,7 +773,7 @@
             </div>
              <label for="for_diagnosis" class="">2. Número de folio Notificación a Epivigila.</label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" id="for_diagnosis">
+                <input type="text" class="form-control" id="for_diagnosis" value="{{$suspectCase->epivigila}}">
             </div>
           </div>
         </div>
