@@ -59,7 +59,7 @@
     </thead>
 
     <tbody>
-        @foreach ($cases as $case)
+    @foreach ($cases as $case)
         @if($case->run_medic == '0') <tr style="background-color:#FF0000">
         @else <tr> @endif
 
@@ -103,30 +103,12 @@
                     </a>
                 @endif
             </td>
+            
+            
+            
+            
         </tr>
         @endforeach
-        {{-- @foreach($externos as $case)
-        <tr>
-            <td></td>
-            <td></td>
-            <td nowrap>{{ $case->runExport }}</td>
-            <td nowrap>{{ $case->fullName }}</td>
-            <td nowrap>{{ strtoupper($case->gender) }}</td>
-            <td nowrap>{{ $case->age }}</td>
-            <td nowrap>{{ $case->sample_type }}</td>
-            <td nowrap>{{ $case->result }}</td>
-            <td nowrap>{{ $case->sample_at->format('d-m-Y') }}</td>
-            <td nowrap>{{ ($case->reception_at)? $case->reception_at->format('d-m-Y'): '' }}</td>
-            <td nowrap>{{ ($case->result_at) ? $case->result_at->format('d-m-Y') : '' }}</td>
-            <td nowrap>{{ strtoupper($case->origin) }}</td>
-            <td nowrap>{{ strtoupper($case->origin_commune) }}</td>
-            <td nowrap class="text-uppercase">{{ last(request()->segments()) }}</td>
-            <td nowrap>TARAPACÁ</td>
-            <td nowrap>{{ $case->telephone }}</td>
-            <td nowrap>{{ $case->email }}</td>
-            <td nowrap>{{ $case->address }}</td>
-        </tr>
-        @endforeach --}}
     </tbody>
 
 

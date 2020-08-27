@@ -755,7 +755,7 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     public function report_minsal_ws(Request $request)
     {
-        $from = '2020-06-01 00:00';//date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+        $from = '2020-08-01 00:00';//date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $to = date("Y-m-d 20:59:59");
 
         $laboratory_id = 1;
@@ -772,9 +772,10 @@ class SuspectCaseReportController extends Controller
                 // ->where('id',20370)
                 ->get()
                 ->sortByDesc('pcr_sars_cov_2_at');
-                // dd($cases);
+                 //dd($cases);
 
         $laboratories = Laboratory::where('minsal_ws',1)->get();
+        //dd($laboratories);
         // $laboratories = Laboratory::where('id',1)->get();
 
         return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'request','laboratories'));//,'externos'));
@@ -787,8 +788,8 @@ class SuspectCaseReportController extends Controller
     public function ws_minsal(Request $request)
     {
 
-        // dd($request);
-        $from = '2020-06-01 00:00';//date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+         //dd($request);
+        $from = '2020-08-01 00:00';//date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $to = date("Y-m-d 20:59:59");
 
         $laboratory_id = 1;
@@ -799,6 +800,7 @@ class SuspectCaseReportController extends Controller
         }
 
         $laboratories = Laboratory::where('minsal_ws',1)->get();
+       // dd($laboratories);
         // $laboratories = Laboratory::where('id',1)->get();
 
         $cases = SuspectCase::where('laboratory_id',$request->laboratory_id)
