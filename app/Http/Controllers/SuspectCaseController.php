@@ -1374,7 +1374,7 @@ class SuspectCaseController extends Controller
 
             if($resultado == "negativo" || $resultado == "NEGATIVO" || $resultado == "Negativo"){$resultado = "negative";}
             if($resultado == "pendiente" || $resultado == "PENDIENTE" || $resultado == "Pendiente"){$resultado = "pending";}
-            if($resultado == "positivo" || $resultado == "POSITIVO" ||| $resultado == "Positivo"){$resultado = "positive";}
+            if($resultado == "positivo" || $resultado == "POSITIVO" || $resultado == "Positivo"){$resultado = "positive";}
             if($resultado == "rechazado" || $resultado == "RECHAZADO" || $resultado == "Rechazado"){$resultado = "rejected";}
             if($resultado == "indeterminado" || $resultado == "INDETERMINADO" || $resultado == "Indeterminado"){$resultado = "undetermined";}
 
