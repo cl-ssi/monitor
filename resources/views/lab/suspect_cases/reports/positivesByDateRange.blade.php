@@ -70,6 +70,7 @@
             <th nowrap>Establecimiento</th>
 			<th nowrap>Estrategia</th>
 			<th nowrap>Laboratorio</th>
+            <th nowrap>Observacion</th>
         </thead>
 
         <tbody>
@@ -101,6 +102,7 @@
                     <td nowrap>{{ ($suspectCase->establishment) ? $suspectCase->establishment->alias : '' }}</td>
 					<td nowrap>{{ $suspectCase->origin}}</td>
 					<td nowrap>{{ ($suspectCase->laboratory) ? $suspectCase->laboratory->name : '' }}</td>
+                    <td nowrap>{{ $suspectCase->observation}}</td>
 
                 </tr>
         @endforeach
