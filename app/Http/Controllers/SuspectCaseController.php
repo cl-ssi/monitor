@@ -1192,7 +1192,7 @@ class SuspectCaseController extends Controller
                         $new_patient->gender = 'male';
                     }
                     if($patient['Sexo'] == 'Femenino'){
-                        $new_patient->gender = 'male';
+                        $new_patient->gender = 'female';
                     }
                     if($patient['Sexo'] == 'Otro'){
                         $new_patient->gender = 'other';
@@ -1322,6 +1322,19 @@ class SuspectCaseController extends Controller
                     $new_suspect_case->patient_id = $patient_create->id;
                     $new_suspect_case->user_id = Auth::user()->id;
                     $new_suspect_case->validator_id = Auth::user()->id;
+                    
+                    if($patient['Sexo'] == 'Masculino'){
+                        $new_suspect_case->gender = 'male';
+                    }
+                    if($patient['Sexo'] == 'Femenino'){
+                        $new_suspect_case->gender = 'female';
+                    }
+                    if($patient['Sexo'] == 'Otro'){
+                        $new_suspect_case->gender = 'other';
+                    }
+                    if($patient['Sexo'] == 'Desconocido'){
+                        $new_suspect_case->gender = 'unknown';
+                    }
 
                     $new_suspect_case->save();
                 }
