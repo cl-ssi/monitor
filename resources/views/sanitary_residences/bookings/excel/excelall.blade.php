@@ -66,14 +66,14 @@
             <td nowrap>{{$booking->room->number}}</td>
             <td nowrap>{{ ($booking->patient->demographic)?$booking->patient->demographic->commune->name:'' }}</td>            
             <td nowrap>{{ ($booking->patient->suspectCases->last())? $booking->patient->suspectCases->last()->establishment->alias.' - '.$booking->patient->suspectCases->last()->origin:'' }}</td>            
-            <td nowrap> {{$booking->entry_criteriar}} </td>
+            <td nowrap> {{$booking->doctor}} </td>
             <td nowrap>{{$booking->patient->identifier}}</td>
             <td nowrap>{{$booking->patient->name}}</td>
             <td nowrap>{{$booking->patient->fathers_family}} {{$booking->patient->mothers_family}}</td>
             <td nowrap>{{$booking->patient->sexEsp}}</td>
             <td nowrap>{{ ($booking->patient->birthday)? $booking->patient->birthday->format('d/m/Y') :''}}</td>
             <td nowrap>{{ $booking->patient->age }}</td>
-            <td nowrap>{{ $booking-> }}</td>
+            <td nowrap>{{ $booking->entry_criteria }}</td>
             <td nowrap>{{ $booking->patient->suspectCases->last()? $booking->patient->suspectCases->last()->covid19:'' }}</td>
             <td nowrap>{{ $booking->morbid_history }}</td>
             <td nowrap>{{$booking->commonly_used_drugs}}</td>
