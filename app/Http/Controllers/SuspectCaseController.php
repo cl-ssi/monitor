@@ -1213,7 +1213,7 @@ class SuspectCaseController extends Controller
                         $new_patient->gender = 'male';
                     }
                     if($patient['Sexo'] == 'Femenino'){
-                        $new_patient->gender = 'male';
+                        $new_patient->gender = 'female';
                     }
                     if($patient['Sexo'] == 'Otro'){
                         $new_patient->gender = 'other';
@@ -1258,6 +1258,19 @@ class SuspectCaseController extends Controller
                 if($patient_create){
                     $new_suspect_case = new SuspectCase();
 
+                    if($patient['Sexo'] == 'Masculino'){
+                        $new_suspect_case->gender = 'male';
+                    }
+                    if($patient['Sexo'] == 'Femenino'){
+                        $new_suspect_case->gender = 'female';
+                    }
+                    if($patient['Sexo'] == 'Otro'){
+                        $new_suspect_case->gender = 'other';
+                    }
+                    if($patient['Sexo'] == 'Desconocido'){
+                        $new_suspect_case->gender = 'unknown';
+                    }
+
                     $new_suspect_case->laboratory_id      = $patient['Laboratorio'];
                     $new_suspect_case->sample_type        = $patient['Tipo Muestra'];
                     $new_suspect_case->sample_at          = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Muestra']))->format('Y-m-d H:i:s');
@@ -1270,19 +1283,19 @@ class SuspectCaseController extends Controller
                         $new_suspect_case->pcr_sars_cov_2_at       = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Resultado']))->format('Y-m-d H:i:s');
                     }
 
-                    if($patient['Resultado'] == 'Positivo'){
+                    if($patient['Resultado'] == 'Positivo' || $patient['Resultado'] == 'positivo' || $patient['Resultado'] == 'POSITIVO'){
                         $new_suspect_case->pcr_sars_cov_2 = 'positive';
                     }
-                    if($patient['Resultado'] == 'Negativo'){
+                    if($patient['Resultado'] == 'Negativo' || $patient['Resultado'] == 'negativo' || $patient['Resultado'] == 'NEGATIVO'){
                         $new_suspect_case->pcr_sars_cov_2 = 'negative';
                     }
-                    if($patient['Resultado'] == 'Indeterminado'){
+                    if($patient['Resultado'] == 'Indeterminado' || $patient['Resultado'] == 'indeterminado' || $patient['Resultado'] == 'INDETERMINADO'){
                         $new_suspect_case->pcr_sars_cov_2 = 'undetermined';
                     }
-                    if($patient['Resultado'] == 'Rechazado'){
+                    if($patient['Resultado'] == 'Rechazado' || $patient['Resultado'] == 'rechazado' || $patient['Resultado'] == 'RECHAZADO'){
                         $new_suspect_case->pcr_sars_cov_2 = 'rejected';
                     }
-                    if($patient['Resultado'] == 'Pendiente'){
+                    if($patient['Resultado'] == 'Pendiente' || $patient['Resultado'] == 'pendiente' || $patient['Resultado'] == 'PENDIENTE'){
                         $new_suspect_case->pcr_sars_cov_2 = 'pending';
                     }
 
