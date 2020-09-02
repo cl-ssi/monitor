@@ -101,16 +101,20 @@
 
     <div class="col-6 col-md-3 p-2">
         <strong>Fecha Última Muestra: </strong>
-        {{ ($booking->patient->suspectCases->last())? $booking->patient->suspectCases->last()->sample_at->format('d-m-Y'):''  }}
+        @if($booking->patient->suspectCases->last()->sample_at)
+        {{$booking->patient->suspectCases->last()->sample_at->format('d-m-Y')}}
+        @endif        
     </div>
 
     <div class="col-6 col-md-5 p-2">
         <strong>Fecha Último Resultado: </strong>
-        {{ ($booking->patient->suspectCases->last())? $booking->patient->suspectCases->last()->pcr_sars_cov_2_at->format('d-m-Y'):''  }}
+        @if($booking->patient->suspectCases->last()->pcr_sars_cov_2_at)
+        {{$booking->patient->suspectCases->last()->pcr_sars_cov_2_at->format('d-m-Y')}}
+        @endif        
     </div>
 
     <div class="col-12 col-md-4 p-2">
-        <strong>Último Resultado: </strong>
+        <strong>Último Resultado: </strong>        
         {{ $booking->patient->suspectCases->last()? $booking->patient->suspectCases->last()->covid19:'' }}
     </div>
 
