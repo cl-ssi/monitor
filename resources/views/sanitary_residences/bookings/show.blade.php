@@ -101,14 +101,14 @@
 
     <div class="col-6 col-md-3 p-2">
         <strong>Fecha Última Muestra: </strong>
-        @if($booking->patient->suspectCases->last()->sample_at)
+        @if($booking->patient->suspectCases->last())
         {{$booking->patient->suspectCases->last()->sample_at->format('d-m-Y')}}
         @endif        
     </div>
 
     <div class="col-6 col-md-5 p-2">
         <strong>Fecha Último Resultado: </strong>
-        @if($booking->patient->suspectCases->last()->pcr_sars_cov_2_at)
+        @if($booking->patient->suspectCases->last())
         {{$booking->patient->suspectCases->last()->pcr_sars_cov_2_at->format('d-m-Y')}}
         @endif        
     </div>
