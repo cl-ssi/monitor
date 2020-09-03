@@ -121,6 +121,11 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
             Route::get('/{tracing_request}/request_complete', 'TracingRequestController@request_complete')->name('request_complete');
             Route::put('/{tracing_request}', 'TracingRequestController@request_complete_update')->name('request_complete_update');
         });
+
+        Route::prefix('ws')->name('ws.')->group(function (){
+            Route::get('/get_patient', 'TracingController@getPatientWS')->name('get_patient');
+        });
+
     });
 });
 
@@ -189,8 +194,8 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/dialysis/covid/{establishment?}','DialysisPatientController@covid')->name('dialysis.covid');
         Route::get('/dialysis/{establishment?}','DialysisPatientController@index')->name('dialysis.index');
         Route::post('/dialysis','DialysisPatientController@store')->name('dialysis.store');
-        
-        
+
+
 
         Route::get('/ownIndex/{laboratory?}','SuspectCaseController@ownIndex')->name('ownIndex')->middleware('auth','can:SuspectCase: own');
         Route::get('/notification','SuspectCaseController@notificationInbox')->name('notificationInbox')->middleware('auth','can:Patient: tracing');
