@@ -484,4 +484,23 @@ class TracingController extends Controller
 
         return view('patients.tracing.without_events', compact('tracingsWithoutEvents'));
     }
+
+    /**
+     * En desarrollo
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getPatientWS()
+    {
+        $client = new \GuzzleHttp\Client();
+
+        try {
+            $response = $client->request('GET', 'https://9h5v644e76.execute-api.us-east-1.amazonaws.com/dev/Patient/1/18270432-6');
+            dd(json_decode($response->getBody()));
+
+//            $response = ['status' => 1, 'msg' => 'OK'];
+        } catch (\Exception $e) {
+        }
+
+
+    }
 }
