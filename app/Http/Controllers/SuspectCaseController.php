@@ -194,9 +194,9 @@ class SuspectCaseController extends Controller
 
         $env_communes = array_map('trim',explode(",",env('COMUNAS')));
         //$establishments = Establishment::whereIn('commune_id',$env_communes)->where('name','<>','Otros')->orderBy('name','ASC')->get();
-        
+
         $establishmentsusers = EstablishmentUser::where('user_id',Auth::id())->get();
-        
+
         //dd($establishmentsusers);
 
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
@@ -335,7 +335,7 @@ class SuspectCaseController extends Controller
             $suspectCase->reception_at  = date('Y-m-d H:i:s');
             $suspectCase->receptor_id   = Auth::id();
         }
-
+/*
         // ws minsal: previo a guardar, se verifica que la información sea correcta.
         if (env('ACTIVA_WS', false) == true) {
             $response = WSMinsal::valida_crea_muestra($request);
@@ -345,7 +345,7 @@ class SuspectCaseController extends Controller
                 return redirect()->back()->withInput();
             }
         }
-
+*/
         /* Guarda el caso sospecha */
         $patient->suspectCases()->save($suspectCase);
 
@@ -1057,7 +1057,7 @@ class SuspectCaseController extends Controller
             'sexo',
 			'fecha_muestra',
 			'origen',
-			'estrategia',			
+			'estrategia',
 			'fecha_recepcion_muestra',
             'fecha_resultado',
             'resultado',
@@ -1086,7 +1086,7 @@ class SuspectCaseController extends Controller
 					$funcionario="SI";
 				else
 					$funcionario="NO";
-			
+
 				if($fila->gestation==1)
 					$gestante="SI";
 				else
@@ -1097,7 +1097,7 @@ class SuspectCaseController extends Controller
 					($fila->patient)?$fila->patient->Identifier:'',
 					($fila->patient)?$fila->patient->fullName:'',
 					$fila->age,
-					strtoupper($fila->gender[0]),  
+					strtoupper($fila->gender[0]),
                     $fila->sample_at,
                     ($fila->establishment)?$fila->establishment->alias:'',
 				    $fila->origin,

@@ -225,6 +225,23 @@
                     </select>
                 </fieldset>
 
+
+                <!--MOTIVO (DESCRIP)-->
+
+                <fieldset class="form-group col-6 col-md-7 alert-danger">
+                    <label for="for_motivo">Motivo (Opcional)</label>
+                    <!--
+                    <input type="text" class="form-control" name="reason" placeholder="Motivo rechazo"
+                           id="for_reason"  maxlength="10" value="{{ $suspectCase->reason }}">-->
+                           <textarea id="for_reason" class="form-control" name="reason"  rows="2" maxlength="150" cols="50">
+                              {{ $suspectCase->reason }}
+                          </textarea>
+                </fieldset>
+
+                <!--END MOTIVO (DESCRIP)-->
+            </div>
+
+            <div class="form-row">
                 <fieldset class="form-group col-6 col-md-2">
                     <label for="for_sent_external_lab_at">Fecha envío lab externo</label>
                     <input type="date" class="form-control" id="for_sent_external_lab_at"

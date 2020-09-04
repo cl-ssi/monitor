@@ -12,6 +12,15 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('clear', function() {
+    $exitCode = Artisan::call('config:cache');
+    $exitCode = Artisan::call('cache:clear');
+    $exitCode = Artisan::call('config:clear');
+    $exitCode = Artisan::call('view:clear');
+
+    return view('/home');
+});
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -189,8 +198,8 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/dialysis/covid/{establishment?}','DialysisPatientController@covid')->name('dialysis.covid');
         Route::get('/dialysis/{establishment?}','DialysisPatientController@index')->name('dialysis.index');
         Route::post('/dialysis','DialysisPatientController@store')->name('dialysis.store');
-        
-        
+
+
 
         Route::get('/ownIndex/{laboratory?}','SuspectCaseController@ownIndex')->name('ownIndex')->middleware('auth','can:SuspectCase: own');
         Route::get('/notification','SuspectCaseController@notificationInbox')->name('notificationInbox')->middleware('auth','can:Patient: tracing');

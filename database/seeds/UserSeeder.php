@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
         $user->run = "15637637";
         $user->dv = 'K';
         $user->name = "Administrador";
-        $user->email = "sistemas.ssi@redsalud.gob.cl";
+        $user->email = "admin@ssdr.gob.cl";
         $user->password = bcrypt('admin');
         $user->save();
         $user->givePermissionTo(Permission::all());

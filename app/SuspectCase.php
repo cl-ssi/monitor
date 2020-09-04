@@ -38,7 +38,7 @@ class SuspectCase extends Model implements Auditable
         'discharged_at',
         'observation', 'minsal_ws_id','case_type',
         'patient_id', 'laboratory_id', 'establishment_id',
-        'user_id'
+        'user_id','reason'
     ];
 
     public function patient() {
