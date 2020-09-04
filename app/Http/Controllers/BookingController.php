@@ -42,7 +42,8 @@ class BookingController extends Controller
     {
         //
         //$patients = Patient::whereNotIn('status', ['Alta', 'Fallecido', 'Hospitalizado UCI (Ventilador)'])->orWhereNull('status')->orderBy('name')->get();
-        $patients = Patient::All()->orderBy('name')->get();
+        //$patients = Patient::All()->orderBy('name')->get();
+        $patients = Patient::orderBy('name')->get();
         return view('sanitary_residences.bookings.create', compact('patients','request'));
     }
 
