@@ -6,7 +6,7 @@
 
 @include('sanitary_residences.nav')
 
-<H1>SISTEMA EN MANTENIMIENTO ANOTAR DIGITAR LOS DATOS POR MIENTRAS EN OTRO MEDIO</H1>
+<H1>SISTEMA EN MANTENIMIENTO DIGITAR LOS DATOS POR MIENTRAS EN OTRO MEDIO PARA DESPUES TRASPASARLO CUANDO VUELVA A ESTAR EN LINEA</H1>
 
 <h3 class="mb-3" style="text-align:center">Módulo Residencias</h3>
 <h4 class="mb-3" style="text-align:center"> Se les recuerda lo Siguiente</h4>
