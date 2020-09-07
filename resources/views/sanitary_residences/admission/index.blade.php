@@ -33,7 +33,8 @@
             <td>{{$admission->created_at}}</td>
             <td>{{$admission->observations}}</td>
             <td>
-                <a href="{{ route('sanitary_residences.bookings.create')}}?paciente={{$admission->patient->id}}&morbid_history={{$admission->morbid_history}}&observations={{$admission->observations}}&symptoms_epivigila={{$admission->symptoms_epivigila}}" class="btn btn-secondary float-left"><i class="fa fa-bed"></i></a>
+                
+                <a href="{{ route('sanitary_residences.bookings.createfrompatient', $admission->patient)}}?paciente={{$admission->patient->id}}&morbid_history={{$admission->morbid_history}}&observations={{$admission->observations}}&symptoms_epivigila={{$admission->symptoms_epivigila}}" class="btn btn-secondary float-left"><i class="fa fa-bed"></i></a>
             </td>
             <td>
             <form method="POST" class="form-horizontal" action="{{ route('sanitary_residences.admission.destroy', $admission) }}">
