@@ -5,7 +5,7 @@
 @section('content')
 
 @include('sanitary_residences.nav')
-
+<h4 align="center"><u><b>{{ $booking->patient->fullName }}</b></u></h4>
 
 <div class="row">
     <div class="col-9 col-md-9 font-weight-bold p-2">
