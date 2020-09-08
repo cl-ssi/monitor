@@ -6,7 +6,7 @@
 
 @include('sanitary_residences.nav')
 
-<h3 class="mb-3">Crear Booking</h3>
+<h3 class="mb-3">Crear Booking Para Paciente {{ $patient->fullName }} </h3>
 
 <form method="POST" class="form-horizontal" action="{{ route('sanitary_residences.bookings.store') }}">
     @csrf
@@ -16,19 +16,8 @@
 
         <fieldset class="form-group col-12 col-md-6">
             <label for="for_patient_id">Paciente*</label>
-            @if($request->input('paciente'))
-            <select name="patient_id" id="for_patient_id" class="form-control" readonly> 
-                @foreach($patients as $patient)
-                <option value="{{ $patient->id }}" {{ ($patient->id == $request->input('paciente'))?'selected':'' }}>{{ $patient->fullName }}</option>
-                @endforeach                
-            </select>
-            @else
-            <select name="patient_id" id="for_patient_id" class="form-control">
-                @foreach($patients as $patient)
-                <option value="{{ $patient->id }}">{{ $patient->fullName }}</option>
-                @endforeach
-            </select>
-            @endif
+            <input type="hidden" id="patient_id" name="patient_id" value="{{$patient->id}}">
+            <input type="text" class="form-control" name="patient_name" id="for_patient_name" autocomplete="off" value="{{ $patient->fullName }}" readonly="true">
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-4">

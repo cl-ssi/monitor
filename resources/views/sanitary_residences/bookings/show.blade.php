@@ -130,19 +130,19 @@
     <div class="form-row">
         <fieldset class="form-group col-12 col-md-6">
             <label for="for_patient_id">Paciente</label>
-            <select name="patient_id" id="for_patient_id" class="form-control">
+            <select name="patient_id" id="for_patient_id" class="form-control" readonly="true">
                 @foreach($patients as $patient)
-                <option value="{{ $patient->id }}" {{ ($patient->id == $booking->patient_id)?'selected':'' }}>{{ $patient->fullName }}</option>
+                <option value="{{ $patient->id }}" {{ ($patient->id == $booking->patient_id)?'selected':'disabled' }}>{{ $patient->fullName }}</option>
                 @endforeach
             </select>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-4">
             <label for="for_room_id">Residencia - Habitación</label>
-            <select name="room_id" id="for_room_id" class="form-control">
+            <select name="room_id" id="for_room_id" class="form-control" readonly="true">
                 @foreach(Auth::user()->residences as $residence)
                     @foreach($residence->rooms->sortBy('number') as $room)
-                    <option value="{{ $room->id }}" {{ ($room->id == $booking->room_id)?'selected':'' }}>{{ $room->residence->name }} - Habitación {{ $room->number }}</option>
+                    <option value="{{ $room->id }}" {{ ($room->id == $booking->room_id)?'selected':'disabled' }}>{{ $room->residence->name }} - Habitación {{ $room->number }}</option>
                     @endforeach
                 @endforeach
             </select>

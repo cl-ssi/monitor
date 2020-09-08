@@ -377,6 +377,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
         Route::get('/excel/{booking}','BookingController@excel')->name('excel');
         Route::delete('/{booking}', 'BookingController@destroy')->name('destroy');
         Route::get('/residence/{residence}', 'BookingController@index')->name('index');
+        Route::get('/createfrompatient/{patient}', 'BookingController@createfrompatient')->name('createfrompatient');
         Route::get('/create', 'BookingController@create')->name('create');
         Route::get('/{booking}', 'BookingController@show')->name('show');
         Route::post('/', 'BookingController@store')->name('store');
