@@ -132,7 +132,12 @@
             <label for="for_patient_id">Paciente</label>
             <select name="patient_id" id="for_patient_id" class="form-control" readonly="true">
                 @foreach($patients as $patient)
+                @can('SanitaryResidence: admin')
+                <option value="{{ $patient->id }}" {{ ($patient->id == $booking->patient_id)?'selected':'' }}>{{ $patient->fullName }}</option>
+                @endcan
+                @can('SanitaryResidence: user')
                 <option value="{{ $patient->id }}" {{ ($patient->id == $booking->patient_id)?'selected':'disabled' }}>{{ $patient->fullName }}</option>
+                @endcan                
                 @endforeach
             </select>
         </fieldset>
@@ -142,7 +147,12 @@
             <select name="room_id" id="for_room_id" class="form-control" readonly="true">
                 @foreach(Auth::user()->residences as $residence)
                     @foreach($residence->rooms->sortBy('number') as $room)
+                    @can('SanitaryResidence: admin')
+                    <option value="{{ $room->id }}" {{ ($room->id == $booking->room_id)?'selected':'' }}>{{ $room->residence->name }} - Habitación {{ $room->number }}</option>
+                    @endcan
+                    @can('SanitaryResidence: user')
                     <option value="{{ $room->id }}" {{ ($room->id == $booking->room_id)?'selected':'disabled' }}>{{ $room->residence->name }} - Habitación {{ $room->number }}</option>
+                    @endcan
                     @endforeach
                 @endforeach
             </select>
@@ -274,8 +284,10 @@
         </fieldset>
 
     </div>
-
+    @canany(['SanitaryResidence: user', 'SanitaryResidence: admin'] )
     <button type="submit" class="btn btn-primary">Guardar</button>
+    @endcan
+    <a class="btn btn-outline-secondary" href="{{ route('sanitary_residences.home') }}">Cancelar</a>
 
 </form>
 
