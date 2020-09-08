@@ -57,8 +57,11 @@
             <input type="text" class="form-control" name="observations" id="for_observations2"  autocomplete="off">
         </fieldset>
     </div>
-
+    @canany(['SanitaryResidence: user', 'SanitaryResidence: admin'] )
     <button type="submit" class="btn btn-primary">Guardar</button>
+    @endcan
+
+    <a class="btn btn-outline-secondary" href="{{ route('sanitary_residences.home') }}">Cancelar</a>
 
 
 </form>

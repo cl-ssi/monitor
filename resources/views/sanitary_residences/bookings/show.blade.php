@@ -5,7 +5,7 @@
 @section('content')
 
 @include('sanitary_residences.nav')
-
+<h4 align="center"><u><b>{{ $booking->patient->fullName }}</b></u></h4>
 
 <div class="row">
     <div class="col-9 col-md-9 font-weight-bold p-2">
@@ -130,19 +130,29 @@
     <div class="form-row">
         <fieldset class="form-group col-12 col-md-6">
             <label for="for_patient_id">Paciente</label>
-            <select name="patient_id" id="for_patient_id" class="form-control" readonly="true">
+            <select name="patient_id" id="for_patient_id" class="form-control">
                 @foreach($patients as $patient)
+                @can('SanitaryResidence: admin')
+                <option value="{{ $patient->id }}" {{ ($patient->id == $booking->patient_id)?'selected':'' }}>{{ $patient->fullName }}</option>
+                @endcan
+                @canany(['SanitaryResidence: user', 'SanitaryResidence: view'])
                 <option value="{{ $patient->id }}" {{ ($patient->id == $booking->patient_id)?'selected':'disabled' }}>{{ $patient->fullName }}</option>
+                @endcan                
                 @endforeach
             </select>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-4">
             <label for="for_room_id">Residencia - Habitación</label>
-            <select name="room_id" id="for_room_id" class="form-control" readonly="true">
+            <select name="room_id" id="for_room_id" class="form-control">
                 @foreach(Auth::user()->residences as $residence)
                     @foreach($residence->rooms->sortBy('number') as $room)
+                    @can('SanitaryResidence: admin')
+                    <option value="{{ $room->id }}" {{ ($room->id == $booking->room_id)?'selected':'' }}>{{ $room->residence->name }} - Habitación {{ $room->number }}</option>
+                    @endcan
+                    @canany(['SanitaryResidence: user', 'SanitaryResidence: view'])
                     <option value="{{ $room->id }}" {{ ($room->id == $booking->room_id)?'selected':'disabled' }}>{{ $room->residence->name }} - Habitación {{ $room->number }}</option>
+                    @endcan
                     @endforeach
                 @endforeach
             </select>
@@ -274,8 +284,10 @@
         </fieldset>
 
     </div>
-
+    @canany(['SanitaryResidence: user', 'SanitaryResidence: admin'] )
     <button type="submit" class="btn btn-primary">Guardar</button>
+    @endcan
+    <a class="btn btn-outline-secondary" href="{{ route('sanitary_residences.home') }}">Cancelar</a>
 
 </form>
 
