@@ -831,100 +831,172 @@ class TracingController extends Controller
                         ),
                         'item' => array(
                             array(
-                                'linkId' => '1.1',
-                                'text' => 'cefalea',
-                                'answer' => array(
-                                    array('valueBoolean' => false)
+                                'linkId' => '1',
+                                'text' => '¿Ha presentado alguno de los siguientes síntomas?',
+                                'item' => array(
+
+                                    array(
+                                        'linkId' => '1.1',
+                                        'text' => 'cefalea',
+                                        'answer' => array(
+                                            array('valueBoolean' => false)
+                                        )
+                                    ),
+                                    array(
+                                        'linkId' => '1.2',
+                                        'text' => 'cianosis',
+                                        'answer' => array(
+                                            array('valueBoolean' => false)
+                                        )
+                                    ),
+                                    array(
+                                        'linkId' => '1.3',
+                                        'text' => 'diarrea',
+                                        'answer' => array(
+                                            array('valueBoolean' => false)
+                                        )
+                                    ),
+                                    array(
+                                        'linkId' => '1.4',
+                                        'text' => 'dolor_abdominal',
+                                        'answer' => array(
+                                            array('valueBoolean' => true)
+                                        )
+                                    ),
+                                    array(
+                                        'linkId' => '1.5',
+                                        'text' => 'dolor_toracico',
+                                        'answer' => array(
+                                            array('valueBoolean' => false)
+                                        )
+                                    ),
+                                    array(
+                                        'linkId' => '1.6',
+                                        'text' => 'fiebre',
+                                        'answer' => array(
+                                            array('valueBoolean' => false)
+                                        )
+                                    ),
+                                    array(
+                                        'linkId' => '1.7',
+                                        'text' => 'mialgia',
+                                        'answer' => array(
+                                            array('valueBoolean' => false)
+                                        )
+                                    ),
+                                    array(
+                                        'linkId' => '1.8',
+                                        'text' => 'odinofagia',
+                                        'answer' => array(
+                                            array('valueBoolean' => true)
+                                        )
+                                    ),
+                                    array(
+                                        'linkId' => '1.9',
+                                        'text' => 'anosmia',
+                                        'answer' => array(
+                                            array('valueBoolean' => true)
+                                        )
+                                    ),
+                                    array(
+                                        'linkId' => '1.10',
+                                        'text' => 'ageusia',
+                                        'answer' => array(
+                                            array('valueBoolean' => false)
+                                        )
+                                    ),
+                                    array(
+                                        'linkId' => '1.11',
+                                        'text' => 'postracion',
+                                        'answer' => array(
+                                            array('valueBoolean' => false)
+                                        )
+                                    ),
+                                    array(
+                                        'linkId' => '1.12',
+                                        'text' => 'taquipnea',
+                                        'answer' => array(
+                                            array('valueBoolean' => false)
+                                        )
+                                    ),
+                                    array(
+                                        'linkId' => '1.13',
+                                        'text' => 'tos',
+                                        'answer' => array(
+                                            array('valueBoolean' => false)
+                                        )
+                                    )
                                 )
                             ),
                             array(
-                                'linkId' => '1.2',
-                                'text' => 'cianosis',
-                                'answer' => array(
-                                    array('valueBoolean' => false)
-                                )
-                            ),
-                            array(
-                                'linkId' => '1.3',
-                                'text' => 'diarrea',
-                                'answer' => array(
-                                    array('valueBoolean' => false)
-                                )
-                            ),
-                            array(
-                                'linkId' => '1.4',
-                                'text' => 'dolor_abdominal',
-                                'answer' => array(
-                                    array('valueBoolean' => true)
-                                )
-                            ),
-                            array(
-                                'linkId' => '1.5',
-                                'text' => 'dolor_toracico',
-                                'answer' => array(
-                                    array('valueBoolean' => false)
-                                )
-                            ),
-                            array(
-                                'linkId' => '1.6',
-                                'text' => 'fiebre',
-                                'answer' => array(
-                                    array('valueBoolean' => false)
-                                )
-                            ),
-                            array(
-                                'linkId' => '1.7',
-                                'text' => 'mialgia',
-                                'answer' => array(
-                                    array('valueBoolean' => false)
-                                )
-                            ),
-                            array(
-                                'linkId' => '1.8',
-                                'text' => 'odinofagia',
-                                'answer' => array(
-                                    array('valueBoolean' => true)
-                                )
-                            ),
-                            array(
-                                'linkId' => '1.9',
-                                'text' => 'anosmia',
-                                'answer' => array(
-                                    array('valueBoolean' => true)
-                                )
-                            ),
-                            array(
-                                'linkId' => '1.10',
-                                'text' => 'ageusia',
-                                'answer' => array(
-                                    array('valueBoolean' => false)
-                                )
-                            ),
-                            array(
-                                'linkId' => '1.11',
-                                'text' => 'postracion',
-                                'answer' => array(
-                                    array('valueBoolean' => false)
-                                )
-                            ),
-                            array(
-                                'linkId' => '1.12',
-                                'text' => 'taquipnea',
-                                'answer' => array(
-                                    array('valueBoolean' => false)
-                                )
-                            ),
-                            array(
-                                'linkId' => '1.13',
-                                'text' => 'tos',
-                                'answer' => array(
-                                    array('valueBoolean' => false)
+                                'linkId' => '2',
+                                'text' => 'respecto a examen covid-19',
+                                'item' => array(
+                                    array(
+                                        'linkId' => '2.1',
+                                        'text' => 'fue derivado para realizarse el examen?',
+                                        'answer' => array(
+                                            array(
+                                                'valueBoolean' => false,
+                                                'item' => array(
+                                                    array(
+                                                        'linkId' => '2.1.1',
+                                                        'text' => 'fecha derivacion toma de muestras',
+                                                        'answer' => array(
+                                                            array(
+                                                                'valueDate' => '2020-09-04'
+                                                            )
+                                                        )
+                                                    ),
+                                                    array(
+                                                        'linkId' => '2.1.2',
+                                                        'text' => 'derivacion a SU',
+                                                        'answer' => array(
+                                                            array(
+                                                                'valueBoolean' => false
+                                                            )
+                                                        )
+                                                    ),
+                                                    array(
+                                                        'linkId' => '2.1.3',
+                                                        'text' => '¿cumple cuarentena y aislamiento?',
+                                                        'answer' => array(
+                                                            array(
+                                                                'valueBoolean' => false
+                                                            )
+                                                        )
+                                                    ),
+                                                    array(
+                                                        'linkId' => '2.1.4',
+                                                        'text' => '¿tiene resultado covid?',
+                                                        'answer' => array(
+                                                            array(
+                                                                'valueString' => 'negativo'
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    ),
+                                    array(
+                                        'linkId' => '2.2',
+                                        'text' => 'Observacion de Seguimiento',
+                                        'answer' => array(
+                                            array(
+                                                'valueString' => 'Sin observaciones'
+                                            )
+                                        )
+                                    )
                                 )
                             )
 
-
                         )
 
+                    ),
+                    'request' => array(
+                        'method' => 'POST',
+                        'url' => 'QuestionnaireResponse'
                     )
                 )
 
