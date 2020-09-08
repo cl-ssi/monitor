@@ -518,6 +518,28 @@ class TracingController extends Controller
      */
     public function setPatientWs(Patient $patient){
 
+        $run = $patient->run . '-' . $patient->dv;
+        $family = $patient->fathers_family;
+        $given_name = $patient->name;
+        $mothers_family = $patient->mothers_family;
+        $mobile_phone = (int)$patient->demographic->telephone;
+        $home_phone = ($patient->demographic->telephone2) ? (int)$patient->demographic->telephone2 : null;
+        $email = ($patient->demographic->email) ? $patient->demographic->email : null;
+        $gender = $patient->gender;
+        //todo verificar si city esta estandarizado
+        $city = $patient->demographic->city;
+        //todo agregar columna de homologacion
+        $region = $patient->demographic->region->name;
+        $via = $patient->demographic->street_type;
+        $direccion = $patient->demographic->address;
+        $numero_residencia = $patient->demographic->number;
+        $comuna_code_deis = $patient->demographic->commune->code_deis;
+        $region_id = $patient->demographic->region_id;
+
+        //todo obtener suspect case por parametro?
+//        $suspectCase =
+//        $establecimiento_code_deis =
+
         $patient = array(
             'resourceType' => 'Patient',
             'identifier' => array(
@@ -529,63 +551,64 @@ class TracingController extends Controller
                             'display' => 'run')
                     ),
                     'system' => 'www.registrocivil.cl/run',
-                    'value' => '18314540-1'
+                    'value' => $run
                 )),
             'name' => array(
-                'family' => 'Christiansen',
-                'given' => array('Rodrigo Iván'),
+                'family' => $family,
+                'given' => array($given_name),
                 'extension' => array(
                     array(
                         'url' => 'www.hl7.org/fhir/extension-humanname-mothers-family.json.html',
-                        'valueString' => 'Gonzalez'
+                        'valueString' => $mothers_family
                     ))
             ),
             'telecom' => array(
                 array(
                     'system' => 'phone',
                     'use' => 'mobile',
-                    'value' => 123456789
+                    'value' => $mobile_phone
                 ),
                 array(
                     'system' => 'phone',
                     'use' => 'home',
-                    'value' => 584679
+                    'value' => $home_phone
                 ),
                 array(
                     'system' => 'email',
-                    'value' => 'rodrigo.christiansen@hjnc.cl',
+                    'value' => $email,
                     'use' => 'home'
                 )),
-            'gender' => 'male',
+            'gender' => $gender,
             'birthDate' => '1992-10-27',
             'address' => array(
-                'city' => 'Arica',
-                'state' => 'De Arica y Parinacota',
+                'city' => $city,
+                'state' => $region,
                 'country' => 'CL',
                 'extension' => array(
                     array(
                         'url' => 'apidocs.epivigila.minsal.cl/tipo-direccion',
+//                        todo cambiar a una de las opciones
                         'valueString' => 'domicilio_particular'
                     ),
                     array(
                         'url' => 'apidocs.epivigila.minsal.cl/via',
-                        'valueString' => 'calle'
+                        'valueString' => $via
                     ),
                     array(
                         'url' => 'apidocs.epivigila.minsal.cl/direccion',
-                        'valueString' => 'garona'
+                        'valueString' => $direccion
                     ),
                     array(
                         'url' => 'apidocs.epivigila.minsal.cl/numero-residencia',
-                        'valueString' => '598'
+                        'valueString' => $numero_residencia
                     ),
                     array(
                         'url' => 'apidocs.epivigila.minsal.cl/comuna',
-                        'valueCode' => '15101'
+                        'valueCode' => $comuna_code_deis
                     ),
                     array(
                         'url' => 'apidocs.epivigila.minsal.cl/region',
-                        'valueCode' => '15'
+                        'valueCode' => $region_id
                     ))
             ),
 
