@@ -35,6 +35,7 @@
         </fieldset>
     </div>
 
+    @canany(['SanitaryResidence: user', 'SanitaryResidence: admin'] )
     <button type="submit" class="btn btn-primary" 
     @if(isset($booking->patient->tracing) && isset($booking->patient->tracing->quarantine_end_at))    
     @if ($booking->patient->tracing->quarantine_end_at > now()))
@@ -43,5 +44,8 @@
     @endif
     >
     Guardar</button>
+    @endcan
+
+    <a class="btn btn-outline-secondary" href="{{ route('sanitary_residences.home') }}">Cancelar</a>
 
 </form>
