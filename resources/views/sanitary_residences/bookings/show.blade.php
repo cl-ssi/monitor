@@ -135,7 +135,7 @@
                 @can('SanitaryResidence: admin')
                 <option value="{{ $patient->id }}" {{ ($patient->id == $booking->patient_id)?'selected':'' }}>{{ $patient->fullName }}</option>
                 @endcan
-                @can('SanitaryResidence: user')
+                @canany(['SanitaryResidence: user', 'SanitaryResidence: view'])
                 <option value="{{ $patient->id }}" {{ ($patient->id == $booking->patient_id)?'selected':'disabled' }}>{{ $patient->fullName }}</option>
                 @endcan                
                 @endforeach
