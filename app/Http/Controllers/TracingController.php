@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Tracing\Tracing;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
 use App\Patient;
 use Carbon\Carbon;
@@ -10,6 +12,7 @@ use App\EstablishmentUser;
 use App\Commune;
 use App\Establishment;
 use App\SuspectCase;
+use Illuminate\Support\Facades\Storage;
 
 
 class TracingController extends Controller
@@ -486,21 +489,463 @@ class TracingController extends Controller
     }
 
     /**
-     * En desarrollo
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * En desarrollo. Obtiene folio-indice del paciente.
+     * @throws GuzzleException
      */
-    public function getPatientWS()
+    public function getFolioPatientWs(String $type_id, String $id)
     {
         $client = new \GuzzleHttp\Client();
 
         try {
-            $response = $client->request('GET', 'https://9h5v644e76.execute-api.us-east-1.amazonaws.com/dev/Patient/1/18270432-6');
+
+            /** test_parameters: type_id=1, $id=18270432-6 **/
+            $response = $client->request('GET', 'https://9h5v644e76.execute-api.us-east-1.amazonaws.com/dev/Patient/' . $type_id . '/' . $id );
             dd(json_decode($response->getBody()));
 
 //            $response = ['status' => 1, 'msg' => 'OK'];
-        } catch (\Exception $e) {
+        } catch (RequestException $e) {
+            $response = $e->getResponse();
+            $responseBodyAsString = $response->getBody()->getContents();
+            $decode = json_decode($responseBodyAsString);
+            dd($decode);
+//            $response = ['status' => 0, 'msg' => $decode->error];
         }
 
-
     }
+
+    /**
+     * En desarrollo. Envía paciente contacto estrecho
+     */
+    public function setPatientWs(Patient $patient){
+
+        $patient = array(
+            'resourceType' => 'Patient',
+            'identifier' => array(
+                array(
+                    'type' => array(
+                        'coding' => array(
+                            'system' => 'apidocs.epivigila.minsal.cl/tipo-documento',
+                            'code' => 1,
+                            'display' => 'run')
+                    ),
+                    'system' => 'www.registrocivil.cl/run',
+                    'value' => '18314540-1'
+                )),
+            'name' => array(
+                'family' => 'Christiansen',
+                'given' => array('Rodrigo Iván'),
+                'extension' => array(
+                    array(
+                        'url' => 'www.hl7.org/fhir/extension-humanname-mothers-family.json.html',
+                        'valueString' => 'Gonzalez'
+                    ))
+            ),
+            'telecom' => array(
+                array(
+                    'system' => 'phone',
+                    'use' => 'mobile',
+                    'value' => 123456789
+                ),
+                array(
+                    'system' => 'phone',
+                    'use' => 'home',
+                    'value' => 584679
+                ),
+                array(
+                    'system' => 'email',
+                    'value' => 'rodrigo.christiansen@hjnc.cl',
+                    'use' => 'home'
+                )),
+            'gender' => 'male',
+            'birthDate' => '1992-10-27',
+            'address' => array(
+                'city' => 'Arica',
+                'state' => 'De Arica y Parinacota',
+                'country' => 'CL',
+                'extension' => array(
+                    array(
+                        'url' => 'apidocs.epivigila.minsal.cl/tipo-direccion',
+                        'valueString' => 'domicilio_particular'
+                    ),
+                    array(
+                        'url' => 'apidocs.epivigila.minsal.cl/via',
+                        'valueString' => 'calle'
+                    ),
+                    array(
+                        'url' => 'apidocs.epivigila.minsal.cl/direccion',
+                        'valueString' => 'garona'
+                    ),
+                    array(
+                        'url' => 'apidocs.epivigila.minsal.cl/numero-residencia',
+                        'valueString' => '598'
+                    ),
+                    array(
+                        'url' => 'apidocs.epivigila.minsal.cl/comuna',
+                        'valueCode' => '15101'
+                    ),
+                    array(
+                        'url' => 'apidocs.epivigila.minsal.cl/region',
+                        'valueCode' => '15'
+                    ))
+            ),
+
+            'contact' => array(array(
+                'coding' => array(
+                    'system' => 'apidocs.epivigila.minsal.cl/folio-indice',
+                    'code' => '50669',
+                    'display' => 'folio-indice'
+                )
+            )),
+
+            'managingOrganization' => array(
+                'identifier' => array(array(
+                    'system' => 'apidocs.epivigila.minsal.cl/establecimientos-DEIS',
+                    'value' => 101100
+                )),
+                'name' => 'string'
+            )
+
+        );
+
+        /** template **/
+//        $patient = array(
+//            'resourceType' => 'Patient',
+//            'identifier' => array(
+//                array(
+//                    'type' => array(
+//                        'coding' => array(
+//                            'system' => 'apidocs.epivigila.minsal.cl/tipo-documento',
+//                            'code' => 1,
+//                            'display' => 'run')
+//                    ),
+//                    'system' => 'www.registrocivil.cl/run',
+//                    'value' => '18314540-1'
+//                )),
+//            'name' => array(
+//                'family' => 'Christiansen',
+//                'given' => array('Rodrigo Iván'),
+//                'extension' => array(
+//                    array(
+//                        'url' => 'www.hl7.org/fhir/extension-humanname-mothers-family.json.html',
+//                        'valueString' => 'Gonzalez'
+//                    ))
+//            ),
+//            'telecom' => array(
+//                array(
+//                    'system' => 'phone',
+//                    'use' => 'mobile',
+//                    'value' => 123456789
+//                ),
+//                array(
+//                    'system' => 'phone',
+//                    'use' => 'home',
+//                    'value' => 584679
+//                ),
+//                array(
+//                    'system' => 'email',
+//                    'value' => 'rodrigo.christiansen@hjnc.cl',
+//                    'use' => 'home'
+//                )),
+//            'gender' => 'male',
+//            'birthDate' => '1992-10-27',
+//            'address' => array(
+//                'city' => 'Arica',
+//                'state' => 'De Arica y Parinacota',
+//                'country' => 'CL',
+//                'extension' => array(
+//                    array(
+//                        'url' => 'apidocs.epivigila.minsal.cl/tipo-direccion',
+//                        'valueString' => 'domicilio_particular'
+//                ),
+//                    array(
+//                        'url' => 'apidocs.epivigila.minsal.cl/via',
+//                        'valueString' => 'calle'
+//                    ),
+//                    array(
+//                        'url' => 'apidocs.epivigila.minsal.cl/direccion',
+//                        'valueString' => 'garona'
+//                    ),
+//                    array(
+//                        'url' => 'apidocs.epivigila.minsal.cl/numero-residencia',
+//                        'valueString' => '598'
+//                    ),
+//                    array(
+//                        'url' => 'apidocs.epivigila.minsal.cl/comuna',
+//                        'valueCode' => '15101'
+//                    ),
+//                    array(
+//                        'url' => 'apidocs.epivigila.minsal.cl/region',
+//                        'valueCode' => '15'
+//                    ))
+//            ),
+//
+//            'contact' => array(array(
+//                'coding' => array(
+//                    'system' => 'apidocs.epivigila.minsal.cl/folio-indice',
+//                    'code' => '50669',
+//                    'display' => 'folio-indice'
+//                )
+//            )),
+//
+//            'managingOrganization' => array(
+//                'identifier' => array(array(
+//                    'system' => 'apidocs.epivigila.minsal.cl/establecimientos-DEIS',
+//                    'value' => 101100
+//                )),
+//                'name' => 'string'
+//            )
+//
+//        );
+
+        try {
+            $patientJson = json_encode($patient, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+            Storage::disk('public')->put('prueba.json', $patientJson);
+            dd($patientJson);
+
+//            $response = ['status' => 1, 'msg' => 'OK'];
+        } catch (RequestException $e) {
+            $response = $e->getResponse();
+            $responseBodyAsString = $response->getBody()->getContents();
+            $decode = json_decode($responseBodyAsString);
+            dd('error: ' + $decode);
+
+//            $response = ['status' => 0, 'msg' => $decode->error];
+        }
+    }
+
+    public function setBundleContactWs(){
+
+        $bundle = array(
+            'resourceType' => "Bundle",
+            'id' => 'bundle-seguimiento',
+            'type' => 'collection',
+            'entry' => array(array(
+                'resource' => array(
+                    'resourceType' => 'Encounter',
+                    'id' => 'seguimiento-c19',
+                    'text' => array(
+                        'status' => 'generated',
+                        'div' => '<div>Seguimiento Contacto</div>'
+                    ),
+                    'contained' => array(array(
+                        'resourceType' => 'Location',
+                        'id' => 'seguimiento',
+                        'description' => 'Casa',
+                        'mode' => 'kind'
+                    )),
+                    'status' => 'finished',
+                    'class' => array(
+                        'system' => 'apidocs.epivigila.minsal.cl/tipo-domicilio',
+                        'code' => 'domicilio_particular',
+                        'display' => 'Seguimiento con paciente en domicilio particular'
+                    ),
+                    'subject' => array(
+                        'reference' => 'Patient/50669'
+                    ),
+                    'participant' => array(array(
+                        'individual' => array(
+                            'reference' => 'Practitioner/15000018-1',
+                            'display' => 'Alfredo Figueroa Seguel'
+                        )
+                    )),
+                    'period' => array(
+                        'start' => '2020-09-04',
+                        'end' => '2020-09-17'
+                    ),
+                    'location' => array(array(
+                        'location' => array(
+                            'reference' => 'seguimiento-c19',
+                            'display' => 'Lugar de seguimiento'
+                        ),
+                        'status' => 'completed',
+                        'period' => array(
+                            'start' => '2020-09-04',
+                            'end' => '2020-09-04'
+                        ),
+                        'extension' => array(
+                            array(
+                                'url' => 'apidocs.epivigila.minsal.cl/dia-seguimiento-covid',
+                                'valueInteger' => 1
+                            ),
+                            array(
+                                'url' => 'apidocs.epivigila.minsal.cl/tipo-contactabilidad',
+                                'valueString' => 'llamada'
+                            )
+                        )
+                    ))
+                ),
+                'request' => array(
+                    'method' => 'POST',
+                    'url' => 'Encounter'
+                )
+            ),
+                array(
+                    'resource' => array(
+                        'resourceType' => 'QuestionnaireResponse',
+                        'contained' => array(
+                            array(
+                                'resourceType' => 'Patient',
+                                'id' => 'seguimiento-covid',
+                                'identifier' => array(array(
+                                    'system' => 'apidocs.epivigila.minsal.cl/folio-contacto',
+                                    'code' => 'SC50669-1085',
+                                    'display' => 'folio-contacto'
+                                )),
+                                'contact' => array(
+                                    'relationship' => array(array(
+                                        'coding' => array(
+                                            'system' => 'apidocs.epivigila.minsal.cl/folio-indice',
+                                            'code' => '50669',
+                                            'display' => 'folio-indice'
+                                        )
+                                    ))
+                                ),
+                            ),
+                            array(
+                                'resourceType' => 'Practitioner',
+                                'id' => 'responsable-encuesta-seguimiento',
+                                'identifier' => array(
+                                    array(
+                                        'type' => array('text' => 'Rodrigo Baeza Galaz'),
+                                        'system' => 'www.registrocivil.cl/run',
+                                        'value' => '15840868-6'
+                                    )),
+                            ),
+                            array(
+                                'resourceType' => 'Organization',
+                                'id' => 'institucion-seguimiento',
+                                'identifier' => array(
+                                    array(
+                                        'system' => 'apidocs.epivigila.minsal.cl/establecimientos-DEIS',
+                                        'value' => 101100
+                                )),
+                                'name' => 'Hospital Dr. Juan Noé Crevani'
+                            )
+                        ),
+                        'status' => 'completed',
+                        'subject' => array(
+                            'reference' => 'seguimiento-c19'
+                        ),
+                        'encounter' => array(
+                            'reference' => 'Encounter/seguimiento-c19'
+                        ),
+                        'item' => array(
+                            array(
+                                'linkId' => '1.1',
+                                'text' => 'cefalea',
+                                'answer' => array(
+                                    array('valueBoolean' => false)
+                                )
+                            ),
+                            array(
+                                'linkId' => '1.2',
+                                'text' => 'cianosis',
+                                'answer' => array(
+                                    array('valueBoolean' => false)
+                                )
+                            ),
+                            array(
+                                'linkId' => '1.3',
+                                'text' => 'diarrea',
+                                'answer' => array(
+                                    array('valueBoolean' => false)
+                                )
+                            ),
+                            array(
+                                'linkId' => '1.4',
+                                'text' => 'dolor_abdominal',
+                                'answer' => array(
+                                    array('valueBoolean' => true)
+                                )
+                            ),
+                            array(
+                                'linkId' => '1.5',
+                                'text' => 'dolor_toracico',
+                                'answer' => array(
+                                    array('valueBoolean' => false)
+                                )
+                            ),
+                            array(
+                                'linkId' => '1.6',
+                                'text' => 'fiebre',
+                                'answer' => array(
+                                    array('valueBoolean' => false)
+                                )
+                            ),
+                            array(
+                                'linkId' => '1.7',
+                                'text' => 'mialgia',
+                                'answer' => array(
+                                    array('valueBoolean' => false)
+                                )
+                            ),
+                            array(
+                                'linkId' => '1.8',
+                                'text' => 'odinofagia',
+                                'answer' => array(
+                                    array('valueBoolean' => true)
+                                )
+                            ),
+                            array(
+                                'linkId' => '1.9',
+                                'text' => 'anosmia',
+                                'answer' => array(
+                                    array('valueBoolean' => true)
+                                )
+                            ),
+                            array(
+                                'linkId' => '1.10',
+                                'text' => 'ageusia',
+                                'answer' => array(
+                                    array('valueBoolean' => false)
+                                )
+                            ),
+                            array(
+                                'linkId' => '1.11',
+                                'text' => 'postracion',
+                                'answer' => array(
+                                    array('valueBoolean' => false)
+                                )
+                            ),
+                            array(
+                                'linkId' => '1.12',
+                                'text' => 'taquipnea',
+                                'answer' => array(
+                                    array('valueBoolean' => false)
+                                )
+                            ),
+                            array(
+                                'linkId' => '1.13',
+                                'text' => 'tos',
+                                'answer' => array(
+                                    array('valueBoolean' => false)
+                                )
+                            )
+
+
+                        )
+
+                    )
+                )
+
+            )
+        );
+
+
+        try {
+            $bundleJson = json_encode($bundle, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+            Storage::disk('public')->put('prueba.json', $bundleJson);
+            dd($bundleJson);
+
+//            $response = ['status' => 1, 'msg' => 'OK'];
+        } catch (RequestException $e) {
+            $response = $e->getResponse();
+            $responseBodyAsString = $response->getBody()->getContents();
+            $decode = json_decode($responseBodyAsString);
+            dd('error: ' + $decode);
+
+//            $response = ['status' => 0, 'msg' => $decode->error];
+        }
+    }
+
 }

@@ -123,7 +123,9 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
         });
 
         Route::prefix('ws')->name('ws.')->group(function (){
-            Route::get('/get_patient', 'TracingController@getPatientWS')->name('get_patient');
+            Route::get('/get_folio_patient/{type_id}/{id}', 'TracingController@getFolioPatientWs')->name('get_folio_patient');
+            Route::get('/set_patient/{patient}', 'TracingController@setPatientWs')->name('set_patient');
+            Route::get('/set_bundle_contact/{patient}', 'TracingController@setBundleContactWs')->name('set_bundle_contact');
         });
 
     });
