@@ -8,7 +8,7 @@
     @if($laboratory)
         Examenes del laboratorio {{ $laboratory->alias }}
     @else
-        Listado de todos los exámenes
+        Listado de todos los exámenes 
     @endif
 </h3>
 
@@ -22,7 +22,7 @@
     @endcan
 </div>
 <div class="table-responsive">
-<table class="table table-sm table-bordered">
+<table class="table table-sm table-bordered" >
     <thead>
         <tr class="text-center">
             <th>Exámenes enviados a análisis</th>

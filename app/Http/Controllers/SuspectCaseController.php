@@ -53,7 +53,8 @@ class SuspectCaseController extends Controller
    *
    * @return \Illuminate\Http\Response
    */
-  public function index(request $request, Laboratory $laboratory){
+  public function index(request $request, Laboratory $laboratory)
+  {
       $collection = collect(['positivos', 'negativos', 'pendientes', 'rechazados', 'indeterminados']);
       $filtro = collect([]);
       $collection->each(function ($item, $key) use ($request, $filtro){
@@ -77,7 +78,8 @@ class SuspectCaseController extends Controller
       });
 
       $patients = Patient::getPatientsBySearch($request->get('text'));
-      if(!empty($laboratory->id)){
+      if(!empty($laboratory->id))
+      {
           $cases['total'] = SuspectCase::where('laboratory_id',$laboratory->id)->count();
           $cases['positivos']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','positive')->count();
           $cases['negativos']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','negative')->count();
@@ -89,7 +91,8 @@ class SuspectCaseController extends Controller
                                ->whereIn('pcr_sars_cov_2',$filtro)
                                ->paginate(200);
      }
-     else{
+     else
+     {
           $laboratory = null;
           $cases['total'] = SuspectCase::whereNotNull('laboratory_id')->count();
           $cases['positivos']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','positive')->count();
@@ -619,14 +622,84 @@ class SuspectCaseController extends Controller
      * @param  \App\SuspectCase  $suspectCase
      * @return \Illuminate\Http\Response
      */
-    public function search_id(Request $request)
+    public function search_id(Request $request, Laboratory $laboratory)
     {
-        $suspectCase = SuspectCase::find($request->input('id'));
-        if($suspectCase) return redirect()->route('lab.suspect_cases.edit', $suspectCase);
-        else {
-            session()->flash('warning', 'No se ha encontrado el exámen ID: <h3>' . $request->input('id') . '</h3>');
-            return redirect()->back();
+        $case_id=$request->input('id');
+
+        switch($request->submitbutton)
+        {
+                 case 'go_to':
+                    $suspectCase = SuspectCase::find($request->input('id'));
+                     if($suspectCase) return redirect()->route('lab.suspect_cases.edit', $suspectCase);
+                     else {
+                         session()->flash('warning', 'No se ha encontrado el exámen ID: <h3>' . $request->input('id') . '</h3>');
+                         return redirect()->back();
+                     }
+
+                 break;
+
+                 case 'index_search':
+
+                   $collection = collect(['positivos', 'negativos', 'pendientes', 'rechazados', 'indeterminados']);
+                   $filtro = collect([]);
+
+                   $patients = Patient::getPatientsBySearch($request->get('text'));
+                   if(!empty($laboratory->id))
+                   {
+                       $cases['total'] = SuspectCase::where('laboratory_id',$laboratory->id)->count();
+                       $cases['positivos']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','positive')->count();
+                       $cases['negativos']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','negative')->count();
+                       $cases['pendientes']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','pending')->count();
+                       $cases['rechazados']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','rejected')->count();
+                       $cases['indeterminados']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','undetermined')->count();
+                       $suspectCases = SuspectCase::where('id',$case_id)
+
+                                            ->paginate(200);
+                  }
+                  else
+                  {
+                       $laboratory = null;
+                       $cases['total'] = SuspectCase::whereNotNull('laboratory_id')->count();
+                       $cases['positivos']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','positive')->count();
+                       $cases['negativos']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','negative')->count();
+                       $cases['pendientes']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','pending')->count();
+                       $cases['rechazados']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','rejected')->count();
+                       $cases['indeterminados']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','undetermined')->count();
+                       $suspectCases = SuspectCase::where('id',$case_id)
+
+
+                                           ->paginate(200);
+                   }
+                   return view('lab.suspect_cases.index', compact('suspectCases','request','laboratory','cases'));
+
+                 break;
+
+
+                 case 'own_search':
+                     $searchText = $request->get('text');
+                     $arrayFilter = (empty($request->filter)) ? array() : $request->filter;
+
+                     $suspectCasesTotal = SuspectCase::where(function($q){
+                         $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
+                             ->orWhere('user_id', Auth::user()->id);
+                     })->get();
+
+                     $suspectCases = SuspectCase::where('id',$case_id)
+                     ->where(function($q){
+                         $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
+                             ->orWhere('user_id', Auth::user()->id);
+                     })
+                         ->paginate(200);
+
+                     return view('lab.suspect_cases.ownIndex', compact('suspectCases', 'arrayFilter', 'searchText', 'laboratory', 'suspectCasesTotal'));
+
+                //  return redirect('/lab/suspect_cases/ownIndex?text=&filter%5B%5D=pending');
+                 break;
+
         }
+
+
+
     }
 
 

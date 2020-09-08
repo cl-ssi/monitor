@@ -5,7 +5,7 @@
 @section('content')
 
 <h3 class="mb-3"><i class="fas fa-lungs-virus"></i>
-    Exámenes ingresados en el establecimiento del usuario.
+    Exámenes ingresados en el establecimiento del usuario
 </h3>
 <div class="table-responsive">
 <table class="table table-sm table-bordered">
