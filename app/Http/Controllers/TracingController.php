@@ -530,15 +530,82 @@ class TracingController extends Controller
         $city = $patient->demographic->city;
         //todo agregar columna de homologacion
         $region = $patient->demographic->region->name;
-        $via = $patient->demographic->street_type;
+        $via = strtolower($patient->demographic->street_type);
         $direccion = $patient->demographic->address;
         $numero_residencia = $patient->demographic->number;
         $comuna_code_deis = $patient->demographic->commune->code_deis;
-        $region_id = $patient->demographic->region_id;
+        $region_id = (string)$patient->demographic->region_id;
 
         //todo obtener suspect case por parametro?
-//        $suspectCase =
-//        $establecimiento_code_deis =
+        $suspectCase = SuspectCase::where('patient_id', $patient->id)
+            ->orderBy('id', 'desc')
+            ->first();
+
+        $establecimiento_code_deis = ($suspectCase->establishment->new_code_deis) ?
+            (int)$suspectCase->establishment->new_code_deis : null;
+
+        /** TELECOM ARRAY **/
+        $mobile_phone_array = array(
+            'system' => 'phone',
+            'use' => 'mobile',
+            'value' => $mobile_phone
+        );
+
+        $home_phone_array = array(
+            'system' => 'phone',
+            'use' => 'home',
+            'value' => $home_phone
+        );
+
+        $email_array = array(
+            'system' => 'email',
+            'value' => $email,
+            'use' => 'home'
+        );
+
+        $telecomArray = array();
+        array_push($telecomArray, $mobile_phone_array);
+        if($home_phone){array_push($telecomArray, $home_phone_array);}
+        if($email){array_push($telecomArray, $email_array);}
+
+        /** ADDRESS ARRAY **/
+
+        $addressArray = array(
+            'state' => $region,
+            'country' => 'CL',
+            'extension' => array(
+                array(
+                    'url' => 'apidocs.epivigila.minsal.cl/tipo-direccion',
+//                        todo cambiar a una de las opciones
+                    'valueString' => 'domicilio_particular'
+                ),
+                array(
+                    'url' => 'apidocs.epivigila.minsal.cl/via',
+                    'valueString' => $via
+                ),
+                array(
+                    'url' => 'apidocs.epivigila.minsal.cl/direccion',
+                    'valueString' => $direccion
+                ),
+                array(
+                    'url' => 'apidocs.epivigila.minsal.cl/numero-residencia',
+                    'valueString' => $numero_residencia
+                ),
+                array(
+                    'url' => 'apidocs.epivigila.minsal.cl/comuna',
+                    'valueCode' => $comuna_code_deis
+                ),
+                array(
+                    'url' => 'apidocs.epivigila.minsal.cl/region',
+                    'valueCode' => $region_id
+                ))
+        );
+
+        if($city){
+            $addressArray = array('city' => $city) + $addressArray;
+        }
+
+        /** JSON **/
 
         $patient = array(
             'resourceType' => 'Patient',
@@ -562,55 +629,10 @@ class TracingController extends Controller
                         'valueString' => $mothers_family
                     ))
             ),
-            'telecom' => array(
-                array(
-                    'system' => 'phone',
-                    'use' => 'mobile',
-                    'value' => $mobile_phone
-                ),
-                array(
-                    'system' => 'phone',
-                    'use' => 'home',
-                    'value' => $home_phone
-                ),
-                array(
-                    'system' => 'email',
-                    'value' => $email,
-                    'use' => 'home'
-                )),
+            'telecom' => $telecomArray,
             'gender' => $gender,
             'birthDate' => '1992-10-27',
-            'address' => array(
-                'city' => $city,
-                'state' => $region,
-                'country' => 'CL',
-                'extension' => array(
-                    array(
-                        'url' => 'apidocs.epivigila.minsal.cl/tipo-direccion',
-//                        todo cambiar a una de las opciones
-                        'valueString' => 'domicilio_particular'
-                    ),
-                    array(
-                        'url' => 'apidocs.epivigila.minsal.cl/via',
-                        'valueString' => $via
-                    ),
-                    array(
-                        'url' => 'apidocs.epivigila.minsal.cl/direccion',
-                        'valueString' => $direccion
-                    ),
-                    array(
-                        'url' => 'apidocs.epivigila.minsal.cl/numero-residencia',
-                        'valueString' => $numero_residencia
-                    ),
-                    array(
-                        'url' => 'apidocs.epivigila.minsal.cl/comuna',
-                        'valueCode' => $comuna_code_deis
-                    ),
-                    array(
-                        'url' => 'apidocs.epivigila.minsal.cl/region',
-                        'valueCode' => $region_id
-                    ))
-            ),
+            'address' => $addressArray,
 
             'contact' => array(array(
                 'coding' => array(
@@ -623,7 +645,7 @@ class TracingController extends Controller
             'managingOrganization' => array(
                 'identifier' => array(array(
                     'system' => 'apidocs.epivigila.minsal.cl/establecimientos-DEIS',
-                    'value' => 101100
+                    'value' => $establecimiento_code_deis
                 )),
                 'name' => 'string'
             )
