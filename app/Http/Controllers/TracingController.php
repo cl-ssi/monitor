@@ -494,13 +494,32 @@ class TracingController extends Controller
      */
     public function getFolioPatientWs(String $type_id, String $id)
     {
-        $client = new \GuzzleHttp\Client();
+        $guzzle = new \GuzzleHttp\Client();
 
         try {
 
-            /** test_parameters: type_id=1, $id=18270432-6 **/
-            $response = $client->request('GET', 'https://9h5v644e76.execute-api.us-east-1.amazonaws.com/dev/Patient/' . $type_id . '/' . $id );
-            dd(json_decode($response->getBody()));
+            $response = $guzzle->post(env('TOKEN_ENDPOINT'), [
+               'form_params' => [
+                   'grant_type' => 'client_credentials',
+                   'client_id' => env('CLIENT_ID'),
+                   'client_secret' => env('CLIENT_SECRET'),
+               ],
+            ]);
+
+            $accessToken = json_decode((string) $response->getBody(), true)['access_token'];
+
+            $client = new \GuzzleHttp\Client(['base_uri' => env('BASE_ENDPOINT')]);
+            $headers = [
+                'Authorization' => 'Bearer ' . $accessToken,
+                'x-api-key' => env('X_API_KEY'),
+            ];
+
+            $response2 = $client->request('GET', 'Patient/' . $type_id . '/' . $id, [
+                'headers' => $headers
+            ]);
+
+            /** test_parameters: type_id=1, $id=17353836-7 **/
+            dd(json_decode((string) $response2->getBody(), true));
 
 //            $response = ['status' => 1, 'msg' => 'OK'];
         } catch (RequestException $e) {
@@ -533,10 +552,15 @@ class TracingController extends Controller
         $via = strtolower($patient->demographic->street_type);
         $direccion = $patient->demographic->address;
         $numero_residencia = $patient->demographic->number;
-        $comuna_code_deis = $patient->demographic->commune->code_deis;
         $region_id = (string)$patient->demographic->region_id;
+        $comuna_code_deis = $patient->demographic->commune->code_deis;
 
-        //todo obtener suspect case por parametro?
+        /** code deis de comunas deben ser de 5 digitos **/
+        if(strlen($comuna_code_deis) == 4){
+            $comuna_code_deis = '0' . $comuna_code_deis;
+        }
+
+        //todo obtener suspect case por parametro?, por ahora se obtiene el ultimo caso
         $suspectCase = SuspectCase::where('patient_id', $patient->id)
             ->orderBy('id', 'desc')
             ->first();
