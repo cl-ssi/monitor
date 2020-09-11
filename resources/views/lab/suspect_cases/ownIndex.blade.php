@@ -48,6 +48,9 @@
     <div class="col-8 col-sm-4 col-md-4 col-lg-2 align-self-end">
         <a type="button" class="btn btn-success mb-3" href="{{ route('lab.suspect_cases.export', 'own') }}">Descargar <i class="far fa-file-excel"></i></a>
     </div>
+    <div class="col-8 col-sm-4 col-md-4 col-lg-2 align-self-end">
+        <a type="button" class="btn btn-success mb-3" href="{{ route('lab.suspect_cases.ownIndexFilter') }}">por Fecha <i class="far fa-file-excel"></i></a>
+    </div>
     <div class="col-12 col-sm-7 col-md-6 col-lg-4 align-self-end">
         @include('lab.suspect_cases.partials.search_id')
     </div>

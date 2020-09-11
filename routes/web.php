@@ -200,6 +200,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
 
 
         Route::get('/ownIndex/{laboratory?}','SuspectCaseController@ownIndex')->name('ownIndex')->middleware('auth','can:SuspectCase: own');
+        Route::get('/ownIndexFilter/{laboratory?}','SuspectCaseReportController@ownIndexFilter')->name('ownIndexFilter')->middleware('auth','can:SuspectCase: own');
         Route::get('/notification','SuspectCaseController@notificationInbox')->name('notificationInbox')->middleware('auth','can:Patient: tracing');
 
         Route::get('/exportSuspectCases/{lab}/{date?}','SuspectCaseController@exportExcel')->name('export')->middleware('auth');

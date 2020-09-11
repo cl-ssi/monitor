@@ -131,7 +131,7 @@ class SuspectCaseController extends Controller
           ->paginate(200);
 
       return view('lab.suspect_cases.ownIndex', compact('suspectCases', 'arrayFilter', 'searchText', 'laboratory', 'suspectCasesTotal'));
-    }
+    }    
 
     /**
      * Muestra exámenes asociados a la comunas del usuario.
