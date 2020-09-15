@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ContactPatient;
 use App\Tracing\Tracing;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -490,36 +491,19 @@ class TracingController extends Controller
 
     /**
      * En desarrollo. Obtiene folio-indice del paciente.
+     * @param String $type_id
+     * @param String $id
+     * @return mixed
      * @throws GuzzleException
      */
     public function getFolioPatientWs(String $type_id, String $id)
     {
-        $guzzle = new \GuzzleHttp\Client();
-
         try {
-
-            $response = $guzzle->post(env('TOKEN_ENDPOINT'), [
-               'form_params' => [
-                   'grant_type' => 'client_credentials',
-                   'client_id' => env('CLIENT_ID'),
-                   'client_secret' => env('CLIENT_SECRET'),
-               ],
-            ]);
-
-            $accessToken = json_decode((string) $response->getBody(), true)['access_token'];
-
-            $client = new \GuzzleHttp\Client(['base_uri' => env('BASE_ENDPOINT')]);
-            $headers = [
-                'Authorization' => 'Bearer ' . $accessToken,
-                'x-api-key' => env('X_API_KEY'),
-            ];
-
-            $response2 = $client->request('GET', 'Patient/' . $type_id . '/' . $id, [
-                'headers' => $headers
-            ]);
-
+            $method = 'GET';
+            $uri = 'Patient/' . $type_id . '/' . $id;
             /** test_parameters: type_id=1, $id=17353836-7 **/
-            dd(json_decode((string) $response2->getBody(), true));
+
+            return $this->requestApiEpivigila($method, $uri);
 
 //            $response = ['status' => 1, 'msg' => 'OK'];
         } catch (RequestException $e) {
@@ -529,13 +513,13 @@ class TracingController extends Controller
             dd($decode);
 //            $response = ['status' => 0, 'msg' => $decode->error];
         }
-
     }
 
     /**
      * En desarrollo. Envía paciente contacto estrecho
+     * @param Patient $patient
      */
-    public function setPatientWs(Patient $patient){
+    public function setContactPatientWs(Patient $patient){
 
         $run = $patient->run . '-' . $patient->dv;
         $family = $patient->fathers_family;
@@ -545,7 +529,6 @@ class TracingController extends Controller
         $home_phone = ($patient->demographic->telephone2) ? (int)$patient->demographic->telephone2 : null;
         $email = ($patient->demographic->email) ? $patient->demographic->email : null;
         $gender = $patient->gender;
-        //todo verificar si city esta estandarizado
         $city = $patient->demographic->city;
         //todo agregar columna de homologacion
         $region = $patient->demographic->region->name;
@@ -555,7 +538,7 @@ class TracingController extends Controller
         $region_id = (string)$patient->demographic->region_id;
         $comuna_code_deis = $patient->demographic->commune->code_deis;
 
-        /** code deis de comunas deben ser de 5 digitos **/
+        /** code deis de comunas deben ser de 5 digitos, se agrega 0 **/
         if(strlen($comuna_code_deis) == 4){
             $comuna_code_deis = '0' . $comuna_code_deis;
         }
@@ -565,8 +548,34 @@ class TracingController extends Controller
             ->orderBy('id', 'desc')
             ->first();
 
+        /** Obtiene codigo deis del establecimiento del suspect case **/
         $establecimiento_code_deis = ($suspectCase->establishment->new_code_deis) ?
             (int)$suspectCase->establishment->new_code_deis : null;
+
+        /** Obtiene paciente indice del contacto **/
+        $indexContactPatient = ContactPatient::select('patient_id')
+            ->where('contact_id', $patient->id)
+            ->where('index', true)->first();
+
+        dump('Paciente indice: ' . $indexContactPatient->patient_id);
+
+        $indexPatient = Patient::select('run', 'dv')->where('id', $indexContactPatient->patient_id)->first();
+
+        dump('Paciente indice: ' . $indexPatient->run . '-' . $indexPatient->dv);
+
+        if ($indexContactPatient != null){
+//            $response= $this->getFolioPatientWs('1', '17353836-7');
+            $response = $this->getFolioPatientWs('1', $indexPatient->run . '-' . $indexPatient->dv);
+
+            if($response['code'] == 1){
+                $folioIndice = (string)$response['data']['identifier'][0]['value'];
+                dump('folio indice: ' . $folioIndice);
+            }
+            else
+                dd($response['mensaje']);
+        }
+        else
+            dd('No existe paciente índice para el contacto');
 
         /** TELECOM ARRAY **/
         $mobile_phone_array = array(
@@ -631,7 +640,7 @@ class TracingController extends Controller
 
         /** JSON **/
 
-        $patient = array(
+        $patientArray = array(
             'resourceType' => 'Patient',
             'identifier' => array(
                 array(
@@ -661,7 +670,7 @@ class TracingController extends Controller
             'contact' => array(array(
                 'coding' => array(
                     'system' => 'apidocs.epivigila.minsal.cl/folio-indice',
-                    'code' => '50669',
+                    'code' => $folioIndice,
                     'display' => 'folio-indice'
                 )
             )),
@@ -676,107 +685,18 @@ class TracingController extends Controller
 
         );
 
-        /** template **/
-//        $patient = array(
-//            'resourceType' => 'Patient',
-//            'identifier' => array(
-//                array(
-//                    'type' => array(
-//                        'coding' => array(
-//                            'system' => 'apidocs.epivigila.minsal.cl/tipo-documento',
-//                            'code' => 1,
-//                            'display' => 'run')
-//                    ),
-//                    'system' => 'www.registrocivil.cl/run',
-//                    'value' => '18314540-1'
-//                )),
-//            'name' => array(
-//                'family' => 'Christiansen',
-//                'given' => array('Rodrigo Iván'),
-//                'extension' => array(
-//                    array(
-//                        'url' => 'www.hl7.org/fhir/extension-humanname-mothers-family.json.html',
-//                        'valueString' => 'Gonzalez'
-//                    ))
-//            ),
-//            'telecom' => array(
-//                array(
-//                    'system' => 'phone',
-//                    'use' => 'mobile',
-//                    'value' => 123456789
-//                ),
-//                array(
-//                    'system' => 'phone',
-//                    'use' => 'home',
-//                    'value' => 584679
-//                ),
-//                array(
-//                    'system' => 'email',
-//                    'value' => 'rodrigo.christiansen@hjnc.cl',
-//                    'use' => 'home'
-//                )),
-//            'gender' => 'male',
-//            'birthDate' => '1992-10-27',
-//            'address' => array(
-//                'city' => 'Arica',
-//                'state' => 'De Arica y Parinacota',
-//                'country' => 'CL',
-//                'extension' => array(
-//                    array(
-//                        'url' => 'apidocs.epivigila.minsal.cl/tipo-direccion',
-//                        'valueString' => 'domicilio_particular'
-//                ),
-//                    array(
-//                        'url' => 'apidocs.epivigila.minsal.cl/via',
-//                        'valueString' => 'calle'
-//                    ),
-//                    array(
-//                        'url' => 'apidocs.epivigila.minsal.cl/direccion',
-//                        'valueString' => 'garona'
-//                    ),
-//                    array(
-//                        'url' => 'apidocs.epivigila.minsal.cl/numero-residencia',
-//                        'valueString' => '598'
-//                    ),
-//                    array(
-//                        'url' => 'apidocs.epivigila.minsal.cl/comuna',
-//                        'valueCode' => '15101'
-//                    ),
-//                    array(
-//                        'url' => 'apidocs.epivigila.minsal.cl/region',
-//                        'valueCode' => '15'
-//                    ))
-//            ),
-//
-//            'contact' => array(array(
-//                'coding' => array(
-//                    'system' => 'apidocs.epivigila.minsal.cl/folio-indice',
-//                    'code' => '50669',
-//                    'display' => 'folio-indice'
-//                )
-//            )),
-//
-//            'managingOrganization' => array(
-//                'identifier' => array(array(
-//                    'system' => 'apidocs.epivigila.minsal.cl/establecimientos-DEIS',
-//                    'value' => 101100
-//                )),
-//                'name' => 'string'
-//            )
-//
-//        );
-
         try {
-            $patientJson = json_encode($patient, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+            $patientJson = json_encode($patientArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
             Storage::disk('public')->put('prueba.json', $patientJson);
-            dd($patientJson);
+            dump($patientJson);
+            $this->requestApiEpivigila('POST', 'Patient', $patientArray);
 
 //            $response = ['status' => 1, 'msg' => 'OK'];
         } catch (RequestException $e) {
             $response = $e->getResponse();
             $responseBodyAsString = $response->getBody()->getContents();
             $decode = json_decode($responseBodyAsString);
-            dd('error: ' + $decode);
+            dd('error: ' . $decode);
 
 //            $response = ['status' => 0, 'msg' => $decode->error];
         }
@@ -1087,6 +1007,60 @@ class TracingController extends Controller
 
 //            $response = ['status' => 0, 'msg' => $decode->error];
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTokenApiEpivigila()
+    {
+        $guzzle = new \GuzzleHttp\Client();
+        $response = $guzzle->post(env('TOKEN_ENDPOINT'), [
+            'form_params' => [
+                'grant_type' => 'client_credentials',
+                'client_id' => env('CLIENT_ID'),
+                'client_secret' => env('CLIENT_SECRET'),
+            ],
+        ]);
+
+        dump(json_decode((string)$response->getBody(), true));
+        return json_decode((string)$response->getBody(), true)['access_token'];
+    }
+
+    /**
+     * @param string $method
+     * @param string $uri
+     * @param string $json
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws GuzzleException
+     */
+    public function requestApiEpivigila(string $method, string $uri, $json = null)
+    {
+
+        try {
+            $accessToken = $this->getTokenApiEpivigila();
+            $client = new \GuzzleHttp\Client(['base_uri' => env('BASE_ENDPOINT')]);
+            $headers = [
+                'Authorization' => 'Bearer ' . $accessToken,
+                'x-api-key' => env('X_API_KEY'),
+            ];
+            $options = [
+                'headers' => $headers,
+            ];
+
+            if ($json != null){
+                $options['json'] = $json;
+            }
+
+            dump($options);
+
+            $response = $client->request($method, $uri, $options);
+            dump(json_decode((string)$response->getBody(), true));
+            return json_decode((string)$response->getBody(), true);
+        } catch (GuzzleException $e) {
+            dd($e->getMessage());
+        }
+
     }
 
 }
