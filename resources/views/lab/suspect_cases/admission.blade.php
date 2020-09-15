@@ -287,6 +287,22 @@ jQuery(document).ready(function($){
         $('#for_run_medic_dv').val($.rut.dv(str));
     });
 
+    function yearold() {
+
+      var birthDate=$("#for_birthday").val();
+      var d = new Date(birthDate);
+      var mdate = birthDate.toString();
+      var yearThen = parseInt(mdate.substring(0,4), 10);
+      var monthThen = parseInt(mdate.substring(5,7), 10);
+      var dayThen = parseInt(mdate.substring(8,10), 10);
+
+      var today = new Date();
+      var birthday = new Date(yearThen, monthThen-1, dayThen);
+      var differenceInMilisecond = today.valueOf() - birthday.valueOf();
+
+      var year_age = Math.floor(differenceInMilisecond / 31536000000);
+      document.getElementById("for_age").value =  year_age;
+    }
 
 
 $('input[name=run]').change(function() {
@@ -297,9 +313,11 @@ $('input[name=run]').change(function() {
             document.getElementById("for_other_identification").value = data.other_identification;
             document.getElementById("for_gender").value = data.gender;
             document.getElementById("for_birthday").value = data.birthday;
+            yearold();
             document.getElementById("for_name").value = data.name;
             document.getElementById("for_fathers_family").value = data.fathers_family;
             document.getElementById("for_mothers_family").value = data.mothers_family;
+
             if(data.gender === 'male'){
                 $('#for_gestation').val('0');
                 $('#for_gestation option:not(:selected)').attr('disabled', 'disabled');
@@ -336,6 +354,7 @@ $('input[name=other_identification]').change(function() {
             document.getElementById("for_name").value = data.name;
             document.getElementById("for_fathers_family").value = data.fathers_family;
             document.getElementById("for_mothers_family").value = data.mothers_family;
+            yearold();
             if(data.gender === 'male'){
                 $('#for_gestation').val('0');
                 $('#for_gestation option:not(:selected)').attr('disabled', 'disabled');
@@ -375,6 +394,7 @@ $('#btn_fonasa').click(function() {
             document.getElementById("for_mothers_family").value = data.mothers_family;
             // document.getElementById("for_gender").value = data.gender;
             document.getElementById("for_birthday").value = data.birthday;
+            yearold();
         } else {
             document.getElementById("for_name").value = "";
             document.getElementById("for_fathers_family").value = "";
@@ -461,8 +481,6 @@ jQuery(document).ready(function () {
 });
 </script>
 
-
-
 <script type="text/javascript">
 $(document).ready(function(){
     $("#for_gender").change(function(){
@@ -494,8 +512,6 @@ $(document).ready(function(){
     })
 
 });
-
-
 
 
 </script>
