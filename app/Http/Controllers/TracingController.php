@@ -492,8 +492,8 @@ class TracingController extends Controller
 
     /**
      * En desarrollo. Obtiene folio-indice del paciente.
-     * @param String $type_id
-     * @param String $id
+     * @param String $type_id Tipo de identificacion. 1-run, 2-pasaporte, 3-comprobante de parto, 4-identificacion local
+     * @param String $id Identificacion
      * @return mixed
      * @throws GuzzleException
      */
@@ -513,6 +513,20 @@ class TracingController extends Controller
             $decode = json_decode($responseBodyAsString);
             dd($decode);
 //            $response = ['status' => 0, 'msg' => $decode->error];
+        }
+    }
+
+    public function getFolioContactPatientWs(String $type_id, String $id, String $folio_indice){
+        try {
+            $method = 'GET';
+            $uri = 'Patient/' . $type_id . '/' . $id . '/' . $folio_indice;
+            return $this->requestApiEpivigila($method, $uri);
+
+        } catch (RequestException $e) {
+            $response = $e->getResponse();
+            $responseBodyAsString = $response->getBody()->getContents();
+            $decode = json_decode($responseBodyAsString);
+            dd($decode);
         }
     }
 
@@ -703,13 +717,46 @@ class TracingController extends Controller
         }
     }
 
-    public function setBundleTracingWs(Event $event){
+    public function setTracingBundleWs(Event $event){
 
         /** Si el caso no se pudo contactar (event_type_id == 6) **/
         if($event->event_type_id == 6)
             $status = 'cancelled';
         else
             $status = 'finished';
+
+        /** Obtencion datos paciente **/
+        $patient_run = $event->tracing->patient->run;
+        $patient_dv = $event->tracing->patient->dv;
+        $patient_rut = $patient_run . '-' . $patient_dv;
+        $response = $this->getFolioPatientWs('1', $patient_rut);
+
+        if($response['code'] == 1)
+            $folio = (string)$response['data']['identifier'][0]['value'];
+        else
+            dd($response['mensaje']);
+
+        /** Obtencion datos de usuario **/
+        $user_rut = auth()->user()->run . '-' . auth()->user()->dv;
+        $user_name = auth()->user()->name;
+
+        /** Obtiene inicio y fin de tracing **/
+        $quarantine_start = $event->tracing->quarantine_start_at;
+        $quarantine_end = $event->tracing->quarantine_end_at;
+
+        /** Obtiene fecha inicio y fin del event_tracing**/
+        $tracing_event_at = $event->event_at;
+
+        /** Obtiene dia de seguimiento **/
+        $tracing_day = $tracing_event_at->diffInDays($quarantine_start);
+
+        /** Obtener tipo de contacto **/
+        //todo definir cuales son tipo llamada y tipo visita. Que pasa con el caso no se pudo contactar, es llamada o visita.
+        if ($event->event_type_id == 1) {
+            $tipo_contactabilidad = 'llamada';
+        }
+        else
+            $tipo_contactabilidad = 'visita';
 
 
 
@@ -738,17 +785,17 @@ class TracingController extends Controller
                         'display' => 'Seguimiento con paciente en domicilio particular'
                     ),
                     'subject' => array(
-                        'reference' => 'Patient/50669'
+                        'reference' => 'Patient/' . $folio
                     ),
                     'participant' => array(array(
                         'individual' => array(
-                            'reference' => 'Practitioner/15000018-1',
-                            'display' => 'Alfredo Figueroa Seguel'
+                            'reference' => 'Practitioner/'. $user_rut,
+                            'display' => $user_name
                         )
                     )),
                     'period' => array(
-                        'start' => '2020-09-04',
-                        'end' => '2020-09-17'
+                        'start' => $quarantine_start->format('Y-m-d'),
+                        'end' => $quarantine_end->format('Y-m-d')
                     ),
                     'location' => array(array(
                         'location' => array(
@@ -757,17 +804,17 @@ class TracingController extends Controller
                         ),
                         'status' => 'completed',
                         'period' => array(
-                            'start' => '2020-09-04',
-                            'end' => '2020-09-04'
+                            'start' => $tracing_event_at->format('Y-m-d'),
+                            'end' => $tracing_event_at->format('Y-m-d')
                         ),
                         'extension' => array(
                             array(
                                 'url' => 'apidocs.epivigila.minsal.cl/dia-seguimiento-covid',
-                                'valueInteger' => 1
+                                'valueInteger' => $tracing_day
                             ),
                             array(
                                 'url' => 'apidocs.epivigila.minsal.cl/tipo-contactabilidad',
-                                'valueString' => 'llamada'
+                                'valueString' => $tipo_contactabilidad
                             )
                         )
                     ))
@@ -793,7 +840,7 @@ class TracingController extends Controller
                                     'relationship' => array(array(
                                         'coding' => array(
                                             'system' => 'apidocs.epivigila.minsal.cl/folio-indice',
-                                            'code' => '50669',
+                                            'code' => $folio,
                                             'display' => 'folio-indice'
                                         )
                                     ))
