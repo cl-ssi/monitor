@@ -491,9 +491,9 @@ class TracingController extends Controller
     }
 
     /**
-     * En desarrollo. Obtiene folio-indice del paciente.
+     * En desarrollo. Obtiene folio-indice de paciente indice.
      * @param String $type_id Tipo de identificacion. 1-run, 2-pasaporte, 3-comprobante de parto, 4-identificacion local
-     * @param String $id Identificacion
+     * @param String $id Identificacion de paciente
      * @return mixed
      * @throws GuzzleException
      */
@@ -516,6 +516,13 @@ class TracingController extends Controller
         }
     }
 
+    /**
+     * Obtiene folio-contacto de paciente contacto estrecho
+     * @param String $type_id Tipo de identificacion. 1-run, 2-pasaporte, 3-comprobante de parto, 4-identificacion local
+     * @param String $id Identificacion de paciente contacto estrecho
+     * @param String $folio_indice folio del paciente indice del contacto estrecho
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     public function getFolioContactPatientWs(String $type_id, String $id, String $folio_indice){
         try {
             $method = 'GET';
@@ -734,7 +741,7 @@ class TracingController extends Controller
         if($response['code'] == 1)
             $folio = (string)$response['data']['identifier'][0]['value'];
         else
-            dd($response['mensaje']);
+            dump($response['mensaje']);
 
         /** Obtencion datos de usuario **/
         $user_rut = auth()->user()->run . '-' . auth()->user()->dv;
@@ -758,6 +765,35 @@ class TracingController extends Controller
         else
             $tipo_contactabilidad = 'visita';
 
+        /** Obtener si es caso indice o no **/
+        $index = $event->tracing->index;
+
+        if($index == false){
+
+            /** Obtiene paciente indice del contacto **/
+            $indexPatient = ContactPatient::where('contact_id', $event->tracing->patient_id)
+                ->where('index', true)->first();
+
+            $indexPatientRut = $indexPatient->self_patient->run . '-' . $indexPatient->self_patient->dv;
+            dump('Paciente indice: ' . $indexPatient->patient_id, 'Rut paciente indice: ' . $indexPatientRut);
+
+            /** Obtiene el folio del paciente indice del contacto estrecho **/
+            $response = $this->getFolioPatientWs('1', $indexPatientRut);
+            if($response['code'] == 1)
+                $folio = (string)$response['data']['identifier'][0]['value'];
+            else
+                dump( 'respuesta getfoliompatientws: ' . $response['mensaje']);
+
+            /** Folio del contacto estrecho **/
+            $response = $this->getFolioContactPatientWs('1', $patient_rut, $folio);
+            if($response['code'] == 1)
+                $folioContact = (string)$response['data']['identifier'][0]['value'];
+            else
+                dump( 'respuesta getfoliocontactpatientws: ' . $response['mensaje']);
+
+            dump('foliocontacto: ' . $folioContact);
+
+        }
 
 
         $bundle = array(
@@ -785,7 +821,7 @@ class TracingController extends Controller
                         'display' => 'Seguimiento con paciente en domicilio particular'
                     ),
                     'subject' => array(
-                        'reference' => 'Patient/' . $folio
+                        'reference' => 'Patient/' . '56663' // todo agregar $folio
                     ),
                     'participant' => array(array(
                         'individual' => array(
@@ -833,14 +869,14 @@ class TracingController extends Controller
                                 'id' => 'seguimiento-covid',
                                 'identifier' => array(array(
                                     'system' => 'apidocs.epivigila.minsal.cl/folio-contacto',
-                                    'code' => 'SC50669-1085',
+                                    'code' => $folioContact, //'SC50669-1085',
                                     'display' => 'folio-contacto'
                                 )),
                                 'contact' => array(
                                     'relationship' => array(array(
                                         'coding' => array(
                                             'system' => 'apidocs.epivigila.minsal.cl/folio-indice',
-                                            'code' => $folio,
+                                            'code' => '20663', // todo agregar $folio,
                                             'display' => 'folio-indice'
                                         )
                                     ))
