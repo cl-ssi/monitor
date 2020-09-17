@@ -795,6 +795,33 @@ class TracingController extends Controller
 
         }
 
+        /** Obtiene Establecimiento que realiza el seguimiento  **/
+        $establishmentName = $event->tracing->establishment->name;
+        $establishmentCode = $event->tracing->establishment->new_code_deis;
+
+        /** Obtener sintomas del evento **/
+        $symptoms = $event->symptoms;
+        $symptoms = explode(',', $symptoms);
+
+        dump('sintomas: ' . $symptoms);
+
+        $fiebre = in_array('Fiebre', $symptoms) ? true : false;
+        $tos = in_array('Tos', $symptoms) ? true : false;
+        $mialgia = in_array('Mialgias', $symptoms) ? true : false;
+        $odinofagia = in_array('Odinofagia', $symptoms) ? true : false;
+        $anosmia = in_array('Anosmia', $symptoms) ? true : false;
+        $ageusia = in_array('Ageusia', $symptoms) ? true : false;
+        $dolor_toracico = in_array('Dolor toráxico', $symptoms) ? true : false;
+        $diarrea = in_array('Diarrea', $symptoms) ? true : false;
+        $cefalea = in_array('Cefalea', $symptoms) ? true : false;
+
+        /** Estos sintomas no se encuentran en bd **/
+        $cianosis = in_array('cianosis', $symptoms) ? true : false;
+        $dolor_abdominal = in_array('dolor_abdominal', $symptoms) ? true : false;
+        $postracion = in_array('postracion', $symptoms) ? true : false;
+        $taquipnea = in_array('taquipnea', $symptoms) ? true : false;
+
+
 
         $bundle = array(
             'resourceType' => "Bundle",
@@ -887,9 +914,9 @@ class TracingController extends Controller
                                 'id' => 'responsable-encuesta-seguimiento',
                                 'identifier' => array(
                                     array(
-                                        'type' => array('text' => 'Rodrigo Baeza Galaz'),
+                                        'type' => array('text' => $user_name),
                                         'system' => 'www.registrocivil.cl/run',
-                                        'value' => '15840868-6'
+                                        'value' => $user_rut
                                     )),
                             ),
                             array(
@@ -898,9 +925,9 @@ class TracingController extends Controller
                                 'identifier' => array(
                                     array(
                                         'system' => 'apidocs.epivigila.minsal.cl/establecimientos-DEIS',
-                                        'value' => 101100
+                                        'value' => $establishmentCode
                                 )),
-                                'name' => 'Hospital Dr. Juan Noé Crevani'
+                                'name' => $establishmentName
                             )
                         ),
                         'status' => 'completed',
@@ -920,91 +947,91 @@ class TracingController extends Controller
                                         'linkId' => '1.1',
                                         'text' => 'cefalea',
                                         'answer' => array(
-                                            array('valueBoolean' => false)
+                                            array('valueBoolean' => $cefalea)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.2',
                                         'text' => 'cianosis',
                                         'answer' => array(
-                                            array('valueBoolean' => false)
+                                            array('valueBoolean' => $cianosis)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.3',
                                         'text' => 'diarrea',
                                         'answer' => array(
-                                            array('valueBoolean' => false)
+                                            array('valueBoolean' => $diarrea)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.4',
                                         'text' => 'dolor_abdominal',
                                         'answer' => array(
-                                            array('valueBoolean' => true)
+                                            array('valueBoolean' => $dolor_abdominal)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.5',
                                         'text' => 'dolor_toracico',
                                         'answer' => array(
-                                            array('valueBoolean' => false)
+                                            array('valueBoolean' => $dolor_toracico)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.6',
                                         'text' => 'fiebre',
                                         'answer' => array(
-                                            array('valueBoolean' => false)
+                                            array('valueBoolean' => $fiebre)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.7',
                                         'text' => 'mialgia',
                                         'answer' => array(
-                                            array('valueBoolean' => false)
+                                            array('valueBoolean' => $mialgia)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.8',
                                         'text' => 'odinofagia',
                                         'answer' => array(
-                                            array('valueBoolean' => true)
+                                            array('valueBoolean' => $odinofagia)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.9',
                                         'text' => 'anosmia',
                                         'answer' => array(
-                                            array('valueBoolean' => true)
+                                            array('valueBoolean' => $anosmia)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.10',
                                         'text' => 'ageusia',
                                         'answer' => array(
-                                            array('valueBoolean' => false)
+                                            array('valueBoolean' => $ageusia)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.11',
                                         'text' => 'postracion',
                                         'answer' => array(
-                                            array('valueBoolean' => false)
+                                            array('valueBoolean' => $postracion)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.12',
                                         'text' => 'taquipnea',
                                         'answer' => array(
-                                            array('valueBoolean' => false)
+                                            array('valueBoolean' => $taquipnea)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.13',
                                         'text' => 'tos',
                                         'answer' => array(
-                                            array('valueBoolean' => false)
+                                            array('valueBoolean' => $tos)
                                         )
                                     )
                                 )
