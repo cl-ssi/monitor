@@ -554,7 +554,7 @@ class TracingController extends Controller
         $gender = $patient->gender;
         $city = $patient->demographic->city;
         //todo agregar columna de homologacion
-        $region = $patient->demographic->region->name;
+        $region = $patient->demographic->region->name_epivigila;
         $via = strtolower($patient->demographic->street_type);
         $direccion = $patient->demographic->address;
         $numero_residencia = $patient->demographic->number;
@@ -803,7 +803,8 @@ class TracingController extends Controller
         $symptoms = $event->symptoms;
         $symptoms = explode(',', $symptoms);
 
-        dump('sintomas: ' . $symptoms);
+//        dump('sintomas: ' . $symptoms);
+        dump($event);
 
         $fiebre = in_array('Fiebre', $symptoms) ? true : false;
         $tos = in_array('Tos', $symptoms) ? true : false;
