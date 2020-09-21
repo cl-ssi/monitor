@@ -553,7 +553,6 @@ class TracingController extends Controller
         $email = ($patient->demographic->email) ? $patient->demographic->email : null;
         $gender = $patient->gender;
         $city = $patient->demographic->city;
-        //todo agregar columna de homologacion
         $region = $patient->demographic->region->name_epivigila;
         $via = strtolower($patient->demographic->street_type);
         $direccion = $patient->demographic->address;
@@ -588,7 +587,17 @@ class TracingController extends Controller
 
         if ($indexContactPatient != null){
 //            $response= $this->getFolioPatientWs('1', '17353836-7');
-            $response = $this->getFolioPatientWs('1', $indexPatient->run . '-' . $indexPatient->dv);
+
+            if($indexPatient->run){
+                $idType = '1';
+                $idPatient = $indexPatient->run. '-' . $indexPatient->dv;
+            }
+            else{
+                $idType = '5';
+                $idPatient = $indexPatient->other_identification;
+            }
+
+            $response = $this->getFolioPatientWs($idType, $idPatient);
 
             if($response['code'] == 1){
                 $folioIndice = (string)$response['data']['identifier'][0]['value'];
@@ -670,6 +679,7 @@ class TracingController extends Controller
                         'coding' => array(
                             'system' => 'apidocs.epivigila.minsal.cl/tipo-documento',
                             'code' => 1,
+                            //todo campo display debe ser dinamico?
                             'display' => 'run')
                     ),
                     'system' => 'www.registrocivil.cl/run',
