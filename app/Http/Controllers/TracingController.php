@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ContactPatient;
+use App\Tracing\Event;
 use App\Tracing\Tracing;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -490,9 +491,9 @@ class TracingController extends Controller
     }
 
     /**
-     * En desarrollo. Obtiene folio-indice del paciente.
-     * @param String $type_id
-     * @param String $id
+     * En desarrollo. Obtiene folio-indice de paciente indice.
+     * @param String $type_id Tipo de identificacion. 1-run, 2-pasaporte, 3-comprobante de parto, 4-identificacion local
+     * @param String $id Identificacion de paciente
      * @return mixed
      * @throws GuzzleException
      */
@@ -516,8 +517,30 @@ class TracingController extends Controller
     }
 
     /**
-     * En desarrollo. Envía paciente contacto estrecho
+     * Obtiene folio-contacto de paciente contacto estrecho
+     * @param String $type_id Tipo de identificacion. 1-run, 2-pasaporte, 3-comprobante de parto, 4-identificacion local
+     * @param String $id Identificacion de paciente contacto estrecho
+     * @param String $folio_indice folio del paciente indice del contacto estrecho
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getFolioContactPatientWs(String $type_id, String $id, String $folio_indice){
+        try {
+            $method = 'GET';
+            $uri = 'Patient/' . $type_id . '/' . $id . '/' . $folio_indice;
+            return $this->requestApiEpivigila($method, $uri);
+
+        } catch (RequestException $e) {
+            $response = $e->getResponse();
+            $responseBodyAsString = $response->getBody()->getContents();
+            $decode = json_decode($responseBodyAsString);
+            dd($decode);
+        }
+    }
+
+    /**
+     * En desarrollo. Envía contacto estrecho
      * @param Patient $patient
+     * @throws GuzzleException
      */
     public function setContactPatientWs(Patient $patient){
 
@@ -530,8 +553,7 @@ class TracingController extends Controller
         $email = ($patient->demographic->email) ? $patient->demographic->email : null;
         $gender = $patient->gender;
         $city = $patient->demographic->city;
-        //todo agregar columna de homologacion
-        $region = $patient->demographic->region->name;
+        $region = $patient->demographic->region->name_epivigila;
         $via = strtolower($patient->demographic->street_type);
         $direccion = $patient->demographic->address;
         $numero_residencia = $patient->demographic->number;
@@ -565,7 +587,17 @@ class TracingController extends Controller
 
         if ($indexContactPatient != null){
 //            $response= $this->getFolioPatientWs('1', '17353836-7');
-            $response = $this->getFolioPatientWs('1', $indexPatient->run . '-' . $indexPatient->dv);
+
+            if($indexPatient->run){
+                $idType = '1';
+                $idPatient = $indexPatient->run. '-' . $indexPatient->dv;
+            }
+            else{
+                $idType = '5';
+                $idPatient = $indexPatient->other_identification;
+            }
+
+            $response = $this->getFolioPatientWs($idType, $idPatient);
 
             if($response['code'] == 1){
                 $folioIndice = (string)$response['data']['identifier'][0]['value'];
@@ -639,7 +671,6 @@ class TracingController extends Controller
         }
 
         /** JSON **/
-
         $patientArray = array(
             'resourceType' => 'Patient',
             'identifier' => array(
@@ -648,6 +679,7 @@ class TracingController extends Controller
                         'coding' => array(
                             'system' => 'apidocs.epivigila.minsal.cl/tipo-documento',
                             'code' => 1,
+                            //todo campo display debe ser dinamico?
                             'display' => 'run')
                     ),
                     'system' => 'www.registrocivil.cl/run',
@@ -702,7 +734,105 @@ class TracingController extends Controller
         }
     }
 
-    public function setBundleContactWs(){
+    public function setTracingBundleWs(Event $event){
+
+        /** Si el caso no se pudo contactar (event_type_id == 6) **/
+        if($event->event_type_id == 6)
+            $status = 'cancelled';
+        else
+            $status = 'finished';
+
+        /** Obtencion datos paciente **/
+        $patient_run = $event->tracing->patient->run;
+        $patient_dv = $event->tracing->patient->dv;
+        $patient_rut = $patient_run . '-' . $patient_dv;
+        $response = $this->getFolioPatientWs('1', $patient_rut);
+
+        if($response['code'] == 1)
+            $folio = (string)$response['data']['identifier'][0]['value'];
+        else
+            dump($response['mensaje']);
+
+        /** Obtencion datos de usuario **/
+        $user_rut = auth()->user()->run . '-' . auth()->user()->dv;
+        $user_name = auth()->user()->name;
+
+        /** Obtiene inicio y fin de tracing **/
+        $quarantine_start = $event->tracing->quarantine_start_at;
+        $quarantine_end = $event->tracing->quarantine_end_at;
+
+        /** Obtiene fecha inicio y fin del event_tracing**/
+        $tracing_event_at = $event->event_at;
+
+        /** Obtiene dia de seguimiento **/
+        $tracing_day = $tracing_event_at->diffInDays($quarantine_start);
+
+        /** Obtener tipo de contacto **/
+        //todo definir cuales son tipo llamada y tipo visita. Que pasa con el caso no se pudo contactar, es llamada o visita.
+        if ($event->event_type_id == 1) {
+            $tipo_contactabilidad = 'llamada';
+        }
+        else
+            $tipo_contactabilidad = 'visita';
+
+        /** Obtener si es caso indice o no **/
+        $index = $event->tracing->index;
+
+        if($index == false){
+
+            /** Obtiene paciente indice del contacto **/
+            $indexPatient = ContactPatient::where('contact_id', $event->tracing->patient_id)
+                ->where('index', true)->first();
+
+            $indexPatientRut = $indexPatient->self_patient->run . '-' . $indexPatient->self_patient->dv;
+            dump('Paciente indice: ' . $indexPatient->patient_id, 'Rut paciente indice: ' . $indexPatientRut);
+
+            /** Obtiene el folio del paciente indice del contacto estrecho **/
+            $response = $this->getFolioPatientWs('1', $indexPatientRut);
+            if($response['code'] == 1)
+                $folio = (string)$response['data']['identifier'][0]['value'];
+            else
+                dump( 'respuesta getfoliompatientws: ' . $response['mensaje']);
+
+            /** Folio del contacto estrecho **/
+            $response = $this->getFolioContactPatientWs('1', $patient_rut, $folio);
+            if($response['code'] == 1)
+                $folioContact = (string)$response['data']['identifier'][0]['value'];
+            else
+                dump( 'respuesta getfoliocontactpatientws: ' . $response['mensaje']);
+
+            dump('foliocontacto: ' . $folioContact);
+
+        }
+
+        /** Obtiene Establecimiento que realiza el seguimiento  **/
+        $establishmentName = $event->tracing->establishment->name;
+        $establishmentCode = $event->tracing->establishment->new_code_deis;
+
+        /** Obtener sintomas del evento **/
+        $symptoms = $event->symptoms;
+        $symptoms = explode(',', $symptoms);
+
+//        dump('sintomas: ' . $symptoms);
+        dump($event);
+
+        $fiebre = in_array('Fiebre', $symptoms) ? true : false;
+        $tos = in_array('Tos', $symptoms) ? true : false;
+        $mialgia = in_array('Mialgias', $symptoms) ? true : false;
+        $odinofagia = in_array('Odinofagia', $symptoms) ? true : false;
+        $anosmia = in_array('Anosmia', $symptoms) ? true : false;
+        $ageusia = in_array('Ageusia', $symptoms) ? true : false;
+        $dolor_toracico = in_array('Dolor toráxico', $symptoms) ? true : false;
+        $diarrea = in_array('Diarrea', $symptoms) ? true : false;
+        $cefalea = in_array('Cefalea', $symptoms) ? true : false;
+
+        /** Estos sintomas no se encuentran en bd **/
+        $cianosis = in_array('cianosis', $symptoms) ? true : false;
+        $dolor_abdominal = in_array('dolor_abdominal', $symptoms) ? true : false;
+        $postracion = in_array('postracion', $symptoms) ? true : false;
+        $taquipnea = in_array('taquipnea', $symptoms) ? true : false;
+
+
 
         $bundle = array(
             'resourceType' => "Bundle",
@@ -722,24 +852,24 @@ class TracingController extends Controller
                         'description' => 'Casa',
                         'mode' => 'kind'
                     )),
-                    'status' => 'finished',
+                    'status' => $status,
                     'class' => array(
                         'system' => 'apidocs.epivigila.minsal.cl/tipo-domicilio',
                         'code' => 'domicilio_particular',
                         'display' => 'Seguimiento con paciente en domicilio particular'
                     ),
                     'subject' => array(
-                        'reference' => 'Patient/50669'
+                        'reference' => 'Patient/' . '56663' // todo agregar $folio
                     ),
                     'participant' => array(array(
                         'individual' => array(
-                            'reference' => 'Practitioner/15000018-1',
-                            'display' => 'Alfredo Figueroa Seguel'
+                            'reference' => 'Practitioner/'. $user_rut,
+                            'display' => $user_name
                         )
                     )),
                     'period' => array(
-                        'start' => '2020-09-04',
-                        'end' => '2020-09-17'
+                        'start' => $quarantine_start->format('Y-m-d'),
+                        'end' => $quarantine_end->format('Y-m-d')
                     ),
                     'location' => array(array(
                         'location' => array(
@@ -748,17 +878,17 @@ class TracingController extends Controller
                         ),
                         'status' => 'completed',
                         'period' => array(
-                            'start' => '2020-09-04',
-                            'end' => '2020-09-04'
+                            'start' => $tracing_event_at->format('Y-m-d'),
+                            'end' => $tracing_event_at->format('Y-m-d')
                         ),
                         'extension' => array(
                             array(
                                 'url' => 'apidocs.epivigila.minsal.cl/dia-seguimiento-covid',
-                                'valueInteger' => 1
+                                'valueInteger' => $tracing_day
                             ),
                             array(
                                 'url' => 'apidocs.epivigila.minsal.cl/tipo-contactabilidad',
-                                'valueString' => 'llamada'
+                                'valueString' => $tipo_contactabilidad
                             )
                         )
                     ))
@@ -777,14 +907,14 @@ class TracingController extends Controller
                                 'id' => 'seguimiento-covid',
                                 'identifier' => array(array(
                                     'system' => 'apidocs.epivigila.minsal.cl/folio-contacto',
-                                    'code' => 'SC50669-1085',
+                                    'code' => $folioContact, //'SC50669-1085',
                                     'display' => 'folio-contacto'
                                 )),
                                 'contact' => array(
                                     'relationship' => array(array(
                                         'coding' => array(
                                             'system' => 'apidocs.epivigila.minsal.cl/folio-indice',
-                                            'code' => '50669',
+                                            'code' => '20663', // todo agregar $folio,
                                             'display' => 'folio-indice'
                                         )
                                     ))
@@ -795,9 +925,9 @@ class TracingController extends Controller
                                 'id' => 'responsable-encuesta-seguimiento',
                                 'identifier' => array(
                                     array(
-                                        'type' => array('text' => 'Rodrigo Baeza Galaz'),
+                                        'type' => array('text' => $user_name),
                                         'system' => 'www.registrocivil.cl/run',
-                                        'value' => '15840868-6'
+                                        'value' => $user_rut
                                     )),
                             ),
                             array(
@@ -806,9 +936,9 @@ class TracingController extends Controller
                                 'identifier' => array(
                                     array(
                                         'system' => 'apidocs.epivigila.minsal.cl/establecimientos-DEIS',
-                                        'value' => 101100
+                                        'value' => $establishmentCode
                                 )),
-                                'name' => 'Hospital Dr. Juan Noé Crevani'
+                                'name' => $establishmentName
                             )
                         ),
                         'status' => 'completed',
@@ -828,91 +958,91 @@ class TracingController extends Controller
                                         'linkId' => '1.1',
                                         'text' => 'cefalea',
                                         'answer' => array(
-                                            array('valueBoolean' => false)
+                                            array('valueBoolean' => $cefalea)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.2',
                                         'text' => 'cianosis',
                                         'answer' => array(
-                                            array('valueBoolean' => false)
+                                            array('valueBoolean' => $cianosis)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.3',
                                         'text' => 'diarrea',
                                         'answer' => array(
-                                            array('valueBoolean' => false)
+                                            array('valueBoolean' => $diarrea)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.4',
                                         'text' => 'dolor_abdominal',
                                         'answer' => array(
-                                            array('valueBoolean' => true)
+                                            array('valueBoolean' => $dolor_abdominal)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.5',
                                         'text' => 'dolor_toracico',
                                         'answer' => array(
-                                            array('valueBoolean' => false)
+                                            array('valueBoolean' => $dolor_toracico)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.6',
                                         'text' => 'fiebre',
                                         'answer' => array(
-                                            array('valueBoolean' => false)
+                                            array('valueBoolean' => $fiebre)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.7',
                                         'text' => 'mialgia',
                                         'answer' => array(
-                                            array('valueBoolean' => false)
+                                            array('valueBoolean' => $mialgia)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.8',
                                         'text' => 'odinofagia',
                                         'answer' => array(
-                                            array('valueBoolean' => true)
+                                            array('valueBoolean' => $odinofagia)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.9',
                                         'text' => 'anosmia',
                                         'answer' => array(
-                                            array('valueBoolean' => true)
+                                            array('valueBoolean' => $anosmia)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.10',
                                         'text' => 'ageusia',
                                         'answer' => array(
-                                            array('valueBoolean' => false)
+                                            array('valueBoolean' => $ageusia)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.11',
                                         'text' => 'postracion',
                                         'answer' => array(
-                                            array('valueBoolean' => false)
+                                            array('valueBoolean' => $postracion)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.12',
                                         'text' => 'taquipnea',
                                         'answer' => array(
-                                            array('valueBoolean' => false)
+                                            array('valueBoolean' => $taquipnea)
                                         )
                                     ),
                                     array(
                                         'linkId' => '1.13',
                                         'text' => 'tos',
                                         'answer' => array(
-                                            array('valueBoolean' => false)
+                                            array('valueBoolean' => $tos)
                                         )
                                     )
                                 )
@@ -992,6 +1122,294 @@ class TracingController extends Controller
             )
         );
 
+//        $bundle = array(
+//            'resourceType' => "Bundle",
+//            'id' => 'bundle-seguimiento',
+//            'type' => 'collection',
+//            'entry' => array(array(
+//                'resource' => array(
+//                    'resourceType' => 'Encounter',
+//                    'id' => 'seguimiento-c19',
+//                    'text' => array(
+//                        'status' => 'generated',
+//                        'div' => '<div>Seguimiento Contacto</div>'
+//                    ),
+//                    'contained' => array(array(
+//                        'resourceType' => 'Location',
+//                        'id' => 'seguimiento',
+//                        'description' => 'Casa',
+//                        'mode' => 'kind'
+//                    )),
+//                    'status' => 'finished',
+//                    'class' => array(
+//                        'system' => 'apidocs.epivigila.minsal.cl/tipo-domicilio',
+//                        'code' => 'domicilio_particular',
+//                        'display' => 'Seguimiento con paciente en domicilio particular'
+//                    ),
+//                    'subject' => array(
+//                        'reference' => 'Patient/50669'
+//                    ),
+//                    'participant' => array(array(
+//                        'individual' => array(
+//                            'reference' => 'Practitioner/15000018-1',
+//                            'display' => 'Alfredo Figueroa Seguel'
+//                        )
+//                    )),
+//                    'period' => array(
+//                        'start' => '2020-09-04',
+//                        'end' => '2020-09-17'
+//                    ),
+//                    'location' => array(array(
+//                        'location' => array(
+//                            'reference' => 'seguimiento-c19',
+//                            'display' => 'Lugar de seguimiento'
+//                        ),
+//                        'status' => 'completed',
+//                        'period' => array(
+//                            'start' => '2020-09-04',
+//                            'end' => '2020-09-04'
+//                        ),
+//                        'extension' => array(
+//                            array(
+//                                'url' => 'apidocs.epivigila.minsal.cl/dia-seguimiento-covid',
+//                                'valueInteger' => 1
+//                            ),
+//                            array(
+//                                'url' => 'apidocs.epivigila.minsal.cl/tipo-contactabilidad',
+//                                'valueString' => 'llamada'
+//                            )
+//                        )
+//                    ))
+//                ),
+//                'request' => array(
+//                    'method' => 'POST',
+//                    'url' => 'Encounter'
+//                )
+//            ),
+//                array(
+//                    'resource' => array(
+//                        'resourceType' => 'QuestionnaireResponse',
+//                        'contained' => array(
+//                            array(
+//                                'resourceType' => 'Patient',
+//                                'id' => 'seguimiento-covid',
+//                                'identifier' => array(array(
+//                                    'system' => 'apidocs.epivigila.minsal.cl/folio-contacto',
+//                                    'code' => 'SC50669-1085',
+//                                    'display' => 'folio-contacto'
+//                                )),
+//                                'contact' => array(
+//                                    'relationship' => array(array(
+//                                        'coding' => array(
+//                                            'system' => 'apidocs.epivigila.minsal.cl/folio-indice',
+//                                            'code' => '50669',
+//                                            'display' => 'folio-indice'
+//                                        )
+//                                    ))
+//                                ),
+//                            ),
+//                            array(
+//                                'resourceType' => 'Practitioner',
+//                                'id' => 'responsable-encuesta-seguimiento',
+//                                'identifier' => array(
+//                                    array(
+//                                        'type' => array('text' => 'Rodrigo Baeza Galaz'),
+//                                        'system' => 'www.registrocivil.cl/run',
+//                                        'value' => '15840868-6'
+//                                    )),
+//                            ),
+//                            array(
+//                                'resourceType' => 'Organization',
+//                                'id' => 'institucion-seguimiento',
+//                                'identifier' => array(
+//                                    array(
+//                                        'system' => 'apidocs.epivigila.minsal.cl/establecimientos-DEIS',
+//                                        'value' => 101100
+//                                    )),
+//                                'name' => 'Hospital Dr. Juan Noé Crevani'
+//                            )
+//                        ),
+//                        'status' => 'completed',
+//                        'subject' => array(
+//                            'reference' => 'seguimiento-c19'
+//                        ),
+//                        'encounter' => array(
+//                            'reference' => 'Encounter/seguimiento-c19'
+//                        ),
+//                        'item' => array(
+//                            array(
+//                                'linkId' => '1',
+//                                'text' => '¿Ha presentado alguno de los siguientes síntomas?',
+//                                'item' => array(
+//
+//                                    array(
+//                                        'linkId' => '1.1',
+//                                        'text' => 'cefalea',
+//                                        'answer' => array(
+//                                            array('valueBoolean' => false)
+//                                        )
+//                                    ),
+//                                    array(
+//                                        'linkId' => '1.2',
+//                                        'text' => 'cianosis',
+//                                        'answer' => array(
+//                                            array('valueBoolean' => false)
+//                                        )
+//                                    ),
+//                                    array(
+//                                        'linkId' => '1.3',
+//                                        'text' => 'diarrea',
+//                                        'answer' => array(
+//                                            array('valueBoolean' => false)
+//                                        )
+//                                    ),
+//                                    array(
+//                                        'linkId' => '1.4',
+//                                        'text' => 'dolor_abdominal',
+//                                        'answer' => array(
+//                                            array('valueBoolean' => true)
+//                                        )
+//                                    ),
+//                                    array(
+//                                        'linkId' => '1.5',
+//                                        'text' => 'dolor_toracico',
+//                                        'answer' => array(
+//                                            array('valueBoolean' => false)
+//                                        )
+//                                    ),
+//                                    array(
+//                                        'linkId' => '1.6',
+//                                        'text' => 'fiebre',
+//                                        'answer' => array(
+//                                            array('valueBoolean' => false)
+//                                        )
+//                                    ),
+//                                    array(
+//                                        'linkId' => '1.7',
+//                                        'text' => 'mialgia',
+//                                        'answer' => array(
+//                                            array('valueBoolean' => false)
+//                                        )
+//                                    ),
+//                                    array(
+//                                        'linkId' => '1.8',
+//                                        'text' => 'odinofagia',
+//                                        'answer' => array(
+//                                            array('valueBoolean' => true)
+//                                        )
+//                                    ),
+//                                    array(
+//                                        'linkId' => '1.9',
+//                                        'text' => 'anosmia',
+//                                        'answer' => array(
+//                                            array('valueBoolean' => true)
+//                                        )
+//                                    ),
+//                                    array(
+//                                        'linkId' => '1.10',
+//                                        'text' => 'ageusia',
+//                                        'answer' => array(
+//                                            array('valueBoolean' => false)
+//                                        )
+//                                    ),
+//                                    array(
+//                                        'linkId' => '1.11',
+//                                        'text' => 'postracion',
+//                                        'answer' => array(
+//                                            array('valueBoolean' => false)
+//                                        )
+//                                    ),
+//                                    array(
+//                                        'linkId' => '1.12',
+//                                        'text' => 'taquipnea',
+//                                        'answer' => array(
+//                                            array('valueBoolean' => false)
+//                                        )
+//                                    ),
+//                                    array(
+//                                        'linkId' => '1.13',
+//                                        'text' => 'tos',
+//                                        'answer' => array(
+//                                            array('valueBoolean' => false)
+//                                        )
+//                                    )
+//                                )
+//                            ),
+//                            array(
+//                                'linkId' => '2',
+//                                'text' => 'respecto a examen covid-19',
+//                                'item' => array(
+//                                    array(
+//                                        'linkId' => '2.1',
+//                                        'text' => 'fue derivado para realizarse el examen?',
+//                                        'answer' => array(
+//                                            array(
+//                                                'valueBoolean' => false,
+//                                                'item' => array(
+//                                                    array(
+//                                                        'linkId' => '2.1.1',
+//                                                        'text' => 'fecha derivacion toma de muestras',
+//                                                        'answer' => array(
+//                                                            array(
+//                                                                'valueDate' => '2020-09-04'
+//                                                            )
+//                                                        )
+//                                                    ),
+//                                                    array(
+//                                                        'linkId' => '2.1.2',
+//                                                        'text' => 'derivacion a SU',
+//                                                        'answer' => array(
+//                                                            array(
+//                                                                'valueBoolean' => false
+//                                                            )
+//                                                        )
+//                                                    ),
+//                                                    array(
+//                                                        'linkId' => '2.1.3',
+//                                                        'text' => '¿cumple cuarentena y aislamiento?',
+//                                                        'answer' => array(
+//                                                            array(
+//                                                                'valueBoolean' => false
+//                                                            )
+//                                                        )
+//                                                    ),
+//                                                    array(
+//                                                        'linkId' => '2.1.4',
+//                                                        'text' => '¿tiene resultado covid?',
+//                                                        'answer' => array(
+//                                                            array(
+//                                                                'valueString' => 'negativo'
+//                                                            )
+//                                                        )
+//                                                    )
+//                                                )
+//                                            )
+//                                        )
+//                                    ),
+//                                    array(
+//                                        'linkId' => '2.2',
+//                                        'text' => 'Observacion de Seguimiento',
+//                                        'answer' => array(
+//                                            array(
+//                                                'valueString' => 'Sin observaciones'
+//                                            )
+//                                        )
+//                                    )
+//                                )
+//                            )
+//
+//                        )
+//
+//                    ),
+//                    'request' => array(
+//                        'method' => 'POST',
+//                        'url' => 'QuestionnaireResponse'
+//                    )
+//                )
+//
+//            )
+//        );
+
 
         try {
             $bundleJson = json_encode($bundle, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
@@ -1010,6 +1428,7 @@ class TracingController extends Controller
     }
 
     /**
+     * Obtiene token de acceso a API epivigila
      * @return mixed
      */
     public function getTokenApiEpivigila()
@@ -1028,15 +1447,14 @@ class TracingController extends Controller
     }
 
     /**
-     * @param string $method
-     * @param string $uri
-     * @param string $json
+     * Genera request a API epivigila
+     * @param string $method Tipo request (POST, GET)
+     * @param string $uri uri que viene despues de BASE_ENDPOINT
+     * @param array|null $json array de datos a enviar
      * @return \Psr\Http\Message\ResponseInterface
-     * @throws GuzzleException
      */
-    public function requestApiEpivigila(string $method, string $uri, $json = null)
+    public function requestApiEpivigila(string $method, string $uri, array $json = null)
     {
-
         try {
             $accessToken = $this->getTokenApiEpivigila();
             $client = new \GuzzleHttp\Client(['base_uri' => env('BASE_ENDPOINT')]);
