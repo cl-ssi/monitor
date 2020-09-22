@@ -579,6 +579,8 @@ class TracingController extends Controller
             ->where('contact_id', $patient->id)
             ->where('index', true)->first();
 
+        //todo verificar si no tiene paciente indice
+
         dump('Paciente indice: ' . $indexContactPatient->patient_id);
 
         $indexPatient = Patient::select('run', 'dv')->where('id', $indexContactPatient->patient_id)->first();
@@ -734,6 +736,188 @@ class TracingController extends Controller
         }
     }
 
+
+    public function setQuestionnairePatientWs(ContactPatient $contactPatient){
+
+        //Obtencion folio del indice
+        $response =  $this->getFolioPatientWs('1', $contactPatient->self_patient->run . '-' . $contactPatient->self_patient->dv);
+        if($response['code'] == 1){
+            $folioIndice = (string)$response['data']['identifier'][0]['value'];
+            dump('folio indice: ' . $folioIndice);
+        }
+        else
+            dd($response['mensaje']);
+
+        //Obtiene folio del contacto
+        $response = $this->getFolioContactPatientWs('1', $contactPatient->patient->run . '-' . $contactPatient->patient->dv, $folioIndice);
+        if($response['code'] == 1)
+            $folioContact = (string)$response['data']['identifier'][0]['value'];
+        else
+            dump( 'respuesta getfoliocontactpatientws: ' . $response['mensaje']);
+
+        //Obtencion de usuario
+        $userRut = auth()->user()->run . '-' . auth()->user()->dv;
+        $userName = auth()->user()->name;
+
+        //Obtencion de establecimiento
+//        $establishmentCode = auth()->user()->establishment->new_code_deis;
+//        $establishmentName = auth()->user()->establishment->name;
+
+        $questionnaireArray = array('resourceType' => 'QuestionnaireResponse',
+            'contained' => array(
+                array(
+                    'resourceType' => 'Patient',
+                    'id' => 'contacto',
+                    'identifier' => array(
+                        array('system' => 'apidocs.epivigila.minsal.cl/folio-contacto',
+                            'value' => $folioContact) //todo agregar folio contacto
+                    )),
+                array(
+                    'resourceType' => 'Practitioner',
+                    'id' => 'responsable-encuesta',
+                    'identifier' => array(
+                        array('system' => 'www.registrocivil.cl/run',
+                            'value' => $userRut) //todo agregar rut del personal
+                    ),
+                    'name' => $userName //todo
+                ),
+//                array(
+//                    'resourceType' => 'Organization',
+//                    'id' => 'institucion-seguimiento',
+//                    'identifier' => array(
+//                        array('system' => 'apidocs.epivigila.minsal.cl/establecimientos-DEIS',
+//                            'value' => $establishmentCode) //todo
+//                    ),
+//                    'name' => $establishmentName //todo
+//                )
+            ),
+            'status' => 'completed', //todo
+            'subject' => array(
+                'reference' => '#encuesta-c19'
+            ),
+            'item' => array(
+                array(
+                    'linkId' => '1',
+                    'text' => 'Relación con el caso',
+                    'answer' => array(
+                        array(
+                            'valueCoding' => 'familiar' //todo
+                        )
+                    ),
+                    'item' => array(
+                        array(
+                            'linkId' => '1.1',
+                            'text' => 'Parentesco',
+                            'answer' => array(
+                                array(
+                                    'valueCoding' => 'madre_padre' //todo
+                                )
+                            )
+                        )
+                    )
+                ),
+                array(
+                    'linkId' => '2',
+                    'text' => 'Fecha de inicio de cuarentena',
+                    'answer' => array(
+                        array(
+                            'valueDate' => '2020-08-30' //todo
+                        )
+                    )
+                )
+            ),
+            'request' => array(
+                'method' => 'POST',
+                'url' => 'QuestionnaireResponse'
+            )
+        );
+
+//        $questionnaireArray = array('resourceType' => 'QuestionnaireResponse',
+//            'contained' => array(
+//                array(
+//                    'resourceType' => 'Patient',
+//                    'id' => 'contacto',
+//                    'identifier' => array(
+//                        array('system' => 'apidocs.epivigila.minsal.cl/folio-contacto',
+//                            'value' => '') //todo agregar folio contacto
+//                    )),
+//                array(
+//                    'resourceType' => 'Practitioner',
+//                    'id' => 'responsable-encuesta',
+//                    'identifier' => array(
+//                        array('system' => 'www.registrocivil.cl/run',
+//                            'value' => '') //todo agregar rut del personal
+//                    ),
+//                    'name' => 'Nombre del encargado de seguimiento' //todo
+//                ),
+//                array(
+//                    'resourceType' => 'Organization',
+//                    'id' => 'institucion-seguimiento',
+//                    'identifier' => array(
+//                        array('system' => 'apidocs.epivigila.minsal.cl/establecimientos-DEIS',
+//                            'value' => 112315) //todo
+//                    ),
+//                    'name' => 'Nombre de la institución que realiza el seguimiento' //todo
+//                )
+//            ),
+//            'status' => 'completed', //todo
+//            'subject' => array(
+//                'reference' => '#encuesta-c19'
+//            ),
+//            'item' => array(
+//                array(
+//                    'linkId' => '1',
+//                    'text' => 'Relación con el caso',
+//                    'answer' => array(
+//                        array(
+//                            'valueCoding' => 'familiar' //todo
+//                        )
+//                    ),
+//                    'item' => array(
+//                        array(
+//                            'linkId' => '1.1',
+//                            'text' => 'Parentesco',
+//                            'answer' => array(
+//                                array(
+//                                    'valueCoding' => 'madre_padre' //todo
+//                                )
+//                            )
+//                        )
+//                    )
+//                ),
+//                array(
+//                    'linkId' => '2',
+//                    'text' => 'Fecha de inicio de cuarentena',
+//                    'answer' => array(
+//                        array(
+//                            'valueDate' => '2020-08-30' //todo
+//                        )
+//                    )
+//                )
+//            ),
+//            'request' => array(
+//                'method' => 'POST',
+//                'url' => 'QuestionnaireResponse'
+//            )
+//        );
+
+        try {
+            $bundleJson = json_encode($questionnaireArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+            Storage::disk('public')->put('prueba.json', $bundleJson);
+            dd($bundleJson);
+
+//            $response = ['status' => 1, 'msg' => 'OK'];
+        } catch (RequestException $e) {
+            $response = $e->getResponse();
+            $responseBodyAsString = $response->getBody()->getContents();
+            $decode = json_decode($responseBodyAsString);
+            dd('error: ' + $decode);
+
+//            $response = ['status' => 0, 'msg' => $decode->error];
+        }
+
+    }
+
     public function setTracingBundleWs(Event $event){
 
         /** Si el caso no se pudo contactar (event_type_id == 6) **/
@@ -826,7 +1010,7 @@ class TracingController extends Controller
         $diarrea = in_array('Diarrea', $symptoms) ? true : false;
         $cefalea = in_array('Cefalea', $symptoms) ? true : false;
 
-        /** Estos sintomas no se encuentran en bd **/
+        /** Estos sintomas no estan en bd **/ //todo que pasa con campos q no estan en bd
         $cianosis = in_array('cianosis', $symptoms) ? true : false;
         $dolor_abdominal = in_array('dolor_abdominal', $symptoms) ? true : false;
         $postracion = in_array('postracion', $symptoms) ? true : false;
@@ -1053,7 +1237,7 @@ class TracingController extends Controller
                                 'item' => array(
                                     array(
                                         'linkId' => '2.1',
-                                        'text' => 'fue derivado para realizarse el examen?',
+                                        'text' => 'fue derivado para realizarse el examen?', //todo preguntar por este parametro
                                         'answer' => array(
                                             array(
                                                 'valueBoolean' => false,
