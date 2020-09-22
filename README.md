@@ -68,4 +68,5 @@
 - $ composer dump-autoload
 
 ## Contribución
-- :smiley: El sistema está abierto a quien quiera colaborar. :smiley:
+- El sistema está abierto a quien quiera colaborar. :)
+
