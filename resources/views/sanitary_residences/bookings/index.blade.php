@@ -8,7 +8,7 @@
 
 <h3 class="mb-3">Listado de Bookings</h3>
 
-<a class="btn btn-primary mb-3" href="{{ route('sanitary_residences.bookings.create') }}">Crear un Booking</a>
+<!-- <a class="btn btn-primary mb-3" href="{{ route('sanitary_residences.bookings.create') }}">Crear un Booking</a> -->
 
 
 <h3>{{ $residence->name }}</h3>

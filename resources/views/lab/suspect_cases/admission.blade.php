@@ -131,8 +131,8 @@
             <label for="for_establishment_id">Establecimiento *</label>
             <select name="establishment_id" id="for_establishment_id" class="form-control" required>
                 <option value="">Seleccionar Establecimiento</option>
-                @foreach($establishments as $establishment)
-                    <option value="{{ $establishment->id }}" {{(old('establishment_id') == $establishment->id) ? 'selected' : '' }} >{{ $establishment->alias }}</option>
+                @foreach($establishmentsusers as $establishmentsusers)
+                    <option value="{{ $establishmentsusers->establishment->id }}" {{(old('establishment_id') == $establishmentsusers->establishment->id) ? 'selected' : '' }} >{{ $establishmentsusers->establishment->alias }}</option>
                 @endforeach
             </select>
         </fieldset>
@@ -375,6 +375,22 @@ $('#btn_fonasa').click(function() {
             document.getElementById("for_mothers_family").value = data.mothers_family;
             // document.getElementById("for_gender").value = data.gender;
             document.getElementById("for_birthday").value = data.birthday;
+
+            //CALCULO DE FECHA EN CACHO QUE EXISTA EL DATO DE FECHA DE NACIMIENTO
+            var birthDate =data.birthday;
+            var d = new Date(birthDate);
+            var mdate = birthDate.toString();
+            var yearThen = parseInt(mdate.substring(0,4), 10);
+            var monthThen = parseInt(mdate.substring(5,7), 10);
+            var dayThen = parseInt(mdate.substring(8,10), 10);
+            var today = new Date();
+            var birthday = new Date(yearThen, monthThen-1, dayThen);
+            var differenceInMilisecond = today.valueOf() - birthday.valueOf();
+            var year_age = Math.floor(differenceInMilisecond / 31536000000);
+            $("#for_age").val(year_age);
+            //FIN DE CALCULO DE EDAD
+
+
         } else {
             document.getElementById("for_name").value = "";
             document.getElementById("for_fathers_family").value = "";
@@ -491,6 +507,25 @@ $(document).ready(function(){
         $("#for_other_identification").val("");
         $("#for_other_identification").attr('readonly', 'readonly');
         $("#for_run").removeAttr('readonly', 'readonly');
+    })
+
+    $("#for_birthday").change(function () {        
+        var birthDate =document.getElementById('for_birthday').value;
+        var d = new Date(birthDate);
+
+        var mdate = birthDate.toString();
+        var yearThen = parseInt(mdate.substring(0,4), 10);
+        var monthThen = parseInt(mdate.substring(5,7), 10);
+        var dayThen = parseInt(mdate.substring(8,10), 10);
+        
+        var today = new Date();
+        var birthday = new Date(yearThen, monthThen-1, dayThen);
+     
+        var differenceInMilisecond = today.valueOf() - birthday.valueOf();      
+        
+        var year_age = Math.floor(differenceInMilisecond / 31536000000);
+        $("#for_age").val(year_age);
+        
     })
 
 });

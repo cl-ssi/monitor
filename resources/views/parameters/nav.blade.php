@@ -34,7 +34,12 @@
     <li class="nav-item">
         <a class="nav-link" href="{{ route('parameters.request_type') }}">
             <i class="fas fa-clipboard-list"></i> Tipos de solicitudes</a>
-    </li>    
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('parameters.establishment') }}">
+            <i class="fas fa-store"></i> Establecimientos</a>            
+    </li>
     
 </ul>
 @endcan

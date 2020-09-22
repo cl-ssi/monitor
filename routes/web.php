@@ -121,6 +121,13 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
             Route::get('/{tracing_request}/request_complete', 'TracingRequestController@request_complete')->name('request_complete');
             Route::put('/{tracing_request}', 'TracingRequestController@request_complete_update')->name('request_complete_update');
         });
+
+        Route::prefix('ws')->name('ws.')->group(function (){
+            Route::get('/get_folio_patient/{type_id}/{id}', 'TracingController@getFolioPatientWs')->name('get_folio_patient');
+            Route::get('/set_contact_patient/{patient}', 'TracingController@setContactPatientWs')->name('set_contact_patient');
+            Route::get('/set_tracing_bundle/{event}', 'TracingController@setTracingBundleWs')->name('set_tracing_bundle');
+        });
+
     });
 });
 
@@ -189,10 +196,11 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/dialysis/covid/{establishment?}','DialysisPatientController@covid')->name('dialysis.covid');
         Route::get('/dialysis/{establishment?}','DialysisPatientController@index')->name('dialysis.index');
         Route::post('/dialysis','DialysisPatientController@store')->name('dialysis.store');
-        
-        
+
+
 
         Route::get('/ownIndex/{laboratory?}','SuspectCaseController@ownIndex')->name('ownIndex')->middleware('auth','can:SuspectCase: own');
+        Route::get('/ownIndexFilter/{laboratory?}','SuspectCaseReportController@ownIndexFilter')->name('ownIndexFilter')->middleware('auth','can:SuspectCase: own');
         Route::get('/notification','SuspectCaseController@notificationInbox')->name('notificationInbox')->middleware('auth','can:Patient: tracing');
 
         Route::get('/exportSuspectCases/{lab}/{date?}','SuspectCaseController@exportExcel')->name('export')->middleware('auth');
@@ -305,6 +313,13 @@ Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(functi
     Route::get('/request_type/{request_type}/edit', 'RequestTypeController@edit')->name('request_type.edit');
     Route::put('/request_type/update/{request_type}', 'RequestTypeController@update')->name('request_type.update');
 
+
+    Route::get('/establishment', 'EstablishmentController@index')->name('establishment');
+    Route::get('/establishment/create', 'EstablishmentController@create')->name('establishment.create');
+    Route::post('/establishment/store', 'EstablishmentController@store')->name('establishment.store');
+    Route::get('/establishment/{establishment}/edit', 'EstablishmentController@edit')->name('establishment.edit');
+    Route::put('/establishment/update/{establishment}', 'EstablishmentController@update')->name('establishment.update');
+
 });
 
 Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('auth')->group(function () {
@@ -363,6 +378,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
         Route::get('/excel/{booking}','BookingController@excel')->name('excel');
         Route::delete('/{booking}', 'BookingController@destroy')->name('destroy');
         Route::get('/residence/{residence}', 'BookingController@index')->name('index');
+        Route::get('/createfrompatient/{patient}', 'BookingController@createfrompatient')->name('createfrompatient');
         Route::get('/create', 'BookingController@create')->name('create');
         Route::get('/{booking}', 'BookingController@show')->name('show');
         Route::post('/', 'BookingController@store')->name('store');

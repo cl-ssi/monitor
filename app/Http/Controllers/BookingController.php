@@ -41,9 +41,43 @@ class BookingController extends Controller
     public function create(request $request)
     {
         //
-        $patients = Patient::whereNotIn('status', ['Alta', 'Fallecido', 'Hospitalizado UCI (Ventilador)'])->orWhereNull('status')->orderBy('name')->get();
+        //$patients = Patient::whereNotIn('status', ['Alta', 'Fallecido', 'Hospitalizado UCI (Ventilador)'])->orWhereNull('status')->orderBy('name')->get();
+        //$patients = Patient::All()->orderBy('name')->get();
+        //$patients = Patient::orderBy('name')->get();
+        //$patients = Patient::whereNotIn('status', ['Alta', 'Fallecido', 'Hospitalizado UCI (Ventilador)'])->orWhereNull('status')->orderBy('name')->get();
+        //$patients = Patient::whereIn('status', ['Ambulatorio','Otra Institución','null',])->orderBy('name')->get();
+        //$patients = Patient::whereIn('status', ['Ambulatorio','Otra Institución','null'])->orderBy('name')->get();
+        //$patients = Patient::WhereNull('status')->orWhereIn('status', ['Ambulatorio','Otra Institución','Hospitalizado Básico'])->orderBy('name')->get();
+        //$patients = Patient::WhereNull('status')->orWhereIn('status', ['Ambulatorio','Otra Institución'])->orderBy('name')->get();
+        $patients = Patient::WhereNull('status')->orderBy('name')->get();
         return view('sanitary_residences.bookings.create', compact('patients','request'));
     }
+
+
+
+    public function createfrompatient(Patient $patient, request $request)
+    {
+        //
+        //$patients = Patient::whereNotIn('status', ['Alta', 'Fallecido', 'Hospitalizado UCI (Ventilador)'])->orWhereNull('status')->orderBy('name')->get();
+        //$patients = Patient::All()->orderBy('name')->get();
+        //$patients = Patient::orderBy('name')->get();
+        //$patients = Patient::whereNotIn('status', ['Alta', 'Fallecido', 'Hospitalizado UCI (Ventilador)'])->orWhereNull('status')->orderBy('name')->get();
+        //$patients = Patient::whereIn('status', ['Ambulatorio','Otra Institución','null',])->orderBy('name')->get();
+        //$patients = Patient::whereIn('status', ['Ambulatorio','Otra Institución','null'])->orderBy('name')->get();
+        //$patients = Patient::WhereNull('status')->orWhereIn('status', ['Ambulatorio','Otra Institución','Hospitalizado Básico'])->orderBy('name')->get();
+        //$patients = Patient::WhereNull('status')->orWhereIn('status', ['Ambulatorio','Otra Institución'])->orderBy('name')->get();
+        //$patients = Patient::WhereNull('status')->orderBy('name')->get();
+        return view('sanitary_residences.bookings.create', compact('patient','request'));
+    }
+
+
+
+
+
+
+
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -83,7 +117,8 @@ class BookingController extends Controller
      */
     public function show(Booking $booking)
     {
-        $patients = Patient::orderBy('name')->get();
+        //$patients = Patient::orderBy('name')->get();
+        $patients = Patient::where('status', 'Residencia Sanitaria')->orderBy('name')->get();
         $rooms = Room::All();
         return view('sanitary_residences.bookings.show', compact('booking', 'patients', 'rooms'));
     }

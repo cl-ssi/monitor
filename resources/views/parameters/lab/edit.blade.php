@@ -87,7 +87,7 @@
     </div>
 
 
-    <button type="submit" class="btn btn-primary">Guardar</button>
+    <button type="submit" class="btn btn-primary">Actualizar</button>
 
     <a class="btn btn-outline-secondary" href="{{ route('parameters.lab') }}">Cancelar</a>
 

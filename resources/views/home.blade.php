@@ -12,14 +12,29 @@
                 <div class="card-body text-center" style="background-color: #F0F0F0;">
 
                     @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
+                    <div class="alert alert-success" role="alert">
+                        {{ session('status') }}
+                    </div>
                     @endif
                     <img src="{{ asset('images/esmeralda.png') }}" width="300" alt="Foto de la esmeralda">
+                    <br>
+                    Usted tiene acceso a los siguientes establecimientos:                    
+                    @foreach($establishmentsusers as $establishmentsusers)
+                        <br>{{ $establishmentsusers->establishment->alias }}
+                    @endforeach
+                    
+                    
+
+
+
+
+
+
 
                 </div>
+
                 <div class="card-footer text-muted text-center">
+
                     {{ env('INFO_HOME','Configurar variable INFO_HOME en .env') }}
                     <hr>
                     Sistema desarrollado por el Área de Informática del

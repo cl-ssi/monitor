@@ -71,6 +71,12 @@ class PermissionSeeder extends Seeder
             'description' => 'Permite al usuario registrar en R.S.'
         ]);
 
+        
+        $permission = Permission::create([
+            'name' => 'SanitaryResidence: view',
+            'description' => 'Permite al usuario ver (no registrar) en R.S.'
+        ]);
+
         $permission = Permission::create([
             'name' => 'SuspectCase: admission',
             'description' => 'Permite crear muestra (tomadores de muestra)'

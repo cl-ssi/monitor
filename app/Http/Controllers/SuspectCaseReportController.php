@@ -31,7 +31,8 @@ use App\User;
 
 class SuspectCaseReportController extends Controller
 {
-    public function positives() {
+    public function positives()
+    {
         // set_time_limit(3600);
 
         /* Obtiene comunas .env */
@@ -46,7 +47,7 @@ class SuspectCaseReportController extends Controller
         });
 
         /* Valida que existan casos positivos */
-        if ($patients->count() == 0){
+        if ($patients->count() == 0) {
             session()->flash('info', 'No existen casos positivos o no hay casos con dirección.');
             return redirect()->route('home');
         }
@@ -59,11 +60,11 @@ class SuspectCaseReportController extends Controller
 
         /* Exámenes */
         $exams['total'] = SuspectCase::count();
-        $exams['positives'] = SuspectCase::where('pcr_sars_cov_2','positive')->count();
-        $exams['negatives'] = SuspectCase::where('pcr_sars_cov_2','negative')->count();
-        $exams['pending'] = SuspectCase::where('pcr_sars_cov_2','pending')->count();
-        $exams['undetermined'] = SuspectCase::where('pcr_sars_cov_2','undetermined')->count();
-        $exams['rejected'] = SuspectCase::where('pcr_sars_cov_2','rejected')->count();
+        $exams['positives'] = SuspectCase::where('pcr_sars_cov_2', 'positive')->count();
+        $exams['negatives'] = SuspectCase::where('pcr_sars_cov_2', 'negative')->count();
+        $exams['pending'] = SuspectCase::where('pcr_sars_cov_2', 'pending')->count();
+        $exams['undetermined'] = SuspectCase::where('pcr_sars_cov_2', 'undetermined')->count();
+        $exams['rejected'] = SuspectCase::where('pcr_sars_cov_2', 'rejected')->count();
 
         /* Ventiladores */
         list($ventilator, $UciPatients) = $this->getVentilatorStats($patients);
@@ -77,14 +78,15 @@ class SuspectCaseReportController extends Controller
         /* Casos por comuna */
         $casesByCommuneArray = $this->getCasesByCommune($communes);
 
-        return view('lab.suspect_cases.reports.positives', compact('evolucion','ventilator','exams','communes', 'ageRangeArray', 'casosTotalesArray', 'totalDeceasedArray', 'casesByCommuneArray', 'UciPatients'));
+        return view('lab.suspect_cases.reports.positives', compact('evolucion', 'ventilator', 'exams', 'communes', 'ageRangeArray', 'casosTotalesArray', 'totalDeceasedArray', 'casesByCommuneArray', 'UciPatients'));
     }
 
     /**
      * Obtiene positivos y acumulados por día.
      * @return Application|Factory|View
      */
-    public function positivesOwn() {
+    public function positivesOwn()
+    {
         $communes_ids = Auth::user()->communes();
         $communes = Commune::find(Auth::user()->communes());
 
@@ -105,10 +107,10 @@ class SuspectCaseReportController extends Controller
         $to = Carbon::now();
 
         $suspectcases = SuspectCase::select('pcr_sars_cov_2_at')
-                                ->where('pcr_sars_cov_2','positive')
-                                ->whereBetween('pcr_sars_cov_2_at', [$from, $to])
-                                ->orderByDesc('sample_at')
-                                ->get();
+            ->where('pcr_sars_cov_2', 'positive')
+            ->whereBetween('pcr_sars_cov_2_at', [$from, $to])
+            ->orderByDesc('sample_at')
+            ->get();
 
         foreach ($suspectcases as $key => $suspectcase) {
             $positives[$suspectcase->pcr_sars_cov_2_at->format('d-m-Y')] = 0;
@@ -128,7 +130,6 @@ class SuspectCaseReportController extends Controller
         $casesByCommuneArray = $this->getCasesByCommuneByGender($communes);
 
         return view('lab.suspect_cases.reports.positives_own', compact('evolucion', 'communes', 'positives', 'ageRangeArray', 'totalPatients', 'totalDeceasedArray', 'casesByCommuneArray'));
-
     }
 
     /**
@@ -167,16 +168,22 @@ class SuspectCaseReportController extends Controller
             $cantMale = $malePatients->whereBetween('birthday', [$begin, $end])->count();
             $cantFemale = $femalePatients->whereBetween('birthday', [$begin, $end])->count();
 
-            array_push($ageRangeArray,
-                array('male' => $cantMale,
-                    'female' => $cantFemale));
+            array_push(
+                $ageRangeArray,
+                array(
+                    'male' => $cantMale,
+                    'female' => $cantFemale
+                )
+            );
         }
 
         $patients3 = clone $patients;
         $birthdayNullPatients = $patients3->whereNull('birthday')->count();
 
-        array_push($ageRangeArray,
-            array('null' => $birthdayNullPatients));
+        array_push(
+            $ageRangeArray,
+            array('null' => $birthdayNullPatients)
+        );
 
         return $ageRangeArray;
     }
@@ -354,7 +361,6 @@ class SuspectCaseReportController extends Controller
 
             $casesByCommuneArray[$commune->id]['male'] = $cantMale;
             $casesByCommuneArray[$commune->id]['female'] = $cantFemale;
-
         }
 
         return $casesByCommuneArray;
@@ -383,27 +389,27 @@ class SuspectCaseReportController extends Controller
         $env_communes = array_map('trim', explode(",", env('COMUNAS')));
 
         $patients = Patient::whereHas('suspectCases', function ($q) {
-                $q->where('pcr_sars_cov_2', 'positive');
-            })->whereHas('demographic', function ($q) use ($env_communes) {
-                $q->whereIn('commune_id', $env_communes);
-            })
+            $q->where('pcr_sars_cov_2', 'positive');
+        })->whereHas('demographic', function ($q) use ($env_communes) {
+            $q->whereIn('commune_id', $env_communes);
+        })
             ->with('inmunoTests')
             ->latest()
             ->paginate(500);
 
         $patientsNoDemographic = Patient::whereHas('suspectCases', function ($q) {
-                $q->where('pcr_sars_cov_2', 'positive');
-            })->doesntHave('demographic')
+            $q->where('pcr_sars_cov_2', 'positive');
+        })->doesntHave('demographic')
             ->with('inmunoTests')
             ->get();
 
         $max_cases = 0;
         $max_cases_inmuno = 0;
         foreach ($patients as $patient) {
-            if($max_cases < $patient->suspectCases->count()){
+            if ($max_cases < $patient->suspectCases->count()) {
                 $max_cases = $patient->suspectCases->count();
             }
-            if($max_cases_inmuno < $patient->inmunoTests->count()){
+            if ($max_cases_inmuno < $patient->inmunoTests->count()) {
                 $max_cases_inmuno = $patient->inmunoTests->count();
             }
         }
@@ -411,10 +417,10 @@ class SuspectCaseReportController extends Controller
         $max_cases_no_demographic = 0;
         $max_cases_inmuno_no_demographic = 0;
         foreach ($patientsNoDemographic as $patient) {
-            if($max_cases_no_demographic < $patient->suspectCases->count()){
+            if ($max_cases_no_demographic < $patient->suspectCases->count()) {
                 $max_cases_no_demographic = $patient->suspectCases->count();
             }
-            if($max_cases_inmuno_no_demographic < $patient->inmunoTests->count()){
+            if ($max_cases_inmuno_no_demographic < $patient->inmunoTests->count()) {
                 $max_cases_inmuno_no_demographic = $patient->inmunoTests->count();
             }
         }
@@ -422,49 +428,81 @@ class SuspectCaseReportController extends Controller
         return view('lab.suspect_cases.reports.case_tracing', compact('patients', 'max_cases', 'max_cases_inmuno', 'patientsNoDemographic', 'max_cases_no_demographic', 'max_cases_inmuno_no_demographic'));
     }
 
+
+    public function ownIndexFilter(request $request, Laboratory $laboratory)
+    {
+
+        $laboratories = Laboratory::All();
+        //$laboratory = Laboratory::All();
+        if ($from = $request->has('from')) {
+            $from = $request->get('from');
+            $to = $request->get('to');
+        } else {
+            $from = date("Y-m-d 21:00", time() - 60 * 60 * 24);
+            $to = date("Y-m-d 20:59");
+        }
+
+        if($request->get('laboratory_id')==0)
+        {
+            $cases = SuspectCase::whereBetween('sample_at', [$from, $to])->where(function ($q) {
+            $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
+                ->orWhere('user_id', Auth::user()->id);
+        })->orderBy('suspect_cases.id', 'desc')->get();
+        }
+        else
+        {
+            $cases = SuspectCase::where('laboratory_id', $request->get('laboratory_id'))->whereBetween('sample_at', [$from, $to])->where(function ($q) {
+                $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
+                    ->orWhere('user_id', Auth::user()->id);
+            })->orderBy('suspect_cases.id', 'desc')->get();
+        }
+
+        return view('lab.suspect_cases.reports.ownindexfilter', compact('request', 'cases', 'from', 'to','laboratories'));
+    }
+
+
+
+
     public function tracing_minsal(Request $request)
     {
 
-        if($request->has('date_from') && $request->has('date_to')){
+        if ($request->has('date_from') && $request->has('date_to')) {
             $date_from = $request->get('date_from');
             $date_to = $request->get('date_to');
-        }
-        else{
+        } else {
             $date_from = Carbon::now();
             $date_to = Carbon::now();
         }
 
-        $patients = Patient::
-            whereHas('tracing', function ($q) use($date_to, $date_from) {
-              $q->where('index', '1')
-              ->whereIn('establishment_id', auth()->user()->establishments->pluck('id'))
-              ->whereBetween('notification_at', [new Carbon($date_from), new Carbon($date_to)]);
+        $patients = Patient::whereHas('tracing', function ($q) use ($date_to, $date_from) {
+                $q->where('index', '1')
+                    ->whereIn('establishment_id', auth()->user()->establishments->pluck('id'))
+                    ->whereBetween('notification_at', [new Carbon($date_from), new Carbon($date_to)]);
             })
             ->with('contactPatient')
             ->with('tracing')
             ->with('suspectCases')
             ->get();
 
-//        dd($patients);
+        //        dd($patients);
 
         return view('lab.suspect_cases.reports.tracing_minsal', compact('patients', 'request'));
     }
 
     public function tracing_minsal_by_patient(Request $request)
     {
-        if($request->has('run')){
+        if ($request->has('run')) {
             $patients = Patient::whereHas('tracing', function ($q) {
-                  $q->where('index', '1')
-                  ->whereIn('establishment_id', auth()->user()->establishments->pluck('id'));
-                })
+                $q->where('index', '1')
+                    ->whereIn('establishment_id', auth()->user()->establishments->pluck('id'));
+            })
                 ->where('run', $request->get('run'))
                 ->orWhere('other_identification', $request->get('run'))
                 ->with('contactPatient')
                 ->with('tracing')
                 ->with('suspectCases')
                 ->get();
-        }
-        else{
+        } else {
             $patients = collect(new Patient);
         }
 
@@ -475,10 +513,9 @@ class SuspectCaseReportController extends Controller
     {
 
 
-        if($request->has('date')){
+        if ($request->has('date')) {
             $date = $request->get('date');
-        }
-        else{
+        } else {
             $date = Carbon::now();
         }
 
@@ -492,41 +529,36 @@ class SuspectCaseReportController extends Controller
             $report[$commune->id]['terminado'] = 0;
         }
 
-        $from = $request->get('date'). ' 00:00:00';
-        $to = $request->get('date'). ' 23:59:59';
+        $from = $request->get('date') . ' 00:00:00';
+        $to = $request->get('date') . ' 23:59:59';
 
-        $patients = Patient::whereHas('suspectCases', function ($q) use($date) {
-                                $q->where('pcr_sars_cov_2', 'positive')
-                                ->whereDate('pcr_sars_cov_2_at', $date);
-                              })
-                              ->whereHas('demographic', function ($q) {
-                                $q->where('region_id', env('REGION'));
-                              })
-                              ->get();
+        $patients = Patient::whereHas('suspectCases', function ($q) use ($date) {
+            $q->where('pcr_sars_cov_2', 'positive')
+                ->whereDate('pcr_sars_cov_2_at', $date);
+        })
+            ->whereHas('demographic', function ($q) {
+                $q->where('region_id', env('REGION'));
+            })
+            ->get();
 
-        foreach($patients as $patient){
+        foreach ($patients as $patient) {
 
             $report[$patient->demographic->commune_id]['positives'] += 1;
 
             foreach ($patient->contactPatient as $contact) {
-                if($contact->patient_id == $patient->id){
+                if ($contact->patient_id == $patient->id) {
                     // dd($contact);
                     $report[$patient->demographic->commune_id]['car'] += 1;
                 }
-
-
             }
 
-            if($patient->tracing){
-                if($patient->tracing->status == 1){
-                $report[$patient->demographic->commune_id]['curso'] += 1;
+            if ($patient->tracing) {
+                if ($patient->tracing->status == 1) {
+                    $report[$patient->demographic->commune_id]['curso'] += 1;
                 }
-                if($patient->tracing->status == null or $patient->tracing->status == 0){
+                if ($patient->tracing->status == null or $patient->tracing->status == 0) {
                     $report[$patient->demographic->commune_id]['terminado'] += 1;
                 }
-
-
-
             }
         }
 
@@ -541,12 +573,12 @@ class SuspectCaseReportController extends Controller
 
 
 
-        $communes_ids = array_map('trim',explode(",",env('COMUNAS')));
+        $communes_ids = array_map('trim', explode(",", env('COMUNAS')));
         $communes = Commune::whereIn('id', $communes_ids)->get();
 
 
 
-        return view('lab.suspect_cases.reports.tracingbycommune',compact('request','report','communes','patients'));
+        return view('lab.suspect_cases.reports.tracingbycommune', compact('request', 'report', 'communes', 'patients'));
     }
 
     public function case_tracing_export()
@@ -564,10 +596,10 @@ class SuspectCaseReportController extends Controller
         $max_cases = 0;
         $max_cases_inmuno = 0;
         foreach ($patients as $patient) {
-            if($max_cases < $patient->suspectCases->count()){
+            if ($max_cases < $patient->suspectCases->count()) {
                 $max_cases = $patient->suspectCases->count();
             }
-            if($max_cases_inmuno < $patient->inmunoTests->count()){
+            if ($max_cases_inmuno < $patient->inmunoTests->count()) {
                 $max_cases_inmuno = $patient->inmunoTests->count();
             }
         }
@@ -585,21 +617,21 @@ class SuspectCaseReportController extends Controller
         );
 
         $columnas_covid = array();
-        for($i=1; $i <= $max_cases; $i++){
-            $columnas_covid[] = 'PCR '.$i;
-            $columnas_covid[] = 'Fecha Muestra '.$i;
-            $columnas_covid[] = 'Fecha Resultado '.$i;
-            $columnas_covid[] = 'Resultado '.$i;
-            $columnas_covid[] = 'S '.$i;
+        for ($i = 1; $i <= $max_cases; $i++) {
+            $columnas_covid[] = 'PCR ' . $i;
+            $columnas_covid[] = 'Fecha Muestra ' . $i;
+            $columnas_covid[] = 'Fecha Resultado ' . $i;
+            $columnas_covid[] = 'Resultado ' . $i;
+            $columnas_covid[] = 'S ' . $i;
         }
 
         $columnas_inmuno = array();
-        for($i=1; $i <= $max_cases_inmuno; $i++){
-            $columnas_inmuno[] = 'IgG/IgM '.$i;
-            $columnas_inmuno[] = 'Fecha Test'.$i;
-            $columnas_inmuno[] = 'IgG '.$i;
-            $columnas_inmuno[] = 'IgM '.$i;
-            $columnas_inmuno[] = 'Control '.$i;
+        for ($i = 1; $i <= $max_cases_inmuno; $i++) {
+            $columnas_inmuno[] = 'IgG/IgM ' . $i;
+            $columnas_inmuno[] = 'Fecha Test' . $i;
+            $columnas_inmuno[] = 'IgG ' . $i;
+            $columnas_inmuno[] = 'IgM ' . $i;
+            $columnas_inmuno[] = 'Control ' . $i;
         }
 
         $columnas_cases = array(
@@ -619,25 +651,25 @@ class SuspectCaseReportController extends Controller
             'Observación',
         );
 
-        $columnas= array_merge($columnas_paciente, $columnas_covid, $columnas_inmuno, $columnas_cases);
+        $columnas = array_merge($columnas_paciente, $columnas_covid, $columnas_inmuno, $columnas_cases);
 
         foreach ($patients as $key => $patient) {
             $casos[$key][] = $patient->fullName;
             $casos[$key][] = $patient->identifier;
             $casos[$key][] = $patient->age;
             $casos[$key][] = $patient->genderEsp;
-            $casos[$key][] = ($patient->demographic AND $patient->demographic->commune)?$patient->demographic->commune->name:'';
-            $casos[$key][] = ($patient->demographic)?$patient->demographic->nationality:'';
-            $casos[$key][] = ($patient->demographic)?$patient->demographic->fullTelephones:'';
+            $casos[$key][] = ($patient->demographic and $patient->demographic->commune) ? $patient->demographic->commune->name : '';
+            $casos[$key][] = ($patient->demographic) ? $patient->demographic->nationality : '';
+            $casos[$key][] = ($patient->demographic) ? $patient->demographic->fullTelephones : '';
             $casos[$key][] = $patient->status;
-            foreach($patient->suspectCases as $suspectCase) {
+            foreach ($patient->suspectCases as $suspectCase) {
                 $casos[$key][] = $suspectCase->id;
                 $casos[$key][] = $suspectCase->sample_at->format('Y-m-d');
                 $casos[$key][] = ($suspectCase->pcr_sars_cov_2_at) ? $suspectCase->pcr_sars_cov_2_at->format('Y-m-d') : '';
                 $casos[$key][] = $suspectCase->covid19;
                 $casos[$key][] = $suspectCase->symptoms;
             }
-            for($i = $patient->suspectCases->count(); $i < $max_cases; $i++) {
+            for ($i = $patient->suspectCases->count(); $i < $max_cases; $i++) {
                 $casos[$key][] = '';
                 $casos[$key][] = '';
                 $casos[$key][] = '';
@@ -646,12 +678,12 @@ class SuspectCaseReportController extends Controller
             }
             foreach ($patient->inmunoTests as $inmunoTest) {
                 $casos[$key][] = $inmunoTest->id;
-                $casos[$key][] = ($inmunoTest->register_at)?$inmunoTest->register_at->format('Y-m-d H:i:s'):'';
+                $casos[$key][] = ($inmunoTest->register_at) ? $inmunoTest->register_at->format('Y-m-d H:i:s') : '';
                 $casos[$key][] = strtoupper(($inmunoTest->IgValue) ? $inmunoTest->IgValue : '');
                 $casos[$key][] = strtoupper(($inmunoTest->ImValue) ? $inmunoTest->ImValue : '');
                 $casos[$key][] = strtoupper($inmunoTest->ControlValue);
             }
-            for($i = $patient->inmunoTests->count(); $i < $max_cases_inmuno; $i++) {
+            for ($i = $patient->inmunoTests->count(); $i < $max_cases_inmuno; $i++) {
                 $casos[$key][] = '';
                 $casos[$key][] = '';
                 $casos[$key][] = '';
@@ -665,25 +697,24 @@ class SuspectCaseReportController extends Controller
             $casos[$key][] = $patient->suspectCases->first()->epivigila;
             $casos[$key][] = $patient->suspectCases->first()->paho_flu;
             $casos[$key][] = ($patient->suspectCases->first()->gestation == 1) ? 'Sí' : '';
-            $casos[$key][] = ($patient->suspectCases->first()->close_contact == 1) ? 'Sí':'';
+            $casos[$key][] = ($patient->suspectCases->first()->close_contact == 1) ? 'Sí' : '';
             $casos[$key][] = ($patient->suspectCases->first()->sent_external_lab_at) ? $patient->suspectCases->first()->sent_external_lab_at->format('Y-m-d') : '';
-            $casos[$key][] = $patient->suspectCases->first()->procesingLab ;
+            $casos[$key][] = $patient->suspectCases->first()->procesingLab;
             $casos[$key][] = ($patient->suspectCases->first()->notification_at) ? $patient->suspectCases->first()->notification_at->format('Y-m-d') : '';
             $casos[$key][] = $patient->suspectCases->first()->notification_mechanism;
             $casos[$key][] = ($patient->suspectCases->first()->discharged_at) ? $patient->suspectCases->first()->discharged_at->format('Y-m-d') : '';
             $casos[$key][] = $patient->suspectCases->first()->observation;
         }
 
-        $callback = function() use ($casos, $columnas)
-        {
+        $callback = function () use ($casos, $columnas) {
 
             $file = fopen('php://output', 'w');
-            fputs($file, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
+            fputs($file, $bom = (chr(0xEF) . chr(0xBB) . chr(0xBF)));
 
-            fputcsv($file, $columnas,';');
+            fputcsv($file, $columnas, ';');
 
             foreach ($casos as $fila) {
-                fputcsv($file, $fila,';');
+                fputcsv($file, $fila, ';');
             }
             fclose($file);
         };
@@ -707,21 +738,21 @@ class SuspectCaseReportController extends Controller
     public function report_minsal(Request $request, Laboratory $laboratory)
     {
 
-        if($from = $request->has('from')){
+        if ($from = $request->has('from')) {
             $from = $request->get('from');
             $to = $request->get('to');
-        }else{
+        } else {
             $from = date("Y-m-d 21:00", time() - 60 * 60 * 24);
             $to = date("Y-m-d 20:59");
         }
 
         $externos = SARSCoV2External::whereBetween('result_at', [$from, $to])->get();
 
-        $cases = SuspectCase::where('laboratory_id',$laboratory->id)
-                ->whereBetween('pcr_sars_cov_2_at', [$from, $to])
-                ->whereNull('external_laboratory')
-                ->get()
-                ->sortByDesc('pcr_sars_cov_2_at');
+        $cases = SuspectCase::where('laboratory_id', $laboratory->id)
+            ->whereBetween('pcr_sars_cov_2_at', [$from, $to])
+            ->whereNull('external_laboratory')
+            ->get()
+            ->sortByDesc('pcr_sars_cov_2_at');
         return view('lab.suspect_cases.reports.minsal', compact('cases', 'laboratory', 'externos', 'from', 'to', 'request'));
     }
 
@@ -731,21 +762,21 @@ class SuspectCaseReportController extends Controller
     public function reception_report(Request $request, Laboratory $laboratory)
     {
 
-        if($from = $request->has('from')){
+        if ($from = $request->has('from')) {
             $from = $request->get('from');
             $to = $request->get('to');
-        }else{
+        } else {
             $from = date("Y-m-d 21:00", time() - 60 * 60 * 24);
             $to = date("Y-m-d 20:59");
         }
 
         $externos = SARSCoV2External::whereBetween('result_at', [$from, $to])->get();
 
-        $cases = SuspectCase::where('laboratory_id',$laboratory->id)
-                ->whereBetween('reception_at', [$from, $to])
-                ->whereNull('external_laboratory')
-                ->get()
-                ->sortByDesc('reception_at');
+        $cases = SuspectCase::where('laboratory_id', $laboratory->id)
+            ->whereBetween('reception_at', [$from, $to])
+            ->whereNull('external_laboratory')
+            ->get()
+            ->sortByDesc('reception_at');
         return view('lab.suspect_cases.reports.reception_report', compact('cases', 'laboratory', 'externos', 'from', 'to', 'request'));
     }
 
@@ -755,29 +786,29 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     public function report_minsal_ws(Request $request)
     {
-        $from = '2020-06-01 00:00';//date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+        $from = '2020-06-01 00:00'; //date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $to = date("Y-m-d 20:59:59");
 
         $laboratory_id = 1;
         if ($request->all()) {
             $laboratory_id = $request->laboratory_id;
-        }else{
+        } else {
             $request->laboratory_id = 1;
         }
 
-        $cases = SuspectCase::where('laboratory_id',$laboratory_id)
-                ->whereBetween('pcr_sars_cov_2_at', [$from, $to])
-                ->whereNull('external_laboratory')
-                ->whereNULL('minsal_ws_id')
-                // ->where('id',20370)
-                ->get()
-                ->sortByDesc('pcr_sars_cov_2_at');
-                // dd($cases);
+        $cases = SuspectCase::where('laboratory_id', $laboratory_id)
+            ->whereBetween('pcr_sars_cov_2_at', [$from, $to])
+            ->whereNull('external_laboratory')
+            ->whereNULL('minsal_ws_id')
+            // ->where('id',20370)
+            ->get()
+            ->sortByDesc('pcr_sars_cov_2_at');
+        // dd($cases);
 
-        $laboratories = Laboratory::where('minsal_ws',1)->get();
+        $laboratories = Laboratory::where('minsal_ws', 1)->get();
         // $laboratories = Laboratory::where('id',1)->get();
 
-        return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'request','laboratories'));//,'externos'));
+        return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'request', 'laboratories')); //,'externos'));
     }
 
 
@@ -788,56 +819,56 @@ class SuspectCaseReportController extends Controller
     {
 
         // dd($request);
-        $from = '2020-06-01 00:00';//date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+        $from = '2020-06-01 00:00'; //date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $to = date("Y-m-d 20:59:59");
 
         $laboratory_id = 1;
         if ($request->all()) {
             $laboratory_id = $request->laboratory_id;
-        }else{
+        } else {
             $request->laboratory_id = 1;
         }
 
-        $laboratories = Laboratory::where('minsal_ws',1)->get();
+        $laboratories = Laboratory::where('minsal_ws', 1)->get();
         // $laboratories = Laboratory::where('id',1)->get();
 
-        $cases = SuspectCase::where('laboratory_id',$request->laboratory_id)
-                ->whereBetween('pcr_sars_cov_2_at', [$from, $to])
-                ->whereNull('external_laboratory')
-                ->whereNULL('minsal_ws_id')
-                // ->where('id',20370)
-                ->get()
-                ->sortByDesc('pcr_sars_cov_2_at');
-                // dd($cases);
+        $cases = SuspectCase::where('laboratory_id', $request->laboratory_id)
+            ->whereBetween('pcr_sars_cov_2_at', [$from, $to])
+            ->whereNull('external_laboratory')
+            ->whereNULL('minsal_ws_id')
+            // ->where('id',20370)
+            ->get()
+            ->sortByDesc('pcr_sars_cov_2_at');
+        // dd($cases);
 
         foreach ($cases as $key => $case) {
             // if ($case->run_medic != 0) {
-                if ($case->patient->demographic) {
-                    // dd("");
-                    $response = WSMinsal::crea_muestra($case);
+            if ($case->patient->demographic) {
+                // dd("");
+                $response = WSMinsal::crea_muestra($case);
+                if ($response['status'] == 0) {
+                    session()->flash('info', 'Error al subir muestra ' . $case->id . ' a MINSAL. ' . $response['msg']);
+                    return redirect()->back();
+                    // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'request','laboratories'));
+                } else {
+                    $response = WSMinsal::recepciona_muestra($case);
                     if ($response['status'] == 0) {
-                        session()->flash('info', 'Error al subir muestra ' . $case->id . ' a MINSAL. ' . $response['msg']);
+                        session()->flash('info', 'Error al recepcionar muestra ' . $case->id . ' en MINSAL. ' . $response['msg']);
                         return redirect()->back();
                         // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'request','laboratories'));
-                    }else{
-                        $response = WSMinsal::recepciona_muestra($case);
+                    } else {
+                        $response = WSMinsal::resultado_muestra($case);
                         if ($response['status'] == 0) {
-                            session()->flash('info', 'Error al recepcionar muestra ' . $case->id . ' en MINSAL. ' . $response['msg']);
+                            session()->flash('info', 'Error al subir resultado de muestra ' . $case->id . ' en MINSAL. ' . $response['msg']);
                             return redirect()->back();
                             // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'request','laboratories'));
-                        }else{
-                            $response = WSMinsal::resultado_muestra($case);
-                            if ($response['status'] == 0) {
-                                session()->flash('info', 'Error al subir resultado de muestra ' . $case->id . ' en MINSAL. ' . $response['msg']);
-                                return redirect()->back();
-                                // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'request','laboratories'));
-                            }
                         }
                     }
-                }else{
-                    session()->flash('info', 'Error al subir la muestra ' . $case->id . ' en MINSAL. No existen datos demográficos asociados.');
-                    return redirect()->back();
                 }
+            } else {
+                session()->flash('info', 'Error al subir la muestra ' . $case->id . ' en MINSAL. No existen datos demográficos asociados.');
+                return redirect()->back();
+            }
             // }else{
             //     session()->flash('info', 'No se detectó run de médico registrado en muestra:  ' . $case->id);
             //     return redirect()->back();
@@ -846,7 +877,7 @@ class SuspectCaseReportController extends Controller
 
         session()->flash('success', 'Se ha subido la información a sistema MINSAL.');
         // return redirect()->back();
-        return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'request','laboratories'));
+        return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'request', 'laboratories'));
     }
 
     /*****************************************************/
@@ -855,7 +886,7 @@ class SuspectCaseReportController extends Controller
     public function report_seremi(Laboratory $laboratory)
     {
 
-        $cases = SuspectCase::where('laboratory_id',$laboratory->id)->get()->sortDesc();
+        $cases = SuspectCase::where('laboratory_id', $laboratory->id)->get()->sortDesc();
         return view('lab.suspect_cases.reports.seremi', compact('cases', 'laboratory'));
     }
 
@@ -864,9 +895,10 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     /*                REPORTE GESTANTES                  */
     /*****************************************************/
-    public function gestants() {
+    public function gestants()
+    {
         $patients = Patient::whereHas('suspectCases', function ($q) {
-            $q->where('gestation',1);
+            $q->where('gestation', 1);
         })->with('suspectCases')->get();
 
         return view('lab.suspect_cases.reports.gestants', compact('patients'));
@@ -879,12 +911,12 @@ class SuspectCaseReportController extends Controller
     {
         $patients = Patient::positivesList();
 
-        if($request->input('residence')) {
-            $bookings = Booking::where('status','Residencia Sanitaria')
-                        ->whereHas('patient', function ($q) {
-                            $q->where('status','Residencia Sanitaria');
-                        })->get();
-            $booking_ct = $bookings->where('room.residence_id',$request->input('residence'))->count();
+        if ($request->input('residence')) {
+            $bookings = Booking::where('status', 'Residencia Sanitaria')
+                ->whereHas('patient', function ($q) {
+                    $q->where('status', 'Residencia Sanitaria');
+                })->get();
+            $booking_ct = $bookings->where('room.residence_id', $request->input('residence'))->count();
             return $patients->count() . "\n" . $booking_ct;
         }
 
@@ -898,49 +930,50 @@ class SuspectCaseReportController extends Controller
      */
     public function getHl7Files(Request $request)
     {
+        $patientId = $request->input('patient_id');
+        $patientNames = $request->input('patient_names');
+        $patientFamilyFather = $request->input('patient_family_father');
+        $patientFamilyMother = $request->input('patient_family_mother');
+        $pcrSarsCov2At = Carbon::parse($request->input('observation_datetime'));
+        $pcrSarsCov2 = $request->input('observation_value');
+        //        $sampleAt = Carbon::parse($request->input('sample_observation_datetime'));
+        $sampleAt = Carbon::parse($request->input('message_datetime'));
+        error_log('---------------WEBSERVICE: HL7 FILES TEST----------------');
+        error_log('patientId: ' . $patientId);
+        error_log('patientNames: ' . $patientNames);
+        error_log('patientFamilyFather: ' . $patientFamilyFather);
+        error_log('patientFamilyMother: ' . $patientFamilyMother);
+        error_log('pcrSarsCov2At: ' . $pcrSarsCov2At);
+        error_log('pcrSarsCov2: ' . $pcrSarsCov2);
+        error_log('sampleAt: ' . $sampleAt->toDateString());
 
-//            $nombreMuestra = $request->input('observation_name');
-//            $patientId = $request->input('patient_id');
-//            $patientNames = $request->input('patient_names');
-//            $patientFamilyFather = $request->input('patient_family_father');
-//            $patientFamilyMother = $request->input('patient_family_mother');
-//            $pcrSarsCov2At = $request->input('observation_datetime');
-//            $pcrSarsCov2 = $request->input('observation_value');
-//            $sampleAt = $request->input('message_datetime');
-            error_log('---------------WEBSERVICE: HL7 FILES TEST----------------');
-//            error_log('nombreMuestra: ' . $nombreMuestra);
-//            error_log('patientId: ' . $patientId);
-//            error_log('patientNames: ' . $patientNames);
-//            error_log('patientFamilyFather: ' . $patientFamilyFather);
-//            error_log('patientFamilyMother: ' . $patientFamilyMother);
-//            error_log('pcrSarsCov2At: ' . $pcrSarsCov2At);
-//            error_log('pcrSarsCov2: ' . $pcrSarsCov2);
-//            error_log('sampleAt: ' . $sampleAt);
+        if (strtoupper($pcrSarsCov2) == "N") {
+            $pcrSarsCov2 = "negative";
+        }
+        if (strtoupper($pcrSarsCov2) == "P") {
+            $pcrSarsCov2 = "positive";
+        }
+        if (strtoupper($pcrSarsCov2) == "ENM") {
+            $pcrSarsCov2 = "rejected";
+        }
+        if (strtoupper($pcrSarsCov2) == "INDET") {
+            $pcrSarsCov2 = "undetermined";
+        }
+        //            if(strtoupper($pcrSarsCov2) == "PENDIENTE"){$pcrSarsCov2 = "pending";}
 
+        $suspectCase = SuspectCase::whereHas('patient', function ($q) use ($patientFamilyFather, $patientFamilyMother, $patientNames) {
+            $q->where('fathers_family', 'LIKE', '%' . $patientFamilyFather . '%')
+                ->where('mothers_family', 'like', '%' . $patientFamilyMother . '%')
+                ->where('name', 'like', '%' . $patientNames . '%');
+        })->whereDate('sample_at', $sampleAt->toDateString())
+            ->orderBy('updated_at', 'desc')->first();
 
-//        if(Str::contains(strtoupper($nombreMuestra), 'SARS-COV-2')) {
-//
-//            if(strtoupper($pcrSarsCov2)  == "NEGATIVO"){$pcrSarsCov2 = "negative";}
-//            if(strtoupper($pcrSarsCov2) == "PENDIENTE"){$pcrSarsCov2 = "pending";}
-//            if(strtoupper($pcrSarsCov2) == "POSITIVO"){$pcrSarsCov2 = "positive";}
-//            if(strtoupper($pcrSarsCov2) == "RECHAZADO"){$pcrSarsCov2 = "rejected";}
-//            if(strtoupper($pcrSarsCov2) == "INDETERMINADO"){$pcrSarsCov2 = "undetermined";}
-//
-//            //TODO revisar casos nombres con tilde y ñ
-//            $suspectCase = SuspectCase::whereHas('patient', function ($q) use ($patientFamilyFather, $patientFamilyMother, $patientNames) {
-//                $q->where('fathers_family', 'LIKE', '%' . $patientFamilyFather . '%')
-//                    ->where('mothers_family', 'like', '%' . $patientFamilyMother . '%')
-//                    ->where('name', 'like', '%' . $patientNames . '%');
-//            })->whereDate('sample_at', $sampleAt->toDateString())
-//                ->orderBy('updated_at', 'desc')->first();
-//
-////        $suspectCase->pcr_sars_cov_2 = $pcrSarsCov2;
-////        $suspectCase->pcr_sars_cov_2_at = $pcrSarsCov2At;
-////        $suspectCase->save();
-//
-//
-////            error_log($suspectCase);
-//        }
+        if ($suspectCase != null) {
+            $suspectCase->pcr_sars_cov_2 = $pcrSarsCov2;
+            $suspectCase->pcr_sars_cov_2_at = $pcrSarsCov2At;
+            $suspectCase->save();
+            error_log($suspectCase);
+        }
     }
 
     public function case_chart(Request $request)
@@ -991,16 +1024,16 @@ class SuspectCaseReportController extends Controller
     {
         $from = Carbon::now()->subDays(2);
         $to = Carbon::now();
-//        $files = File::whereBetween('created_at', [$from, $to])
-//                   ->whereHas('suspectCase', function ($query) {
-//                        $query->where('pcr_sars_cov_2', 'like', 'positive');
-//                    })
-//                   ->orderBy('created_at','DESC')->get();
+        //        $files = File::whereBetween('created_at', [$from, $to])
+        //                   ->whereHas('suspectCase', function ($query) {
+        //                        $query->where('pcr_sars_cov_2', 'like', 'positive');
+        //                    })
+        //                   ->orderBy('created_at','DESC')->get();
 
         $suspectCases = SuspectCase::whereBetween('pcr_sars_cov_2_at', [$from, $to])
             ->where('pcr_sars_cov_2', 'like', 'positive')
             ->where('file', true)
-            ->orderBy('created_at','DESC')->get();
+            ->orderBy('created_at', 'DESC')->get();
 
 
         $suspectCasesUnap = SuspectCase::whereBetween('created_at', [$from, $to])
@@ -1008,7 +1041,7 @@ class SuspectCaseReportController extends Controller
             ->where('laboratory_id', 2)
             ->get();
 
-        return view('lab.suspect_cases.reports.exams_with_result', compact('suspectCases','suspectCasesUnap'));
+        return view('lab.suspect_cases.reports.exams_with_result', compact('suspectCases', 'suspectCasesUnap'));
     }
 
     /**
@@ -1017,26 +1050,27 @@ class SuspectCaseReportController extends Controller
      * @param Request $request
      * @return Application|Factory|View
      */
-    public function positivesByDateRange(Request $request){
+    public function positivesByDateRange(Request $request)
+    {
 
-        if($from = $request->has('from')){
-            $from = $request->get('from'). ' 00:00:00';
-            $to = $request->get('to'). ' 23:59:59';
-        }else{
+        if ($from = $request->has('from')) {
+            $from = $request->get('from') . ' 00:00:00';
+            $to = $request->get('to') . ' 23:59:59';
+        } else {
             $from = Carbon::yesterday();
             $to = Carbon::now();
         }
 
-        $communes_ids = array_map('trim',explode(",",env('COMUNAS')));
+        $communes_ids = array_map('trim', explode(",", env('COMUNAS')));
         $communes = Commune::whereIn('id', $communes_ids)->get();
 
         $selectedCommune = $request->get('commune');
 
         $suspectCases = SuspectCase::whereBetween('pcr_sars_cov_2_at', [$from, $to])
             ->where('pcr_sars_cov_2', 'positive')
-            ->when($selectedCommune, function ($q) use ($selectedCommune){
-                return $q->whereHas('patient', function($q) use ($selectedCommune){
-                    $q->whereHas('demographic', function ($q) use ($selectedCommune){
+            ->when($selectedCommune, function ($q) use ($selectedCommune) {
+                return $q->whereHas('patient', function ($q) use ($selectedCommune) {
+                    $q->whereHas('demographic', function ($q) use ($selectedCommune) {
                         $q->where('commune_id', $selectedCommune);
                     });
                 });
@@ -1050,18 +1084,19 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     /*            REPORTE HOSPITALIZADOS                 */
     /*****************************************************/
-    public function hospitalized() {
+    public function hospitalized()
+    {
         $patients = Patient::whereHas('suspectCases', function ($q) {
-            $q->where('pcr_sars_cov_2','positive');
-        })->whereIn('status',[
+            $q->where('pcr_sars_cov_2', 'positive');
+        })->whereIn('status', [
             'Hospitalizado Básico',
             'Hospitalizado Medio',
             'Hospitalizado UTI',
             'Hospitalizado UCI',
             'Hospitalizado UCI (Ventilador)'
         ])
-        ->orderBy('status')
-        ->get();
+            ->orderBy('status')
+            ->get();
 
         return view('lab.suspect_cases.reports.hospitalized', compact('patients'));
     }
@@ -1069,17 +1104,18 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     /*     REPORTE HOSPITALIZADOS POR COMUNAS USUARIO    */
     /*****************************************************/
-    public function hospitalizedByUserCommunes() {
+    public function hospitalizedByUserCommunes()
+    {
 
         $patients = Patient::whereHas('suspectCases', function ($q) {
-            $q->where('pcr_sars_cov_2','positive');
-        })->whereIn('status',[
+            $q->where('pcr_sars_cov_2', 'positive');
+        })->whereIn('status', [
             'Hospitalizado Básico',
             'Hospitalizado Medio',
             'Hospitalizado UTI',
             'Hospitalizado UCI',
             'Hospitalizado UCI (Ventilador)'
-        ])->whereHas('demographic', function ($q){
+        ])->whereHas('demographic', function ($q) {
             $q->whereIn('commune_id', auth()->user()->communes());
         })
             ->orderBy('status')
@@ -1093,10 +1129,11 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     /*            REPORTE FALLECIDOS                     */
     /*****************************************************/
-    public function deceased() {
+    public function deceased()
+    {
         $patients = Patient::whereHas('suspectCases', function ($q) {
-            $q->where('pcr_sars_cov_2','positive');
-        })->where('status','Fallecido')->with('suspectCases')->with('demographic')->orderBy('deceased_at')->get();
+            $q->where('pcr_sars_cov_2', 'positive');
+        })->where('status', 'Fallecido')->with('suspectCases')->with('demographic')->orderBy('deceased_at')->get();
 
         return view('lab.suspect_cases.reports.deceased', compact('patients'));
     }
@@ -1110,8 +1147,8 @@ class SuspectCaseReportController extends Controller
         $from = Carbon::yesterday();
         $to = Carbon::now();
 
-        $patients = Patient::whereHas('suspectCases', function ($q) use($from,$to)  {
-            $q->whereBetween('pcr_sars_cov_2_at',[$from,$to]);
+        $patients = Patient::whereHas('suspectCases', function ($q) use ($from, $to) {
+            $q->whereBetween('pcr_sars_cov_2_at', [$from, $to]);
         })->with('suspectCases')->get();
 
         //dd($patients);
@@ -1123,11 +1160,10 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     public function requires_licence()
     {
-        $patients = Patient::
-            whereHas('tracing', function ($q) {
-              $q->where('status', '>', '0')
-              ->where('requires_licence', 1)
-              ->whereIn('establishment_id', auth()->user()->establishments->pluck('id'));
+        $patients = Patient::whereHas('tracing', function ($q) {
+                $q->where('status', '>', '0')
+                    ->where('requires_licence', 1)
+                    ->whereIn('establishment_id', auth()->user()->establishments->pluck('id'));
             })
             ->get();
 
@@ -1141,11 +1177,11 @@ class SuspectCaseReportController extends Controller
     {
         /* USUARIOS DE MIS ESTABLECIMIENTOS */
         $users = User::whereHas('establishments', function ($q) {
-                    $q->whereIn('establishment_id', auth()->user()->establishments->pluck('id'));
-                  })
-                  ->has('events')
-                  ->orderBy('name', 'ASC')
-                  ->get();
+            $q->whereIn('establishment_id', auth()->user()->establishments->pluck('id'));
+        })
+            ->has('events')
+            ->orderBy('name', 'ASC')
+            ->get();
 
         $events = Event::whereDate('event_at', $request->date)
             ->where('user_id', $request->user)
@@ -1167,7 +1203,8 @@ class SuspectCaseReportController extends Controller
         return view('lab.suspect_cases.reports.user_performance', compact('users', 'request', 'events', 'events_resume'));
     }
 
-    public function pendingMoreThanTwoDays(){
+    public function pendingMoreThanTwoDays()
+    {
         $suspectCases = SuspectCase::where('pcr_sars_cov_2', 'pending')
             ->where('reception_at', '<=', Carbon::now()->subDays(2))
             ->get();
@@ -1175,11 +1212,12 @@ class SuspectCaseReportController extends Controller
         return view('lab.suspect_cases.reports.pending_more_than_two_days', compact('suspectCases'));
     }
 
-    public function suspectCaseByCommune(Request $request){
-        if($from = $request->has('from')){
-            $from = $request->get('from'). ' 00:00:00';
-            $to = $request->get('to'). ' 23:59:59';
-        }else{
+    public function suspectCaseByCommune(Request $request)
+    {
+        if ($from = $request->has('from')) {
+            $from = $request->get('from') . ' 00:00:00';
+            $to = $request->get('to') . ' 23:59:59';
+        } else {
             $from = Carbon::yesterday();
             $to = Carbon::now();
         }
@@ -1189,9 +1227,9 @@ class SuspectCaseReportController extends Controller
         $selectedCommune = $request->get('commune');
 
         $suspectCases = SuspectCase::whereBetween('pcr_sars_cov_2_at', [$from, $to])
-            ->when($selectedCommune, function ($q) use ($selectedCommune){
-                return $q->whereHas('patient', function($q) use ($selectedCommune){
-                        $q->whereHas('demographic', function ($q) use ($selectedCommune){
+            ->when($selectedCommune, function ($q) use ($selectedCommune) {
+                return $q->whereHas('patient', function ($q) use ($selectedCommune) {
+                    $q->whereHas('demographic', function ($q) use ($selectedCommune) {
                         $q->where('commune_id', $selectedCommune);
                     });
                 });
@@ -1208,9 +1246,9 @@ class SuspectCaseReportController extends Controller
      * recepcionados
      * @return Application|Factory|View
      */
-    public function withoutReception(){
-      $cases = SuspectCase::whereNull('receptor_id')->get();
-      return view('lab.suspect_cases.reports.without_reception', compact('cases'));
+    public function withoutReception()
+    {
+        $cases = SuspectCase::whereNull('receptor_id')->get();
+        return view('lab.suspect_cases.reports.without_reception', compact('cases'));
     }
-
 }

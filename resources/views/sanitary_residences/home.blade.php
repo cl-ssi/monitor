@@ -6,6 +6,8 @@
 
 @include('sanitary_residences.nav')
 
+
+
 <h3 class="mb-3" style="text-align:center">Módulo Residencias</h3>
 <h4 class="mb-3" style="text-align:center"> Se les recuerda lo Siguiente</h4>
 <ul style="list-style-type:disc; font-size:15px">

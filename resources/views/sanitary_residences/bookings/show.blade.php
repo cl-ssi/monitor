@@ -5,7 +5,7 @@
 @section('content')
 
 @include('sanitary_residences.nav')
-
+<h4 align="center"><u><b>{{ $booking->patient->fullName }}</b></u></h4>
 
 <div class="row">
     <div class="col-9 col-md-9 font-weight-bold p-2">
@@ -100,18 +100,22 @@
 <div class="row">
 
     <div class="col-6 col-md-3 p-2">
-        <strong>Fecha Muestra: </strong>
-        {{ ($booking->patient->suspectCases->where('pcr_sars_cov_2', 'positive')->last())? $booking->patient->suspectCases->where('pcr_sars_cov_2', 'positive')->last()->sample_at->format('d-m-Y'):''  }}
+        <strong>Fecha Última Muestra: </strong>
+        @if($booking->patient->suspectCases->last())
+        {{$booking->patient->suspectCases->last()->sample_at->format('d-m-Y')}}
+        @endif        
     </div>
 
     <div class="col-6 col-md-5 p-2">
-        <strong>Fecha Resultado: </strong>
-        {{ ($booking->patient->suspectCases->where('pcr_sars_cov_2', 'positive')->last())? $booking->patient->suspectCases->where('pcr_sars_cov_2', 'positive')->last()->pcr_sars_cov_2_at->format('d-m-Y'):''  }}
+        <strong>Fecha Último Resultado: </strong>
+        @if($booking->patient->suspectCases->last() and $booking->patient->suspectCases->last()->pcr_sars_cov_2_at)
+        {{$booking->patient->suspectCases->last()->pcr_sars_cov_2_at->format('d-m-Y')}}
+        @endif        
     </div>
 
     <div class="col-12 col-md-4 p-2">
-        <strong>Resultado: </strong>
-        {{ $booking->patient->suspectCases->where('pcr_sars_cov_2', 'positive')->last()? $booking->patient->suspectCases->where('pcr_sars_cov_2', 'positive')->last()->covid19:'' }}
+        <strong>Último Resultado: </strong>        
+        {{ $booking->patient->suspectCases->last()? $booking->patient->suspectCases->last()->covid19:'' }}
     </div>
 
 </div>
@@ -128,7 +132,12 @@
             <label for="for_patient_id">Paciente</label>
             <select name="patient_id" id="for_patient_id" class="form-control">
                 @foreach($patients as $patient)
+                @can('SanitaryResidence: admin')
                 <option value="{{ $patient->id }}" {{ ($patient->id == $booking->patient_id)?'selected':'' }}>{{ $patient->fullName }}</option>
+                @endcan
+                @canany(['SanitaryResidence: user', 'SanitaryResidence: view'])
+                <option value="{{ $patient->id }}" {{ ($patient->id == $booking->patient_id)?'selected':'disabled' }}>{{ $patient->fullName }}</option>
+                @endcan                
                 @endforeach
             </select>
         </fieldset>
@@ -138,7 +147,12 @@
             <select name="room_id" id="for_room_id" class="form-control">
                 @foreach(Auth::user()->residences as $residence)
                     @foreach($residence->rooms->sortBy('number') as $room)
+                    @can('SanitaryResidence: admin')
                     <option value="{{ $room->id }}" {{ ($room->id == $booking->room_id)?'selected':'' }}>{{ $room->residence->name }} - Habitación {{ $room->number }}</option>
+                    @endcan
+                    @canany(['SanitaryResidence: user', 'SanitaryResidence: view'])
+                    <option value="{{ $room->id }}" {{ ($room->id == $booking->room_id)?'selected':'disabled' }}>{{ $room->residence->name }} - Habitación {{ $room->number }}</option>
+                    @endcan
                     @endforeach
                 @endforeach
             </select>
@@ -191,6 +205,9 @@
                 <option value="Otro" {{ ($booking->entry_criteria == 'Otro')?'selected':'' }}>Otro</option>
                 <option value="Contacto Estrecho" {{ ($booking->entry_criteria == 'Contacto Estrecho')?'selected':'' }} >Contacto Estrecho</option>
                 <option value="Sospecha" {{ ($booking->entry_criteria == 'Sospecha')?'selected':'' }} >Sospecha</option>
+                <option value="Probable" {{ ($booking->entry_criteria == 'Probable')?'selected':'' }} >Probable</option>
+                <option value="Viajero" {{ ($booking->entry_criteria == 'Viajero')?'selected':'' }} >Viajero</option>
+                <option value="Migrante" {{ ($booking->entry_criteria == 'Migrante')?'selected':'' }} >Migrante</option>
             </select>
         </fieldset>
 
@@ -268,8 +285,10 @@
         </fieldset>
 
     </div>
-
+    @canany(['SanitaryResidence: user', 'SanitaryResidence: admin'] )
     <button type="submit" class="btn btn-primary">Guardar</button>
+    @endcan
+    <a class="btn btn-outline-secondary" href="{{ route('sanitary_residences.home') }}">Cancelar</a>
 
 </form>
 
