@@ -207,6 +207,7 @@
                 <option value="Sospecha" {{ ($booking->entry_criteria == 'Sospecha')?'selected':'' }} >Sospecha</option>
                 <option value="Probable" {{ ($booking->entry_criteria == 'Probable')?'selected':'' }} >Probable</option>
                 <option value="Viajero" {{ ($booking->entry_criteria == 'Viajero')?'selected':'' }} >Viajero</option>
+                <option value="Migrante" {{ ($booking->entry_criteria == 'Migrante')?'selected':'' }} >Migrante</option>
             </select>
         </fieldset>
 

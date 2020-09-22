@@ -79,6 +79,7 @@
                 <option value="Sospecha">Sospecha</option>
                 <option value="Probable">Probable</option>
                 <option value="Viajero">Viajero</option>
+                <option value="Migrante">Migrante</option>
             </select>
         </fieldset>
 
