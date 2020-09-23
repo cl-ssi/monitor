@@ -60,6 +60,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::prefix('patients')->name('patients.')->middleware('auth')->group(function () {
     Route::get('get/{rut?}','PatientController@getPatient')->name('get')->middleware('auth');
+    Route::get('getotheridentification/{other_identification?}','PatientController@getPatientOtherIdentification')->name('getotheridentification')->middleware('auth');
+    //Route::get('get/{rut?}','PatientController@getPatient')->name('get')->middleware('auth');
     Route::get('georeferencing','PatientController@georeferencing')->name('georeferencing')->middleware('can:Patient: georeferencing');
     Route::get('/', 'PatientController@index')->name('index')->middleware('can:Patient: list' );
     Route::get('/dialisys/{establishment?}', 'PatientController@index')->name('dialysis.index')->middleware('can:DialysisCenter: user');
