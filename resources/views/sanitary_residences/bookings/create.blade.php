@@ -80,6 +80,7 @@
                 <option value="Probable">Probable</option>
                 <option value="Viajero">Viajero</option>
                 <option value="Migrante">Migrante</option>
+                <option value="Migrante Contacto Estrecho">Migrante Contacto Estrecho</option>
             </select>
         </fieldset>
 

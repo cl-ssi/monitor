@@ -208,6 +208,7 @@
                 <option value="Probable" {{ ($booking->entry_criteria == 'Probable')?'selected':'' }} >Probable</option>
                 <option value="Viajero" {{ ($booking->entry_criteria == 'Viajero')?'selected':'' }} >Viajero</option>
                 <option value="Migrante" {{ ($booking->entry_criteria == 'Migrante')?'selected':'' }} >Migrante</option>
+                <option value="Migrante Contacto Estrecho" {{ ($booking->entry_criteria == 'Migrante Contacto Estrecho')?'selected':'' }} >Migrante Contacto Estrecho</option>
             </select>
         </fieldset>
 
