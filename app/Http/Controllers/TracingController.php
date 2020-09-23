@@ -763,6 +763,11 @@ class TracingController extends Controller
 //        $establishmentCode = auth()->user()->establishment->new_code_deis;
 //        $establishmentName = auth()->user()->establishment->name;
 
+        //Obtencion de relacion
+        $relacion = $contactPatient->categoryEpivigila;
+        $parentesco = $contactPatient->relationshipNameEpivigila;
+
+
         $questionnaireArray = array('resourceType' => 'QuestionnaireResponse',
             'contained' => array(
                 array(
@@ -770,16 +775,16 @@ class TracingController extends Controller
                     'id' => 'contacto',
                     'identifier' => array(
                         array('system' => 'apidocs.epivigila.minsal.cl/folio-contacto',
-                            'value' => $folioContact) //todo agregar folio contacto
+                            'value' => $folioContact)
                     )),
                 array(
                     'resourceType' => 'Practitioner',
                     'id' => 'responsable-encuesta',
                     'identifier' => array(
                         array('system' => 'www.registrocivil.cl/run',
-                            'value' => $userRut) //todo agregar rut del personal
+                            'value' => $userRut)
                     ),
-                    'name' => $userName //todo
+                    'name' => $userName
                 ),
 //                array(
 //                    'resourceType' => 'Organization',
@@ -791,7 +796,7 @@ class TracingController extends Controller
 //                    'name' => $establishmentName //todo
 //                )
             ),
-            'status' => 'completed', //todo
+            'status' => 'completed',
             'subject' => array(
                 'reference' => '#encuesta-c19'
             ),
@@ -801,7 +806,7 @@ class TracingController extends Controller
                     'text' => 'Relación con el caso',
                     'answer' => array(
                         array(
-                            'valueCoding' => 'familiar' //todo
+                            'valueCoding' => $relacion
                         )
                     ),
                     'item' => array(
@@ -810,7 +815,7 @@ class TracingController extends Controller
                             'text' => 'Parentesco',
                             'answer' => array(
                                 array(
-                                    'valueCoding' => 'madre_padre' //todo
+                                    'valueCoding' => $parentesco
                                 )
                             )
                         )
