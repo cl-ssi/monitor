@@ -88,6 +88,8 @@ class ContactPatientController extends Controller
         // GUARDAR RELACION PACIENTE
         $contactPatient = new ContactPatient($request->All());
         $contactPatient->save();
+        $contactPatientId = $contactPatient->id;
+
 
         $patient = Patient::where('id', $request->get('patient_id'))->first();
 
@@ -102,6 +104,10 @@ class ContactPatientController extends Controller
         $contactPatient->index = NULL;
 
         $contactPatient->save();
+
+//         SE ENVIA CONTACTO Y RELACION A API EPIVIGILA
+//        (new TracingController)->setContactPatientWs($request->get('contact_id'));
+//        (new TracingController)->setQuestionnairePatientWs($contactPatientId);
 
         $id = $request->get('patient_id');
         return redirect()->route('patients.edit', $id);
