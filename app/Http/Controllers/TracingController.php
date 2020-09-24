@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ContactPatient;
+use App\Helpers\EpivigilaApi;
 use App\Tracing\Event;
 use App\Tracing\Tracing;
 use GuzzleHttp\Exception\GuzzleException;
@@ -490,379 +491,6 @@ class TracingController extends Controller
         return view('patients.tracing.without_events', compact('tracingsWithoutEvents'));
     }
 
-    /**
-     * En desarrollo. Obtiene folio-indice de paciente indice.
-     * @param String $type_id Tipo de identificacion. 1-run, 2-pasaporte, 3-comprobante de parto, 4-identificacion local
-     * @param String $id Identificacion de paciente
-     * @return mixed
-     * @throws GuzzleException
-     */
-    public function getFolioPatientWs(String $type_id, String $id)
-    {
-        try {
-            $method = 'GET';
-            $uri = 'Patient/' . $type_id . '/' . $id;
-            /** test_parameters: type_id=1, $id=17353836-7 **/
-
-            return $this->requestApiEpivigila($method, $uri);
-
-//            $response = ['status' => 1, 'msg' => 'OK'];
-        } catch (RequestException $e) {
-            $response = $e->getResponse();
-            $responseBodyAsString = $response->getBody()->getContents();
-            $decode = json_decode($responseBodyAsString);
-            dd($decode);
-//            $response = ['status' => 0, 'msg' => $decode->error];
-        }
-    }
-
-    /**
-     * Obtiene folio-contacto de paciente contacto estrecho
-     * @param String $type_id Tipo de identificacion. 1-run, 2-pasaporte, 3-comprobante de parto, 4-identificacion local
-     * @param String $id Identificacion de paciente contacto estrecho
-     * @param String $folio_indice folio del paciente indice del contacto estrecho
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function getFolioContactPatientWs(String $type_id, String $id, String $folio_indice){
-        try {
-            $method = 'GET';
-            $uri = 'Patient/' . $type_id . '/' . $id . '/' . $folio_indice;
-            return $this->requestApiEpivigila($method, $uri);
-
-        } catch (RequestException $e) {
-            $response = $e->getResponse();
-            $responseBodyAsString = $response->getBody()->getContents();
-            $decode = json_decode($responseBodyAsString);
-            dd($decode);
-        }
-    }
-
-    /**
-     * En desarrollo. Envía contacto estrecho
-     * @param Patient $patient
-     * @throws GuzzleException
-     */
-    public function setContactPatientWs(Patient $patient){
-
-        $run = $patient->run . '-' . $patient->dv;
-        $family = $patient->fathers_family;
-        $given_name = $patient->name;
-        $mothers_family = $patient->mothers_family;
-        $mobile_phone = (int)$patient->demographic->telephone;
-        $home_phone = ($patient->demographic->telephone2) ? (int)$patient->demographic->telephone2 : null;
-        $email = ($patient->demographic->email) ? $patient->demographic->email : null;
-        $gender = $patient->gender;
-        $city = $patient->demographic->city;
-        $region = $patient->demographic->region->name_epivigila;
-        $via = strtolower($patient->demographic->street_type);
-        $direccion = $patient->demographic->address;
-        $numero_residencia = $patient->demographic->number;
-        $region_id = (string)$patient->demographic->region_id;
-        $comuna_code_deis = $patient->demographic->commune->code_deis;
-
-        /** code deis de comunas deben ser de 5 digitos, se agrega 0 **/
-        if(strlen($comuna_code_deis) == 4){
-            $comuna_code_deis = '0' . $comuna_code_deis;
-        }
-
-        //todo obtener suspect case por parametro?, por ahora se obtiene el ultimo caso
-        $suspectCase = SuspectCase::where('patient_id', $patient->id)
-            ->orderBy('id', 'desc')
-            ->first();
-
-        /** Obtiene codigo deis del establecimiento del suspect case **/
-        $establecimiento_code_deis = ($suspectCase->establishment->new_code_deis) ?
-            (int)$suspectCase->establishment->new_code_deis : null;
-
-        /** Obtiene paciente indice del contacto **/
-        $indexContactPatient = ContactPatient::select('patient_id')
-            ->where('contact_id', $patient->id)
-            ->where('index', true)->first();
-
-        //todo verificar si no tiene paciente indice
-
-        dump('Paciente indice: ' . $indexContactPatient->patient_id);
-
-        $indexPatient = Patient::select('run', 'dv')->where('id', $indexContactPatient->patient_id)->first();
-
-        dump('Paciente indice: ' . $indexPatient->run . '-' . $indexPatient->dv);
-
-        if ($indexContactPatient != null){
-//            $response= $this->getFolioPatientWs('1', '17353836-7');
-
-            if($indexPatient->run){
-                $idType = '1';
-                $idPatient = $indexPatient->run. '-' . $indexPatient->dv;
-            }
-            else{
-                $idType = '5';
-                $idPatient = $indexPatient->other_identification;
-            }
-
-            $response = $this->getFolioPatientWs($idType, $idPatient);
-
-            if($response['code'] == 1){
-                $folioIndice = (string)$response['data']['identifier'][0]['value'];
-                dump('folio indice: ' . $folioIndice);
-            }
-            else
-                dd($response['mensaje']);
-        }
-        else
-            dd('No existe paciente índice para el contacto');
-
-        /** TELECOM ARRAY **/
-        $mobile_phone_array = array(
-            'system' => 'phone',
-            'use' => 'mobile',
-            'value' => $mobile_phone
-        );
-
-        $home_phone_array = array(
-            'system' => 'phone',
-            'use' => 'home',
-            'value' => $home_phone
-        );
-
-        $email_array = array(
-            'system' => 'email',
-            'value' => $email,
-            'use' => 'home'
-        );
-
-        $telecomArray = array();
-        array_push($telecomArray, $mobile_phone_array);
-        if($home_phone){array_push($telecomArray, $home_phone_array);}
-        if($email){array_push($telecomArray, $email_array);}
-
-        /** ADDRESS ARRAY **/
-
-        $addressArray = array(
-            'state' => $region,
-            'country' => 'CL',
-            'extension' => array(
-                array(
-                    'url' => 'apidocs.epivigila.minsal.cl/tipo-direccion',
-//                        todo cambiar a una de las opciones:
-//                    "domicilio_particular",
-//                    "domicilio_particular_caso_indice",
-//                    "hospitalizacion_clinica",
-//                    "hospitalizacion_domiciliaria",
-//                    "residencia_sanitaria"
-                    'valueString' => 'domicilio_particular'
-                ),
-                array(
-                    'url' => 'apidocs.epivigila.minsal.cl/via',
-                    'valueString' => $via
-                ),
-                array(
-                    'url' => 'apidocs.epivigila.minsal.cl/direccion',
-                    'valueString' => $direccion
-                ),
-                array(
-                    'url' => 'apidocs.epivigila.minsal.cl/numero-residencia',
-                    'valueString' => $numero_residencia
-                ),
-                array(
-                    'url' => 'apidocs.epivigila.minsal.cl/comuna',
-                    'valueCode' => $comuna_code_deis
-                ),
-                array(
-                    'url' => 'apidocs.epivigila.minsal.cl/region',
-                    'valueCode' => $region_id
-                ))
-        );
-
-        if($city){
-            $addressArray = array('city' => $city) + $addressArray;
-        }
-
-        /** JSON **/
-        $patientArray = array(
-            'resourceType' => 'Patient',
-            'identifier' => array(
-                array(
-                    'type' => array(
-                        'coding' => array(
-                            'system' => 'apidocs.epivigila.minsal.cl/tipo-documento',
-                            //todo hacer dinamico segun tipo doc (run u otro (5))
-                            'code' => 1,
-                            'display' => 'run')
-                    ),
-                    'system' => 'www.registrocivil.cl/run',
-                    'value' => $run
-                )),
-            'name' => array(
-                'family' => $family,
-                'given' => array($given_name),
-                'extension' => array(
-                    array(
-                        'url' => 'www.hl7.org/fhir/extension-humanname-mothers-family.json.html',
-                        'valueString' => $mothers_family
-                    ))
-            ),
-            'telecom' => $telecomArray,
-            'gender' => $gender,
-            'birthDate' => '1992-10-27', //todo agregar birthdate
-            'address' => $addressArray,
-
-            'contact' => array(array(
-                'coding' => array(
-                    'system' => 'apidocs.epivigila.minsal.cl/folio-indice',
-                    'code' => $folioIndice,
-                    'display' => 'folio-indice'
-                )
-            )),
-
-            'managingOrganization' => array(
-                'identifier' => array(array(
-                    'system' => 'apidocs.epivigila.minsal.cl/establecimientos-DEIS',
-                    'value' => $establecimiento_code_deis
-                )),
-                'name' => 'string'
-            )
-
-        );
-
-        try {
-            $patientJson = json_encode($patientArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-            Storage::disk('public')->put('prueba.json', $patientJson);
-            dump($patientJson);
-            $this->requestApiEpivigila('POST', 'Patient', $patientArray);
-
-//            $response = ['status' => 1, 'msg' => 'OK'];
-        } catch (RequestException $e) {
-            $response = $e->getResponse();
-            $responseBodyAsString = $response->getBody()->getContents();
-            $decode = json_decode($responseBodyAsString);
-            dd('error: ' . $decode);
-
-//            $response = ['status' => 0, 'msg' => $decode->error];
-        }
-    }
-
-
-    public function setQuestionnairePatientWs(ContactPatient $contactPatient){
-
-        //Obtencion folio del indice
-        $response =  $this->getFolioPatientWs('1', $contactPatient->self_patient->run . '-' . $contactPatient->self_patient->dv);
-        if($response['code'] == 1){
-            $folioIndice = (string)$response['data']['identifier'][0]['value'];
-            dump('folio indice: ' . $folioIndice);
-        }
-        else
-            dd($response['mensaje']);
-
-        //Obtiene folio del contacto
-        $response = $this->getFolioContactPatientWs('1', $contactPatient->patient->run . '-' . $contactPatient->patient->dv, $folioIndice);
-        if($response['code'] == 1)
-            $folioContact = (string)$response['data']['identifier'][0]['value'];
-        else
-            dump( 'respuesta getfoliocontactpatientws: ' . $response['mensaje']);
-
-        dump('contacto: ' . $contactPatient->patient->run . '-' . $contactPatient->patient->dv . ' ' . $contactPatient->patient->name .  ' ' . $contactPatient->patient->fathers_family);
-
-        //Obtencion de usuario
-        $userRut = auth()->user()->run . '-' . auth()->user()->dv;
-        $userName = auth()->user()->name;
-
-        //Obtencion de establecimiento
-//        $establishmentCode = auth()->user()->establishment->new_code_deis;
-//        $establishmentName = auth()->user()->establishment->name;
-
-        //Obtencion de relacion
-        $relacion = $contactPatient->categoryEpivigila;
-        $parentesco = $contactPatient->relationshipNameEpivigila;
-
-
-        $questionnaireArray = array('resourceType' => 'QuestionnaireResponse',
-            'contained' => array(
-                array(
-                    'resourceType' => 'Patient',
-                    'id' => 'contacto',
-                    'identifier' => array(
-                        array('system' => 'apidocs.epivigila.minsal.cl/folio-contacto',
-                            'value' => $folioContact)
-                    )),
-                array(
-                    'resourceType' => 'Practitioner',
-                    'id' => 'responsable-encuesta',
-                    'identifier' => array(
-                        array('system' => 'www.registrocivil.cl/run',
-                            'value' => $userRut)
-                    ),
-                    'name' => $userName
-                ),
-                array(
-                    'resourceType' => 'Organization',
-                    'id' => 'institucion-seguimiento',
-                    'identifier' => array(
-                        array('system' => 'apidocs.epivigila.minsal.cl/establecimientos-DEIS',
-                            'value' => 102010) //todo
-                    ),
-                    'name' => 'Actividades gestionadas por la Dirección del Servicio para apoyo de la Red (S.S de Iquique)' //todo
-                )
-            ),
-            'status' => 'completed',
-            'subject' => array(
-                'reference' => '#encuesta-c19'
-            ),
-            'item' => array(
-                array(
-                    'linkId' => '1',
-                    'text' => 'Relación con el caso',
-                    'answer' => array(
-                        array(
-                            'valueCoding' => $relacion
-                        )
-                    ),
-                    'item' => array(
-                        array(
-                            'linkId' => '1.1',
-                            'text' => 'Parentesco',
-                            'answer' => array(
-                                array(
-                                    'valueCoding' => $parentesco
-                                )
-                            )
-                        )
-                    )
-                ),
-                array(
-                    'linkId' => '2',
-                    'text' => 'Fecha de inicio de cuarentena',
-                    'answer' => array(
-                        array(
-                            'valueDate' => '2020-09-24' //todo
-                        )
-                    )
-                )
-            ),
-            'request' => array(
-                'method' => 'POST',
-                'url' => 'QuestionnaireResponse'
-            )
-        );
-
-
-        try {
-            $bundleJson = json_encode($questionnaireArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-            Storage::disk('public')->put('prueba.json', $bundleJson);
-            dump($bundleJson);
-            $this->requestApiEpivigila('POST', 'QuestionnaireResponse', $questionnaireArray);
-
-//            $response = ['status' => 1, 'msg' => 'OK'];
-        } catch (RequestException $e) {
-            $response = $e->getResponse();
-            $responseBodyAsString = $response->getBody()->getContents();
-            $decode = json_decode($responseBodyAsString);
-            dd('error: ' + $decode);
-
-//            $response = ['status' => 0, 'msg' => $decode->error];
-        }
-
-    }
-
     public function setTracingBundleWs(Event $event){
 
         /** Si el caso no se pudo contactar (event_type_id == 6) **/
@@ -907,6 +535,7 @@ class TracingController extends Controller
             $tipo_contactabilidad = 'visita';
 
         /** Obtener eventos **/
+        //todo agregar segun evento de seguimiento
         $derivacionTomaMuestra = false;
 
         /** Obtener si es caso indice o no **/
@@ -922,14 +551,14 @@ class TracingController extends Controller
             dump('Paciente indice: ' . $indexPatient->patient_id, 'Rut paciente indice: ' . $indexPatientRut);
 
             /** Obtiene el folio del paciente indice del contacto estrecho **/
-            $response = $this->getFolioPatientWs('1', $indexPatientRut);
+            $response = EpivigilaApi::instance()->getFolioPatientWs('1', $indexPatientRut);
             if($response['code'] == 1)
                 $folio = (string)$response['data']['identifier'][0]['value'];
             else
                 dump( 'respuesta getfoliompatientws: ' . $response['mensaje']);
 
             /** Folio del contacto estrecho **/
-            $response = $this->getFolioContactPatientWs('1', $patient_rut, $folio);
+            $response = EpivigilaApi::instance()->getFolioContactPatientWs('1', $patient_rut, $folio);
             if($response['code'] == 1)
                 $folioContact = (string)$response['data']['identifier'][0]['value'];
             else
@@ -972,7 +601,7 @@ class TracingController extends Controller
             'text' => 'fecha derivacion toma de muestras',
             'answer' => array(
                 array(
-                    'valueDate' => '2020-09-04'
+                    'valueDate' => '2020-09-04' //todo obtener fecha derivacion
                 )
             )
         );
@@ -982,7 +611,7 @@ class TracingController extends Controller
             'text' => 'derivacion a SU',
             'answer' => array(
                 array(
-                    'valueBoolean' => false
+                    'valueBoolean' => false //todo obtener derivacion su
                 )
             )
         );
@@ -992,7 +621,7 @@ class TracingController extends Controller
             'text' => '¿cumple cuarentena y aislamiento?',
             'answer' => array(
                 array(
-                    'valueBoolean' => false
+                    'valueBoolean' => false //todo obtener
                 )
             )
         );
@@ -1002,7 +631,7 @@ class TracingController extends Controller
             'text' => '¿tiene resultado covid?',
             'answer' => array(
                 array(
-                    'valueString' => 'negativo'
+                    'valueString' => 'negativo' //todo obtener
                 )
             )
         );
@@ -1013,6 +642,9 @@ class TracingController extends Controller
         array_push($covidExamItemsArray, $derivacionSuArray);
         array_push($covidExamItemsArray, $cumpleCuarantenaArray);
         array_push($covidExamItemsArray, $tieneResultadoCovidArray);
+
+        //Se agrega observaciones de evento
+        $observaciones = $event->details;
 
         $bundle = array(
             'resourceType' => "Bundle",
@@ -1045,7 +677,7 @@ class TracingController extends Controller
                         'display' => 'Seguimiento con paciente en domicilio particular'
                     ),
                     'subject' => array(
-                        'reference' => 'Patient/' . $folio // todo agregar $folio
+                        'reference' => 'Patient/' . $folio
                     ),
                     'participant' => array(array(
                         'individual' => array(
@@ -1100,7 +732,7 @@ class TracingController extends Controller
                                     'relationship' => array(array(
                                         'coding' => array(
                                             'system' => 'apidocs.epivigila.minsal.cl/folio-indice',
-                                            'code' => $folio, // todo agregar $folio,
+                                            'code' => $folio,
                                             'display' => 'folio-indice'
                                         )
                                     ))
@@ -1239,10 +871,10 @@ class TracingController extends Controller
                                 'item' => array(
                                     array(
                                         'linkId' => '2.1',
-                                        'text' => 'fue derivado para realizarse el examen?', //todo agregar segun evento de seguimiento
+                                        'text' => 'fue derivado para realizarse el examen?',
                                         'answer' => array(
                                             array(
-                                                'valueBoolean' => false,
+                                                'valueBoolean' => $derivacionTomaMuestra,
                                                 'item' => $covidExamItemsArray
                                             )
                                         )
@@ -1252,7 +884,7 @@ class TracingController extends Controller
                                         'text' => 'Observacion de Seguimiento',
                                         'answer' => array(
                                             array(
-                                                'valueString' => 'Sin observaciones' //todo agregar detalle del evento
+                                                'valueString' => $observaciones
                                             )
                                         )
                                     )
@@ -1275,7 +907,7 @@ class TracingController extends Controller
             $bundleJson = json_encode($bundle, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
             Storage::disk('public')->put('prueba.json', $bundleJson);
             dump($bundleJson);
-            $this->requestApiEpivigila('POST', 'Bundle', $bundle);
+            EpivigilaApi::instance()->requestApiEpivigila('POST', 'Bundle', $bundle);
 
 //            $response = ['status' => 1, 'msg' => 'OK'];
         } catch (RequestException $e) {
@@ -1288,58 +920,6 @@ class TracingController extends Controller
         }
     }
 
-    /**
-     * Obtiene token de acceso a API epivigila
-     * @return mixed
-     */
-    public function getTokenApiEpivigila()
-    {
-        $guzzle = new \GuzzleHttp\Client();
-        $response = $guzzle->post(env('TOKEN_ENDPOINT'), [
-            'form_params' => [
-                'grant_type' => 'client_credentials',
-                'client_id' => env('CLIENT_ID'),
-                'client_secret' => env('CLIENT_SECRET'),
-            ],
-        ]);
 
-        dump(json_decode((string)$response->getBody(), true));
-        return json_decode((string)$response->getBody(), true)['access_token'];
-    }
-
-    /**
-     * Genera request a API epivigila
-     * @param string $method Tipo request (POST, GET)
-     * @param string $uri uri que viene despues de BASE_ENDPOINT
-     * @param array|null $json array de datos a enviar
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function requestApiEpivigila(string $method, string $uri, array $json = null)
-    {
-        try {
-            $accessToken = $this->getTokenApiEpivigila();
-            $client = new \GuzzleHttp\Client(['base_uri' => env('BASE_ENDPOINT')]);
-            $headers = [
-                'Authorization' => 'Bearer ' . $accessToken,
-                'x-api-key' => env('X_API_KEY'),
-            ];
-            $options = [
-                'headers' => $headers,
-            ];
-
-            if ($json != null){
-                $options['json'] = $json;
-            }
-
-            dump($options);
-
-            $response = $client->request($method, $uri, $options);
-            dump(json_decode((string)$response->getBody(), true));
-            return json_decode((string)$response->getBody(), true);
-        } catch (GuzzleException $e) {
-            dd($e->getMessage());
-        }
-
-    }
 
 }
