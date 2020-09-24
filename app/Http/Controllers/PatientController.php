@@ -230,7 +230,12 @@ class PatientController extends Controller
 
     public function getPatient($rut)
     {
-        return Patient::where('run',$rut)->orWhere('other_identification',$rut)->first();
+        return Patient::where('run',$rut)->first();
+    }
+
+    public function getPatientOtherIdentification($other_identification)
+    {
+        return Patient::where('other_identification',$other_identification)->first();
     }
 
     public function georeferencing()
