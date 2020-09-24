@@ -833,7 +833,7 @@ class TracingController extends Controller
                     'text' => 'Fecha de inicio de cuarentena',
                     'answer' => array(
                         array(
-                            'valueDate' => '2020-08-30' //todo
+                            'valueDate' => '2020-09-24' //todo
                         )
                     )
                 )
@@ -844,74 +844,6 @@ class TracingController extends Controller
             )
         );
 
-//        $questionnaireArray = array('resourceType' => 'QuestionnaireResponse',
-//            'contained' => array(
-//                array(
-//                    'resourceType' => 'Patient',
-//                    'id' => 'contacto',
-//                    'identifier' => array(
-//                        array('system' => 'apidocs.epivigila.minsal.cl/folio-contacto',
-//                            'value' => '')
-//                    )),
-//                array(
-//                    'resourceType' => 'Practitioner',
-//                    'id' => 'responsable-encuesta',
-//                    'identifier' => array(
-//                        array('system' => 'www.registrocivil.cl/run',
-//                            'value' => '')
-//                    ),
-//                    'name' => 'Nombre del encargado de seguimiento'
-//                ),
-//                array(
-//                    'resourceType' => 'Organization',
-//                    'id' => 'institucion-seguimiento',
-//                    'identifier' => array(
-//                        array('system' => 'apidocs.epivigila.minsal.cl/establecimientos-DEIS',
-//                            'value' => 112315)
-//                    ),
-//                    'name' => 'Nombre de la institución que realiza el seguimiento'
-//                )
-//            ),
-//            'status' => 'completed',
-//            'subject' => array(
-//                'reference' => '#encuesta-c19'
-//            ),
-//            'item' => array(
-//                array(
-//                    'linkId' => '1',
-//                    'text' => 'Relación con el caso',
-//                    'answer' => array(
-//                        array(
-//                            'valueCoding' => 'familiar'
-//                        )
-//                    ),
-//                    'item' => array(
-//                        array(
-//                            'linkId' => '1.1',
-//                            'text' => 'Parentesco',
-//                            'answer' => array(
-//                                array(
-//                                    'valueCoding' => 'madre_padre'
-//                                )
-//                            )
-//                        )
-//                    )
-//                ),
-//                array(
-//                    'linkId' => '2',
-//                    'text' => 'Fecha de inicio de cuarentena',
-//                    'answer' => array(
-//                        array(
-//                            'valueDate' => '2020-08-30'
-//                        )
-//                    )
-//                )
-//            ),
-//            'request' => array(
-//                'method' => 'POST',
-//                'url' => 'QuestionnaireResponse'
-//            )
-//        );
 
         try {
             $bundleJson = json_encode($questionnaireArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
@@ -974,6 +906,9 @@ class TracingController extends Controller
         else
             $tipo_contactabilidad = 'visita';
 
+        /** Obtener eventos **/
+        $derivacionTomaMuestra = false;
+
         /** Obtener si es caso indice o no **/
         $index = $event->tracing->index;
 
@@ -1031,7 +966,53 @@ class TracingController extends Controller
         $postracion = in_array('postracion', $symptoms) ? true : false;
         $taquipnea = in_array('taquipnea', $symptoms) ? true : false;
 
+        //Se generan arrays de items covid exams
+        $tomaDeMuestraArray = array(
+            'linkId' => '2.1.1',
+            'text' => 'fecha derivacion toma de muestras',
+            'answer' => array(
+                array(
+                    'valueDate' => '2020-09-04'
+                )
+            )
+        );
 
+        $derivacionSuArray = array(
+            'linkId' => '2.1.2',
+            'text' => 'derivacion a SU',
+            'answer' => array(
+                array(
+                    'valueBoolean' => false
+                )
+            )
+        );
+
+        $cumpleCuarantenaArray = array(
+            'linkId' => '2.1.3',
+            'text' => '¿cumple cuarentena y aislamiento?',
+            'answer' => array(
+                array(
+                    'valueBoolean' => false
+                )
+            )
+        );
+
+        $tieneResultadoCovidArray = array(
+            'linkId' => '2.1.4',
+            'text' => '¿tiene resultado covid?',
+            'answer' => array(
+                array(
+                    'valueString' => 'negativo'
+                )
+            )
+        );
+
+        //Se construye array de items
+        $covidExamItemsArray = array();
+        if($derivacionTomaMuestra) {array_push($covidExamItemsArray, $tomaDeMuestraArray);}
+        array_push($covidExamItemsArray, $derivacionSuArray);
+        array_push($covidExamItemsArray, $cumpleCuarantenaArray);
+        array_push($covidExamItemsArray, $tieneResultadoCovidArray);
 
         $bundle = array(
             'resourceType' => "Bundle",
@@ -1262,44 +1243,7 @@ class TracingController extends Controller
                                         'answer' => array(
                                             array(
                                                 'valueBoolean' => false,
-                                                'item' => array(
-                                                    array(
-                                                        'linkId' => '2.1.1',
-                                                        'text' => 'fecha derivacion toma de muestras',
-                                                        'answer' => array(
-                                                            array(
-                                                                'valueDate' => '' //todo quitar fecha derivacion si no tiene
-                                                            )
-                                                        )
-                                                    ),
-                                                    array(
-                                                        'linkId' => '2.1.2',
-                                                        'text' => 'derivacion a SU',
-                                                        'answer' => array(
-                                                            array(
-                                                                'valueBoolean' => false
-                                                            )
-                                                        )
-                                                    ),
-                                                    array(
-                                                        'linkId' => '2.1.3',
-                                                        'text' => '¿cumple cuarentena y aislamiento?',
-                                                        'answer' => array(
-                                                            array(
-                                                                'valueBoolean' => false
-                                                            )
-                                                        )
-                                                    ),
-                                                    array(
-                                                        'linkId' => '2.1.4',
-                                                        'text' => '¿tiene resultado covid?',
-                                                        'answer' => array(
-                                                            array(
-                                                                'valueString' => 'negativo'
-                                                            )
-                                                        )
-                                                    )
-                                                )
+                                                'item' => $covidExamItemsArray
                                             )
                                         )
                                     ),
@@ -1327,300 +1271,11 @@ class TracingController extends Controller
             )
         );
 
-//        $bundle = array(
-//            'resourceType' => "Bundle",
-//            'id' => 'bundle-seguimiento',
-//            'type' => 'collection',
-//            'entry' => array(array(
-//                'resource' => array(
-//                    'resourceType' => 'Encounter',
-//                    'id' => 'seguimiento-c19',
-//                    'text' => array(
-//                        'status' => 'generated',
-//                        'div' => '<div>Seguimiento Contacto</div>'
-//                    ),
-//                    'contained' => array(array(
-//                        'resourceType' => 'Location',
-//                        'id' => 'seguimiento',
-//                        'description' => 'Casa',
-//                        'mode' => 'kind'
-//                    )),
-//                    'status' => 'finished',
-//                    'class' => array(
-//                        'system' => 'apidocs.epivigila.minsal.cl/tipo-domicilio',
-//                        'code' => 'domicilio_particular',
-//                        'display' => 'Seguimiento con paciente en domicilio particular'
-//                    ),
-//                    'subject' => array(
-//                        'reference' => 'Patient/50669'
-//                    ),
-//                    'participant' => array(array(
-//                        'individual' => array(
-//                            'reference' => 'Practitioner/15000018-1',
-//                            'display' => 'Alfredo Figueroa Seguel'
-//                        )
-//                    )),
-//                    'period' => array(
-//                        'start' => '2020-09-04',
-//                        'end' => '2020-09-17'
-//                    ),
-//                    'location' => array(array(
-//                        'location' => array(
-//                            'reference' => 'seguimiento-c19',
-//                            'display' => 'Lugar de seguimiento'
-//                        ),
-//                        'status' => 'completed',
-//                        'period' => array(
-//                            'start' => '2020-09-04',
-//                            'end' => '2020-09-04'
-//                        ),
-//                        'extension' => array(
-//                            array(
-//                                'url' => 'apidocs.epivigila.minsal.cl/dia-seguimiento-covid',
-//                                'valueInteger' => 1
-//                            ),
-//                            array(
-//                                'url' => 'apidocs.epivigila.minsal.cl/tipo-contactabilidad',
-//                                'valueString' => 'llamada'
-//                            )
-//                        )
-//                    ))
-//                ),
-//                'request' => array(
-//                    'method' => 'POST',
-//                    'url' => 'Encounter'
-//                )
-//            ),
-//                array(
-//                    'resource' => array(
-//                        'resourceType' => 'QuestionnaireResponse',
-//                        'contained' => array(
-//                            array(
-//                                'resourceType' => 'Patient',
-//                                'id' => 'seguimiento-covid',
-//                                'identifier' => array(array(
-//                                    'system' => 'apidocs.epivigila.minsal.cl/folio-contacto',
-//                                    'code' => 'SC50669-1085',
-//                                    'display' => 'folio-contacto'
-//                                )),
-//                                'contact' => array(
-//                                    'relationship' => array(array(
-//                                        'coding' => array(
-//                                            'system' => 'apidocs.epivigila.minsal.cl/folio-indice',
-//                                            'code' => '50669',
-//                                            'display' => 'folio-indice'
-//                                        )
-//                                    ))
-//                                ),
-//                            ),
-//                            array(
-//                                'resourceType' => 'Practitioner',
-//                                'id' => 'responsable-encuesta-seguimiento',
-//                                'identifier' => array(
-//                                    array(
-//                                        'type' => array('text' => 'Rodrigo Baeza Galaz'),
-//                                        'system' => 'www.registrocivil.cl/run',
-//                                        'value' => '15840868-6'
-//                                    )),
-//                            ),
-//                            array(
-//                                'resourceType' => 'Organization',
-//                                'id' => 'institucion-seguimiento',
-//                                'identifier' => array(
-//                                    array(
-//                                        'system' => 'apidocs.epivigila.minsal.cl/establecimientos-DEIS',
-//                                        'value' => 101100
-//                                    )),
-//                                'name' => 'Hospital Dr. Juan Noé Crevani'
-//                            )
-//                        ),
-//                        'status' => 'completed',
-//                        'subject' => array(
-//                            'reference' => 'seguimiento-c19'
-//                        ),
-//                        'encounter' => array(
-//                            'reference' => 'Encounter/seguimiento-c19'
-//                        ),
-//                        'item' => array(
-//                            array(
-//                                'linkId' => '1',
-//                                'text' => '¿Ha presentado alguno de los siguientes síntomas?',
-//                                'item' => array(
-//
-//                                    array(
-//                                        'linkId' => '1.1',
-//                                        'text' => 'cefalea',
-//                                        'answer' => array(
-//                                            array('valueBoolean' => false)
-//                                        )
-//                                    ),
-//                                    array(
-//                                        'linkId' => '1.2',
-//                                        'text' => 'cianosis',
-//                                        'answer' => array(
-//                                            array('valueBoolean' => false)
-//                                        )
-//                                    ),
-//                                    array(
-//                                        'linkId' => '1.3',
-//                                        'text' => 'diarrea',
-//                                        'answer' => array(
-//                                            array('valueBoolean' => false)
-//                                        )
-//                                    ),
-//                                    array(
-//                                        'linkId' => '1.4',
-//                                        'text' => 'dolor_abdominal',
-//                                        'answer' => array(
-//                                            array('valueBoolean' => true)
-//                                        )
-//                                    ),
-//                                    array(
-//                                        'linkId' => '1.5',
-//                                        'text' => 'dolor_toracico',
-//                                        'answer' => array(
-//                                            array('valueBoolean' => false)
-//                                        )
-//                                    ),
-//                                    array(
-//                                        'linkId' => '1.6',
-//                                        'text' => 'fiebre',
-//                                        'answer' => array(
-//                                            array('valueBoolean' => false)
-//                                        )
-//                                    ),
-//                                    array(
-//                                        'linkId' => '1.7',
-//                                        'text' => 'mialgia',
-//                                        'answer' => array(
-//                                            array('valueBoolean' => false)
-//                                        )
-//                                    ),
-//                                    array(
-//                                        'linkId' => '1.8',
-//                                        'text' => 'odinofagia',
-//                                        'answer' => array(
-//                                            array('valueBoolean' => true)
-//                                        )
-//                                    ),
-//                                    array(
-//                                        'linkId' => '1.9',
-//                                        'text' => 'anosmia',
-//                                        'answer' => array(
-//                                            array('valueBoolean' => true)
-//                                        )
-//                                    ),
-//                                    array(
-//                                        'linkId' => '1.10',
-//                                        'text' => 'ageusia',
-//                                        'answer' => array(
-//                                            array('valueBoolean' => false)
-//                                        )
-//                                    ),
-//                                    array(
-//                                        'linkId' => '1.11',
-//                                        'text' => 'postracion',
-//                                        'answer' => array(
-//                                            array('valueBoolean' => false)
-//                                        )
-//                                    ),
-//                                    array(
-//                                        'linkId' => '1.12',
-//                                        'text' => 'taquipnea',
-//                                        'answer' => array(
-//                                            array('valueBoolean' => false)
-//                                        )
-//                                    ),
-//                                    array(
-//                                        'linkId' => '1.13',
-//                                        'text' => 'tos',
-//                                        'answer' => array(
-//                                            array('valueBoolean' => false)
-//                                        )
-//                                    )
-//                                )
-//                            ),
-//                            array(
-//                                'linkId' => '2',
-//                                'text' => 'respecto a examen covid-19',
-//                                'item' => array(
-//                                    array(
-//                                        'linkId' => '2.1',
-//                                        'text' => 'fue derivado para realizarse el examen?',
-//                                        'answer' => array(
-//                                            array(
-//                                                'valueBoolean' => false,
-//                                                'item' => array(
-//                                                    array(
-//                                                        'linkId' => '2.1.1',
-//                                                        'text' => 'fecha derivacion toma de muestras',
-//                                                        'answer' => array(
-//                                                            array(
-//                                                                'valueDate' => '2020-09-04'
-//                                                            )
-//                                                        )
-//                                                    ),
-//                                                    array(
-//                                                        'linkId' => '2.1.2',
-//                                                        'text' => 'derivacion a SU',
-//                                                        'answer' => array(
-//                                                            array(
-//                                                                'valueBoolean' => false
-//                                                            )
-//                                                        )
-//                                                    ),
-//                                                    array(
-//                                                        'linkId' => '2.1.3',
-//                                                        'text' => '¿cumple cuarentena y aislamiento?',
-//                                                        'answer' => array(
-//                                                            array(
-//                                                                'valueBoolean' => false
-//                                                            )
-//                                                        )
-//                                                    ),
-//                                                    array(
-//                                                        'linkId' => '2.1.4',
-//                                                        'text' => '¿tiene resultado covid?',
-//                                                        'answer' => array(
-//                                                            array(
-//                                                                'valueString' => 'negativo'
-//                                                            )
-//                                                        )
-//                                                    )
-//                                                )
-//                                            )
-//                                        )
-//                                    ),
-//                                    array(
-//                                        'linkId' => '2.2',
-//                                        'text' => 'Observacion de Seguimiento',
-//                                        'answer' => array(
-//                                            array(
-//                                                'valueString' => 'Sin observaciones'
-//                                            )
-//                                        )
-//                                    )
-//                                )
-//                            )
-//
-//                        )
-//
-//                    ),
-//                    'request' => array(
-//                        'method' => 'POST',
-//                        'url' => 'QuestionnaireResponse'
-//                    )
-//                )
-//
-//            )
-//        );
-
-
         try {
             $bundleJson = json_encode($bundle, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
             Storage::disk('public')->put('prueba.json', $bundleJson);
             dump($bundleJson);
-            $this->requestApiEpivigila('POST', 'QuestionnaireResponse', $bundle);
+            $this->requestApiEpivigila('POST', 'Bundle', $bundle);
 
 //            $response = ['status' => 1, 'msg' => 'OK'];
         } catch (RequestException $e) {
