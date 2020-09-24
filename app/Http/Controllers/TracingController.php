@@ -643,7 +643,12 @@ class TracingController extends Controller
             'extension' => array(
                 array(
                     'url' => 'apidocs.epivigila.minsal.cl/tipo-direccion',
-//                        todo cambiar a una de las opciones
+//                        todo cambiar a una de las opciones:
+//                    "domicilio_particular",
+//                    "domicilio_particular_caso_indice",
+//                    "hospitalizacion_clinica",
+//                    "hospitalizacion_domiciliaria",
+//                    "residencia_sanitaria"
                     'valueString' => 'domicilio_particular'
                 ),
                 array(
@@ -680,8 +685,8 @@ class TracingController extends Controller
                     'type' => array(
                         'coding' => array(
                             'system' => 'apidocs.epivigila.minsal.cl/tipo-documento',
+                            //todo hacer dinamico segun tipo doc (run u otro (5))
                             'code' => 1,
-                            //todo campo display debe ser dinamico?
                             'display' => 'run')
                     ),
                     'system' => 'www.registrocivil.cl/run',
@@ -698,7 +703,7 @@ class TracingController extends Controller
             ),
             'telecom' => $telecomArray,
             'gender' => $gender,
-            'birthDate' => '1992-10-27',
+            'birthDate' => '1992-10-27', //todo agregar birthdate
             'address' => $addressArray,
 
             'contact' => array(array(
@@ -755,6 +760,8 @@ class TracingController extends Controller
         else
             dump( 'respuesta getfoliocontactpatientws: ' . $response['mensaje']);
 
+        dump('contacto: ' . $contactPatient->patient->run . '-' . $contactPatient->patient->dv . ' ' . $contactPatient->patient->name .  ' ' . $contactPatient->patient->fathers_family);
+
         //Obtencion de usuario
         $userRut = auth()->user()->run . '-' . auth()->user()->dv;
         $userName = auth()->user()->name;
@@ -786,15 +793,15 @@ class TracingController extends Controller
                     ),
                     'name' => $userName
                 ),
-//                array(
-//                    'resourceType' => 'Organization',
-//                    'id' => 'institucion-seguimiento',
-//                    'identifier' => array(
-//                        array('system' => 'apidocs.epivigila.minsal.cl/establecimientos-DEIS',
-//                            'value' => $establishmentCode) //todo
-//                    ),
-//                    'name' => $establishmentName //todo
-//                )
+                array(
+                    'resourceType' => 'Organization',
+                    'id' => 'institucion-seguimiento',
+                    'identifier' => array(
+                        array('system' => 'apidocs.epivigila.minsal.cl/establecimientos-DEIS',
+                            'value' => 102010) //todo
+                    ),
+                    'name' => 'Actividades gestionadas por la Dirección del Servicio para apoyo de la Red (S.S de Iquique)' //todo
+                )
             ),
             'status' => 'completed',
             'subject' => array(
@@ -844,28 +851,28 @@ class TracingController extends Controller
 //                    'id' => 'contacto',
 //                    'identifier' => array(
 //                        array('system' => 'apidocs.epivigila.minsal.cl/folio-contacto',
-//                            'value' => '') //todo agregar folio contacto
+//                            'value' => '')
 //                    )),
 //                array(
 //                    'resourceType' => 'Practitioner',
 //                    'id' => 'responsable-encuesta',
 //                    'identifier' => array(
 //                        array('system' => 'www.registrocivil.cl/run',
-//                            'value' => '') //todo agregar rut del personal
+//                            'value' => '')
 //                    ),
-//                    'name' => 'Nombre del encargado de seguimiento' //todo
+//                    'name' => 'Nombre del encargado de seguimiento'
 //                ),
 //                array(
 //                    'resourceType' => 'Organization',
 //                    'id' => 'institucion-seguimiento',
 //                    'identifier' => array(
 //                        array('system' => 'apidocs.epivigila.minsal.cl/establecimientos-DEIS',
-//                            'value' => 112315) //todo
+//                            'value' => 112315)
 //                    ),
-//                    'name' => 'Nombre de la institución que realiza el seguimiento' //todo
+//                    'name' => 'Nombre de la institución que realiza el seguimiento'
 //                )
 //            ),
-//            'status' => 'completed', //todo
+//            'status' => 'completed',
 //            'subject' => array(
 //                'reference' => '#encuesta-c19'
 //            ),
@@ -875,7 +882,7 @@ class TracingController extends Controller
 //                    'text' => 'Relación con el caso',
 //                    'answer' => array(
 //                        array(
-//                            'valueCoding' => 'familiar' //todo
+//                            'valueCoding' => 'familiar'
 //                        )
 //                    ),
 //                    'item' => array(
@@ -884,7 +891,7 @@ class TracingController extends Controller
 //                            'text' => 'Parentesco',
 //                            'answer' => array(
 //                                array(
-//                                    'valueCoding' => 'madre_padre' //todo
+//                                    'valueCoding' => 'madre_padre'
 //                                )
 //                            )
 //                        )
@@ -895,7 +902,7 @@ class TracingController extends Controller
 //                    'text' => 'Fecha de inicio de cuarentena',
 //                    'answer' => array(
 //                        array(
-//                            'valueDate' => '2020-08-30' //todo
+//                            'valueDate' => '2020-08-30'
 //                        )
 //                    )
 //                )
@@ -909,7 +916,8 @@ class TracingController extends Controller
         try {
             $bundleJson = json_encode($questionnaireArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
             Storage::disk('public')->put('prueba.json', $bundleJson);
-            dd($bundleJson);
+            dump($bundleJson);
+            $this->requestApiEpivigila('POST', 'QuestionnaireResponse', $questionnaireArray);
 
 //            $response = ['status' => 1, 'msg' => 'OK'];
         } catch (RequestException $e) {
@@ -935,12 +943,14 @@ class TracingController extends Controller
         $patient_run = $event->tracing->patient->run;
         $patient_dv = $event->tracing->patient->dv;
         $patient_rut = $patient_run . '-' . $patient_dv;
-        $response = $this->getFolioPatientWs('1', $patient_rut);
+//        $response = $this->getFolioPatientWs('1', $patient_rut);
 
-        if($response['code'] == 1)
-            $folio = (string)$response['data']['identifier'][0]['value'];
-        else
-            dump($response['mensaje']);
+        dump('patientrut: ' . $patient_rut . ' ' . 'name'. ' ' . $event->tracing->patient->name . ' ' . $event->tracing->patient->fathers_family);
+
+//        if($response['code'] == 1)
+//            $folio = (string)$response['data']['identifier'][0]['value'];
+//        else
+//            dump($response['mensaje']);
 
         /** Obtencion datos de usuario **/
         $user_rut = auth()->user()->run . '-' . auth()->user()->dv;
@@ -954,7 +964,7 @@ class TracingController extends Controller
         $tracing_event_at = $event->event_at;
 
         /** Obtiene dia de seguimiento **/
-        $tracing_day = $tracing_event_at->diffInDays($quarantine_start);
+        $tracing_day = $tracing_event_at->diffInDays($quarantine_start) + 1;
 
         /** Obtener tipo de contacto **/
         //todo definir cuales son tipo llamada y tipo visita. Que pasa con el caso no se pudo contactar, es llamada o visita.
@@ -990,13 +1000,13 @@ class TracingController extends Controller
             else
                 dump( 'respuesta getfoliocontactpatientws: ' . $response['mensaje']);
 
-            dump('foliocontacto: ' . $folioContact);
+//            dump('foliocontacto: ' . $folioContact);
 
         }
 
         /** Obtiene Establecimiento que realiza el seguimiento  **/
         $establishmentName = $event->tracing->establishment->name;
-        $establishmentCode = $event->tracing->establishment->new_code_deis;
+        $establishmentCode = (integer)$event->tracing->establishment->new_code_deis;
 
         /** Obtener sintomas del evento **/
         $symptoms = $event->symptoms;
@@ -1044,11 +1054,17 @@ class TracingController extends Controller
                     'status' => $status,
                     'class' => array(
                         'system' => 'apidocs.epivigila.minsal.cl/tipo-domicilio',
+                        //todo hacer dinamico segun:
+//                        "domicilio_particular",
+//                        "domicilio_particular_caso_indice",
+//                        "hospitalizacion_clinica",
+//                        "hospitalizacion_domiciliaria",
+//                        "residencia_sanitaria"
                         'code' => 'domicilio_particular',
                         'display' => 'Seguimiento con paciente en domicilio particular'
                     ),
                     'subject' => array(
-                        'reference' => 'Patient/' . '56663' // todo agregar $folio
+                        'reference' => 'Patient/' . $folio // todo agregar $folio
                     ),
                     'participant' => array(array(
                         'individual' => array(
@@ -1103,7 +1119,7 @@ class TracingController extends Controller
                                     'relationship' => array(array(
                                         'coding' => array(
                                             'system' => 'apidocs.epivigila.minsal.cl/folio-indice',
-                                            'code' => '20663', // todo agregar $folio,
+                                            'code' => $folio, // todo agregar $folio,
                                             'display' => 'folio-indice'
                                         )
                                     ))
@@ -1242,7 +1258,7 @@ class TracingController extends Controller
                                 'item' => array(
                                     array(
                                         'linkId' => '2.1',
-                                        'text' => 'fue derivado para realizarse el examen?', //todo preguntar por este parametro
+                                        'text' => 'fue derivado para realizarse el examen?', //todo agregar segun evento de seguimiento
                                         'answer' => array(
                                             array(
                                                 'valueBoolean' => false,
@@ -1252,7 +1268,7 @@ class TracingController extends Controller
                                                         'text' => 'fecha derivacion toma de muestras',
                                                         'answer' => array(
                                                             array(
-                                                                'valueDate' => '2020-09-04'
+                                                                'valueDate' => '' //todo quitar fecha derivacion si no tiene
                                                             )
                                                         )
                                                     ),
@@ -1292,7 +1308,7 @@ class TracingController extends Controller
                                         'text' => 'Observacion de Seguimiento',
                                         'answer' => array(
                                             array(
-                                                'valueString' => 'Sin observaciones'
+                                                'valueString' => 'Sin observaciones' //todo agregar detalle del evento
                                             )
                                         )
                                     )
@@ -1603,7 +1619,8 @@ class TracingController extends Controller
         try {
             $bundleJson = json_encode($bundle, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
             Storage::disk('public')->put('prueba.json', $bundleJson);
-            dd($bundleJson);
+            dump($bundleJson);
+            $this->requestApiEpivigila('POST', 'QuestionnaireResponse', $bundle);
 
 //            $response = ['status' => 1, 'msg' => 'OK'];
         } catch (RequestException $e) {
