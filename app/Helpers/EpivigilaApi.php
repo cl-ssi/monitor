@@ -27,7 +27,8 @@ class EpivigilaApi{
             $response = $e->getResponse();
             $responseBodyAsString = $response->getBody()->getContents();
             $decode = json_decode($responseBodyAsString);
-            dd($decode);
+            dump($decode);
+            return $decode;
 //            $response = ['status' => 0, 'msg' => $decode->error];
         }
     }
@@ -49,7 +50,8 @@ class EpivigilaApi{
             $response = $e->getResponse();
             $responseBodyAsString = $response->getBody()->getContents();
             $decode = json_decode($responseBodyAsString);
-            dd($decode);
+            dump($decode);
+            return $decode;
         }
     }
 
@@ -68,6 +70,7 @@ class EpivigilaApi{
             ],
         ]);
 
+        //todo validar en try/catch
         dump(json_decode((string)$response->getBody(), true));
         return json_decode((string)$response->getBody(), true)['access_token'];
     }
@@ -77,7 +80,7 @@ class EpivigilaApi{
      * @param string $method Tipo request (POST, GET)
      * @param string $uri uri que viene despues de BASE_ENDPOINT
      * @param array|null $json array de datos a enviar
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return string
      */
     public function requestApiEpivigila(string $method, string $uri, array $json = null)
     {
@@ -101,9 +104,17 @@ class EpivigilaApi{
             $response = $client->request($method, $uri, $options);
             dump(json_decode((string)$response->getBody(), true));
             return json_decode((string)$response->getBody(), true);
-        } catch (GuzzleException $e) {
-            dd($e->getMessage());
+        } catch (RequestException $e) {
+            $response = $e->getResponse();
+            $responseBodyAsString = $response->getBody()->getContents();
+            $decode = json_decode((string)$responseBodyAsString, true);
+            dump($decode);
+            return $decode;
         }
+//        } catch (GuzzleException $e) {
+//            dump( json_decode((string)$e->getMessage(), true));
+//            return $e->getMessage();
+//        }
 
     }
 

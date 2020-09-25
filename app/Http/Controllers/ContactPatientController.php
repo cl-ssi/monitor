@@ -108,17 +108,23 @@ class ContactPatientController extends Controller
         $contactPatient->index = NULL;
 
         $contactPatient->save();
-
+        $id = $request->get('patient_id');
 
 //         SE ENVIA CONTACTO Y RELACION A API EPIVIGILA
-        //todo QUITAR SIGUIENTES 5 LINEAS ANTES DE GIT PUSH
+        //todo QUITAR SIGUIENTES LINEAS ANTES DE GIT PUSH
 //        $contact = Patient::find($request->get('contact_id'));
-//        $contactPatientIndex = ContactPatient::find($contactPatientId);
-//        $this->setContactPatientWs($contact);
+        $contactPatientIndex = ContactPatient::find($contactPatientId);
+//        $response = $this->setContactPatientWs($contact);
 //        $this->setQuestionnairePatientWs($contactPatientIndex);
-//        dd('finalizado');
+//        dd($response);
 
-        $id = $request->get('patient_id');
+//        if($response['code'] == 1){
+//            session()->flash('info', 'EPIVIGILA: ' . $response['message'] . '. ' . $response['detalle_mensaje']);
+//        }
+//        else{
+//            session()->flash('warning', 'EPIVIGILA: ' . $response['mensaje'] . '. ' . $response['detalle_mensaje']);
+//        }
+
         return redirect()->route('patients.edit', $id);
     }
 
@@ -328,13 +334,13 @@ class ContactPatientController extends Controller
             'resourceType' => 'Patient',
             'identifier' => array(
                 array(
-                    'type' => array(
-                        'coding' => array(
-                            'system' => 'apidocs.epivigila.minsal.cl/tipo-documento',
-                            //todo hacer dinamico segun tipo doc (run u otro (5))
-                            'code' => 1,
-                            'display' => 'run')
-                    ),
+//                    'type' => array(
+//                        'coding' => array(
+//                            'system' => 'apidocs.epivigila.minsal.cl/tipo-documento',
+//                            //todo hacer dinamico segun tipo doc (run u otro (5))
+//                            'code' => 1,
+//                            'display' => 'run')
+//                    ),
                     'system' => 'www.registrocivil.cl/run',
                     'value' => $run
                 )),
@@ -375,15 +381,14 @@ class ContactPatientController extends Controller
             Storage::disk('public')->put('prueba.json', $patientJson);
             dump($patientJson);
             //todo obtener respuesta y verificar si envio fue valido
-            EpivigilaApi::instance()->requestApiEpivigila('POST', 'Patient', $patientArray);
-
+            return EpivigilaApi::instance()->requestApiEpivigila('POST', 'Patient', $patientArray);
 //            $response = ['status' => 1, 'msg' => 'OK'];
         } catch (RequestException $e) {
             $response = $e->getResponse();
             $responseBodyAsString = $response->getBody()->getContents();
             $decode = json_decode($responseBodyAsString);
             dump('====ERROR====: ' . $decode);
-
+            return $decode;
 //            $response = ['status' => 0, 'msg' => $decode->error];
         }
     }
