@@ -109,9 +109,14 @@ class ContactPatientController extends Controller
 
         $contactPatient->save();
 
+
 //         SE ENVIA CONTACTO Y RELACION A API EPIVIGILA
-//        (new TracingController)->setContactPatientWs($request->get('contact_id'));
-//        (new TracingController)->setQuestionnairePatientWs($contactPatientId);
+        //todo QUITAR SIGUIENTES 5 LINEAS ANTES DE GIT PUSH
+//        $contact = Patient::find($request->get('contact_id'));
+//        $contactPatientIndex = ContactPatient::find($contactPatientId);
+//        $this->setContactPatientWs($contact);
+//        $this->setQuestionnairePatientWs($contactPatientIndex);
+//        dd('finalizado');
 
         $id = $request->get('patient_id');
         return redirect()->route('patients.edit', $id);
@@ -247,10 +252,10 @@ class ContactPatientController extends Controller
                 dump('folio indice: ' . $folioIndice);
             }
             else
-                dd($response['mensaje']);
+                dump( '====ERROR==== ' . $response['mensaje']);
         }
         else
-            dd('No existe paciente índice para el contacto');
+            dump('====ERRORR==== ' . 'No existe paciente índice para el contacto');
 
         /** TELECOM ARRAY **/
         $mobile_phone_array = array(
@@ -377,7 +382,7 @@ class ContactPatientController extends Controller
             $response = $e->getResponse();
             $responseBodyAsString = $response->getBody()->getContents();
             $decode = json_decode($responseBodyAsString);
-            dd('error: ' . $decode);
+            dump('====ERROR====: ' . $decode);
 
 //            $response = ['status' => 0, 'msg' => $decode->error];
         }
@@ -392,7 +397,7 @@ class ContactPatientController extends Controller
             dump('folio indice: ' . $folioIndice);
         }
         else
-            dd($response['mensaje']);
+            dump('======ERROR=======: ' . $response['mensaje']);
 
         //Obtiene folio del contacto
         $response = EpivigilaApi::instance()->getFolioContactPatientWs('1', $contactPatient->patient->run . '-' . $contactPatient->patient->dv, $folioIndice);
@@ -497,7 +502,7 @@ class ContactPatientController extends Controller
             $response = $e->getResponse();
             $responseBodyAsString = $response->getBody()->getContents();
             $decode = json_decode($responseBodyAsString);
-            dd('error: ' + $decode);
+            dump('=======ERROR=====: ' + $decode);
 
 //            $response = ['status' => 0, 'msg' => $decode->error];
         }
