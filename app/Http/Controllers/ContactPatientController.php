@@ -122,7 +122,7 @@ class ContactPatientController extends Controller
 //            session()->flash('info', 'EPIVIGILA: ' . $response['message'] . '. ' . $response['detalle_mensaje']);
 //        }
 //        else{
-//            session()->flash('warning', 'EPIVIGILA: ' . $response['mensaje'] . '. ' . $response['detalle_mensaje']);
+//            session()->flash('warning', 'EPIVIGILA: ' . $response['message'] . '. ' . $response['detalle_mensaje']);
 //        }
 
         return redirect()->route('patients.edit', $id);
@@ -334,13 +334,13 @@ class ContactPatientController extends Controller
             'resourceType' => 'Patient',
             'identifier' => array(
                 array(
-//                    'type' => array(
-//                        'coding' => array(
-//                            'system' => 'apidocs.epivigila.minsal.cl/tipo-documento',
-//                            //todo hacer dinamico segun tipo doc (run u otro (5))
-//                            'code' => 1,
-//                            'display' => 'run')
-//                    ),
+                    'type' => array(
+                        'coding' => array(
+                            'system' => 'apidocs.epivigila.minsal.cl/tipo-documento',
+                            //todo hacer dinamico segun tipo doc (run u otro (5))
+                            'code' => 1,
+                            'display' => 'run')
+                    ),
                     'system' => 'www.registrocivil.cl/run',
                     'value' => $run
                 )),
