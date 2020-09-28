@@ -11,16 +11,15 @@
                         id="for_event_at" required value="{{ date('Y-m-d\TH:i:s') }}">
                 </fieldset>
 
-{{--                todo ACTIVAR--}}
-{{--                <fieldset class="form-group col-md-6">--}}
-{{--                    <label for="for_event_type_id">Tipo contacto *</label>--}}
-{{--                    <select name="contact_type" id="for_contact_type" required class="form-control">--}}
-{{--                        <option value=""></option>--}}
-{{--                        <option value = 'llamada'> Llamada Telefónica </option>--}}
-{{--                        <option value = 'visita'> Visita </option>--}}
+                <fieldset class="form-group col-md-6">
+                    <label for="for_event_type_id">Tipo contacto *</label>
+                    <select name="contact_type" id="for_contact_type" required class="form-control">
+                        <option value=""></option>
+                        <option value = 'llamada'> Llamada Telefónica </option>
+                        <option value = 'visita'> Visita </option>
 
-{{--                    </select>--}}
-{{--                </fieldset>--}}
+                    </select>
+                </fieldset>
 
                 <fieldset class="form-group col-md-6">
                     <label for="for_event_type_id">Tipo de evento *</label>
