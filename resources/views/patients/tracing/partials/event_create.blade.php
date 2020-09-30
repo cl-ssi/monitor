@@ -12,6 +12,16 @@
                 </fieldset>
 
                 <fieldset class="form-group col-md-6">
+                    <label for="for_event_type_id">Tipo contacto *</label>
+                    <select name="contact_type" id="for_contact_type" required class="form-control">
+                        <option value=""></option>
+                        <option value = 'llamada'> Llamada Telefónica </option>
+                        <option value = 'visita'> Visita </option>
+
+                    </select>
+                </fieldset>
+
+                <fieldset class="form-group col-md-6">
                     <label for="for_event_type_id">Tipo de evento *</label>
                     <select name="event_type_id" id="for_event_type_id" required class="form-control">
                         <option value=""></option>
