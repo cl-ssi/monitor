@@ -6,9 +6,6 @@
 
 @include('sanitary_residences.nav')
 
-@if(Auth::id() == 211)
-<h1 style="background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red); text-align:center">Que tengas un gran último turno Delia</h1> <small>solamente tu ves esto, para que estés tranquila</small>
-@else
 <h3 class="mb-3" style="text-align:center">Módulo Residencias</h3>
 <h4 class="mb-3" style="text-align:center"> Se les recuerda lo Siguiente</h4>
 <ul style="list-style-type:disc; font-size:15px">
@@ -20,7 +17,6 @@
   <li>Tiene 24 horas para poder modificar un signo vital-evolución-indicación, posterior a este tiempo no se puede modificar lo digitado.</li>
   <li>Está prohibido publicar-difundir pantallazos de cualquier información sensible en RRSS.</li>
 </ul>
-@endif
 
 
 @endsection
