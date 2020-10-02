@@ -3,6 +3,7 @@ namespace App\Helpers;
 
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\Log;
 
 class EpivigilaApi{
 
@@ -27,7 +28,7 @@ class EpivigilaApi{
             $response = $e->getResponse();
             $responseBodyAsString = $response->getBody()->getContents();
             $decode = json_decode($responseBodyAsString);
-            dump($decode);
+            Log::channel('integracionEpivigila')->debug($decode);
             return $decode;
 //            $response = ['status' => 0, 'msg' => $decode->error];
         }
@@ -50,7 +51,7 @@ class EpivigilaApi{
             $response = $e->getResponse();
             $responseBodyAsString = $response->getBody()->getContents();
             $decode = json_decode($responseBodyAsString);
-            dump($decode);
+            Log::channel('integracionEpivigila')->debug($decode);
             return $decode;
         }
     }
@@ -71,7 +72,7 @@ class EpivigilaApi{
         ]);
 
         //todo validar en try/catch
-        dump(json_decode((string)$response->getBody(), true));
+        Log::channel('integracionEpivigila')->debug(json_decode((string)$response->getBody(), true));
         return json_decode((string)$response->getBody(), true)['access_token'];
     }
 
@@ -99,20 +100,20 @@ class EpivigilaApi{
                 $options['json'] = $json;
             }
 
-            dump($options);
+            Log::channel('integracionEpivigila')->debug($options);
 
             $response = $client->request($method, $uri, $options);
-            dump(json_decode((string)$response->getBody(), true));
+            Log::channel('integracionEpivigila')->debug(json_decode((string)$response->getBody(), true));
             return json_decode((string)$response->getBody(), true);
         } catch (RequestException $e) {
             $response = $e->getResponse();
             $responseBodyAsString = $response->getBody()->getContents();
             $decode = json_decode((string)$responseBodyAsString, true);
-            dump($decode);
+            Log::channel('integracionEpivigila')->debug($decode);
             return $decode;
         }
 //        } catch (GuzzleException $e) {
-//            dump( json_decode((string)$e->getMessage(), true));
+//            Log::channel('integracionEpivigila')->debug( json_decode((string)$e->getMessage(), true));
 //            return $e->getMessage();
 //        }
 

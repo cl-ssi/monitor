@@ -251,6 +251,58 @@
                     <textarea class="form-control" name="comment"  id="for_comment" rows="1"></textarea>
                 </fieldset>
             </div>
+
+{{--            <h5>Seguimiento:</h5>--}}
+{{--            <div class="form-row">--}}
+{{--                <fieldset class="form-group col-md-2">--}}
+{{--                    <label for="for_category"--}}
+{{--                        @if($patient->tracing)--}}
+{{--                            hidden--}}
+{{--                        @endif--}}
+{{--                    >Crear seguimiento *</label>--}}
+{{--                    <select class="form-control" name="create_tracing" id="for_create_tracing" title="Seleccione..." required--}}
+{{--                        @if($patient->tracing)--}}
+{{--                            hidden disabled--}}
+{{--                        @endif--}}
+{{--                    >--}}
+{{--                        <option value=true>Si</option>--}}
+{{--                        <option value=false>No</option>--}}
+{{--                    </select>--}}
+{{--                </fieldset>--}}
+
+{{--                <fieldset class="form-group col-md-4">--}}
+{{--                    <label for="for_establishment_id">Establecimiento que realiza seguimiento *</label>--}}
+{{--                    <select name="establishment_id" id="for_establishment_id" class="form-control" required--}}
+{{--                        @if(auth()->user()->cannot('Tracing: change') AND $patient->tracing AND $patient->tracing->establishment_id)--}}
+{{--                            disabled--}}
+{{--                        @endif--}}
+{{--                    >--}}
+{{--                        <option value=""></option>--}}
+{{--                        @foreach($establishments as $estab)--}}
+{{--                            <option--}}
+{{--                                value="{{ $estab->id }}" {{ ($patient->tracing) ? (($patient->tracing->establishment_id == $estab->id) ? 'selected' : '') : '' }}>{{ $estab->alias }}</option>--}}
+{{--                        @endforeach--}}
+{{--                    </select>--}}
+{{--                </fieldset>--}}
+
+{{--                <fieldset class="form-group col-8 col-sm-5 col-md-4 col-lg-3">--}}
+{{--                    <label for="for_quarantine_start_at">Inicio Cuarentena *</label>--}}
+{{--                    <input type="date" class="form-control" name="quarantine_start_at"--}}
+{{--                           id="for_quarantine_start_at" required--}}
+{{--                           value="{{ ($patient->tracing) ? (($patient->tracing->quarantine_start_at) ? $patient->tracing->quarantine_start_at->format('Y-m-d') : '') : '' }}">--}}
+{{--                </fieldset>--}}
+
+{{--                <fieldset class="form-group col-8 col-sm-5 col-md-4 col-lg-3">--}}
+{{--                    <label for="for_quarantine_end_at">Término de Cuarentena *</label>--}}
+{{--                    <input type="date" class="form-control" name="quarantine_end_at"--}}
+{{--                           id="for_quarantine_end_at" required--}}
+{{--                           value="{{ ($patient ->tracing) ? (($patient->tracing->quarantine_end_at) ? $patient->tracing->quarantine_end_at->format('Y-m-d') : '') : '' }}">--}}
+{{--                </fieldset>--}}
+
+{{--            </div>--}}
+
+
+
             <div class="form-row">
               <fieldset class="form-group col-md-3" hidden>
                   <input type="text" class="form-control" name="patient_id" id="for_patient_id" value="{{ $id_patient }}">
@@ -329,9 +381,42 @@ $(document).ready(function(){
             $('#for_relationship').prop('disabled', true);
 
         }
-
-
     });
+
+    $('#for_create_tracing').change(function (){
+        const selectedOption = $(this).children("option:selected").val();
+        if(selectedOption === 'true'){
+            $('#for_establishment_id').prop('disabled', false);
+            $('#for_establishment_id').prop('required', true);
+            $('#for_quarantine_start_at').prop('disabled', false);
+            $('#for_quarantine_start_at').prop('required', true);
+            $('#for_quarantine_end_at').prop('disabled', false);
+            $('#for_quarantine_end_at').prop('required', true);
+        }
+        else {
+            $('#for_establishment_id').prop('disabled', true);
+            $('#for_establishment_id').prop('required', false);
+            $('#for_quarantine_start_at').prop('disabled', true);
+            $('#for_quarantine_start_at').prop('required', false);
+            $('#for_quarantine_end_at').prop('disabled', true);
+            $('#for_quarantine_end_at').prop('required', false);
+        }
+    });
+
+    $('#for_last_contact_at').change(function (){
+        if(!document.getElementById('for_quarantine_start_at').value){
+            const selectedDate = $(this).val().split('T')[0];
+            $('#for_quarantine_start_at').val(selectedDate);
+
+            const dateEnd = new Date($(this).val());
+            dateEnd.setDate(dateEnd.getDate() + 13)
+
+            $('#for_quarantine_end_at').val(dateEnd.toISOString().split('T')[0]);
+        }
+    });
+
+
 });
+
 </script>
 @endsection

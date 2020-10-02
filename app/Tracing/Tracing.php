@@ -26,7 +26,7 @@ class Tracing extends Model  implements Auditable
     protected $fillable = [
         'patient_id','index','functionary',
         'notification_at','notification_mechanism',
-        'next_control_at','status','risk_rating','discharged_at','category',
+        'next_control_at','status','risk_rating','discharged_at',
         'responsible_family_member',
         'prevision','establishment_id',
         'gestation','gestation_week',
