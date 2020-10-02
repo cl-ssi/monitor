@@ -44,6 +44,7 @@ use App\Imports\DemographicImport;
 use App\Imports\SuspectCaseImport;
 
 use App\WSMinsal;
+use PDO;
 use Redirect;
 
 class SuspectCaseController extends Controller
@@ -78,16 +79,20 @@ class SuspectCaseController extends Controller
 
       $patients = Patient::getPatientsBySearch($request->get('text'));
       if(!empty($laboratory->id)){
+		  
           $cases['total'] = SuspectCase::where('laboratory_id',$laboratory->id)->count();
           $cases['positivos']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','positive')->count();
           $cases['negativos']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','negative')->count();
           $cases['pendientes']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','pending')->count();
           $cases['rechazados']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','rejected')->count();
           $cases['indeterminados']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','undetermined')->count();
+		  
+          DB::connection()->getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
           $suspectCases = SuspectCase::getCaseByPatientLaboratory($patients, $laboratory->id)
                                ->latest('id')
                                ->whereIn('pcr_sars_cov_2',$filtro)
                                ->paginate(200);
+          DB::connection()->getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
      }
      else{
           $laboratory = null;
@@ -97,11 +102,14 @@ class SuspectCaseController extends Controller
           $cases['pendientes']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','pending')->count();
           $cases['rechazados']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','rejected')->count();
           $cases['indeterminados']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','undetermined')->count();
+		  
+          DB::connection()->getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
           $suspectCases = SuspectCase::getCaseByPatient($patients)
                               ->latest('id')
                               ->whereNotNull('laboratory_id')
                               ->whereIn('pcr_sars_cov_2',$filtro)
                               ->paginate(200);
+          DB::connection()->getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
       }
       return view('lab.suspect_cases.index', compact('suspectCases','request','laboratory','cases'));
   }
