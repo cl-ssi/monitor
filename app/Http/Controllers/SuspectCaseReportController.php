@@ -885,8 +885,13 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     public function report_seremi(Laboratory $laboratory)
     {
+        $from = Carbon::now()->subDays(15);
+        $to = Carbon::now();
 
-        $cases = SuspectCase::where('laboratory_id', $laboratory->id)->get()->sortDesc();
+        $cases = SuspectCase::where('laboratory_id', $laboratory->id)->
+            whereBetween('created_at', [$from, $to])->
+            get()->
+            sortDesc();
         return view('lab.suspect_cases.reports.seremi', compact('cases', 'laboratory'));
     }
 
