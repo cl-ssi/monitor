@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\ContactPatient;
+use App\Establishment;
 use App\Helpers\EpivigilaApi;
 use App\Patient;
 use App\SuspectCase;
+use App\Tracing\Tracing;
+use Carbon\Carbon;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ContactPatientController extends Controller
 {
@@ -77,8 +82,10 @@ class ContactPatientController extends Controller
           }
         }
 
+        $env_communes = array_map('trim',explode(",",env('COMUNAS')));
+        $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
 
-        return view('patients.contact.create', compact('patients', 'contacts','s', 'id_patient','request', 'message'));
+        return view('patients.contact.create', compact('patients', 'contacts','s', 'id_patient','request', 'message', 'establishments'));
     }
 
     /**
@@ -93,7 +100,6 @@ class ContactPatientController extends Controller
         $contactPatient = new ContactPatient($request->All());
         $contactPatient->save();
         $contactPatientId = $contactPatient->id;
-
 
         $patient = Patient::where('id', $request->get('patient_id'))->first();
 
@@ -111,19 +117,35 @@ class ContactPatientController extends Controller
         $id = $request->get('patient_id');
 
 //         SE ENVIA CONTACTO Y RELACION A API EPIVIGILA
-        //todo QUITAR SIGUIENTES LINEAS ANTES DE GIT PUSH
 //        $contact = Patient::find($request->get('contact_id'));
-        $contactPatientIndex = ContactPatient::find($contactPatientId);
-//        $response = $this->setContactPatientWs($contact);
-//        $this->setQuestionnairePatientWs($contactPatientIndex);
-//        dd($response);
-
-//        if($response['code'] == 1){
-//            session()->flash('info', 'EPIVIGILA: ' . $response['message'] . '. ' . $response['detalle_mensaje']);
+//        $contactPatientIndex = ContactPatient::find($contactPatientId);
+//
+//        if(!$request->has('create_tracing')){
+//            //Caso en que tiene tracing
+//            $contact->tracing->establishment_id = $request->get('establishment_id');
+//            $contact->tracing->quarantine_start_at = $request->get('quarantine_start_at');
+//            $contact->tracing->quarantine_end_at = $request->get('quarantine_end_at');
+//            $contact->tracing->save();
+//            $responseContact = $this->setContactPatientWs($contact, $contactPatientIndex);
+//            $responseQuestionnaire = $this->setQuestionnairePatientWs($contactPatientIndex, $contact->tracing);
+//
+//        }elseif ($request->boolean('create_tracing') == true){
+//            //Caso en que no tiene tracing y se desea crear uno.
+//            $tracing = new Tracing($request->All());
+//            $tracing->patient_id = $contact->id;
+//            $tracing->index = NULL;
+//            $tracing->save();
+//            $responseContact = $this->setContactPatientWs($contact, $contactPatientIndex);
+//            $responseQuestionnaire = $this->setQuestionnairePatientWs($contactPatientIndex, $tracing);
+//
+//        }else{
+//            //Caso en que tiene tracing y no se desea crear uno
+//            $responseContact = $this->setContactPatientWs($contact, $contactPatientIndex);
+//            $responseQuestionnaire['code'] = 0;
+//            $responseQuestionnaire['mensaje'] = 'No se ingresó informacion de los datos del contacto a epivigila';
 //        }
-//        else{
-//            session()->flash('warning', 'EPIVIGILA: ' . $response['message'] . '. ' . $response['detalle_mensaje']);
-//        }
+//
+//        $this->showEpivigilaMessage($responseQuestionnaire, $responseContact);
 
         return redirect()->route('patients.edit', $id);
     }
@@ -190,10 +212,21 @@ class ContactPatientController extends Controller
 
     /**
      * En desarrollo. Envía contacto estrecho
-     * @param Patient $patient
-     * @throws GuzzleException
+     * @param Patient $patient contacto estrecho
+     * @param ContactPatient $indexContactPatient
+     * @return array|mixed|string
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function setContactPatientWs(Patient $patient){
+    public function setContactPatientWs(Patient $patient, ContactPatient $indexContactPatient)
+    {
+        if($patient->run){
+            $idTypeContact = '1';
+            $idContact = $patient->run. '-' . $patient->dv;
+        }
+        else{
+            $idTypeContact = '5';
+            $idContact = $patient->other_identification;
+        }
 
         $run = $patient->run . '-' . $patient->dv;
         $family = $patient->fathers_family;
@@ -203,6 +236,7 @@ class ContactPatientController extends Controller
         $home_phone = ($patient->demographic->telephone2) ? (int)$patient->demographic->telephone2 : null;
         $email = ($patient->demographic->email) ? $patient->demographic->email : null;
         $gender = $patient->gender;
+        $birthday = Carbon::parse($patient->birthday)->toDateString();
         $city = $patient->demographic->city;
         $region = $patient->demographic->region->name_epivigila;
         $via = strtolower($patient->demographic->street_type);
@@ -216,31 +250,22 @@ class ContactPatientController extends Controller
             $comuna_code_deis = '0' . $comuna_code_deis;
         }
 
-        //todo obtener suspect case por parametro?, por ahora se obtiene el ultimo caso
+        //Obtiene ultimo suspect case
         $suspectCase = SuspectCase::where('patient_id', $patient->id)
             ->orderBy('id', 'desc')
             ->first();
 
-        /** Obtiene codigo deis del establecimiento del suspect case **/
-        $establecimiento_code_deis = ($suspectCase->establishment->new_code_deis) ?
-            (int)$suspectCase->establishment->new_code_deis : null;
+        /** Obtiene codigo deis del establecimiento del tracing, si no tiene lo obtiene de suspect case **/
+        $establecimiento_code_deis = ($patient->tracing) ?
+            (int)$patient->tracing->establishment->new_code_deis : (int)$suspectCase->establishment->new_code_deis;
 
-        /** Obtiene paciente indice del contacto **/
-        $indexContactPatient = ContactPatient::select('patient_id')
-            ->where('contact_id', $patient->id)
-            ->where('index', true)->first();
-
-        //todo verificar si no tiene paciente indice
-
-        dump('Paciente indice: ' . $indexContactPatient->patient_id);
-
+        /**Obtiene Paciente indice**/
         $indexPatient = Patient::select('run', 'dv')->where('id', $indexContactPatient->patient_id)->first();
+        Log::channel('integracionEpivigila')->debug('Paciente indice: ' . $indexContactPatient->patient_id);
+        Log::channel('integracionEpivigila')->debug('Paciente indice: ' . $indexPatient->run . '-' . $indexPatient->dv);
 
-        dump('Paciente indice: ' . $indexPatient->run . '-' . $indexPatient->dv);
-
+        $response = array();
         if ($indexContactPatient != null){
-//            $response= $this->getFolioPatientWs('1', '17353836-7');
-
             if($indexPatient->run){
                 $idType = '1';
                 $idPatient = $indexPatient->run. '-' . $indexPatient->dv;
@@ -250,18 +275,23 @@ class ContactPatientController extends Controller
                 $idPatient = $indexPatient->other_identification;
             }
 
-//            $response = $this->getFolioPatientWs($idType, $idPatient);
             $response = EpivigilaApi::instance()->getFolioPatientWs($idType, $idPatient);
 
             if($response['code'] == 1){
                 $folioIndice = (string)$response['data']['identifier'][0]['value'];
-                dump('folio indice: ' . $folioIndice);
+                Log::channel('integracionEpivigila')->debug('folio indice: ' . $folioIndice);
             }
-            else
-                dump( '====ERROR==== ' . $response['mensaje']);
+            else{
+                Log::channel('integracionEpivigila')->debug( '====ERROR==== ' . (isset($response['mensaje']) ? $response['mensaje'] : $response['message']));
+                return $response;
+            }
         }
-        else
-            dump('====ERRORR==== ' . 'No existe paciente índice para el contacto');
+        else{
+            Log::channel('integracionEpivigila')->debug('====ERRORR==== ' . 'No existe paciente índice para el contacto');
+            $response['code'] = 0;
+            $response['mensaje'] = 'No existe paciente indice para el contacto.';
+            return $response;
+        }
 
         /** TELECOM ARRAY **/
         $mobile_phone_array = array(
@@ -288,14 +318,12 @@ class ContactPatientController extends Controller
         if($email){array_push($telecomArray, $email_array);}
 
         /** ADDRESS ARRAY **/
-
         $addressArray = array(
             'state' => $region,
             'country' => 'CL',
             'extension' => array(
                 array(
                     'url' => 'apidocs.epivigila.minsal.cl/tipo-direccion',
-//                        todo cambiar a una de las opciones:
 //                    "domicilio_particular",
 //                    "domicilio_particular_caso_indice",
 //                    "hospitalizacion_clinica",
@@ -337,12 +365,11 @@ class ContactPatientController extends Controller
                     'type' => array(
                         'coding' => array(
                             'system' => 'apidocs.epivigila.minsal.cl/tipo-documento',
-                            //todo hacer dinamico segun tipo doc (run u otro (5))
-                            'code' => 1,
+                            'code' => $idTypeContact,
                             'display' => 'run')
                     ),
                     'system' => 'www.registrocivil.cl/run',
-                    'value' => $run
+                    'value' => $idContact
                 )),
             'name' => array(
                 'family' => $family,
@@ -355,7 +382,7 @@ class ContactPatientController extends Controller
             ),
             'telecom' => $telecomArray,
             'gender' => $gender,
-            'birthDate' => '1992-10-27', //todo agregar birthdate
+            'birthDate' => $birthday,
             'address' => $addressArray,
 
             'contact' => array(array(
@@ -378,54 +405,59 @@ class ContactPatientController extends Controller
 
         try {
             $patientJson = json_encode($patientArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-            Storage::disk('public')->put('prueba.json', $patientJson);
-            dump($patientJson);
-            //todo obtener respuesta y verificar si envio fue valido
+            Storage::disk('public')->put('pruebaContacto.json', $patientJson);
+            Log::channel('integracionEpivigila')->debug($patientJson);
             return EpivigilaApi::instance()->requestApiEpivigila('POST', 'Patient', $patientArray);
-//            $response = ['status' => 1, 'msg' => 'OK'];
         } catch (RequestException $e) {
             $response = $e->getResponse();
             $responseBodyAsString = $response->getBody()->getContents();
             $decode = json_decode($responseBodyAsString);
-            dump('====ERROR====: ' . $decode);
+            Log::channel('integracionEpivigila')->debug('====ERROR====: ' . $decode);
             return $decode;
-//            $response = ['status' => 0, 'msg' => $decode->error];
         }
     }
 
-    public function setQuestionnairePatientWs(ContactPatient $contactPatient){
-
+    public function setQuestionnairePatientWs(ContactPatient $contactPatient, Tracing $tracing)
+    {
         //Obtencion folio del indice
         $response =  EpivigilaApi::instance()->getFolioPatientWs('1', $contactPatient->self_patient->run . '-' . $contactPatient->self_patient->dv);
         if($response['code'] == 1){
             $folioIndice = (string)$response['data']['identifier'][0]['value'];
-            dump('folio indice: ' . $folioIndice);
+            Log::channel('integracionEpivigila')->debug('folio indice: ' . $folioIndice);
         }
-        else
-            dump('======ERROR=======: ' . $response['mensaje']);
+        else{
+            Log::channel('integracionEpivigila')->debug('======ERROR=======: ' . (isset($response['mensaje']) ? $response['mensaje'] : $response['message']));
+            return $response;
+        }
 
         //Obtiene folio del contacto
         $response = EpivigilaApi::instance()->getFolioContactPatientWs('1', $contactPatient->patient->run . '-' . $contactPatient->patient->dv, $folioIndice);
         if($response['code'] == 1)
             $folioContact = (string)$response['data']['identifier'][0]['value'];
-        else
-            dump( 'respuesta getfoliocontactpatientws: ' . $response['mensaje']);
+        else{
+            Log::channel('integracionEpivigila')->debug( 'respuesta getfoliocontactpatientws: ' . (isset($response['mensaje']) ? $response['mensaje'] : $response['message']));
+            return $response;
 
-        dump('contacto: ' . $contactPatient->patient->run . '-' . $contactPatient->patient->dv . ' ' . $contactPatient->patient->name .  ' ' . $contactPatient->patient->fathers_family);
+        }
+
+        Log::channel('integracionEpivigila')->debug('contacto: ' . $contactPatient->patient->run . '-' . $contactPatient->patient->dv . ' ' . $contactPatient->patient->name .  ' ' . $contactPatient->patient->fathers_family);
 
         //Obtencion de usuario
         $userRut = auth()->user()->run . '-' . auth()->user()->dv;
         $userName = auth()->user()->name;
 
         //Obtencion de establecimiento
-//        $establishmentCode = auth()->user()->establishment->new_code_deis;
-//        $establishmentName = auth()->user()->establishment->name;
+        $establishmentCode = $tracing->establishment->new_code_deis;
+        $establishmentName = $tracing->establishment->name;
 
         //Obtencion de relacion
         $relacion = $contactPatient->categoryEpivigila;
         $parentesco = $contactPatient->relationshipNameEpivigila;
 
+        //Obtencion inicio cuarentena
+        $inicioCuarentena = Carbon::parse($tracing->quarantine_start_at)->toDateString();
 
+        //Creacion de array json para envio
         $questionnaireArray = array('resourceType' => 'QuestionnaireResponse',
             'contained' => array(
                 array(
@@ -449,9 +481,9 @@ class ContactPatientController extends Controller
                     'id' => 'institucion-seguimiento',
                     'identifier' => array(
                         array('system' => 'apidocs.epivigila.minsal.cl/establecimientos-DEIS',
-                            'value' => 102010) //todo
+                            'value' => $establishmentCode)
                     ),
-                    'name' => 'Actividades gestionadas por la Dirección del Servicio para apoyo de la Red (S.S de Iquique)' //todo
+                    'name' => $establishmentName
                 )
             ),
             'status' => 'completed',
@@ -484,7 +516,7 @@ class ContactPatientController extends Controller
                     'text' => 'Fecha de inicio de cuarentena',
                     'answer' => array(
                         array(
-                            'valueDate' => '2020-09-24' //todo
+                            'valueDate' => $inicioCuarentena
                         )
                     )
                 )
@@ -498,21 +530,36 @@ class ContactPatientController extends Controller
 
         try {
             $bundleJson = json_encode($questionnaireArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-            Storage::disk('public')->put('prueba.json', $bundleJson);
-            dump($bundleJson);
-            EpivigilaApi::instance()->requestApiEpivigila('POST', 'QuestionnaireResponse', $questionnaireArray);
-
-//            $response = ['status' => 1, 'msg' => 'OK'];
+            Storage::disk('public')->put('pruebaQuestionnaire.json', $bundleJson);
+            Log::channel('integracionEpivigila')->debug($bundleJson);
+            return EpivigilaApi::instance()->requestApiEpivigila('POST', 'QuestionnaireResponse', $questionnaireArray);
         } catch (RequestException $e) {
             $response = $e->getResponse();
             $responseBodyAsString = $response->getBody()->getContents();
             $decode = json_decode($responseBodyAsString);
-            dump('=======ERROR=====: ' + $decode);
-
-//            $response = ['status' => 0, 'msg' => $decode->error];
+            Log::channel('integracionEpivigila')->debug('=======ERROR=====: ' . $decode);
+            return $decode;
         }
 
     }
 
+    /** Muestra mensajes desde API Epivigila
+     * @param array $responseQuestionnaire
+     * @param array $responseContact
+     */
+    private function showEpivigilaMessage(array $responseQuestionnaire, array $responseContact): void
+    {
+        if ($responseQuestionnaire['code'] == 1) {
+            session()->flash('info', 'EPIVIGILA SEGUIMIENTO: ' . (isset($responseQuestionnaire['mensaje']) ? $responseQuestionnaire['mensaje'] : $responseQuestionnaire['message']) . '. ' . $responseQuestionnaire['detalle_mensaje']);
+        } else {
+            session()->flash('warning', 'EPIVIGILA SEGUIMIENTO: ' . (isset($responseQuestionnaire['mensaje']) ? $responseQuestionnaire['mensaje'] : $responseQuestionnaire['message']) . '. ' . $responseQuestionnaire['detalle_mensaje']);
+        }
+
+        if ($responseContact['code'] == 1) {
+            session()->flash('info', 'EPIVIGILA CONTACTO: ' . (isset($responseContact['mensaje']) ? $responseContact['mensaje'] : $responseContact['message']) . '. ' . $responseContact['detalle_mensaje']);
+        } else {
+            session()->flash('warning', 'EPIVIGILA CONTACTO: ' . (isset($responseContact['mensaje']) ? $responseContact['mensaje'] : $responseContact['message']) . '. ' . $responseContact['detalle_mensaje']);
+        }
+    }
 
 }

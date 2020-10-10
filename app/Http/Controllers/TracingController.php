@@ -491,8 +491,8 @@ class TracingController extends Controller
         return view('patients.tracing.without_events', compact('tracingsWithoutEvents'));
     }
 
-    public function setTracingBundleWs(Event $event){
-
+    public function setTracingBundleWs(Event $event)
+    {
         /** Si el caso no se pudo contactar (event_type_id == 6) **/
         if($event->event_type_id == 6)
             $status = 'cancelled';
@@ -667,7 +667,6 @@ class TracingController extends Controller
                     'status' => $status,
                     'class' => array(
                         'system' => 'apidocs.epivigila.minsal.cl/tipo-domicilio',
-                        //todo hacer dinamico segun:
 //                        "domicilio_particular",
 //                        "domicilio_particular_caso_indice",
 //                        "hospitalizacion_clinica",

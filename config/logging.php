@@ -37,6 +37,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
+            'name' => 'laravel-local',
             'channels' => ['single'],
             'ignore_exceptions' => false,
         ],
@@ -44,6 +45,12 @@ return [
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
+            'level' => 'debug',
+        ],
+
+        'integracionEpivigila' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/integracion_epivigila.log'),
             'level' => 'debug',
         ],
 
