@@ -289,7 +289,7 @@ jQuery(document).ready(function($){
 
 
 
-$('input[name=run]').change(function() {
+$('input[name=run]').change(function() {    
     var str = $("#for_run").val();
     $.get('{{ route('patients.get')}}/'+str, function(data) {
         if(data){
@@ -325,9 +325,9 @@ $('input[name=run]').change(function() {
     });
 });
 
-$('input[name=other_identification]').change(function() {
+$('input[name=other_identification]').change(function() {    
     var str = $("#for_other_identification").val();
-    $.get('{{ route('patients.get')}}/'+str, function(data) {
+    $.get('{{ route('patients.getotheridentification')}}/'+str, function(data) {
         if(data){
             document.getElementById("for_id").value = data.id;
             // document.getElementById("for_other_identification").value = data.other_identification;

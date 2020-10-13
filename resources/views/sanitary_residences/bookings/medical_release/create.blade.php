@@ -26,6 +26,7 @@
                 <option value="Hospitalizado UCI">Hospitalizado UCI</option>
                 <option value="Hospitalizado UCI (Ventilador)">Hospitalizado UCI (Ventilador)</option>
                 <option value="Residencia Sanitaria">Residencia Sanitaria</option>                
+                <option value="Otra Institución">Otras instituciones (SENAME, Penitenciaria, etc.)</option>
             </select>
         </fieldset>
 

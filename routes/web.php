@@ -60,6 +60,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::prefix('patients')->name('patients.')->middleware('auth')->group(function () {
     Route::get('get/{rut?}','PatientController@getPatient')->name('get')->middleware('auth');
+    Route::get('getotheridentification/{other_identification?}','PatientController@getPatientOtherIdentification')->name('getotheridentification')->middleware('auth');
+    //Route::get('get/{rut?}','PatientController@getPatient')->name('get')->middleware('auth');
     Route::get('georeferencing','PatientController@georeferencing')->name('georeferencing')->middleware('can:Patient: georeferencing');
     Route::get('/', 'PatientController@index')->name('index')->middleware('can:Patient: list' );
     Route::get('/dialisys/{establishment?}', 'PatientController@index')->name('dialysis.index')->middleware('can:DialysisCenter: user');
@@ -123,9 +125,11 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
         });
 
         Route::prefix('ws')->name('ws.')->group(function (){
-            Route::get('/get_folio_patient/{type_id}/{id}', 'TracingController@getFolioPatientWs')->name('get_folio_patient');
-            Route::get('/set_contact_patient/{patient}', 'TracingController@setContactPatientWs')->name('set_contact_patient');
+//            Route::get('/get_folio_patient/{type_id}/{id}', 'TracingController@getFolioPatientWs')->name('get_folio_patient');
+            Route::get('/set_contact_patient/{patient}', 'ContactPatientController@setContactPatientWs')->name('set_contact_patient');
+            Route::get('/set_questionnaire_patient/{contact_patient}', 'ContactPatientController@setQuestionnairePatientWs')->name('set_questionnaire_patient');
             Route::get('/set_tracing_bundle/{event}', 'TracingController@setTracingBundleWs')->name('set_tracing_bundle');
+
         });
 
     });

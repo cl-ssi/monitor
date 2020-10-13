@@ -43,9 +43,7 @@
         <th nowrap>FECHA DE INGRESO</th>
         <th nowrap>NACIONALIDAD</th>
         <th nowrap>CAUSAL DE ALTA</th>
-        <th nowrap>FECHA DE EGRESO</th>
-        <th nowrap>VACUNADO INFLUENZA</th>
-        <th nowrap>EXAMEN COVID AL EGRESO</th>
+        <th nowrap>FECHA DE EGRESO</th>        
         <th nowrap>OBSERVACIONES</th>
     </thead>
     <tbody>
@@ -83,9 +81,7 @@
             <td nowrap> {{ $booking->from }} </td>
             <td nowrap>{{ ($booking->patient->demographic)?$booking->patient->demographic->nationality:'' }}</td>
             <td nowrap>{{ $booking->released_cause }}</td>
-            <td nowrap>{{ $booking->real_to }}</td>
-            <td nowrap></td>
-            <td nowrap></td>
+            <td nowrap>{{ $booking->real_to }}</td>            
             <td nowrap> {{ $booking->observations }}</td>
         </tr>
         @endif

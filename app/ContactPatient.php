@@ -16,7 +16,9 @@ class ContactPatient extends Model implements Auditable
     use softDeletes;
 
     protected $fillable = [
-        'patient_id', 'contact_id', 'last_contact_at', 'category', 'relationship', 'live_together', 'comment', 'index', 'user_id'
+        'patient_id', 'contact_id', 'last_contact_at', 'category', 'relationship', 'live_together', 'comment', 'index',
+        'user_id','flight_name', 'flight_date', 'waiting_room_establishment', 'social_meeting_place', 'social_meeting_date',
+        'company_name', 'functionary_profession', 'institution', 'mode_of_transport'
     ];
 
     public function patient() {
@@ -75,6 +77,32 @@ class ContactPatient extends Model implements Auditable
       }
     }
 
+    public function getCategoryEpivigilaAttribute(){
+      switch ($this->category) {
+          case "institutional":
+              return 'institucional';
+              break;
+          case "ocupational":
+              return 'laboral';
+              break;
+          case "passenger":
+              return 'pasajero';
+              break;
+          case "social":
+              return 'social';
+              break;
+          case "waiting room":
+              return 'sala_espera';
+              break;
+          case "intradomiciliary":
+          case "family":
+              return 'familiar';
+              break;
+          case "functionary":
+              return 'personal_salud';
+              break;
+      }
+    }
 
     public function getRelationshipNameAttribute(){
         switch ($this->relationship) {
@@ -165,6 +193,52 @@ class ContactPatient extends Model implements Auditable
 
             case "other":
                 return 'Otro Parentesco u Relación';
+                break;
+        }
+    }
+    public function getRelationshipNameEpivigilaAttribute(){
+        switch ($this->relationship) {
+            case "grandmother":
+            case "sister in law":
+            case "brother in law":
+            case "cousin":
+            case "niece":
+            case "nephew":
+            case "mother in law":
+            case "father in law":
+            case "aunt":
+            case "uncle":
+            case "grandchild":
+            case "daughter in law":
+            case "son in law":
+            case "grandfather":
+                return 'otro_familiar';
+                break;
+
+            case "husband":
+            case "girlfriend":
+            case "boyfriend":
+            case "wife":
+                return 'pareja';
+                break;
+
+            case "brother":
+            case "sister":
+                return 'hermano_a';
+                break;
+
+            case "son":
+            case "daughter":
+                return 'hijo_a';
+                break;
+
+            case "father":
+            case "mother":
+                return 'madre_padre';
+                break;
+
+            case "other":
+                return 'otra_relacion';
                 break;
         }
     }

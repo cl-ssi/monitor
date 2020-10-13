@@ -51,7 +51,9 @@
         <th nowrap>Nombres</th>
         <th nowrap>Sexo</th>
         <th nowrap>Fecha de Nacimiento (dd/mm/aaaa)</th>
-        <th nowrap>Situación COVID-19 Actual</th>
+        <th nowrap>Edad</th>
+        <th nowrap>Criterio de Ingreso</th>
+        <th nowrap>Resultado Último Examen</th>
         <th nowrap>Otros antecedentes médicos (Crónicos, gestantes, otros)</th>
         <th nowrap>Prescripción médica vigente</th>
         <th nowrap>Previsión de salud</th>
@@ -60,9 +62,7 @@
         <th nowrap>Fecha de Ingreso</th>
         <th nowrap>Nacionalidad</th>
         <th nowrap>Causal De Alta</th>
-        <th nowrap>Fecha De Egreso</th>
-        <th nowrap>Vacunado Influeza</th>
-        <th nowrap>Examen Covid Al Egreso</th>
+        <th nowrap>Fecha De Egreso</th>        
         <th nowrap>Observaciones</th>
     </thead>
     <tbody>
@@ -91,6 +91,8 @@
             <td nowrap>{{$booking->patient->name}}</td>
             <td nowrap>{{$booking->patient->sexEsp}}</td>
             <td nowrap>{{ ($booking->patient->birthday)? $booking->patient->birthday->format('d/m/Y') :''}}</td>
+            <td nowrap>{{ $booking->patient->age }}</td>
+            <td nowrap>{{ $booking->entry_criteria }}</td>
             <td nowrap>{{ $booking->patient->suspectCases->last()? $booking->patient->suspectCases->last()->covid19:'' }}</td>
             <td nowrap>{{ $booking->morbid_history }}</td>
             <td nowrap>{{$booking->commonly_used_drugs}}</td>
@@ -100,9 +102,7 @@
             <td nowrap> {{ $booking->from }} </td>
             <td nowrap>{{ ($booking->patient->demographic)?$booking->patient->demographic->nationality:'' }}</td>
             <td nowrap>{{ $booking->released_cause }}</td>
-            <td nowrap>{{ $booking->real_to }}</td>
-            <td nowrap></td>
-            <td nowrap></td>
+            <td nowrap>{{ $booking->real_to }}</td>            
             <td nowrap> {{ $booking->observations }}</td>
         </tr>        
         @endforeach        
