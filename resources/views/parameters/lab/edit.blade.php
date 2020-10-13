@@ -14,6 +14,12 @@
     <div class="form-row">
 
         <fieldset class="form-group col-6 col-md-4">
+            <label for="for_id_openagora">Id Openagora</label>
+            <input type="text" class="form-control" name="id_openagora" id="for_id_openagora"
+                placeholder="" autocomplete="off" value ="{{$laboratory->id_openagora}}">
+        </fieldset>
+
+        <fieldset class="form-group col-6 col-md-4">
             <label for="for_name">Nombre</label>
             <input type="text" class="form-control" name="name" id="for_name" required
                 placeholder="" autocomplete="off" value ="{{$laboratory->name}}">

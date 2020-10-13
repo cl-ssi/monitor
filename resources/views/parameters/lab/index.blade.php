@@ -13,6 +13,7 @@
 <table class="table table-sm table-bordered">
     <thead>
         <tr>
+            <th>Id Openagora</th>
             <th>Nombre</th>
             <th>Alias</th>
             <th>Externo</th>
@@ -28,6 +29,7 @@
     <tbody>
     @foreach($laboratories as $laboratory)
         <tr>
+            <td>{{ $laboratory->id_openagora }}</td>
             <td>{{ $laboratory->name }}</td>
             <td>{{ $laboratory->alias }}</td>
             <td>{{ ($laboratory->external == 1)? 'Si':'No' }}</td>
