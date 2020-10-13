@@ -117,34 +117,34 @@ class ContactPatientController extends Controller
         $id = $request->get('patient_id');
 
 //         SE ENVIA CONTACTO Y RELACION A API EPIVIGILA
-//        $contact = Patient::find($request->get('contact_id'));
-//        $contactPatientIndex = ContactPatient::find($contactPatientId);
-//
-//        if(!$request->has('create_tracing')){
-//            //Caso en que tiene tracing
-//            $contact->tracing->establishment_id = $request->get('establishment_id');
-//            $contact->tracing->quarantine_start_at = $request->get('quarantine_start_at');
-//            $contact->tracing->quarantine_end_at = $request->get('quarantine_end_at');
-//            $contact->tracing->save();
+        $contact = Patient::find($request->get('contact_id'));
+        $contactPatientIndex = ContactPatient::find($contactPatientId);
+
+        if(!$request->has('create_tracing')){
+            //Caso en que tiene tracing
+            $contact->tracing->establishment_id = $request->get('establishment_id');
+            $contact->tracing->quarantine_start_at = $request->get('quarantine_start_at');
+            $contact->tracing->quarantine_end_at = $request->get('quarantine_end_at');
+            $contact->tracing->save();
 //            $responseContact = $this->setContactPatientWs($contact, $contactPatientIndex);
 //            $responseQuestionnaire = $this->setQuestionnairePatientWs($contactPatientIndex, $contact->tracing);
-//
-//        }elseif ($request->boolean('create_tracing') == true){
-//            //Caso en que no tiene tracing y se desea crear uno.
-//            $tracing = new Tracing($request->All());
-//            $tracing->patient_id = $contact->id;
-//            $tracing->index = NULL;
-//            $tracing->save();
+
+        }elseif ($request->boolean('create_tracing') == true){
+            //Caso en que no tiene tracing y se desea crear uno.
+            $tracing = new Tracing($request->All());
+            $tracing->patient_id = $contact->id;
+            $tracing->index = NULL;
+            $tracing->save();
 //            $responseContact = $this->setContactPatientWs($contact, $contactPatientIndex);
 //            $responseQuestionnaire = $this->setQuestionnairePatientWs($contactPatientIndex, $tracing);
-//
-//        }else{
-//            //Caso en que tiene tracing y no se desea crear uno
+
+        }else{
+            //Caso en que tiene tracing y no se desea crear uno
 //            $responseContact = $this->setContactPatientWs($contact, $contactPatientIndex);
 //            $responseQuestionnaire['code'] = 0;
 //            $responseQuestionnaire['mensaje'] = 'No se ingresó informacion de los datos del contacto a epivigila';
-//        }
-//
+        }
+
 //        $this->showEpivigilaMessage($responseQuestionnaire, $responseContact);
 
         return redirect()->route('patients.edit', $id);
@@ -457,6 +457,162 @@ class ContactPatientController extends Controller
         //Obtencion inicio cuarentena
         $inicioCuarentena = Carbon::parse($tracing->quarantine_start_at)->toDateString();
 
+        //Datos extra dependiendo de categoria de contacto
+        $arrayItems = array();
+
+        //Data para institucional
+        $arrayInstitutional = array(
+            'linkId' => '1.3',
+            'text' => 'Nombre institución',
+            'answer' => array(
+                array(
+                    'valueCoding' => $contactPatient->institution
+                )
+            )
+        );
+
+        //Data para laboral
+        $arrayOcupational = array(
+            'linkId' => '1.2',
+            'text' => 'Nombre empresa',
+            'answer' => array(
+                array(
+                    'valueCoding' => $contactPatient->company_name
+                )
+            )
+        );
+
+        //Data para pasajero
+        $arrayAirMode = array(
+            array(
+                'linkId' => '1.4.1',
+                'text' => 'Nombre de vuelo',
+                'answer' => array(
+                    array(
+                        'valueString' => $contactPatient->flight_name
+                    )
+                )
+            ),
+            array(
+                'linkId' => '1.4.3',
+                'text' => 'Detalle del pasajero',
+                'answer' => array(
+                    array(
+                        'valueString' =>  $contactPatient->comment
+                    )
+                )
+            )
+        );
+
+        if ($contactPatient->flight_date){
+            $arrayFlightDate = array(
+                'linkId' => '1.4.2',
+                'text' => 'Fecha de vuelo',
+                'answer' => array(
+                    array(
+                        'valueDate' =>  Carbon::parse($contactPatient->flight_date)->toDateString()
+                    )
+                )
+            );
+            array_push($arrayAirMode, $arrayFlightDate);
+        }
+
+        $arrayPassenger = array(
+            'linkId' => '1.4',
+            'text' => 'Tipo de transporte',
+            'answer' => array(
+                array(
+                    'valueCoding' => $contactPatient->mode_of_transport
+                )
+            ),
+            'item' => $arrayAirMode
+        );
+
+        //Data para social
+        $arraySocialMeetingDate = array();
+        if ($contactPatient->social_meeting_date) {
+            $arraySocialMeetingDate = array(
+                array(
+                    'linkId' => '1.5.1',
+                    'text' => 'Fecha encuentro social',
+                    'answer' => array(
+                        array(
+                            'valueDate' => Carbon::parse($contactPatient->social_meeting_date)->toDateString()
+                        )
+                    )
+                )
+            );
+        }
+
+        $arraySocial = array(
+            'linkId' => '1.5',
+            'text' => 'Nombre lugar encuentro social',
+            'answer' => array(
+                array(
+                    'valueString' => $contactPatient->social_meeting_place
+                )
+            ),
+            'item' => $arraySocialMeetingDate
+        );
+
+        //Data para sala se espera
+        $arrayWaitingRoom = array(
+            'linkId' => '1.7',
+            'text' => 'Nombre establecimiento sala de espera',
+            'answer' => array(
+                array(
+                    'valueCoding' => $contactPatient->waiting_room_establishment
+                )
+            )
+        );
+
+        //Data para functionary
+        $arrayFunctionary = array(
+            'linkId' => '1.6',
+            'text' => 'Profesión personal de salud',
+            'answer' => array(
+                array(
+                    'valueCoding' => $contactPatient->functionary_profession
+                )
+            )
+        );
+
+        //Data para familiar
+        $arrayFamily = array(
+            'linkId' => '1.1',
+            'text' => 'Parentesco',
+            'answer' => array(
+                array(
+                    'valueCoding' => $parentesco
+                )
+            )
+        );
+
+        //Se agrega array segun corresponda
+        switch($contactPatient->category){
+            case 'institutional':
+                array_push($arrayItems, $arrayInstitutional);
+                break;
+            case 'ocupational':
+                array_push($arrayItems, $arrayOcupational);
+                break;
+            case 'passenger';
+                array_push($arrayItems, $arrayPassenger);
+                break;
+            case 'social';
+                array_push($arrayItems, $arraySocial);
+                break;
+            case 'waiting room';
+                array_push($arrayItems, $arrayWaitingRoom);
+                break;
+            case 'family';
+                array_push($arrayItems, $arrayFamily);
+                break;
+            case 'functionary';
+                array_push($arrayItems, $arrayFunctionary);
+                break;
+        }
+
         //Creacion de array json para envio
         $questionnaireArray = array('resourceType' => 'QuestionnaireResponse',
             'contained' => array(
@@ -499,17 +655,7 @@ class ContactPatientController extends Controller
                             'valueCoding' => $relacion
                         )
                     ),
-                    'item' => array(
-                        array(
-                            'linkId' => '1.1',
-                            'text' => 'Parentesco',
-                            'answer' => array(
-                                array(
-                                    'valueCoding' => $parentesco
-                                )
-                            )
-                        )
-                    )
+                    'item' => $arrayItems
                 ),
                 array(
                     'linkId' => '2',

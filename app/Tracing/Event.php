@@ -17,7 +17,7 @@ class Event extends Model implements Auditable
      * @var array
      */
     protected $fillable = [
-        'event_at','event_type_id','details','symptoms','tracing_id','user_id', 'contact_type'
+        'event_at','event_type_id','details','symptoms','tracing_id','user_id', 'contact_type', 'quarantine_fulfilled'
     ];
 
     /**

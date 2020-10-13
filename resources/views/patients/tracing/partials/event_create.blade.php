@@ -31,6 +31,15 @@
                     </select>
                 </fieldset>
 
+                <fieldset class="form-group col-md-6">
+                    <label for="for_event_type_id">¿Cumple Cuarentena?</label>
+                    <select name="quarantine_fulfilled" id="for_quarantine_fulfilled" class="form-control">
+                        <option value=""></option>
+                            <option value=1>Si</option>
+                            <option value=0>No</option>
+                    </select>
+                </fieldset>
+
             </div>
 
             <div class="form-row">

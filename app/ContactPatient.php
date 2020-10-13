@@ -16,7 +16,9 @@ class ContactPatient extends Model implements Auditable
     use softDeletes;
 
     protected $fillable = [
-        'patient_id', 'contact_id', 'last_contact_at', 'category', 'relationship', 'live_together', 'comment', 'index', 'user_id'
+        'patient_id', 'contact_id', 'last_contact_at', 'category', 'relationship', 'live_together', 'comment', 'index',
+        'user_id','flight_name', 'flight_date', 'waiting_room_establishment', 'social_meeting_place', 'social_meeting_date',
+        'company_name', 'functionary_profession', 'institution', 'mode_of_transport'
     ];
 
     public function patient() {
