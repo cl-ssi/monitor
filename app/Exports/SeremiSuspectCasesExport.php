@@ -22,7 +22,11 @@ class SeremiSuspectCasesExport implements FromCollection, WithHeadings, WithMapp
     */
     public function collection()
     {
+        $from = Carbon::now()->subDays(15);
+        $to = Carbon::now();
+
         return SuspectCase::where('laboratory_id', $this->cod_lab)
+        ->whereBetween('created_at', [$from, $to])
         ->orderBy('id', 'desc')
         ->get();
     }
