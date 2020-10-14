@@ -15,6 +15,7 @@ class CreateLaboratoriesTable extends Migration
     {
         Schema::create('laboratories', function (Blueprint $table) {
             $table->id();
+            $table->integer('id_openagora')->nullable();
             $table->string('name');
             $table->string('alias')->nullable();
             $table->boolean('external')->default(0);

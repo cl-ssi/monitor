@@ -46,7 +46,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $laboratories = Laboratory::orderBy('name')->get();
+        $laboratories = Laboratory::where('external',0)->orderBy('name')->get();
         $permissions = Permission::OrderBy('name')->get();
         //$dialysiscenters = DialysisCenter::OrderBy('name')->get();
 
@@ -125,7 +125,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $laboratories = Laboratory::orderBy('name')->get();
+        $laboratories = Laboratory::where('external',0)->orderBy('name')->get();
         $permissions = Permission::OrderBy('name')->get();
         //$dialysiscenters = DialysisCenter::OrderBy('name')->get();
 
