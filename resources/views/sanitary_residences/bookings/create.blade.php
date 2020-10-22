@@ -82,6 +82,8 @@
                 <option value="Migrante">Migrante</option>
                 <option value="Migrante Contacto Estrecho">Migrante Contacto Estrecho</option>
                 <option value="Migrante Sospecha">Migrante Sospecha</option>
+                <option value="Migrante Caso Probable">Migrante Caso Probable</option>
+                <option value="Migrante Otro">Migrante Otro</option>
             </select>
         </fieldset>
 

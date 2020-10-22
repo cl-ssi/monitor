@@ -10,8 +10,8 @@
 @else
 <div style="width: 100%; height: 650px" id="mapContainer"></div>
 <br />
-<!-- <i>Los datos expresados en este gráfico corresponden a pacientes con resultado PCR positivo en los ultimos 30 dias. </i><br />
-<i>No considera fallecidos, hospitalizados ni en residencia sanitaria.</i> -->
+<i>Los datos expresados en este gráfico corresponden a pacientes con resultado PCR positivo en los ultimos 30 dias. </i><br />
+<i>No considera fallecidos, hospitalizados ni en residencia sanitaria.</i>
 <br />
 
 @endsection

@@ -203,6 +203,8 @@
                 <option value="Migrante" {{ ($booking->entry_criteria == 'Migrante')?'selected':'' }} >Migrante</option>
                 <option value="Migrante Contacto Estrecho" {{ ($booking->entry_criteria == 'Migrante Contacto Estrecho')?'selected':'' }} >Migrante Contacto Estrecho</option>
                 <option value="Migrante Sospecha" {{ ($booking->entry_criteria == 'Migrante Sospecha')?'selected':'' }} >Migrante Sospecha</option>
+                <option value="Migrante Caso Probable" {{ ($booking->entry_criteria == 'Migrante Caso Probable')?'selected':'' }} >Migrante Caso Probable</option>
+                <option value="Migrante Otro" {{ ($booking->entry_criteria == 'Migrante Otro')?'selected':'' }} >Migrante Otro</option>
             </select>
         </fieldset>
 
