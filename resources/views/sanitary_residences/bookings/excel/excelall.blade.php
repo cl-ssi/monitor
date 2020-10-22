@@ -35,6 +35,7 @@
         <th nowrap>Edad</th>
         <th nowrap>Criterio de Ingreso</th>
         <th nowrap>Resultado Último Examen</th>
+        <th nowrap>Correlativo Epivigila Último Examen</th>
         <th nowrap>Otros antecedentes médicos (Crónicos, gestantes, otros)</th>
         <th nowrap>Prescripción médica vigente</th>
         <th nowrap>Previsión de salud</th>
@@ -73,6 +74,7 @@
             <td nowrap>{{ $booking->patient->age }}</td>
             <td nowrap>{{ $booking->entry_criteria }}</td>
             <td nowrap>{{ $booking->patient->suspectCases->last()? $booking->patient->suspectCases->last()->covid19:'' }}</td>
+            <td nowrap>{{ $booking->patient->suspectCases->last()? $booking->patient->suspectCases->last()->epivigila:'' }}</td>
             <td nowrap>{{ $booking->morbid_history }}</td>
             <td nowrap>{{$booking->commonly_used_drugs}}</td>
             <td nowrap>{{ $booking->prevision }}</td>
