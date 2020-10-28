@@ -1173,7 +1173,8 @@ class SuspectCaseController extends Controller
             'gestante',
             'semanas_gestacion',
             'presenta_sintomatología',
-            'fecha_inicio_síntomas'
+            'fecha_inicio_síntomas',
+            'teléfono'
 //            'sem',
 //            'epivigila',
 //            'fecha de resultado',
@@ -1214,6 +1215,7 @@ class SuspectCaseController extends Controller
                     $fila->gestation_week,
                     ($fila->symptoms === NULL) ? '' : (($fila->symptoms === 1) ? 'Si' : 'No'),
                     $fila->symptoms_at,
+                    ($fila->patient && $fila->patient->demographic) ? $fila->patient->demographic->telephone : ''
 //                    $fila->epidemiological_week,
 //                    $fila->epivigila,
 //                    $fila->pcr_sars_cov_2_at,
