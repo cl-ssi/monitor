@@ -79,14 +79,14 @@ class SuspectCaseController extends Controller
 
       $patients = Patient::getPatientsBySearch($request->get('text'));
       if(!empty($laboratory->id)){
-		  
+
           $cases['total'] = SuspectCase::where('laboratory_id',$laboratory->id)->count();
           $cases['positivos']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','positive')->count();
           $cases['negativos']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','negative')->count();
           $cases['pendientes']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','pending')->count();
           $cases['rechazados']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','rejected')->count();
           $cases['indeterminados']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','undetermined')->count();
-		  
+
           DB::connection()->getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
           $suspectCases = SuspectCase::getCaseByPatientLaboratory($patients, $laboratory->id)
                                ->latest('id')
@@ -102,7 +102,7 @@ class SuspectCaseController extends Controller
           $cases['pendientes']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','pending')->count();
           $cases['rechazados']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','rejected')->count();
           $cases['indeterminados']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','undetermined')->count();
-		  
+
           DB::connection()->getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
           $suspectCases = SuspectCase::getCaseByPatient($patients)
                               ->latest('id')
@@ -139,7 +139,7 @@ class SuspectCaseController extends Controller
           ->paginate(200);
 
       return view('lab.suspect_cases.ownIndex', compact('suspectCases', 'arrayFilter', 'searchText', 'laboratory', 'suspectCasesTotal'));
-    }    
+    }
 
     /**
      * Muestra exámenes asociados a la comunas del usuario.
@@ -202,9 +202,9 @@ class SuspectCaseController extends Controller
 
         $env_communes = array_map('trim',explode(",",env('COMUNAS')));
         //$establishments = Establishment::whereIn('commune_id',$env_communes)->where('name','<>','Otros')->orderBy('name','ASC')->get();
-        
+
         $establishmentsusers = EstablishmentUser::where('user_id',Auth::id())->get();
-        
+
         //dd($establishmentsusers);
 
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
@@ -1130,6 +1130,101 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.notification_form', compact('suspectCase', 'user'));
     }
 
+    public function exportExcelReceptionInbox($cod_lab){
+        $headers = array(
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=examenes_pendientes_recepcionar.csv",
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        );
+
+//        $selectedEstablishment = $request->input('establishment_id');
+
+        $filas = null;
+        $filas = SuspectCase::whereNull('laboratory_id')
+//            ->search($request->input('search'))
+//            ->where(function($q) use($selectedEstablishment){
+//                if($selectedEstablishment){
+//                    $q->where('establishment_id', $selectedEstablishment);
+//                }
+//            })
+            ->latest()
+            ->get();
+
+
+        $columnas = array(
+            '#',
+            'fecha_muestra',
+            'establecimiento',
+            'nombre',
+            'identificador',
+            'edad',
+            'sexo',
+            'pcr_sars-cov2',
+            'observación',
+            'fecha_nacimiento',
+            'nacionalidad',
+            'correo_electronico',
+            'region_toma_muestra',
+            'trabajador_de_la_salud',
+            'contacto_estrecho',
+            'gestante',
+            'semanas_gestacion',
+            'presenta_sintomatología',
+            'fecha_inicio_síntomas'
+//            'sem',
+//            'epivigila',
+//            'fecha de resultado',
+//            'teléfono',
+//            'dirección',
+//            'comuna'
+        );
+
+        $callback = function() use ($filas, $columnas)
+        {
+            $file = fopen('php://output', 'w');
+            fputs($file, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
+            fputcsv($file, $columnas,';');
+
+
+            foreach($filas as $fila) {
+
+
+
+                fputcsv($file, array(
+                    $fila->id,
+                    $fila->sample_at,
+                    ($fila->establishment)?$fila->establishment->alias: '',
+                    ($fila->patient)?$fila->patient->fullName:'',
+                    ($fila->patient)?$fila->patient->Identifier:'',
+                    $fila->age,
+                    strtoupper($fila->gender[0]),
+                    $fila->Covid19,
+                    $fila->observation,
+                    ($fila->patient) ? $fila->patient->birthday : '',
+                    ($fila->patient && $fila->patient->demographic) ? $fila->patient->demographic->nationality : '',
+                    ($fila->patient && $fila->patient->demographic) ? $fila->patient->demographic->email : '',
+                    'Tarapacá',
+                    ($fila->functionary === NULL) ? '' : (($fila->functionary === 1) ? 'Si' : 'No'),
+                    ($fila->close_contact === NULL) ? '' : (($fila->close_contact === 1) ? 'Si' : 'No'),
+                    ($fila->gestation == 1) ? 'Si' : 'No', //todo
+                    $fila->gestation_week,
+                    ($fila->symptoms === NULL) ? '' : (($fila->symptoms === 1) ? 'Si' : 'No'),
+                    $fila->symptoms_at,
+//                    $fila->epidemiological_week,
+//                    $fila->epivigila,
+//                    $fila->pcr_sars_cov_2_at,
+//                    ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->telephone:'',
+//                    ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->fullAddress:'',
+//                    ($fila->patient && $fila->patient->demographic && $fila->patient->demographic->commune)?$fila->patient->demographic->commune->name:'',
+                ),';');
+            }
+            fclose($file);
+        };
+        return response()->stream($callback, 200, $headers);
+    }
+
 
     /**
      * Se utiliza una única vez para migrar los archivos de suspect case a nueva carpeta
@@ -1330,7 +1425,7 @@ class SuspectCaseController extends Controller
                     $new_suspect_case->patient_id = $patient_create->id;
                     $new_suspect_case->user_id = Auth::user()->id;
                     $new_suspect_case->validator_id = Auth::user()->id;
-                    
+
                     if($patient['Sexo'] == 'Masculino'){
                         $new_suspect_case->gender = 'male';
                     }
