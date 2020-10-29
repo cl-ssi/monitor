@@ -284,19 +284,20 @@ class SuspectCaseController extends Controller
             foreach ($cases as $case) {
                 if ($case->laboratory_id != null) {
                     if ($case->laboratory->minsal_ws == true) {
-                        // recepciona en minsal
-                        $response = WSMinsal::recepciona_muestra($case);
-                        if ($response['status'] == 0) {
-                            dump('entre');
-                            $errorMsg = $errorMsg . 'Error al recepcionar muestra ' . $case->id . ' en MINSAL. ' . $response['msg'] . "<br>";
-                            $case->receptor_id = NULL;
-                            $case->reception_at = NULL;
-                            $case->save();
+                        if ($case->minsal_ws_id) {
+                            // recepciona en minsal
+                            $response = WSMinsal::recepciona_muestra($case);
+                            if ($response['status'] == 0) {
+                                dump('entre');
+                                $errorMsg = $errorMsg . 'Error al recepcionar muestra ' . $case->id . ' en MINSAL. ' . $response['msg'] . "<br>";
+                                $case->receptor_id = NULL;
+                                $case->reception_at = NULL;
+                                $case->save();
 //                            return redirect()->back()->withInput();
+                            }
                         }
                     }
                 }
-
             }
         }
 
