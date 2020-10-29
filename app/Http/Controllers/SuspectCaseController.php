@@ -82,35 +82,49 @@ class SuspectCaseController extends Controller
       if(!empty($laboratory->id)){
 
           $cases['total'] = SuspectCase::where('laboratory_id',$laboratory->id)->whereNotNull('reception_at')->count();
-          $cases['positivos']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','positive')->whereNotNull('reception_at')->count();
-          $cases['negativos']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','negative')->whereNotNull('reception_at')->count();
-          $cases['pendientes']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','pending')->whereNotNull('reception_at')->count();
-          $cases['rechazados']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','rejected')->whereNotNull('reception_at')->count();
-          $cases['indeterminados']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','undetermined')->whereNotNull('reception_at')->count();
+          $cases['positivos']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','positive')->count();
+          $cases['negativos']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','negative')->count();
+          $cases['pendientes']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','pending')->count();
+          $cases['rechazados']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','rejected')->count();
+          $cases['indeterminados']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','undetermined')->count();
+
+//          $cases['total'] = SuspectCase::where('laboratory_id',$laboratory->id)->whereNotNull('reception_at')->count();
+//          $cases['positivos']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','positive')->whereNotNull('reception_at')->count();
+//          $cases['negativos']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','negative')->whereNotNull('reception_at')->count();
+//          $cases['pendientes']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','pending')->whereNotNull('reception_at')->count();
+//          $cases['rechazados']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','rejected')->whereNotNull('reception_at')->count();
+//          $cases['indeterminados']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','undetermined')->whereNotNull('reception_at')->count();
 
           DB::connection()->getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
           $suspectCases = SuspectCase::getCaseByPatientLaboratory($patients, $laboratory->id)
                                ->latest('id')
                                ->whereIn('pcr_sars_cov_2',$filtro)
-                               ->whereNotNull('reception_at')
+//                               ->whereNotNull('reception_at')
                                ->paginate(200);
           DB::connection()->getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
      }
      else{
           $laboratory = null;
           $cases['total'] = SuspectCase::whereNotNull('laboratory_id')->count();
-          $cases['positivos']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','positive')->whereNotNull('reception_at')->count();
-          $cases['negativos']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','negative')->whereNotNull('reception_at')->count();
-          $cases['pendientes']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','pending')->whereNotNull('reception_at')->count();
-          $cases['rechazados']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','rejected')->whereNotNull('reception_at')->count();
-          $cases['indeterminados']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','undetermined')->whereNotNull('reception_at')->count();
+          $cases['positivos']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','positive')->count();
+          $cases['negativos']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','negative')->count();
+          $cases['pendientes']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','pending')->count();
+          $cases['rechazados']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','rejected')->count();
+          $cases['indeterminados']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','undetermined')->count();
+
+//         $cases['total'] = SuspectCase::whereNotNull('laboratory_id')->count();
+//         $cases['positivos']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','positive')->whereNotNull('reception_at')->count();
+//         $cases['negativos']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','negative')->whereNotNull('reception_at')->count();
+//         $cases['pendientes']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','pending')->whereNotNull('reception_at')->count();
+//         $cases['rechazados']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','rejected')->whereNotNull('reception_at')->count();
+//         $cases['indeterminados']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','undetermined')->whereNotNull('reception_at')->count();
 
           DB::connection()->getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
           $suspectCases = SuspectCase::getCaseByPatient($patients)
                               ->latest('id')
                               ->whereNotNull('laboratory_id')
                               ->whereIn('pcr_sars_cov_2',$filtro)
-                              ->whereNotNull('reception_at')
+//                              ->whereNotNull('reception_at')
                               ->paginate(200);
           DB::connection()->getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
       }
@@ -128,20 +142,33 @@ class SuspectCaseController extends Controller
       $searchText = $request->get('text');
       $arrayFilter = (empty($request->filter)) ? array() : $request->filter;
 
-      $suspectCasesTotal = SuspectCase::whereNotNull('reception_at')
-      ->where(function($q){
+      $suspectCasesTotal = SuspectCase::where(function($q){
           $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
               ->orWhere('user_id', Auth::user()->id);
       })->get();
 
-      $suspectCases = SuspectCase::whereNotNull('reception_at')
-          ->where(function($q){
+//        $suspectCasesTotal = SuspectCase::whereNotNull('reception_at')
+//            ->where(function($q){
+//                $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
+//                    ->orWhere('user_id', Auth::user()->id);
+//            })->get();
+
+      $suspectCases = SuspectCase::where(function($q){
           $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
               ->orWhere('user_id', Auth::user()->id);
       })
           ->patientTextFilter($searchText)
           ->whereIn('pcr_sars_cov_2', $arrayFilter)
           ->paginate(200);
+
+//        $suspectCases = SuspectCase::whereNotNull('reception_at')
+//            ->where(function($q){
+//                $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
+//                    ->orWhere('user_id', Auth::user()->id);
+//            })
+//            ->patientTextFilter($searchText)
+//            ->whereIn('pcr_sars_cov_2', $arrayFilter)
+//            ->paginate(200);
 
       return view('lab.suspect_cases.ownIndex', compact('suspectCases', 'arrayFilter', 'searchText', 'laboratory', 'suspectCasesTotal'));
     }
