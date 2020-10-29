@@ -243,9 +243,10 @@ class PatientController extends Controller
         $date = \Carbon\Carbon::today()->subDays(30);
         // $users = User::where('created_at', '>=', $date)->get();
         // $suspectCases = SuspectCase::latest('id')->get();
-        $suspectCases = SuspectCase::where('pcr_sars_cov_2_at', '>=', $date)
-                                   ->where('pcr_sars_cov_2', 'positive')
-                                   ->whereHas('patient', function ($q) {
+        $suspectCases = SuspectCase::
+        where('pcr_sars_cov_2_at', '>=', $date)->
+                                   where('pcr_sars_cov_2', 'positive')
+                                ->whereHas('patient', function ($q) {
                                         $q->whereIn('status',['Ambulatorio',''])
                                           ->OrWhereNULL('status');
                                     })

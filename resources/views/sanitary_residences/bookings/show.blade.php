@@ -130,15 +130,8 @@
     <div class="form-row">
         <fieldset class="form-group col-12 col-md-6">
             <label for="for_patient_id">Paciente</label>
-            <select name="patient_id" id="for_patient_id" class="form-control">
-                @foreach($patients as $patient)
-                @can('SanitaryResidence: admin')
-                <option value="{{ $patient->id }}" {{ ($patient->id == $booking->patient_id)?'selected':'' }}>{{ $patient->fullName }}</option>
-                @endcan
-                @canany(['SanitaryResidence: user', 'SanitaryResidence: view'])
-                <option value="{{ $patient->id }}" {{ ($patient->id == $booking->patient_id)?'selected':'disabled' }}>{{ $patient->fullName }}</option>
-                @endcan                
-                @endforeach
+            <select name="patient_id" id="for_patient_id" class="form-control">                
+                <option value="{{ $booking->patient->id }}">{{ $booking->patient->fullName }}</option>
             </select>
         </fieldset>
 
@@ -210,6 +203,8 @@
                 <option value="Migrante" {{ ($booking->entry_criteria == 'Migrante')?'selected':'' }} >Migrante</option>
                 <option value="Migrante Contacto Estrecho" {{ ($booking->entry_criteria == 'Migrante Contacto Estrecho')?'selected':'' }} >Migrante Contacto Estrecho</option>
                 <option value="Migrante Sospecha" {{ ($booking->entry_criteria == 'Migrante Sospecha')?'selected':'' }} >Migrante Sospecha</option>
+                <option value="Migrante Caso Probable" {{ ($booking->entry_criteria == 'Migrante Caso Probable')?'selected':'' }} >Migrante Caso Probable</option>
+                <option value="Migrante Otro" {{ ($booking->entry_criteria == 'Migrante Otro')?'selected':'' }} >Migrante Otro</option>
             </select>
         </fieldset>
 

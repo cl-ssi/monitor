@@ -4,6 +4,7 @@
 
 @section('content')
 
+
 @if ($errors->any())
     <div class="alert alert-warning">
         <ul>
@@ -14,7 +15,16 @@
     </div>
 @endif
 
-<h3 class="mb-3"><i class="fas fa-lungs-virus"></i> Bandeja de recepción</h3>
+<div class="row">
+    <div class="col-4">
+        <h3 class="mb-3"><i class="fas fa-lungs-virus"></i> Bandeja de recepción</h3>
+    </div>
+    <div class="col-4"></div>
+    <div class="col-4">
+        <a type="button" class="btn btn-sm btn-success mb-3 float-right" href="{{ route('lab.suspect_cases.exportExcelReceptionInbox', 1) }}">Descargar <i class="far fa-file-excel"></i></a>
+    </div>
+</div>
+
 <form method="GET" action="{{ route('lab.suspect_cases.reception_inbox') }}">
 <!-------------------------->
 <div class="row align-items-end">
