@@ -142,33 +142,33 @@ class SuspectCaseController extends Controller
       $searchText = $request->get('text');
       $arrayFilter = (empty($request->filter)) ? array() : $request->filter;
 
-      $suspectCasesTotal = SuspectCase::where(function($q){
-          $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
-              ->orWhere('user_id', Auth::user()->id);
-      })->get();
+//      $suspectCasesTotal = SuspectCase::where(function($q){
+//          $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
+//              ->orWhere('user_id', Auth::user()->id);
+//      })->get();
 
-//        $suspectCasesTotal = SuspectCase::whereNotNull('reception_at')
-//            ->where(function($q){
-//                $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
-//                    ->orWhere('user_id', Auth::user()->id);
-//            })->get();
+        $suspectCasesTotal = SuspectCase::whereNotNull('reception_at')
+            ->where(function($q){
+                $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
+                    ->orWhere('user_id', Auth::user()->id);
+            })->get();
 
-      $suspectCases = SuspectCase::where(function($q){
-          $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
-              ->orWhere('user_id', Auth::user()->id);
-      })
-          ->patientTextFilter($searchText)
-          ->whereIn('pcr_sars_cov_2', $arrayFilter)
-          ->paginate(200);
+//      $suspectCases = SuspectCase::where(function($q){
+//          $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
+//              ->orWhere('user_id', Auth::user()->id);
+//      })
+//          ->patientTextFilter($searchText)
+//          ->whereIn('pcr_sars_cov_2', $arrayFilter)
+//          ->paginate(200);
 
-//        $suspectCases = SuspectCase::whereNotNull('reception_at')
-//            ->where(function($q){
-//                $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
-//                    ->orWhere('user_id', Auth::user()->id);
-//            })
-//            ->patientTextFilter($searchText)
-//            ->whereIn('pcr_sars_cov_2', $arrayFilter)
-//            ->paginate(200);
+        $suspectCases = SuspectCase::whereNotNull('reception_at')
+            ->where(function($q){
+                $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
+                    ->orWhere('user_id', Auth::user()->id);
+            })
+            ->patientTextFilter($searchText)
+            ->whereIn('pcr_sars_cov_2', $arrayFilter)
+            ->paginate(200);
 
       return view('lab.suspect_cases.ownIndex', compact('suspectCases', 'arrayFilter', 'searchText', 'laboratory', 'suspectCasesTotal'));
     }
