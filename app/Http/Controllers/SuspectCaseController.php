@@ -228,19 +228,20 @@ class SuspectCaseController extends Controller
         /* Webservice minsal */
         //####### recepciona en webservice ########
         if (env('ACTIVA_WS', false) == true) {
-            if($suspectCase->laboratory_id != null) {
+            if ($suspectCase->laboratory_id != null) {
                 if ($suspectCase->laboratory->minsal_ws == true) {
-
-                    // recepciona en minsal
-                    $response = WSMinsal::recepciona_muestra($suspectCase);
-                    if ($response['status'] == 0) {
-                        session()->flash('info', 'Error al recepcionar muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'] . ". De todas maneras se recepcionó muestra en Esmeralda.");
+                    if ($suspectCase->minsal_ws_id) {
+                        // recepciona en minsal
+                        $response = WSMinsal::recepciona_muestra($suspectCase);
+                        if ($response['status'] == 0) {
+                            session()->flash('info', 'Error al recepcionar muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'] . ". De todas maneras se recepcionó muestra en Esmeralda.");
 //                        $suspectCase->laboratory_id = NULL;
-                        $suspectCase->receptor_id   = NULL;
-                        $suspectCase->reception_at  = NULL;
-                        // $suspectCase->minsal_ws_id = NULL;
-                        $suspectCase->save();
-                        return redirect()->back()->withInput();
+                            $suspectCase->receptor_id = NULL;
+                            $suspectCase->reception_at = NULL;
+                            // $suspectCase->minsal_ws_id = NULL;
+                            $suspectCase->save();
+                            return redirect()->back()->withInput();
+                        }
                     }
                 }
             }
@@ -651,33 +652,21 @@ class SuspectCaseController extends Controller
         /* Webservice minsal */
         //##### se genera envio de resultado a ws minsal #####
 
-//        if (env('ACTIVA_WS', false) == true) {
-//            if($suspectCase->laboratory_id != null) {
-//                if ($suspectCase->laboratory->minsal_ws == true) {
-//                    //obtiene id laboratorio external_laboratory
-//                    $external_laboratory = Laboratory::where('name',$suspectCase->external_laboratory)->first();
-//
-//                    // //caso1
-//                     if ($old_external_laboratory == NULL && $suspectCase->external_laboratory != null) {
-//                         //envío información minsal
-//                         if ($external_laboratory->id_openagora != null) {
-//
-////                             $response = WSMinsal::devolver_muestra($suspectCase);
-////                             if ($response['status'] == 0) {
-////                                 session()->flash('info', 'Error al intentar devolver estado de la muestra (de recepcionada a creada).' . $suspectCase->id . ' en MINSAL. ' . $response['msg']);
-////                                 // $suspectCase->result_ifd = "No solicitado";
-////                                 $suspectCase->pcr_sars_cov_2_at = NULL;
-////                                 $suspectCase->pcr_sars_cov_2 = 'pending';
-////                                 $suspectCase->validator_id = NULL;
-////                                 $suspectCase->file = NULL;
-////                                 $suspectCase->save();
-////                                 // return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
-////                                 return redirect()->back()->withInput();
-////                             }
-//
-//                             $response = WSMinsal::cambia_laboratorio($suspectCase, $external_laboratory->id_openagora);
+        if (env('ACTIVA_WS', false) == true) {
+            if ($suspectCase->laboratory_id != null) {
+                if ($suspectCase->laboratory->minsal_ws == true) {
+                    if ($suspectCase->minsal_ws_id) {
+                        //obtiene id laboratorio external_laboratory
+                        $external_laboratory = Laboratory::where('name', $suspectCase->external_laboratory)->first();
+
+                        // //caso1
+                        if ($old_external_laboratory == NULL && $suspectCase->external_laboratory != null) {
+                            //envío información minsal
+                            if ($external_laboratory->id_openagora != null) {
+
+//                             $response = WSMinsal::devolver_muestra($suspectCase);
 //                             if ($response['status'] == 0) {
-//                                 session()->flash('info', 'Error al intentar cambiar laboratorio de la muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg']);
+//                                 session()->flash('info', 'Error al intentar devolver estado de la muestra (de recepcionada a creada).' . $suspectCase->id . ' en MINSAL. ' . $response['msg']);
 //                                 // $suspectCase->result_ifd = "No solicitado";
 //                                 $suspectCase->pcr_sars_cov_2_at = NULL;
 //                                 $suspectCase->pcr_sars_cov_2 = 'pending';
@@ -687,53 +676,66 @@ class SuspectCaseController extends Controller
 //                                 // return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
 //                                 return redirect()->back()->withInput();
 //                             }
-//                             session()->flash('success', 'Se cambió laboratorio de la muestra en PNTM');
-//
-//                         }else {
-//                             session()->flash('info', 'No es posible modificar laboratorio en PNTM. No existe *id PNTM* del laboratorio.');
-//                             // $suspectCase->result_ifd = "No solicitado";
-//                             $suspectCase->pcr_sars_cov_2_at = NULL;
-//                             $suspectCase->pcr_sars_cov_2 = 'pending';
-//                             $suspectCase->validator_id = NULL;
-//                             $suspectCase->file = NULL;
-//                             return redirect()->back()->withInput();
-//                         }
-//                     }
-//
-//                    //caso4: /si se cambia laboratorio, if $old_external_laboratory != $suspectCase->external_laboratory entra a condición
-//                    //no es posible, porque no existe webservice. Se debe hacer de forma manual.
-//
-//                    //caso2
-//                    if($old_pcr == 'pending' && ($suspectCase->pcr_sars_cov_2 == 'positive' || $suspectCase->pcr_sars_cov_2 == 'negative' ||
-//                            $suspectCase->pcr_sars_cov_2 == 'undetermined' || $suspectCase->pcr_sars_cov_2 == 'rejected')
-//                        &&  $suspectCase->patient->demographic != NULL && $suspectCase->external_laboratory == null){
-//
-//
-//
-//                        //envío información minsal
-//                        $response = WSMinsal::resultado_muestra($suspectCase);
-//                        if ($response['status'] == 0) {
-//                            session()->flash('info', 'Error al subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg']);
-//                            // $suspectCase->result_ifd = "No solicitado";
-//                            $suspectCase->pcr_sars_cov_2_at = NULL;
-//                            $suspectCase->pcr_sars_cov_2 = 'pending';
-//                            $suspectCase->validator_id = NULL;
-//                            $suspectCase->file = NULL;
-//                            $suspectCase->save();
-//                            // return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
-//                            return redirect()->back()->withInput();
-//                        }
-//
-//                        session()->flash('success', 'Se subió resultado a PNTM');
-//                    }
-//
-//                    //caso3
-//                    //verificar si se cambia resultado de caso, en ese caso se debe modificar dato en tomademuestra.class
-//                    //si $old_pcr != new_pcr && $old_pcr != 'pending' => está editado, y debiese entrar
-//                    //no es posible, porque no existe webservice. Se debe hacer de forma manual.
-//                }
-//            }
-//        }
+
+                                $response = WSMinsal::cambia_laboratorio($suspectCase, $external_laboratory->id_openagora);
+                                if ($response['status'] == 0) {
+                                    session()->flash('info', 'Error al intentar cambiar laboratorio de la muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg']);
+                                    // $suspectCase->result_ifd = "No solicitado";
+                                    $suspectCase->pcr_sars_cov_2_at = NULL;
+                                    $suspectCase->pcr_sars_cov_2 = 'pending';
+                                    $suspectCase->validator_id = NULL;
+                                    $suspectCase->file = NULL;
+                                    $suspectCase->save();
+                                    // return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
+                                    return redirect()->back()->withInput();
+                                }
+                                session()->flash('success', 'Se cambió laboratorio de la muestra en PNTM');
+
+                            } else {
+                                session()->flash('info', 'No es posible modificar laboratorio en PNTM. No existe *id PNTM* del laboratorio.');
+                                // $suspectCase->result_ifd = "No solicitado";
+                                $suspectCase->pcr_sars_cov_2_at = NULL;
+                                $suspectCase->pcr_sars_cov_2 = 'pending';
+                                $suspectCase->validator_id = NULL;
+                                $suspectCase->file = NULL;
+                                return redirect()->back()->withInput();
+                            }
+                        }
+
+                        //caso4: /si se cambia laboratorio, if $old_external_laboratory != $suspectCase->external_laboratory entra a condición
+                        //no es posible, porque no existe webservice. Se debe hacer de forma manual.
+
+                        //caso2
+                        if ($old_pcr == 'pending' && ($suspectCase->pcr_sars_cov_2 == 'positive' || $suspectCase->pcr_sars_cov_2 == 'negative' ||
+                                $suspectCase->pcr_sars_cov_2 == 'undetermined' || $suspectCase->pcr_sars_cov_2 == 'rejected')
+                            && $suspectCase->patient->demographic != NULL && $suspectCase->external_laboratory == null) {
+
+
+                            //envío información minsal
+                            $response = WSMinsal::resultado_muestra($suspectCase);
+                            if ($response['status'] == 0) {
+                                session()->flash('info', 'Error al subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg']);
+                                // $suspectCase->result_ifd = "No solicitado";
+                                $suspectCase->pcr_sars_cov_2_at = NULL;
+                                $suspectCase->pcr_sars_cov_2 = 'pending';
+                                $suspectCase->validator_id = NULL;
+                                $suspectCase->file = NULL;
+                                $suspectCase->save();
+                                // return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
+                                return redirect()->back()->withInput();
+                            }
+
+                            session()->flash('success', 'Se subió resultado a PNTM');
+                        }
+
+                        //caso3
+                        //verificar si se cambia resultado de caso, en ese caso se debe modificar dato en tomademuestra.class
+                        //si $old_pcr != new_pcr && $old_pcr != 'pending' => está editado, y debiese entrar
+                        //no es posible, porque no existe webservice. Se debe hacer de forma manual.
+                    }
+                }
+            }
+        }
 
         /* Crea un TRACING si el resultado es positivo o indeterminado */
         if ($old_pcr == 'pending' and ($suspectCase->pcr_sars_cov_2 == 'positive' OR $suspectCase->pcr_sars_cov_2 == 'undetermined')) {
