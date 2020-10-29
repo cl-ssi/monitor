@@ -279,7 +279,7 @@
                     <label for="for_file">Archivo</label>
                     <div class="custom-file">
                         <input type="file" name="forfile" class="custom-file-input" id="forfile" lang="es"
-                               accept="application/pdf" {{($suspectCase->laboratory->pdf_generate) ? 'disabled' : ''}} >
+                               accept="application/pdf" {{ ($suspectCase->laboratory) ? (($suspectCase->laboratory->pdf_generate) ? 'disabled' : '') : '' }} >
                         <label class="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
                     </div>
                     @if($suspectCase->file)
