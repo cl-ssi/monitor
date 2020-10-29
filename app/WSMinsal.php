@@ -20,8 +20,8 @@ use App\File;
 class WSMinsal extends Model
 {
 
-    public static function valida_crea_muestra($request) {
-
+    public static function valida_crea_muestra($request)
+    {
         $response = [];
         $client = new \GuzzleHttp\Client();
 
@@ -45,15 +45,16 @@ class WSMinsal extends Model
             $paciente_tipodoc = "RUN";
         }
 
-        $codigo_muestra_cliente = SuspectCase::max('id') + 1;
+        $codigo_muestra_cliente = SuspectCase::max('id');
+//        dd($codigo_muestra_cliente);
         // $cod_deis = Laboratory::find(Auth::user()->laboratory_id);
         // dd($cod_deis);
         // dd($request->run_medic);
         $array = array(
             'raw' => array(
-                'codigo_muestra_cliente' => $codigo_muestra_cliente,
-                'rut_responsable' => Auth::user()->run . "-" . Auth::user()->dv, //Claudia Caronna //Auth::user()->run . "-" . Auth::user()->dv, //se va a enviar rut de enfermo del servicio
-                'cod_deis' => '102100', //$request->establishment_id
+                'codigo_muestra_cliente' => $codigo_muestra_cliente + 1,
+                'rut_responsable' => Auth::user()->run . "-" . Auth::user()->dv,
+                'cod_deis' => Establishment::find($request->establishment_id)->new_code_deis,
                 'rut_medico' => $request->run_medic_s_dv . "-" . $request->run_medic_dv, //'16350555-K', //Pedro Valjalo
                 'paciente_run' => $request->run,
                 'paciente_dv' =>  $request->dv,
@@ -71,7 +72,9 @@ class WSMinsal extends Model
                 'paciente_prevision' => 'FONASA', //fijo por el momento
                 'fecha_muestra' => date('Y-m-d H:i:s'),
                 'tecnica_muestra' => 'RT-PCR', //fijo
-                'tipo_muestra' => $request->sample_type
+                'tipo_muestra' => $request->sample_type,
+                'busqueda_activa' => ($request->case_type == 'Busqueda activa') ? 'true' : 'false'
+
             )
         );
 
@@ -89,9 +92,14 @@ class WSMinsal extends Model
 
         } catch (RequestException $e) {
             $response = $e->getResponse();
-            $responseBodyAsString = $response->getBody()->getContents();
-            $decode = json_decode($responseBodyAsString);
-            $response = ['status' => 0, 'msg' => $decode->error];
+            if($response){
+                $responseBodyAsString = $response->getBody()->getContents();
+                $decode = json_decode($responseBodyAsString);
+                $response = ['status' => 0, 'msg' => $decode->error];
+            }
+            else{
+                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras.'];
+            }
         }
 
         return $response;
@@ -138,9 +146,9 @@ class WSMinsal extends Model
         $array = array(
             'raw' => array(
                 'codigo_muestra_cliente' => $suspectCase->id,
-                'rut_responsable' => '15980951-K', //$suspectCase->user->run . "-" . $suspectCase->user->dv,//'15980951-K', //Claudia Caronna //Auth::user()->run . "-" . Auth::user()->dv, //se va a enviar rut de enfermo del servicio
-                'cod_deis' => $suspectCase->laboratory->cod_deis, //'102100', //$request->establishment_id
-                'rut_medico' => '16350555-K',//$run_medic,//$suspectCase->run_medic, //'16350555-K', //Pedro Valjalo
+                'rut_responsable' => $suspectCase->user->run . "-" . $suspectCase->user->dv,//'15980951-K', //Claudia Caronna
+                'cod_deis' => $suspectCase->establishment->new_code_deis, //'102100', //$request->establishment_id
+                'rut_medico' => $run_medic,//$suspectCase->run_medic, //'16350555-K', //Pedro Valjalo
                 'paciente_run' => $suspectCase->patient->run,
                 'paciente_dv' => $suspectCase->patient->dv,
                 'paciente_nombres' => $suspectCase->patient->name,
@@ -157,7 +165,9 @@ class WSMinsal extends Model
                 'paciente_prevision' => 'FONASA', //fijo por el momento
                 'fecha_muestra' => $suspectCase->sample_at,
                 'tecnica_muestra' => 'RT-PCR', //fijo
-                'tipo_muestra' => $suspectCase->sample_type
+                'tipo_muestra' => $suspectCase->sample_type,
+                'busqueda_activa' => ($suspectCase->case_type == 'Busqueda activa') ? 'true' : 'false'
+
             )
         );
 
@@ -174,9 +184,15 @@ class WSMinsal extends Model
 
         } catch (RequestException $e) {
             $response = $e->getResponse();
-            $responseBodyAsString = $response->getBody()->getContents();
-            $decode = json_decode($responseBodyAsString);
-            $response = ['status' => 0, 'msg' => $decode->error];
+            if($response){
+                $responseBodyAsString = $response->getBody()->getContents();
+                $decode = json_decode($responseBodyAsString);
+                $response = ['status' => 0, 'msg' => $decode->error];
+            }
+            else{
+                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras.'];
+            }
+
         }
 
         return $response;
@@ -201,9 +217,14 @@ class WSMinsal extends Model
 
         } catch (RequestException $e) {
             $response = $e->getResponse();
-            $responseBodyAsString = $response->getBody()->getContents();
-            $decode = json_decode($responseBodyAsString);
-            $response = ['status' => 0, 'msg' => $decode->error];
+            if($response){
+                $responseBodyAsString = $response->getBody()->getContents();
+                $decode = json_decode($responseBodyAsString);
+                $response = ['status' => 0, 'msg' => $decode->error];
+            }
+            else{
+                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras.'];
+            }
         }
 
         return $response;
@@ -217,6 +238,7 @@ class WSMinsal extends Model
             if ($suspectCase->laboratory->pdf_generate) {
                 $case = $suspectCase;
                 $pdf = \PDF::loadView('lab.results.result', compact('case'));
+//                dd($pdf);
             }
         }
 
@@ -276,10 +298,14 @@ class WSMinsal extends Model
 
         } catch (RequestException $e) {
             $response = $e->getResponse();
-            $responseBodyAsString = $response->getBody()->getContents();
-            $decode = json_decode($responseBodyAsString);
-            // dd("3".$decode);
-            $response = ['status' => 0, 'msg' => $decode->error];
+            if($response){
+                $responseBodyAsString = $response->getBody()->getContents();
+                $decode = json_decode($responseBodyAsString);
+                $response = ['status' => 0, 'msg' => $decode->error];
+            }
+            else{
+                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras.'];
+            }
         }
 
         return $response;
@@ -303,9 +329,14 @@ class WSMinsal extends Model
 
         } catch (RequestException $e) {
             $response = $e->getResponse();
-            $responseBodyAsString = $response->getBody()->getContents();
-            $decode = json_decode($responseBodyAsString);
-            $response = ['status' => 0, 'msg' => $decode->error];
+            if($response){
+                $responseBodyAsString = $response->getBody()->getContents();
+                $decode = json_decode($responseBodyAsString);
+                $response = ['status' => 0, 'msg' => $decode->error];
+            }
+            else{
+                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras.'];
+            }
         }
 
         return $response;

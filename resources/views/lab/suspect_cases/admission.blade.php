@@ -3,7 +3,16 @@
 @section('title', 'Nueva sospecha')
 
 @section('content')
-<h3 class="mb-3">Nueva sospecha</h3>
+    <div class="row">
+        <div class="col-4">
+            <h3 class="mb-3">Nueva sospecha</h3>
+        </div>
+        <div class="col-4"></div>
+        <div class="col-4 text-right ">
+            <h6>Laboratorio: {{\Illuminate\Support\Facades\Auth::user()->laboratory->alias}}</h6>
+        </div>
+    </div>
+
 
 @if ($errors->any())
     <div class="alert alert-warning">
@@ -289,7 +298,7 @@ jQuery(document).ready(function($){
 
 
 
-$('input[name=run]').change(function() {    
+$('input[name=run]').change(function() {
     var str = $("#for_run").val();
     $.get('{{ route('patients.get')}}/'+str, function(data) {
         if(data){
@@ -325,7 +334,7 @@ $('input[name=run]').change(function() {
     });
 });
 
-$('input[name=other_identification]').change(function() {    
+$('input[name=other_identification]').change(function() {
     var str = $("#for_other_identification").val();
     $.get('{{ route('patients.getotheridentification')}}/'+str, function(data) {
         if(data){
@@ -509,7 +518,7 @@ $(document).ready(function(){
         $("#for_run").removeAttr('readonly', 'readonly');
     })
 
-    $("#for_birthday").change(function () {        
+    $("#for_birthday").change(function () {
         var birthDate =document.getElementById('for_birthday').value;
         var d = new Date(birthDate);
 
@@ -517,15 +526,15 @@ $(document).ready(function(){
         var yearThen = parseInt(mdate.substring(0,4), 10);
         var monthThen = parseInt(mdate.substring(5,7), 10);
         var dayThen = parseInt(mdate.substring(8,10), 10);
-        
+
         var today = new Date();
         var birthday = new Date(yearThen, monthThen-1, dayThen);
-     
-        var differenceInMilisecond = today.valueOf() - birthday.valueOf();      
-        
+
+        var differenceInMilisecond = today.valueOf() - birthday.valueOf();
+
         var year_age = Math.floor(differenceInMilisecond / 31536000000);
         $("#for_age").val(year_age);
-        
+
     })
 
 });

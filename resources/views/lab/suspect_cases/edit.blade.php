@@ -30,16 +30,47 @@
 
         @can('SuspectCase: reception')
             <div class="form-row">
-                <fieldset class="form-group col-5 col-md-3">
-                    <label for="for_laboratory_id">Laboratorio local</label>
-                    <select name="laboratory_id" id="for_laboratory_id" class="form-control">
-                        <option value="">No Recepcionado</option>
-                        @foreach($local_labs as $local_lab)
-                            <option
-                                value="{{ $local_lab->id }}" {{ ($suspectCase->laboratory_id == $local_lab->id)?'selected':'' }}>{{ $local_lab->alias }}</option>
-                        @endforeach
-                    </select>
-                </fieldset>
+
+                <div class="col-12 col-md-4 col-lg-3">
+                    <div class="input-group mb-3">
+                        <select name="laboratory_id_derive" form="derive_form" id="for_laboratory_id_derive" class="form-control selectpicker" required>
+                            <option value="">Selec. Laboratorio</option>
+                            <optgroup label="Internos">
+                                @foreach($laboratories as $laboratory)
+                                    @if(!$laboratory->external)
+                                        <option {{(Auth::user()->laboratory->id == $laboratory->id) ? 'disabled' : '' }} {{($suspectCase->laboratory_id == $laboratory->id) ? 'selected' : ''}} value="{{ $laboratory->id }}">{{ $laboratory->alias }}</option>
+                                    @endif
+                                @endforeach
+                            </optgroup>
+
+                            <optgroup label="Externos">
+                                @foreach($laboratories as $laboratory)
+                                    @if($laboratory->external)
+                                        <option {{(Auth::user()->laboratory->id == $laboratory->id) ? 'disabled' : '' }} {{($suspectCase->external_laboratory == $laboratory->name) ? 'selected' : ''}} value="{{ $laboratory->id }}">{{ $laboratory->alias }}</option>
+                                    @endif
+                                @endforeach
+                            </optgroup>
+                        </select>
+
+                        <input type="hidden" form="derive_form" name="casos_seleccionados[]" value="{{$suspectCase->id}}">
+
+                        <div class="input-group-append">
+                            <button type="submit" form="derive_form" class="btn btn-primary float-right" title="Derivar"><i class="fas fa-reply-all"></i> Derivar</button>
+                        </div>
+                    </div>
+                </div>
+
+{{--                <fieldset class="form-group col-5 col-md-3">--}}
+{{--                    <label for="for_laboratory_id">Laboratorio local</label>--}}
+                <input type="hidden" name="laboratory_id" id="for_laboratory_id" value="{{$suspectCase->laboratory_id}}">
+{{--                    <select name="laboratory_id" id="for_laboratory_id" class="form-control">--}}
+{{--                        <option value="">No Recepcionado</option>--}}
+{{--                        @foreach($local_labs as $local_lab)--}}
+{{--                            <option--}}
+{{--                                value="{{ $local_lab->id }}" {{ ($suspectCase->laboratory_id == $local_lab->id)?'selected':'' }}>{{ $local_lab->alias }}</option>--}}
+{{--                        @endforeach--}}
+{{--                    </select>--}}
+{{--                </fieldset>--}}
             </div>
         @endcan
 
@@ -225,30 +256,30 @@
                     </select>
                 </fieldset>
 
-                <fieldset class="form-group col-6 col-md-2">
-                    <label for="for_sent_external_lab_at">Fecha envío lab externo</label>
-                    <input type="date" class="form-control" id="for_sent_external_lab_at"
-                           name="sent_external_lab_at"
-                           value="{{ isset($suspectCase->sent_external_lab_at)? $suspectCase->sent_external_lab_at->format('Y-m-d'):'' }}">
-                </fieldset>
+{{--                <fieldset class="form-group col-6 col-md-2">--}}
+{{--                    <label for="for_sent_external_lab_at">Fecha envío lab externo</label>--}}
+{{--                    <input type="date" class="form-control" id="for_sent_external_lab_at"--}}
+{{--                           name="sent_external_lab_at"--}}
+{{--                           value="{{ isset($suspectCase->sent_external_lab_at)? $suspectCase->sent_external_lab_at->format('Y-m-d'):'' }}">--}}
+{{--                </fieldset>--}}
 
-                <fieldset class="form-group col-6 col-md-2">
-                    <label for="for_external_laboratory">Laboratorio externo</label>
-                    <select name="external_laboratory" id="for_external_laboratory" class="form-control">
-                        <option value=""></option>
-                        @foreach($external_labs as $external_lab)
-                            <option
-                                value="{{ $external_lab->name }}" {{ ($suspectCase->external_laboratory == $external_lab->name)?'selected':'' }}>{{ $external_lab->name }}</option>
-                        @endforeach
-                    </select>
-                </fieldset>
+{{--                <fieldset class="form-group col-6 col-md-2">--}}
+{{--                    <label for="for_external_laboratory">Laboratorio externo</label>--}}
+{{--                    <select name="external_laboratory" id="for_external_laboratory" class="form-control">--}}
+{{--                        <option value=""></option>--}}
+{{--                        @foreach($external_labs as $external_lab)--}}
+{{--                            <option--}}
+{{--                                value="{{ $external_lab->name }}" {{ ($suspectCase->external_laboratory == $external_lab->name)?'selected':'' }}>{{ $external_lab->name }}</option>--}}
+{{--                        @endforeach--}}
+{{--                    </select>--}}
+{{--                </fieldset>--}}
 
 
                 <fieldset class="form-group col-12 col-md-3">
                     <label for="for_file">Archivo</label>
                     <div class="custom-file">
                         <input type="file" name="forfile" class="custom-file-input" id="forfile" lang="es"
-                               accept="application/pdf">
+                               accept="application/pdf" {{($suspectCase->laboratory->pdf_generate) ? 'disabled' : ''}} >
                         <label class="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
                     </div>
                     @if($suspectCase->file)
@@ -458,6 +489,11 @@
         </form>
     @endcan
 
+    <form method="POST" id="derive_form" action="{{ route('lab.suspect_cases.derive') }}">
+        @csrf
+        @method('POST')
+    </form>
+
     <h4 class="mt-4">Otros Examenes realizados</h4>
 
     <table class="table table-sm table-bordered small mb-4 mt-4">
@@ -569,12 +605,12 @@
                     $('#for_pcr_sars_cov_2_at').prop('required',true);
                 }
             });
-
         });
 
         $('input[type="file"]').change(function (e) {
             var fileName = e.target.files[0].name;
             $('.custom-file-label').html(fileName);
         });
+
     </script>
 @endsection
