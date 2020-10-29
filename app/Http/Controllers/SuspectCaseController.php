@@ -227,6 +227,7 @@ class SuspectCaseController extends Controller
         /* Recepciona en sistema */
         $suspectCase->receptor_id   = Auth::id();
         $suspectCase->reception_at  = date('Y-m-d H:i:s');
+        if(!$suspectCase->minsal_ws_id) $suspectCase->laboratory_id = Auth::user()->laboratory->id; //todo revisar
         $suspectCase->save();
 
         /* Webservice minsal */
@@ -281,6 +282,8 @@ class SuspectCaseController extends Controller
             ->whereIn('id', $idsCasesReceptionArray)
             ->update(['receptor_id' => Auth::id(),
                 'reception_at' => date('Y-m-d H:i:s')]);
+
+        //todo agregar laboratorio id si no tiene minsal ws id
 
 
         if (env('ACTIVA_WS', false) == true) {
