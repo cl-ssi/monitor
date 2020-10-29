@@ -186,6 +186,8 @@ Route::prefix('lab')->name('lab.')->group(function () {
 
         Route::get('reception_inbox','SuspectCaseController@reception_inbox')->name('reception_inbox')->middleware('auth','can:SuspectCase: reception');
         Route::post('reception/{suspect_case}','SuspectCaseController@reception')->name('reception')->middleware('auth','can:SuspectCase: reception');
+        Route::post('derive','SuspectCaseController@derive')->name('derive')->middleware('auth');
+        Route::post('mass_reception','SuspectCaseController@massReception')->name('mass_reception')->middleware('auth');
 
         Route::post('/search_id','SuspectCaseController@search_id')->name('search_id')->middleware('auth');
         //Route::get('stat', 'SuspectCaseController@stat')->name('stat');
@@ -208,6 +210,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/notification','SuspectCaseController@notificationInbox')->name('notificationInbox')->middleware('auth','can:Patient: tracing');
 
         Route::get('/exportSuspectCases/{lab}/{date?}','SuspectCaseController@exportExcel')->name('export')->middleware('auth');
+        Route::get('/exportExcelReceptionInbox/{lab}','SuspectCaseController@exportExcelReceptionInbox')->name('exportExcelReceptionInbox')->middleware('auth');
 
         //Route::get('/create','SuspectCaseController@create')->name('create')->middleware('auth','can:SuspectCase: create');
         //Route::post('/','SuspectCaseController@store')->name('store')->middleware('auth','can:SuspectCase: create');

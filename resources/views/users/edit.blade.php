@@ -45,7 +45,7 @@
                     <select name="laboratory_id" id="for_laboratory_id" class="form-control">
                         <option value=""></option>
                         @foreach($laboratories as $lab)
-                        <option value="{{ $lab->id }}" {{ ($user->laboratory_id == $lab->id)?'selected':'' }}>{{ $lab->name }}</option>
+                        <option value="{{ $lab->id }}" {{ ($user->laboratory_id == $lab->id)?'selected':'' }}>{{ $lab->alias }}</option>
                         @endforeach
                     </select>
                 </fieldset>
@@ -74,7 +74,7 @@
 
                 <fieldset class="form-group col-6 col-md-3">
                     <label for="for_function">Función</label>
-                    <input type="text" class="form-control" name="function" id="for_function" 
+                    <input type="text" class="form-control" name="function" id="for_function"
                     value="{{ $user->function }}">
                 </fieldset>
 
@@ -92,7 +92,7 @@
                     </a>
                 </fieldset>
             </div>
-            
+
         </div>
     </div>
 
@@ -100,9 +100,9 @@
 
     <div class="form-row">
         <div class="col">
-            
 
-            
+
+
             <h5>Roles:</h5>
             @foreach($permissions as $permission)
             <div class="form-check">

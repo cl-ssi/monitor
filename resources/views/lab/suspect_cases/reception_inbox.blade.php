@@ -4,7 +4,27 @@
 
 @section('content')
 
-<h3 class="mb-3"><i class="fas fa-lungs-virus"></i> Bandeja de recepción</h3>
+
+@if ($errors->any())
+    <div class="alert alert-warning">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+<div class="row">
+    <div class="col-4">
+        <h3 class="mb-3"><i class="fas fa-lungs-virus"></i> Bandeja de recepción</h3>
+    </div>
+    <div class="col-4"></div>
+    <div class="col-4">
+        <a type="button" class="btn btn-sm btn-success mb-3 float-right" href="{{ route('lab.suspect_cases.exportExcelReceptionInbox', 1) }}">Descargar <i class="far fa-file-excel"></i></a>
+    </div>
+</div>
+
 <form method="GET" action="{{ route('lab.suspect_cases.reception_inbox') }}">
 <!-------------------------->
 <div class="row align-items-end">
@@ -39,6 +59,7 @@
         <h3 class="text-danger">Usuario no tiene laboratorio asignado</h3>
         @endif
     </div>
+
 </div>
 <!-------------------------->
 <div class="form-group row">
@@ -55,7 +76,49 @@
             @endforeach
         </select>
     </div>
+{{--todo activar--}}
+    <div class="col-12 col-md-4 col-lg-3 text-center">
+        <button style="display: none" class="btn btn-primary" id="btn_reception" form="mass_reception_form" type="submit"> <i class="fas fa-inbox"></i> Recepcionar</button>
+    </div>
+{{--    <div class="col-12 col-md-4 col-lg-3"></div>--}}
+
+    <div class="col-12 col-md-4 col-lg-3">
+        <div class="input-group mb-3">
+            <select name="laboratory_id_derive" form="derive_form" id="for_laboratory_id_derive" class="form-control selectpicker" required>
+                <option value="">Selec. Laboratorio</option>
+                <optgroup label="Internos">
+                    @foreach($laboratories as $laboratory)
+                        @if(!$laboratory->external)
+                            <option {{(Auth::user()->laboratory->id == $laboratory->id) ? 'disabled' : '' }} value="{{ $laboratory->id }}">{{ $laboratory->alias }}</option>
+                        @endif
+                    @endforeach
+                </optgroup>
+
+                <optgroup label="Externos">
+                    @foreach($laboratories as $laboratory)
+                        @if($laboratory->external)
+                            <option {{(Auth::user()->laboratory->id == $laboratory->id) ? 'disabled' : '' }} value="{{ $laboratory->id }}">{{ $laboratory->alias }}</option>
+                        @endif
+                    @endforeach
+                </optgroup>
+            </select>
+            <div class="input-group-append">
+                <button type="submit" form="derive_form" id="btn_derive" class="btn btn-primary float-right" title="Derivar"><i class="fas fa-reply-all"></i> Derivar</button>
+            </div>
+        </div>
+    </div>
+
 </div>
+</form>
+
+<form method="POST" id="derive_form" action="{{ route('lab.suspect_cases.derive') }}">
+    @csrf
+    @method('POST')
+</form>
+
+<form method="POST" id="mass_reception_form" action="{{ route('lab.suspect_cases.mass_reception') }}">
+    @csrf
+    @method('POST')
 </form>
 <!-------------------------->
 
@@ -76,6 +139,7 @@
             <th>Sexo</th>
             <th class="alert-danger">PCR SARS-Cov2</th>
             <th>Observación</th>
+            <th>Selec.</th>
         </tr>
     </thead>
     <tbody id="tableCases">
@@ -111,6 +175,7 @@
             <td>{{ strtoupper($case->gender[0]) }}</td>
             <td>{{ $case->covid19 }}</td>
             <td class="text-muted small">{{ $case->observation }}</td>
+            <td style="text-align:center;"><label for="chk_derivacion">{{($case->external_laboratory) ? 'externo' : '' }}</label><input type="checkbox" {{($case->external_laboratory) ? 'visibility: hidden' : '' }} name="casos_seleccionados[]" id="chk_derivacion" class="select_checkboxs" value={{$case->id}} /> </td>
         </tr>
         @endforeach
     </tbody>
@@ -151,6 +216,20 @@ function exportF(elem) {
                 $(this).toggle(tableValue.indexOf(value) > -1)
             });
         });
+
+        document.getElementById("btn_reception").onclick = function () {
+            let selectCheckboxs = document.getElementsByClassName("select_checkboxs");
+            for (let item of selectCheckboxs) {
+                item.setAttribute('form', 'mass_reception_form');
+            }
+        }
+
+        document.getElementById("btn_derive").onclick = function () {
+            let selectCheckboxs = document.getElementsByClassName("select_checkboxs");
+            for (let item of selectCheckboxs) {
+                item.setAttribute('form', 'derive_form');
+            }
+        }
     });
 
 </script>
