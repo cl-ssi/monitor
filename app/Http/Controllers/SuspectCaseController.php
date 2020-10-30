@@ -305,12 +305,12 @@ class SuspectCaseController extends Controller
 //        $oldCases = SuspectCase::find($request->get('casos_seleccionados'));
 
         /* Recepciona en sistema */
+        //todo quitar update de laboratory_id cuando todos los casos tengan laboratory_id?
         DB::table('suspect_cases')
             ->whereIn('id', $idsCasesReceptionArray)
             ->update(['receptor_id' => Auth::id(),
-                'reception_at' => date('Y-m-d H:i:s')]);
-
-        //todo agregar laboratorio id si no tiene minsal ws id
+                'reception_at' => date('Y-m-d H:i:s'),
+                'laboratory_id' => Auth::user()->laboratory->id]);
 
 
         if (env('ACTIVA_WS', false) == true) {
@@ -1439,6 +1439,11 @@ class SuspectCaseController extends Controller
             "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
             "Expires" => "0"
         );
+
+//        ->where(function ($query){
+//            $query->where('laboratory_id', Auth::user()->laboratory_id)
+//                ->orWhereNull('laboratory_id');
+//        })
 
         $filas = null;
         $filas = SuspectCase::where('laboratory_id', Auth::user()->laboratory_id)
