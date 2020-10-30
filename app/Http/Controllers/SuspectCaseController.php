@@ -389,38 +389,40 @@ class SuspectCaseController extends Controller
         if (env('ACTIVA_WS', false) == true) {
             $cases = SuspectCase::whereIn('id', $idsCasosDerivarArray)->get();
             foreach ($cases as $case) {
-                if($case->laboratory_id != null) {
+                if ($case->laboratory_id != null) {
                     if ($case->laboratory->minsal_ws == true) {
-                        if ($laboratory->id_openagora != null) {
-                            //oldCases tiene el laboratorio al que pertenecia anteriormente, que se usa para hacer el cambio de lab
-                            $response = WSMinsal::cambia_laboratorio($oldCases->find($case->id), $laboratory->id_openagora);
-                            if ($response['status'] == 0) {
+                        if ($case->minsal_ws_id) {
+                            if ($laboratory->id_openagora != null) {
+                                //oldCases tiene el laboratorio al que pertenecia anteriormente, que se usa para hacer el cambio de lab
+                                $response = WSMinsal::cambia_laboratorio($oldCases->find($case->id), $laboratory->id_openagora);
+                                if ($response['status'] == 0) {
 
-                                if($laboratory->external){
+                                    if ($laboratory->external) {
+                                        $case->external_laboratory = $oldCases->find($case->id)->external_laboratory;
+                                        $case->sent_external_lab_at = $oldCases->find($case->id)->sent_external_lab_at;
+                                    } else {
+                                        $case->laboratory_id = $oldCases->find($case->id)->laboratory_id;
+                                        $case->derivation_internal_lab_at = $oldCases->find($case->id)->derivation_internal_lab_at;
+                                    }
+                                    $case->reception_at = $oldCases->find($case->id)->reception_at;
+                                    $case->receptor_id = $oldCases->find($case->id)->receptor_id;
+
+                                    $errorMsg = $errorMsg . 'Error al intentar cambiar laboratorio de la muestra ' . $case->id . ' en MINSAL. ' . $response['msg'] . '<br>';
+                                    $case->save();
+//                                return redirect()->back()->withInput();
+                                }
+                            } else {
+                                if ($laboratory->external) {
                                     $case->external_laboratory = $oldCases->find($case->id)->external_laboratory;
                                     $case->sent_external_lab_at = $oldCases->find($case->id)->sent_external_lab_at;
-                                }else{
+                                } else {
                                     $case->laboratory_id = $oldCases->find($case->id)->laboratory_id;
                                     $case->derivation_internal_lab_at = $oldCases->find($case->id)->derivation_internal_lab_at;
                                 }
-                                $case->reception_at = $oldCases->find($case->id)->reception_at;
-                                $case->receptor_id = $oldCases->find($case->id)->receptor_id;
-
-                                $errorMsg = $errorMsg . 'Error al intentar cambiar laboratorio de la muestra ' . $case->id . ' en MINSAL. ' . $response['msg'] . '<br>';
+                                $errorMsg = $errorMsg . 'No es posible modificar laboratorio en PNTM. No existe *id PNTM* del laboratorio.' . '<br>';
                                 $case->save();
-//                                return redirect()->back()->withInput();
-                            }
-                        }else{
-                            if($laboratory->external){
-                                $case->external_laboratory = $oldCases->find($case->id)->external_laboratory;
-                                $case->sent_external_lab_at = $oldCases->find($case->id)->sent_external_lab_at;
-                            }else{
-                                $case->laboratory_id = $oldCases->find($case->id)->laboratory_id;
-                                $case->derivation_internal_lab_at = $oldCases->find($case->id)->derivation_internal_lab_at;
-                            }
-                            $errorMsg = $errorMsg . 'No es posible modificar laboratorio en PNTM. No existe *id PNTM* del laboratorio.' . '<br>';
-                            $case->save();
 //                            return redirect()->back()->withInput();
+                            }
                         }
                     }
                 }
