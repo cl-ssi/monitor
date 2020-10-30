@@ -3,7 +3,17 @@
 @section('title', 'Editar sospecha')
 
 @section('content')
-    <h3 class="mb-3">Editar sospecha {{ $suspectCase->id }}</h3>
+    <div class="row">
+        <div class="col-4">
+            <h3 class="mb-3">Editar sospecha {{ $suspectCase->id }}</h3>
+        </div>
+        <div class="col-4"></div>
+        <div class="col-4">
+            <a href= '{{route('lab.suspect_cases.notificationForm',$suspectCase) }}' class="btn btn-outline-primary float-right" >Caso pdf</a>
+        </div>
+    </div>
+
+
     @php
         $patient = $suspectCase->patient;
     @endphp
