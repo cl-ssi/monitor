@@ -55,6 +55,8 @@ class WebserviceController extends Controller
                     $user['mothers_family'] = $beneficiario->apell2;
                     $user['birthday']       = $beneficiario->fechaNacimiento;
                     $user['gender']         = $beneficiario->generoDes;
+                    //$user['direccion']      = $beneficiario->direccion;
+                    $user['direccion']      = $beneficiario->direccion;
 
                     if($afiliado->desEstado == 'ACTIVO') {
                         $user['tramo'] = $afiliado->tramo;
