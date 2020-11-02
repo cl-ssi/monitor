@@ -266,7 +266,7 @@ class SuspectCaseController extends Controller
                         // recepciona en minsal
                         $response = WSMinsal::recepciona_muestra($suspectCase);
                         if ($response['status'] == 0) {
-                            session()->flash('info', 'Error al recepcionar muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'] . ". De todas maneras se recepcionó muestra en Esmeralda.");
+                            session()->flash('info', 'Error al recepcionar muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'] . ".");
 //                        $suspectCase->laboratory_id = NULL;
                             $suspectCase->receptor_id = NULL;
                             $suspectCase->reception_at = NULL;
