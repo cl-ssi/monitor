@@ -1256,4 +1256,124 @@ class SuspectCaseReportController extends Controller
         $cases = SuspectCase::whereNull('receptor_id')->get();
         return view('lab.suspect_cases.reports.without_reception', compact('cases'));
     }
+
+    public function casesWithoutResults(Request $request)
+    {
+
+//        dd($userEstablishments);
+        if ($from = $request->has('from')) {
+            $from = $request->get('from') . ' 00:00:00';
+            $to = $request->get('to') . ' 23:59:59';
+        } else {
+            $from = Carbon::now();
+            $to = Carbon::now();
+        }
+
+        if($request->has('from')){
+            $headers = array(
+                "Content-type" => "text/csv",
+                "Content-Disposition" => "attachment; filename=examenes_pendientes_recepcionar.csv",
+                "Pragma" => "no-cache",
+                "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+                "Expires" => "0"
+            );
+
+//        ->where(function ($query){
+//            $query->where('laboratory_id', Auth::user()->laboratory_id)
+//                ->orWhereNull('laboratory_id');
+//        })
+
+            $userEstablishmentsIds = Auth::user()->establishments->pluck('id')->toArray();
+
+            $filas = null;
+            $filas = SuspectCase::where('pcr_sars_cov_2_at', NULL)
+            ->whereIn('establishment_id', $userEstablishmentsIds)
+            ->whereBetween('created_at', [$from, $to])
+            ->latest()
+            ->get();
+
+
+            $columnas = array(
+                '#',
+                'fecha_muestra',
+                'establecimiento',
+                'estab. detalle',
+                'nombre',
+                'identificador',
+                'edad',
+                'sexo',
+                'pcr_sars-cov2',
+                'observación',
+                'fecha_nacimiento',
+                'nacionalidad',
+                'correo_electronico',
+                'region_toma_muestra',
+                'trabajador_de_la_salud',
+                'contacto_estrecho',
+                'gestante',
+                'semanas_gestacion',
+                'presenta_sintomatología',
+                'fecha_inicio_síntomas',
+                'teléfono',
+                'recepcionado'
+//            'sem',
+//            'epivigila',
+//            'fecha de resultado',
+//            'teléfono',
+//            'dirección',
+//            'comuna'
+            );
+
+            $callback = function() use ($filas, $columnas)
+            {
+                $file = fopen('php://output', 'w');
+                fputs($file, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
+                fputcsv($file, $columnas,';');
+
+
+                foreach($filas as $fila) {
+
+
+
+                    fputcsv($file, array(
+                        $fila->id,
+                        $fila->sample_at,
+                        ($fila->establishment)?$fila->establishment->alias: '',
+                        $fila->origin,
+                        ($fila->patient)?$fila->patient->fullName:'',
+                        ($fila->patient)?$fila->patient->Identifier:'',
+                        $fila->age,
+                        strtoupper($fila->gender[0]),
+                        $fila->Covid19,
+                        $fila->observation,
+                        ($fila->patient) ? $fila->patient->birthday : '',
+                        ($fila->patient && $fila->patient->demographic) ? $fila->patient->demographic->nationality : '',
+                        ($fila->patient && $fila->patient->demographic) ? $fila->patient->demographic->email : '',
+                        'Tarapacá',
+                        ($fila->functionary === NULL) ? '' : (($fila->functionary === 1) ? 'Si' : 'No'),
+                        ($fila->close_contact === NULL) ? '' : (($fila->close_contact === 1) ? 'Si' : 'No'),
+                        ($fila->gestation == 1) ? 'Si' : 'No', //todo
+                        $fila->gestation_week,
+                        ($fila->symptoms === NULL) ? '' : (($fila->symptoms === 1) ? 'Si' : 'No'),
+                        $fila->symptoms_at,
+                        ($fila->patient && $fila->patient->demographic) ? $fila->patient->demographic->telephone : '',
+                        ($fila->reception_at) ? 'Si' : 'No'
+//                    $fila->epidemiological_week,
+//                    $fila->epivigila,
+//                    $fila->pcr_sars_cov_2_at,
+//                    ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->telephone:'',
+//                    ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->fullAddress:'',
+//                    ($fila->patient && $fila->patient->demographic && $fila->patient->demographic->commune)?$fila->patient->demographic->commune->name:'',
+                    ),';');
+                }
+                fclose($file);
+            };
+            return response()->stream($callback, 200, $headers);
+        }
+
+
+
+        return view('lab.suspect_cases.reports.cases_without_results', compact('from', 'to'));
+    }
+
 }

@@ -76,9 +76,9 @@
             @endforeach
         </select>
     </div>
-{{--todo activar--}}
+
     <div class="col-12 col-md-4 col-lg-3 text-center">
-        <button style="display: none" class="btn btn-primary" id="btn_reception" form="mass_reception_form" type="submit"> <i class="fas fa-inbox"></i> Recepcionar</button>
+        <button class="btn btn-primary" id="btn_reception" form="mass_reception_form" type="submit"> <i class="fas fa-inbox"></i> Recepcionar</button>
     </div>
 {{--    <div class="col-12 col-md-4 col-lg-3"></div>--}}
 

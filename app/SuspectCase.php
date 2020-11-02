@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Patient;
 use File;
@@ -142,6 +143,10 @@ class SuspectCase extends Model implements Auditable
     public static function getCaseByPatientLaboratory($patients, $laboratory_id){
           $patients_id = $patients->pluck('id');
           $suspectCases = SuspectCase::latest('id')
+//              ->where(function ($query) use ($laboratory_id){
+//                  $query->where('laboratory_id', $laboratory_id)
+//                      ->orWhereNull('laboratory_id');
+//              })
               ->where('laboratory_id',$laboratory_id)
               ->whereIn('patient_id', $patients_id);
           return $suspectCases;
