@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -100,8 +101,10 @@ class WSMinsal extends Model
                 $response = ['status' => 0, 'msg' => $decode->error];
             }
             else{
-                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras.'];
+                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un moménto.'];
             }
+        }catch (Exception $e){
+            $response = ['status' => 0, 'msg' => 'Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un moménto.'];
         }
 
         return $response;
@@ -168,10 +171,13 @@ class WSMinsal extends Model
                 'fecha_muestra' => $suspectCase->sample_at,
                 'tecnica_muestra' => 'RT-PCR', //fijo
                 'tipo_muestra' => $suspectCase->sample_type,
-                'busqueda_activa' => ($suspectCase->case_type == 'Busqueda activa') ? 'true' : 'false'
+                'busqueda_activa' => ($suspectCase->case_type == 'Busqueda activa') ? 'true' : 'false',
+                'id_laboratorio' => $suspectCase->laboratory->id_openagora
 
             )
         );
+
+//        dd(json_encode($array, JSON_PRETTY_PRINT) );
 
         try {
             $response = $client->request('POST', env('WS_CREAR_MUESTRA'), [
@@ -192,9 +198,11 @@ class WSMinsal extends Model
                 $response = ['status' => 0, 'msg' => $decode->error];
             }
             else{
-                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras.'];
+                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un moménto.'];
             }
 
+        }catch (Exception $e){
+            $response = ['status' => 0, 'msg' => 'Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un moménto.'];
         }
 
         return $response;
@@ -225,8 +233,10 @@ class WSMinsal extends Model
                 $response = ['status' => 0, 'msg' => $decode->error];
             }
             else{
-                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras.'];
+                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un moménto.'];
             }
+        }catch (Exception $e){
+            $response = ['status' => 0, 'msg' => 'Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un moménto.'];
         }
 
         return $response;
@@ -306,8 +316,10 @@ class WSMinsal extends Model
                 $response = ['status' => 0, 'msg' => $decode->error];
             }
             else{
-                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras.'];
+                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un moménto.'];
             }
+        }catch (Exception $e){
+            $response = ['status' => 0, 'msg' => 'Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un moménto.'];
         }
 
         return $response;
@@ -337,8 +349,10 @@ class WSMinsal extends Model
                 $response = ['status' => 0, 'msg' => $decode->error];
             }
             else{
-                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras.'];
+                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un moménto.'];
             }
+        }catch (Exception $e){
+            $response = ['status' => 0, 'msg' => 'Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un moménto.'];
         }
 
         return $response;
