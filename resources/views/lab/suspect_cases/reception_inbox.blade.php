@@ -139,6 +139,7 @@
             <th>Sexo</th>
             <th class="alert-danger">PCR SARS-Cov2</th>
             <th>Observación</th>
+            <th>Epivigila</th>
             <th>Selec.</th>
         </tr>
     </thead>
@@ -175,6 +176,7 @@
             <td>{{ strtoupper($case->gender[0]) }}</td>
             <td>{{ $case->covid19 }}</td>
             <td class="text-muted small">{{ $case->observation }}</td>
+            <td>{{ $case->epivigila }}</td>
             <td style="text-align:center;"><label for="chk_derivacion">{{($case->external_laboratory) ? 'externo' : '' }}</label><input type="checkbox" {{($case->external_laboratory) ? 'visibility: hidden' : '' }} name="casos_seleccionados[]" id="chk_derivacion" class="select_checkboxs" value={{$case->id}} /> </td>
         </tr>
         @endforeach
@@ -230,6 +232,16 @@ function exportF(elem) {
                 item.setAttribute('form', 'derive_form');
             }
         }
+
+        jQuery(function(){
+            var max = 10;
+            var checkboxes = $('input[type="checkbox"]');
+            checkboxes.change(function(){
+                var current = checkboxes.filter(':checked').length;
+                checkboxes.filter(':not(:checked)').prop('disabled', current >= max);
+            });
+        });
+
     });
 
 </script>

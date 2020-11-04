@@ -304,39 +304,48 @@ class SuspectCaseController extends Controller
         $errorMsg = '';
 //        $oldCases = SuspectCase::find($request->get('casos_seleccionados'));
 
-        /* Recepciona en sistema */
-        //todo quitar update de laboratory_id cuando todos los casos tengan laboratory_id?
-        DB::table('suspect_cases')
-            ->whereIn('id', $idsCasesReceptionArray)
-            ->update(['receptor_id' => Auth::id(),
-                'reception_at' => date('Y-m-d H:i:s'),
-                'laboratory_id' => Auth::user()->laboratory->id]);
-
-
         if (env('ACTIVA_WS', false) == true) {
             $cases = SuspectCase::whereIn('id', $idsCasesReceptionArray)->get();
             foreach ($cases as $case) {
-                if ($case->laboratory_id != null) {
-                    if ($case->laboratory->minsal_ws == true) {
-                        if ($case->minsal_ws_id) {
+                if ($case->minsal_ws_id) {
+                    if ($case->laboratory_id != null) {
+                        if ($case->laboratory->minsal_ws == true) {
                             // recepciona en minsal
                             $response = WSMinsal::recepciona_muestra($case);
-                            if ($response['status'] == 0) {
-                                dump('entre');
-                                $errorMsg = $errorMsg . 'Error al recepcionar muestra ' . $case->id . ' en MINSAL. ' . $response['msg'] . "<br>";
-                                $case->receptor_id = NULL;
-                                $case->reception_at = NULL;
+                            if ($response['status'] == 1) {
+                                $case->receptor_id = Auth::id();
+                                $case->reception_at = date('Y-m-d H:i:s');
                                 $case->save();
-//                            return redirect()->back()->withInput();
+                            } else {
+                                $errorMsg = $errorMsg . 'Error al recepcionar muestra ' . $case->id . ' en MINSAL. ' . $response['msg'] . "<br>";
                             }
+                        }else{
+                            $case->receptor_id = Auth::id();
+                            $case->reception_at = date('Y-m-d H:i:s');
+                            $case->save();
                         }
+                    }else{
+                        $errorMsg = $errorMsg . 'No es posible modificar laboratorio en PNTM para caso ' . $case->id . ' No existe laboratory_id.' . '<br>';
                     }
+                }else{
+                    $case->receptor_id = Auth::id();
+                    $case->reception_at = date('Y-m-d H:i:s');
+                    $case->laboratory_id = Auth::user()->laboratory->id;
+                    $case->save();
                 }
             }
+        }else{
+            /* Recepciona en sistema sin pasar por ws */
+            //todo quitar update de laboratory_id cuando todos los casos tengan laboratory_id?
+            DB::table('suspect_cases')
+                ->whereIn('id', $idsCasesReceptionArray)
+                ->update(['receptor_id' => Auth::id(),
+                    'reception_at' => date('Y-m-d H:i:s'),
+                    'laboratory_id' => Auth::user()->laboratory->id]);
         }
 
         if($errorMsg == ''){
-            session()->flash('success', 'Se recepcionaron muestras en PNTM');
+            session()->flash('success', 'Se recepcionaron muestras correctamente.');
         }else{
             session()->flash('warning', $errorMsg);
         }
@@ -359,78 +368,63 @@ class SuspectCaseController extends Controller
 
         $idsCasosDerivarArray = $request->get('casos_seleccionados');
         $laboratory = Laboratory::find($request->get('laboratory_id_derive'));
-        $oldCases = SuspectCase::find($idsCasosDerivarArray);
         $errorMsg = '';
-
-        //SE GUARDA EN BD ESMERALDA
-        if($laboratory->external){
-            $derivedCasesCant = DB::table('suspect_cases')
-                ->whereIn('id', $idsCasosDerivarArray)
-                ->update(['external_laboratory' => $laboratory->name,
-                    'sent_external_lab_at' => date("Y-m-d H:i:s")]);
-
-            DB::table('suspect_cases')
-                ->whereIn('id', $idsCasosDerivarArray)
-                ->update(['reception_at' => date('Y-m-d H:i:s'),
-                    'receptor_id' => Auth::id()]);
-        }else{
-            $derivedCasesCant = DB::table('suspect_cases')
-                ->whereIn('id', $idsCasosDerivarArray)
-                ->update(['laboratory_id' => $laboratory->id,
-                    'derivation_internal_lab_at' => date("Y-m-d H:i:s")]);
-
-            DB::table('suspect_cases')
-                ->whereIn('id', $idsCasosDerivarArray)
-                ->update(['reception_at' => NULL,
-                    'receptor_id' => NULL]);
-        }
 
         //SE ENVIA A WS
         if (env('ACTIVA_WS', false) == true) {
             $cases = SuspectCase::whereIn('id', $idsCasosDerivarArray)->get();
             foreach ($cases as $case) {
-                if ($case->laboratory_id != null) {
-                    if ($case->laboratory->minsal_ws == true) {
-                        if ($case->minsal_ws_id) {
+                if ($case->minsal_ws_id) {
+                    if ($case->laboratory_id != null) {
+                        if ($case->laboratory->minsal_ws == true) {
                             if ($laboratory->id_openagora != null) {
-                                //oldCases tiene el laboratorio al que pertenecia anteriormente, que se usa para hacer el cambio de lab
-                                $response = WSMinsal::cambia_laboratorio($oldCases->find($case->id), $laboratory->id_openagora);
-                                if ($response['status'] == 0) {
+                                $response = WSMinsal::cambia_laboratorio($case, $laboratory->id_openagora);
 
-                                    if ($laboratory->external) {
-                                        $case->external_laboratory = $oldCases->find($case->id)->external_laboratory;
-                                        $case->sent_external_lab_at = $oldCases->find($case->id)->sent_external_lab_at;
-                                    } else {
-                                        $case->laboratory_id = $oldCases->find($case->id)->laboratory_id;
-                                        $case->derivation_internal_lab_at = $oldCases->find($case->id)->derivation_internal_lab_at;
-                                    }
-                                    $case->reception_at = $oldCases->find($case->id)->reception_at;
-                                    $case->receptor_id = $oldCases->find($case->id)->receptor_id;
-
+                                if ($response['status'] == 1) {
+                                    $this->saveDerivation($laboratory, $case);
+                                } else {
                                     $errorMsg = $errorMsg . 'Error al intentar cambiar laboratorio de la muestra ' . $case->id . ' en MINSAL. ' . $response['msg'] . '<br>';
-                                    $case->save();
-//                                return redirect()->back()->withInput();
                                 }
                             } else {
-                                if ($laboratory->external) {
-                                    $case->external_laboratory = $oldCases->find($case->id)->external_laboratory;
-                                    $case->sent_external_lab_at = $oldCases->find($case->id)->sent_external_lab_at;
-                                } else {
-                                    $case->laboratory_id = $oldCases->find($case->id)->laboratory_id;
-                                    $case->derivation_internal_lab_at = $oldCases->find($case->id)->derivation_internal_lab_at;
-                                }
-                                $errorMsg = $errorMsg . 'No es posible modificar laboratorio en PNTM. No existe *id PNTM* del laboratorio.' . '<br>';
-                                $case->save();
-//                            return redirect()->back()->withInput();
+                                $errorMsg = $errorMsg . 'No es posible modificar laboratorio en PNTM para caso ' . $case->id . '. No existe *id PNTM* del laboratorio.' . '<br>';
                             }
+                        }else{
+                            $this->saveDerivation($laboratory, $case);
                         }
+                    }else{
+                        $errorMsg = $errorMsg . 'No es posible modificar laboratorio en PNTM para caso '. $case->id  . '. No existe laboratory_id.' . '<br>';
                     }
+                }else{
+                    $this->saveDerivation($laboratory, $case);
                 }
+            }
+        }else{
+            //SE GUARDA EN BD ESMERALDA SIN PASAR POR WS
+            if($laboratory->external){
+                $derivedCasesCant = DB::table('suspect_cases')
+                    ->whereIn('id', $idsCasosDerivarArray)
+                    ->update(['external_laboratory' => $laboratory->name,
+                        'sent_external_lab_at' => date("Y-m-d H:i:s")]);
+
+                DB::table('suspect_cases')
+                    ->whereIn('id', $idsCasosDerivarArray)
+                    ->update(['reception_at' => date('Y-m-d H:i:s'),
+                        'receptor_id' => Auth::id()]);
+            }else{
+                $derivedCasesCant = DB::table('suspect_cases')
+                    ->whereIn('id', $idsCasosDerivarArray)
+                    ->update(['laboratory_id' => $laboratory->id,
+                        'derivation_internal_lab_at' => date("Y-m-d H:i:s")]);
+
+                DB::table('suspect_cases')
+                    ->whereIn('id', $idsCasosDerivarArray)
+                    ->update(['reception_at' => NULL,
+                        'receptor_id' => NULL]);
             }
         }
 
         if($errorMsg == ''){
-            session()->flash('success', "Se derivaron $derivedCasesCant casos a laboratorio $laboratory->alias ");
+            session()->flash('success', "Se derivaron los casos a laboratorio $laboratory->alias ");
         }else{
             session()->flash('warning', $errorMsg);
         }
@@ -1792,6 +1786,27 @@ class SuspectCaseController extends Controller
 
         session()->flash('success', 'Se han modificado ' . $cont . ' casos.');
         return view('lab.suspect_cases.import_results');
+    }
+
+    /**
+     * @param Laboratory $laboratory
+     * @param SuspectCase $case
+     */
+    private function saveDerivation(Laboratory $laboratory, SuspectCase $case): void
+    {
+        if ($laboratory->external) {
+            $case->external_laboratory = $laboratory->name;
+            $case->sent_external_lab_at = date("Y-m-d H:i:s");
+            $case->reception_at = date('Y-m-d H:i:s');
+            $case->receptor_id = Auth::id();
+            $case->save();
+        } else {
+            $case->laboratory_id = $laboratory->id;
+            $case->derivation_internal_lab_at = date("Y-m-d H:i:s");
+            $case->reception_at = NULL;
+            $case->receptor_id = NULL;
+            $case->save();
+        }
     }
 
 }
