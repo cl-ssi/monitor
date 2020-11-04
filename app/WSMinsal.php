@@ -104,7 +104,7 @@ class WSMinsal extends Model
                 $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un momento.'];
             }
         }catch (Exception $e){
-            $response = ['status' => 0, 'msg' => 'Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento.'];
+            $response = ['status' => 0, 'msg' => "Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento. {$e->getMessage()}"];
         }
 
         return $response;
@@ -202,7 +202,7 @@ class WSMinsal extends Model
             }
 
         }catch (Exception $e){
-            $response = ['status' => 0, 'msg' => 'Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento.'];
+            $response = ['status' => 0, 'msg' => "Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento. {$e->getMessage()}"];
         }
 
         return $response;
@@ -236,7 +236,7 @@ class WSMinsal extends Model
                 $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un momento.'];
             }
         }catch (Exception $e){
-            $response = ['status' => 0, 'msg' => 'Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento.'];
+            $response = ['status' => 0, 'msg' => "Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento. {$e->getMessage()}"];
         }
 
         return $response;
@@ -319,7 +319,7 @@ class WSMinsal extends Model
                 $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un momento.'];
             }
         }catch (Exception $e){
-            $response = ['status' => 0, 'msg' => 'Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento.'];
+            $response = ['status' => 0, 'msg' => "Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento. {$e->getMessage()}"];
         }
 
         return $response;
@@ -352,7 +352,7 @@ class WSMinsal extends Model
                 $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un momento.'];
             }
         }catch (Exception $e){
-            $response = ['status' => 0, 'msg' => 'Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento.'];
+            $response = ['status' => 0, 'msg' => "Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento. {$e->getMessage()}"];
         }
 
         return $response;

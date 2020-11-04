@@ -48,6 +48,7 @@
         <th>teléfono</th>
         <th>dirección</th>
         <th>comuna</th>
+        <th>nacimiento</th>
     </thead>
     <tbody>
         @foreach ($cases as $case)
@@ -68,6 +69,8 @@
             <td>{{($case->patient && $case->patient->demographic)?$case->patient->demographic->telephone:''}}</td>
             <td>{{($case->patient && $case->patient->demographic)?$case->patient->demographic->fullAddress:''}}</td>
             <td>{{($case->patient && $case->patient->demographic && $case->patient->demographic->commune)?$case->patient->demographic->commune->name:''}}</td>
+            <td>{{($case->patient) ? $case->patient->birthday->format('Y-m-d') : ''}}</td>
+
         </tr>
         @endforeach
 </table>
