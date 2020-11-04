@@ -884,20 +884,48 @@ class SuspectCaseReportController extends Controller
     /**
      *Funcion para sincronizar muestras que quedaron a mitad de proceso durante baja de sistema
      */
-    public function ws_minsal_pendings(Request $request){
-        $from = '2020-11-02 12:02:47'; //date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+    public function ws_minsal_pendings(Request $request)
+    {
+        set_time_limit(3600);
 
-        $casesOnlyReception = SuspectCase::whereNotNull('minsal_ws_id')
-            ->whereDate('reception_at', '>', $from)->count();
-//            ->orWhereDate()
+        $from = '2020-11-02 12:02'; //date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+        $errors = '';
 
-        $casesReceptionResult = SuspectCase::whereNotNull('minsal_ws_id')
-            ->whereDate('reception_at', '>', $from)
-            ->orWhereDate('pcr_sars_cov_2_at', '>', $from)
-            ->count();
+        $casosRecepcionados = SuspectCase::whereNotNull('minsal_ws_id')
+            ->whereNull('external_laboratory')
+            ->where('reception_at', '>', $from)->get();
 
-        dump('onlyreception', $casesOnlyReception);
-        dd('receptionOrResult',$casesReceptionResult);
+        foreach ($casosRecepcionados as $case){
+            $response = WSMinsal::recepciona_muestra($case);
+            if ($response['status'] == 0) {
+                $errors = $errors . "case: " .$case->id . " " . $response['msg'] . "<br>";
+            }
+        }
+
+        $casosConResultado = SuspectCase::whereNotNull('minsal_ws_id')
+            ->whereNull('external_laboratory')
+            ->where('pcr_sars_cov_2_at', '>', $from)->get();
+
+        foreach ($casosConResultado as $case) {
+            $response = WSMinsal::resultado_muestra($case);
+            if ($response['status'] == 0) {
+                $errors = $errors . "case: " .$case->id . " " . $response['msg'] . "<br>";
+            }
+        }
+
+//        dump('casos recepcionados', $casosRecepcionados->pluck('id'));
+//        dd('casos con resultado',$casosConResultado->pluck('id'));
+
+        if($errors){
+            session()->flash('info', $errors);
+        }else {
+            session()->flash('success', 'Se han sincronizado muestras con PNTM.');
+        }
+
+        return redirect()->back();
+
+
+
 
     }
 
