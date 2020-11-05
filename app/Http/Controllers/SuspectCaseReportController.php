@@ -934,9 +934,16 @@ class SuspectCaseReportController extends Controller
         $from = '2020-10-30 08:35:23'; //date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $errors = '';
 
+//        $casosConResultado = SuspectCase::whereNotNull('minsal_ws_id')
+//            ->whereNull('external_laboratory')
+//            ->where('pcr_sars_cov_2_at', '>', $from)->get();
+
         $casosConResultado = SuspectCase::whereNotNull('minsal_ws_id')
-            ->whereNull('external_laboratory')
-            ->where('pcr_sars_cov_2_at', '>', $from)->get();
+            ->whereNotNull('pcr_sars_cov_2_at')
+            ->whereNotNull('derivation_internal_lab_at')
+            ->get();
+
+//        dd($casosConResultado);
 
         foreach ($casosConResultado as $case) {
             $response = WSMinsal::resultado_muestra($case);
