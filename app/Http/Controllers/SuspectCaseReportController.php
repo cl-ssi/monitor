@@ -892,9 +892,16 @@ class SuspectCaseReportController extends Controller
         $from = '2020-10-30 08:35:23'; //date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $errors = '';
 
+//        $casosRecepcionados = SuspectCase::whereNotNull('minsal_ws_id')
+//            ->whereNull('external_laboratory')
+//            ->where('reception_at', '>', $from)->get();
+
         $casosRecepcionados = SuspectCase::whereNotNull('minsal_ws_id')
-            ->whereNull('external_laboratory')
-            ->where('reception_at', '>', $from)->get();
+            ->whereNotNull('reception_at')
+            ->whereNotNull('derivation_internal_lab_at')
+            ->get();
+
+//        dd($casosRecepcionados);
 
         foreach ($casosRecepcionados as $case){
             $response = WSMinsal::recepciona_muestra($case);
