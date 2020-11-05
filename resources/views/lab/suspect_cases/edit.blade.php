@@ -43,7 +43,7 @@
 
                 <div class="col-12 col-md-4 col-lg-3">
                     <div class="input-group mb-3">
-                        <select name="laboratory_id_derive" form="derive_form" id="for_laboratory_id_derive" class="form-control selectpicker" required>
+                        <select name="laboratory_id_derive" form="derive_form" id="for_laboratory_id_derive" class="form-control selectpicker" required >
                             <option value="">Selec. Laboratorio</option>
                             <optgroup label="Internos">
                                 @foreach($laboratories as $laboratory)
@@ -65,7 +65,7 @@
                         <input type="hidden" form="derive_form" name="casos_seleccionados[]" value="{{$suspectCase->id}}">
 
                         <div class="input-group-append">
-                            <button type="submit" form="derive_form" class="btn btn-primary float-right" title="Derivar"><i class="fas fa-reply-all"></i> Derivar</button>
+                            <button type="submit" form="derive_form" class="btn btn-primary float-right" title="Derivar" {{($suspectCase->pcr_sars_cov_2_at) ? 'disabled' : ''}}><i class="fas fa-reply-all"></i> Derivar</button>
                         </div>
                     </div>
                 </div>

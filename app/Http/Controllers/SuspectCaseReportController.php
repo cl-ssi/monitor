@@ -889,7 +889,7 @@ class SuspectCaseReportController extends Controller
     {
         set_time_limit(3600);
 
-        $from = '2020-11-02 12:02'; //date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+        $from = '2020-10-29 00:00'; //date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $errors = '';
 
         $casosRecepcionados = SuspectCase::whereNotNull('minsal_ws_id')
@@ -924,7 +924,7 @@ class SuspectCaseReportController extends Controller
     {
         set_time_limit(3600);
 
-        $from = '2020-11-02 12:02'; //date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+        $from = '2020-10-29 00:00'; //date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $errors = '';
 
         $casosConResultado = SuspectCase::whereNotNull('minsal_ws_id')
