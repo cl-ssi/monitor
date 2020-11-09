@@ -162,6 +162,10 @@
             <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_address_origin" value="{{$suspectCase->run_medic}}">
             </div>
+            <label for="for_address_origin" class="col-sm-2 col-form-label">Epivigila</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="for_address_origin" value="{{$suspectCase->epivigila}}">
+            </div>
         </div>
 
         <hr/>

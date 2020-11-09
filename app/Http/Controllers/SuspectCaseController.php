@@ -1369,7 +1369,8 @@ class SuspectCaseController extends Controller
             'observación',
             'teléfono',
             'dirección',
-            'comuna'
+            'comuna',
+            'país'
         );
 
         $callback = function() use ($filas, $columnas)
@@ -1396,6 +1397,7 @@ class SuspectCaseController extends Controller
                     ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->telephone:'',
                     ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->fullAddress:'',
                     ($fila->patient && $fila->patient->demographic && $fila->patient->demographic->commune)?$fila->patient->demographic->commune->name:'',
+                    ($fila->patient && $fila->patient->demographic && $fila->patient->demographic->nationality) ? $fila->patient->demographic->nationality : ''
                 ),';');
             }
             fclose($file);
@@ -1425,6 +1427,11 @@ class SuspectCaseController extends Controller
     {
         $user = auth()->user();
         return view('lab.suspect_cases.notification_form', compact('suspectCase', 'user'));
+    }
+
+    public function notificationFormSmall(SuspectCase $suspectCase){
+        $user = auth()->user();
+        return view('lab.suspect_cases.notification_form_small', compact('suspectCase', 'user'));
     }
 
     public function exportExcelReceptionInbox($cod_lab){

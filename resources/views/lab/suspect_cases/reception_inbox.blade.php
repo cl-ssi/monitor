@@ -141,6 +141,7 @@
             <th>Observación</th>
             <th>Epivigila</th>
             <th>Selec.</th>
+{{--            <th>Impr.</th>--}}
         </tr>
     </thead>
     <tbody id="tableCases">
@@ -178,6 +179,7 @@
             <td class="text-muted small">{{ $case->observation }}</td>
             <td>{{ $case->epivigila }}</td>
             <td style="text-align:center;"><label for="chk_derivacion">{{($case->external_laboratory) ? 'externo' : '' }}</label><input type="checkbox" {{($case->external_laboratory) ? 'visibility: hidden' : '' }} name="casos_seleccionados[]" id="chk_derivacion" class="select_checkboxs" value={{$case->id}} /> </td>
+{{--            <td > <a class="btn btn-sm btn-outline-primary" href="#"><i class="fas fa-print"></i></a> </td>--}}
         </tr>
         @endforeach
     </tbody>
