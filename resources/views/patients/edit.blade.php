@@ -590,17 +590,22 @@
 
             });
 
+            //Run y otra identificación excluyentes
             $("#for_other_identification").click(function () {
                 $("#for_run").val("");
                 $("#for_dv").val("");
                 $("#for_run").attr('readonly', 'readonly');
                 $("#for_other_identification").removeAttr('readonly', 'readonly');
+                $("#for_run").removeAttr('required')
+                $("#for_other_identification").attr('required', 'required');
             })
 
             $("#for_run").click(function () {
                 $("#for_other_identification").val("");
                 $("#for_other_identification").attr('readonly', 'readonly');
                 $("#for_run").removeAttr('readonly', 'readonly');
+                $("#for_other_identification").removeAttr('required')
+                $("#for_run").attr('required', 'required');
             })
 
         });

@@ -22,7 +22,7 @@
     <div class="form-row align-items-end">
         <fieldset class="form-group col-5 col-sm-4 col-md-4 col-lg-2">
             <label for="for_run">Run</label>
-            <input type="number" class="form-control" id="for_run" name="run" autocomplete="off" max="50000000">
+            <input type="number" class="form-control" id="for_run" name="run" autocomplete="off" max="50000000" required>
         </fieldset>
 
         <fieldset class="form-group col-2 col-sm-2 col-md-1 col-lg-1">
@@ -217,12 +217,16 @@
                 $("#for_dv").val("");
                 $("#for_run").attr('readonly', 'readonly');
                 $("#for_other_identification").removeAttr('readonly', 'readonly');
+                $("#for_run").removeAttr('required')
+                $("#for_other_identification").attr('required', 'required');
             })
 
             $("#for_run").click(function () {
                 $("#for_other_identification").val("");
                 $("#for_other_identification").attr('readonly', 'readonly');
                 $("#for_run").removeAttr('readonly', 'readonly');
+                $("#for_other_identification").removeAttr('required')
+                $("#for_run").attr('required', 'required');
             })
 
         });
