@@ -681,13 +681,13 @@ class SuspectCaseController extends Controller
         }
         }
 
-//        if ($old_pcr == 'pending' && ($suspectCase->pcr_sars_cov_2 == 'positive' || $suspectCase->pcr_sars_cov_2 == 'negative' ||
-//                $suspectCase->pcr_sars_cov_2 == 'undetermined' || $suspectCase->pcr_sars_cov_2 == 'rejected')
-//            && $suspectCase->patient->demographic != NULL && $suspectCase->external_laboratory == null) {
-//
-//            $suspectCase->pcr_result_added_at = Carbon::now();
-//
-//        }
+        if ($old_pcr == 'pending' && ($suspectCase->pcr_sars_cov_2 == 'positive' || $suspectCase->pcr_sars_cov_2 == 'negative' ||
+                $suspectCase->pcr_sars_cov_2 == 'undetermined' || $suspectCase->pcr_sars_cov_2 == 'rejected')
+            && $suspectCase->patient->demographic != NULL && $suspectCase->external_laboratory == null) {
+
+            $suspectCase->pcr_result_added_at = Carbon::now();
+
+        }
 
         $suspectCase->save();
         /* Webservice minsal */
@@ -762,7 +762,7 @@ class SuspectCaseController extends Controller
                                 $suspectCase->pcr_sars_cov_2 = 'pending';
                                 $suspectCase->validator_id = NULL;
                                 $suspectCase->file = NULL;
-//                                $suspectCase->pcr_result_added_at = NULL;
+                                $suspectCase->pcr_result_added_at = NULL;
                                 $suspectCase->save();
                                 // return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
                                 return redirect()->back()->withInput();
