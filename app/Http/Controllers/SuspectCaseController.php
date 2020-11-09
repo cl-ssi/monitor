@@ -681,6 +681,14 @@ class SuspectCaseController extends Controller
         }
         }
 
+//        if ($old_pcr == 'pending' && ($suspectCase->pcr_sars_cov_2 == 'positive' || $suspectCase->pcr_sars_cov_2 == 'negative' ||
+//                $suspectCase->pcr_sars_cov_2 == 'undetermined' || $suspectCase->pcr_sars_cov_2 == 'rejected')
+//            && $suspectCase->patient->demographic != NULL && $suspectCase->external_laboratory == null) {
+//
+//            $suspectCase->pcr_result_added_at = Carbon::now();
+//
+//        }
+
         $suspectCase->save();
         /* Webservice minsal */
         //##### se genera envio de resultado a ws minsal #####
@@ -693,6 +701,7 @@ class SuspectCaseController extends Controller
                         $external_laboratory = Laboratory::where('name', $suspectCase->external_laboratory)->first();
 
                         // //caso1
+                        //todo eliminar caso 1? ya que se hace la derivacion en otro formulario
                         if ($old_external_laboratory == NULL && $suspectCase->external_laboratory != null) {
                             //envío información minsal
                             if ($external_laboratory->id_openagora != null) {
@@ -753,6 +762,7 @@ class SuspectCaseController extends Controller
                                 $suspectCase->pcr_sars_cov_2 = 'pending';
                                 $suspectCase->validator_id = NULL;
                                 $suspectCase->file = NULL;
+//                                $suspectCase->pcr_result_added_at = NULL;
                                 $suspectCase->save();
                                 // return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
                                 return redirect()->back()->withInput();
