@@ -887,7 +887,7 @@ class SuspectCaseReportController extends Controller
         $from = '2020-10-30 08:35:23'; //date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $errors = '';
 
-        $casosCreados = SuspectCase::find('114122');
+        $casosCreados = SuspectCase::find('114122')->get();
 
         dump($casosCreados);
 
