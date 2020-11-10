@@ -260,6 +260,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::get('/minsal-export/{laboratory}','SuspectCaseController@exportMinsalExcel')->name('exportMinsal')->middleware('auth');
             Route::get('/seremi-export/{laboratory}','SuspectCaseController@exportSeremiExcel')->name('exportSeremi')->middleware('auth');
             Route::get('/ws_minsal','SuspectCaseReportController@ws_minsal')->name('ws_minsal')->middleware('auth');
+            Route::get('/ws_minsal_pendings_creation','SuspectCaseReportController@ws_minsal_pendings_creation')->name('ws_minsal_pendings_creation')->middleware('auth');
             Route::get('/ws_minsal_pendings_reception','SuspectCaseReportController@ws_minsal_pendings_reception')->name('ws_minsal_pendings_reception')->middleware('auth');
             Route::get('/ws_minsal_pendings_result','SuspectCaseReportController@ws_minsal_pendings_result')->name('ws_minsal_pendings_result')->middleware('auth');
             Route::get('diary_lab_report','SuspectCaseController@diary_lab_report')->name('diary_lab_report')->middleware('auth');

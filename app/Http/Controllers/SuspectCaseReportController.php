@@ -880,6 +880,34 @@ class SuspectCaseReportController extends Controller
         return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'request', 'laboratories'));
     }
 
+    public function ws_minsal_pendings_creation(Request $request)
+    {
+        set_time_limit(3600);
+
+        $from = '2020-10-30 08:35:23'; //date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+        $errors = '';
+
+        $casosCreados = SuspectCase::find('114122');
+
+        dump($casosCreados);
+
+        foreach ($casosCreados as $case){
+            $response = WSMinsal::crea_muestra($case);
+            if ($response['status'] == 0) {
+                $errors = $errors . "case: " .$case->id . " " . $response['msg'] . "<br>";
+            }
+        }
+
+        if($errors){
+            session()->flash('info', $errors);
+        }else {
+            session()->flash('success', 'Se han sincronizado muestras recepcion con PNTM.');
+        }
+
+        return redirect()->back();
+    }
+
+
     /**
      * Funcion para sincronizar receptions muestras que quedaron a mitad de proceso durante baja de sistema
      * @param Request $request
