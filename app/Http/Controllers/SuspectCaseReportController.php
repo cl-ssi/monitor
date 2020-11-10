@@ -887,9 +887,9 @@ class SuspectCaseReportController extends Controller
         $from = '2020-10-30 08:35:23'; //date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $errors = '';
 
-        $case = SuspectCase::find('114122')->get();
+        $case = SuspectCase::find('114122');
 
-        dd($case);
+        dump($case);
 
 //        foreach ($casosCreados as $case){
             $response = WSMinsal::crea_muestra($case);
