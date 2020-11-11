@@ -959,14 +959,14 @@ class SuspectCaseReportController extends Controller
     {
         set_time_limit(3600);
 
-        $from = '2020-11-10 20:05:17';
+        $from = '2020-11-10 23:30:00';
         $to = '2020-11-11 17:02:53';
         $errors = '';
 
         $casosConResultado = SuspectCase::whereNotNull('minsal_ws_id')
             ->whereNull('external_laboratory')
-            ->where('pcr_sars_cov_2_at', '>=', $from)
-            ->where('pcr_sars_cov_2_at', '<=', $to)->get();
+            ->where('pcr_result_added_at', '>=', $from)
+            ->where('pcr_result_added_at', '<=', $to)->get();
 
 //        $casosConResultado = SuspectCase::whereNotNull('minsal_ws_id')
 //            ->whereNotNull('pcr_sars_cov_2_at')
