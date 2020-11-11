@@ -3,6 +3,7 @@
 namespace App;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -94,17 +95,23 @@ class WSMinsal extends Model
             $response = ['status' => 1, 'msg' => $array[0]['id_muestra']];
 
         } catch (RequestException $e) {
-            $response = $e->getResponse();
-            if($response){
-                $responseBodyAsString = $response->getBody()->getContents();
-                $decode = json_decode($responseBodyAsString);
-                $response = ['status' => 0, 'msg' => $decode->error];
-            }
-            else{
-                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un momento.'];
-            }
+//            $response = $e->getResponse();
+//            if($response){
+////                dd($response);
+//
+//                $responseBodyAsString = $response->getBody()->getContents();
+//                $decode = json_decode($responseBodyAsString);
+////                dd($decode);
+//                $response = ['status' => 0, 'msg' => $decode->error];
+//            }
+//            else{
+                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un momento. ' . $e->getMessage()];
+//            }
         }catch (Exception $e){
             $response = ['status' => 0, 'msg' => "Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento. {$e->getMessage()}"];
+        } catch (GuzzleException $e) {
+            $response = ['status' => 0, 'msg' => "Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento. {$e->getMessage()}"];
+
         }
 
         return $response;
@@ -191,15 +198,17 @@ class WSMinsal extends Model
             $response = ['status' => 1, 'msg' => $array[0]['id_muestra']];
 
         } catch (RequestException $e) {
-            $response = $e->getResponse();
-            if($response){
-                $responseBodyAsString = $response->getBody()->getContents();
-                $decode = json_decode($responseBodyAsString);
-                $response = ['status' => 0, 'msg' => $decode->error];
-            }
-            else{
-                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un momento.'];
-            }
+//            $response = $e->getResponse();
+//            if($response){
+//                $responseBodyAsString = $response->getBody()->getContents();
+//                $decode = json_decode($responseBodyAsString);
+//                $response = ['status' => 0, 'msg' => $decode->error];
+//            }
+//            else{
+//                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un momento.'];
+//            }
+
+            $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un momento. ' . $e->getMessage()];
 
         }catch (Exception $e){
             $response = ['status' => 0, 'msg' => "Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento. {$e->getMessage()}"];
@@ -226,15 +235,17 @@ class WSMinsal extends Model
             $response = ['status' => 1, 'msg' => 'OK'];
 
         } catch (RequestException $e) {
-            $response = $e->getResponse();
-            if($response){
-                $responseBodyAsString = $response->getBody()->getContents();
-                $decode = json_decode($responseBodyAsString);
-                $response = ['status' => 0, 'msg' => $decode->error];
-            }
-            else{
-                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un momento.'];
-            }
+//            $response = $e->getResponse();
+//            if($response){
+//                $responseBodyAsString = $response->getBody()->getContents();
+//                $decode = json_decode($responseBodyAsString);
+//                $response = ['status' => 0, 'msg' => $decode->error];
+//            }
+//            else{
+//                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un momento.'];
+//            }
+            $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un momento. ' . $e->getMessage()];
+
         }catch (Exception $e){
             $response = ['status' => 0, 'msg' => "Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento. {$e->getMessage()}"];
         }
@@ -309,15 +320,18 @@ class WSMinsal extends Model
             $response = ['status' => 1, 'msg' => 'OK'];
 
         } catch (RequestException $e) {
-            $response = $e->getResponse();
-            if($response){
-                $responseBodyAsString = $response->getBody()->getContents();
-                $decode = json_decode($responseBodyAsString);
-                $response = ['status' => 0, 'msg' => $decode->error];
-            }
-            else{
-                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un momento.'];
-            }
+//            $response = $e->getResponse();
+//            if($response){
+//                $responseBodyAsString = $response->getBody()->getContents();
+//                $decode = json_decode($responseBodyAsString);
+//                $response = ['status' => 0, 'msg' => $decode->error];
+//            }
+//            else{
+//                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un momento.'];
+//            }
+
+            $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un momento. ' . $e->getMessage()];
+
         }catch (Exception $e){
             $response = ['status' => 0, 'msg' => "Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento. {$e->getMessage()}"];
         }
@@ -342,15 +356,17 @@ class WSMinsal extends Model
             $response = ['status' => 1, 'msg' => 'OK'];
 
         } catch (RequestException $e) {
-            $response = $e->getResponse();
-            if($response){
-                $responseBodyAsString = $response->getBody()->getContents();
-                $decode = json_decode($responseBodyAsString);
-                $response = ['status' => 0, 'msg' => $decode->error];
-            }
-            else{
-                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un momento.'];
-            }
+//            $response = $e->getResponse();
+//            if($response){
+//                $responseBodyAsString = $response->getBody()->getContents();
+//                $decode = json_decode($responseBodyAsString);
+//                $response = ['status' => 0, 'msg' => $decode->error];
+//            }
+//            else{
+//                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un momento.'];
+//            }
+            $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un momento. ' . $e->getMessage()];
+
         }catch (Exception $e){
             $response = ['status' => 0, 'msg' => "Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento. {$e->getMessage()}"];
         }

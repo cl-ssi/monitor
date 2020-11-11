@@ -286,6 +286,54 @@ class SuspectCaseController extends Controller
         return redirect()->back();
     }
 
+//    public function reception(Request $request, SuspectCase $suspectCase) //recepcion antes en pntm y luego monitor
+//    {
+//        /* Webservice minsal */
+//        //####### recepciona en webservice ########
+//        if (env('ACTIVA_WS', false) == true) {
+//            if ($suspectCase->minsal_ws_id) {
+//                if ($suspectCase->laboratory_id != null) {
+//                    if ($suspectCase->laboratory->minsal_ws == true) {
+//                        // recepciona en minsal
+//                        $response = WSMinsal::recepciona_muestra($suspectCase);
+//                        if ($response['status'] == 1) {
+//                            $suspectCase->receptor_id = Auth::id();
+//                            $suspectCase->reception_at = date('Y-m-d H:i:s');
+//                            $suspectCase->save();
+//                        } else {
+//                            session()->flash('info', 'Error al recepcionar muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'] . ".");
+////                            $suspectCase->receptor_id = NULL;
+////                            $suspectCase->reception_at = NULL;
+////                            $suspectCase->save();
+//                            return redirect()->back()->withInput();
+//                        }
+//                    }else{
+//                        $suspectCase->receptor_id = Auth::id();
+//                        $suspectCase->reception_at = date('Y-m-d H:i:s');
+//                        if (!$suspectCase->minsal_ws_id) $suspectCase->laboratory_id = Auth::user()->laboratory->id;
+//                    }
+//                } else {
+//                    session()->flash('info', 'Error al recepcionar muestra ' . $suspectCase->id . ' en MINSAL. ' . 'No existe laboratory_id' . ".");
+//                    return redirect()->back()->withInput();
+//                }
+//            } else {
+//                $suspectCase->receptor_id = Auth::id();
+//                $suspectCase->reception_at = date('Y-m-d H:i:s');
+//                $suspectCase->laboratory_id = Auth::user()->laboratory->id;
+//            }
+//        } else {
+//            $suspectCase->receptor_id = Auth::id();
+//            $suspectCase->reception_at = date('Y-m-d H:i:s');
+//            if (!$suspectCase->minsal_ws_id) $suspectCase->laboratory_id = Auth::user()->laboratory->id;
+//        }
+//
+//        session()->flash('info', 'Se ha recepcionada la muestra: '
+//            . $suspectCase->id . ' en laboratorio: '
+//            . Auth::user()->laboratory->name);
+//
+//        return redirect()->back();
+//    }
+
     /**
      * Recepciona masivamente muestras
      * @param Request $request
