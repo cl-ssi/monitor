@@ -929,7 +929,7 @@ class SuspectCaseReportController extends Controller
 //            ->whereNotNull('derivation_internal_lab_at')
 //            ->get();
 
-        dd($casosRecepcionados);
+//        dd($casosRecepcionados);
 
         foreach ($casosRecepcionados as $case){
             $response = WSMinsal::recepciona_muestra($case);
