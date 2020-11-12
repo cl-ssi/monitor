@@ -4,16 +4,24 @@
 
 @section('content')
 
+<?php use Milon\Barcode\DNS1D; ?>
+
     <div class="row">
         <div class="col-md-2">
             <img src="{{ asset('/images/256px_logo_isp.png') }}" class="img-fluid" alt="Instituto de Salud Pública de Chile" width="70%">
         </div>
-        <div class="col-md-10">
-            <h3 class="mb-3">Formulario notificación inmediata y envío de muestras
-                <br>a confirmación IRA grave y 2019-nCoV </h3><input type="button" class="d-print-none" value="Imprimir" onclick="javascript:window.print()">
-            <h3 class="mb3 float-right"> Número de ingreso: {{$suspectCase->id}}</h3>
+        <div class="col-md-7">
+            <h2 class="mb-3">Formulario envío de muestras
+                 2019-nCoV </h2><input type="button" class="d-print-none" value="Imprimir" onclick="javascript:window.print()">
+
         </div>
-        <div class="col-md-2"></div>
+        <div class="col-md-3">
+            <div style="text-align: center" >
+                <img src="data:image/png;base64, <?php echo (new DNS1D)->getBarcodePNG($suspectCase->id, "C128", 2, 40); ?> " />
+                <h3 style="margin-top: 30px" class="mb3">Ingreso: {{$suspectCase->id}}</h3>
+            </div>
+
+        </div>
     </div>
 
     <hr/>
@@ -88,7 +96,7 @@
             </div>
             <label for="for_age" class="col-sm-2 col-form-label">Edad</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_age" value="{{$suspectCase->patient->age}}">
+                <input type="text" class="form-control" id="for_age" value="{{$suspectCase->agePatient}}">
             </div>
         </div>
 
@@ -101,29 +109,31 @@
             </div>
         </div>
         <div class="form-group row">
+            <label for="for_name_medic" class="col-sm-2 col-form-label">Profesional Responsable</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="for_name_medic" value="{{$user->name}}">
+            </div>
             <label for="for_run_medic" class="col-sm-2 col-form-label">Profesional Responsable</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_run_medic" value="{{$user->run . '-' .$user->dv}}">
             </div>
-            <label for="for_laboratory" class="col-sm-2 col-form-label">Laboratorio</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_laboratory">
-            </div>
+
         </div>
         <div class="form-group row">
+            <label for="for_laboratory" class="col-sm-2 col-form-label">Laboratorio</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="for_laboratory" value="{{($suspectCase->laboratory) ? $suspectCase->laboratory->name : ''}}">
+            </div>
             <label for="for_region_origin" class="col-sm-2 col-form-label">Región</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_region_origin" value="{{$suspectCase->patient->demographic->region->name}}">
             </div>
+
+        </div>
+        <div class="form-group row">
             <label for="for_unit_origin" class="col-sm-2 col-form-label">Unidad</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" id="for_unit_origin" >
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="for_province_origin" class="col-sm-2 col-form-label">Provincia</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_province_origin">
             </div>
             <label for="for_email_origin" class="col-sm-2 col-form-label">Correo Electrónico</label>
             <div class="col-sm-4">
@@ -160,12 +170,13 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="for_sample_at" class="col-sm-1 col-form-label">Obtención</label>
-            <div class="col-sm-5">
-                <input type="text" class="form-control" id="for_sample_at" value="{{Carbon\Carbon::parse($suspectCase->sample_at)->format('d/m/Y')  }}">
+            <label for="for_sample_at" class="col-sm-2 col-form-label">Fecha obtención</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="for_sample_at" value="{{$suspectCase->sample_at->format('d/m/Y')  }}">
             </div>
-            <div class="col-sm-6">
-
+            <label for="for_sample_at" class="col-sm-2 col-form-label">Hora obtención</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="for_sample_at" value="{{$suspectCase->sample_at->format('H:i:s')  }}">
             </div>
         </div>
 
@@ -212,7 +223,7 @@
 
             <label class="col-sm-1" for="for_symptoms_at" >Inicio Síntomas</label>
             <div class="col-sm-3">
-                <input type="text" class="form-control" id="for_symptoms_at" value="{{($suspectCase->symptoms_at === NULL) ? '' : $suspectCase->symptoms_at}}">
+                <input type="text" class="form-control" id="for_symptoms_at" value="{{($suspectCase->symptoms_at === NULL) ? '' : $suspectCase->symptoms_at->format('d/m/Y') }}">
             </div>
 
             <label class="col-sm-1" for="for_gestation" >Gestante</label>
@@ -232,122 +243,12 @@
 
         </div>
 
-{{--        <div class="form-group row">--}}
-{{--            <div class="col-sm-4">--}}
-{{--                <div class="form-check">--}}
-{{--                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">--}}
-{{--                    <label class="form-check-label" for="defaultCheck1">--}}
-{{--                        Fiebre sobre 38°C--}}
-{{--                    </label>--}}
-{{--                </div>--}}
-{{--                <div class="form-check">--}}
-{{--                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">--}}
-{{--                    <label class="form-check-label" for="defaultCheck2">--}}
-{{--                        Dolor de garganta--}}
-{{--                    </label>--}}
-{{--                </div>--}}
-{{--                <div class="form-check">--}}
-{{--                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">--}}
-{{--                    <label class="form-check-label" for="defaultCheck2">--}}
-{{--                        Mialgia--}}
-{{--                    </label>--}}
-{{--                </div>--}}
-{{--                <div class="form-check">--}}
-{{--                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">--}}
-{{--                    <label class="form-check-label" for="defaultCheck2">--}}
-{{--                        Neumonía--}}
-{{--                    </label>--}}
-{{--                </div>--}}
-{{--                <div class="form-check">--}}
-{{--                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">--}}
-{{--                    <label class="form-check-label" for="defaultCheck2">--}}
-{{--                        Encefalitis--}}
-{{--                    </label>--}}
-{{--                </div>--}}
-{{--                <div class="form-check">--}}
-{{--                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">--}}
-{{--                    <label class="form-check-label" for="defaultCheck2">--}}
-{{--                        Tos--}}
-{{--                    </label>--}}
-{{--                </div>--}}
-
-
-{{--            </div>--}}
-{{--            <div class="col-sm-4">--}}
-{{--                <div class="form-check">--}}
-{{--                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">--}}
-{{--                    <label class="form-check-label" for="defaultCheck2">--}}
-{{--                        Rinorrea/congestión Nasal--}}
-{{--                    </label>--}}
-{{--                </div>--}}
-{{--                <div class="form-check">--}}
-{{--                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">--}}
-{{--                    <label class="form-check-label" for="defaultCheck2">--}}
-{{--                        Dificultad respiratoria--}}
-{{--                    </label>--}}
-{{--                </div>--}}
-{{--                <div class="form-check">--}}
-{{--                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">--}}
-{{--                    <label class="form-check-label" for="defaultCheck2">--}}
-{{--                        Hipotensión--}}
-{{--                    </label>--}}
-{{--                </div>--}}
-{{--                <div class="form-check">--}}
-{{--                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">--}}
-{{--                    <label class="form-check-label" for="defaultCheck1">--}}
-{{--                        Cefalea--}}
-{{--                    </label>--}}
-{{--                </div>--}}
-{{--                <div class="form-check">--}}
-{{--                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">--}}
-{{--                    <label class="form-check-label" for="defaultCheck2">--}}
-{{--                        Taquipnea--}}
-{{--                    </label>--}}
-{{--                </div>--}}
-{{--                <div class="form-check">--}}
-{{--                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">--}}
-{{--                    <label class="form-check-label" for="defaultCheck2">--}}
-{{--                        Hipoxia--}}
-{{--                    </label>--}}
-{{--                </div>--}}
-{{--                <div class="form-check">--}}
-{{--                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">--}}
-{{--                    <label class="form-check-label" for="defaultCheck2">--}}
-{{--                        Deshidratación o rechazo alimentario (lactantes)--}}
-{{--                    </label>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-
-{{--            <div class="col-sm-4">--}}
-{{--                <div class="form-check">--}}
-{{--                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">--}}
-{{--                    <label class="form-check-label" for="defaultCheck2">--}}
-{{--                        Cianosis--}}
-{{--                    </label>--}}
-{{--                </div>--}}
-
-{{--                <div class="form-check">--}}
-{{--                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">--}}
-{{--                    <label class="form-check-label" for="defaultCheck2">--}}
-{{--                        Compromiso hemodinámica--}}
-{{--                    </label>--}}
-{{--                </div>--}}
-{{--                <div class="form-check">--}}
-{{--                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">--}}
-{{--                    <label class="form-check-label" for="defaultCheck2">--}}
-{{--                        Consulta repetida por deterioro cuadro respiratorio--}}
-{{--                    </label>--}}
-{{--                </div>--}}
-{{--                <div class="form-check">--}}
-{{--                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">--}}
-{{--                    <label class="form-check-label" for="defaultCheck2">--}}
-{{--                        Enfermedad de base--}}
-{{--                    </label>--}}
-{{--                </div>--}}
-{{--                <input type="text" class="form-control" id="for_dv">--}}
-{{--            </div>--}}
-
-{{--        </div>--}}
+        <div class="form-group row">
+            <label class="col-sm-1" for="for_observation" >Observación</label>
+            <div class="col-sm-11">
+                <input type="text" class="form-control" id="for_observation" value="{{($suspectCase->observation) ? $suspectCase->observation : '' }}">
+            </div>
+        </div>
 
         <hr/>
 

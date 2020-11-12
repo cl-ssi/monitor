@@ -164,7 +164,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         //para poder hacer resize de imagen
         //Intervention\Image\ImageServiceProvider::class,
-        
+
 
         /*
          * Package Service Providers...
@@ -179,6 +179,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Milon\Barcode\BarcodeServiceProvider::class,
 
     ],
 
@@ -235,6 +236,8 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         //para poder hacer resize de imagen
         'Image' => Intervention\Image\Facades\Image::class,
+        'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
+        'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
 
     ],
 
