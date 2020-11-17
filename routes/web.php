@@ -252,6 +252,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::get('pending_more_than_two_days','SuspectCaseReportController@pendingMoreThanTwoDays')->name('pending_more_than_two_days')->middleware('auth', 'can:Report: more than two days');
             Route::get('suspect_case_by_commune','SuspectCaseReportController@suspectCaseByCommune')->name('suspect_case_by_commune')->middleware('auth', 'can:Report: suspect cases by commune');
             Route::get('/cases_without_results','SuspectCaseReportController@casesWithoutResults')->name('cases_without_results')->middleware('auth');
+            Route::get('/cases_with_barcodes','SuspectCaseReportController@casesWithBarcodes')->name('cases_with_barcodes')->middleware('auth');
 
         });
         Route::prefix('report')->name('report.')->group(function () {

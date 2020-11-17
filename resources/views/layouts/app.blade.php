@@ -386,6 +386,9 @@
                                 @can('Report: cases without results')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.cases_without_results') }}">Casos sin resultados por fecha</a>
                                 @endcan
+                                @can('Report: cases with barcodes')
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.cases_with_barcodes') }}">Casos Códigos de barra</a>
+                                @endcan
 
                             </div>
                         </li>

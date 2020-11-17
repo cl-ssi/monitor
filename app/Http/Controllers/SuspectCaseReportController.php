@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Establishment;
 use http\Message;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -1490,5 +1491,35 @@ class SuspectCaseReportController extends Controller
 
         return view('lab.suspect_cases.reports.cases_without_results', compact('from', 'to'));
     }
+
+    public function casesWithBarcodes(Request $request){
+//        dd($request);
+        $selectedEstablishment = $request->input('establishment_id');
+        $selectedSampleAt = $request->input('sample_at');
+
+        $suspectCases = SuspectCase::where(function ($q) use ($selectedEstablishment) {
+            if ($selectedEstablishment) {
+                $q->where('establishment_id', $selectedEstablishment);
+            }
+        })
+            ->where(function ($q) use ($selectedSampleAt){
+            if ($selectedSampleAt) {
+                $q->whereDate('sample_at', $selectedSampleAt);
+            }
+        })
+            ->where('laboratory_id', Auth::user()->laboratory_id)
+            ->where('reception_at', NULL)
+            ->where('pcr_sars_cov_2', 'pending')
+            ->latest()
+            ->paginate(200);
+
+        $env_communes = array_map('trim',explode(",",env('COMUNAS')));
+        $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
+
+        return view('lab.suspect_cases.reports.cases_with_barcodes', compact('suspectCases', 'establishments', 'selectedEstablishment', 'selectedSampleAt'));
+
+    }
+
+
 
 }
