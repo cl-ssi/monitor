@@ -111,11 +111,11 @@
         <div class="form-group row">
             <label for="for_name_medic" class="col-sm-2 col-form-label">Profesional Responsable</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_name_medic" value="{{$user->name}}">
+                <input type="text" class="form-control" id="for_name_medic" value="{{ ($suspectCase->user) ? $suspectCase->user->name : '' }}">
             </div>
             <label for="for_run_medic" class="col-sm-2 col-form-label">Profesional Responsable</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="for_run_medic" value="{{$user->run . '-' .$user->dv}}">
+                <input type="text" class="form-control" id="for_run_medic" value="{{ ($suspectCase->user) ? $suspectCase->user->run . '-' .$suspectCase->user->dv : '' }}">
             </div>
 
         </div>
