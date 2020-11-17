@@ -1492,26 +1492,37 @@ class SuspectCaseReportController extends Controller
         return view('lab.suspect_cases.reports.cases_without_results', compact('from', 'to'));
     }
 
+    /**
+     * Obtiene los casos creados filtrados por establecimiento y fecha de muestra, con códigos de barras
+     * @param Request $request
+     * @return Application|Factory|View
+     */
     public function casesWithBarcodes(Request $request){
 //        dd($request);
         $selectedEstablishment = $request->input('establishment_id');
         $selectedSampleAt = $request->input('sample_at');
 
-        $suspectCases = SuspectCase::where(function ($q) use ($selectedEstablishment) {
-            if ($selectedEstablishment) {
-                $q->where('establishment_id', $selectedEstablishment);
-            }
-        })
-            ->where(function ($q) use ($selectedSampleAt){
-            if ($selectedSampleAt) {
-                $q->whereDate('sample_at', $selectedSampleAt);
-            }
-        })
-            ->where('laboratory_id', Auth::user()->laboratory_id)
-            ->where('reception_at', NULL)
-            ->where('pcr_sars_cov_2', 'pending')
-            ->latest()
-            ->paginate(200);
+        $suspectCases = null;
+        if($selectedEstablishment and $selectedSampleAt){
+            $suspectCases = SuspectCase::where(function ($q) use ($selectedEstablishment) {
+                if ($selectedEstablishment) {
+                    $q->where('establishment_id', $selectedEstablishment);
+                }
+            })
+                ->where(function ($q) use ($selectedSampleAt){
+                    if ($selectedSampleAt) {
+                        $q->whereDate('sample_at', $selectedSampleAt);
+                    }
+                })
+                ->where('laboratory_id', Auth::user()->laboratory_id)
+                ->where('reception_at', NULL)
+                ->where('pcr_sars_cov_2', 'pending')
+                ->latest()
+                ->get();
+        }
+
+
+
 
         $env_communes = array_map('trim',explode(",",env('COMUNAS')));
         $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();

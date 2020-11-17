@@ -31,7 +31,7 @@
 <div class="row align-items-end mb-3">
     <div class="col-12 col-md-4 col-lg-4">
             <label for="for_establishment_id">Establecimiento</label>
-            <select name="establishment_id" id="for_establishment_id" class="form-control">
+            <select name="establishment_id" id="for_establishment_id" class="form-control" required>
                 <option value=""> Seleccione Establecimiento</option>
                 @foreach($establishments as $establishment)
                     <option
@@ -43,14 +43,14 @@
 
     <div class="col-12 col-md-4 col-lg-4">
         <label for="for_sample_at">Toma Muestra</label>
-        <input class="form-control" type="date" id="for_sample_at" name="sample_at" value={{ ($selectedSampleAt) ? \Carbon\Carbon::parse($selectedSampleAt) : '' }}>
+        <input class="form-control" type="date" id="for_sample_at" name="sample_at" required value={{ ($selectedSampleAt) ? \Carbon\Carbon::parse($selectedSampleAt) : '' }}>
 
 
 
     </div>
     <div class="col-12 col-md-4 col-lg-4">
-        <button type="submit" class="btn btn-outline-secondary float-left">Filtrar</button>
-        <input type="button" class="btn btn-outline-secondary d-print-none ml-3" value="Imprimir" onclick="javascript:window.print()">
+        <button type="submit" class="btn btn-outline-secondary float-left d-print-none"><i class="fa fa-search"></i> Buscar</button>
+        <button type="button" class="btn btn-outline-secondary d-print-none ml-3" onclick="javascript:window.print()"> <i class="fa fa-print"></i> Imprimir </button>
     </div>
 
 </div>
@@ -67,7 +67,7 @@
     <div class="col-12 col-md-4 col-lg-4">
     </div>
     <div class="col-12 col-md-4 col-lg-4 ">
-        <b class="float-right">Exámenes en listado: {{ $suspectCases->count() }}</b>
+        <b class="float-right">Exámenes en listado: {{ ($suspectCases) ? $suspectCases->count() : '0' }}</b>
     </div>
 
 
@@ -91,6 +91,7 @@
         </tr>
     </thead>
     <tbody id="tableCases">
+    @if($suspectCases)
         @foreach($suspectCases as $case)
         <tr class="row_{{$case->covid19}} {{ ($case->pcr_sars_cov_2 == 'positive')?'table-danger':''}}">
             <td class="text-center">{{ $case->id }}</td>
@@ -111,13 +112,14 @@
             <td>{{ $case->age }}</td>
             <td>{{ strtoupper($case->gender[0]) }}</td>
             <td class="text-muted small">{{ $case->observation }}</td>
-            <td><img src="data:image/png;base64, <?php echo (new DNS1D)->getBarcodePNG($case->id, "C128", 2, 40); ?> " /></td>
+            <td><img class="mx-3 my-1" src="data:image/png;base64, <?php echo (new DNS1D)->getBarcodePNG($case->id, "C128", 2, 40); ?> " /></td>
         </tr>
         @endforeach
+    @endif
     </tbody>
 </table>
 
-{{ $suspectCases->appends(request()->query())->links() }}
+{{--{{ $suspectCases->appends(request()->query())->links() }}--}}
 
 @endsection
 

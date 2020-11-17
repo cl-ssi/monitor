@@ -71,7 +71,7 @@ class PermissionSeeder extends Seeder
             'description' => 'Permite al usuario registrar en R.S.'
         ]);
 
-        
+
         $permission = Permission::create([
             'name' => 'SanitaryResidence: view',
             'description' => 'Permite al usuario ver (no registrar) en R.S.'
@@ -258,6 +258,11 @@ class PermissionSeeder extends Seeder
         $permission = Permission::create([
             'name' => 'Report: positive average by commune',
             'description' => 'Reporte de positivos por comuna'
+        ]);
+
+        $permission = Permission::create([
+            'name' => 'Report: cases with barcodes',
+            'description' => 'Listado de muestras por establecimiento y fecha de muestra con código de barra'
         ]);
 
 /*
