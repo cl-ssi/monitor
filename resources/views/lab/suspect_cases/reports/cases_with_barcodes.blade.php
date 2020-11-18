@@ -49,7 +49,7 @@
 
     </div>
     <div class="col-12 col-md-4 col-lg-4">
-        <button type="submit" class="btn btn-outline-secondary float-left d-print-none"><i class="fa fa-search"></i> Buscar</button>
+        <button type="submit" class="btn btn-primary float-left d-print-none"><i class="fa fa-search"></i> Buscar</button>
         <button type="button" class="btn btn-outline-secondary d-print-none ml-3" onclick="javascript:window.print()"> <i class="fa fa-print"></i> Imprimir </button>
     </div>
 

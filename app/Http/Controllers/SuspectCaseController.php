@@ -731,7 +731,7 @@ class SuspectCaseController extends Controller
 
         if ($old_pcr == 'pending' && ($suspectCase->pcr_sars_cov_2 == 'positive' || $suspectCase->pcr_sars_cov_2 == 'negative' ||
                 $suspectCase->pcr_sars_cov_2 == 'undetermined' || $suspectCase->pcr_sars_cov_2 == 'rejected')
-            && $suspectCase->patient->demographic != NULL && $suspectCase->external_laboratory == null) {
+            && $suspectCase->patient->demographic != NULL) {
 
             $suspectCase->pcr_result_added_at = Carbon::now();
 
