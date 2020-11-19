@@ -860,10 +860,17 @@ class SuspectCaseReportController extends Controller
                     } else {
                         $response = WSMinsal::resultado_muestra($case);
                         if ($response['status'] == 0) {
+                            $case->ws_pntm_mass_sending = false;
+                            $case->save();
                             session()->flash('info', 'Error al subir resultado de muestra ' . $case->id . ' en MINSAL. ' . $response['msg']);
                             return redirect()->back();
                             // return view('lab.suspect_cases.reports.minsal_ws', compact('cases', 'request','laboratories'));
                         }
+                        if ($response['status'] == 1) {
+                            $case->ws_pntm_mass_sending = true;
+                            $case->save();
+                        }
+
                     }
                 }
             } else {
