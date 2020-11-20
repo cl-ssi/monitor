@@ -265,6 +265,15 @@ class PermissionSeeder extends Seeder
             'description' => 'Listado de muestras por establecimiento y fecha de muestra con código de barra'
         ]);
 
+        $permission = Permission::create([
+            'name' => 'NotContacted: create',
+            'description' => 'Crear nuevo paciente no contactado'
+        ]);
+
+        $permission = Permission::create([
+            'name' => 'NotContacted: list',
+            'description' => 'Listar pacientes no contactados'
+        ]);
 /*
         $users = User::all();
         foreach($users as $user) {

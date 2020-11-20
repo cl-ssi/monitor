@@ -394,6 +394,24 @@
                         </li>
                         @endcan
 
+                        @canany(['NotContacted: create',
+                                'NotContacted: list'])
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-phone"></i>
+                                    No Contactados
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                                    @can('NotContacted: create')
+                                        <a class="dropdown-item" href="{{ route('pending_patient.create') }}">Crear paciente no contactado</a>
+                                    @endcan()
+                                    @can('NotContacted: list')
+                                        <a class="dropdown-item" href="{{ route('pending_patient.index') }}">Listar pacientes</a>
+                                    @endcan
+                                </div>
+                            </li>
+                        @endcanany
                         @endauth
                     </ul>
 

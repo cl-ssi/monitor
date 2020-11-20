@@ -435,3 +435,11 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
 
 
 });
+
+Route::prefix('pending_patient')->name('pending_patient.')->middleware('auth')->group(function () {
+   Route::get('/create', 'PendingPatientController@create')->name('create');
+   Route::post('/store', 'PendingPatientController@store')->name('store');
+   Route::get('/{pending_patient}/edit', 'PendingPatientController@edit')->name('edit');
+   Route::get('/', 'PendingPatientController@index')->name('index');
+   Route::put('/{pending_patient}', 'PendingPatientController@update')->name('update');
+});
