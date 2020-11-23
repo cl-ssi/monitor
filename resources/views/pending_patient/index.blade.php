@@ -36,7 +36,12 @@
             </div>
 
             <div class="col-12 col-md-4 col-lg-4">
-                <button type="submit" class="btn btn-primary float-left d-print-none"><i class="fa fa-search"></i> Filtrar</button>
+                <button type="submit" class="btn btn-primary float-left d-print-none"><i class="fa fa-search"></i> Buscar</button>
+            </div>
+
+            <div class="col-12 col-md-4 col-lg-4 float-right">
+                <label></label>
+                <input class="form-control" type="text" id="textoFiltro" placeholder="Ingresar nombre para filtrar">
             </div>
 
         </div>
@@ -45,7 +50,7 @@
 
 
     <table class="table table-sm table-bordered table-responsive" id="tabla_casos">
-        <thead>
+        <thead style="width: 100%;">
         <tr>
             <th nowrap>° ID</th>
             <th>Nombre</th>
@@ -56,7 +61,7 @@
             <th>Editar</th>
         </tr>
         </thead>
-        <tbody id="tableCases">
+        <tbody id="tableCases" style="width: 100%;">
         @if($pendingPatients)
             @foreach($pendingPatients as $patient)
                 <tr>
@@ -85,4 +90,18 @@
 
 @section('custom_js')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#textoFiltro").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                value = value.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+                $("#tabla_casos tr").filter(function () {
+                    var tableValue = $(this).text().toLowerCase();
+                    tableValue = tableValue.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+                    $(this).toggle(tableValue.indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
 @endsection

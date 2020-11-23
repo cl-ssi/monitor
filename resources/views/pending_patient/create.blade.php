@@ -19,9 +19,25 @@
     @csrf
     @method('POST')
         <div class="card mb-3">
+            <h5 class="card-header">Paciente</h5>
             <div class="card-body">
                 <div class="form-row">
-                    <fieldset class="form-group col-12 col-sm-7 col-md-4">
+                    <fieldset class="form-group col-10 col-sm-4 col-md-3 col-lg-3">
+                        <label for="for_run">Run</label>
+                        <input type="text" class="form-control" id="for_run" name="run" autocomplete="off" max="50000000">
+                    </fieldset>
+
+                    <fieldset class="form-group col-2 col-sm-2 col-md-1 col-lg-1">
+                        <label for="for_dv">DV</label>
+                        <input type="text" class="form-control" id="for_dv" name="dv" autocomplete="off" readonly>
+                    </fieldset>
+
+                    <fieldset class="form-group col-12 col-sm-6 col-md-4">
+                        <label for="for_other_identification">Run Provisorio</label>
+                        <input type="text" class="form-control" id="for_other_identification" name="other_identification" autocomplete="off">
+                    </fieldset>
+
+                    <fieldset class="form-group col-12 col-sm-6 col-md-4">
                         <label for="for_name">Nombres*</label>
                         <input type="text" class="form-control" id="for_name" name="name"
                                style="text-transform: uppercase;"
@@ -39,6 +55,12 @@
                         <label for="for_mothers_family">Apellido Materno</label>
                         <input type="text" class="form-control" id="for_mothers_family"
                                name="mothers_family" style="text-transform: uppercase;" autocomplete="off">
+                    </fieldset>
+
+                    <fieldset class="form-group col-12 col-sm-6 col-md-4">
+                        <label for="for_file_number">Nº Ficha*</label>
+                        <input type="text" class="form-control" id="for_file_number"
+                               name="file_number" autocomplete="off" required>
                     </fieldset>
 
                 </div>
@@ -91,16 +113,41 @@
                         </select>
                     </fieldset>
                 </div>
-
-
-                <!--------------------------->
-                <button type="submit" class="btn btn-primary">Guardar</button>
-
-                <a class="btn btn-outline-secondary" href="{{ route('patients.index') }}">
-                    Cancelar
-                </a>
             </div>
         </div>
+
+        <div class="card mb-3">
+            <h5 class="card-header">Citación</h5>
+            <div class="card-body">
+                <div class="form-row">
+
+                    <fieldset class="form-group col-12 col-md-4">
+                        <label for="for_reason">Motivo</label>
+                        <select name="reason" id="for_reason" class="form-control">
+                            <option value="ges">GES</option>
+                            <option value="le">Lista de espera</option>
+                            <option value="control">Control</option>
+                            <option value="procedure">Procedimiento</option>
+                        </select>
+                    </fieldset>
+                    <fieldset class="form-group col-12 col-md-4">
+                        <label for="for_appointment_with">Citación con</label>
+                        <input type="text" class="form-control" name="appointment_with" id="for_appointment_with">
+                    </fieldset>
+                    <fieldset class="form-group col-12 col-md-4">
+                        <label for="for_appointment_at">Fecha citación</label>
+                        <input type="datetime-local" class="form-control" name="appointment_at" id="for_appointment_at">
+                    </fieldset>
+
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a class="btn btn-outline-secondary" href="{{ route('pending_patient.index') }}">
+            Cancelar
+        </a>
+
     </form>
 
 
@@ -133,6 +180,11 @@
                 jQuery('#comunas').html(htmlComuna);
             });
 
+            //obtiene digito verificador
+            $('input[name=run]').keyup(function(e) {
+                var str = $("#for_run").val();
+                $('#for_dv').val($.rut.dv(str));
+            });
         });
 
     </script>

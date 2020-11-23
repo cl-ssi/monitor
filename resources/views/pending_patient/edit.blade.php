@@ -19,9 +19,26 @@
         @csrf
         @method('PUT')
         <div class="card mb-3">
+            <h5 class="card-header">Paciente</h5>
             <div class="card-body">
                 <div class="form-row">
-                    <fieldset class="form-group col-12 col-sm-7 col-md-4">
+
+                    <fieldset class="form-group col-10 col-sm-4 col-md-3 col-lg-3">
+                        <label for="for_run">Run</label>
+                        <input type="text" class="form-control" id="for_run" name="run" autocomplete="off" max="50000000" value="{{$pendingPatient->run}}">
+                    </fieldset>
+
+                    <fieldset class="form-group col-2 col-sm-2 col-md-1 col-lg-1">
+                        <label for="for_dv">DV</label>
+                        <input type="text" class="form-control" id="for_dv" name="dv" autocomplete="off" readonly value="{{$pendingPatient->dv}}">
+                    </fieldset>
+
+                    <fieldset class="form-group col-12 col-sm-6 col-md-4">
+                        <label for="for_other_identification">Run Provisorio</label>
+                        <input type="text" class="form-control" id="for_other_identification" name="other_identification" autocomplete="off" value="{{$pendingPatient->other_identification}}">
+                    </fieldset>
+
+                    <fieldset class="form-group col-12 col-sm-6 col-md-4">
                         <label for="for_name">Nombres*</label>
                         <input type="text" class="form-control" id="for_name" name="name"
                                style="text-transform: uppercase;"
@@ -39,6 +56,12 @@
                         <label for="for_mothers_family">Apellido Materno</label>
                         <input type="text" class="form-control" id="for_mothers_family"
                                name="mothers_family" style="text-transform: uppercase;" autocomplete="off" value="{{$pendingPatient->mothers_family}}">
+                    </fieldset>
+
+                    <fieldset class="form-group col-12 col-sm-6 col-md-4">
+                        <label for="for_file_number">Nº Ficha*</label>
+                        <input type="text" class="form-control" id="for_file_number"
+                               name="file_number" autocomplete="off" required value="{{$pendingPatient->file_number}}">
                     </fieldset>
 
                 </div>
@@ -84,22 +107,93 @@
                     <fieldset class="form-group col-12 col-md-4">
                         <label for="for_status">Estado</label>
                         <select name="status" id="for_status" class="form-control">
-                            <option value="not_contacted">No contactado</option>
-                            <option value="updated_information" selected>Información actualizada</option>
-                            <option value="contacted">Contactado</option>
+                            <option value="not_contacted" {{($pendingPatient->status == 'not_contacted') ? 'selected' : '' }}>No contactado</option>
+                            <option value="updated_information" {{($pendingPatient->status == 'updated_information') ? 'selected' : '' }}>Información actualizada</option>
+                            <option value="contacted" {{($pendingPatient->status == 'contacted') ? 'selected' : '' }} >Contactado</option>
                         </select>
                     </fieldset>
                 </div>
 
-
-                <!--------------------------->
-                <button type="submit" class="btn btn-primary">Guardar</button>
-
-                <a class="btn btn-outline-secondary" href="{{ route('pending_patient.index') }}">
-                    Cancelar
-                </a>
             </div>
         </div>
+
+        <div class="card mb-3">
+            <h5 class="card-header">Citación</h5>
+            <div class="card-body">
+                <div class="form-row">
+                    <fieldset class="form-group col-12 col-md-4">
+                        <label for="for_reason">Motivo</label>
+                        <select name="reason" id="for_reason" class="form-control">
+                            <option value="ges" {{($pendingPatient->reason == 'ges') ? 'selected' : '' }} >GES</option>
+                            <option value="le" {{($pendingPatient->reason == 'le') ? 'selected' : '' }}>Lista de espera</option>
+                            <option value="control" {{($pendingPatient->reason == 'control') ? 'selected' : '' }}>Control</option>
+                            <option value="procedure" {{($pendingPatient->reason == 'procedure') ? 'selected' : '' }}>Procedimiento</option>
+                        </select>
+                    </fieldset>
+                    <fieldset class="form-group col-12 col-md-4">
+                        <label for="for_appointment_with">Citación con</label>
+                        <input type="text" class="form-control" name="appointment_with" id="for_appointment_with" value="{{$pendingPatient->appointment_with}}">
+                    </fieldset>
+                    <fieldset class="form-group col-12 col-md-4">
+                        <label for="for_appointment_at">Fecha citación</label>
+                        <input type="datetime-local" class="form-control" name="appointment_at" id="for_appointment_at" value="{{($pendingPatient->appointment_at) ? $pendingPatient->appointment_at->format('Y-m-d\TH:i:s') : null }}" >
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-3">
+            <h5 class="card-header">Responsable recepción citación</h5>
+            <div class="card-body">
+                <div class="form-row">
+                    <fieldset class="form-group col-12 col-md-4">
+                        <label for="for_responsible_name">Nombre</label>
+                        <input type="text" class="form-control" name="responsible_name" id="for_responsible_name" value="{{$pendingPatient->responsible_name}}">
+                    </fieldset>
+
+                    <fieldset class="form-group col-12 col-md-4">
+                        <label for="for_responsible_run">Run</label>
+                        <input type="text" class="form-control" id="for_responsible_run" name="responsible_run" value="{{$pendingPatient->responsible_run}}">
+                    </fieldset>
+
+                    <fieldset class="form-group col-12 col-md-4">
+                        <label for="for_responsible_phone">Fono</label>
+                        <input type="text" class="form-control" id="for_responsible_phone" name="responsible_phone" value="{{$pendingPatient->responsible_phone}}">
+                    </fieldset>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-3">
+            <h5 class="card-header">Visita</h5>
+            <div class="card-body">
+                <div class="form-row">
+                    <fieldset class="form-group col-12 col-md-12">
+                        <label for="for_visit_observation">Observación de visita domiciliaria</label>
+                        <input type="text" class="form-control" id="for_visit_observation" name="visit_observation" value="{{$pendingPatient->visit_observation}}">
+                    </fieldset>
+
+                    <fieldset class="form-group col-12 col-md-4">
+                        <label for="for_visit_delivery_at">Fecha de entrega</label>
+                        <input type="datetime-local" class="form-control" id="for_visit_delivery_at" name="visit_delivery_at" value="{{ ($pendingPatient->visit_delivery_at) ? $pendingPatient->visit_delivery_at->format('Y-m-d\TH:i:s') : null}}">
+                    </fieldset>
+
+                    <fieldset class="form-group col-12 col-md-8">
+                        <label for="for_visit_appointment_functionary">Funcionario que entrega citación</label>
+                        <input type="text" class="form-control" id="for_visit_appointment_functionary" name="visit_appointment_functionary" value="{{$pendingPatient->visit_appointment_functionary}}">
+                    </fieldset>
+
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+
+        <a class="btn btn-outline-secondary" href="{{ route('pending_patient.index') }}">
+            Cancelar
+        </a>
+
     </form>
 
 
@@ -145,6 +239,12 @@
                 }
                 @endforeach
                 jQuery('#comunas').html(htmlComuna);
+            });
+
+            //obtiene digito verificador
+            $('input[name=run]').keyup(function(e) {
+                var str = $("#for_run").val();
+                $('#for_dv').val($.rut.dv(str));
             });
 
         });
