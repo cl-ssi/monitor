@@ -1406,7 +1406,12 @@ class SuspectCaseController extends Controller
                 ->get();
 
         } else {
+            $month = Carbon::parse($date)->month;
+            $year = Carbon::parse($date)->year;
+
             $filas = SuspectCase::where('laboratory_id', $cod_lab)
+                ->whereYear('sample_at', '=', $year)
+                ->whereMonth('sample_at', '=', $month)
                 ->orderBy('suspect_cases.id', 'desc')
                 ->get();
         }
