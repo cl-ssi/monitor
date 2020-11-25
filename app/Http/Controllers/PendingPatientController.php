@@ -6,6 +6,7 @@ use App\Commune;
 use App\Country;
 use App\PendingPatient;
 use App\Region;
+use App\Specialty;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -44,7 +45,8 @@ class PendingPatientController extends Controller
     {
         $regions = Region::orderBy('id','ASC')->get();
         $communes = Commune::orderBy('id','ASC')->get();
-        return view('pending_patient.create', compact('regions', 'communes'));
+        $specialties = Specialty::all();
+        return view('pending_patient.create', compact('regions', 'communes', 'specialties'));
     }
 
     /**
@@ -81,10 +83,10 @@ class PendingPatientController extends Controller
      */
     public function edit(PendingPatient $pendingPatient)
     {
-
         $regions = Region::orderBy('id','ASC')->get();
         $communes = Commune::orderBy('id','ASC')->get();
-        return view('pending_patient.edit', compact('pendingPatient', 'regions', 'communes'));
+        $specialties = Specialty::all();
+        return view('pending_patient.edit', compact('pendingPatient', 'regions', 'communes', 'specialties'));
 
     }
 

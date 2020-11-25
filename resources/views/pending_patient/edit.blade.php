@@ -3,7 +3,15 @@
 @section('title', 'Editar paciente pendiente')
 
 @section('content')
-    <h3 class="mb-3">Paciente no contactado</h3>
+    <div class="row">
+        <div class="col-md-4">
+            <h3 class="mb-3 d-print-none">Paciente no contactado</h3>
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4 text-right">
+            <input type="button" class="d-print-none" value="Imprimir" onclick="javascript:window.print()">
+        </div>
+    </div>
     @if ($errors->any())
         <div class="alert alert-warning">
             <ul>
@@ -13,6 +21,25 @@
             </ul>
         </div>
     @endif
+
+    <div class="noScreen">
+        <div class="row mb-3">
+            <div class="col-md-3 text-center">
+                <img src="{{ asset('/images/SS_RGB_200.png') }}" class="img-fluid mb-2" alt="Servicio de Salud Iquique" width="40%"><br>
+                <span  >SERVICIO DE SALUD IQUIQUE</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="noScreen">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 text-center">
+                <H2>CITACION DOMICILIARIA</H2>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
 
 
     <form method="POST" class="form-horizontal" action="{{ route('pending_patient.update', $pendingPatient) }}">
@@ -75,7 +102,7 @@
 
                     <fieldset class="form-group col-12 col-md-4">
                         <label for="regiones">Región *</label>
-                        <select class="form-control" name="region_id" id="regiones">
+                        <select class="form-control" name="region_id" id="regiones" required>
                             <option>Seleccione Región</option>
                             @foreach ($regions as $key => $region)
                                 <option
@@ -86,7 +113,7 @@
 
                     <fieldset class="form-group col-12 col-md-4">
                         <label for="comunas">Comuna *</label>
-                        <select class="form-control geo" name="commune_id" id="comunas"
+                        <select class="form-control geo" name="commune_id" id="comunas" required
                                 value="{{old('commune_id')}}" ></select>
                     </fieldset>
                 </div>
@@ -134,9 +161,26 @@
                         <label for="for_appointment_with">Citación con</label>
                         <input type="text" class="form-control" name="appointment_with" id="for_appointment_with" value="{{$pendingPatient->appointment_with}}">
                     </fieldset>
+
+                    <fieldset class="form-group col-12 col-md-4">
+                        <label for="for_appointment_specialty">Especialidad</label>
+                        <select class="form-control" name="appointment_specialty" id="for_appointment_specialty">
+                            <option value="">Seleccionar</option>
+                            @foreach($specialties as $specialty)
+                                <option value="{{$specialty->id}}" {{($specialty->id == $pendingPatient->appointment_specialty) ? 'selected' : '' }}>{{$specialty->name}}</option>
+                            @endforeach
+
+
+                        </select>
+                    </fieldset>
+
                     <fieldset class="form-group col-12 col-md-4">
                         <label for="for_appointment_at">Fecha citación</label>
                         <input type="datetime-local" class="form-control" name="appointment_at" id="for_appointment_at" value="{{($pendingPatient->appointment_at) ? $pendingPatient->appointment_at->format('Y-m-d\TH:i:s') : null }}" >
+                    </fieldset>
+                    <fieldset class="form-group col-12 col-md-4">
+                        <label for="for_appointment_location">Lugar a presentarse</label>
+                        <input type="text" class="form-control" name="appointment_location" id="for_appointment_location" value="{{$pendingPatient->appointment_location}}">
                     </fieldset>
                 </div>
             </div>
@@ -188,9 +232,9 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">Guardar</button>
+        <button type="submit" class="btn btn-primary d-print-none">Guardar</button>
 
-        <a class="btn btn-outline-secondary" href="{{ route('pending_patient.index') }}">
+        <a class="btn btn-outline-secondary d-print-none" href="{{ route('pending_patient.index') }}">
             Cancelar
         </a>
 
@@ -251,3 +295,17 @@
 
     </script>
 @endsection
+
+<style type="text/css">
+    @media screen
+    {
+        .noPrint{}
+        .noScreen{display:none;}
+    }
+
+    @media print
+    {
+        .noPrint{display:none;}
+        .noScreen{}
+    }
+</style>

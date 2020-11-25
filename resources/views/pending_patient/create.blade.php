@@ -74,7 +74,7 @@
 
                     <fieldset class="form-group col-12 col-md-4">
                         <label for="regiones">Región *</label>
-                        <select class="form-control" name="region_id" id="regiones">
+                        <select class="form-control" name="region_id" id="regiones" required>
                             <option>Seleccione Región</option>
                             @foreach ($regions as $key => $region)
                                 <option
@@ -85,7 +85,7 @@
 
                     <fieldset class="form-group col-12 col-md-4">
                         <label for="comunas">Comuna *</label>
-                        <select class="form-control geo" name="commune_id" id="comunas"
+                        <select class="form-control geo" name="commune_id" id="comunas" required
                                 value="{{old('commune_id')}}" ></select>
                     </fieldset>
                 </div>
@@ -134,9 +134,25 @@
                         <label for="for_appointment_with">Citación con</label>
                         <input type="text" class="form-control" name="appointment_with" id="for_appointment_with">
                     </fieldset>
+
+                    <fieldset class="form-group col-12 col-md-4">
+                        <label for="for_appointment_specialty">Especialidad</label>
+                        <select class="form-control" name="appointment_specialty" id="for_appointment_specialty">
+                            <option value="">Seleccionar</option>
+                            @foreach($specialties as $specialty)
+                                <option value="{{$specialty->id}}"> {{$specialty->name}} </option>
+                            @endforeach
+                        </select>
+                    </fieldset>
+
                     <fieldset class="form-group col-12 col-md-4">
                         <label for="for_appointment_at">Fecha citación</label>
                         <input type="datetime-local" class="form-control" name="appointment_at" id="for_appointment_at">
+                    </fieldset>
+
+                    <fieldset class="form-group col-12 col-md-4">
+                        <label for="for_appointment_location">Lugar a presentarse</label>
+                        <input type="text" class="form-control" name="appointment_location" id="for_appointment_location">
                     </fieldset>
 
                 </div>
