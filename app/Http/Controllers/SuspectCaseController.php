@@ -1406,7 +1406,12 @@ class SuspectCaseController extends Controller
                 ->get();
 
         } else {
+            $month = Carbon::parse($date)->month;
+            $year = Carbon::parse($date)->year;
+
             $filas = SuspectCase::where('laboratory_id', $cod_lab)
+                ->whereYear('sample_at', '=', $year)
+                ->whereMonth('sample_at', '=', $month)
                 ->orderBy('suspect_cases.id', 'desc')
                 ->get();
         }
@@ -1428,7 +1433,8 @@ class SuspectCaseController extends Controller
             'teléfono',
             'dirección',
             'comuna',
-            'país'
+            'país',
+            'email'
         );
 
         $callback = function() use ($filas, $columnas)
@@ -1455,7 +1461,8 @@ class SuspectCaseController extends Controller
                     ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->telephone:'',
                     ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->fullAddress:'',
                     ($fila->patient && $fila->patient->demographic && $fila->patient->demographic->commune)?$fila->patient->demographic->commune->name:'',
-                    ($fila->patient && $fila->patient->demographic && $fila->patient->demographic->nationality) ? $fila->patient->demographic->nationality : ''
+                    ($fila->patient && $fila->patient->demographic && $fila->patient->demographic->nationality) ? $fila->patient->demographic->nationality : '',
+                    ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->email:''
                 ),';');
             }
             fclose($file);
