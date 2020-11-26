@@ -27,7 +27,7 @@ class WSMinsal extends Model
 //        dd($request);
 
         $response = [];
-        $client = new \GuzzleHttp\Client();
+        $client = new Client();
 
         // $genero = strtoupper($suspectCase->gender[0]);
         if($request->gender == "female"){$genero = "F";}
@@ -120,7 +120,7 @@ class WSMinsal extends Model
     public static function crea_muestra(SuspectCase $suspectCase) {
 
         $response = [];
-        $client = new \GuzzleHttp\Client();
+        $client = new Client();
 
         // $genero = strtoupper($suspectCase->gender[0]);
         if($suspectCase->gender == "female"){$genero = "F";}
@@ -223,7 +223,7 @@ class WSMinsal extends Model
 
         $minsal_ws_id = $suspectCase->minsal_ws_id;
         $response = [];
-        $client = new \GuzzleHttp\Client();
+        $client = new Client();
         $array = array('raw' => array('id_muestra' => $minsal_ws_id));
 
         try {
@@ -267,7 +267,7 @@ class WSMinsal extends Model
 
         $resultado = $suspectCase->covid19;
 
-        $client = new \GuzzleHttp\Client();
+        $client = new Client();
 
         try {
             if ($pdf == NULL) {
@@ -343,7 +343,7 @@ class WSMinsal extends Model
 
         $minsal_ws_id = $suspectCase->minsal_ws_id;
         $response = [];
-        $client = new \GuzzleHttp\Client();
+        $client = new Client();
         $array = array('raw' => array('id_muestra' => $minsal_ws_id,
                                       'id_nuevo_laboratorio' => $laboratory_id));
 
@@ -373,4 +373,37 @@ class WSMinsal extends Model
 
         return $response;
     }
+
+    /**
+     * @param \App\SuspectCase $suspectCase
+     * @throws GuzzleException
+     *
+     */
+    public static function obtiene_estado_muestra(SuspectCase $suspectCase){
+        $minsal_ws_id = $suspectCase->minsal_ws_id;
+        $response = [];
+        $client = new Client();
+        $array = array('raw' => array('id_muestra' => $minsal_ws_id));
+
+
+        try {
+            $response = $client->request('POST', env('WS_DATOS_MUESTRA_ID'), [
+                'json' => $array,
+                'headers'  => [ 'ACCESSKEY' => $suspectCase->laboratory->token_ws]
+            ]);
+
+            dd($response);
+//            return $response->getBody()->getContents(), true);
+
+            $response = ['status' => 1, 'msg' => 'OK'];
+        }catch (RequestException $e){
+            $response = ['status' => 0, 'msg' => $e->getMessage()];
+        }catch (Exception $e){
+            $response = ['status' => 0, 'msg' => "Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento. {$e->getMessage()}"];
+
+        }
+
+        return $response;
+    }
+
 }

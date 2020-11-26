@@ -251,6 +251,10 @@ class SuspectCaseController extends Controller
 
     public function reception(Request $request, SuspectCase $suspectCase)
     {
+        //Obtiene datos de recepcion actuales
+        $receptor_id_old = $suspectCase->receptor_id;
+        $reception_id_old = $suspectCase->reception_id;
+
         /* Recepciona en sistema */
         $suspectCase->receptor_id   = Auth::id();
         $suspectCase->reception_at  = date('Y-m-d H:i:s');
@@ -267,10 +271,8 @@ class SuspectCaseController extends Controller
                         $response = WSMinsal::recepciona_muestra($suspectCase);
                         if ($response['status'] == 0) {
                             session()->flash('info', 'Error al recepcionar muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'] . ".");
-//                        $suspectCase->laboratory_id = NULL;
-                            $suspectCase->receptor_id = NULL;
-                            $suspectCase->reception_at = NULL;
-                            // $suspectCase->minsal_ws_id = NULL;
+                            $suspectCase->receptor_id = $receptor_id_old;
+                            $suspectCase->reception_at = $reception_id_old;
                             $suspectCase->save();
                             return redirect()->back()->withInput();
                         }
@@ -1879,6 +1881,13 @@ class SuspectCaseController extends Controller
             $case->receptor_id = NULL;
             $case->save();
         }
+    }
+
+    public function ws_test(){
+        $case = SuspectCase::find(507934);
+//        dd($case);
+        dd(WSMinsal::obtiene_estado_muestra($case));
+        return redirect()->back();
     }
 
 }

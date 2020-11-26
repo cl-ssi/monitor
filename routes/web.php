@@ -180,10 +180,6 @@ Route::prefix('lab')->name('lab.')->group(function () {
         });
     });
     Route::prefix('suspect_cases')->name('suspect_cases.')->group(function () {
-
-        //Se utiliza para migración de exámenes pdf desde carpeta "files" a carpeta "suspect cases"
-//        Route::get('/filesMigrationSingleUse','SuspectCaseController@filesMigrationSingleUse')->name('filesMigrationSingleUse')->middleware('auth');
-
         Route::get('reception_inbox','SuspectCaseController@reception_inbox')->name('reception_inbox')->middleware('auth','can:SuspectCase: reception');
         Route::post('reception/{suspect_case}','SuspectCaseController@reception')->name('reception')->middleware('auth','can:SuspectCase: reception');
         Route::post('derive','SuspectCaseController@derive')->name('derive')->middleware('auth');
@@ -269,6 +265,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::get('diary_by_lab_report','SuspectCaseController@diary_by_lab_report')->name('diary_by_lab_report')->middleware('auth');
             Route::get('estadistico_diario_covid19','SuspectCaseController@estadistico_diario_covid19')->name('estadistico_diario_covid19')->middleware('auth');
         });
+        Route::get('ws_test', 'SuspectCaseController@ws_test')->name('ws_test');
     });
     Route::prefix('sample_origins')->name('sample_origins.')->group(function () {
         Route::get('/', 'SampleOriginController@index')->name('index');
