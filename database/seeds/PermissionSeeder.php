@@ -274,6 +274,16 @@ class PermissionSeeder extends Seeder
             'name' => 'NotContacted: list',
             'description' => 'Listar pacientes no contactados'
         ]);
+
+        $permission = Permission::create([
+            'name' => 'NotContacted: show all',
+            'description' => 'Listar pacientes no contactados independiente de establecimiento asignado'
+        ]);
+
+        $permission = Permission::create([
+            'name' => 'NotContacted: delete',
+            'description' => 'Borrar paciente no contactado'
+        ]);
 /*
         $users = User::all();
         foreach($users as $user) {

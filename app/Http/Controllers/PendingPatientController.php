@@ -28,9 +28,14 @@ class PendingPatientController extends Controller
             $selectedStatus = 'not_contacted';
         }
 
-        $pendingPatients = PendingPatient::where('status', $selectedStatus)
-            ->whereIn('commune_id',  $communes_ids)
-            ->get();
+        if(Auth::user()->can('NotContacted: show all')){
+            $pendingPatients = PendingPatient::where('status', $selectedStatus)
+                ->get();
+        }else{
+            $pendingPatients = PendingPatient::where('status', $selectedStatus)
+                ->whereIn('commune_id',  $communes_ids)
+                ->get();
+        }
 
         return view('pending_patient.index', compact('pendingPatients', 'selectedStatus'));
 
