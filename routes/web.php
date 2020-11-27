@@ -439,4 +439,5 @@ Route::prefix('pending_patient')->name('pending_patient.')->middleware('auth')->
    Route::get('/{pending_patient}/edit', 'PendingPatientController@edit')->name('edit');
    Route::get('/', 'PendingPatientController@index')->name('index');
    Route::put('/{pending_patient}', 'PendingPatientController@update')->name('update');
+   Route::get('/{pending_patient}', 'PendingPatientController@destroy')->name('destroy');
 });

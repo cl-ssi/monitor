@@ -238,6 +238,11 @@
             Cancelar
         </a>
 
+        <a class="btn btn-danger d-print-none float-right" href="{{route('pending_patient.destroy', $pendingPatient)}}"
+           onclick="return confirm('¿Está seguro que desea eliminar al paciente : {{$pendingPatient->name . ' ' . $pendingPatient->fathers_family}}? ' )">
+            Eliminar
+        </a>
+
     </form>
 
 

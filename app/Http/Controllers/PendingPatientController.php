@@ -116,8 +116,10 @@ class PendingPatientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(PendingPatient $pendingPatient)
     {
-        //
+        $pendingPatient->delete();
+        session()->flash('success', 'Paciente eliminado exitosamente');
+        return redirect()->route('pending_patient.index');
     }
 }
