@@ -78,7 +78,7 @@
     </div>
 
     <div class="col-12 col-md-4 col-lg-3 text-center">
-        <button class="btn btn-primary" id="btn_reception" form="mass_reception_form" type="submit"> <i class="fas fa-inbox"></i> Recepcionar</button>
+        <button class="btn btn-primary" id="btn_reception" form="mass_reception_form" type="submit" disabled title="Seleccione las muestras a recepcionar."> <i class="fas fa-inbox"></i> Recepcionar</button>
     </div>
 {{--    <div class="col-12 col-md-4 col-lg-3"></div>--}}
 
@@ -103,7 +103,7 @@
                 </optgroup>
             </select>
             <div class="input-group-append">
-                <button type="submit" form="derive_form" id="btn_derive" class="btn btn-primary float-right" title="Derivar"><i class="fas fa-reply-all"></i> Derivar</button>
+                <button type="submit" form="derive_form" id="btn_derive" class="btn btn-primary float-right" disabled title="Seleccione las muestras a derivar."><i class="fas fa-reply-all"></i> Derivar</button>
             </div>
         </div>
     </div>
@@ -235,12 +235,22 @@ function exportF(elem) {
             }
         }
 
+        //Seleccionar maximo 10 muestras. Habilita botones derivar recepcionar massivos
         jQuery(function(){
             var max = 10;
             var checkboxes = $('input[type="checkbox"]');
             checkboxes.change(function(){
                 var current = checkboxes.filter(':checked').length;
                 checkboxes.filter(':not(:checked)').prop('disabled', current >= max);
+
+                if(current > 0){
+                    document.getElementById('btn_reception').disabled = false;
+                    document.getElementById('btn_derive').disabled = false;
+                }else {
+                    document.getElementById('btn_reception').disabled = true;
+                    document.getElementById('btn_derive').disabled = true;
+                }
+
             });
         });
 
