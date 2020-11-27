@@ -380,22 +380,22 @@ class WSMinsal extends Model
      *
      */
     public static function obtiene_estado_muestra(SuspectCase $suspectCase){
-        $minsal_ws_id = $suspectCase->minsal_ws_id;
         $response = [];
         $client = new Client();
-        $array = array('raw' => array('id_muestra' => $minsal_ws_id));
-
-
         try {
             $response = $client->request('POST', env('WS_DATOS_MUESTRA_ID'), [
-                'json' => $array,
+                'multipart' => [
+                    [
+                        'name'     => 'parametros',
+                        'contents' => '{"id_muestra": ' . $suspectCase->minsal_ws_id .'}'
+                    ]
+                ],
                 'headers'  => [ 'ACCESSKEY' => $suspectCase->laboratory->token_ws]
             ]);
 
-            dd($response);
-//            return $response->getBody()->getContents(), true);
+            $array = json_decode($response->getBody()->getContents(), true);
+            $response = ['status' => 1, 'sample_status' => $array[0]['estado_muestra']];
 
-            $response = ['status' => 1, 'msg' => 'OK'];
         }catch (RequestException $e){
             $response = ['status' => 0, 'msg' => $e->getMessage()];
         }catch (Exception $e){

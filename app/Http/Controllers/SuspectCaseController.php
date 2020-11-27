@@ -258,7 +258,7 @@ class SuspectCaseController extends Controller
         /* Recepciona en sistema */
         $suspectCase->receptor_id   = Auth::id();
         $suspectCase->reception_at  = date('Y-m-d H:i:s');
-        if(!$suspectCase->minsal_ws_id) $suspectCase->laboratory_id = Auth::user()->laboratory->id; //todo revisar
+        if(!$suspectCase->minsal_ws_id) $suspectCase->laboratory_id = Auth::user()->laboratory->id;
         $suspectCase->save();
 
         /* Webservice minsal */
@@ -270,7 +270,7 @@ class SuspectCaseController extends Controller
                         // recepciona en minsal
                         $response = WSMinsal::recepciona_muestra($suspectCase);
                         if ($response['status'] == 0) {
-                            session()->flash('info', 'Error al recepcionar muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'] . ".");
+                            session()->flash('warning', 'Error al recepcionar muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'] . ".");
                             $suspectCase->receptor_id = $receptor_id_old;
                             $suspectCase->reception_at = $reception_id_old;
                             $suspectCase->save();
@@ -281,7 +281,7 @@ class SuspectCaseController extends Controller
             }
         }
 
-        session()->flash('info', 'Se ha recepcionada la muestra: '
+        session()->flash('success', 'Se ha recepcionada la muestra: '
             . $suspectCase->id . ' en laboratorio: '
             . Auth::user()->laboratory->name);
 
@@ -484,6 +484,28 @@ class SuspectCaseController extends Controller
     }
 
     /**
+     * Guarda derivación segun sea lab externo o no.
+     * @param Laboratory $laboratory
+     * @param SuspectCase $case
+     */
+    private function saveDerivation(Laboratory $laboratory, SuspectCase $case): void
+    {
+        if ($laboratory->external) {
+            $case->external_laboratory = $laboratory->name;
+            $case->sent_external_lab_at = date("Y-m-d H:i:s");
+            $case->reception_at = date('Y-m-d H:i:s');
+            $case->receptor_id = Auth::id();
+            $case->save();
+        } else {
+            $case->laboratory_id = $laboratory->id;
+            $case->derivation_internal_lab_at = date("Y-m-d H:i:s");
+            $case->reception_at = NULL;
+            $case->receptor_id = NULL;
+            $case->save();
+        }
+    }
+
+    /**
      * NO UTILIZAR
      * Store a newly created resource in storage.
      *
@@ -605,7 +627,7 @@ class SuspectCaseController extends Controller
                 $response = WSMinsal::valida_crea_muestra($request);
                 $ws_minsal_id = $response['msg'];
                 if ($response['status'] == 0) {
-                    session()->flash('info', 'Error al validar muestra . ' . $response['msg']);
+                    session()->flash('warning', 'Error al validar muestra . ' . $response['msg']);
                     return redirect()->back()->withInput();
                 }
             }
@@ -637,7 +659,7 @@ class SuspectCaseController extends Controller
                     $response = WSMinsal::crea_muestra($suspectCase);
                     $ws_minsal_id = $response['msg'];
                     if ($response['status'] == 0) {
-                        session()->flash('info', 'Error al subir muestra a MINSAL. ' . $response['msg']);
+                        session()->flash('warninig', 'Error al subir muestra a MINSAL. ' . $response['msg']);
                         $suspectCase->forceDelete();
                         return redirect()->back()->withInput();
                     }
@@ -771,25 +793,15 @@ class SuspectCaseController extends Controller
 
                                 $response = WSMinsal::cambia_laboratorio($suspectCase, $external_laboratory->id_openagora);
                                 if ($response['status'] == 0) {
-                                    session()->flash('info', 'Error al intentar cambiar laboratorio de la muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg']);
-                                    // $suspectCase->result_ifd = "No solicitado";
-                                    $suspectCase->pcr_sars_cov_2_at = NULL;
-                                    $suspectCase->pcr_sars_cov_2 = 'pending';
-                                    $suspectCase->validator_id = NULL;
-                                    $suspectCase->file = NULL;
-                                    $suspectCase->save();
-                                    // return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
+                                    session()->flash('warning', 'Error al intentar cambiar laboratorio de la muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg']);
+                                    $this->suspectCaseBackToPending($suspectCase);
                                     return redirect()->back()->withInput();
                                 }
                                 session()->flash('success', 'Se cambió laboratorio de la muestra en PNTM');
 
                             } else {
-                                session()->flash('info', 'No es posible modificar laboratorio en PNTM. No existe *id PNTM* del laboratorio.');
-                                // $suspectCase->result_ifd = "No solicitado";
-                                $suspectCase->pcr_sars_cov_2_at = NULL;
-                                $suspectCase->pcr_sars_cov_2 = 'pending';
-                                $suspectCase->validator_id = NULL;
-                                $suspectCase->file = NULL;
+                                session()->flash('warning', 'No es posible modificar laboratorio en PNTM. No existe *id PNTM* del laboratorio.');
+                                $this->suspectCaseBackToPending($suspectCase);
                                 return redirect()->back()->withInput();
                             }
                         }
@@ -802,20 +814,31 @@ class SuspectCaseController extends Controller
                                 $suspectCase->pcr_sars_cov_2 == 'undetermined' || $suspectCase->pcr_sars_cov_2 == 'rejected')
                             && $suspectCase->patient->demographic != NULL && $suspectCase->external_laboratory == null) {
 
-
                             //envío información minsal
                             $response = WSMinsal::resultado_muestra($suspectCase);
                             if ($response['status'] == 0) {
-                                session()->flash('info', 'Error al subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg']);
-                                // $suspectCase->result_ifd = "No solicitado";
-                                $suspectCase->pcr_sars_cov_2_at = NULL;
-                                $suspectCase->pcr_sars_cov_2 = 'pending';
-                                $suspectCase->validator_id = NULL;
-                                $suspectCase->file = NULL;
-                                $suspectCase->pcr_result_added_at = NULL;
-                                $suspectCase->save();
-                                // return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
-                                return redirect()->back()->withInput();
+                                $responseSampleStatus = WSMinsal::obtiene_estado_muestra($suspectCase);
+                                //Si en pntm esta en estado 2 (no recepcionado)
+                                if($responseSampleStatus['status'] == 1 && $responseSampleStatus['sample_status'] == 2 && $suspectCase->reception_at != NULL){
+                                        $responseReception = WSMinsal::recepciona_muestra($suspectCase);
+                                        if($responseReception['status'] == 1){
+                                            $response = WSMinsal::resultado_muestra($suspectCase);
+                                            if ($response['status'] == 0) {
+                                                session()->flash('warning', 'Error al recepcionar y subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg']);
+                                                $this->suspectCaseBackToPending($suspectCase);
+                                                return redirect()->back()->withInput();
+                                            }
+                                        }else{
+                                            session()->flash('warning', 'Error al recepcionar y subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg']);
+                                            $this->suspectCaseBackToPending($suspectCase);
+                                            return redirect()->back()->withInput();
+                                        }
+                                }else{
+                                    session()->flash('warning', 'Error al subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg']);
+                                    $this->suspectCaseBackToPending($suspectCase);
+                                    return redirect()->back()->withInput();
+                                }
+
                             }
 
                             session()->flash('success', 'Se subió resultado a PNTM');
@@ -922,6 +945,19 @@ class SuspectCaseController extends Controller
         //return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
     }
 
+    /**
+     * Devuelve el suspect case a su estado 'pending'
+     * @param SuspectCase $suspectCase
+     */
+    private function suspectCaseBackToPending(SuspectCase $suspectCase): void
+    {
+        $suspectCase->pcr_sars_cov_2_at = NULL;
+        $suspectCase->pcr_sars_cov_2 = 'pending';
+        $suspectCase->validator_id = NULL;
+        $suspectCase->file = NULL;
+        $suspectCase->pcr_result_added_at = NULL;
+        $suspectCase->save();
+    }
 
     /**
      * Modifica datos notificación de suspect case.
@@ -1862,32 +1898,15 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.import_results');
     }
 
-    /**
-     * @param Laboratory $laboratory
-     * @param SuspectCase $case
-     */
-    private function saveDerivation(Laboratory $laboratory, SuspectCase $case): void
-    {
-        if ($laboratory->external) {
-            $case->external_laboratory = $laboratory->name;
-            $case->sent_external_lab_at = date("Y-m-d H:i:s");
-            $case->reception_at = date('Y-m-d H:i:s');
-            $case->receptor_id = Auth::id();
-            $case->save();
-        } else {
-            $case->laboratory_id = $laboratory->id;
-            $case->derivation_internal_lab_at = date("Y-m-d H:i:s");
-            $case->reception_at = NULL;
-            $case->receptor_id = NULL;
-            $case->save();
-        }
-    }
+
 
     public function ws_test(){
         $case = SuspectCase::find(507934);
-//        dd($case);
-        dd(WSMinsal::obtiene_estado_muestra($case));
+        $estadoMuestra = WSMinsal::obtiene_estado_muestra($case);
+        dd($estadoMuestra);
         return redirect()->back();
     }
+
+
 
 }
