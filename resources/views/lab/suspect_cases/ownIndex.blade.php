@@ -39,9 +39,9 @@
 <a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.seremi',$laboratory) }}">
     Reporte SEREMI
 </a>
-<a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.report.estadistico_diario_covid19',$laboratory) }}">
-    Reporte estadistico diario
-</a>
+{{--<a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.report.estadistico_diario_covid19',$laboratory) }}">--}}
+{{--    Reporte estadistico diario--}}
+{{--</a>--}}
 @endif
 <!-------------------------------->
 <div class="row">
