@@ -16,9 +16,9 @@
     @endcan
     @can('Patient: list')
     <div class="col-12 col-md-9">
-        
+
         <form method="GET" class="form-horizontal" action="{{ route('patients.index') }}">
-        
+
             <div class="input-group mb-sm-0">
                 <input class="form-control" type="text" name="search" autocomplete="off" id="for_search" style="text-transform: uppercase;" placeholder="RUN (sin dígito verificador) / OTRA IDENTIFICACION / NOMBRE" value="{{$request->search}}" required>
 
@@ -30,8 +30,8 @@
     </div>
     @endcan
     @can('DialysisCenter: user')
-    <div class="col-12 col-md-9">        
-        <form method="GET" class="form-horizontal" action="{{ route('patients.dialysis.index', $establishment) }}">        
+    <div class="col-12 col-md-9">
+        <form method="GET" class="form-horizontal" action="{{ route('patients.dialysis.index', $establishment) }}">
             <div class="input-group mb-sm-0">
                 <input class="form-control" type="text" name="search" autocomplete="off" id="for_search" style="text-transform: uppercase;" placeholder="RUN (sin dígito verificador) / OTRA IDENTIFICACION / NOMBRE" value="{{$request->search}}" required>
                 <div class="input-group-append">
