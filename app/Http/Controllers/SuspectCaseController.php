@@ -667,7 +667,7 @@ class SuspectCaseController extends Controller
                     $suspectCase->minsal_ws_id = $ws_minsal_id;
                     $suspectCase->save();
 
-                    session()->flash('success', 'Se ha creado el caso número: <h3>'. $suspectCase->id. ' <a href="' . route('lab.suspect_cases.notificationForm',$suspectCase)
+                    session()->flash('success', 'Se ha creado el caso número: <h3>'. $suspectCase->id. ' <a href="' . route('lab.suspect_cases.notificationFormSmall',$suspectCase)
                         . '">Imprimir Formulario</a></h3><br />Se ha creado muestra en PNTM. Id generado: ' .$ws_minsal_id);
 
                     return redirect()->back();
@@ -676,7 +676,7 @@ class SuspectCaseController extends Controller
         }
 
         session()->flash('success', 'Se ha creado el caso número: <h3>'
-            . $suspectCase->id. ' <a href="' . route('lab.suspect_cases.notificationForm',$suspectCase)
+            . $suspectCase->id. ' <a href="' . route('lab.suspect_cases.notificationFormSmall',$suspectCase)
             . '">Imprimir Formulario</a></h3>');
 
         return redirect()->back();

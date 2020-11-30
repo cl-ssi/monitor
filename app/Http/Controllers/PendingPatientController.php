@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Commune;
-use App\Country;
 use App\PendingPatient;
 use App\Region;
 use App\Specialty;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
