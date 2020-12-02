@@ -284,6 +284,11 @@ class PermissionSeeder extends Seeder
             'name' => 'NotContacted: delete',
             'description' => 'Borrar paciente no contactado'
         ]);
+
+        $permission = Permission::create([
+            'name' => 'SuspectCase: reception with barcode',
+            'description' => 'Habilita botón para recepcionar mediante código de barras'
+        ]);
 /*
         $users = User::all();
         foreach($users as $user) {

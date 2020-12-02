@@ -21,7 +21,13 @@
     </div>
     <div class="col-4"></div>
     <div class="col-4">
-        <a type="button" class="btn btn-sm btn-success mb-3 float-right" href="{{ route('lab.suspect_cases.exportExcelReceptionInbox', 1) }}">Descargar <i class="far fa-file-excel"></i></a>
+        <a type="button" class="btn btn-sm btn-success mb-3 float-right" href="{{ route('lab.suspect_cases.exportExcelReceptionInbox', 1) }}"><i class="far fa-file-excel"></i> Descargar</a>
+        @can('SuspectCase: reception with barcode')
+            <a type="button" class="btn btn-sm btn-primary mb-3 mr-3 float-right"
+               href="{{ route('lab.suspect_cases.barcode_reception.index') }}"><i class="fas fa-barcode"></i> Por código
+                barra</a>
+        @endcan
+
     </div>
 </div>
 
