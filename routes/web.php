@@ -265,6 +265,12 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::get('diary_by_lab_report','SuspectCaseController@diary_by_lab_report')->name('diary_by_lab_report')->middleware('auth');
             Route::get('estadistico_diario_covid19','SuspectCaseController@estadistico_diario_covid19')->name('estadistico_diario_covid19')->middleware('auth');
         });
+
+        Route::prefix('barcode_reception')->name('barcode_reception.')->group(function(){
+            Route::get('/','SuspectCaseController@barcodeReceptionIndex')->name('index')->middleware('auth','can:SuspectCase: reception');
+            Route::get('/reception','SuspectCaseController@barcodeReception')->name('reception')->middleware('auth','can:SuspectCase: reception');
+        });
+
         Route::get('ws_test', 'SuspectCaseController@ws_test')->name('ws_test');
     });
     Route::prefix('sample_origins')->name('sample_origins.')->group(function () {

@@ -50,7 +50,6 @@
                     <button class="btn btn-outline-secondary" type="submit" id="button-addon">Buscar</button>
                 </div>
             </div>
-
     </div>
     <div class="col-12 col-md-5 col-lg-5">
         @if(Auth::user()->laboratory)

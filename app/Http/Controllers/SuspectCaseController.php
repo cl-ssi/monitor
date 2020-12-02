@@ -1410,6 +1410,27 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.reception_inbox', compact('suspectCases', 'establishments', 'selectedEstablishment', 'laboratories'));
     }
 
+    public function barcodeReceptionIndex(Request $request)
+    {
+        return view('lab.suspect_cases.reception_barcode');
+    }
+
+    public function barcodeReception(Request $request){
+        if($request->has('id')){
+            $suspectCase = SuspectCase::find($request->get('id'));
+        }
+
+        if(!$suspectCase){
+            session()->flash('warning', 'No se encuentra muestra con esta id.');
+        }elseif ($suspectCase->reception_at == NULL){
+            $this->reception($request, $suspectCase);
+        }else{
+            session()->flash('warning', "La muestra $suspectCase->id ya se encuentra recepcionada");
+        }
+
+        return view('lab.suspect_cases.reception_barcode', compact('suspectCase'));
+    }
+
 //    public function exportExcel($cod_lab){
 ////    public function exportExcel(Request $request, $cod_lab){
 //
