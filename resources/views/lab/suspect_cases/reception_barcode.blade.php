@@ -32,7 +32,7 @@
             </div>
         </div>
 
-        <div class="card mt-3">
+        <div class="card my-3">
             <div class="card-body">
                 <div class="form-row">
                     <div class="col-12 col-md-4">
@@ -74,9 +74,36 @@
         </div>
     </form>
 
-    <div class="row">
+{{--<form action="{{route('lab.suspect_cases.notificationFormSmallBulk')}}" method="post">--}}
+{{--    <div class="row">--}}
+{{--        @if (session('suspect_cases.received'))--}}
+{{--            <div class="table-responsive">--}}
+{{--                <table class="table table-sm table-bordered table-responsive" >--}}
+{{--                    <thead>--}}
+{{--                    <tr>--}}
+{{--                        <th>Nro. Muestra</th>--}}
+{{--                        <th>Select</th>--}}
+{{--                    </tr>--}}
+{{--                    </thead>--}}
+{{--                    <tbody>--}}
+{{--                    @foreach(session('suspect_cases.received') as $id_case)--}}
+{{--                        <tr>--}}
+{{--                            <td>{{ $id_case }}</td>--}}
+{{--                        <td><input type="checkbox" name="selected_cases_ids[]" id="selected_cases_ids" value="{{$id_case}}" checked> </td>--}}
+{{--                        </tr>--}}
+{{--                    @endforeach--}}
+{{--                    </tbody>--}}
+{{--                </table>--}}
+{{--            </div>--}}
 
-    </div>
+
+{{--            <button type="submit">Generar Formularios</button>--}}
+
+{{--        @endif--}}
+{{--    </div>--}}
+{{--</form>--}}
+
+
 
 
 

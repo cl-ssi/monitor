@@ -217,6 +217,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::delete('/{suspect_case}','SuspectCaseController@destroy')->name('destroy')->middleware('auth','can:SuspectCase: delete');
         Route::get('/{suspect_case}/notificationForm','SuspectCaseController@notificationForm')->name('notificationForm')->middleware('auth','can:SuspectCase: admission');
         Route::get('/{suspect_case}/notificationFormSmall','SuspectCaseController@notificationFormSmall')->name('notificationFormSmall')->middleware('auth','can:SuspectCase: admission');
+        Route::post('/notificationFormSmallBulk','SuspectCaseController@notificationFormSmallBulk')->name('notificationFormSmallBulk')->middleware('auth','can:SuspectCase: admission');
 
         Route::get('/index_import_results','SuspectCaseController@index_import_results')->name('index_import_results')->middleware('auth');
         Route::post('/results_import', 'SuspectCaseController@results_import')->name('results_import');
