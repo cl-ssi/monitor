@@ -24,7 +24,8 @@
         <div class="form-row">
             <div class="col-12 col-md-4">
                 <div class="input-group">
-                    <input type="text" class="form-control" id="for_id" name="id" placeholder="Nro. de muestra" autofocus>
+                    <input type="text" class="form-control" id="for_id" name="id" placeholder="Nro. de muestra"
+                           autofocus>
                     <div class="input-group-append">
                         <button type="submit" class="btn btn-primary">Recepcionar</button>
                     </div>
@@ -74,34 +75,45 @@
         </div>
     </form>
 
-{{--<form action="{{route('lab.suspect_cases.notificationFormSmallBulk')}}" method="post">--}}
-{{--    <div class="row">--}}
-{{--        @if (session('suspect_cases.received'))--}}
-{{--            <div class="table-responsive">--}}
-{{--                <table class="table table-sm table-bordered table-responsive" >--}}
-{{--                    <thead>--}}
-{{--                    <tr>--}}
-{{--                        <th>Nro. Muestra</th>--}}
-{{--                        <th>Select</th>--}}
-{{--                    </tr>--}}
-{{--                    </thead>--}}
-{{--                    <tbody>--}}
-{{--                    @foreach(session('suspect_cases.received') as $id_case)--}}
-{{--                        <tr>--}}
-{{--                            <td>{{ $id_case }}</td>--}}
-{{--                        <td><input type="checkbox" name="selected_cases_ids[]" id="selected_cases_ids" value="{{$id_case}}" checked> </td>--}}
-{{--                        </tr>--}}
-{{--                    @endforeach--}}
-{{--                    </tbody>--}}
-{{--                </table>--}}
-{{--            </div>--}}
+    <div class="row">
+        <h4 class="mt-3">Formularios por imprimir:</h4>
+    </div>
 
+    <form action="{{route('lab.suspect_cases.notificationFormSmallBulk')}}" method="post">
+        @csrf
+        @method('POST')
+        <div class="row">
+            @if (session('suspect_cases.received'))
+                <div class="table-responsive">
+                    <table class="table table-sm table-bordered table-responsive">
+                        <thead>
+                        <tr>
+                            <th>Nro. Muestra</th>
+                            <th>Nombre</th>
+                            <th>Toma de Muestra</th>
+                            <th>Selec.</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach(session('suspect_cases.received') as $arraySuspectCase)
+                            <tr>
+                                <td>{{ $arraySuspectCase['id'] }}</td>
+                                <td>{{$arraySuspectCase['fullName']}}</td>
+                                <td>{{$arraySuspectCase['sampleAt']}}</td>
+                                <td><input type="checkbox" name="selected_cases_ids[]" id="selected_cases_ids"
+                                           value="{{$arraySuspectCase['id']}}" checked></td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
 
-{{--            <button type="submit">Generar Formularios</button>--}}
-
-{{--        @endif--}}
-{{--    </div>--}}
-{{--</form>--}}
+                <button class="btn btn-primary mr-3" type="submit">Imprimir Formularios</button>
+                <a href="{{route('lab.suspect_cases.barcode_reception.forget_cases_received')}}"
+                   class="btn btn-warning">Limpiar listado de impresión</a>
+            @endif
+        </div>
+    </form>
 
 
 

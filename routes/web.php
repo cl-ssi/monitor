@@ -270,6 +270,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::prefix('barcode_reception')->name('barcode_reception.')->group(function(){
             Route::get('/','SuspectCaseController@barcodeReceptionIndex')->name('index')->middleware('auth','can:SuspectCase: reception');
             Route::get('/reception','SuspectCaseController@barcodeReception')->name('reception')->middleware('auth','can:SuspectCase: reception');
+            Route::get('/forget_cases_received','SuspectCaseController@barcodeReceptionForgetCasesReceived')->name('forget_cases_received')->middleware('auth','can:SuspectCase: reception');
         });
 
         Route::get('ws_test', 'SuspectCaseController@ws_test')->name('ws_test');

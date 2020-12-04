@@ -249,7 +249,7 @@ class SuspectCaseController extends Controller
     }
 
 
-    public function reception(Request $request, SuspectCase $suspectCase)
+    public function reception(Request $request, SuspectCase $suspectCase, $barcodeReception = false)
     {
         //Obtiene datos de recepcion actuales
         $receptor_id_old = $suspectCase->receptor_id;
@@ -274,6 +274,7 @@ class SuspectCaseController extends Controller
                             $suspectCase->receptor_id = $receptor_id_old;
                             $suspectCase->reception_at = $reception_id_old;
                             $suspectCase->save();
+                            if($barcodeReception) return false;
                             return redirect()->back()->withInput();
                         }
                     }
@@ -285,6 +286,7 @@ class SuspectCaseController extends Controller
             . $suspectCase->id . ' en laboratorio: '
             . Auth::user()->laboratory->name);
 
+        if($barcodeReception) return true;
         return redirect()->back();
     }
 
@@ -1409,37 +1411,57 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.reception_inbox', compact('suspectCases', 'establishments', 'selectedEstablishment', 'laboratories'));
     }
 
+    /**
+     * Muestra index de recepción por código de barras
+     * @param Request $request
+     * @return Application|Factory|View
+     */
     public function barcodeReceptionIndex(Request $request)
     {
-        session()->forget('suspect_cases.received');
         return view('lab.suspect_cases.reception_barcode');
     }
 
+    /**
+     * Recepciona por id de caso mediante código de barras
+     * @param Request $request
+     * @return Application|Factory|View
+     */
     public function barcodeReception(Request $request){
         if($request->has('id')){
             $suspectCase = SuspectCase::find($request->get('id'));
-
-            //TODO AGREGAR DENTRO DE ELSEIF RECEPTION AT NULL
-            if(!session()->has('suspect_cases.received')){
-                session()->put('suspect_cases.received', array());
-            }
-
-            session()->push('suspect_cases.received', $request->get('id'));
+            $arraySuspectCase['id'] = $suspectCase->id;
+            $arraySuspectCase['fullName'] = $suspectCase->patient->fullName;
+            $arraySuspectCase['sampleAt'] = $suspectCase->sample_at;
         }
 
 
         if(!$suspectCase){
             session()->flash('warning', "No se encuentra muestra con la id $request->get('id'.");
         }elseif ($suspectCase->reception_at == NULL){
-            $this->reception($request, $suspectCase);
+            $receptionSuccess = $this->reception($request, $suspectCase, true);
 
-
+            if ($receptionSuccess) {
+                if(!session()->has('suspect_cases.received')){
+                    session()->put('suspect_cases.received', array());
+                }
+                session()->push('suspect_cases.received', $arraySuspectCase);
+            }
 
         }else{
             session()->flash('warning', "La muestra $suspectCase->id ya se encuentra recepcionada");
         }
 
         return view('lab.suspect_cases.reception_barcode', compact('suspectCase'));
+    }
+
+    /**
+     * Borra de la sesión los casos recepcionados para imprimir
+     */
+    public function barcodeReceptionForgetCasesReceived()
+    {
+        session()->forget('suspect_cases.received');
+        return view('lab.suspect_cases.reception_barcode');
+
     }
 
 //    public function exportExcel($cod_lab){
@@ -1570,8 +1592,12 @@ class SuspectCaseController extends Controller
     }
 
     public function notificationFormSmallBulk(Request $request){
-        $user = auth()->user();
-        return view('lab.suspect_cases.notification_form_small_bulk', compact('suspectCase', 'user'));
+        if ($request->has('selected_cases_ids')) {
+            $selectedCasesIds = $request->get('selected_cases_ids');
+            $suspectCases = SuspectCase::whereIn('id', $selectedCasesIds)->get();
+        }
+
+        return view('lab.suspect_cases.notification_form_small_bulk', compact('suspectCases'));
     }
 
     public function exportExcelReceptionInbox($cod_lab){
