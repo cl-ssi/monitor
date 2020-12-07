@@ -19,24 +19,42 @@
             <h3 class="mb-3"><i class="fas fa-phone"></i> Pacientes Pendientes</h3>
         </div>
         <div class="col-4"></div>
+
+
         <div class="col-4">
+            <a href="{{route('pending_patient.export_excel_by_status', $selectedStatus)}}" class="btn btn-sm btn-success float-right"> <i class="fas fa-print"></i> Imprimir</a>
         </div>
     </div>
 
     <form method="GET" action="{{ route('pending_patient.index') }}">
         <div class="row align-items-end mb-3">
-            <div class="col-12 col-md-4 col-lg-4">
-                <label for="for_status">Estado</label>
-                <select name="status" id="for_status" class="form-control" required>
-                    <option value="not_contacted" {{($selectedStatus == 'not_contacted' ? 'selected' : '')}}> Sin contactar</option>
-                    <option value="updated_information" {{($selectedStatus == 'updated_information' ? 'selected' : '')}}> Informacion Actualizada</option>
-                    <option value="contacted" {{($selectedStatus == 'contacted' ? 'selected' : '')}}> Contactado</option>
-                </select>
 
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-group">
+
+                    <label for="for_status"></label>
+                    <select name="status" id="for_status" class="form-control" required>
+                        <option value="not_contacted" {{($selectedStatus == 'not_contacted' ? 'selected' : '')}}> Sin
+                            contactar
+                        </option>
+                        <option
+                            value="updated_information" {{($selectedStatus == 'updated_information' ? 'selected' : '')}}>
+                            Informacion Actualizada
+                        </option>
+                        <option value="contacted" {{($selectedStatus == 'contacted' ? 'selected' : '')}}> Contactado
+                        </option>
+                    </select>
+
+
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary float-left d-print-none"><i
+                                class="fa fa-search"></i> Buscar
+                        </button>
+                    </div>
+                </div>
             </div>
 
-            <div class="col-12 col-md-4 col-lg-4">
-                <button type="submit" class="btn btn-primary float-left d-print-none"><i class="fa fa-search"></i> Buscar</button>
+            <div class="col-12 col-md-4 col-lg-4 float-right">
             </div>
 
             <div class="col-12 col-md-4 col-lg-4 float-right">
@@ -92,7 +110,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <script type="text/javascript">
-        $(document).ready(function(){
+        $(document).ready(function () {
             $("#textoFiltro").on("keyup", function () {
                 var value = $(this).val().toLowerCase();
                 value = value.normalize('NFD').replace(/[\u0300-\u036f]/g, "");

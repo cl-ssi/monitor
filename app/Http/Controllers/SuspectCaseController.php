@@ -1656,12 +1656,7 @@ class SuspectCaseController extends Controller
             $file = fopen('php://output', 'w');
             fputs($file, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
             fputcsv($file, $columnas,';');
-
-
             foreach($filas as $fila) {
-
-
-
                 fputcsv($file, array(
                     $fila->id,
                     $fila->sample_at,

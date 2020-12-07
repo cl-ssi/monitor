@@ -448,4 +448,6 @@ Route::prefix('pending_patient')->name('pending_patient.')->middleware('auth')->
    Route::get('/', 'PendingPatientController@index')->name('index');
    Route::put('/{pending_patient}', 'PendingPatientController@update')->name('update');
    Route::get('/{pending_patient}', 'PendingPatientController@destroy')->name('destroy');
+   Route::get('/export_excel_by_status/{selectedStatus}','PendingPatientController@exportExcelByStatus')->name('export_excel_by_status')->middleware('auth');
+
 });
