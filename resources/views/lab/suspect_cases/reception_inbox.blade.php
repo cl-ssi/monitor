@@ -19,14 +19,16 @@
     <div class="col-4">
         <h3 class="mb-3"><i class="fas fa-lungs-virus"></i> Bandeja de recepción</h3>
     </div>
-    <div class="col-4"></div>
-    <div class="col-4">
+    <div class="col-3"></div>
+    <div class="col-5">
         <a type="button" class="btn btn-sm btn-success mb-3 float-right" href="{{ route('lab.suspect_cases.exportExcelReceptionInbox', 1) }}"><i class="far fa-file-excel"></i> Descargar</a>
         @can('SuspectCase: reception with barcode')
             <a type="button" class="btn btn-sm btn-primary mb-3 mr-3 float-right"
                href="{{ route('lab.suspect_cases.barcode_reception.index') }}"><i class="fas fa-barcode"></i> Por código
                 barra</a>
         @endcan
+
+        <a href="{{route('lab.suspect_cases.reports.cases_by_ids_index')}}" type="button" class="btn btn-sm btn-primary mb-3 mr-3 float-right"> Descargar por Ids </a>
 
     </div>
 </div>
@@ -116,6 +118,8 @@
 </div>
 </form>
 
+
+
 <form method="POST" id="derive_form" action="{{ route('lab.suspect_cases.derive') }}">
     @csrf
     @method('POST')
@@ -125,6 +129,8 @@
     @csrf
     @method('POST')
 </form>
+
+
 <!-------------------------->
 
 

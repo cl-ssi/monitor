@@ -208,6 +208,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/exportSuspectCases/{lab}/{date?}','SuspectCaseController@exportExcel')->name('export')->middleware('auth');
         Route::get('/exportExcelReceptionInbox/{lab}','SuspectCaseController@exportExcelReceptionInbox')->name('exportExcelReceptionInbox')->middleware('auth');
 
+
         //Route::get('/create','SuspectCaseController@create')->name('create')->middleware('auth','can:SuspectCase: create');
         //Route::post('/','SuspectCaseController@store')->name('store')->middleware('auth','can:SuspectCase: create');
         Route::get('/admission','SuspectCaseController@admission')->name('admission')->middleware('auth','can:SuspectCase: admission');
@@ -250,6 +251,8 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::get('suspect_case_by_commune','SuspectCaseReportController@suspectCaseByCommune')->name('suspect_case_by_commune')->middleware('auth', 'can:Report: suspect cases by commune');
             Route::get('/cases_without_results','SuspectCaseReportController@casesWithoutResults')->name('cases_without_results')->middleware('auth');
             Route::get('/cases_with_barcodes','SuspectCaseReportController@casesWithBarcodes')->name('cases_with_barcodes')->middleware('auth');
+            Route::get('/cases_by_ids_index','SuspectCaseReportController@casesByIdsIndex')->name('cases_by_ids_index')->middleware('auth');
+            Route::post('/export_excel_by_cases_ids','SuspectCaseReportController@exportExcelByCasesIds')->name('export_excel_by_cases_ids')->middleware('auth');
 
         });
         Route::prefix('report')->name('report.')->group(function () {

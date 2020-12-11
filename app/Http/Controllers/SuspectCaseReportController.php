@@ -1538,6 +1538,117 @@ class SuspectCaseReportController extends Controller
 
     }
 
+    public function casesByIdsIndex()
+    {
+//        $externalLabs = Laboratory::where('external', 1)->get();
+        return view('lab.suspect_cases.reports.cases_by_ids_index');
+    }
+
+    public function exportExcelByCasesIds(Request $request){
+
+                $ids = $request->get('suspectCasesId');
+        $ids = explode(' ', $ids);
+        $id_lab_report = $request->get('id_lab_report');
+
+        $headers = array(
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=examenes_pendientes_recepcionar.csv",
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        );
+
+        $filas = SuspectCase::whereIn('id', $ids)
+            ->latest()
+            ->get();
+
+
+        $columnas = array(
+            'run',
+            'dv',
+            'name',
+            'fathers_family',
+            'mothers_family',
+            'gender',
+            'birthday',
+            'status',
+            'street_type',
+            'address',
+            'number',
+            'department',
+            'city',
+            'suburb',
+            'commune_id',
+            'region_id',
+            'nationality',
+            'telephone',
+            'email',
+            'laboratory_id',
+            'sample_type',
+            'sample_at',
+            'recepcion_at',
+            'pcr_sars_cov_2_at',
+            'pcr_sars_cov_2',
+            'name',
+            'origin',
+            'run_medic',
+            'symptoms',
+            'symptoms_at',
+            'gestation',
+            'gestation_week',
+            'index_',
+            'functionary',
+            'observation',
+            'epivigila',
+        );
+
+        $callback = function() use ($filas, $columnas, $id_lab_report)
+        {
+            $file = fopen('php://output', 'w');
+            fputs($file, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
+            fputcsv($file, $columnas,';');
+            foreach($filas as $fila) {
+                fputcsv($file, array(
+                    ($fila->patient->run) ? $fila->patient->run : $fila->patient->other_identification,
+                    $fila->patient->dv,
+                    $fila->patient->name,
+                    $fila->patient->fathers_family,
+                    $fila->patient->mothers_family,
+                    $fila->patient->gender,
+                    $fila->patient->birthday,
+                    $fila->patient->status,
+                    ($fila->patient->demographic) ? $fila->patient->demographic->street_type : '',
+                    ($fila->patient->demographic) ? $fila->patient->demographic->address : '',
+                    ($fila->patient->demographic) ? $fila->patient->demographic->number : '',
+                    ($fila->patient->demographic) ? $fila->patient->demographic->department : '',
+                    ($fila->patient->demographic) ? $fila->patient->demographic->city : '',
+                    ($fila->patient->demographic) ? $fila->patient->demographic->suburb : '',
+                    ($fila->patient->demographic) ? $fila->patient->demographic->commune_id : '',
+                    ($fila->patient->demographic) ? $fila->patient->demographic->region_id : '',
+                    ($fila->patient->demographic) ? $fila->patient->demographic->nationality : '',
+                    ($fila->patient->demographic) ? $fila->patient->demographic->telephone : '',
+                    ($fila->patient->demographic) ? $fila->patient->demographic->email : '',
+                    $id_lab_report,
+                    $fila->sample_type,
+                    $fila->sample_at,
+                    $fila->reception_at,
+                    $fila->pcr_sars_cov_2_at,
+                    $fila->covid19,
+                    $fila->establishment->name,
+                    $fila->origin,
+                    $fila->run_medic,
+                    $fila->symptomEsp,
+                    $fila->gestationEsp,
+                    $fila->functionaryEsp,
+                    $fila->observation,
+                    $fila->epivigila,
+                ),';');
+            }
+            fclose($file);
+        };
+        return response()->stream($callback, 200, $headers);
+    }
+
 
 
 }

@@ -1692,38 +1692,6 @@ class SuspectCaseController extends Controller
         return response()->stream($callback, 200, $headers);
     }
 
-
-    /**
-     * Se utiliza una única vez para migrar los archivos de suspect case a nueva carpeta
-     * con nuevos nombres.
-     */
-    public function filesMigrationSingleUse(){
-
-        Storage::makeDirectory('suspect_cases');
-
-        $files = File::orderBy('id', 'desc')->get();
-
-        foreach ($files as $file){
-
-            if($file->suspectCase){
-                $originFileName = $file->file;
-
-                if(Storage::exists('suspect_cases/' . $file->suspectCase->id . '.pdf')){
-                    Storage::delete('suspect_cases/' . $file->suspectCase->id . '.pdf');
-                }
-
-                Storage::copy($originFileName, 'suspect_cases/' . $file->suspectCase->id . '.pdf');
-                $file->suspectCase->file = true;
-                $file->suspectCase->save();
-//            dump($originFileName);
-            }
-
-        }
-
-        dd("Migración Lista.");
-
-    }
-
     public function index_bulk_load(){
         $bulkLoadRecords = BulkLoadRecord::orderBy('id', 'Desc')->get();
         return view('lab.bulk_load.import', compact('bulkLoadRecords'));
