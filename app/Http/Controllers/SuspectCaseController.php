@@ -1389,8 +1389,9 @@ class SuspectCaseController extends Controller
     {
         $selectedEstablishment = $request->input('establishment_id');
         $nameFilter = $request->input('filter_name_string');
+        $idFilter = $request->input('search');
 
-        $suspectCases = SuspectCase::search($request->input('search'))
+        $suspectCases = SuspectCase::search($idFilter)
             ->where(function($q) use($selectedEstablishment){
                 if($selectedEstablishment){
                     $q->where('establishment_id', $selectedEstablishment);
@@ -1411,7 +1412,7 @@ class SuspectCaseController extends Controller
         $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
         $laboratories = Laboratory::all();
 
-        return view('lab.suspect_cases.reception_inbox', compact('suspectCases', 'establishments', 'selectedEstablishment', 'laboratories'));
+        return view('lab.suspect_cases.reception_inbox', compact('suspectCases', 'establishments', 'selectedEstablishment', 'laboratories', 'nameFilter', 'idFilter'));
     }
 
     /**

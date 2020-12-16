@@ -53,7 +53,7 @@
 
     <div class="col-12 col-md-4 col-lg-3">
             <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="ID examen" name="search" id="for_search">
+                <input type="text" class="form-control" placeholder="ID examen" name="search" id="for_search" value="{{$idFilter}}">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="submit" id="button-addon">Buscar</button>
                 </div>
@@ -72,7 +72,7 @@
 <div class="form-group row">
     <div class="col-12 col-md-6 col-lg-3">
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Filtrar por Nombre" id="for_filter_name_string" name="filter_name_string">
+          <input type="text" class="form-control" placeholder="Filtrar por Nombre" id="for_filter_name_string" name="filter_name_string" value="{{$nameFilter}}">
         </div>
     </div>
     <div class="col-12 col-md-6 col-lg-3">
