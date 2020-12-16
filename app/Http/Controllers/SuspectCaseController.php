@@ -1388,6 +1388,7 @@ class SuspectCaseController extends Controller
     public function reception_inbox(Request $request)
     {
         $selectedEstablishment = $request->input('establishment_id');
+        $nameFilter = $request->input('filter_name_string');
 
         $suspectCases = SuspectCase::search($request->input('search'))
             ->where(function($q) use($selectedEstablishment){
@@ -1399,7 +1400,9 @@ class SuspectCaseController extends Controller
                 $query->where('laboratory_id', Auth::user()->laboratory_id)
                     ->orWhereNull('laboratory_id');
             })
-//            ->where('laboratory_id', Auth::user()->laboratory_id)
+            ->wherehas('patient', function ($q) use ($nameFilter) {
+                $q->search($nameFilter);
+            })
             ->where('reception_at', NULL)
             ->latest()
             ->paginate(200);

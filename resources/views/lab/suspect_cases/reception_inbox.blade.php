@@ -71,9 +71,9 @@
 <!-------------------------->
 <div class="form-group row">
     <div class="col-12 col-md-6 col-lg-3">
-            <div class="input-group mb-3">
-              <input type="text" class="form-control" placeholder="Filtrar por Nombre" id="texto">
-            </div>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Filtrar por Nombre" id="for_filter_name_string" name="filter_name_string">
+        </div>
     </div>
     <div class="col-12 col-md-6 col-lg-3">
         <select name="establishment_id" id="for_establishment_id" class="form-control">
@@ -222,16 +222,6 @@ function exportF(elem) {
 <script>
 
     $(document).ready(function () {
-        $("#texto").on("keyup", function () {
-            var value = $(this).val().toLowerCase();
-            value = value.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-            $("#tableCases tr").filter(function () {
-                var tableValue = $(this).text().toLowerCase();
-                tableValue = tableValue.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-                $(this).toggle(tableValue.indexOf(value) > -1)
-            });
-        });
-
         document.getElementById("btn_reception").onclick = function () {
             let selectCheckboxs = document.getElementsByClassName("select_checkboxs");
             for (let item of selectCheckboxs) {
