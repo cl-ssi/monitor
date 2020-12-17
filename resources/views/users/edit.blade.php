@@ -94,7 +94,7 @@
                 <fieldset class="form-group col-12 col-md-6 ">
                     <button class="btn btn-danger float-md-right" type="submit" form="delete_form"
                             onclick="return confirm('¿Está seguro que desea eliminar al usuario : {{$user->name}}? ' )">
-                        <i class="fas fa-user-slash"></i> Desactivar Usuario
+                        <i class="fas fa-user-slash"></i> Eliminar Usuario
                     </button>
                 </fieldset>
             </div>
