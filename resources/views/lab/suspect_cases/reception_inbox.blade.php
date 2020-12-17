@@ -142,7 +142,7 @@
         <tr>
             <th nowrap>° Monitor</th>
             <th></th>
-            <th>Fecha muestra</th>
+            <th>Fecha Muestra</th>
             <th>Establecimiento</th>
             <th>Nombre</th>
             <th>Identificador</th>
@@ -170,7 +170,7 @@
                     @endcan
                 @endif
             </td>
-            <td nowrap class="small">@date($case->sample_at)</td>
+            <td nowrap class="small">{{$case->sample_at->toDateString()}} <br> {{$case->sample_at->toTimeString()}} </td>
             <td>{{ ($case->establishment) ? $case->establishment->alias : '' }}</td>
             <td>
                 @if($case->patient)

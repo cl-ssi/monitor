@@ -13,18 +13,19 @@
 </h3>
 
 <div class="row">
-    @can('SuspectCase: create')
+
     <div class="col-10 col-sm-6">
-        <a class="btn btn-primary mb-3" href="{{ route('lab.suspect_cases.admission') }}">
-            Crear nueva sospecha
-        </a>
+        @can('SuspectCase: create')
+            <a class="btn btn-primary mb-3" href="{{ route('lab.suspect_cases.admission') }}">
+                Crear nueva sospecha
+            </a>
+        @endcan
         @if($laboratory)
             <a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.minsal',$laboratory) }}">Reporte MINSAL</a>
             <a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.seremi',$laboratory) }}">Reporte SEREMI</a>
         @endif
-
     </div>
-    @endcan
+
 </div>
 <div class="table-responsive">
 <table class="table table-sm table-bordered">
