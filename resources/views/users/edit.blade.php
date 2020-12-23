@@ -86,10 +86,16 @@
 
 
             <div class="form-row">
-                <fieldset class="form-group col-6 col-md-6">
+                <fieldset class="form-group col-12 col-md-6">
                     <a class="btn btn-primary btn-sm" href="{{ route('users.password.restore', $user) }}">
                         <i class="fas fa-plus"></i> Generar Nueva Contraseña
                     </a>
+                </fieldset>
+                <fieldset class="form-group col-12 col-md-6 ">
+                    <button class="btn btn-danger float-md-right" type="submit" form="delete_form"
+                            onclick="return confirm('¿Está seguro que desea eliminar al usuario : {{$user->name}}? ' )">
+                        <i class="fas fa-user-slash"></i> Eliminar Usuario
+                    </button>
                 </fieldset>
             </div>
 
@@ -126,6 +132,10 @@
 
 </form>
 
+<form method="POST" id="delete_form" action="{{route('users.destroy', $user)}}">
+    @csrf
+    @method('DELETE')
+</form>
 
 
 @endsection

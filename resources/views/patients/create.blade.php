@@ -53,7 +53,7 @@
 
         <fieldset class="form-group col-7 col-sm-4 col-md-3 col-lg-2">
             <label for="for_birthday">Fecha Nacimiento</label>
-            <input type="date" class="form-control" id="for_birthday"
+            <input type="date" class="form-control" id="for_birthday" min="1900-01-01" max="{{Carbon\Carbon::now()->toDateString()}}"
                 name="birthday" required>
         </fieldset>
     </div>

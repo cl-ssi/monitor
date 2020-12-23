@@ -20,7 +20,7 @@
                     <br>
 
                     @if($suspectCase->Covid19 == 'Positivo')
-                        <p><strong>Deberá cumplir una cuarentena por 14 días. </strong>
+                        <p><strong>Deberá cumplir una cuarentena por 11 días. </strong>
                             Sin perjuicio de lo anterior, dicho tiempo puede
                             extenderse si no se ha recuperado totalmente de la
                             enfermedad.</p>

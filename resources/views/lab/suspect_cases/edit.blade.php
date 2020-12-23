@@ -9,7 +9,7 @@
         </div>
         <div class="col-4"></div>
         <div class="col-4">
-            <a href= '{{route('lab.suspect_cases.notificationForm',$suspectCase) }}' class="btn btn-outline-primary float-right" >Caso pdf</a>
+            <a href= '{{route('lab.suspect_cases.notificationFormSmall',$suspectCase) }}' class="btn btn-outline-primary float-right" >Caso pdf</a>
         </div>
     </div>
 

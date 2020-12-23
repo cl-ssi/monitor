@@ -180,10 +180,6 @@ Route::prefix('lab')->name('lab.')->group(function () {
         });
     });
     Route::prefix('suspect_cases')->name('suspect_cases.')->group(function () {
-
-        //Se utiliza para migración de exámenes pdf desde carpeta "files" a carpeta "suspect cases"
-//        Route::get('/filesMigrationSingleUse','SuspectCaseController@filesMigrationSingleUse')->name('filesMigrationSingleUse')->middleware('auth');
-
         Route::get('reception_inbox','SuspectCaseController@reception_inbox')->name('reception_inbox')->middleware('auth','can:SuspectCase: reception');
         Route::post('reception/{suspect_case}','SuspectCaseController@reception')->name('reception')->middleware('auth','can:SuspectCase: reception');
         Route::post('derive','SuspectCaseController@derive')->name('derive')->middleware('auth');
@@ -212,6 +208,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/exportSuspectCases/{lab}/{date?}','SuspectCaseController@exportExcel')->name('export')->middleware('auth');
         Route::get('/exportExcelReceptionInbox/{lab}','SuspectCaseController@exportExcelReceptionInbox')->name('exportExcelReceptionInbox')->middleware('auth');
 
+
         //Route::get('/create','SuspectCaseController@create')->name('create')->middleware('auth','can:SuspectCase: create');
         //Route::post('/','SuspectCaseController@store')->name('store')->middleware('auth','can:SuspectCase: create');
         Route::get('/admission','SuspectCaseController@admission')->name('admission')->middleware('auth','can:SuspectCase: admission');
@@ -221,6 +218,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::delete('/{suspect_case}','SuspectCaseController@destroy')->name('destroy')->middleware('auth','can:SuspectCase: delete');
         Route::get('/{suspect_case}/notificationForm','SuspectCaseController@notificationForm')->name('notificationForm')->middleware('auth','can:SuspectCase: admission');
         Route::get('/{suspect_case}/notificationFormSmall','SuspectCaseController@notificationFormSmall')->name('notificationFormSmall')->middleware('auth','can:SuspectCase: admission');
+        Route::post('/notificationFormSmallBulk','SuspectCaseController@notificationFormSmallBulk')->name('notificationFormSmallBulk')->middleware('auth','can:SuspectCase: admission');
 
         Route::get('/index_import_results','SuspectCaseController@index_import_results')->name('index_import_results')->middleware('auth');
         Route::post('/results_import', 'SuspectCaseController@results_import')->name('results_import');
@@ -253,6 +251,8 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::get('suspect_case_by_commune','SuspectCaseReportController@suspectCaseByCommune')->name('suspect_case_by_commune')->middleware('auth', 'can:Report: suspect cases by commune');
             Route::get('/cases_without_results','SuspectCaseReportController@casesWithoutResults')->name('cases_without_results')->middleware('auth');
             Route::get('/cases_with_barcodes','SuspectCaseReportController@casesWithBarcodes')->name('cases_with_barcodes')->middleware('auth');
+            Route::get('/cases_by_ids_index','SuspectCaseReportController@casesByIdsIndex')->name('cases_by_ids_index')->middleware('auth');
+            Route::post('/export_excel_by_cases_ids','SuspectCaseReportController@exportExcelByCasesIds')->name('export_excel_by_cases_ids')->middleware('auth');
 
         });
         Route::prefix('report')->name('report.')->group(function () {
@@ -269,6 +269,14 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::get('diary_by_lab_report','SuspectCaseController@diary_by_lab_report')->name('diary_by_lab_report')->middleware('auth');
             Route::get('estadistico_diario_covid19','SuspectCaseController@estadistico_diario_covid19')->name('estadistico_diario_covid19')->middleware('auth');
         });
+
+        Route::prefix('barcode_reception')->name('barcode_reception.')->group(function(){
+            Route::get('/','SuspectCaseController@barcodeReceptionIndex')->name('index')->middleware('auth','can:SuspectCase: reception');
+            Route::get('/reception','SuspectCaseController@barcodeReception')->name('reception')->middleware('auth','can:SuspectCase: reception');
+            Route::get('/forget_cases_received','SuspectCaseController@barcodeReceptionForgetCasesReceived')->name('forget_cases_received')->middleware('auth','can:SuspectCase: reception');
+        });
+
+        Route::get('ws_test', 'SuspectCaseController@ws_test')->name('ws_test');
     });
     Route::prefix('sample_origins')->name('sample_origins.')->group(function () {
         Route::get('/', 'SampleOriginController@index')->name('index');
@@ -442,4 +450,7 @@ Route::prefix('pending_patient')->name('pending_patient.')->middleware('auth')->
    Route::get('/{pending_patient}/edit', 'PendingPatientController@edit')->name('edit');
    Route::get('/', 'PendingPatientController@index')->name('index');
    Route::put('/{pending_patient}', 'PendingPatientController@update')->name('update');
+   Route::get('/{pending_patient}', 'PendingPatientController@destroy')->name('destroy');
+   Route::get('/export_excel_by_status/{selectedStatus}','PendingPatientController@exportExcelByStatus')->name('export_excel_by_status')->middleware('auth');
+
 });

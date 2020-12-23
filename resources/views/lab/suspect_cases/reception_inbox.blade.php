@@ -19,9 +19,17 @@
     <div class="col-4">
         <h3 class="mb-3"><i class="fas fa-lungs-virus"></i> Bandeja de recepción</h3>
     </div>
-    <div class="col-4"></div>
-    <div class="col-4">
-        <a type="button" class="btn btn-sm btn-success mb-3 float-right" href="{{ route('lab.suspect_cases.exportExcelReceptionInbox', 1) }}">Descargar <i class="far fa-file-excel"></i></a>
+    <div class="col-3"></div>
+    <div class="col-5">
+        <a type="button" class="btn btn-sm btn-success mb-3 float-right" href="{{ route('lab.suspect_cases.exportExcelReceptionInbox', 1) }}"><i class="far fa-file-excel"></i> Descargar</a>
+        @can('SuspectCase: reception with barcode')
+            <a type="button" class="btn btn-sm btn-primary mb-3 mr-3 float-right"
+               href="{{ route('lab.suspect_cases.barcode_reception.index') }}"><i class="fas fa-barcode"></i> Por código
+                barra</a>
+        @endcan
+
+        <a href="{{route('lab.suspect_cases.reports.cases_by_ids_index')}}" type="button" class="btn btn-sm btn-primary mb-3 mr-3 float-right"> Descargar por Ids </a>
+
     </div>
 </div>
 
@@ -45,12 +53,11 @@
 
     <div class="col-12 col-md-4 col-lg-3">
             <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="ID examen" name="search" id="for_search">
+                <input type="text" class="form-control" placeholder="ID examen" name="search" id="for_search" value="{{$idFilter}}">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="submit" id="button-addon">Buscar</button>
                 </div>
             </div>
-
     </div>
     <div class="col-12 col-md-5 col-lg-5">
         @if(Auth::user()->laboratory)
@@ -64,9 +71,9 @@
 <!-------------------------->
 <div class="form-group row">
     <div class="col-12 col-md-6 col-lg-3">
-            <div class="input-group mb-3">
-              <input type="text" class="form-control" placeholder="Filtrar por Nombre" id="texto">
-            </div>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Filtrar por Nombre" id="for_filter_name_string" name="filter_name_string" value="{{$nameFilter}}">
+        </div>
     </div>
     <div class="col-12 col-md-6 col-lg-3">
         <select name="establishment_id" id="for_establishment_id" class="form-control">
@@ -78,7 +85,7 @@
     </div>
 
     <div class="col-12 col-md-4 col-lg-3 text-center">
-        <button class="btn btn-primary" id="btn_reception" form="mass_reception_form" type="submit"> <i class="fas fa-inbox"></i> Recepcionar</button>
+        <button class="btn btn-primary" id="btn_reception" form="mass_reception_form" type="submit" disabled title="Seleccione las muestras a recepcionar."> <i class="fas fa-inbox"></i> Recepcionar</button>
     </div>
 {{--    <div class="col-12 col-md-4 col-lg-3"></div>--}}
 
@@ -103,13 +110,15 @@
                 </optgroup>
             </select>
             <div class="input-group-append">
-                <button type="submit" form="derive_form" id="btn_derive" class="btn btn-primary float-right" title="Derivar"><i class="fas fa-reply-all"></i> Derivar</button>
+                <button type="submit" form="derive_form" id="btn_derive" class="btn btn-primary float-right" disabled title="Seleccione las muestras a derivar."><i class="fas fa-reply-all"></i> Derivar</button>
             </div>
         </div>
     </div>
 
 </div>
 </form>
+
+
 
 <form method="POST" id="derive_form" action="{{ route('lab.suspect_cases.derive') }}">
     @csrf
@@ -120,6 +129,8 @@
     @csrf
     @method('POST')
 </form>
+
+
 <!-------------------------->
 
 
@@ -131,7 +142,7 @@
         <tr>
             <th nowrap>° Monitor</th>
             <th></th>
-            <th>Fecha muestra</th>
+            <th>Fecha Muestra</th>
             <th>Establecimiento</th>
             <th>Nombre</th>
             <th>Identificador</th>
@@ -159,7 +170,7 @@
                     @endcan
                 @endif
             </td>
-            <td nowrap class="small">@date($case->sample_at)</td>
+            <td nowrap class="small">{{$case->sample_at->toDateString()}} <br> {{$case->sample_at->toTimeString()}} </td>
             <td>{{ ($case->establishment) ? $case->establishment->alias : '' }}</td>
             <td>
                 @if($case->patient)
@@ -211,16 +222,6 @@ function exportF(elem) {
 <script>
 
     $(document).ready(function () {
-        $("#texto").on("keyup", function () {
-            var value = $(this).val().toLowerCase();
-            value = value.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-            $("#tableCases tr").filter(function () {
-                var tableValue = $(this).text().toLowerCase();
-                tableValue = tableValue.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-                $(this).toggle(tableValue.indexOf(value) > -1)
-            });
-        });
-
         document.getElementById("btn_reception").onclick = function () {
             let selectCheckboxs = document.getElementsByClassName("select_checkboxs");
             for (let item of selectCheckboxs) {
@@ -235,12 +236,22 @@ function exportF(elem) {
             }
         }
 
+        //Seleccionar maximo 10 muestras. Habilita botones derivar recepcionar massivos
         jQuery(function(){
             var max = 10;
             var checkboxes = $('input[type="checkbox"]');
             checkboxes.change(function(){
                 var current = checkboxes.filter(':checked').length;
                 checkboxes.filter(':not(:checked)').prop('disabled', current >= max);
+
+                if(current > 0){
+                    document.getElementById('btn_reception').disabled = false;
+                    document.getElementById('btn_derive').disabled = false;
+                }else {
+                    document.getElementById('btn_reception').disabled = true;
+                    document.getElementById('btn_derive').disabled = true;
+                }
+
             });
         });
 

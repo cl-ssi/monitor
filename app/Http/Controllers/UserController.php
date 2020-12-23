@@ -210,7 +210,10 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+        session()->flash('success', "Se ha eliminado usuario: '$user->name'");
+        return redirect()->route('users.index');
+
     }
 
     /**

@@ -13,13 +13,19 @@
 </h3>
 
 <div class="row">
-    @can('SuspectCase: create')
+
     <div class="col-10 col-sm-6">
-        <a class="btn btn-primary mb-3" href="{{ route('lab.suspect_cases.admission') }}">
-            Crear nueva sospecha
-        </a>
+        @can('SuspectCase: create')
+            <a class="btn btn-primary mb-3" href="{{ route('lab.suspect_cases.admission') }}">
+                Crear nueva sospecha
+            </a>
+        @endcan
+        @if($laboratory)
+            <a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.minsal',$laboratory) }}">Reporte MINSAL</a>
+            <a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.seremi',$laboratory) }}">Reporte SEREMI</a>
+        @endif
     </div>
-    @endcan
+
 </div>
 <div class="table-responsive">
 <table class="table table-sm table-bordered">
@@ -51,18 +57,17 @@
 <div class="row row align-items-end"> <!---START ROW PRINCIPAL--->
   <div class="col-12 col-sm-12 col-md-6"> <!-- START COL 1 PRINCIPAL -->
       <div class="row align-items-end">
-        <div class="col-12 col-sm-12">
-            <a type="button" class="btn btn-sm btn-success mb-3" href="{{ route('lab.suspect_cases.export', $laboratory->id) }}">Descargar <i class="far fa-file-excel"></i></a>
-        <!--</div>
-        <div class="col-6 col-sm-3">-->
-            <a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.minsal',$laboratory) }}">Reporte MINSAL</a>
-        <!--</div>
-        <div class="col-6 col-sm-6 float-left">-->
-            <a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.reports.seremi',$laboratory) }}">Reporte SEREMI</a>
-        <!--</div>
-        <div class="col-6 col-sm-3">-->
-            <a class="btn btn-outline-info btn-sm mb-3" href="{{ route('lab.suspect_cases.report.estadistico_diario_covid19',$laboratory) }}">Reporte estadistico diario</a>
+        <div class="col-12 col-sm-12 col-md-6">
+            <input type="month" class="form-control mb-3" id="for_month_by_lab"
+                   name="month" value="{{ Carbon\Carbon::now()->format('Y-m') }}" required>
         </div>
+
+          <div class="col-12 col-sm-12 col-md-6">
+              <a type="button" class="btn btn-success mb-3" id="btn_download_by_lab"
+                 href="{{ route('lab.suspect_cases.export', [$laboratory->id, Carbon\Carbon::now()->format('Y-m')]) }}">Descargar
+                  <i class="far fa-file-excel"></i></a>
+          </div>
+
       </div><!---END row--->
       <div class="row">
           <div class="col-12 col-sm-12 col-md-12" align="right">
@@ -213,6 +218,10 @@
 $(document).ready(function(){
     $('#for_month').on('change', function() {
         $('#btn_download').attr('href', '{{route('lab.suspect_cases.export', 'all')}}' + '/' + this.value);
+    });
+
+    $('#for_month_by_lab').on('change', function() {
+        $('#btn_download_by_lab').attr('href', '{{route('lab.suspect_cases.export', (($laboratory) ? $laboratory->id : '') )}}' + '/' + this.value);
     });
 });
 

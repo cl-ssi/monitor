@@ -12,10 +12,14 @@ class PendingPatient extends Model
     protected $fillable = ['run', 'dv', 'other_identification', 'id', 'name', 'fathers_family', 'mothers_family', 'address',
         'region_id', 'commune_id', 'email', 'telephone', 'file_number', 'status', 'reason', 'appointment_with',
         'appointment_at', 'responsible_name', 'responsible_run', 'responsible_phone',
-        'visit_observation', 'visit_delivery_at', 'visit_appointment_functionary'];
+        'visit_observation', 'visit_delivery_at', 'visit_appointment_functionary', 'appointment_specialty', 'appointment_location'];
 
     public function commune() {
         return $this->belongsTo('App\Commune');
+    }
+
+    public function specialty() {
+        return $this->belongsTo('App\Specialty');
     }
 
     protected $dates = ['appointment_at', 'visit_delivery_at'];
