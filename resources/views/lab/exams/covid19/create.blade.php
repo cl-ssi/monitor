@@ -154,13 +154,13 @@
         </fieldset>
 
         <fieldset class="form-group col-8 col-md-2">
-            <label for="for_run_medic">Run Médico SIN DV *</label>
+            <label for="for_run_medic">Run Médico SIN DV</label>
             <input type="text" class="form-control" name="run_medic"
-                   id="for_run_medic" required>
+                   id="for_run_medic" >
         </fieldset>
 
         <fieldset class="form-group col-4 col-md-1">
-            <label for="for_run_medic_dv">DV *</label>
+            <label for="for_run_medic_dv">DV</label>
             <input type="text" class="form-control" id="for_run_medic_dv" name="run_medic_dv" readonly>
         </fieldset>
 
