@@ -95,7 +95,7 @@
             <th>Habitación</th>
             <th>Desde</th>
             <th>Fecha Egreso</th>
-            <th></th>
+            <th>Borrar Egreso (Regresar al Booking)</th>
         </tr>
     </thead>
     <tbody class="small">
@@ -107,9 +107,16 @@
             <td> {{ $booking->room->residence->name }}</td>
             <td>{{ $booking->room->number }}</td>
             <td>{{ $booking->from }}</td>
-            <td>{{ $booking->real_to }}</td>
-
-            <td></td>
+            <td>{{ $booking->real_to }}</td>            
+            <td>
+            @can('SanitaryResidence: return booking')
+            <form method="POST" class="form-horizontal" action="{{ route('sanitary_residences.bookings.returnbooking',$booking) }}">
+                        @csrf
+                        @method('PUT')
+            <button type="submit" class="btn btn-danger" onclick="return confirm('¿Está seguro que desea REINGRESAR el Booking del paciente {{ $booking->patient->fullName }} para la habitación {{$booking->room->number}} ?' )">Reingresar al Booking</button>
+            </form>
+            @endcan
+            </td>
         </tr>
         
         @endforeach

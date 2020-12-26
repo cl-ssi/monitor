@@ -67,6 +67,11 @@ class PermissionSeeder extends Seeder
         ]);
 
         $permission = Permission::create([
+            'name' => 'SanitaryResidence: return booking',
+            'description' => 'Usuario que puede eliminar un egreso, y paciente se retorna a su booking'
+        ]);
+
+        $permission = Permission::create([
             'name' => 'SanitaryResidence: user',
             'description' => 'Permite al usuario registrar en R.S.'
         ]);

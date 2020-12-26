@@ -408,6 +408,7 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
         Route::get('/{booking}/release', 'BookingController@showRelease')->name('showrelease');
         // Route::get('/{booking}/edit', 'BookingController@edit')->name('edit');
         Route::put('/{booking}', 'BookingController@update')->name('update');
+        Route::put('/{booking}/returnbooking', 'BookingController@returnbooking')->name('returnbooking');
         //Route::delete('/destroy/{id}', 'BookingController@destroy')->name('destroy');
 
     });

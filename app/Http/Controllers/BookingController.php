@@ -166,6 +166,28 @@ class BookingController extends Controller
         return view('sanitary_residences.bookings.show', compact('booking', 'patients', 'rooms'));
     }
 
+
+    public function returnbooking(Booking $booking)
+    {
+        // $logPatient = new Log();
+        // $logPatient->old = clone $booking;
+
+        $booking->status = 'Residencia Sanitaria';
+        $booking->real_to = null;
+        $booking->released_cause = null;
+        $booking->patient->status = 'Residencia Sanitaria';
+        $booking->patient->save();
+        $booking->save();
+
+
+
+        session()->flash('success', 'Paciente reingresado al booking exitosamente');
+        return redirect()->back();
+
+        
+
+    }
+
     /**
      * Remove the specified resource from storage.
      *
