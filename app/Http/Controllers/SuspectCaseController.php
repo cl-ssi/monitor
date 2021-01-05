@@ -601,7 +601,13 @@ class SuspectCaseController extends Controller
 
         $suspectCase = new SuspectCase($request->All());
         $suspectCase->user_id = Auth::id();
-        $suspectCase->run_medic = $request->run_medic_s_dv . "-" . $request->run_medic_dv;
+
+        if(trim($request->run_medic_s_dv) == ''){
+            $suspectCase->run_medic = NULL;
+        }else{
+            $suspectCase->run_medic = $request->run_medic_s_dv . "-" . $request->run_medic_dv;
+        }
+
 
         /* Calcula la semana epidemiológica */
         $suspectCase->epidemiological_week = Carbon::createFromDate($suspectCase->sample_at->format('Y-m-d'))

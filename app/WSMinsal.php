@@ -50,16 +50,19 @@ class WSMinsal extends Model
         }
 
         $codigo_muestra_cliente = SuspectCase::max('id');
-//        dd($codigo_muestra_cliente);
-        // $cod_deis = Laboratory::find(Auth::user()->laboratory_id);
-        // dd($cod_deis);
-        // dd($request->run_medic);
+
+        if(trim($request->run_medic_s_dv) == ''){
+           $run_medic = '';
+        }else{
+           $run_medic = $request->run_medic_s_dv . "-" . $request->run_medic_dv;
+        }
+
         $array = array(
             'raw' => array(
                 'codigo_muestra_cliente' => $codigo_muestra_cliente + 1,
                 'rut_responsable' => Auth::user()->run . "-" . Auth::user()->dv,
                 'cod_deis' => Establishment::find($request->establishment_id)->new_code_deis,
-                'rut_medico' => $request->run_medic_s_dv . "-" . $request->run_medic_dv, //'16350555-K', //Pedro Valjalo
+                'rut_medico' => $run_medic, //'16350555-K', //Pedro Valjalo
                 'paciente_run' => $request->run,
                 'paciente_dv' =>  $request->dv,
                 'paciente_nombres' => $request->name,
@@ -151,9 +154,14 @@ class WSMinsal extends Model
             || $suspectCase->run_medic == "17430962-0"
         ) {
             $run_medic = "16350555-K";
-        }else{
+        }elseif ($suspectCase->run_medic == NULL){
+            $run_medic = '';
+        }
+        else{
             $run_medic = $suspectCase->run_medic;
         }
+
+
 
         $array = array(
             'raw' => array(
