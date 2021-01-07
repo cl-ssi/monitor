@@ -25,7 +25,7 @@ class Demographic extends Model implements Auditable
         'street_type','address','number','department','suburb',
         'region_id','commune_id','city','nationality',
         'latitude','longitude',
-        'telephone','telephone2','email','patient_id'
+        'telephone','telephone2','email','workplace','patient_id'
     ];
 
     public function patient() {
