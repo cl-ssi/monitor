@@ -1526,8 +1526,9 @@ class SuspectCaseController extends Controller
             'run',
             'edad',
             'sexo',
+            'Laboratorio',   
             'resultado_ifd',
-            'pcr_sars_cov2',
+            'pcr_sars_cov2',            
             'sem',
             'epivigila',
             'fecha de resultado',
@@ -1537,7 +1538,8 @@ class SuspectCaseController extends Controller
             'comuna',
             'país',
             'email',
-            'lugar de trabajo'
+            'lugar de trabajo',
+            'fecha envío lab. externo'
         );
 
         $callback = function() use ($filas, $columnas)
@@ -1555,8 +1557,9 @@ class SuspectCaseController extends Controller
                     ($fila->patient)?$fila->patient->Identifier:'',
                     $fila->age,
                     strtoupper($fila->gender[0]),
+                    $fila->laboratory->name,
                     $fila->result_ifd,
-                    $fila->Covid19,
+                    $fila->Covid19,                    
                     $fila->epidemiological_week,
                     $fila->epivigila,
                     $fila->pcr_sars_cov_2_at,
@@ -1566,7 +1569,8 @@ class SuspectCaseController extends Controller
                     ($fila->patient && $fila->patient->demographic && $fila->patient->demographic->commune)?$fila->patient->demographic->commune->name:'',
                     ($fila->patient && $fila->patient->demographic && $fila->patient->demographic->nationality) ? $fila->patient->demographic->nationality : '',
                     ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->email:'',
-                    ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->workplace:''
+                    ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->workplace:'',
+                    $fila->sent_external_lab_at
                 ),';');
             }
             fclose($file);
