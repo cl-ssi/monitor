@@ -1536,7 +1536,8 @@ class SuspectCaseController extends Controller
             'dirección',
             'comuna',
             'país',
-            'email'
+            'email',
+            'lugar de trabajo'
         );
 
         $callback = function() use ($filas, $columnas)
@@ -1564,7 +1565,8 @@ class SuspectCaseController extends Controller
                     ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->fullAddress:'',
                     ($fila->patient && $fila->patient->demographic && $fila->patient->demographic->commune)?$fila->patient->demographic->commune->name:'',
                     ($fila->patient && $fila->patient->demographic && $fila->patient->demographic->nationality) ? $fila->patient->demographic->nationality : '',
-                    ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->email:''
+                    ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->email:'',
+                    ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->workplace:''
                 ),';');
             }
             fclose($file);
