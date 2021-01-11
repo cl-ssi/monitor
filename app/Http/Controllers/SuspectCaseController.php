@@ -1536,13 +1536,15 @@ class SuspectCaseController extends Controller
             'epivigila',
             'fecha de resultado',
             'observación',
+            'mecanismo de notificación',
+            'fecha de notificación',
             'teléfono',
             'dirección',
             'comuna',
             'país',
             'email',
             'lugar de trabajo',
-            'fecha envío lab. externo'
+            'fecha envío lab. externo'            
         );
 
         $callback = function() use ($filas, $columnas)
@@ -1571,6 +1573,8 @@ class SuspectCaseController extends Controller
                     $fila->epivigila,
                     $fila->pcr_sars_cov_2_at,
                     $fila->observation,
+                    $fila->notification_mechanism,
+                    ($fila->notification_at)?$fila->notification_at->format('d-m-Y'):'',
                     ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->telephone:'',
                     ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->fullAddress:'',
                     ($fila->patient && $fila->patient->demographic && $fila->patient->demographic->commune)?$fila->patient->demographic->commune->name:'',
