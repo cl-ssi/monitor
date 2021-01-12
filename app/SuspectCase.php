@@ -37,7 +37,7 @@ class SuspectCase extends Model implements Auditable
         'gestation', 'gestation_week', 'close_contact', 'functionary',
         'notification_at', 'notification_mechanism',
         'discharged_at',
-        'observation', 'minsal_ws_id','case_type',
+        'observation', 'minsal_ws_id','case_type', 'positive_condition',
         'patient_id', 'laboratory_id', 'establishment_id',
         'user_id'
     ];

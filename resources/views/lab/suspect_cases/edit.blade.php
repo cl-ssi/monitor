@@ -476,9 +476,25 @@
                 <input type="date" class="form-control" name="discharged_at"
                        id="for_discharged_at"
                        value="{{ ($suspectCase->discharged_at)?$suspectCase->discharged_at->format('Y-m-d'):'' }}">
+            </fieldset>            
+            @if($suspectCase->patient->suspectCases->where('pcr_sars_cov_2','positive')->count() > 1 and $suspectCase->pcr_sars_cov_2 == 'positive')
+            <fieldset class="form-group col-6 col-md-3">
+                <label for="positive_condition">Casos Recuperados (Nueva Muestra)</label>
+                <select name="positive_condition" id="for_positive_condition" class="form-control">
+                    <option></option>
+                    <option value="Excreción Viral Remanente"
+                        {{ ($suspectCase->positive_condition == 'Excreción Viral Remanente')?'selected':'' }}>
+                        Excreción Viral Remanente
+                    </option>
+                    <option value="Reinfección"
+                        {{ ($suspectCase->positive_condition == 'Reinfección')?'selected':'' }}>
+                        Reinfección
+                    </option>                    
+                </select>
             </fieldset>
-
+            @endif
         </div>
+        
 
         <input type="hidden" name="referer" value="{{ request()->headers->get('referer') }}">
 
