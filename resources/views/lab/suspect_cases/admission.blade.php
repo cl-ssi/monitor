@@ -42,7 +42,7 @@
 
         <fieldset class="form-group col-1 col-md-1">
             <label for="">&nbsp;</label>
-            <button type="button" id="btn_fonasa" class="btn btn-outline-success">Fonasa&nbsp;</button>
+            <button type="button" id="btn_fonasa" class="btn btn-outline-success form-control">Fonasa&nbsp;</button>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-2">
