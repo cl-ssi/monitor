@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use App\SuspectCase;
 use App\Patient;
 use App\Demographic;
+use App\RapidTest;
 use App\File;
 use App\User;
 use App\EstablishmentUser;
@@ -656,6 +657,14 @@ class SuspectCaseController extends Controller
             $demographic->save();
         }
 
+        /*Guarda Examen Rápido*/
+        if($request->input('value_test')) {
+            $rapidtest = new RapidTest($request->All());
+            $rapidtest->patient_id = $patient->id;
+            $rapidtest->type = "Antígeno";
+            $rapidtest->save();            
+        }
+
 
         /* Webservice minsal */
         /* Si se crea el caso por alguien con laboratorio asignado */
@@ -682,6 +691,8 @@ class SuspectCaseController extends Controller
                 }
             }
         }
+
+
 
         session()->flash('success', 'Se ha creado el caso número: <h3>'
             . $suspectCase->id. ' <a href="' . route('lab.suspect_cases.notificationFormSmall',$suspectCase)

@@ -270,6 +270,29 @@
     </div>
 
     <hr>
+    <h4 class="mt-4">Examen Rápido (Opcional)</h4>
+    <div class="form-row">
+    <fieldset class="form-group col-5 col-md-3">
+            <label for="for_register_at">Fecha de Muestra de Antígeno</label>
+            <input type="datetime-local" class="form-control" id="for_register_at"
+                name="register_at" value="{{ date('Y-m-d\TH:i:s') }}"  max="{{ date('Y-m-d\TH:i:s') }}">
+    </fieldset>
+
+
+
+    <fieldset class="form-group col-3 col-md-3">
+    <label for="for_value_test">Valor de Antígeno</label>
+    <select name="value_test" id="for_value_test" class="form-control">
+                <option value="" {{(old('value_test') == '') ? 'selected' : '' }}></option>
+                <option value="Positive" {{(old('value_test') == 'Positive') ? 'selected' : '' }}>Positivo</option>
+                <option value="Negative" {{(old('value_test') == 'Negative') ? 'selected' : '' }}>Negativo</option>
+                <option value="Weak" {{(old('value_test') == 'Weak') ? 'selected' : '' }}>No Válido</option>
+            </select>
+    </fieldset>
+
+    
+
+    </div>
 
     <button type="submit" class="btn btn-primary">Guardar</button>
 
