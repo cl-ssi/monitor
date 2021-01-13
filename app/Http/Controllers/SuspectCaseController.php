@@ -1961,5 +1961,15 @@ class SuspectCaseController extends Controller
     }
 
 
+    public function positiveCondition(Request $request, SuspectCase $suspectCase){
+        
+        $suspectCase->positive_condition = $request->positive_condition;
+        $suspectCase->save();
+        session()->flash('success', 'Se añadio el tipo de infección correctamente');
+        return redirect()->back();
+        
+    }
+
+
 
 }

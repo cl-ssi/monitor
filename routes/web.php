@@ -215,6 +215,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::post('/admission','SuspectCaseController@storeAdmission')->name('store_admission')->middleware('auth','can:SuspectCase: admission');
         Route::get('/{suspect_case}/edit','SuspectCaseController@edit')->name('edit')->middleware('auth','can:SuspectCase: edit');
         Route::put('/{suspect_case}','SuspectCaseController@update')->name('update')->middleware('auth','can:SuspectCase: edit');
+        Route::patch('/{suspect_case}','SuspectCaseController@positiveCondition')->name('positiveCondition')->middleware('auth','can:SuspectCase: edit');
         Route::delete('/{suspect_case}','SuspectCaseController@destroy')->name('destroy')->middleware('auth','can:SuspectCase: delete');
         Route::get('/{suspect_case}/notificationForm','SuspectCaseController@notificationForm')->name('notificationForm')->middleware('auth','can:SuspectCase: admission');
         Route::get('/{suspect_case}/notificationFormSmall','SuspectCaseController@notificationFormSmall')->name('notificationFormSmall')->middleware('auth','can:SuspectCase: admission');
