@@ -212,18 +212,18 @@ class PermissionSeeder extends Seeder
         ]);
 
         $permission = Permission::create([
-            'name' => 'Inmuno Test: list',
-            'description' => 'Permite listar Test Rapido Inmunoglobulinas'
+            'name' => 'Rapid Test: list',
+            'description' => 'Permite listar Test Rapido '
         ]);
 
         $permission = Permission::create([
-            'name' => 'Inmuno Test: create',
-            'description' => 'Permite crear Test Rapido Inmunoglobulinas'
+            'name' => 'Rapid Test: create',
+            'description' => 'Permite crear Test Rapido '
         ]);
 
         $permission = Permission::create([
-            'name' => 'Inmuno Test: edit',
-            'description' => 'Permite editar Test Rapido Inmunoglobulinas'
+            'name' => 'Rapid Test: edit',
+            'description' => 'Permite editar Test Rápido '
         ]);
 
         $permission = Permission::create([

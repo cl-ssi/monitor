@@ -335,13 +335,13 @@
 
     <hr>
 
-    @can('Inmuno Test: list')
+    @can('Rapid Test: list')
 
         <div class="card">
             <div class="card-body">
                 <h4 class="mt-4">Test Rápido</h4>
 
-            @can('Inmuno Test: create')
+            @can('Rapid Test: create')
                 <!-- <a class="btn btn-primary btn-sm" href="{{ route('lab.inmuno_tests.create', 'search_false') }}">
                 <i class="fas fa-plus"></i> Agregar Test
                 </a> -->

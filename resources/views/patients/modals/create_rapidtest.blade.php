@@ -41,6 +41,8 @@
                     @csrf
                     @method('POST')
 
+                    <div class="form-row">
+
                     <fieldset class="form-group col-md-3">
                           <label for="for_control">Tipo de Examen</label>
                           <select class="form-control" name="type" id="for_type"  required>
@@ -52,7 +54,7 @@
                       </fieldset>
 
 
-                    <div class="form-row">
+                    
                       <fieldset class="form-group col-md-3">
                           <label for="for_register_at">Fecha de Examen</label>
                           <input type="datetime-local" class="form-control" name="register_at" id="for_register_at" value="{{ date('Y-m-d\TH:i:s') }}"  max="{{ date('Y-m-d\TH:i:s') }}">
