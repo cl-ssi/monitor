@@ -43,7 +43,8 @@
 
                     <fieldset class="form-group col-md-3">
                           <label for="for_control">Tipo de Examen</label>
-                          <select class="form-control" name="type" id="for_type" title="Seleccione..." required>
+                          <select class="form-control" name="type" id="for_type"  required>
+                              <option value="">Seleccione</option>
                               <option value="Antígeno">Antígeno</option>
                               <option value="IgG">IgG</option>
                               <option value="IgM">IgM</option>
@@ -59,7 +60,8 @@
 
                       <fieldset class="form-group col-md-3">
                           <label for="for_register_at">Valor del Examen</label>
-                          <select class="form-control" name="value_test" id="for_value_test" title="Seleccione..." required>
+                          <select class="form-control" name="value_test" id="for_value_test" required>
+                              <option value="">Seleccione</option>
                               <option value="Positive">Positivo</option>
                               <option value="Negative">Negativo</option>
                               <option value="weak">Débil</option>
