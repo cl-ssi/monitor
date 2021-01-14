@@ -171,9 +171,7 @@
                 <a class="link" href="{{ route('patients.edit', $case->patient) }}">
                     {{ $case->patient->fullName }}
                     @if($case->gestation == "1") <img align="center" src="{{ asset('images/pregnant.png') }}" width="24"> @endif
-                    @if($case->close_contact == "1") <img align="center" src="{{ asset('images/contact.png') }}" width="24"> @endif
-                    @if($case->positive_condition == "Excreción Viral Remanente") <img align="center" src="{{ asset('images/head-side-virus-solid.png') }}" width="24"> @endif
-                    @if($case->positive_condition == "Reinfección") <img align="center" src="{{ asset('images/viruses-solid.png') }}" width="24"> @endif
+                    @if($case->close_contact == "1") <img align="center" src="{{ asset('images/contact.png') }}" width="24"> @endif                    
                  </a>
                  @endif
             </td>
@@ -196,6 +194,9 @@
                     target="_blank"><i class="fas fa-paperclip"></i>&nbsp
                 </a>
                 @endif
+                @if($case->positive_condition == "Excreción Viral Remanente") <img align="center" src="{{ asset('images/head-side-virus-solid.png') }}" width="24"> @endif
+                @if($case->positive_condition == "Reinfección") <img align="center" src="{{ asset('images/viruses-solid.png') }}" width="24"> @endif
+
             </td>
             <td class="{{ ($case->result_ifd <> 'Negativo' AND $case->result_ifd <> 'No solicitado')?'text-danger':''}}">{{ $case->result_ifd }} {{ $case->subtype }}</td>
             <td>{{ $case->external_laboratory }}</td>
