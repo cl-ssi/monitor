@@ -66,7 +66,7 @@
                               <option value="">Seleccione</option>
                               <option value="Positive">Positivo</option>
                               <option value="Negative">Negativo</option>
-                              <option value="weak">Débil</option>
+                              <option value="Weak Positive">Positivo Débil</option>
                           </select>
                       </fieldset>                      
 
