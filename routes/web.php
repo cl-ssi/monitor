@@ -295,6 +295,14 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::put('/update/{inmunoTest}', 'InmunoTestController@update')->name('update')->middleware('auth');
     });
 
+    Route::prefix('rapid_tests')->name('rapid_tests.')->group(function () {
+        //Route::get('/', 'InmunoTestController@index')->name('index')->middleware('auth');
+        //Route::get('/create/{search}', 'InmunoTestController@create')->name('create')->middleware('auth');
+        Route::get('/{inmunoTest}/edit', 'InmunoTestController@edit')->name('edit')->middleware('auth');
+        Route::post('/{store}', 'RapidTestController@store')->name('store')->middleware('auth');
+        //Route::put('/update/{inmunoTest}', 'InmunoTestController@update')->name('update')->middleware('auth');
+    });
+
     Route::prefix('bulk_load')->name('bulk_load.')->group(function () {
         Route::get('/','SuspectCaseController@index_bulk_load')->name('index')->middleware('auth');
         Route::post('/import', 'SuspectCaseController@bulk_load_import')->name('import.excel');

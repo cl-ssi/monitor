@@ -339,7 +339,7 @@
 
         <div class="card">
             <div class="card-body">
-                <h4 class="mt-4">Examenes Inmunoglobulinas</h4>
+                <h4 class="mt-4">Test Rápido</h4>
 
             @can('Inmuno Test: create')
                 <!-- <a class="btn btn-primary btn-sm" href="{{ route('lab.inmuno_tests.create', 'search_false') }}">
@@ -350,7 +350,7 @@
                         <i class="fas fa-plus"></i> Agregar Test
                     </a>
 
-                    @include('patients.modals.create_inmuno')
+                    @include('patients.modals.create_rapidtest')
 
                 @endcan
               <div class="table-responsive-sm">
@@ -358,26 +358,24 @@
                     <thead>
                     <tr>
                         <th>Id</th>
-                        <th>Fecha Examen</th>
-                        <th>IgG</th>
-                        <th>IgM</th>
-                        <th>Control</th>
-                        <th>Fecha de Carga</th>
+                        <th>Tipo de Examen</th>
+                        <th>Fecha Examen</th>                        
+                        <th>Valor</th>                        
+                        <th>Fecha de Digitación en Sistema</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($patient->inmunoTests as $inmunoTest)
+                    @foreach($patient->rapidTests as $rapidTest)
                         <tr>
                             <td>
-                                <a href="{{ route('lab.inmuno_tests.edit', $inmunoTest )}}">
-                                    {{ $inmunoTest->id }}
+                                <a href="#">
+                                    {{ $rapidTest->id }}
                                 </a>
                             </td>
-                            <td class="text-right">{{ $inmunoTest->register_at->format('d-m-Y H:i:s') }}</td>
-                            <td class="text-right">{{ strtoupper($inmunoTest->IgValue) }}</td>
-                            <td class="text-right">{{ strtoupper($inmunoTest->ImValue) }}</td>
-                            <td class="text-right">{{ strtoupper($inmunoTest->ControlValue) }}</td>
-                            <td class="text-right">{{ $inmunoTest->created_at->format('d-m-Y H:i:s') }}</td>
+                            <td>{{ ($rapidTest->type) }}</td>
+                            <td>{{ $rapidTest->register_at }}</td>
+                            <td>{{ ($rapidTest->value_test) }}</td>
+                            <td>{{ $rapidTest->created_at }}</td>
                         </tr>
                     @endforeach
                     </tbody>

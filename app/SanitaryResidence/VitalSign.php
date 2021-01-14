@@ -3,14 +3,16 @@
 namespace App\SanitaryResidence;
 
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class VitalSign extends Model
+class VitalSign extends Model implements Auditable //Authenticatable
 {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
+    use \OwenIt\Auditing\Auditable;
     protected $fillable = [
         'id', 'temperature','heart_rate','blood_pressure','respiratory_rate',
         'oxygen_saturation','hgt','pain_scale',

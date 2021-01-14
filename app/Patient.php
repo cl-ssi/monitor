@@ -66,6 +66,10 @@ class Patient extends Model implements Auditable //Authenticatable
         return $this->hasMany('App\InmunoTest');
     }
 
+    public function rapidTests() {
+        return $this->hasMany('App\RapidTest');
+    }
+
     public function contactPatient() {
         return $this->hasMany('App\ContactPatient');
     }
