@@ -15,35 +15,13 @@
                     <div class="alert alert-success" role="alert">
                         {{ session('status') }}
                     </div>
-                    @endif                    
-                    <div class="row">
-                        <div class="col-md-6 col-12">
-                            <img src="{{ asset('images\new_year.jpg') }}" alt="Árbol de Navidad" width="400" class="img-thumbnail">
-                        </div>
-                        <div class="col-md-6 col-12">
-                            <p class="h4 text-justify" style="color:#165290">
-                                Feliz año nuevo {{ strtok(auth()->user()->name, " ") }}.<br><br>
-                                Que este año 2021 venga lleno de alegría, amor y salud para tí y todos quienes te rodean.
-                                <br><br>
-                                ¡Que se cumplan todos tus sueños! Son los sinceros deseos del glorioso equipo TIC del Servicio de Salud.
-                            </p>
-                        </div>                        
-                    </div>
-                    <br>
+                    @endif
                     <img src="{{ asset('images/esmeralda.png') }}" width="300" alt="Foto de la esmeralda">
                     <br>
                     Usted tiene acceso a los siguientes establecimientos:
                     @foreach($establishmentsusers as $establishmentsusers)
                     <br>{{ $establishmentsusers->establishment->alias }}
                     @endforeach
-
-
-
-
-
-
-
-
 
                 </div>
 
