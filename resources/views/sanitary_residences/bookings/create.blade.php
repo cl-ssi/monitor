@@ -52,7 +52,7 @@
 
         <fieldset class="form-group col-12 col-md-3">
             <label for="for_from">Desde*</label>
-            <input type="datetime-local" class="form-control date" name="from" id="for_from" required>
+            <input type="datetime-local" class="form-control date" name="from" id="for_from" max="{{ date('Y-m-d\TH:i:s') }}" required>
         </fieldset>
 
         <fieldset class="form-group col-12 col-md-3">
