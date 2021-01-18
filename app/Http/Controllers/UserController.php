@@ -82,7 +82,17 @@ class UserController extends Controller
         $user->function = $request->input('function');
         $user->laboratory_id = $request->input('laboratory_id');
         //$user->dialysis_center_id = $request->input('dialysis_center_id');
-        $user->password = bcrypt($request->input('password'));
+        //$user->password = bcrypt($request->input('password'));
+        if($request->input('password')) {
+            $password = $request->input('password');
+            $user->password = bcrypt($request->input('password'));
+        }
+        else {
+            $password = substr(str_shuffle(MD5(microtime())), 0, 6);
+            $user->password = bcrypt($password);
+        }
+        // $password = substr(str_shuffle(MD5(microtime())), 0, 6);
+        // $user->password = bcrypt($password);
 
         $user->save();
 
@@ -101,7 +111,37 @@ class UserController extends Controller
         );
 
 
-        session()->flash('success', 'Usuario Creado Exitosamente');
+        session()->flash('success', 'Estimado Usuari@
+
+ 
+
+        Mediante el presente correo se hace entrega de su clave para el monitor Esmeralda. El link para ingresar es el siguiente
+        
+         
+        
+        https://i.saludiquique.cl/monitor/
+        
+         
+        
+        en correo deberá digitar al correo que le está llegando este mail y su  contraseña temporal será
+        
+         
+        
+        '.$password.'
+        
+         
+        
+        Se recomienda cambiar la contraseña a una que sea más fácil de recordar, para eso podrá apretar en la esquina superior derecha en el sistema en la opción" cambiar clave. Y seguir los pasos correspondientes
+        
+         
+        
+         
+        
+        Se despide atentamente
+        
+         
+        
+        Atte.');
 
         return redirect()->route('users.index');
     }
