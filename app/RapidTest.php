@@ -24,11 +24,11 @@ class RapidTest extends Model implements Auditable //Authenticatable
         switch($this->value_test) {
             case 'Positive': return 'Positivo'; break;
             case 'Negative': return 'Negativo'; break;
-            case 'Weak Positive': return 'Positivo Débil'; break;            
+            case 'Weak Positive': return 'Positivo Débil'; break;
         }
     }
 
-
+    protected $dates = ['register_at'];
 
 
 }
