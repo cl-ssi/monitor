@@ -213,12 +213,12 @@ class PermissionSeeder extends Seeder
 
         $permission = Permission::create([
             'name' => 'Rapid Test: list',
-            'description' => 'Permite listar Test Rapido '
+            'description' => 'Permite listar Test Rápido'
         ]);
 
         $permission = Permission::create([
             'name' => 'Rapid Test: create',
-            'description' => 'Permite crear Test Rapido '
+            'description' => 'Permite crear Test Rápido '
         ]);
 
         $permission = Permission::create([

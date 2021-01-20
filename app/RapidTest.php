@@ -19,4 +19,16 @@ class RapidTest extends Model implements Auditable //Authenticatable
     public function patient() {
         return $this->belongsTo('App\Patient');
     }
+
+    function getValueEspAttribute(){
+        switch($this->value_test) {
+            case 'Positive': return 'Positivo'; break;
+            case 'Negative': return 'Negativo'; break;
+            case 'Weak Positive': return 'Positivo Débil'; break;            
+        }
+    }
+
+
+
+
 }

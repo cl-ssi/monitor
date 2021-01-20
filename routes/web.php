@@ -254,6 +254,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::get('/cases_with_barcodes','SuspectCaseReportController@casesWithBarcodes')->name('cases_with_barcodes')->middleware('auth');
             Route::get('/cases_by_ids_index','SuspectCaseReportController@casesByIdsIndex')->name('cases_by_ids_index')->middleware('auth');
             Route::post('/export_excel_by_cases_ids','SuspectCaseReportController@exportExcelByCasesIds')->name('export_excel_by_cases_ids')->middleware('auth');
+            Route::get('/allrapidtests','SuspectCaseReportController@allRapidTests')->name('all_rapid_tests')->middleware('auth');
 
         });
         Route::prefix('report')->name('report.')->group(function () {

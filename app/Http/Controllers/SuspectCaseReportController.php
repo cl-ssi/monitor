@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\RapidTest;
 use App\Establishment;
 use http\Message;
 use Illuminate\Contracts\Foundation\Application;
@@ -1650,6 +1651,15 @@ class SuspectCaseReportController extends Controller
             fclose($file);
         };
         return response()->stream($callback, 200, $headers);
+    }
+
+
+    public function allRapidTests()
+    {
+
+
+        $rapidtests = RapidTest::all();
+        return view('lab.suspect_cases.reports.all_rapid_tests', compact('rapidtests'));
     }
 
 
