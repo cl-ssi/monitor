@@ -35,6 +35,7 @@
             <th>Tipo de Examen Rápido</th>
             <th>Fecha examen</th>
             <th>Resultado Test Rápido</th>
+
         </tr>
     </thead>
     <tbody>
@@ -47,7 +48,7 @@
             <td nowrap>{{ $rapidtest->type }}</td>
             <td nowrap>{{ $rapidtest->register_at }}</td>
             <td>{{ $rapidtest->valueEsp }}</td>
-        </tr>
+
         @endforeach
     </tbody>
 </table>
