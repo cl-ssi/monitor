@@ -257,9 +257,9 @@ class SuspectCaseController extends Controller
         $reception_id_old = $suspectCase->reception_id;
 
         /* Recepciona en sistema */
-        $suspectCase->receptor_id   = Auth::id();
-        $suspectCase->reception_at  = date('Y-m-d H:i:s');
-        if(!$suspectCase->minsal_ws_id) $suspectCase->laboratory_id = Auth::user()->laboratory->id;
+        $suspectCase->receptor_id = Auth::id();
+        $suspectCase->reception_at = date('Y-m-d H:i:s');
+        if (!$suspectCase->minsal_ws_id) $suspectCase->laboratory_id = Auth::user()->laboratory->id;
         $suspectCase->save();
 
         /* Webservice minsal */
@@ -271,12 +271,23 @@ class SuspectCaseController extends Controller
                         // recepciona en minsal
                         $response = WSMinsal::recepciona_muestra($suspectCase);
                         if ($response['status'] == 0) {
-                            session()->flash('warning', 'Error al recepcionar muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'] . ".");
-                            $suspectCase->receptor_id = $receptor_id_old;
-                            $suspectCase->reception_at = $reception_id_old;
-                            $suspectCase->save();
-                            if($barcodeReception) return false;
-                            return redirect()->back()->withInput();
+                            // Si en pntm esta recepcionado y en monitor no
+                            $responseSampleStatus = WSMinsal::obtiene_estado_muestra($suspectCase);
+                            if ($responseSampleStatus['status'] == 1 && $responseSampleStatus['sample_status'] == 3 && $suspectCase->reception_at != NULL) {
+                                session()->flash('success', 'Se ha recepcionada la muestra: '
+                                    . $suspectCase->id . ' en laboratorio: '
+                                    . Auth::user()->laboratory->name);
+
+                                if ($barcodeReception) return true;
+                                return redirect()->back();
+                            }else{
+                                session()->flash('warning', 'Error al recepcionar muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'] . ".");
+                                $suspectCase->receptor_id = $receptor_id_old;
+                                $suspectCase->reception_at = $reception_id_old;
+                                $suspectCase->save();
+                                if ($barcodeReception) return false;
+                                return redirect()->back()->withInput();
+                            }
                         }
                     }
                 }
@@ -287,7 +298,7 @@ class SuspectCaseController extends Controller
             . $suspectCase->id . ' en laboratorio: '
             . Auth::user()->laboratory->name);
 
-        if($barcodeReception) return true;
+        if ($barcodeReception) return true;
         return redirect()->back();
     }
 
@@ -662,7 +673,7 @@ class SuspectCaseController extends Controller
             $rapidtest = new RapidTest($request->All());
             $rapidtest->patient_id = $patient->id;
             $rapidtest->type = "Antígeno";
-            $rapidtest->save();            
+            $rapidtest->save();
         }
 
 
@@ -836,8 +847,8 @@ class SuspectCaseController extends Controller
                             //envío información minsal
                             $response = WSMinsal::resultado_muestra($suspectCase);
                             if ($response['status'] == 0) {
+                                //Verificar si en pntm esta en estado 2 (no recepcionado) se recepciona.
                                 $responseSampleStatus = WSMinsal::obtiene_estado_muestra($suspectCase);
-                                //Si en pntm esta en estado 2 (no recepcionado)
                                 if($responseSampleStatus['status'] == 1 && $responseSampleStatus['sample_status'] == 2 && $suspectCase->reception_at != NULL){
                                         $responseReception = WSMinsal::recepciona_muestra($suspectCase);
                                         if($responseReception['status'] == 1){
@@ -1540,7 +1551,7 @@ class SuspectCaseController extends Controller
             'fecha de nacimiento',
             'edad',
             'sexo',
-            'Laboratorio',   
+            'Laboratorio',
             'resultado_ifd',
             'pcr_sars_cov2',
             'Casos Recuperados (Nueva Muestra)' ,
@@ -1556,7 +1567,7 @@ class SuspectCaseController extends Controller
             'país',
             'email',
             'lugar de trabajo',
-            'fecha envío lab. externo'            
+            'fecha envío lab. externo'
         );
 
         $callback = function() use ($filas, $columnas)
@@ -1975,12 +1986,12 @@ class SuspectCaseController extends Controller
 
 
     public function positiveCondition(Request $request, SuspectCase $suspectCase){
-        
+
         $suspectCase->positive_condition = $request->positive_condition;
         $suspectCase->save();
         session()->flash('success', 'Se añadio el tipo de infección correctamente');
         return redirect()->back();
-        
+
     }
 
 
