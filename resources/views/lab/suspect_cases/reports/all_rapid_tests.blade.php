@@ -35,6 +35,7 @@
             <th>Tipo de Examen Rápido</th>
             <th>Fecha examen</th>
             <th>Resultado Test Rápido</th>
+            <th>PCR</th>
         </tr>
     </thead>
     <tbody>
@@ -47,6 +48,7 @@
             <td nowrap>{{ $rapidtest->type }}</td>
             <td nowrap>{{ $rapidtest->register_at }}</td>
             <td>{{ $rapidtest->valueEsp }}</td>
+            <td>{{ $rapidtest->patient->suspectCases->where('sample_at',$x->register_at)->first()->pcr_sars_cov_2 }}</td>
         </tr>
         @endforeach
     </tbody>
