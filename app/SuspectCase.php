@@ -51,7 +51,7 @@ class SuspectCase extends Model implements Auditable
     }
 
     public function laboratory() {
-        return $this->belongsTo('App\Laboratory');
+        return $this->belongsTo('App\Laboratory')->withTrashed();
     }
 
     public function logs() {
