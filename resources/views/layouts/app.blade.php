@@ -389,7 +389,9 @@
                                 @can('Report: cases with barcodes')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.cases_with_barcodes') }}">Casos códigos de barra</a>
                                 @endcan
+                                @can('Report: rapid test')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.all_rapid_tests') }}">Test Rápido</a>
+                                @endcan
 
                             </div>
                         </li>

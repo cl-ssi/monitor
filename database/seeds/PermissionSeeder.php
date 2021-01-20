@@ -271,6 +271,11 @@ class PermissionSeeder extends Seeder
         ]);
 
         $permission = Permission::create([
+            'name' => 'Report: rapid test',
+            'description' => 'Listado de Pacientes con Test Rápido'
+        ]);
+
+        $permission = Permission::create([
             'name' => 'NotContacted: create',
             'description' => 'Crear nuevo paciente no contactado'
         ]);
