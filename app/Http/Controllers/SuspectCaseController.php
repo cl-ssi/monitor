@@ -381,7 +381,14 @@ class SuspectCaseController extends Controller
                                 $case->reception_at = date('Y-m-d H:i:s');
                                 $case->save();
                             } else {
-                                $errorMsg = $errorMsg . 'Error al recepcionar muestra ' . $case->id . ' en MINSAL. ' . $response['msg'] . "<br>";
+                                $responseSampleStatus = WSMinsal::obtiene_estado_muestra($case);
+                                if ($responseSampleStatus['status'] == 1 && $responseSampleStatus['sample_status'] == 3) {
+                                    $case->receptor_id = Auth::id();
+                                    $case->reception_at = date('Y-m-d H:i:s');
+                                    $case->save();
+                                }else{
+                                    $errorMsg = $errorMsg . 'Error al recepcionar muestra ' . $case->id . ' en MINSAL. ' . $response['msg'] . "<br>";
+                                }
                             }
                         }else{
                             $case->receptor_id = Auth::id();
