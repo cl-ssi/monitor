@@ -5,56 +5,49 @@ namespace App;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Auth;
 
-use App\Laboratory;
-use App\SuspectCase;
-use App\Commune;
-use App\Country;
-use App\File;
-
-
 class WSMinsal extends Model
 {
 
     public static function valida_crea_muestra($request)
     {
-//        dd($request);
-
         $response = [];
         $client = new Client();
 
-        // $genero = strtoupper($suspectCase->gender[0]);
-        if($request->gender == "female"){$genero = "F";}
-        elseif($request->gender == "male"){$genero = "M";}
-        elseif($request->gender == "other"){$genero = "Intersex";} //intersex
-        else{$request = "Desconocido";} //desconocido
+        if ($request->gender == "female") {
+            $genero = "F";
+        } elseif ($request->gender == "male") {
+            $genero = "M";
+        } elseif ($request->gender == "other") {
+            $genero = "Intersex";
+        } //intersex
+        else {
+            $request = "Desconocido";
+        } //desconocido
 
         $commune_code_deis = Commune::find($request->commune_id)->code_deis;
 
         $paciente_ext_paisorigen = '';
 
-        if($request->run == "") {
+        if ($request->run == "") {
             $paciente_tipodoc = "PASAPORTE";
-            $country = Country::where('name',$request->nationality)->get();
-            // dd($country);e
+            $country = Country::where('name', $request->nationality)->get();
             $paciente_ext_paisorigen = $country->first()->id_minsal;
-        }
-        else {
+        } else {
             $paciente_tipodoc = "RUN";
         }
 
         $codigo_muestra_cliente = SuspectCase::max('id');
 
-        if(trim($request->run_medic_s_dv) == ''){
-           $run_medic = '';
-        }else{
-           $run_medic = $request->run_medic_s_dv . "-" . $request->run_medic_dv;
+        if (trim($request->run_medic_s_dv) == '') {
+            $run_medic = '';
+        } else {
+            $run_medic = $request->run_medic_s_dv . "-" . $request->run_medic_dv;
         }
 
         $array = array(
@@ -64,7 +57,7 @@ class WSMinsal extends Model
                 'cod_deis' => Establishment::find($request->establishment_id)->new_code_deis,
                 'rut_medico' => $run_medic, //'16350555-K', //Pedro Valjalo
                 'paciente_run' => $request->run,
-                'paciente_dv' =>  $request->dv,
+                'paciente_dv' => $request->dv,
                 'paciente_nombres' => $request->name,
                 'paciente_ap_pat' => $request->fathers_family,
                 'paciente_ap_mat' => $request->mothers_family,
@@ -81,36 +74,23 @@ class WSMinsal extends Model
                 'tecnica_muestra' => 'RT-PCR', //fijo
                 'tipo_muestra' => $request->sample_type,
                 'busqueda_activa' => ($request->case_type == 'Busqueda activa') ? 'true' : 'false'
-
             )
         );
 
-        // dd(env('WS_VALIDA_CREAR_MUESTRA'), Laboratory::find(Auth::user()->laboratory_id)->token_ws);
+//        dd(json_encode($array, JSON_PRETTY_PRINT) );
+
         try {
             $response = $client->request('POST', env('WS_VALIDA_CREAR_MUESTRA'), [
                 'json' => $array,
-                'headers'  => [ 'ACCESSKEY' => Laboratory::whereNotNull('token_ws')->get()->first()->token_ws] //se permite el uso de cualuier access key
+                'headers' => ['ACCESSKEY' => Laboratory::whereNotNull('token_ws')->get()->first()->token_ws] //se permite el uso de cualuier access key
             ]);
 
             $array = json_decode($response->getBody()->getContents(), true);
-            // $suspectCase->minsal_ws_id = $array[0]['id_muestra'];
-            // $suspectCase->save();
             $response = ['status' => 1, 'msg' => $array[0]['id_muestra']];
 
         } catch (RequestException $e) {
-//            $response = $e->getResponse();
-//            if($response){
-////                dd($response);
-//
-//                $responseBodyAsString = $response->getBody()->getContents();
-//                $decode = json_decode($responseBodyAsString);
-////                dd($decode);
-//                $response = ['status' => 0, 'msg' => $decode->error];
-//            }
-//            else{
-                $response = ['status' => 0, 'msg' => $e->getMessage()];
-//            }
-        }catch (Exception $e){
+            $response = ['status' => 0, 'msg' => $e->getMessage()];
+        } catch (Exception $e) {
             $response = ['status' => 0, 'msg' => "Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento. {$e->getMessage()}"];
         } catch (GuzzleException $e) {
             $response = ['status' => 0, 'msg' => "Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento. {$e->getMessage()}"];
@@ -125,7 +105,6 @@ class WSMinsal extends Model
         $response = [];
         $client = new Client();
 
-        // $genero = strtoupper($suspectCase->gender[0]);
         if($suspectCase->gender == "female"){$genero = "F";}
         elseif($suspectCase->gender == "male"){$genero = "M";}
         elseif($suspectCase->gender == "other"){$genero = "Intersex";} //intersex
@@ -160,8 +139,6 @@ class WSMinsal extends Model
         else{
             $run_medic = $suspectCase->run_medic;
         }
-
-
 
         $array = array(
             'raw' => array(
@@ -206,18 +183,7 @@ class WSMinsal extends Model
             $response = ['status' => 1, 'msg' => $array[0]['id_muestra']];
 
         } catch (RequestException $e) {
-//            $response = $e->getResponse();
-//            if($response){
-//                $responseBodyAsString = $response->getBody()->getContents();
-//                $decode = json_decode($responseBodyAsString);
-//                $response = ['status' => 0, 'msg' => $decode->error];
-//            }
-//            else{
-//                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un momento.'];
-//            }
-
             $response = ['status' => 0, 'msg' => $e->getMessage()];
-
         }catch (Exception $e){
             $response = ['status' => 0, 'msg' => "Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento. {$e->getMessage()}"];
         }
@@ -243,17 +209,7 @@ class WSMinsal extends Model
             $response = ['status' => 1, 'msg' => 'OK'];
 
         } catch (RequestException $e) {
-//            $response = $e->getResponse();
-//            if($response){
-//                $responseBodyAsString = $response->getBody()->getContents();
-//                $decode = json_decode($responseBodyAsString);
-//                $response = ['status' => 0, 'msg' => $decode->error];
-//            }
-//            else{
-//                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un momento.'];
-//            }
             $response = ['status' => 0, 'msg' => $e->getMessage()];
-
         }catch (Exception $e){
             $response = ['status' => 0, 'msg' => "Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento. {$e->getMessage()}"];
         }
@@ -269,7 +225,6 @@ class WSMinsal extends Model
             if ($suspectCase->laboratory->pdf_generate) {
                 $case = $suspectCase;
                 $pdf = \PDF::loadView('lab.results.result', compact('case'));
-//                dd($pdf);
             }
         }
 
@@ -295,8 +250,6 @@ class WSMinsal extends Model
                         'multipart' => [
                             [
                                 'name'     => 'upfile',
-                                // 'contents' => Storage::get($suspectCase->files->first()->file),
-                                // 'filename' => $suspectCase->files->first()->name
                                 'contents' => Storage::get('suspect_cases/' . $suspectCase->id . '.pdf'),
                                 'filename' => $suspectCase->id . '.pdf'
                             ],
@@ -328,18 +281,7 @@ class WSMinsal extends Model
             $response = ['status' => 1, 'msg' => 'OK'];
 
         } catch (RequestException $e) {
-//            $response = $e->getResponse();
-//            if($response){
-//                $responseBodyAsString = $response->getBody()->getContents();
-//                $decode = json_decode($responseBodyAsString);
-//                $response = ['status' => 0, 'msg' => $decode->error];
-//            }
-//            else{
-//                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un momento.'];
-//            }
-
             $response = ['status' => 0, 'msg' => $e->getMessage()];
-
         }catch (Exception $e){
             $response = ['status' => 0, 'msg' => "Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento. {$e->getMessage()}"];
         }
@@ -364,17 +306,7 @@ class WSMinsal extends Model
             $response = ['status' => 1, 'msg' => 'OK'];
 
         } catch (RequestException $e) {
-//            $response = $e->getResponse();
-//            if($response){
-//                $responseBodyAsString = $response->getBody()->getContents();
-//                $decode = json_decode($responseBodyAsString);
-//                $response = ['status' => 0, 'msg' => $decode->error];
-//            }
-//            else{
-//                $response = ['status' => 0, 'msg' => 'No se pudo conectar a plataforma de toma de muestras. Por favor intente nuevamente en un momento.'];
-//            }
             $response = ['status' => 0, 'msg' => $e->getMessage()];
-
         }catch (Exception $e){
             $response = ['status' => 0, 'msg' => "Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento. {$e->getMessage()}"];
         }
