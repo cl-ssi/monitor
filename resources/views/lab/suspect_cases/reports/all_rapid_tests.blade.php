@@ -33,6 +33,7 @@
             <th>Run o (ID)</th>
             <th>Nombre</th>
             <th>Tipo de Examen Rápido</th>
+            <th>Fecha examen</th>
             <th>Resultado Test Rápido</th>
         </tr>
     </thead>
@@ -40,10 +41,11 @@
         @foreach($rapidtests->reverse() as $rapidtest)
         <tr>
             <td nowrap>{{ $rapidtest->patient->identifier }}</td>
-            <td nowrap>                
+            <td nowrap>
                 {{ $rapidtest->patient->fullName }}
-            </td>            
+            </td>
             <td nowrap>{{ $rapidtest->type }}</td>
+            <td nowrap>{{ $rapidtest->register_at }}</td>
             <td>{{ $rapidtest->valueEsp }}</td>
         </tr>
         @endforeach
