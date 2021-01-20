@@ -254,7 +254,7 @@ class SuspectCaseController extends Controller
     {
         //Obtiene datos de recepcion actuales
         $receptor_id_old = $suspectCase->receptor_id;
-        $reception_id_old = $suspectCase->reception_id;
+        $reception_at_old = $suspectCase->reception_at;
 
         /* Recepciona en sistema */
         $suspectCase->receptor_id = Auth::id();
@@ -283,7 +283,7 @@ class SuspectCaseController extends Controller
                             }else{
                                 session()->flash('warning', 'Error al recepcionar muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'] . ".");
                                 $suspectCase->receptor_id = $receptor_id_old;
-                                $suspectCase->reception_at = $reception_id_old;
+                                $suspectCase->reception_at = $reception_at_old;
                                 $suspectCase->save();
                                 if ($barcodeReception) return false;
                                 return redirect()->back()->withInput();
