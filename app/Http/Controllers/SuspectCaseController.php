@@ -741,7 +741,7 @@ class SuspectCaseController extends Controller
         //dd(request()::route()->getName());
 //        $external_labs = Laboratory::where('external',1)->orderBy('name')->get();
 //        $local_labs = Laboratory::where('external',0)->orderBy('name')->get();
-        $laboratories = Laboratory::all();
+        $laboratories = Laboratory::withTrashed()->get();
 
         $establishments = Establishment::whereIn('commune_id',explode(',',env('COMUNAS')))
                                         ->orderBy('name','ASC')->get();
