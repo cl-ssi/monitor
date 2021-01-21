@@ -1107,7 +1107,7 @@ class SuspectCaseController extends Controller
 
         //FIRST CASE
         $beginExamDate = SuspectCase::orderBy('sample_at')->first()->sample_at;
-        $laboratories = Laboratory::all();
+        $laboratories = Laboratory::withTrashed()->get();
 
         $periods = CarbonPeriod::create($beginExamDate, now()->addDay());
         $periods_count = $periods->count();
