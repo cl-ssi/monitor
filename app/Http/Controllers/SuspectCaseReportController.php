@@ -1506,7 +1506,6 @@ class SuspectCaseReportController extends Controller
      * @return Application|Factory|View
      */
     public function casesWithBarcodes(Request $request){
-//        dd($request);
         $selectedEstablishment = $request->input('establishment_id');
         $selectedSampleAt = $request->input('sample_at');
         $selectedCaseType = $request->input('case_type');
@@ -1535,9 +1534,6 @@ class SuspectCaseReportController extends Controller
                 ->latest()
                 ->get();
         }
-
-
-
 
         $env_communes = array_map('trim',explode(",",env('COMUNAS')));
         $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();

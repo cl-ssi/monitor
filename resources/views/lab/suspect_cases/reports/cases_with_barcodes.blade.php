@@ -28,7 +28,7 @@
 
     <form method="GET" action="{{ route('lab.suspect_cases.reports.cases_with_barcodes') }}">
         <!-------------------------->
-        <div class="row align-items-end mb-3">
+        <div class="row align-items-end mb-3 d-print-none">
             <div class="col-12 col-md-4 col-lg-4">
                 <label for="for_establishment_id">Establecimiento*</label>
                 <select name="establishment_id" id="for_establishment_id" class="form-control" required>
@@ -65,11 +65,11 @@
             <div class="col-12 col-md-4 col-lg-4"></div>
             <div class="col-12 col-md-4 col-lg-4"></div>
             <div class="col-12 col-md-4 col-lg-4">
-                <button type="submit" class="btn btn-primary float-left d-print-none"><i class="fa fa-search"></i>
-                    Buscar
-                </button>
-                <button type="button" class="btn btn-outline-secondary d-print-none ml-3"
+                <button type="button" class="btn btn-outline-secondary float-right d-print-none ml-3"
                         onclick="javascript:window.print()"><i class="fa fa-print"></i> Imprimir
+                </button>
+                <button type="submit" class="btn btn-primary float-right d-print-none"><i class="fa fa-search"></i>
+                    Buscar
                 </button>
             </div>
 
@@ -79,6 +79,9 @@
             <div class="col-12 col-md-4 col-lg-4">
                 @if(Auth::user()->laboratory)
                     <h3>Laboratorio: {{ Auth::user()->laboratory->alias }}</h3>
+                    <b>Establecimiento:</b> {{ $establishments->find($selectedEstablishment)->alias  }} <br/>
+                    <b>Toma de Muestra:</b> {{ \Carbon\Carbon::parse($selectedSampleAt )->format('d-m-Y') }} <br/>
+                    <b>Tipo Caso:</b> {{  $selectedCaseType }}
                 @else
                     <h3 class="text-danger">Usuario no tiene laboratorio asignado</h3>
                 @endif
