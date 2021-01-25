@@ -79,9 +79,9 @@
             <div class="col-12 col-md-4 col-lg-4">
                 @if(Auth::user()->laboratory)
                     <h3>Laboratorio: {{ Auth::user()->laboratory->alias }}</h3>
-                    <b>Establecimiento:</b> {{ $establishments->find($selectedEstablishment)->alias  }} <br/>
-                    <b>Toma de Muestra:</b> {{ \Carbon\Carbon::parse($selectedSampleAt )->format('d-m-Y') }} <br/>
-                    <b>Tipo Caso:</b> {{  $selectedCaseType }}
+                    <b>Establecimiento:</b> {{ ($selectedEstablishment) ? $establishments->find($selectedEstablishment)->alias : '' }} <br/>
+                    <b>Toma de Muestra:</b> {{  ($selectedSampleAt) ? \Carbon\Carbon::parse($selectedSampleAt )->format('d-m-Y') : '' }} <br/>
+                    <b>Tipo Caso:</b> {{ ($selectedCaseType) ? $selectedCaseType : '' }}
                 @else
                     <h3 class="text-danger">Usuario no tiene laboratorio asignado</h3>
                 @endif
