@@ -738,9 +738,7 @@ class SuspectCaseController extends Controller
      */
     public function edit(SuspectCase $suspectCase)
     {
-        //dd(request()::route()->getName());
-//        $external_labs = Laboratory::where('external',1)->orderBy('name')->get();
-//        $local_labs = Laboratory::where('external',0)->orderBy('name')->get();
+        //TODO solo debe ser withtrashed si ya existe un registro que ya viene con un lab que se haya eliminado, para poder editar
         $laboratories = Laboratory::withTrashed()->get();
 
         $establishments = Establishment::whereIn('commune_id',explode(',',env('COMUNAS')))

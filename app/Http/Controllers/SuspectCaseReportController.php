@@ -1509,17 +1509,24 @@ class SuspectCaseReportController extends Controller
 //        dd($request);
         $selectedEstablishment = $request->input('establishment_id');
         $selectedSampleAt = $request->input('sample_at');
+        $selectedCaseType = $request->input('case_type');
 
         $suspectCases = null;
-        if($selectedEstablishment and $selectedSampleAt){
-            $suspectCases = SuspectCase::where(function ($q) use ($selectedEstablishment) {
-                if ($selectedEstablishment) {
-                    $q->where('establishment_id', $selectedEstablishment);
-                }
-            })
-                ->where(function ($q) use ($selectedSampleAt){
+        if ($selectedEstablishment and $selectedSampleAt) {
+            $suspectCases = SuspectCase::
+                where(function ($q) use ($selectedEstablishment) {
+                    if ($selectedEstablishment) {
+                        $q->where('establishment_id', $selectedEstablishment);
+                    }
+                })
+                ->where(function ($q) use ($selectedSampleAt) {
                     if ($selectedSampleAt) {
                         $q->whereDate('sample_at', $selectedSampleAt);
+                    }
+                })
+                ->where(function($q) use ($selectedCaseType){
+                    if ($selectedCaseType) {
+                        $q->where('case_type', $selectedCaseType);
                     }
                 })
                 ->where('laboratory_id', Auth::user()->laboratory_id)
@@ -1535,7 +1542,7 @@ class SuspectCaseReportController extends Controller
         $env_communes = array_map('trim',explode(",",env('COMUNAS')));
         $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
 
-        return view('lab.suspect_cases.reports.cases_with_barcodes', compact('suspectCases', 'establishments', 'selectedEstablishment', 'selectedSampleAt'));
+        return view('lab.suspect_cases.reports.cases_with_barcodes', compact('suspectCases', 'establishments', 'selectedEstablishment', 'selectedSampleAt', 'selectedCaseType'));
 
     }
 
