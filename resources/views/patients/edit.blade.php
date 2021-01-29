@@ -176,7 +176,7 @@
           </div>
                 @else
                 <div class="col-8 col-sm-9 offset-sm-1 offset-md-3 col-md-7 offset-lg-4 col-lg-6">
-                    <button class="btn btn-outline-danger float-right" disabled>No es posible eliminar, tiene examenes
+                    <button class="btn btn-outline-danger float-right" disabled>No es posible eliminar, tiene exámenes
                         asociados
                     </button>
                 </div>
@@ -277,7 +277,7 @@
 
         <div class="card">
             <div class="card-body">
-                <h4 class="mt-4">Examenes PCR</h4>
+                <h4 class="mt-4">Exámenes PCR</h4>
               <div class="table-responsive-md">
                 <table class="table table-sm table-bordered small mb-4 mt-4">
                     <thead>
@@ -288,7 +288,7 @@
                         <th>Fecha resultado</th>
                         <th>Resultado</th>
                         <th>Epivigila</th>
-                        <th>Observacion</th>
+                        <th>Observación</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -359,8 +359,8 @@
                     <tr>
                         <th>Id</th>
                         <th>Tipo de Examen</th>
-                        <th>Fecha Examen</th>                        
-                        <th>Valor</th>                        
+                        <th>Fecha Examen</th>
+                        <th>Valor</th>
                         <th>Fecha de Digitación en Sistema</th>
                     </tr>
                     </thead>

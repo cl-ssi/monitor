@@ -476,9 +476,9 @@
                 <input type="date" class="form-control" name="discharged_at"
                        id="for_discharged_at"
                        value="{{ ($suspectCase->discharged_at)?$suspectCase->discharged_at->format('Y-m-d'):'' }}">
-            </fieldset>                        
+            </fieldset>
         </div>
-        
+
 
         <input type="hidden" name="referer" value="{{ request()->headers->get('referer') }}">
 
@@ -487,7 +487,7 @@
         <a class="btn btn-outline-secondary" href="{{ route('lab.suspect_cases.index') }}">
             Cancelar
         </a>
-    </form>   
+    </form>
 
     @can('SuspectCase: delete')
         <form method="POST" class="form-horizontal" action="{{ route('lab.suspect_cases.destroy',$suspectCase) }}">
@@ -506,14 +506,14 @@
 
     @if($suspectCase->patient->suspectCases->where('pcr_sars_cov_2','positive')->count() > 1 and $suspectCase->pcr_sars_cov_2 == 'positive')
     <hr>
-    <h4 class="mt-4">Casos Recuperados (Nueva Muestra)</h4>    
+    <h4 class="mt-4">Casos Recuperados (Nueva Muestra)</h4>
     <form method="POST" class="form-horizontal" action="{{ route('lab.suspect_cases.positiveCondition', $suspectCase) }}">
         @csrf
         @method('PATCH')
 
         <input type="hidden" name="referer" value="{{ request()->headers->get('referer') }}">
 
-        <fieldset class="form-group col-6 col-md-3">                
+        <fieldset class="form-group col-6 col-md-3">
                 <select name="positive_condition" id="for_positive_condition" class="form-control" required>
                     <option></option>
                     <option value="Excreción Viral Remanente"
@@ -523,7 +523,7 @@
                     <option value="Reinfección"
                         {{ ($suspectCase->positive_condition == 'Reinfección')?'selected':'' }}>
                         Reinfección
-                    </option>                    
+                    </option>
                 </select>
         </fieldset>
         <button type="submit" class="btn btn-primary">Guardar</button>
@@ -534,7 +534,7 @@
     </form>
     @endif
 
-    <h4 class="mt-4">Otros Examenes realizados</h4>
+    <h4 class="mt-4">Otros Exámenes realizados</h4>
 
     <table class="table table-sm table-bordered small mb-4 mt-4">
         <thead>

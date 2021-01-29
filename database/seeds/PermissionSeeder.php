@@ -134,12 +134,12 @@ class PermissionSeeder extends Seeder
 
         $permission = Permission::create([
             'name' => 'SuspectCase: bulk load',
-            'description' => 'Permite acceso al formulario de carga masiva de pacientes, examenes y resultados'
+            'description' => 'Permite acceso al formulario de carga masiva de pacientes, exámenes y resultados'
         ]);
 
         $permission = Permission::create([
             'name' => 'SuspectCase: import results',
-            'description' => 'Permite acceso al formulario importar resultados de examenes'
+            'description' => 'Permite acceso al formulario importar resultados de exámenes'
         ]);
 
         $permission = Permission::create([

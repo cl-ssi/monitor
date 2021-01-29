@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'Examenes sin Recepción')
+@section('title', 'Exámenes sin Recepción')
 
 @section('content')
-<h3 class="mb-3">Examenes no Recepcionados</h3>
+<h3 class="mb-3">Exámenes no Recepcionados</h3>
 
 <div class="table-responsive">
 <table class="table table-sm table-bordered" id="tabla_casos">

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Demographic;
+use App\Patient;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class WebserviceController extends Controller
 {
@@ -54,7 +57,7 @@ class WebserviceController extends Controller
                     $user['fathers_family'] = $beneficiario->apell1;
                     $user['mothers_family'] = $beneficiario->apell2;
                     $user['birthday']       = $beneficiario->fechaNacimiento;
-                    $user['gender']         = $beneficiario->generoDes;                    
+                    $user['gender']         = $beneficiario->generoDes;
                     $user['desRegion']         = $beneficiario->desRegion;
                     $user['desComuna']         = $beneficiario->desComuna;
                     $user['direccion']      = $beneficiario->direccion;
@@ -81,4 +84,83 @@ class WebserviceController extends Controller
             return isset($user) ? json_encode($user) : json_encode($error);
         }
     }
+
+    public function addCase(Request $request)
+    {
+        $dataArray = json_decode($request->getContent(), true);
+
+        //TODO validar otros campos
+        if (is_numeric($dataArray[0]['run'])) {
+            if (!$dataArray[0]['dv']) {
+                $responseArray = ['error' => 'Debe ingresar un dv válido'];
+                return json_encode($responseArray);
+            }
+        } elseif (!$dataArray[0]['other_identification']) {
+            //TODO string "0" es false
+            $responseArray = ['error' => 'Debe ingresar other_identification o run válido'];
+            return json_encode($responseArray);
+        }
+
+        $patientsDbCount = Patient::query()
+            ->when($dataArray[0]['run'], function ($q) use ($dataArray) {
+                $q->where('run', $dataArray[0]['run']);
+            })
+            ->when($dataArray[0]['other_identification'], function ($q) use ($dataArray) {
+                $q->where('other_identification', $dataArray[0]['other_identification']);
+            })
+            ->count();
+
+        if ($patientsDbCount == 0) {
+            $newPatient = new Patient();
+            $newPatient->run = $dataArray[0]['run'];
+            $newPatient->dv = $dataArray[0]['dv'];
+            $newPatient->other_identification = $dataArray[0]['other_identification'];
+            $newPatient->name = $dataArray[0]['name'];
+            $newPatient->fathers_family = $dataArray[0]['fathers_family'];
+            $newPatient->mothers_family = $dataArray[0]['mothers_family'];
+            $newPatient->gender = $dataArray[0]['gender'];
+            $newPatient->birthday = $dataArray[0]['birthday'];
+            $newPatient->status = $dataArray[0]['status'];
+            $newPatient->save();
+        }
+
+        $patient = Patient::query()
+            ->when($dataArray[0]['run'], function ($q) use ($dataArray) {
+                $q->where('run', $dataArray[0]['run']);
+            })
+            ->when($dataArray[0]['other_identification'], function ($q) use ($dataArray) {
+                $q->where('other_identification', $dataArray[0]['other_identification']);
+            })
+            ->get()
+            ->first();
+
+        if($patient){
+            //todo debería actualizar el demographic?
+            if(!$patient->demographic){
+                $newDemographic = new Demographic();
+                $newDemographic->street_type = $dataArray[1]['street_type'];
+                $newDemographic->address = $dataArray[1]['address'];
+                $newDemographic->number = $dataArray[1]['number'];
+                $newDemographic->department = $dataArray[1]['department'];
+                $newDemographic->city = $dataArray[1]['city'];
+                $newDemographic->suburb = $dataArray[1]['suburb'];
+                $newDemographic->commune_id = $dataArray[1]['commune_id'];
+                $newDemographic->nationality = $dataArray[1]['nationality'];
+                $newDemographic->telephone = $dataArray[1]['telephone'];
+                $newDemographic->email = $dataArray[1]['email'];
+                $newDemographic->save();
+            }
+        }
+
+        //Respuesta
+        $responseArray = ['patient_id' => $patient->id];
+        return json_encode($responseArray);
+
+
+//        error_log('probando');
+//        info('con info');
+//        Log::channel('integracionEpivigila')->debug($array);
+//        Log::info('con loginfo');
+    }
+
 }

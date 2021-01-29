@@ -7,7 +7,7 @@
 <div class="row mb-3">
     <div class="col-8">
         <h3><i class="fas fa-lungs-virus"></i>
-            Examenes por notificar, excluye positivos, indeterminados y pendientes
+            Exámenes por notificar, excluye positivos, indeterminados y pendientes
         </h3>
     </div>
     <div class="col-4">

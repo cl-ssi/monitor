@@ -166,7 +166,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-                                <a class="dropdown-item" href="{{ route('lab.exams.covid19.index') }}">Examenes externos</a>
+                                <a class="dropdown-item" href="{{ route('lab.exams.covid19.index') }}">Exámenes externos</a>
                                 @can('Inmuno Test: list')
                                 <a class="dropdown-item" href="{{ route('lab.inmuno_tests.index') }}">Inmunoglobulinas</a>
                                 @endcan
