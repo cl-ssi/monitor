@@ -251,6 +251,15 @@
                 required placeholder="Ej: 12345678-9">
         </fieldset> --}}
 
+        <fieldset class="form-group col-1 col-md-1">
+            <label for="for_run_medic_s_dv">Orden Méd. </label>
+            <select name="medical_order" id="for_medical_order" class="form-control" required>
+                <option value="1" {{(old('medical_order') == '1') ? 'selected' : '' }}>Sí</option>
+                <option value="0" {{(old('medical_order') == '0') ? 'selected' : '' }}>No</option>
+            </select>
+
+        </fieldset>
+
         <fieldset class="form-group col-8 col-md-2">
             <label for="for_run_medic_s_dv">Run Médico SIN DV </label>
             <input type="number" class="form-control" id="for_run_medic_s_dv" name="run_medic_s_dv" value="{{old('run_medic_s_dv')}}">
@@ -290,7 +299,7 @@
             </select>
     </fieldset>
 
-    
+
 
     </div>
 
