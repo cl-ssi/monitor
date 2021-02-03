@@ -30,4 +30,6 @@ Route::get('reporte_expertos', 'SuspectCaseReportController@reporteExpertos')->m
 //Route::get('hl7_files', 'SuspectCaseReportController@getHl7Files')->middleware('auth.basic');
 
 //API Monitor
-Route::post('add_case', 'WebServiceController@addCase')->middleware('auth.basic');
+Route::post('case_create', 'WebServiceController@caseCreate')->middleware('auth.basic');
+Route::post('case_reception', 'WebServiceController@caseReception')->middleware('auth.basic');
+Route::post('case_result', 'WebServiceController@caseResult')->middleware('auth.basic');

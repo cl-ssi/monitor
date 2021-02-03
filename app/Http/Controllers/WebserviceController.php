@@ -87,7 +87,7 @@ class WebserviceController extends Controller
         }
     }
 
-    public function addCase(Request $request)
+    public function caseCreate(Request $request)
     {
         $dataArray = json_decode($request->getContent(), true);
 
@@ -195,6 +195,37 @@ class WebserviceController extends Controller
 //        info('con info');
 //        Log::channel('integracionEpivigila')->debug($array);
 //        Log::info('con loginfo');
+    }
+
+    public function caseReception(Request $request)
+    {
+        $dataArray = json_decode($request->getContent(), true);
+        $suspectCase = SuspectCase::find($dataArray[0]['case_id'])->first();
+        $suspectCase->reception_at = $dataArray[0]['reception_at'];
+        $suspectCase->receptor_id = Auth::user()->id;
+        $suspectCase->save();
+
+        $responseArray = [];
+        return json_encode($responseArray);
+    }
+
+    public function caseResult(Request $request)
+    {
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $file->storeAs('suspect_cases', $request->case_id . '.pdf');
+        }
+
+
+
+//        Log::channel('integracionEpivigila')->debug('caseresult: ' . $request->getContent());
+//        error_log("hola");
+        $dataArray = json_encode($request->getContent(), JSON_UNESCAPED_SLASHES);
+        $responseArray = ['pcr_sars_cov_2' => $request->get('pcr_sars_cov_2') ];
+        return json_encode($responseArray,JSON_UNESCAPED_SLASHES );
+//        $suspectCase = SuspectCase::find($dataArray[0]['case_id'])->first();
+
     }
 
 }
