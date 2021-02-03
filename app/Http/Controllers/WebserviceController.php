@@ -200,32 +200,45 @@ class WebserviceController extends Controller
     public function caseReception(Request $request)
     {
         $dataArray = json_decode($request->getContent(), true);
-        $suspectCase = SuspectCase::find($dataArray[0]['case_id'])->first();
+        $suspectCase = SuspectCase::find($dataArray[0]['case_id']);
         $suspectCase->reception_at = $dataArray[0]['reception_at'];
         $suspectCase->receptor_id = Auth::user()->id;
         $suspectCase->save();
 
-        $responseArray = [];
+        $responseArray = ['case_id' => $dataArray[0]['case_id']];
         return json_encode($responseArray);
     }
 
     public function caseResult(Request $request)
     {
 
+//        $responseArray = ['has_file' => $request->hasFile('file') ];
+//        return json_encode($responseArray,JSON_UNESCAPED_SLASHES );
+
+        $suspectCase = SuspectCase::find($request->get('case_id'));
+        $suspectCase->pcr_sars_cov_2 = $request->get('pcr_sars_cov_2');
+        $suspectCase->pcr_sars_cov_2_at = $request->get('pcr_sars_cov_2_at');
+        $suspectCase->pcr_result_added_at = Carbon::now();
+        $suspectCase->validator_id = Auth::id();
+        $suspectCase->epidemiological_week = Carbon::createFromDate(
+            $suspectCase->sample_at->format('Y-m-d'))->add(1, 'days')->weekOfYear;
+
         if ($request->hasFile('file')) {
             $file = $request->file('file');
-            $file->storeAs('suspect_cases', $request->case_id . '.pdf');
+            $file->storeAs('suspect_cases', $request->get('case_id') . '.pdf');
+            $suspectCase->file = true;
+        }else{
+            $suspectCase->file = false;
         }
 
+        $suspectCase->save();
 
-
-//        Log::channel('integracionEpivigila')->debug('caseresult: ' . $request->getContent());
-//        error_log("hola");
-        $dataArray = json_encode($request->getContent(), JSON_UNESCAPED_SLASHES);
         $responseArray = ['pcr_sars_cov_2' => $request->get('pcr_sars_cov_2') ];
         return json_encode($responseArray,JSON_UNESCAPED_SLASHES );
 //        $suspectCase = SuspectCase::find($dataArray[0]['case_id'])->first();
 
+//        Log::channel('integracionEpivigila')->debug('caseresult: ' . $request->getContent());
+//        error_log("hola");
     }
 
 }
