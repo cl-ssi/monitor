@@ -691,7 +691,7 @@ class SuspectCaseController extends Controller
             if($suspectCase->laboratory_id != null) {
                 if ($suspectCase->laboratory->minsal_ws == true) {
                     //####### crea muestra en webservice ########
-                    $response = WSMinsal::crea_muestra($suspectCase);
+                    $response = WSMinsal::crea_muestra_v2($suspectCase);
                     $ws_minsal_id = $response['msg'];
                     if ($response['status'] == 0) {
                         session()->flash('warninig', 'Error al subir muestra a MINSAL. ' . $response['msg']);

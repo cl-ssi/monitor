@@ -100,6 +100,12 @@ class WSMinsal extends Model
         return $response;
     }
 
+    /**
+     * Ya no se utiliza
+     * @param SuspectCase $suspectCase
+     * @return array
+     * @throws GuzzleException
+     */
     public static function crea_muestra(SuspectCase $suspectCase) {
 
         $response = [];
