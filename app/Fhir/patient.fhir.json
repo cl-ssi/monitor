@@ -1,0 +1,110 @@
+{
+    "resourceType": "Patient",
+    "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Nombre:</b> Alvaro Raymundo Edgardo Torres Fuchslocher </p><ul><li><b>RUN:</b> 15287582-7 </li></ul> <p><b>Sexo:</b> Masculino </p><p><b>Fecha de nacimiento:</b> 25-02-1982 </p><b>Contacto:</b><ul><li><b>Teléfono móvil:</b> +56982598059</li><li><b>Teléfono trabajo:</b> Minsal: 576969 </li><li><b>Email personal:</b> alvarotorres@gmail.com</li><li><b>Email trabajo:</b> alvaro.torres@redsalud.gob.cl </li></ul><b>Direcciones:</b><ul><li><b>Dirección Personal:</b> Pasaje Ruben Donoso #2942 Depto. 1, Iquique, Tarapacá, Chile</li></ul></div>"
+    },
+    "identifier": [{
+        "use": "official",
+        "type": {
+            "text": "RUN"
+        },
+        "system": "http://www.registrocivil.cl/run",
+        "value": "15287582-7"
+    }],
+    "active": true,
+    "name": [{
+        "use": "official",
+        "text": "Alvaro Raymundo Edgardo Torres Fuchslocher",
+        "family": "Torres Fuchslocher",
+        "_family": {
+            "extension": [{
+                    "url": "http://hl7.org/fhir/StructureDefinition/humanname-fathers-family",
+                    "valueString": "Torres"
+                },
+                {
+                    "url": "http://hl7.org/fhir/StructureDefinition/humanname-mothers-family",
+                    "valueString": "Fuchslocher"
+                }
+            ]
+        },
+        "given": [
+            "Alvaro", "Raymundo", "Edgardo"
+        ]
+    }],
+    "telecom": [{
+            "system": "phone",
+            "value": "+56982598059",
+            "use": "mobile"
+        },
+        {
+            "system": "phone",
+            "value": "Minsal: 576969",
+            "use": "work"
+        },
+        {
+            "system": "email",
+            "value": "alvarotorres@gmail.com",
+            "use": "home"
+        },
+        {
+            "system": "email",
+            "value": "alvaro.torres@redsalud.gob.cl",
+            "use": "work"
+        }
+    ],
+    "gender": "male",
+    "birthDate": "1982-02-25",
+    "deceasedBoolean": false,
+    "address": [{
+        "use": "home",
+        "text": "Pasaje Ruben Donoso #2942 Depto. 1, Iquique, Tarapacá, Chile",
+        "line": [
+            "Pasaje Ruben Donoso #2942 Depto. 1"
+        ],
+        "_line": [{
+            "extension": [{
+                    "url": "http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-streetNameType",
+                    "valueString": "Pasaje"
+                },
+                {
+                    "url": "http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-streetName",
+                    "valueString": "Ruben Donoso"
+                },
+                {
+                    "url": "http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-houseNumber",
+                    "valueString": "2942"
+                },
+                {
+                    "url": "http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-additionalLocator",
+                    "valueString": "1"
+                }
+            ]
+        }],
+
+        "state": "Tarapacá",
+        "district": "Iquique",
+        "city": "Iquique",
+        "country": "Chile",
+        "extension": [{
+            "extension": [{
+                    "url": "latitude",
+                    "valueDecimal": -20.24447000
+                },
+                {
+                    "url": "longitude",
+                    "valueDecimal": -70.13447000
+                }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/geolocation"
+        }]
+    }],
+    "maritalStatus": {
+        "coding": [{
+            "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
+            "code": "S",
+            "display": "Never Married"
+        }],
+        "text": "Soltero/a"
+    }
+}
