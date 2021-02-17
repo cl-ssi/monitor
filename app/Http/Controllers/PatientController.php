@@ -12,6 +12,7 @@ use App\Establishment;
 use App\Tracing\EventType;
 use App\Tracing\RequestType;
 use App\Tracing\Symptom;
+use Illuminate\Support\Facades\File;
 
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -410,6 +411,110 @@ class PatientController extends Controller
 
         $titulo = 'En residencia';
         return view('patients.tracing.index', compact('patients', 'titulo'));
+    }
+
+
+    public function json_to_vars($arr, $d=1, $ka = null){
+        if ($d==1) echo "<pre>";
+        if (is_array($arr)){
+            foreach($arr as $k=>$v){
+                if($d == 1) {
+                    $ka = array($k);
+                }
+                else {
+                    if($d <= count($ka)){
+                        array_pop($ka);
+                    }
+                    $ka[] = $k;
+                }
+                if(is_array($v)) {         
+                    $this->json_to_vars($v, $d+1,$ka);
+                }
+                else {
+                    foreach($ka as $key => $x){
+                        if($key ===0)  echo '$fhir';
+                        if(is_int($x)){
+                            echo "[".$x."]";
+                        }
+                        else {
+                            echo "['".$x."']";
+                        }
+                    }
+                    echo " = '". $v."';\n";
+                }
+            }
+        }
+        if ($d==1) echo "</pre>";
+    }
+
+    public function fhir(Patient $patient){
+        $fhir = json_decode(File::get(base_path().'/app/Fhir/bundle.fhir.json'), true);
+
+        return $this->json_to_vars($fhir);
+        die();
+
+        
+        $fhir['identifier'][0]['value'] = $patient->run.'-'.$patient->dv;
+        $fhir['name'][0]['text'] = $patient->fullName;
+        $fhir['name'][0]['family'] = $patient->fathers_family.' '.$patient->mothers_family;
+        $fhir['name'][0]['_family']['extension'][0]['valueString'] = $patient->fathers_family;
+        $fhir['name'][0]['_family']['extension'][1]['valueString'] = $patient->mothers_family;
+        $fhir['name'][0]['given'] = explode(' ', $patient->name);
+
+        $fhir['telecom'][0]['system'] = 'phone';
+        $fhir['telecom'][0]['value'] = $patient->demographic->telephone;
+        $fhir['telecom'][0]['use'] = 'mobile';
+
+        $fhir['telecom'][1]['system'] = 'email';
+        $fhir['telecom'][1]['value'] = $patient->demographic->email;
+
+        $fhir['gender'] = $patient->gender;
+        $fhir['birthDate'] = $patient->birthday->format('Y-m-d');
+
+        if($patient->deceased_at) {
+            $fhir['deceasedBoolean'] = true;
+        }
+        else {
+            $fhir['deceasedBoolean'] = false;
+        }
+
+        $fhir['address'][0]['use'] = 'home';
+        $fhir['address'][0]['text'] = $patient->demographic->street_type.' '.$patient->demographic->address.' '.$patient->demographic->number.' '.$patient->demographic->department.', '.$patient->demographic->commune->name.', '.$patient->demographic->region->name.', Chile';
+        $fhir['address'][0]['line'][0] = $patient->demographic->street_type.' '.$patient->demographic->address.' '.$patient->demographic->number.' '.$patient->demographic->department;
+        $fhir['address'][0]['_line'][0]['extension'][0]['valueString'] = $patient->demographic->street_type;
+        $fhir['address'][0]['_line'][0]['extension'][1]['valueString'] = $patient->demographic->address;
+        $fhir['address'][0]['_line'][0]['extension'][2]['valueString'] = $patient->demographic->number;
+        $fhir['address'][0]['_line'][0]['extension'][3]['valueString'] = $patient->demographic->department;
+        $fhir['address'][0]['state'] = $patient->demographic->region->name;
+        $fhir['address'][0]['district'] = $patient->demographic->commune->name;
+        $fhir['address'][0]['city'] = $patient->demographic->city;
+        $fhir['address'][0]['country'] = 'Chile';
+        $fhir['address'][0]['extension'][0]['extension'][0]['valueDecimal'] = $patient->demographic->latitude;
+        $fhir['address'][0]['extension'][0]['extension'][1]['valueDecimal'] = $patient->demographic->longitude;
+
+
+
+        /*
+
+            [nationality] => Chile
+            [region_id] => 1
+            [commune_id] => 5
+            [city] => 
+            [suburb] => 
+            [latitude] => -20.21422510
+            [longitude] => -70.13451010
+            [telephone] => 932509396
+            [telephone2] => 
+            [email] => 
+            [workplace] => 
+            [patient_id] => 65
+            [created_at] => 2020-03-25 04:41:56
+            [updated_at] => 2020-08-21 19:34:53
+            [deleted_at] =>  */
+
+        //echo '<pre>';
+        //print_r(json_encode($fhir));
+        return response()->json($fhir);
     }
 
 }
