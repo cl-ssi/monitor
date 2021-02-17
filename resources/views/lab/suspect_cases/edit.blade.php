@@ -419,9 +419,9 @@
             </fieldset>
 
             <fieldset class="form-group col-6 col-md-2">
-                <label for="for_epivigila">Epivigila *</label>
-                <input type="number" class="form-control" id="for_epivigila"
-                       name="epivigila" min="0" value="{{ $suspectCase->epivigila }}">
+                <label for="for_epivigila" title="Si es BAC: rutUsuario-folioBAC, &#013;si no, solo nro. epivigila">Epivigila *</label>
+                <input type="text" class="form-control" id="for_epivigila"
+                       name="epivigila" maxlength="255" value="{{ $suspectCase->epivigila }}" title="Si es BAC: rutUsuario-folioBAC, &#013;si no, solo nro. epivigila">
             </fieldset>
 
         </div>
