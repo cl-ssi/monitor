@@ -1949,6 +1949,7 @@ class SuspectCaseController extends Controller
     }
 
     public function bulk_load_import_from_pntm(Request $request){
+        set_time_limit(0);
         $file = $request->file('file');
 
         $patientsCollection = Excel::toCollection(new PatientImport, $file);
@@ -1957,6 +1958,8 @@ class SuspectCaseController extends Controller
 //            dd($establishmentCodeDeis);
 //            dd($patient['laboratory_id']);
 //            dd($patient['case_id']);
+//            dd($patient['fecha_toma_muestra']);
+//              dd(Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['fecha_toma_muestra']))->format('Y-m-d H:i:s'));
 
             if($patient['tipo_documento_paciente'] == 'RUN' ){
                 if (str_contains($patient['id_paciente'], '-')) {
@@ -2003,13 +2006,11 @@ class SuspectCaseController extends Controller
                     $new_patient->gender = 'unknown';
                 }
 
-                $new_patient->birthday        = Carbon::parse($patient['fecha_nacimiento_paciente']);
-//                $new_patient->status          = $patient['Estado'];
+//                $new_patient->birthday        = Carbon::parse($patient['fecha_nacimiento_paciente']);
+                $new_patient->birthday = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['fecha_nacimiento_paciente']))->format('Y-m-d H:i:s');
                 $new_patient->save();
 
             }
-
-//            dd('patient listo');
 
             $patient_create = Patient::where('run', $run)
                 ->orWhere('other_identification', $run)
@@ -2022,12 +2023,7 @@ class SuspectCaseController extends Controller
 
                     $commune = Commune::where('name', 'like', '%' . trim($patient['comuna_paciente']) . '%')->first();
 
-//                    $new_demographic->street_type   = $patient['Via Residencia'];
                     $new_demographic->address       = $patient['dirección_paciente'];
-//                    $new_demographic->number        = $patient['Numero'];
-//                    $new_demographic->department    = $patient['Depto'];
-//                    $new_demographic->city          = $patient['Ciudad o Pueblo'];
-//                    $new_demographic->suburb        = $patient['Poblacion o Suburbio'];
                     $new_demographic->commune_id    = $commune->id;
                     $new_demographic->region_id     = $commune->region_id;
                     $new_demographic->nationality   = $patient['pais_origen_paciente'];
@@ -2039,22 +2035,35 @@ class SuspectCaseController extends Controller
                 }
             }
 
-//            dd('demo listo');
-
             if($patient_create){
                 $new_suspect_case = new SuspectCase();
-                $new_suspect_case->id = $patient['case_id'];
+                $new_suspect_case->id = $patient['codigo_muestra_cliente'];
 
                 $new_suspect_case->laboratory_id      = $patient['laboratory_id'];
                 $new_suspect_case->sample_type        = $patient['tipo_muestra'];
-                $new_suspect_case->sample_at          = Carbon::parse($patient['fecha_toma_muestra'].' '.$patient['hora_muestra']);
+//                $new_suspect_case->sample_at          = Carbon::parse($patient['fecha_toma_muestra'].' '.$patient['hora_muestra']);
+                $new_suspect_case->sample_at          = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['fecha_toma_muestra']))->format('Y-m-d H:i:s');
+
+                $user = User::where('run', explode('-', $patient['rut_profesional'])[0])
+                    ->get()
+                    ->first();
+
+                if (!$user) {
+                    $user = Auth::user();
+                }
+
+                $new_suspect_case->user_id = $user->id;
 
                 if($patient['fecha_recepcion_muestra'] != null){
-                    $new_suspect_case->reception_at       = Carbon::parse($patient['fecha_recepcion_muestra'].' '.$patient['hora_recepcion']);
+//                    $new_suspect_case->reception_at       = Carbon::parse($patient['fecha_recepcion_muestra'].' '.$patient['hora_recepcion']);
+                    $new_suspect_case->reception_at       = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['fecha_recepcion_muestra']))->format('Y-m-d H:i:s');
+                    $new_suspect_case->receptor_id = $user->id;
                 }
 
                 if($patient['fecha_resultado_muestra'] != null){
-                    $new_suspect_case->pcr_sars_cov_2_at       = Carbon::parse($patient['fecha_resultado_muestra'].' '.$patient['hora_resultado']);
+//                    $new_suspect_case->pcr_sars_cov_2_at       = Carbon::parse($patient['fecha_resultado_muestra'].' '.$patient['hora_resultado']);
+                    $new_suspect_case->pcr_sars_cov_2_at       = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['fecha_resultado_muestra']))->format('Y-m-d H:i:s');
+                    $new_suspect_case->validator_id = $user->id;
                 }
 
                 if ($patient['resultado'] != null) {
@@ -2074,14 +2083,11 @@ class SuspectCaseController extends Controller
                     $new_suspect_case->pcr_sars_cov_2 = 'pending';
                 }
 
-
                 $establishmentCodeDeis = explode(' ', $patient['establecimiento'])[0];
-
 
                 $establishment = Establishment::where('new_code_deis', $establishmentCodeDeis)
                     ->get()
                     ->first();
-
 
                 if($establishment){
                     $new_suspect_case->establishment_id = $establishment['id'];
@@ -2090,18 +2096,10 @@ class SuspectCaseController extends Controller
                     $new_suspect_case->observation = $patient['establecimiento'];
                 }
 
-
-//                $new_suspect_case->origin = $patient['Detalle Origen'];
                 $new_suspect_case->run_medic = $patient['rut_medico_solicitante'];
                 $new_suspect_case->minsal_ws_id = $patient['id_muestra'];
-
-                //codigo no necesario
-
-//                $new_suspect_case->observation = $patient['Observacion'];
                 $new_suspect_case->epivigila = $patient['epivigila'];
                 $new_suspect_case->patient_id = $patient_create->id;
-                $new_suspect_case->user_id = Auth::user()->id;
-                $new_suspect_case->validator_id = Auth::user()->id;
 
                 if ($patient['busqueda_activa'] == 'VERDADERO') {
                     $new_suspect_case->case_type = 'Busqueda activa';
