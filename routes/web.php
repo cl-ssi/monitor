@@ -310,6 +310,12 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/','SuspectCaseController@index_bulk_load')->name('index')->middleware('auth');
         Route::post('/import', 'SuspectCaseController@bulk_load_import')->name('import.excel');
     });
+
+    Route::prefix('bulk_load_from_pntm')->name('bulk_load_from_pntm.')->group(function () {
+        Route::get('/','SuspectCaseController@index_bulk_load_from_pntm')->name('index')->middleware('auth');
+        Route::post('/import','SuspectCaseController@bulk_load_import_from_pntm')->name('import.excel')->middleware('auth');
+    });
+
 });
 
 Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(function(){
