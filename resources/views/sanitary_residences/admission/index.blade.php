@@ -19,6 +19,7 @@
             <th>Fono</th>
             <th>Fecha Encuesta</th>
             <th>Observaciones</th>
+            <th>Antecedentes Morbidos</th>
             <th>Aprobar Ingreso</th>
             <th>Rechazar Ingreso (Elimina Encuesta)</th>
         </tr>
@@ -32,6 +33,7 @@
             <td>{{ ($admission->patient->demographic)?$admission->patient->demographic->telephone:'' }}</td>
             <td>{{$admission->created_at}}</td>
             <td>{{$admission->observations}}</td>
+            <td>{{$admission->morbid_history ?? ''}}</td>
             <td>
                 
                 <a href="{{ route('sanitary_residences.bookings.createfrompatient', $admission->patient)}}?paciente={{$admission->patient->id}}&morbid_history={{$admission->morbid_history}}&observations={{$admission->observations}}&symptoms_epivigila={{$admission->symptoms_epivigila}}" class="btn btn-secondary float-left"><i class="fa fa-bed"></i></a>

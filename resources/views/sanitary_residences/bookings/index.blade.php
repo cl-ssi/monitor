@@ -32,16 +32,16 @@
         <br>
         @if($room->single)
         <div class="float-left">
-        <i class="fa fa-bed" aria-hidden="true"></i>
-        Single: {{$room->single}}
+            <i class="fa fa-bed" aria-hidden="true"></i>
+            Single: {{$room->single}}
         </div>
         @endif
         @if($room->double)
         <div class="float-right">
-        <i class="fa fa-bed" aria-hidden="true"></i>
-        Doble: {{$room->double}}
+            <i class="fa fa-bed" aria-hidden="true"></i>
+            Doble: {{$room->double}}
         </div>
-        @endif 
+        @endif
         <hr style="height:2px;border-width:0;color:gray;background-color:gray">
 
         @if($room->bookings->first())
@@ -53,20 +53,29 @@
                 {{ $booking->patient->fullName }}
             </a>
             <br>
-            ({{ $booking->patient->age }} AÑOS) 
+            ({{ $booking->patient->age }} AÑOS)
             <span class="{{ ($booking->days < 14)? 'text-success':'text-danger' }}">
-                ({{ $booking->days }} DÍAS EN R.S.) 
+                ({{ $booking->days }} DÍAS EN R.S.)
             </span>
 
             @if($booking->patient->tracing && isset($booking->patient->tracing->quarantine_end_at))
             <span class="{{ ($booking->patient->tracing->quarantine_end_at > now())? 'text-success':'text-danger' }}">
-            (Termino de Cuarentena:
-            {{$booking->patient->tracing->quarantine_end_at->format('d-m-Y')}})
-            @endif
-            <br>
-            <hr>
-            
-            
+                (Termino de Cuarentena:
+                {{$booking->patient->tracing->quarantine_end_at->format('d-m-Y')}})
+                @endif
+                @canany(['SanitaryResidence: admin','SanitaryResidence: survey'])
+                @if($booking->patient->admissionSurvey->last())
+                @foreach($booking->patient->admissionSurvey as $admission)
+                <a class="btn btn-success btn-sm" target=_blank href="{{ route('sanitary_residences.admission.show', $admission) }}">
+                    <i class="fas fa-poll-h"></i> Ver Encuesta
+                </a>
+                @endforeach
+                @endif
+                @endcan
+                <br>
+                <hr>
+
+
         </li>
         @endif
         @endforeach
@@ -99,7 +108,7 @@
         </tr>
     </thead>
     <tbody class="small">
-        @foreach($releases as $booking)        
+        @foreach($releases as $booking)
         <tr>
             <td><a href="{{ route('sanitary_residences.bookings.showrelease',$booking) }}"> {{ $booking->patient->fullName }} </a></td>
             <td>{{ $booking->status }}</td>
@@ -107,18 +116,18 @@
             <td> {{ $booking->room->residence->name }}</td>
             <td>{{ $booking->room->number }}</td>
             <td>{{ $booking->from }}</td>
-            <td>{{ $booking->real_to }}</td>            
+            <td>{{ $booking->real_to }}</td>
             <td>
-            @can('SanitaryResidence: return booking')
-            <form method="POST" class="form-horizontal" action="{{ route('sanitary_residences.bookings.returnbooking',$booking) }}">
-                        @csrf
-                        @method('PUT')
-            <button type="submit" class="btn btn-danger" onclick="return confirm('¿Está seguro que desea REINGRESAR el Booking del paciente {{ $booking->patient->fullName }} para la habitación {{$booking->room->number}} ?' )">Reingresar al Booking</button>
-            </form>
-            @endcan
+                @can('SanitaryResidence: return booking')
+                <form method="POST" class="form-horizontal" action="{{ route('sanitary_residences.bookings.returnbooking',$booking) }}">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('¿Está seguro que desea REINGRESAR el Booking del paciente {{ $booking->patient->fullName }} para la habitación {{$booking->room->number}} ?' )">Reingresar al Booking</button>
+                </form>
+                @endcan
             </td>
         </tr>
-        
+
         @endforeach
 
     </tbody>
