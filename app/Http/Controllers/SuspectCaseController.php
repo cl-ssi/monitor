@@ -1819,7 +1819,7 @@ class SuspectCaseController extends Controller
                       $new_demographic->suburb        = $patient['Poblacion o Suburbio'];
                       $new_demographic->commune_id    = $patient['Comuna'];
                       $new_demographic->region_id     = $patient['Region'];
-                      $new_demographic->nationality   = $patient['Nacionalidad'];
+                      $new_demographic->nationality   = ucfirst(strtolower($patient['Nacionalidad']));
                       $new_demographic->telephone     = $patient['Telefono'];
                       $new_demographic->email         = $patient['Email'];
                       $new_demographic->patient_id    = $patient_create->id;
@@ -1869,44 +1869,51 @@ class SuspectCaseController extends Controller
 
                     // ---------------------------------------------------------------------
                     if($patient['Sintomas'] == 'Si' || $patient['Sintomas'] == 'si' ||
-                          $patient['Sintomas'] == 'si' || $patient['Sintomas'] == 'sI'){
+                          $patient['Sintomas'] == 'si' || $patient['Sintomas'] == 'sI' ||
+                        $patient['Sintomas'] == 'SI'){
                         $new_suspect_case->symptoms = 1;
                         $new_suspect_case->symptoms_at = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Inicio Sintomas']))->format('Y-m-d H:i:s');
                     }
                     if($patient['Sintomas'] == 'No' || $patient['Sintomas'] == 'no' ||
-                          $patient['Sintomas'] == 'no' || $patient['Sintomas'] == 'nO'){
+                          $patient['Sintomas'] == 'no' || $patient['Sintomas'] == 'nO' || $patient['Sintomas'] == 'NO'){
                         $new_suspect_case->symptoms = 0;
                     }
                     // ---------------------------------------------------------------------
 
                     if($patient['Gestante'] == 'Si' || $patient['Gestante'] == 'si' ||
-                          $patient['Gestante'] == 'si' || $patient['Gestante'] == 'sI'){
+                          $patient['Gestante'] == 'si' || $patient['Gestante'] == 'sI' ||
+                        $patient['Gestante'] == 'SI' ){
                         $new_suspect_case->gestation = 1;
                         $new_suspect_case->gestation_week = $patient['Semanas Gestacion'];
 
                     }
                     if($patient['Gestante'] == 'No' || $patient['Gestante'] == 'no' ||
-                          $patient['Gestante'] == 'no' || $patient['Gestante'] == 'nO'){
+                          $patient['Gestante'] == 'no' || $patient['Gestante'] == 'nO' ||
+                        $patient['Gestante'] == 'NO'){
                         $new_suspect_case->gestation = 0;
                     }
                     // ---------------------------------------------------------------------
 
                     if($patient['Indice'] == 'Si' || $patient['Indice'] == 'si' ||
-                          $patient['Indice'] == 'si' || $patient['Indice'] == 'sI'){
+                          $patient['Indice'] == 'si' || $patient['Indice'] == 'sI' ||
+                        $patient['Indice'] == 'SI'){
                         $new_suspect_case->close_contact = 1;
                     }
                     if($patient['Indice'] == 'No' || $patient['Indice'] == 'no' ||
-                          $patient['Indice'] == 'no' || $patient['Indice'] == 'nO'){
+                          $patient['Indice'] == 'no' || $patient['Indice'] == 'nO' ||
+                        $patient['Indice'] == 'NO'){
                         $new_suspect_case->close_contact = 0;
                     }
                     // ---------------------------------------------------------------------
 
                     if($patient['Funcionario Salud'] == 'Si' || $patient['Funcionario Salud'] == 'si' ||
-                          $patient['Funcionario Salud'] == 'si' || $patient['Funcionario Salud'] == 'sI'){
+                          $patient['Funcionario Salud'] == 'si' || $patient['Funcionario Salud'] == 'sI' ||
+                        $patient['Funcionario Salud'] == 'SI'){
                         $new_suspect_case->functionary = 1;
                     }
                     if($patient['Funcionario Salud'] == 'No' || $patient['Funcionario Salud'] == 'no' ||
-                          $patient['Funcionario Salud'] == 'no' || $patient['Funcionario Salud'] == 'nO'){
+                          $patient['Funcionario Salud'] == 'no' || $patient['Funcionario Salud'] == 'nO' ||
+                        $patient['Funcionario Salud'] == 'NO'){
                         $new_suspect_case->functionary = 0;
                     }
                     // ---------------------------------------------------------------------
