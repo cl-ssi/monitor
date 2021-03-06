@@ -1763,10 +1763,15 @@ class SuspectCaseController extends Controller
         $patientsCollection = Excel::toCollection(new PatientImport, $file);
 
         foreach ($patientsCollection[0] as $patient) {
-
+            if (ctype_digit($patient['RUN'])) {
                 $patientsDB = Patient::where('run', $patient['RUN'])
                     ->orWhere('other_identification', $patient['RUN'])
                     ->get();
+            }
+            else{
+                $patientsDB = Patient::where('other_identification', $patient['RUN'])
+                    ->get();
+            }
 
                 if($patientsDB->count() == 0){
                     $new_patient = new Patient();
@@ -1799,17 +1804,20 @@ class SuspectCaseController extends Controller
 
                     $new_patient->status          = $patient['Estado'];
 
-                    dd($new_patient);
                     $new_patient->save();
                 }
 
+            if (ctype_digit($patient['RUN'])) {
                 $patient_create = Patient::where('run', $patient['RUN'])
                     ->orWhere('other_identification', $patient['RUN'])
                     ->get()
                     ->first();
-
-            dd($patient_create);
-
+            }
+            else{
+                $patient_create = Patient::where('other_identification', $patient['RUN'])
+                    ->get()
+                    ->first();
+            }
 
                 if($patient_create){
                   if(!$patient_create->demographic){
