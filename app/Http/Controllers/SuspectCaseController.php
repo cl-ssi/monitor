@@ -1799,6 +1799,7 @@ class SuspectCaseController extends Controller
 
                     $new_patient->status          = $patient['Estado'];
 
+                    dd($new_patient);
                     $new_patient->save();
                 }
 
@@ -2191,7 +2192,7 @@ class SuspectCaseController extends Controller
             // dd($suspectCase);
             $suspectCase->save();
 
-        }    
+        }
 
         session()->flash('success', 'El archivo fue cargado exitosamente.');
         return redirect()->route('lab.bulk_load_from_pntm.index');
