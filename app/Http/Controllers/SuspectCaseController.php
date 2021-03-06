@@ -1808,6 +1808,9 @@ class SuspectCaseController extends Controller
                     ->get()
                     ->first();
 
+            dd($patient_create);
+
+
                 if($patient_create){
                   if(!$patient_create->demographic){
                       $new_demographic = new Demographic();
