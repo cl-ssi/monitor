@@ -788,7 +788,7 @@ class SuspectCaseReportController extends Controller
     /*****************************************************/
     public function report_minsal_ws(Request $request)
     {
-        $from = '2021-03-05 00:00'; //date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+        $from = '2021-03-04 00:00'; //date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $to = date("Y-m-d 20:59:59");
 
         $laboratory_id = 1;
@@ -821,7 +821,7 @@ class SuspectCaseReportController extends Controller
     {
 
         // dd($request);
-        $from = '2021-03-05 00:00'; //date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+        $from = '2021-03-04 00:00'; //date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $to = date("Y-m-d 20:59:59");
 
         $laboratory_id = 1;
