@@ -1758,6 +1758,7 @@ class SuspectCaseController extends Controller
     }
 
     public function bulk_load_import(Request $request){
+        set_time_limit(0);
         $file = $request->file('file');
 
         $patientsCollection = Excel::toCollection(new PatientImport, $file);
@@ -1835,7 +1836,6 @@ class SuspectCaseController extends Controller
                       $new_demographic->telephone     = $patient['Telefono'];
                       $new_demographic->email         = $patient['Email'];
                       $new_demographic->patient_id    = $patient_create->id;
-
                       $new_demographic->save();
                   }
                 }
