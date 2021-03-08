@@ -1591,7 +1591,7 @@ class SuspectCaseController extends Controller
                     ($fila->patient)?$fila->patient->fathers_family:'',
                     ($fila->patient)?$fila->patient->mothers_family:'',
                     ($fila->patient)?$fila->patient->Identifier:'',
-                    ($fila->patient)?$fila->patient->birthday->format('d-m-Y'):'',
+                    ($fila->patient && $fila->patient->birthday)?$fila->patient->birthday->format('d-m-Y'):'',
                     $fila->age,
                     strtoupper($fila->gender[0]),
                     $fila->laboratory->name,
