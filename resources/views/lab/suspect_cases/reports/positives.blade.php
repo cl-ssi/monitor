@@ -37,7 +37,7 @@
         <div id="evolution" style="width: 480px; height: 400"></div>
 
 
-        <table class="table table-sm table-bordered">
+        <!-- <table class="table table-sm table-bordered">
             <thead>
                 <tr class="table-active">
                     <th colspan="5">Cantidad de Ventiladores <small>({{ $ventilator->updated_at }})</small> </th>
@@ -56,7 +56,7 @@
                     </th>
                 </tr>
             </tbody>
-        </table>
+        </table> -->
 
         <table class="table table-sm table-bordered">
             <thead>
