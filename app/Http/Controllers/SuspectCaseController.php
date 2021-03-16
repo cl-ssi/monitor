@@ -1572,6 +1572,7 @@ class SuspectCaseController extends Controller
             'país',
             'email',
             'lugar de trabajo',
+            'funcionario de salud',
             'fecha envío lab. externo'
         );
 
@@ -1610,6 +1611,7 @@ class SuspectCaseController extends Controller
                     ($fila->patient && $fila->patient->demographic && $fila->patient->demographic->nationality) ? $fila->patient->demographic->nationality : '',
                     ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->email:'',
                     ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->workplace:'',
+                    ($fila->functionaryEsp)?$fila->functionaryEsp:'',
                     $fila->sent_external_lab_at
                 ),';');
             }
