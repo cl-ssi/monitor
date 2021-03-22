@@ -28,11 +28,11 @@ class BookingController extends Controller
         {
             $q->where('residence_id', $residence->id);
         })->get();
-        
+
         $releases = Booking::whereNotNull('real_to')->whereHas('room', function ($q) use($residence)
         {
             $q->where('residence_id', $residence->id);
-        })->get();
+        })->orderByDesc('real_to')->paginate(50);
 
         return view('sanitary_residences.bookings.index', compact('residence','bookings', 'rooms','releases'));
     }
