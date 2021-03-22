@@ -23,7 +23,12 @@ class BookingController extends Controller
     {
         $rooms = $rooms = Room::where('residence_id',$residence->id)->orderBy('floor')->orderBy('number')->get();
 
-        $bookings = Booking::All();
+        //$bookings = Booking::All();
+        $bookings = Booking::whereNull('real_to')->whereHas('room', function ($q) use($residence)
+        {
+            $q->where('residence_id', $residence->id);
+        })->get();
+        
         $releases = Booking::whereNotNull('real_to')->whereHas('room', function ($q) use($residence)
         {
             $q->where('residence_id', $residence->id);
