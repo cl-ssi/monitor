@@ -1572,6 +1572,7 @@ class SuspectCaseController extends Controller
             'país',
             'email',
             'lugar de trabajo',
+            'funcionario de salud',
             'fecha envío lab. externo'
         );
 
@@ -1610,6 +1611,7 @@ class SuspectCaseController extends Controller
                     ($fila->patient && $fila->patient->demographic && $fila->patient->demographic->nationality) ? $fila->patient->demographic->nationality : '',
                     ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->email:'',
                     ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->workplace:'',
+                    ($fila->functionaryEsp)?$fila->functionaryEsp:'',
                     $fila->sent_external_lab_at
                 ),';');
             }
@@ -2223,11 +2225,22 @@ class SuspectCaseController extends Controller
             $resultado = $data['resultado'];
             $fecha_resultado = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($data['fecha resultado']))->format('Y-m-d H:i:s');
 
-            if($resultado == "negativo"){$resultado = "negative";}
-            if($resultado == "pendiente"){$resultado = "pending";}
-            if($resultado == "positivo"){$resultado = "positive";}
-            if($resultado == "rechazado"){$resultado = "rejected";}
-            if($resultado == "indeterminado"){$resultado = "undetermined";}
+            if ($resultado == "negativo") {
+                $resultado = "negative";
+            }
+            if ($resultado == "pendiente") {
+                $resultado = "pending";
+            }
+            if ($resultado == "positivo") {
+                $resultado = "positive";
+            }
+            if ($resultado == "rechazado") {
+                $resultado = "rejected";
+            }
+            if ($resultado == "indeterminado") {
+                $resultado = "undetermined";
+            }
+
 
             if ($id_esmeralda != NULL && $resultado != NULL && $fecha_resultado != NULL) {
                 $suspectCase = SuspectCase::find($id_esmeralda);
@@ -2237,6 +2250,30 @@ class SuspectCaseController extends Controller
                     $suspectCase->validator_id = Auth::id();
                     $suspectCase->save();
                     $cont += 1;
+
+                    if ($request->generate_pdf == true) {
+                        \PDF::loadView('lab.results.result', ['case' => $suspectCase])
+                            ->save(storage_path() . '/app/suspect_cases/' . $suspectCase->id . '.pdf');
+                        $suspectCase->file = true;
+                        $suspectCase->save();
+                    }
+
+                    if ($request->upload_to_pntm == true && $suspectCase->pcr_result_added_at == null) {
+                        $response = WSMinsal::resultado_muestra($suspectCase);
+                        if ($response['status'] == 0) {
+                            $suspectCase->ws_pntm_mass_sending = false;
+                            $suspectCase->pcr_result_added_at = null;
+                            $suspectCase->save();
+                            session()->flash('info', 'Error al subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg']);
+                            return view('lab.suspect_cases.import_results');
+                        }
+                        if ($response['status'] == 1) {
+                            $suspectCase->ws_pntm_mass_sending = true;
+                            $suspectCase->pcr_result_added_at = Carbon::now();
+                            $suspectCase->save();
+                        }
+                    }
+
                 }
             }
         }

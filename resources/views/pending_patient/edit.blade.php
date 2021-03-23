@@ -25,7 +25,7 @@
     <div class="noScreen">
         <div class="row mb-3">
             <div class="col-md-3 text-center">
-                <img src="{{ asset('/images/SS_RGB_200.png') }}" class="img-fluid mb-2" alt="Servicio de Salud Iquique" width="40%"><br>
+                <img src="{{ asset('/images/lab_1.png') }}" class="img-fluid mb-2" alt="Servicio de Salud Iquique" width="40%"><br>
                 <span  >SERVICIO DE SALUD IQUIQUE</span>
             </div>
         </div>

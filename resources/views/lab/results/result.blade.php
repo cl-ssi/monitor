@@ -64,9 +64,13 @@
 <body>
     <div class="row">
         <div class="cabecera" style="padding-top: 22px;">
-            <img src="images/SS_RGB_200.png" width="150" alt="logo servicio">
+            @if(File::exists(public_path("images/lab_{$case->laboratory->id}.png")))
+                <img src="{{"images/lab_{$case->laboratory->id}.png"}}" width="150" alt="logo servicio">
+            @else
+                <img src="images/lab_1.png" width="150" alt="logo servicio">
+            @endif
         </div>
-        <div class="cabecera" style="padding-left: 10px;">
+        <div class="cabecera" style="padding-left: 10px; @if($case->laboratory->id == 13) padding-top: 18px; @endif ">
             <h1>{{$case->laboratory->name}}</h1>
             <h2 style="line-height: 1px;">LABORATORIO DE BIOLOGÍA MOLECULAR</h2>
         </div>
@@ -91,7 +95,7 @@
         <tr>
             <th>SEXO</th>
             <td>{{ strtoupper($case->patient->sexEsp) }}</td>
-        </tr>        
+        </tr>
         <tr>
             <th>ESTABLECIMIENTO</th>
             <td>{{ strtoupper(($case->establishment)?$case->establishment->alias.' - '.$case->origin: '') }}</td>
@@ -143,11 +147,14 @@
                     </div>
                 </td>
 
-                <td>
-                    <div class="firma">
-                        <img src="images/firma_user_{{ $case->validator->id}}.png" width="140" alt="Firma Validador">
-                    </div>
-                </td>
+                @if($case->laboratory->id == 1)
+                    <td>
+                        <div class="firma">
+                            <img src="images/firma_user_{{ $case->validator->id}}.png" width="140"
+                                 alt="Firma Validador">
+                        </div>
+                    </td>
+                @endif
 
             </tr>
             <tr>
@@ -156,13 +163,15 @@
                     <br>
                     DIRECTOR TÉCNICO LABORATORIO
                 </td>
-                <td class="firma">
-                    @if($case->validator)
-                    {{ $case->validator->name }}
-                    @endif
-                    <br>
-                    VALIDADOR
-                </td>
+                @if($case->laboratory->id == 1)
+                    <td class="firma">
+                        @if($case->validator)
+                            {{ $case->validator->name }}
+                        @endif
+                        <br>
+                        VALIDADOR
+                    </td>
+                @endif
             </tr>
         </table>
 
