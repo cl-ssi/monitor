@@ -2221,6 +2221,22 @@ class SuspectCaseController extends Controller
             $resultado = NULL;
             $fecha_resultado = NULL;
 
+
+            if (!isset($data['id esmeralda'])) {
+                session()->flash('warning', 'No se encuentra columna id esmeralda o no tiene datos. Por favor verifique que esta correctamente escrito y no tiene espacios en blanco.');
+                return view('lab.suspect_cases.import_results');
+            }
+
+            if (!isset($data['resultado'])) {
+                session()->flash('warning', 'No se encuentra columna resultado o no tiene datos. Por favor verifique que esta correctamente escrito y no tiene espacios en blanco.');
+                return view('lab.suspect_cases.import_results');
+            }
+
+            if (!isset($data['fecha resultado'])) {
+                session()->flash('warning', 'No se encuentra columna fecha resultado o no tiene datos. Por favor verifique que esta correctamente escrito y no tiene espacios en blanco.');
+                return view('lab.suspect_cases.import_results');
+            }
+
             $id_esmeralda = $data['id esmeralda'];
             $resultado = $data['resultado'];
             $fecha_resultado = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($data['fecha resultado']))->format('Y-m-d H:i:s');
