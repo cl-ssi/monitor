@@ -132,6 +132,7 @@
 
     </tbody>
 </table>
+{{ $releases->links() }}
 
 @endsection
 
