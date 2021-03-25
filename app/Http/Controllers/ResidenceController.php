@@ -42,7 +42,7 @@ class ResidenceController extends Controller
         $residenceUser->delete();
 
 
-        session()->flash('success', 'Permisos Eliminados exitosamente');
+        session()->flash('success', 'Usuario Eliminado exitosamente');
         //return redirect()->route('sanitary_residences.residences.index');
         return redirect()->back();
 
