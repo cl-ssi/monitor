@@ -2213,14 +2213,15 @@ class SuspectCaseController extends Controller
 
     public function results_import(Request $request){
         $file = $request->file('file');
-
         $patientsCollection = Excel::toCollection(new PatientImport, $file);
+        $startDate = Carbon::now()->subWeeks(4)->setTime(0,0,0,0);
+        $endDate = Carbon::now()->setTime(0,0,0,0);
         $cont = 0;
+
         foreach ($patientsCollection[0] as $data) {
             $id_esmeralda = NULL;
             $resultado = NULL;
             $fecha_resultado = NULL;
-
 
             if (!isset($data['id esmeralda'])) {
                 session()->flash('warning', 'No se encuentra columna id esmeralda o no tiene datos. Por favor verifique que esta correctamente escrito y no tiene espacios en blanco.');
@@ -2239,7 +2240,13 @@ class SuspectCaseController extends Controller
 
             $id_esmeralda = $data['id esmeralda'];
             $resultado = $data['resultado'];
-            $fecha_resultado = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($data['fecha resultado']))->format('Y-m-d H:i:s');
+            $fecha_resultado_carbon = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($data['fecha resultado']));
+            $fecha_resultado = $fecha_resultado_carbon->format('Y-m-d H:i:s');
+
+            if(!$fecha_resultado_carbon->betweenIncluded($startDate, $endDate)){
+                session()->flash('warning', "La fecha de resultado {$fecha_resultado_carbon->format('d-m-Y')} de la muestra $id_esmeralda debe estar entre {$startDate->format('d-m-Y')} y {$endDate->format('d-m-Y')}.");
+                return view('lab.suspect_cases.import_results');
+            }
 
             if ($resultado == "negativo") {
                 $resultado = "negative";
@@ -2256,7 +2263,6 @@ class SuspectCaseController extends Controller
             if ($resultado == "indeterminado") {
                 $resultado = "undetermined";
             }
-
 
             if ($id_esmeralda != NULL && $resultado != NULL && $fecha_resultado != NULL) {
                 $suspectCase = SuspectCase::find($id_esmeralda);
