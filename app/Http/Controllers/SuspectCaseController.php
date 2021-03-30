@@ -1573,7 +1573,8 @@ class SuspectCaseController extends Controller
             'email',
             'lugar de trabajo',
             'funcionario de salud',
-            'fecha envío lab. externo'
+            'fecha envío lab. externo',
+            'tipo de caso'
         );
 
         $callback = function() use ($filas, $columnas)
@@ -1612,7 +1613,8 @@ class SuspectCaseController extends Controller
                     ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->email:'',
                     ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->workplace:'',
                     ($fila->functionaryEsp)?$fila->functionaryEsp:'',
-                    $fila->sent_external_lab_at
+                    $fila->sent_external_lab_at,
+                    $fila->case_type
                 ),';');
             }
             fclose($file);
