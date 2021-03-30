@@ -1762,10 +1762,21 @@ class SuspectCaseController extends Controller
     public function bulk_load_import(Request $request){
         set_time_limit(0);
         $file = $request->file('file');
+        $startDate = Carbon::now()->subWeeks(4)->setTime(0,0,0,0);
+        $endDate = Carbon::now()->setTime(0,0,0,0);
 
         $patientsCollection = Excel::toCollection(new PatientImport, $file);
 
         foreach ($patientsCollection[0] as $patient) {
+
+            if($patient['Fecha Resultado'] != null){
+                $fecha_resultado_carbon = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Resultado']));
+                if(!$fecha_resultado_carbon->betweenIncluded($startDate, $endDate)){
+                    session()->flash('warning', "La fecha de resultado {$fecha_resultado_carbon->format('d-m-Y')} debe estar entre {$startDate->format('d-m-Y')} y {$endDate->format('d-m-Y')}.");
+                    return view('lab.bulk_load.index');
+                }
+            }
+
             if (ctype_digit($patient['RUN'])) {
                 $patientsDB = Patient::where('run', $patient['RUN'])
                     ->orWhere('other_identification', $patient['RUN'])
