@@ -23,6 +23,8 @@
         "sass-loader": "^8.0.0",
         "vue": "^2.5.17",
         "vue-template-compiler": "^2.6.10",
-        "node-notifier": ">=8.0.1"
+        "node-notifier": ">=8.0.1",
+        "is-svg": ">=4.2.2",
+        "ssri": ">=8.0.1"
     }
 }
