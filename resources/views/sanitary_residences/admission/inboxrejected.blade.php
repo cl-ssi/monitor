@@ -12,7 +12,10 @@
 <table class="table table-sm table-bordered text-center align-middle" id="tabla_encuestas_rechazadas_vb">
   <thead>
     <tr>
+      <th>Rut/ID</th>
       <th>Nombre de Encuestado</th>
+      <th>Dirección</th>
+      <th>Fono</th>
       <th>Fecha de Encuesta</th>
       <th>Fecha Digitación en Sistema de Encuesta</th>
       <th>Encuesta Digitada en Sistema por</th>
@@ -26,7 +29,10 @@
   <tbody>
     @foreach($admissions as $admission)
     <tr>
+      <td>{{$admission->patient->identifier??''}}</td>
       <td class="text-center align-middle">{{ $admission->patient->full_name }}</td>
+      <td>{{($admission->patient->demographic)?$admission->patient->demographic->fulladdress:''}}</td>
+      <td>{{ ($admission->patient->demographic)?$admission->patient->demographic->telephone:'' }}</td>
       <td class="text-center align-middle">{{ $admission->created_at }}</td>
       <td class="text-center align-middle">{{ $admission->updated_at }}</td>
       <td class="text-center align-middle">{{ $admission->user->name }}</td>
