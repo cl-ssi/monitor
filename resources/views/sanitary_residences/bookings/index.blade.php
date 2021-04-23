@@ -92,7 +92,19 @@
 <hr>
 
 
-
+<h3 class="mb-3"><i class="fas fa-user-injured"></i> Listado de Pacientes Egresados</h3>
+<div class="row">
+<div class="col-12 col-md-12">
+        <form method="GET" class="form-horizontal" action="{{ route('sanitary_residences.bookings.index', $residence) }}">
+            <div class="input-group mb-sm-0">
+                <input class="form-control" type="text" name="search" autocomplete="off" id="for_search" style="text-transform: uppercase;" placeholder="RUN (sin dígito verificador) / OTRA IDENTIFICACION / NOMBRE" value="{{$request->search}}" required>
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 <table class="table table-sm table-responsive mt-3">
     <thead>

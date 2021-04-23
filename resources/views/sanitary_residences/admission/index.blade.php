@@ -29,7 +29,7 @@
         <tr>
             <td>{{$admission->patient->identifier}}</td>
             <td>{{$admission->patient->fullname}}</td> 
-            <td>{{($admission->patient->demographic)?$admission->patient->demographic->fulladdress:''}}</td>            
+            <td>{{($admission->patient->demographic)?$admission->patient->demographic->fulladdress:''}}</td>
             <td>{{ ($admission->patient->demographic)?$admission->patient->demographic->telephone:'' }}</td>
             <td>{{$admission->created_at}}</td>
             <td>{{$admission->observations}}</td>
