@@ -19,7 +19,7 @@ class BookingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Residence $residence)
+    public function index(Request $request,Residence $residence)
     {
         $rooms = $rooms = Room::where('residence_id',$residence->id)->orderBy('floor')->orderBy('number')->get();
 
@@ -29,12 +29,16 @@ class BookingController extends Controller
             $q->where('residence_id', $residence->id);
         })->get();
 
-        $releases = Booking::whereNotNull('real_to')->whereHas('room', function ($q) use($residence)
+        // $releases = Booking::whereNotNull('real_to')->whereHas('room', function ($q) use($residence)
+        // {
+        //     $q->where('residence_id', $residence->id);
+        // })->orderByDesc('real_to')->paginate(200);
+        $releases = Booking::SearchRelease($request)->whereHas('room', function ($q) use($residence)
         {
             $q->where('residence_id', $residence->id);
-        })->orderByDesc('real_to')->paginate(100);
+        })->whereNotNull('real_to')->orderByDesc('real_to')->paginate(200);
 
-        return view('sanitary_residences.bookings.index', compact('residence','bookings', 'rooms','releases'));
+        return view('sanitary_residences.bookings.index', compact('residence','bookings', 'rooms','releases','request'));
     }
 
 

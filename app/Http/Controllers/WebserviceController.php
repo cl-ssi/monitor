@@ -90,25 +90,24 @@ class WebserviceController extends Controller
     public function caseCreate(Request $request)
     {
         try {
-            $dataArray = json_decode($request->getContent(), true);//TODO validar otros campos
+            $dataArray = json_decode($request->getContent(), true);
 
             if (isset($dataArray['patient']['run']) && is_numeric($dataArray['patient']['run'])) {
-                if (!$dataArray['patient']['dv']) {
+                if (!isset($dataArray['patient']['dv']) || (isset($dataArray['patient']['dv']) && !in_array($dataArray['patient']['dv'], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'k', 'K']))) {
                     $responseArray = ['success' => false,
                         'message' => 'Debe ingresar un dv válido'];
                     return json_encode($responseArray);
                 }
             } elseif (!$dataArray['patient']['other_identification']) {
-                //TODO string "0" es false
                 $responseArray = ['success' => false,
                     'message' => 'Debe ingresar other_identification o run válido'];
                 return json_encode($responseArray);
             }
 
             if (!isset($dataArray['patient']['name']) || $dataArray['patient']['name'] == '') {
-                    $responseArray = ['success' => false,
-                        'message' => 'Debe ingresar name'];
-                    return json_encode($responseArray);
+                $responseArray = ['success' => false,
+                    'message' => 'Debe ingresar name'];
+                return json_encode($responseArray);
             }
 
             if (!isset($dataArray['patient']['fathers_family']) || $dataArray['patient']['fathers_family'] == '') {
@@ -189,7 +188,7 @@ class WebserviceController extends Controller
                 return json_encode($responsearray);
             }
 
-            if (!isset($dataArray['case']['epivigila']) || $dataArray['case']['epivigila'] == '') {
+            if (!isset($dataArray['case']['epivigila']) || $dataArray['case']['epivigila'] === '') {
                 $responsearray = ['success' => false,
                     'message' => 'Debe ingresar epivigila'];
                 return json_encode($responsearray);
@@ -256,11 +255,12 @@ class WebserviceController extends Controller
             }
 
             if ($patient) {
-
                 $establishment_id = Establishment::where('new_code_deis', $dataArray['case']['establishment_deis'])->first()->id;
                 $newSuspectCase = new SuspectCase();
                 $newSuspectCase->laboratory_id = $dataArray['case']['laboratory_id'];
                 $newSuspectCase->sample_type = $dataArray['case']['sample_type'];
+                //todo validar sample_at no dos el msimo dia
+                //todo validar que no se repita minsal_ws_id
                 $newSuspectCase->sample_at = $dataArray['case']['sample_at'];
                 $newSuspectCase->pcr_sars_cov_2 = 'pending';
                 $newSuspectCase->establishment_id = $establishment_id;
@@ -361,12 +361,12 @@ class WebserviceController extends Controller
             $suspectCase->validator_id = Auth::id();
             $suspectCase->epidemiological_week = Carbon::createFromDate(
                 $suspectCase->sample_at->format('Y-m-d'))->add(1, 'days')->weekOfYear;
-                $file = $request->file('file');
-                $file->storeAs('suspect_cases', $request->get('case_id') . '.pdf');
-                $suspectCase->file = true;
+            $file = $request->file('file');
+            $file->storeAs('suspect_cases', $request->get('case_id') . '.pdf');
+            $suspectCase->file = true;
             $suspectCase->save();
 
-            $responseArray = ['success' => true,'case_id' => $suspectCase->id];
+            $responseArray = ['success' => true, 'case_id' => $suspectCase->id];
             return json_encode($responseArray, JSON_UNESCAPED_SLASHES);
         } catch (\Exception $e) {
             $responseArray = ['success' => false,

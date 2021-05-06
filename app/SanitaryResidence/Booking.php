@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 use OwenIt\Auditing\Contracts\Auditable;
+use Illuminate\Http\Request;
+use App\Patient;
 
 /**
  * Booking
@@ -74,6 +76,17 @@ class Booking extends Model implements Auditable //Authenticatable
 
     public function evolutions() {
         return $this->hasMany('App\SanitaryResidence\Evolution')->orderBy('created_at');
+    }
+
+
+    public function scopeSearchRelease($query, Request $request)
+    {
+        if ($request->input('search') != "") {            
+                $query->whereHas('patient', function ($q) use ($request) {
+                $users = Patient::getPatientsBySearch($request->input('search'));
+                $q->whereIn('id', $users->get('id'));
+              });            
+          }
     }
 
 

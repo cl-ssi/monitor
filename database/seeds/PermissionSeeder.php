@@ -299,6 +299,11 @@ class PermissionSeeder extends Seeder
             'name' => 'SuspectCase: reception with barcode',
             'description' => 'Habilita botón para recepcionar mediante código de barras'
         ]);
+
+        $permission = Permission::create([
+            'name' => 'SuspectCase: bulk load PNTM',
+            'description' => 'Carga masiva desde reporte PNTM'
+        ]);
 /*
         $users = User::all();
         foreach($users as $user) {

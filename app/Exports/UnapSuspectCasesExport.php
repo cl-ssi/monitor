@@ -55,7 +55,7 @@ class UnapSuspectCasesExport implements FromCollection, WithHeadings, WithMappin
             $telephone = $suspectCase->patient->demographic->telephone;
           }
           else {
-            $telephone  = ''
+            $telephone  = '';
           }
         }
 
