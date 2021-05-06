@@ -21,33 +21,83 @@ services:
       - .:/var/www/html
 
   php:
-    build: ./docker/php/
+    image: monitor
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
     networks:
       - net
     ports:
       - "2222:22"
     volumes:
       - .:/var/www/html
-      - ./docker/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+      - ./deploy/php.ini:/usr/local/etc/php/php.ini
+      - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
     depends_on:
+      - redis
       - database
     environment:
+      PHP_IDE_CONFIG: serverName=MonitorServer
+      XDEBUG_CONFIG: client_host=${MYIP:-host.docker.internal}
+      CACHE_DRIVER: redis
+      SESSION_DRIVER: redis
+      SESSION_CONNECTION: session
+      QUEUE_CONNECTION: redis
+      REDIS_HOST: redis
+      ORDERBY: sample_at
+      MINSAL_DATE_INI: "2020-08-26 19:00"
       DB_HOST: database
-      DB_DATABASE: monitor
+      DB_DATABASE: BD_MONITOR
       DB_USERNAME: monitor
       DB_PASSWORD: development
       APP_KEY: base64:499myTpr8iJvYewvoqQfYmobmzUU1DHx7XPx7qF3mnk=
 
+  horizon:
+    image: monitor
+    command: "php artisan horizon"
+    networks:
+      - net
+    volumes:
+      - .:/var/www/html
+      - ./deploy/php.ini:/usr/local/etc/php/php.ini
+      - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+    depends_on:
+      - php
+      - redis
+      - database
+    environment:
+      PHP_IDE_CONFIG: serverName=MonitorServer
+      XDEBUG_CONFIG: client_host=${MYIP:-host.docker.internal}
+      CACHE_DRIVER: redis
+      SESSION_DRIVER: redis
+      SESSION_CONNECTION: session
+      QUEUE_CONNECTION: redis
+      REDIS_HOST: redis
+      ORDERBY: sample_at
+      MINSAL_DATE_INI: "2020-08-26 19:00"
+      DB_HOST: database
+      DB_DATABASE: BD_MONITOR
+      DB_USERNAME: monitor
+      DB_PASSWORD: development
+      APP_KEY: base64:499myTpr8iJvYewvoqQfYmobmzUU1DHx7XPx7qF3mnk=
+
+  redis:
+    image: redis:6-alpine
+    ports:
+      - 6379:6379
+    networks:
+      - net
   database:
     image: mysql:5.7
     networks:
       - net
     environment:
-      MYSQL_DATABASE: monitor
-      MYSQL_USERNAME: monitor
+      MYSQL_DATABASE: BD_MONITOR
+      MYSQL_USER: monitor
       MYSQL_PASSWORD: development
       MYSQL_ROOT_PASSWORD: common404
     volumes:
       - db-data:/var/lib/mysql
+      - ../data:/data
     ports:
-      - "6033:3306"
+      - "3306:3306"
