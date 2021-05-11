@@ -16,6 +16,7 @@ class WSMinsal extends Model
 
     public static function valida_crea_muestra($request)
     {
+        dd($request);
         $response = [];
         $client = new Client();
 
@@ -73,7 +74,10 @@ class WSMinsal extends Model
                 'fecha_muestra' => date('Y-m-d H:i:s'),
                 'tecnica_muestra' => 'RT-PCR', //fijo
                 'tipo_muestra' => $request->sample_type,
-                'busqueda_activa' => ($request->case_type == 'Busqueda activa') ? 'true' : 'false'
+                'busqueda_activa' => ($request->case_type == 'Busqueda activa') ? 'true' : 'false',
+                'id_laboratorio' => $request->id_openagora,
+                'sin_orden_medica' => !$request->medical_order,
+                'epivigila' => $request->epivigila
             )
         );
 
