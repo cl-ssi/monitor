@@ -51,6 +51,36 @@ class WSMinsal extends Model
             $run_medic = $request->run_medic_s_dv . "-" . $request->run_medic_dv;
         }
 
+        switch ($request->sample_type) {
+            case 'TÓRULAS NASOFARÍNGEAS':
+                $sampleType = 'Tórulas Nasofaríngeas';
+                break;
+            case 'ESPUTO':
+                $sampleType = 'Esputo';
+                break;
+            case 'ASPIRADO NASOFARÍNGEO':
+                $sampleType ='Aspirado Nasofaríngeo';
+                break;
+            case 'LAVADO BRONCOALVEOLAR':
+                $sampleType ='Lavado Broncoalveolar';
+                break;
+            case 'ASPIRADO TRAQUEAL':
+                $sampleType ='Aspirado Traqueal';
+                break;
+            case 'MUESTRA SANGUÍNEA':
+                $sampleType ='Muestra sanguínea';
+                break;
+            case 'TEJIDO PULMONAR':
+                $sampleType ='Tejido pulmonar';
+                break;
+            case 'SALIVA':
+                $sampleType ='Saliva';
+                break;
+            case 'OTRO':
+                $sampleType ='Otro';
+                break;
+        }
+
         $array = array(
             'raw' => array(
                 'codigo_muestra_cliente' => $codigo_muestra_cliente + 1,
@@ -73,7 +103,8 @@ class WSMinsal extends Model
                 'paciente_prevision' => 'FONASA', //fijo por el momento
                 'fecha_muestra' => date('Y-m-d H:i:s'),
                 'tecnica_muestra' => 'RT-PCR', //fijo
-                'tipo_muestra' => $request->sample_type,
+                //'tipo_muestra' => $request->sample_type,
+                'tipo_muestra' => $sampleType,
                 'busqueda_activa' => ($request->case_type == 'Busqueda activa') ? 'true' : 'false',
                 'id_laboratorio' => $request->id_openagora,
                 'sin_orden_medica' => !$request->medical_order,
