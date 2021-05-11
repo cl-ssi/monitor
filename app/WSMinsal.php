@@ -16,7 +16,7 @@ class WSMinsal extends Model
 
     public static function valida_crea_muestra($request)
     {
-        dd($request);
+        //dd($request);
         $response = [];
         $client = new Client();
 
