@@ -29,6 +29,8 @@
     @method('POST')
     <div class="form-row">
 
+        <input type="hidden" name="id_laboratory" id="for_id_laboratory" value="{{Auth::user()->laboratory->id_openagora}}">
+
         <fieldset class="form-group col-8 col-md-2">
             <label for="for_run">Run SIN DIGITO VERIF.</label>
             <input type="hidden" class="form-control" id="for_id" name="id" value="{{old('id')}}">
