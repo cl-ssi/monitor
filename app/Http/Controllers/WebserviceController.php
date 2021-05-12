@@ -188,7 +188,7 @@ class WebserviceController extends Controller
                 return json_encode($responsearray);
             }
 
-            if (!isset($dataArray['case']['epivigila']) || $dataArray['case']['epivigila'] == '') {
+            if (!isset($dataArray['case']['epivigila']) || $dataArray['case']['epivigila'] === '') {
                 $responsearray = ['success' => false,
                     'message' => 'Debe ingresar epivigila'];
                 return json_encode($responsearray);
@@ -260,6 +260,7 @@ class WebserviceController extends Controller
                 $newSuspectCase->laboratory_id = $dataArray['case']['laboratory_id'];
                 $newSuspectCase->sample_type = $dataArray['case']['sample_type'];
                 //todo validar sample_at no dos el msimo dia
+                //todo validar que no se repita minsal_ws_id
                 $newSuspectCase->sample_at = $dataArray['case']['sample_at'];
                 $newSuspectCase->pcr_sars_cov_2 = 'pending';
                 $newSuspectCase->establishment_id = $establishment_id;

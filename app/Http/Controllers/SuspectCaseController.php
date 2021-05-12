@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Log;
 use App\Rules\UniqueSampleDateByPatient;
 use GuzzleHttp\Client;
 use App\SuspectCase;
@@ -48,6 +49,7 @@ use App\WSMinsal;
 use MongoDB\Driver\Session;
 use PDO;
 use Redirect;
+use Throwable;
 
 class SuspectCaseController extends Controller
 {
@@ -1982,200 +1984,221 @@ class SuspectCaseController extends Controller
         return view('lab.bulk_load_from_pntm.import');
     }
 
+    /**
+     * @throws Throwable
+     */
     public function bulk_load_import_from_pntm(Request $request){
         set_time_limit(0);
+        $timeStart = microtime(true);
+
         $file = $request->file('file');
-        $errorMsg = '';
+        $warningMsg = '';
+        $casesInsertedNumber = 0;
         $patientsCollection = Excel::toCollection(new PatientImport, $file);
 
         foreach ($patientsCollection[0] as $patient) {
+            if (SuspectCase::where('minsal_ws_id', '=', $patient['id_muestra'])->exists()) {
+                continue;
+            }
 
-            if ($patient['tipo_documento_paciente'] == 'RUN') {
-                if (str_contains($patient['id_paciente'], '-')) {
-                    $run = explode('-', $patient['id_paciente']);
-                    $dv = $run[1];
-                    $run = $run[0];
+            DB::beginTransaction();
+            try {
+                if ($patient['tipo_documento_paciente'] == 'RUN') {
+                    if (str_contains($patient['id_paciente'], '-')) {
+                        $run = explode('-', $patient['id_paciente']);
+                        $dv = $run[1];
+                        $run = $run[0];
+                    } else {
+                        $run = $patient['id_paciente'];
+                        $dv = null;
+                    }
                 } else {
                     $run = $patient['id_paciente'];
                     $dv = null;
                 }
-            } else {
-                $run = $patient['id_paciente'];
-                $dv = null;
-            }
 
-            $patientsDB = Patient::where('run', $run)
-                ->orWhere('other_identification', $run)
-                ->get();
+                $patientsDB = Patient::where('run', $run)
+                    ->orWhere('other_identification', $run)
+                    ->get();
 
-            if ($patientsDB->count() == 0) {
-                $new_patient = new Patient();
-                if ($dv != null) {
-                    $new_patient->run = $run;
-                    $new_patient->dv = $dv;
+                if ($patientsDB->count() == 0) {
+                    $new_patient = new Patient();
+                    if ($dv != null) {
+                        $new_patient->run = $run;
+                        $new_patient->dv = $dv;
+                    } else {
+                        $new_patient->other_identification = $run;
+                    }
+
+                    $new_patient->name = $patient['nombre_paciente'];
+                    $new_patient->fathers_family = $patient['apellido_paterno_paciente'];
+                    $new_patient->mothers_family = $patient['apellido_materno_paciente'];
+
+                    if ($patient['sexo_paciente'] == 'M') {
+                        $new_patient->gender = 'male';
+                    }
+                    if ($patient['sexo_paciente'] == 'F') {
+                        $new_patient->gender = 'female';
+                    }
+                    if ($patient['sexo_paciente'] == 'Intersex') {
+                        $new_patient->gender = 'other';
+                    }
+                    if ($patient['sexo_paciente'] == 'Desconocido') {
+                        $new_patient->gender = 'unknown';
+                    }
+
+                    $new_patient->birthday = Carbon::parse($patient['fecha_nacimiento_paciente']);
+                    //                $new_patient->birthday = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['fecha_nacimiento_paciente']))->format('Y-m-d H:i:s');
+                    $new_patient->save();
+
                 } else {
-                    $new_patient->other_identification = $run;
-                }
-
-                $new_patient->name = $patient['nombre_paciente'];
-                $new_patient->fathers_family = $patient['apellido_paterno_paciente'];
-                $new_patient->mothers_family = $patient['apellido_materno_paciente'];
-
-                if ($patient['sexo_paciente'] == 'M') {
-                    $new_patient->gender = 'male';
-                }
-                if ($patient['sexo_paciente'] == 'F') {
-                    $new_patient->gender = 'female';
-                }
-                if ($patient['sexo_paciente'] == 'Intersex') {
-                    $new_patient->gender = 'other';
-                }
-                if ($patient['sexo_paciente'] == 'Desconocido') {
-                    $new_patient->gender = 'unknown';
-                }
-
-                $new_patient->birthday = Carbon::parse($patient['fecha_nacimiento_paciente']);
-//                $new_patient->birthday = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['fecha_nacimiento_paciente']))->format('Y-m-d H:i:s');
-                $new_patient->save();
-
-            } else {
-                foreach ($patientsDB->first()->suspectCases as $suspectCase) {
-                    if ($suspectCase->sample_at->format('d-m-Y') == $patient['fecha_toma_muestra']) {
-                        $errorMsg .= 'La muestra ' . $patient['id_muestra'] . ' no fué ingresada. El paciente ' . $patient['id_paciente'] . ' ya tiene muestra para el día ' . $patient['fecha_toma_muestra'] . "<br>";
-                        continue 2;
+                    foreach ($patientsDB->first()->suspectCases as $suspectCase) {
+                        if ($suspectCase->sample_at->format('d-m-Y') == $patient['fecha_toma_muestra']) {
+                            $warningMsg .= 'La muestra ' . $patient['id_muestra'] . ' no fué ingresada. El paciente ' . $patient['id_paciente'] . ' ya tiene muestra para el día ' . $patient['fecha_toma_muestra'] . "<br>";
+                            DB::rollBack();
+                            continue 2;
+                        }
                     }
                 }
-            }
 
-            $patient_create = Patient::where('run', $run)
-                ->orWhere('other_identification', $run)
-                ->get()
-                ->first();
-
-            if ($patient_create) {
-                if (!$patient_create->demographic) {
-                    $new_demographic = new Demographic();
-
-                    $commune = Commune::where('name', 'like', '%' . trim($patient['comuna_paciente']) . '%')->first();
-
-                    $new_demographic->address = $patient['dirección_paciente'];
-                    $new_demographic->commune_id = $commune->id;
-                    $new_demographic->region_id = $commune->region_id;
-                    $new_demographic->nationality = $patient['pais_origen_paciente'];
-                    $new_demographic->telephone = $patient['telefono_paciente'];
-                    $new_demographic->email = $patient['paciente_email'];
-                    $new_demographic->patient_id = $patient_create->id;
-
-                    $new_demographic->save();
-                }
-            }
-
-            if ($patient_create) {
-                $new_suspect_case = new SuspectCase();
-                if ($patient['tiposolicitud'] == 'api')
-                    $new_suspect_case->id = $patient['codigo_muestra_cliente'];
-
-                $new_suspect_case->laboratory_id = Auth::user()->laboratory_id;
-                $new_suspect_case->sample_type = $patient['tipo_muestra'];
-                $new_suspect_case->sample_at = Carbon::parse($patient['fecha_toma_muestra'] . ' ' . $patient['hora_muestra']);
-//                $new_suspect_case->sample_at          = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['fecha_toma_muestra']))->format('Y-m-d H:i:s');
-
-                $user = User::where('run', explode('-', $patient['rut_profesional'])[0])
+                $patient_create = Patient::where('run', $run)
+                    ->orWhere('other_identification', $run)
                     ->get()
                     ->first();
 
-                if (!$user) {
-                    $user = Auth::user();
-                }
+                if ($patient_create) {
+                    if (!$patient_create->demographic) {
+                        $new_demographic = new Demographic();
 
-                $new_suspect_case->user_id = $user->id;
+                        $commune = Commune::where('name', 'like', '%' . trim($patient['comuna_paciente']) . '%')->first();
 
-                if ($patient['fecha_recepcion_muestra'] != null) {
-                    $new_suspect_case->reception_at = Carbon::parse($patient['fecha_recepcion_muestra'] . ' ' . $patient['hora_recepcion']);
-//                    $new_suspect_case->reception_at       = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['fecha_recepcion_muestra']))->format('Y-m-d H:i:s');
-                    $new_suspect_case->receptor_id = $user->id;
-                }
+                        $new_demographic->address = $patient['dirección_paciente'];
+                        $new_demographic->commune_id = $commune->id;
+                        $new_demographic->region_id = $commune->region_id;
+                        $new_demographic->nationality = $patient['pais_origen_paciente'];
+                        $new_demographic->telephone = $patient['telefono_paciente'];
+                        $new_demographic->email = $patient['paciente_email'];
+                        $new_demographic->patient_id = $patient_create->id;
 
-                if ($patient['fecha_resultado_muestra'] != null) {
-                    $new_suspect_case->pcr_sars_cov_2_at = Carbon::parse($patient['fecha_resultado_muestra'] . ' ' . $patient['hora_resultado']);
-//                    $new_suspect_case->pcr_sars_cov_2_at       = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['fecha_resultado_muestra']))->format('Y-m-d H:i:s');
-                    $new_suspect_case->validator_id = $user->id;
-
-                }
-
-                if ($patient['resultado'] != null) {
-                    if ($patient['resultado'] == 'Positivo') {
-                        $new_suspect_case->pcr_sars_cov_2 = 'positive';
+                        $new_demographic->save();
                     }
-                    if ($patient['resultado'] == 'Negativo') {
-                        $new_suspect_case->pcr_sars_cov_2 = 'negative';
+                }
+
+                if ($patient_create) {
+                    $new_suspect_case = new SuspectCase();
+//                    if ($patient['tiposolicitud'] == 'api')
+//                        $new_suspect_case->id = $patient['codigo_muestra_cliente'];
+
+                    $new_suspect_case->laboratory_id = Auth::user()->laboratory_id;
+                    $new_suspect_case->sample_type = $patient['tipo_muestra'];
+                    $new_suspect_case->sample_at = Carbon::parse($patient['fecha_toma_muestra'] . ' ' . $patient['hora_muestra']);
+                    //                $new_suspect_case->sample_at          = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['fecha_toma_muestra']))->format('Y-m-d H:i:s');
+
+                    $user = User::where('run', explode('-', $patient['rut_profesional'])[0])
+                        ->get()
+                        ->first();
+
+                    if (!$user) {
+                        $user = Auth::user();
                     }
-                    if ($patient['resultado'] == 'Indeterminado') {
-                        $new_suspect_case->pcr_sars_cov_2 = 'undetermined';
+
+                    $new_suspect_case->user_id = $user->id;
+
+                    if ($patient['fecha_recepcion_muestra'] != null) {
+                        $new_suspect_case->reception_at = Carbon::parse($patient['fecha_recepcion_muestra'] . ' ' . $patient['hora_recepcion']);
+                        //                    $new_suspect_case->reception_at       = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['fecha_recepcion_muestra']))->format('Y-m-d H:i:s');
+                        $new_suspect_case->receptor_id = $user->id;
                     }
-                    if ($patient['resultado'] == 'Muestra no apta') {
-                        $new_suspect_case->pcr_sars_cov_2 = 'rejected';
+
+                    if ($patient['fecha_resultado_muestra'] != null) {
+                        $new_suspect_case->pcr_sars_cov_2_at = Carbon::parse($patient['fecha_resultado_muestra'] . ' ' . $patient['hora_resultado']);
+                        //                    $new_suspect_case->pcr_sars_cov_2_at       = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['fecha_resultado_muestra']))->format('Y-m-d H:i:s');
+                        $new_suspect_case->validator_id = $user->id;
+
                     }
-                } else {
-                    $new_suspect_case->pcr_sars_cov_2 = 'pending';
+
+                    if ($patient['resultado'] != null) {
+                        if ($patient['resultado'] == 'Positivo') {
+                            $new_suspect_case->pcr_sars_cov_2 = 'positive';
+                        }
+                        if ($patient['resultado'] == 'Negativo') {
+                            $new_suspect_case->pcr_sars_cov_2 = 'negative';
+                        }
+                        if ($patient['resultado'] == 'Indeterminado') {
+                            $new_suspect_case->pcr_sars_cov_2 = 'undetermined';
+                        }
+                        if ($patient['resultado'] == 'Muestra no apta') {
+                            $new_suspect_case->pcr_sars_cov_2 = 'rejected';
+                        }
+                    } else {
+                        $new_suspect_case->pcr_sars_cov_2 = 'pending';
+                    }
+
+                    $establishmentCodeDeis = explode(' ', $patient['establecimiento'])[0];
+
+                    $establishment = Establishment::where('new_code_deis', $establishmentCodeDeis)
+                        ->get()
+                        ->first();
+
+                    if ($establishment) {
+                        $new_suspect_case->establishment_id = $establishment['id'];
+                    } else {
+                        $new_suspect_case->establishment_id = 51;
+                        $new_suspect_case->observation = $patient['establecimiento'];
+                    }
+
+                    $new_suspect_case->run_medic = $patient['rut_medico_solicitante'];
+                    $new_suspect_case->minsal_ws_id = $patient['id_muestra'];
+                    $new_suspect_case->epivigila = $patient['epivigila'];
+                    $new_suspect_case->patient_id = $patient_create->id;
+
+                    if ($patient['busqueda_activa'] == 'VERDADERO') {
+                        $new_suspect_case->case_type = 'Busqueda activa';
+                    } else {
+                        $new_suspect_case->case_type = 'Atención médica';
+                    }
+
+                    if ($patient['sexo_paciente'] == 'M') {
+                        $new_suspect_case->gender = 'male';
+                    }
+                    if ($patient['sexo_paciente'] == 'F') {
+                        $new_suspect_case->gender = 'female';
+                    }
+                    if ($patient['sexo_paciente'] == 'Intersex') {
+                        $new_suspect_case->gender = 'other';
+                    }
+                    if ($patient['sexo_paciente'] == 'Desconocido') {
+                        $new_suspect_case->gender = 'unknown';
+                    }
+                    $new_suspect_case->age = $patient['edad_paciente'];
+
+                    $isSaved = $new_suspect_case->save();
+
+                    if ($isSaved && $new_suspect_case->pcr_sars_cov_2_at != null && $new_suspect_case->pcr_sars_cov_2 != null) {
+                        \PDF::loadView('lab.results.result', ['case' => $new_suspect_case])
+                            ->save(storage_path() . '/app/suspect_cases/' . $new_suspect_case->id . '.pdf');
+                        $new_suspect_case->file = true;
+                        $new_suspect_case->save();
+                        $casesInsertedNumber++;
+                    }
                 }
+                DB::commit();
 
-                $establishmentCodeDeis = explode(' ', $patient['establecimiento'])[0];
-
-                $establishment = Establishment::where('new_code_deis', $establishmentCodeDeis)
-                    ->get()
-                    ->first();
-
-                if ($establishment) {
-                    $new_suspect_case->establishment_id = $establishment['id'];
-                } else {
-                    $new_suspect_case->establishment_id = 51;
-                    $new_suspect_case->observation = $patient['establecimiento'];
-                }
-
-                $new_suspect_case->run_medic = $patient['rut_medico_solicitante'];
-                $new_suspect_case->minsal_ws_id = $patient['id_muestra'];
-                $new_suspect_case->epivigila = $patient['epivigila'];
-                $new_suspect_case->patient_id = $patient_create->id;
-
-                if ($patient['busqueda_activa'] == 'VERDADERO') {
-                    $new_suspect_case->case_type = 'Busqueda activa';
-                } else {
-                    $new_suspect_case->case_type = 'Atención médica';
-                }
-
-                if ($patient['sexo_paciente'] == 'M') {
-                    $new_suspect_case->gender = 'male';
-                }
-                if ($patient['sexo_paciente'] == 'F') {
-                    $new_suspect_case->gender = 'female';
-                }
-                if ($patient['sexo_paciente'] == 'Intersex') {
-                    $new_suspect_case->gender = 'other';
-                }
-                if ($patient['sexo_paciente'] == 'Desconocido') {
-                    $new_suspect_case->gender = 'unknown';
-                }
-                $new_suspect_case->age = $patient['edad_paciente'];
-
-                $isSaved = $new_suspect_case->save();
-
-                if ($isSaved && $new_suspect_case->pcr_sars_cov_2_at != null && $new_suspect_case->pcr_sars_cov_2 != null) {
-                    \PDF::loadView('lab.results.result', ['case' => $new_suspect_case])
-                        ->save(storage_path() . '/app/suspect_cases/' . $new_suspect_case->id . '.pdf');
-                    $new_suspect_case->file = true;
-                    $new_suspect_case->save();
-                }
-
+            } catch (Throwable $e) {
+                DB::rollBack();
+                throw $e;
             }
         }
 
-        if ($errorMsg == '') {
-            session()->flash('success', 'El archivo fue cargado exitosamente.');
-        }
-        else{
-            session()->flash('warning', $errorMsg);
-        }
+        $timeElapsed = microtime(true) - $timeStart;
+//        error_log($timeElapsed);
+
+        if ($warningMsg != '') {
+            $warningMsg = "Se insertaron exitosamente $casesInsertedNumber casos." . "<br>" . $warningMsg;
+            session()->flash('warning', $warningMsg);
+        } else
+            session()->flash('success', "Se insertaron exitosamente $casesInsertedNumber casos.");
+
         return redirect()->route('lab.bulk_load_from_pntm.index');
     }
 
