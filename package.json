@@ -16,7 +16,7 @@
         "is-svg": ">=4.2.2",
         "jquery": "^3.5",
         "laravel-mix": "^5.0.1",
-        "lodash": "^4.17.19",
+        "lodash": "^4.17.21",
         "node-notifier": ">=8.0.1",
         "object-path": ">=0.11.5",
         "popper.js": "^1.12",
