@@ -26,6 +26,7 @@
       <data directive="@elsecannot" injection="true" prefix="&lt;?php elseif (app(\Illuminate\Contracts\Auth\Access\Gate::class)-&gt;denies(" suffix=")): ?&gt;" />
       <data directive="@elseguest" injection="true" prefix="&lt;?php elseif(auth()-&gt;guard(" suffix=")-&gt;guest()): ?&gt;" />
       <data directive="@elseif" injection="true" prefix="&lt;?php elseif(" suffix="): ?&gt;" />
+      <data directive="@elserole" injection="true" prefix="&lt;?php _bladeDirective(" suffix="); ?&gt;" />
       <data directive="@empty" injection="true" prefix="&lt;?php if(empty(" suffix=")): ?&gt;" />
       <data directive="@endauth" />
       <data directive="@endcan" />
@@ -41,6 +42,9 @@
       <data directive="@endforeach" />
       <data directive="@endforelse" />
       <data directive="@endguest" />
+      <data directive="@endhasallroles" />
+      <data directive="@endhasanyrole" />
+      <data directive="@endhasrole" />
       <data directive="@endif" />
       <data directive="@endisset" />
       <data directive="@endlang" />
@@ -49,10 +53,12 @@
       <data directive="@endprepend" />
       <data directive="@endproduction" />
       <data directive="@endpush" />
+      <data directive="@endrole" />
       <data directive="@endsection" />
       <data directive="@endslot" />
       <data directive="@endswitch" />
       <data directive="@endunless" />
+      <data directive="@endunlessrole" />
       <data directive="@endverbatim" />
       <data directive="@endwhile" />
       <data directive="@env" injection="true" prefix="&lt;?php if(app()-&gt;environment(" suffix=")): ?&gt;" />
@@ -64,6 +70,9 @@
       <data directive="@forelse" injection="true" prefix="&lt;?php foreach(" suffix="): ?&gt;" />
       <data directive="@guest" injection="true" prefix="&lt;?php if(auth()-&gt;guard(" suffix=")-&gt;guest()): ?&gt;" />
       <data directive="@hasSection" injection="true" prefix="&lt;?php if (! empty(trim($__env-&gt;yieldContent(" suffix=")))): ?&gt;" />
+      <data directive="@hasallroles" injection="true" prefix="&lt;?php _bladeDirective(" suffix="); ?&gt;" />
+      <data directive="@hasanyrole" injection="true" prefix="&lt;?php _bladeDirective(" suffix="); ?&gt;" />
+      <data directive="@hasrole" injection="true" prefix="&lt;?php _bladeDirective(" suffix="); ?&gt;" />
       <data directive="@if" injection="true" prefix="&lt;?php if(" suffix="): ?&gt;" />
       <data directive="@include" injection="true" prefix="&lt;?php echo $__env-&gt;make(" suffix=", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))-&gt;render(); ?&gt;" />
       <data directive="@includeFirst" injection="true" prefix="&lt;?php echo $__env-&gt;first(" suffix=", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))-&gt;render(); ?&gt;" />
@@ -81,6 +90,7 @@
       <data directive="@production" />
       <data directive="@props" injection="true" prefix="&lt;?php $attributes = $attributes-&gt;exceptProps(" suffix="); ?&gt;" />
       <data directive="@push" injection="true" prefix="&lt;?php $__env-&gt;startPush(" suffix="); ?&gt;" />
+      <data directive="@role" injection="true" prefix="&lt;?php _bladeDirective(" suffix="); ?&gt;" />
       <data directive="@section" injection="true" prefix="&lt;?php $__env-&gt;startSection(" suffix="); ?&gt;" />
       <data directive="@sectionMissing" injection="true" prefix="&lt;?php if (empty(trim($__env-&gt;yieldContent(" suffix=")))): ?&gt;" />
       <data directive="@show" />
@@ -89,6 +99,7 @@
       <data directive="@stop" />
       <data directive="@switch" injection="true" prefix="&lt;?php switch(" suffix="): ?&gt;" />
       <data directive="@unless" injection="true" prefix="&lt;?php if (! (" suffix=")): ?&gt;" />
+      <data directive="@unlessrole" injection="true" prefix="&lt;?php _bladeDirective(" suffix="); ?&gt;" />
       <data directive="@unset" injection="true" prefix="&lt;?php unset(" suffix="); ?&gt;" />
       <data directive="@verbatim" />
       <data directive="@while" injection="true" prefix="&lt;?php while(" suffix="): ?&gt;" />
