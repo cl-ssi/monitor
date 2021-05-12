@@ -120,3 +120,6 @@ yarn-error.log
 /monitor-apolo-storage.json
 *.code-workspace
 *.swp
+/.phpstorm.meta.php
+/_ide_helper.php
+/_ide_helper_models.php
