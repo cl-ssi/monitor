@@ -196,6 +196,7 @@
                 <option value="">Seleccione Condición</option>
                 <option value="PCR +" {{ ($booking->entry_criteria == 'PCR +')?'selected':'' }}>PCR +</option>
                 <option value="Otro" {{ ($booking->entry_criteria == 'Otro')?'selected':'' }}>Otro</option>
+                <option value="Antigeno +" {{ ($booking->entry_criteria == 'Antigeno +')?'selected':'' }}>Antigeno +</option>
                 <option value="Contacto Estrecho" {{ ($booking->entry_criteria == 'Contacto Estrecho')?'selected':'' }} >Contacto Estrecho</option>
                 <option value="Sospecha" {{ ($booking->entry_criteria == 'Sospecha')?'selected':'' }} >Sospecha</option>
                 <option value="Probable" {{ ($booking->entry_criteria == 'Probable')?'selected':'' }} >Probable</option>

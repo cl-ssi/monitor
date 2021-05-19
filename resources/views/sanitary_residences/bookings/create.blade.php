@@ -75,6 +75,7 @@
                 <option value="">Seleccione Condición</option>
                 <option value="PCR +">PCR +</option>
                 <option value="Otro">Otro</option>
+                <option value="Antigeno +">Antigeno +</option>
                 <option value="Contacto Estrecho">Contacto Estrecho</option>
                 <option value="Sospecha">Sospecha</option>
                 <option value="Probable">Probable</option>
