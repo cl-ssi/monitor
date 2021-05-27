@@ -9,6 +9,8 @@
       <div class="row">
           <div class="col-6">
               <h5>Carga Masiva PNTM</h5>
+              <span>Carga a monitor Esmeralda los datos descargados desde planilla de PNTM</span>
+              
           </div>
           <div class="col-6 text-right">
               Laboratorio: {{Auth::user()->laboratory->alias}}

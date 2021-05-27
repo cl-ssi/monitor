@@ -7,6 +7,7 @@
 <div class="card">
   <div class="card-body">
     <h5>Carga Masiva</h5>
+    <span>Carga Masiva de un Caso Completo (Incluye creación paciente, recepción y resultado)</span>
     <br>
     <form action="{{ route('lab.bulk_load.import.excel') }}" method="post" enctype="multipart/form-data">
         @csrf
