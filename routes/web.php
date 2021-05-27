@@ -197,9 +197,9 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/index/{laboratory?}','SuspectCaseController@index')->name('index')->middleware('auth','can:SuspectCase: list');
 
         //DIALISIS
-        Route::get('/dialysis/covid/{establishment?}','DialysisPatientController@covid')->name('dialysis.covid');
-        Route::get('/dialysis/{establishment?}','DialysisPatientController@index')->name('dialysis.index');
-        Route::post('/dialysis','DialysisPatientController@store')->name('dialysis.store');
+        Route::get('/dialysis/covid/{establishment?}','DialysisPatientController@covid')->name('dialysis.covid')->middleware('auth');
+        Route::get('/dialysis/{establishment?}','DialysisPatientController@index')->name('dialysis.index')->middleware('auth');
+        Route::post('/dialysis','DialysisPatientController@store')->name('dialysis.store')->middleware('auth');
 
 
 
@@ -240,7 +240,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::get('/minsal/{laboratory}','SuspectCaseReportController@report_minsal')->name('minsal')->middleware('auth');
             Route::get('/reception_report/{laboratory}','SuspectCaseReportController@reception_report')->name('reception_report')->middleware('auth');
             // Route::get('/minsal_ws','SuspectCaseReportController@report_minsal_ws')->name('minsal_ws')->middleware('auth');
-            Route::match(['get','post'],'/minsal_ws','SuspectCaseReportController@report_minsal_ws')->name('minsal_ws');
+            Route::match(['get','post'],'/minsal_ws','SuspectCaseReportController@report_minsal_ws')->name('minsal_ws')->middleware('auth');
             Route::get('/seremi/{laboratory}','SuspectCaseReportController@report_seremi')->name('seremi')->middleware('auth');
             Route::get('/positivesByDateRange','SuspectCaseReportController@positivesByDateRange')->name('positivesByDateRange')->middleware('auth');
             Route::get('/positives_own','SuspectCaseReportController@positivesOwn')->name('positives_own')->middleware('auth');
