@@ -62,7 +62,7 @@
 
                 <fieldset class="form-group col-12 col-md-6">
                     <label for="for_establishment_id">Establecimiento *</label>
-                    <select name="establishment_id" id="for_establishment_id" class="form-control selectpicker" data-live-search="true" multiple="" data-size="10" title="Seleccione..." multiple data-actions-box="true" required>
+                    <select name="establishment_id[]" id="for_establishment_id" class="form-control selectpicker" data-live-search="true" multiple="" data-size="10" title="Seleccione..." multiple data-actions-box="true" required>
                         @foreach($establishments as $establishment)
                             <option value="{{ $establishment->id }}">{{ $establishment->alias }}</option>
                         @endforeach
