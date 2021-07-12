@@ -206,7 +206,6 @@ class WSMinsal extends Model
                 'tipo_muestra' => $suspectCase->sample_type,
                 'busqueda_activa' => ($suspectCase->case_type == 'Busqueda activa') ? 'true' : 'false',
                 'id_laboratorio' => $suspectCase->laboratory->id_openagora
-
             )
         );
 
@@ -358,7 +357,7 @@ class WSMinsal extends Model
         $minsal_ws_id = $suspectCase->minsal_ws_id;
         $response = [];
         $client = new Client();
-        $array = array('raw' => array('id_muestra' => $minsal_ws_id));
+        $array = array('raw' => array('id_muestra' => $minsal_ws_id, 'fecha_recepcion_laboratorio' => now()));
 
         try {
             $response = $client->request('POST', env('WS_RECEPCIONA_MUESTRA'), [
@@ -400,7 +399,7 @@ class WSMinsal extends Model
                         'multipart' => [
                             [
                                 'name'     => 'parametros',
-                                'contents' => '{"id_muestra":"' . $suspectCase->minsal_ws_id .'","resultado":"' . $resultado .'"}'
+                                'contents' => '{"id_muestra":"' . $suspectCase->minsal_ws_id .'","resultado":"' . $resultado .'", "fecha_hora_resultado_laboratorio:"' . $suspectCase->pcr_sars_cov_2_at . '"}'
                             ]
                         ],
                         'headers'  => [ 'ACCESSKEY' => $suspectCase->laboratory->token_ws]
@@ -415,7 +414,7 @@ class WSMinsal extends Model
                             ],
                             [
                                 'name'     => 'parametros',
-                                'contents' => '{"id_muestra":"' . $suspectCase->minsal_ws_id .'","resultado":"' . $resultado .'"}'
+                                'contents' => '{"id_muestra":"' . $suspectCase->minsal_ws_id .'","resultado":"' . $resultado .'", "fecha_hora_resultado_laboratorio:"' . $suspectCase->pcr_sars_cov_2_at . '"}'
                             ]
                         ],
                         'headers'  => [ 'ACCESSKEY' => $suspectCase->laboratory->token_ws]
