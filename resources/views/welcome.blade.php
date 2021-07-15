@@ -106,7 +106,7 @@
                     width="150px" alt="Gobierno de Chile">
 
 
-                <p>Ⓒ 2020 Gobierno de Chile.</p>
+                <p>Ⓒ 2021 Gobierno de Chile.</p>
 
             </div>
 
