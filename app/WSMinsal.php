@@ -399,7 +399,7 @@ class WSMinsal extends Model
                         'multipart' => [
                             [
                                 'name'     => 'parametros',
-                                'contents' => '{"id_muestra":"' . $suspectCase->minsal_ws_id .'","resultado":"' . $resultado .'", "fecha_hora_resultado_laboratorio:"' . $suspectCase->pcr_sars_cov_2_at . '"}'
+                                'contents' => '{"id_muestra":"' . $suspectCase->minsal_ws_id .'","resultado":"' . $resultado .'", "fecha_hora_resultado_laboratorio":"' . $suspectCase->pcr_sars_cov_2_at . '"}'
                             ]
                         ],
                         'headers'  => [ 'ACCESSKEY' => $suspectCase->laboratory->token_ws]
@@ -414,7 +414,7 @@ class WSMinsal extends Model
                             ],
                             [
                                 'name'     => 'parametros',
-                                'contents' => '{"id_muestra":"' . $suspectCase->minsal_ws_id .'","resultado":"' . $resultado .'", "fecha_hora_resultado_laboratorio:"' . $suspectCase->pcr_sars_cov_2_at . '"}'
+                                'contents' => '{"id_muestra":"' . $suspectCase->minsal_ws_id .'","resultado":"' . $resultado .'", "fecha_hora_resultado_laboratorio":"' . $suspectCase->pcr_sars_cov_2_at . '"}'
                             ]
                         ],
                         'headers'  => [ 'ACCESSKEY' => $suspectCase->laboratory->token_ws]
@@ -431,7 +431,7 @@ class WSMinsal extends Model
                         ],
                         [
                             'name'     => 'parametros',
-                            'contents' => '{"id_muestra":"' . $suspectCase->minsal_ws_id .'","resultado":"' . $resultado .'"}'
+                            'contents' => '{"id_muestra":"' . $suspectCase->minsal_ws_id .'","resultado":"' . $resultado .'", "fecha_hora_resultado_laboratorio":"' . $suspectCase->pcr_sars_cov_2_at . '"}'
                         ]
                     ],
                     'headers'  => [ 'ACCESSKEY' => $suspectCase->laboratory->token_ws]
