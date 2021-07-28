@@ -308,6 +308,25 @@
                 </fieldset>
             </div>
 
+            @can('SuspectCase: sequencing')
+            <div class="form-row">
+                <fieldset class="form-group col-6 col-md-1">
+                    <label for="for_ct"> C. T.</label>
+                    <input type="number" class="form-control" name="ct" step=".1" max="45"
+                        id="for_ct" value="{{ $suspectCase->ct }}" required>
+                </fieldset>
+
+                <fieldset class="form-group col-6 col-md-3">
+                <label for="for_candit">Candidato a Secuenciacion</label>
+                <select name="candidate_for_sq" id="for_candidate_for_sq" class="form-control" required>
+                    <option value=""></option>
+                    <option value="1" {{ ($suspectCase->candidate_for_sq == 1) ? 'selected' : '' }}>Si</option>
+                    <option value="0" {{ ($suspectCase->candidate_for_sq === 0) ? 'selected' : '' }}>No</option>                    
+                </select>
+            </fieldset>
+            </div>
+            @endcan
+
         @else
             @include('lab.suspect_cases.partials.show_tecnologo',$suspectCase)
         @endif

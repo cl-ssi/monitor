@@ -44,6 +44,7 @@ use App\Exports\SeremiSuspectCasesExport;
 use App\Imports\PatientImport;
 use App\Imports\DemographicImport;
 use App\Imports\SuspectCaseImport;
+use App\SequencingCriteria;
 
 use App\WSMinsal;
 use MongoDB\Driver\Session;
@@ -781,6 +782,7 @@ class SuspectCaseController extends Controller
             $suspectCase->file = true;
         }
 
+        
 
         if(Auth::user()->can('SuspectCase: reception')){
             if ($request->laboratory_id == null) {
@@ -976,6 +978,14 @@ class SuspectCaseController extends Controller
 
                 }
             }
+        }
+
+
+        if ($request->input('ct')) {            
+            $sequencingCriteria = new SequencingCriteria();
+            $sequencingCriteria->suspect_case_id = $suspectCase->id;
+            $sequencingCriteria->save();
+
         }
 
         return redirect($request->input('referer'));

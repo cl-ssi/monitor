@@ -16,6 +16,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/secuenciacion', function () {
+    return view('secuenciacion');
+});
+Route::get('/secuenciaciondata', function () {
+    return view('secuenciaciondata');
+});
+Route::get('/adddata', function () {
+    return view('adddata');
+});
 
 Route::get('test/fonasa', 'TestController@fonasa');
 
@@ -463,6 +472,18 @@ Route::prefix('sanitary_residences')->name('sanitary_residences.')->middleware('
 
 
 });
+
+Route::prefix('sequencing')->name('sequencing.')->middleware('auth')->group(function () {
+    Route::get('/', 'SequencingCriteriaController@index')->name('index');
+    Route::get('/indexsend', 'SequencingCriteriaController@indexsend')->name('indexsend');
+    Route::get('/create/{suspect_case}','SequencingCriteriaController@create')->name('create');
+    Route::get('/{sequencingCriteria}/edit','SequencingCriteriaController@edit')->name('edit');
+    Route::put('/{sequencingCriteria}', 'SequencingCriteriaController@update')->name('update');
+    Route::put('/{sequencingCriteria}/send', 'SequencingCriteriaController@send')->name('send');
+
+
+});
+
 
 Route::prefix('pending_patient')->name('pending_patient.')->middleware('auth')->group(function () {
    Route::get('/create', 'PendingPatientController@create')->name('create');

@@ -173,6 +173,10 @@
 
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.minsal_ws') }}">WS Minsal</a>
 
+                                @can('SuspectCase: sequencing')
+                                <a class="dropdown-item" href="{{ route('sequencing.index') }}">Secuenciación</a>
+                                @endcan
+
                                 <div class="dropdown-divider"></div>
 
                                 @can('SuspectCase: bulk load')
@@ -186,6 +190,8 @@
                                 @can('SuspectCase: bulk load PNTM')
                                     <a class="dropdown-item" href="{{ route('lab.bulk_load_from_pntm.index') }}">Carga Masiva Resultados PNTM</a>
                                 @endcan
+
+                                
 
                             </div>
 
