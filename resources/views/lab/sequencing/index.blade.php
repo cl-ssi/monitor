@@ -30,10 +30,8 @@
 <div class="table-responsive">
     <table class="table table-sm table-bordered table-striped small">
         <thead>
-            <tr class="text-center">
-                @if(!isset($send))
-                <th>Añadir Datos Secuenciación</th>
-                @endif
+            <tr class="text-center">                
+                <th>Añadir/Editar Datos Secuenciación</th>                
                 <th>Caso Sospecha</th>
                 <th>CT</th>
                 <th>Run o (ID)</th>
