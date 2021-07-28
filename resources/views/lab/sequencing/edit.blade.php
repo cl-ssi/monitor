@@ -62,7 +62,18 @@
         </fieldset>
 
         <fieldset class="form-group col-12 col-sm-7 col-md-4">
-            <label for="for_last_dose_at">Fecha Ultima Dosis</label>
+            <label for="for_name">Tipo de Vacuna</label>
+            <select name="type_of_vaccine" id="for_vaccination" class="form-control">
+                <option value="">Seleccionar Tipo de Vacuna</option>
+                <option value="Sinovac" {{ ($sequencingCriteria->type_of_vaccine == 'Sinovac')?'selected':'' }} >Sinovac</option>
+                <option value="Pfizer" {{ ($sequencingCriteria->type_of_vaccine == 'Pfizer')?'selected':'' }} >Pfizer</option>
+                <option value="Cansino" {{ ($sequencingCriteria->type_of_vaccine == 'Cansino')?'selected':'' }} >Cansino</option>
+                <option value="Astrazeneca" {{ ($sequencingCriteria->type_of_vaccine == 'Astrazeneca')?'selected':'' }} >Astrazeneca</option>
+            </select>
+        </fieldset>
+
+        <fieldset class="form-group col-12 col-sm-7 col-md-4">
+            <label for="for_last_dose_at">Fecha Última Dosis</label>
             <input type="date" class="form-control" id="for_last_dose_at" name="last_dose_at" autocomplete="off" value="{{$sequencingCriteria->last_dose_at}}">
         </fieldset>
     </div>
@@ -214,6 +225,70 @@
         <input class="form-check-input" type="checkbox" name="anosmia" {{ $sequencingCriteria->anosmia?'checked':'' }} value="1">
         <label class="form-check-label">
             Anosmia
+        </label>
+    </div>
+
+    <div class="form-check">
+        <input type="hidden" name="diarrhea" value="0">
+        <input class="form-check-input" type="checkbox" name="diarrhea" {{ $sequencingCriteria->diarrhea?'checked':'' }} value="1">
+        <label class="form-check-label">
+            Diarrea
+        </label>
+    </div>
+
+    <div class="form-check">
+        <input type="hidden" name="nasal_congestion" value="0">
+        <input class="form-check-input" type="checkbox" name="nasal_congestion" {{ $sequencingCriteria->nasal_congestion?'checked':'' }} value="1">
+        <label class="form-check-label">
+            Congestión Nasal
+        </label>
+    </div>
+
+    <div class="form-check">
+        <input type="hidden" name="sickness" value="0">
+        <input class="form-check-input" type="checkbox" name="sickness" {{ $sequencingCriteria->sickness?'checked':'' }} value="1">
+        <label class="form-check-label">
+            Nauseas
+        </label>
+    </div>
+
+    <div class="form-check">
+        <input type="hidden" name="fatigue" value="0">
+        <input class="form-check-input" type="checkbox" name="fatigue" {{ $sequencingCriteria->fatigue?'checked':'' }} value="1">
+        <label class="form-check-label">
+            Fatiga
+        </label>
+    </div>
+
+    <div class="form-check">
+        <input type="hidden" name="vomit" value="0">
+        <input class="form-check-input" type="checkbox" name="vomit" {{ $sequencingCriteria->vomit?'checked':'' }} value="1">
+        <label class="form-check-label">
+            Vómitos
+        </label>
+    </div>
+
+    <div class="form-check">
+        <input type="hidden" name="chest_pain" value="0">
+        <input class="form-check-input" type="checkbox" name="chest_pain" {{ $sequencingCriteria->chest_pain?'checked':'' }} value="1">
+        <label class="form-check-label">
+            Dolor Toracico
+        </label>
+    </div>
+
+    <div class="form-check">
+        <input type="hidden" name="anorexy" value="0">
+        <input class="form-check-input" type="checkbox" name="anorexy" {{ $sequencingCriteria->anorexy?'checked':'' }} value="1">
+        <label class="form-check-label">
+            Anorexia
+        </label>
+    </div>
+
+    <div class="form-check">
+        <input type="hidden" name="asymptomatic" value="0">
+        <input class="form-check-input" type="checkbox" name="asymptomatic" {{ $sequencingCriteria->asymptomatic?'checked':'' }} value="1">
+        <label class="form-check-label">
+            Asintomático
         </label>
     </div>
 

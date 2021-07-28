@@ -15,6 +15,8 @@ class SequencingCriteria extends Model
         'fever', 'throat_pain', 'myalgia', 'pneumonia', 'encephalitis','cough','rhinorrhea',
         'respiratory_distress', 'hypotension', 'headache', 'tachypnea', 'hypoxia', 'cyanosis', 'food_refusal', 'hemodynamic_compromise', 'respiratory_condition_deterioration', 'underlying_disease',
         'ageusia', 'anosmia',
+        'type_of_vaccine', 'diarrhea', 'nasal_congestion', 'sickness',
+        'fatigue', 'vomit', 'chest_pain', 'anorexy', 'asymptomatic',
         'diagnosis'
     ];
 
