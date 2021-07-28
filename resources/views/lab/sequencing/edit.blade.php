@@ -30,6 +30,7 @@
             <label for="for_critery">Criterio*</label>
             <select name="critery" id="for_critery" class="form-control">
                 <option value="">Seleccionar Criterio</option>
+                <option value="Sin Criterio">Sin Criterio</option>
                 <option value="Embarazada" {{ ($sequencingCriteria->critery == 'Embarazada')?'selected':'' }} >Embarazada</option>
                 <option value="Brote" {{ ($sequencingCriteria->critery == 'Brote')?'selected':'' }} >Brote</option>
                 <option value="Irag" {{ ($sequencingCriteria->critery == 'Irag')?'selected':'' }} >Irag</option>

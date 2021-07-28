@@ -313,7 +313,7 @@
                 <fieldset class="form-group col-6 col-md-1">
                     <label for="for_ct"> C. T.</label>
                     <input type="number" class="form-control" name="ct" step=".1" max="45"
-                        id="for_ct" value="{{ $suspectCase->ct }}" required>
+                        id="for_ct" value="{{ $suspectCase->ct }}">
                 </fieldset>
 
                 <fieldset class="form-group col-6 col-md-3">
