@@ -317,7 +317,7 @@
                 </fieldset>
 
                 <fieldset class="form-group col-6 col-md-3">
-                <label for="for_candit">Candidato a Secuenciacion</label>
+                <label for="for_candit">Candidato a Secuenciación</label>
                 <select name="candidate_for_sq" id="for_candidate_for_sq" class="form-control" required>
                     <option value=""></option>
                     <option value="1" {{ ($suspectCase->candidate_for_sq == 1) ? 'selected' : '' }}>Si</option>

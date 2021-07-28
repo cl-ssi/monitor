@@ -981,7 +981,7 @@ class SuspectCaseController extends Controller
         }
 
 
-        if ($request->input('ct')) {            
+        if ($request->input('candidate_for_sq') == 1) {            
             $sequencingCriteria = new SequencingCriteria();
             $sequencingCriteria->suspect_case_id = $suspectCase->id;
             $sequencingCriteria->save();
