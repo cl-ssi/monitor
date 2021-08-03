@@ -36,7 +36,7 @@
                 <option value="PIMS" {{ ($sequencingCriteria->critery == 'PIMS')?'selected':'' }} >PIMS</option>
                 <option value="Reinfección" {{ ($sequencingCriteria->critery == 'Reinfección')?'selected':'' }} >Reinfección</option>
                 <option value="Inusitado" {{ ($sequencingCriteria->critery == 'Inusitado')?'selected':'' }} >Inusitado</option>
-                <option value="Viajero" {{ ($sequencingCriteria->critery == 'Viajero')?'Viajero':'' }} >Viajero</option>
+                <option value="Viajero" {{ ($sequencingCriteria->critery == 'Viajero')?'selected':'' }} >Viajero</option>
             </select>
         </fieldset>
 
