@@ -83,14 +83,9 @@
                 <td>{{$sequencingcriteria->suspectCase->sample_at->format('d-m-Y H:i:s') ?? ''}}</td>
                 <td>{{$sequencingcriteria->suspectCase->pcr_sars_cov_2_at->format('d-m-Y H:i:s') ?? ''}}</td>
                 <td>{{$sequencingcriteria->suspectCase->establishment->name ?? ''}}</td>
-                <td>{{$sequencingcriteria->suspectCase->laboratory->name ?? ''}}</td>                
-                @if(isset($send))                
-                <td>{{$sequencingcriteria->critery ?? '' }}</td>
+                <td>{{$sequencingcriteria->suspectCase->laboratory->name ?? ''}}</td>
+                @if(!isset($send))
                 <td>
-                    @if(isset($send))
-                    {{$sequencingcriteria->send_at?? ''}}
-                    @else
-
                     <form method="POST" class="form-horizontal" action="{{ route('sequencing.send', $sequencingcriteria) }}">
                         @csrf
                         @method('PUT')
@@ -98,15 +93,18 @@
                             <i class="fas fa-share-square"></i> Enviar
                         </button>
                     </form>
-                    @endif
+                </td>
+                @endif
+                @if(isset($send))
+                <td>{{$sequencingcriteria->critery ?? '' }}</td>
+                <td>                    
+                    {{$sequencingcriteria->send_at?? ''}}                   
                 </td>
                 <td>{{$sequencingcriteria->symptoms_at ?? '' }} </td>
                 <td>{{$sequencingcriteria->vaccination ?? '' }} (<small>{{$sequencingcriteria->last_dose_at ?? '' }}</small>)</td>
                 <td>{{$sequencingcriteria->hospitalization_status ?? '' }}</td>
                 <td>{{$sequencingcriteria->diagnosis ?? '' }}</td>
                 <td>{{$sequencingcriteria->upcesp ?? '' }}</td>
-
-
                 @endif
             </tr>
             @endforeach
