@@ -20,10 +20,25 @@ class SequencingCriteria extends Model
         'diagnosis'
     ];
 
+
+    function getUpcEspAttribute()
+    {
+        if ($this->upc == 1) {
+            return 'Si';
+        } elseif ($this->upc == 0) {
+            return 'No';
+        } else {
+            return '';
+        }
+
+    }
+
     
 
     public function suspectCase() {
         return $this->belongsTo('App\SuspectCase');
     }
+
+
 
 }
