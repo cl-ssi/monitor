@@ -58,6 +58,7 @@
                 <th>UPC</th>
                 @else
                 <th>Enviar a secuenciación</th>
+                <th>Eliminar</th>
                 @endif
             </tr>
         </thead>
@@ -80,7 +81,7 @@
                 <td>{{$sequencingcriteria->suspectCase->patient->age ?? ''}}</td>
                 <td>{{$sequencingcriteria->suspectCase->sample_type ?? ''}}</td>
                 <td>{{$sequencingcriteria->suspectCase->covid19 ?? ''}}</td>
-                <td>{{$sequencingcriteria->suspectCase->sample_at->format('d-m-Y H:i:s') ?? ''}}</td>
+                <td>{{$sequencingcriteria->suspectCase->sample_at ? $sequencingcriteria->suspectCase->sample_at->format('d-m-Y H:i:s') : ''}}</td>
                 <td>{{$sequencingcriteria->suspectCase->pcr_sars_cov_2_at->format('d-m-Y H:i:s') ?? ''}}</td>
                 <td>{{$sequencingcriteria->suspectCase->establishment->name ?? ''}}</td>
                 <td>{{$sequencingcriteria->suspectCase->laboratory->name ?? ''}}</td>
@@ -97,8 +98,8 @@
                 @endif
                 @if(isset($send))
                 <td>{{$sequencingcriteria->critery ?? '' }}</td>
-                <td>                    
-                    {{$sequencingcriteria->send_at?? ''}}                   
+                <td>
+                    {{$sequencingcriteria->send_at?? ''}}
                 </td>
                 <td>{{$sequencingcriteria->symptoms_at ?? '' }} </td>
                 <td>{{$sequencingcriteria->vaccination ?? '' }} (<small>{{$sequencingcriteria->last_dose_at ?? '' }}</small>)</td>
@@ -106,9 +107,17 @@
                 <td>{{$sequencingcriteria->diagnosis ?? '' }}</td>
                 <td>{{$sequencingcriteria->upcesp ?? '' }}</td>
                 @endif
+                <td>
+                <form method="POST" id="delete_form" action="{{route('sequencing.destroy', $sequencingcriteria)}}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" onclick="return confirm('¿Está seguro que desea eliminar el criterio de secuenciación?')">
+                        <i class="fas fa-trash-alt"></i>Eliminar Criterio
+                    </button>
+                </form>
+                </td>
             </tr>
             @endforeach
-
         </tbody>
     </table>
 

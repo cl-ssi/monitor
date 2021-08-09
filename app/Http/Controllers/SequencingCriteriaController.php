@@ -110,5 +110,9 @@ class SequencingCriteriaController extends Controller
     public function destroy(SequencingCriteria $sequencingCriteria)
     {
         //
+        $sequencingCriteria->delete();
+        session()->flash('success', 'Se eliminaron los criterios de secuenciación exitosamente');
+        return redirect()->route('sequencing.index');
+
     }
 }

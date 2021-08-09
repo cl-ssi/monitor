@@ -480,6 +480,7 @@ Route::prefix('sequencing')->name('sequencing.')->middleware('auth')->group(func
     Route::get('/{sequencingCriteria}/edit','SequencingCriteriaController@edit')->name('edit');
     Route::put('/{sequencingCriteria}', 'SequencingCriteriaController@update')->name('update');
     Route::put('/{sequencingCriteria}/send', 'SequencingCriteriaController@send')->name('send');
+    Route::delete('/{sequencingCriteria}', 'SequencingCriteriaController@destroy')->name('destroy');
 
 
 });
