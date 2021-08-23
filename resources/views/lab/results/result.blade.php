@@ -156,6 +156,16 @@
                     </td>
                 @endif
 
+                {{-- Lab Arauco --}}
+                @if($case->laboratory->id == 9)
+                    <td>
+                        <div class="firma">
+                            <img src="images/firma_tec_arauco.png" width="140"
+                                 alt="Firma Validador">
+                        </div>
+                    </td>
+                @endif
+
             </tr>
             <tr>
                 <td class="firma">
@@ -163,6 +173,7 @@
                     <br>
                     DIRECTOR TÉCNICO LABORATORIO
                 </td>
+
                 @if($case->laboratory->id == 1)
                     <td class="firma">
                         @if($case->validator)
@@ -172,6 +183,19 @@
                         VALIDADOR
                     </td>
                 @endif
+
+                {{-- Lab Arauco --}}
+                @if($case->laboratory->id == 9)
+                    <td class="firma">
+                        {{-- @if($case->validator) --}}
+                        Mauricio Fuentes Aviles
+                            {{-- {{ $case->validator->name }} --}}
+                        {{-- @endif --}}
+                        <br>
+                        VALIDADOR
+                    </td>
+                @endif
+
             </tr>
         </table>
 
