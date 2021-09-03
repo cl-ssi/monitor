@@ -69,7 +69,7 @@
             <td>{{($case->patient && $case->patient->demographic)?$case->patient->demographic->telephone:''}}</td>
             <td>{{($case->patient && $case->patient->demographic)?$case->patient->demographic->fullAddress:''}}</td>
             <td>{{($case->patient && $case->patient->demographic && $case->patient->demographic->commune)?$case->patient->demographic->commune->name:''}}</td>
-            <td>{{($case->patient) ? $case->patient->birthday->format('Y-m-d') : ''}}</td>
+            <td>{{($case->patient && $case->patient->birthday) ? $case->patient->birthday->format('Y-m-d') : ''}}</td>
 
         </tr>
         @endforeach
