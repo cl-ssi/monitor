@@ -57,7 +57,7 @@
                 <th>Diagnostico</th>
                 <th>UPC</th>
                 @else
-                <th>Enviar a secuenciación</th>
+                <!-- <th>Enviar a secuenciación</th> -->
                 <th>Eliminar</th>
                 @endif
             </tr>
@@ -86,7 +86,7 @@
                 <td>{{$sequencingcriteria->suspectCase->establishment->name ?? ''}}</td>
                 <td>{{$sequencingcriteria->suspectCase->laboratory->name ?? ''}}</td>
                 @if(!isset($send))
-                <td>
+                <!-- <td>
                     <form method="POST" class="form-horizontal" action="{{ route('sequencing.send', $sequencingcriteria) }}">
                         @csrf
                         @method('PUT')
@@ -94,7 +94,7 @@
                             <i class="fas fa-share-square"></i> Enviar
                         </button>
                     </form>
-                </td>
+                </td> -->
                 @endif
                 @if(isset($send))
                 <td>{{$sequencingcriteria->critery ?? '' }}</td>

@@ -17,7 +17,8 @@ class SequencingCriteria extends Model
         'ageusia', 'anosmia',
         'type_of_vaccine', 'diarrhea', 'nasal_congestion', 'sickness',
         'fatigue', 'vomit', 'chest_pain', 'anorexy', 'asymptomatic',
-        'diagnosis'
+        'diagnosis',
+        'local_suspicion', 'result_isp'
     ];
 
 
