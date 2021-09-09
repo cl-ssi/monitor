@@ -311,6 +311,7 @@
             <input name="underlying_disease" id="for_underlying_disease" class="form-control" value="{{ $sequencingCriteria->underlying_disease }}" autocomplete="off">
         </fieldset>
 
+        @can('SuspectCase: sequencing ISP')
         <fieldset class="form-group col-12 col-sm-6 col-md-4">
             <label for="for_local_suspicion">Sospecha Local</label>
             <input name="local_suspicion" id="for_local_suspicion" class="form-control" value="{{$sequencingCriteria->local_suspicion}}" autocomplete="off">
@@ -320,6 +321,7 @@
             <label for="for_result_isp">Resultado ISP</label>
             <input name="result_isp" id="for_result_isp" class="form-control" value="{{$sequencingCriteria->result_isp}}" autocomplete="off">
         </fieldset>
+        @endcan
 
         <fieldset class="form-group col-12 col-sm-12 col-md-12">
             <label for="for_diagnosis">Diagnostico</label>

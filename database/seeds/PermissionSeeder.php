@@ -309,6 +309,11 @@ class PermissionSeeder extends Seeder
             'name' => 'SuspectCase: sequencing',
             'description' => 'Módulo de secuenciación'
         ]);
+
+        $permission = Permission::create([
+            'name' => 'SuspectCase: sequencing ISP',
+            'description' => 'Añade resultado ISP y Sospecha Local'
+        ]);
 /*
         $users = User::all();
         foreach($users as $user) {
