@@ -608,7 +608,6 @@ class SuspectCaseController extends Controller
      */
     public function storeAdmission(Request $request)
     {
-        dd($request);
         $request->validate([
            'id' => new UniqueSampleDateByPatient($request->sample_at)
         ]);
@@ -667,6 +666,9 @@ class SuspectCaseController extends Controller
 
 
         /* Guarda el caso sospecha */
+
+        dd($suspectCase);
+
         $patient->suspectCases()->save($suspectCase);
 
         if($patient->demographic) {
