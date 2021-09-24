@@ -667,8 +667,6 @@ class SuspectCaseController extends Controller
 
         /* Guarda el caso sospecha */
 
-        dd($suspectCase);
-
         $patient->suspectCases()->save($suspectCase);
 
         if($patient->demographic) {
