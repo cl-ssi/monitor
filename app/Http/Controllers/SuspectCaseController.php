@@ -608,6 +608,7 @@ class SuspectCaseController extends Controller
      */
     public function storeAdmission(Request $request)
     {
+        dd($request);
         $request->validate([
            'id' => new UniqueSampleDateByPatient($request->sample_at)
         ]);
@@ -782,7 +783,7 @@ class SuspectCaseController extends Controller
             $suspectCase->file = true;
         }
 
-        
+
 
         if(Auth::user()->can('SuspectCase: reception')){
             if ($request->laboratory_id == null) {
@@ -981,7 +982,7 @@ class SuspectCaseController extends Controller
         }
 
 
-        if ($request->input('candidate_for_sq') == 1) {            
+        if ($request->input('candidate_for_sq') == 1) {
             $sequencingCriteria = new SequencingCriteria();
             $sequencingCriteria->suspect_case_id = $suspectCase->id;
             $sequencingCriteria->save();
