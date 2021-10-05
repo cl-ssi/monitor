@@ -1787,7 +1787,8 @@ class SuspectCaseController extends Controller
                 $fecha_resultado_carbon = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Resultado']));
                 if(!$fecha_resultado_carbon->betweenIncluded($startDate, $endDate)){
                     session()->flash('warning', "La fecha de resultado {$fecha_resultado_carbon->format('d-m-Y')} debe estar entre {$startDate->format('d-m-Y')} y {$endDate->format('d-m-Y')}.");
-                    return view('lab.bulk_load.index');
+                    return redirect()->route('lab.bulk_load.index');
+                    // return view('lab.bulk_load.index');
                 }
             }
 
