@@ -44,6 +44,11 @@ class FusionPatient extends Command
         foreach($patient1->suspectCases as $sc) {
             $sc->update(['patient_id' => $patient2->id]);
         }
+
+        foreach($patient1->audits as $audit) {
+            $audit->update(['auditable_id' => $patient2->id]);
+        }
+
         $patient1->demographic->delete();
         $patient1->delete();
 

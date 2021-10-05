@@ -666,6 +666,7 @@ class SuspectCaseController extends Controller
 
 
         /* Guarda el caso sospecha */
+
         $patient->suspectCases()->save($suspectCase);
 
         if($patient->demographic) {
@@ -782,7 +783,7 @@ class SuspectCaseController extends Controller
             $suspectCase->file = true;
         }
 
-        
+
 
         if(Auth::user()->can('SuspectCase: reception')){
             if ($request->laboratory_id == null) {
@@ -981,7 +982,7 @@ class SuspectCaseController extends Controller
         }
 
 
-        if ($request->input('candidate_for_sq') == 1) {            
+        if ($request->input('candidate_for_sq') == 1) {
             $sequencingCriteria = new SequencingCriteria();
             $sequencingCriteria->suspect_case_id = $suspectCase->id;
             $sequencingCriteria->save();
