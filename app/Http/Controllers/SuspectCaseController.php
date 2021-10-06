@@ -1869,7 +1869,7 @@ class SuspectCaseController extends Controller
                   }
                 }
 
-                if($patient_create){
+                if($patient_create && $patient['Laboratorio'] != null){
                     $new_suspect_case = new SuspectCase();
 
                     $new_suspect_case->laboratory_id      = $patient['Laboratorio'];

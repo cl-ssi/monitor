@@ -180,7 +180,7 @@
                                 <div class="dropdown-divider"></div>
 
                                 @can('SuspectCase: bulk load')
-                                <a class="dropdown-item" href="{{ route('lab.bulk_load.index') }}">Carga Masiva Casos</a>
+                                <a class="dropdown-item" href="{{ route('lab.bulk_load.index') }}">Carga Masiva</a>
                                 @endcan
 
                                 @can('SuspectCase: import results')
