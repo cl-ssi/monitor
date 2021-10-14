@@ -223,6 +223,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         //Route::get('/create','SuspectCaseController@create')->name('create')->middleware('auth','can:SuspectCase: create');
         //Route::post('/','SuspectCaseController@store')->name('store')->middleware('auth','can:SuspectCase: create');
         Route::get('/admission','SuspectCaseController@admission')->name('admission')->middleware('auth','can:SuspectCase: admission');
+        Route::get('/search','SuspectCaseController@search')->name('search')->middleware('auth','can:SuspectCase: admission');
         Route::post('/admission','SuspectCaseController@storeAdmission')->name('store_admission')->middleware('auth','can:SuspectCase: admission');
         Route::get('/{suspect_case}/edit','SuspectCaseController@edit')->name('edit')->middleware('auth','can:SuspectCase: edit');
         Route::put('/{suspect_case}','SuspectCaseController@update')->name('update')->middleware('auth','can:SuspectCase: edit');

@@ -230,6 +230,15 @@ class SuspectCaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function search()
+    {
+        return view('lab.suspect_cases.search');
+
+    }
+
+
+
     public function admission()
     {
         if(!Auth::user()->laboratory_id){
