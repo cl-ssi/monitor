@@ -786,6 +786,7 @@ class SuspectCaseController extends Controller
             $suspectCase->validator_id = Auth::id();
         }
 
+        dd($request->file('forfile'));
         if ($request->hasFile('forfile')) {
             $file = $request->file('forfile');
             $file->storeAs('suspect_cases', $suspectCase->id . '.pdf');
