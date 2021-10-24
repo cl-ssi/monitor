@@ -778,6 +778,7 @@ class SuspectCaseController extends Controller
         }
 
         if ($request->hasFile('forfile')) {
+            dd('hasfile forfile true');
             $file = $request->file('forfile');
             $file->storeAs('suspect_cases', $suspectCase->id . '.pdf');
             $suspectCase->file = true;
