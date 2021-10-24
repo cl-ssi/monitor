@@ -78,6 +78,8 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 @can('SuspectCase: admission')
                                 <a class="dropdown-item" href="{{ route('lab.suspect_cases.admission') }}">Agregar nuevo caso</a>
+
+                                <a class="dropdown-item" href="{{ route('lab.suspect_cases.search') }}">Buscar por ID</a>
                                 @endcan
 
                                 @can('SuspectCase: reception')
