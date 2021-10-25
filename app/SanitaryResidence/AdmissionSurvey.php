@@ -43,7 +43,7 @@ class AdmissionSurvey extends Model implements Auditable //Authenticatable
 
 
     public function patient() {
-        return $this->belongsTo('App\Patient');
+        return $this->belongsTo('App\Patient')->withTrashed();
     }
 
     public function user() {
