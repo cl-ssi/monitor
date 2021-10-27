@@ -882,7 +882,15 @@ class SuspectCaseController extends Controller
                                             $this->suspectCaseBackToPending($suspectCase);
                                             return redirect()->back()->withInput();
                                         }
-                                }else{
+                                //Si en PNTM está con resultado y no es el mismo que se intenta cargar, se devuelve a pending
+                                }elseif ($responseSampleStatus['status'] == 1 && $responseSampleStatus['sample_status'] == 4 && $suspectCase->pcr_sars_cov_2 != 'pending'){
+                                    if ($responseSampleStatus['sample_result'] != $suspectCase->covid19) {
+                                        session()->flash('warning', 'Ya existe muestra en PNTM y el resultado es diferente al especificado ' . $suspectCase->id . ' en MINSAL. ' . $response['msg']);
+                                        $this->suspectCaseBackToPending($suspectCase);
+                                        return redirect()->back()->withInput();
+                                    }
+                                }
+                                else{
                                     session()->flash('warning', 'Error al subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg']);
                                     $this->suspectCaseBackToPending($suspectCase);
                                     return redirect()->back()->withInput();

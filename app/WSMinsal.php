@@ -493,7 +493,7 @@ class WSMinsal extends Model
             ]);
 
             $array = json_decode($response->getBody()->getContents(), true);
-            $response = ['status' => 1, 'sample_status' => $array[0]['estado_muestra']];
+            $response = ['status' => 1, 'sample_status' => $array[0]['estado_muestra'], 'sample_result' => $array[0]['resultado']];
 
         }catch (RequestException $e){
             $response = ['status' => 0, 'msg' => $e->getMessage()];
