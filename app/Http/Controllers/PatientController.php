@@ -26,14 +26,17 @@ class PatientController extends Controller
      */
     public function index(Request $request, Establishment $establishment)
     {
-        $patients = Patient::search($request->input('search'))
-                              ->with('demographic')
-                              ->with('suspectCases')
-                              ->with('contactPatient')
-                              ->orderBy('name')
-                              ->paginate(250);
+        $patients = array();        
+        if (isset($request->search)) {
+            $patients = Patient::search($request->input('search'))
+                ->with('demographic')
+                ->with('suspectCases')
+                ->with('contactPatient')
+                ->orderBy('name')
+                ->paginate(250);
+        } 
 
-        return view('patients.index', compact('patients','request','establishment'));
+        return view('patients.index', compact('patients', 'request', 'establishment'));
     }
 
     /**
@@ -44,8 +47,8 @@ class PatientController extends Controller
     public function create()
     {
 
-        $regions = Region::orderBy('id','ASC')->get();
-        $communes = Commune::orderBy('id','ASC')->get();
+        $regions = Region::orderBy('id', 'ASC')->get();
+        $communes = Commune::orderBy('id', 'ASC')->get();
         $countries = Country::select('name')->orderBy('id', 'ASC')->get();
 
         return view('patients.create', compact('regions', 'communes', 'countries'));
@@ -60,12 +63,14 @@ class PatientController extends Controller
     public function store(Request $request)
     {
 
-        $validatedData = $request->validate([
-            'run' => 'nullable|unique:patients'
-        ],
-        [
-            'run.unique' => 'Este rut ya está registrado.'
-        ]);
+        $validatedData = $request->validate(
+            [
+                'run' => 'nullable|unique:patients'
+            ],
+            [
+                'run.unique' => 'Este rut ya está registrado.'
+            ]
+        );
 
         $patient = new Patient($request->All());
         $patient->save();
@@ -104,17 +109,16 @@ class PatientController extends Controller
             // print_r($audit->new_values);
             // print_r("***<br />");
             if ($key == 0) {
-                if (array_key_exists('status',$audit->old_values)) {
+                if (array_key_exists('status', $audit->old_values)) {
                     $timeline[$audit->created_at->format('Y-m-d H:m')] = 'Paciente creado - ' . $audit->new_values['status'];
-                }else{
+                } else {
                     $timeline[$audit->created_at->format('Y-m-d H:m')] = 'Paciente creado';
                 }
-
-            }else{
-                if (array_key_exists('status',$audit->new_values)) {
+            } else {
+                if (array_key_exists('status', $audit->new_values)) {
                     if ($audit->new_values['status'] == NULL || $audit->new_values['status'] == '') {
                         $timeline[$audit->created_at->format('Y-m-d H:m')] = 'Ambulatorio';
-                    }else{
+                    } else {
                         $timeline[$audit->created_at->format('Y-m-d H:m')] = $audit->new_values['status'];
                     }
                 }
@@ -122,15 +126,15 @@ class PatientController extends Controller
         }
         // dd($timeline);
 
-        $regions = Region::orderBy('id','ASC')->get();
-        $communes = Commune::orderBy('id','ASC')->get();
+        $regions = Region::orderBy('id', 'ASC')->get();
+        $communes = Commune::orderBy('id', 'ASC')->get();
         $countries = Country::select('name')->orderBy('id', 'ASC')->get();
         $event_types = EventType::all();
         $request_types = RequestType::all();
-        $env_communes = array_map('trim',explode(",",env('COMUNAS')));
-        $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
+        $env_communes = array_map('trim', explode(",", env('COMUNAS')));
+        $establishments = Establishment::whereIn('commune_id', $env_communes)->orderBy('name', 'ASC')->get();
         $symptoms = Symptom::All();
-        return view('patients.edit',compact('patient', 'regions', 'communes','event_types', 'request_types','establishments','symptoms', 'countries', 'timeline'));
+        return view('patients.edit', compact('patient', 'regions', 'communes', 'event_types', 'request_types', 'establishments', 'symptoms', 'countries', 'timeline'));
     }
 
     /**
@@ -152,7 +156,7 @@ class PatientController extends Controller
         //$logPatient->save();
 
         //$logDemographic = new Log();
-        if($patient->demographic) {
+        if ($patient->demographic) {
             //$logDemographic->old = clone $patient->demographic;
 
             $patient->demographic->fill($request->all());
@@ -160,13 +164,14 @@ class PatientController extends Controller
 
             //$logDemographic->new = $patient->demographic;
             //$logDemographic->save();
-        }
-        else {
+        } else {
 
-            if ($request->address != null | $request->address != null | $request->deparment != null |
-                    $request->town != null | $request->latitude != null | $request->longitude != null |
-                    $request->email != null | $request->telephone != null | $request->number != null |
-                    $request->region != null | $request->commune != null) {
+            if (
+                $request->address != null | $request->address != null | $request->deparment != null |
+                $request->town != null | $request->latitude != null | $request->longitude != null |
+                $request->email != null | $request->telephone != null | $request->number != null |
+                $request->region != null | $request->commune != null
+            ) {
 
                 $demographic = new Demographic($request->All());
                 $demographic->patient_id = $patient->id;
@@ -204,26 +209,29 @@ class PatientController extends Controller
     public function positives(Request $request)
     {
         $patients = Patient::whereHas('suspectCases', function ($q) {
-            $q->where('pcr_sars_cov_2','positive');
+            $q->where('pcr_sars_cov_2', 'positive');
         })->with('demographic')->get();
 
-        $patients = $patients->whereNotIn('demographic.region',
-                    [
-                    'Arica y Parinacota',
-                    'Antofagasta',
-                    'Atacama',
-                    'Coquimbo',
-                    'Valparaíso',
-                    'Región del Libertador Gral. Bernardo O’Higgins',
-                    'Región del Maule',
-                    'Región del Biobío',
-                    'Región de la Araucanía',
-                    'Región de Los Ríos',
-                    'Región de Los Lagos',
-                    'Región Aisén del Gral. Carlos Ibáñez del Campo',
-                    'Región de Magallanes y de la Antártica Chilena',
-                    'Región Metropolitana de Santiago',
-                    'Región de Ñuble']);
+        $patients = $patients->whereNotIn(
+            'demographic.region',
+            [
+                'Arica y Parinacota',
+                'Antofagasta',
+                'Atacama',
+                'Coquimbo',
+                'Valparaíso',
+                'Región del Libertador Gral. Bernardo O’Higgins',
+                'Región del Maule',
+                'Región del Biobío',
+                'Región de la Araucanía',
+                'Región de Los Ríos',
+                'Región de Los Lagos',
+                'Región Aisén del Gral. Carlos Ibáñez del Campo',
+                'Región de Magallanes y de la Antártica Chilena',
+                'Región Metropolitana de Santiago',
+                'Región de Ñuble'
+            ]
+        );
 
         return view('patients.positives', compact('patients'));
     }
@@ -231,12 +239,12 @@ class PatientController extends Controller
 
     public function getPatient($rut)
     {
-        return Patient::where('run',$rut)->first();
+        return Patient::where('run', $rut)->first();
     }
 
     public function getPatientOtherIdentification($other_identification)
     {
-        return Patient::where('other_identification',$other_identification)->first();
+        return Patient::where('other_identification', $other_identification)->first();
     }
 
     public function georeferencing()
@@ -244,26 +252,24 @@ class PatientController extends Controller
         $date = \Carbon\Carbon::today()->subDays(30);
         // $users = User::where('created_at', '>=', $date)->get();
         // $suspectCases = SuspectCase::latest('id')->get();
-        $suspectCases = SuspectCase::
-        where('pcr_sars_cov_2_at', '>=', $date)->
-                                   where('pcr_sars_cov_2', 'positive')
-                                ->whereHas('patient', function ($q) {
-                                        $q->whereIn('status',['Ambulatorio',''])
-                                          ->OrWhereNULL('status');
-                                    })
+        $suspectCases = SuspectCase::where('pcr_sars_cov_2_at', '>=', $date)->where('pcr_sars_cov_2', 'positive')
+            ->whereHas('patient', function ($q) {
+                $q->whereIn('status', ['Ambulatorio', ''])
+                    ->OrWhereNULL('status');
+            })
 
-                                   ->get();
+            ->get();
 
         $data = array();
         foreach ($suspectCases as $key => $case) {
-          if ($case->pcr_sars_cov_2 == 'positive'){// || $case->pcr_sars_cov_2 == 'pending') {
-              // FIX , pendiente ver que pasó que hay un caso sin paciente asociado
-              if($case->patient) {
-                  if ($case->patient->demographic != null) {
-                    $data[$case->patient->demographic->address . " " . $case->patient->demographic->number . ", " . $case->patient->demographic->commune][$case->patient->run]['paciente']=$case;
-                  }
-              }
-          }
+            if ($case->pcr_sars_cov_2 == 'positive') { // || $case->pcr_sars_cov_2 == 'pending') {
+                // FIX , pendiente ver que pasó que hay un caso sin paciente asociado
+                if ($case->patient) {
+                    if ($case->patient->demographic != null) {
+                        $data[$case->patient->demographic->address . " " . $case->patient->demographic->number . ", " . $case->patient->demographic->commune][$case->patient->run]['paciente'] = $case;
+                    }
+                }
+            }
         }
         // dd($data);
         // foreach ($data as $key1 => $data1) {
@@ -274,7 +280,7 @@ class PatientController extends Controller
         //   }
         // }
 
-        return view('patients.georeferencing.georeferencing', compact('suspectCases','data'));
+        return view('patients.georeferencing.georeferencing', compact('suspectCases', 'data'));
     }
 
     public function export()
@@ -304,13 +310,12 @@ class PatientController extends Controller
             'Direccion'
         );
 
-        $callback = function() use ($filas, $columnas)
-        {
+        $callback = function () use ($filas, $columnas) {
             $file = fopen('php://output', 'w');
-            fputs($file, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
-            fputcsv($file, $columnas,';');
+            fputs($file, $bom = (chr(0xEF) . chr(0xBB) . chr(0xBF)));
+            fputcsv($file, $columnas, ';');
 
-            foreach($filas as $fila) {
+            foreach ($filas as $fila) {
                 fputcsv($file, array(
                     $fila->id,
                     $fila->run,
@@ -320,11 +325,11 @@ class PatientController extends Controller
                     $fila->fathers_family,
                     $fila->mothers_family,
                     $fila->gender,
-                    ($fila->birthday)?$fila->birthday->format('d-m-Y'):'',
-                    ($fila->suspectCases->where('pcr_sars_cov_2','positive')->first())?'Si':'No',
-                    ($fila->demographic)?$fila->demographic->commune:'',
-                    ($fila->demographic)?$fila->demographic->address.' '.$fila->demographic->number:''
-                ),';');
+                    ($fila->birthday) ? $fila->birthday->format('d-m-Y') : '',
+                    ($fila->suspectCases->where('pcr_sars_cov_2', 'positive')->first()) ? 'Si' : 'No',
+                    ($fila->demographic) ? $fila->demographic->commune : '',
+                    ($fila->demographic) ? $fila->demographic->address . ' ' . $fila->demographic->number : ''
+                ), ';');
             }
             fclose($file);
         };
@@ -335,7 +340,8 @@ class PatientController extends Controller
      * Descarga archivo csv de pacientes covid positivos con georeferencia.
      * @return StreamedResponse
      */
-    public function exportPositives(){
+    public function exportPositives()
+    {
         $headers = array(
             "Content-type" => "text/csv",
             "Content-Disposition" => "attachment; filename=pacientes_covid_positivo.csv",
@@ -362,13 +368,12 @@ class PatientController extends Controller
             'Longitud'
         );
 
-        $callback = function() use ($filas, $columnas)
-        {
+        $callback = function () use ($filas, $columnas) {
             $file = fopen('php://output', 'w');
-            fputs($file, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
-            fputcsv($file, $columnas,';');
+            fputs($file, $bom = (chr(0xEF) . chr(0xBB) . chr(0xBF)));
+            fputcsv($file, $columnas, ';');
 
-            foreach($filas as $fila) {
+            foreach ($filas as $fila) {
                 fputcsv($file, array(
                     $fila->id,
                     $fila->run,
@@ -378,32 +383,31 @@ class PatientController extends Controller
                     $fila->fathers_family,
                     $fila->mothers_family,
                     $fila->gender,
-                    ($fila->birthday)?$fila->birthday->format('d-m-Y'):'',
-                    ($fila->demographic)?$fila->demographic->commune:'',
-                    ($fila->demographic)?$fila->demographic->address.' '.$fila->demographic->number:'',
-                    ($fila->demographic)?$fila->demographic->latitude:'',
-                    ($fila->demographic)?$fila->demographic->longitude:''
+                    ($fila->birthday) ? $fila->birthday->format('d-m-Y') : '',
+                    ($fila->demographic) ? $fila->demographic->commune : '',
+                    ($fila->demographic) ? $fila->demographic->address . ' ' . $fila->demographic->number : '',
+                    ($fila->demographic) ? $fila->demographic->latitude : '',
+                    ($fila->demographic) ? $fila->demographic->longitude : ''
 
-                ),';');
+                ), ';');
             }
             fclose($file);
         };
         return response()->stream($callback, 200, $headers);
-
     }
 
     public function inResidence()
     {
-        if(auth()->user()->establishments->count() == 0){
+        if (auth()->user()->establishments->count() == 0) {
             session()->flash('info', 'Usuario no tiene establecimientos asociados.');
             return redirect()->back();
         }
 
-        $patients = Patient::whereHas('demographic', function($q) {
+        $patients = Patient::whereHas('demographic', function ($q) {
             $q->whereIn('commune_id', auth()->user()->communes());
         })
             ->where(function ($q) {
-                $q->where('status','Residencia Sanitaria');
+                $q->where('status', 'Residencia Sanitaria');
             })
             ->with('tracing')
             ->with('demographic')
@@ -414,49 +418,48 @@ class PatientController extends Controller
     }
 
 
-    public function json_to_vars($arr, $d=1, $ka = null){
-        if ($d==1) echo "<pre>";
-        if (is_array($arr)){
-            foreach($arr as $k=>$v){
-                if($d == 1) {
+    public function json_to_vars($arr, $d = 1, $ka = null)
+    {
+        if ($d == 1) echo "<pre>";
+        if (is_array($arr)) {
+            foreach ($arr as $k => $v) {
+                if ($d == 1) {
                     $ka = array($k);
-                }
-                else {
-                    if($d <= count($ka)){
+                } else {
+                    if ($d <= count($ka)) {
                         array_pop($ka);
                     }
                     $ka[] = $k;
                 }
-                if(is_array($v)) {         
-                    $this->json_to_vars($v, $d+1,$ka);
-                }
-                else {
-                    foreach($ka as $key => $x){
-                        if($key ===0)  echo '$fhir';
-                        if(is_int($x)){
-                            echo "[".$x."]";
-                        }
-                        else {
-                            echo "['".$x."']";
+                if (is_array($v)) {
+                    $this->json_to_vars($v, $d + 1, $ka);
+                } else {
+                    foreach ($ka as $key => $x) {
+                        if ($key === 0)  echo '$fhir';
+                        if (is_int($x)) {
+                            echo "[" . $x . "]";
+                        } else {
+                            echo "['" . $x . "']";
                         }
                     }
-                    echo " = '". $v."';\n";
+                    echo " = '" . $v . "';\n";
                 }
             }
         }
-        if ($d==1) echo "</pre>";
+        if ($d == 1) echo "</pre>";
     }
 
-    public function fhir(Patient $patient){
-        $fhir = json_decode(File::get(base_path().'/app/Fhir/bundle.fhir.json'), true);
+    public function fhir(Patient $patient)
+    {
+        $fhir = json_decode(File::get(base_path() . '/app/Fhir/bundle.fhir.json'), true);
 
         return $this->json_to_vars($fhir);
         die();
 
-        
-        $fhir['identifier'][0]['value'] = $patient->run.'-'.$patient->dv;
+
+        $fhir['identifier'][0]['value'] = $patient->run . '-' . $patient->dv;
         $fhir['name'][0]['text'] = $patient->fullName;
-        $fhir['name'][0]['family'] = $patient->fathers_family.' '.$patient->mothers_family;
+        $fhir['name'][0]['family'] = $patient->fathers_family . ' ' . $patient->mothers_family;
         $fhir['name'][0]['_family']['extension'][0]['valueString'] = $patient->fathers_family;
         $fhir['name'][0]['_family']['extension'][1]['valueString'] = $patient->mothers_family;
         $fhir['name'][0]['given'] = explode(' ', $patient->name);
@@ -471,16 +474,15 @@ class PatientController extends Controller
         $fhir['gender'] = $patient->gender;
         $fhir['birthDate'] = $patient->birthday->format('Y-m-d');
 
-        if($patient->deceased_at) {
+        if ($patient->deceased_at) {
             $fhir['deceasedBoolean'] = true;
-        }
-        else {
+        } else {
             $fhir['deceasedBoolean'] = false;
         }
 
         $fhir['address'][0]['use'] = 'home';
-        $fhir['address'][0]['text'] = $patient->demographic->street_type.' '.$patient->demographic->address.' '.$patient->demographic->number.' '.$patient->demographic->department.', '.$patient->demographic->commune->name.', '.$patient->demographic->region->name.', Chile';
-        $fhir['address'][0]['line'][0] = $patient->demographic->street_type.' '.$patient->demographic->address.' '.$patient->demographic->number.' '.$patient->demographic->department;
+        $fhir['address'][0]['text'] = $patient->demographic->street_type . ' ' . $patient->demographic->address . ' ' . $patient->demographic->number . ' ' . $patient->demographic->department . ', ' . $patient->demographic->commune->name . ', ' . $patient->demographic->region->name . ', Chile';
+        $fhir['address'][0]['line'][0] = $patient->demographic->street_type . ' ' . $patient->demographic->address . ' ' . $patient->demographic->number . ' ' . $patient->demographic->department;
         $fhir['address'][0]['_line'][0]['extension'][0]['valueString'] = $patient->demographic->street_type;
         $fhir['address'][0]['_line'][0]['extension'][1]['valueString'] = $patient->demographic->address;
         $fhir['address'][0]['_line'][0]['extension'][2]['valueString'] = $patient->demographic->number;
@@ -516,5 +518,4 @@ class PatientController extends Controller
         //print_r(json_encode($fhir));
         return response()->json($fhir);
     }
-
 }
