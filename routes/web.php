@@ -77,7 +77,7 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
     Route::get('positives', 'PatientController@positives')->name('positives')->middleware('can:Patient: list');
     Route::get('/create', 'PatientController@create')->name('create')->middleware('can:Patient: create');
     Route::post('/', 'PatientController@store')->name('store')->middleware('can:Patient: create');
-    Route::get('/{patient}/edit', 'PatientController@edit')->name('edit')->middleware('can:Patient: edit');
+    Route::get('/{patient}/edit', 'PatientController@edit')->name('edit')->middleware('can:Patient: edit', 'can:Patient: show');
     Route::put('/{patient}', 'PatientController@update')->name('update')->middleware('can:Patient: edit');
     Route::delete('/{patient}', 'PatientController@destroy')->name('destroy')->middleware('can:Patient: delete');
     Route::get('/export', 'PatientController@export')->name('export');
