@@ -64,10 +64,11 @@
             @forelse($patients as $patient)
             <tr>
                 <td>
-                    @canany(['Patient: edit','Patient: demographic edit'])
+                    @canany(['Patient: edit','Patient: demographic edit','Patient: show'])
                     <a href="{{ route('patients.edit', $patient) }}">
-                        Editar
+                        Editar/Ver
                     </a>
+
                     @endcan
                 </td>
                 <td class="text-right" nowrap>{{ $patient->identifier }}</td>

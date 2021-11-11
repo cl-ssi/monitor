@@ -50,6 +50,11 @@ class PermissionSeeder extends Seeder
             'description' => 'Permite visualizar listado de pacientes'
         ]);
 
+        $permission = Permission::create([
+            'name' => 'Patient: show',
+            'description' => 'Permite ver datos de los pacientes sin poder modificar datos'
+        ]);
+
 
         $permission = Permission::create([
             'name' => 'SanitaryResidence: admin',
