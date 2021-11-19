@@ -7,8 +7,13 @@
     </div>
     <div class="col-md-7">
         <h2 class="mb-3">Formulario envío de muestras
-            2019-nCoV </h2><input type="button" class="d-print-none" value="Imprimir"
-                                  onclick="javascript:window.print()">
+            2019-nCoV </h2>
+            
+        <h4> {{ "PNTM: $suspectCase->minsal_ws_id" }} </h4>
+            
+        <input type="button" class="d-print-none" value="Imprimir"
+                                onclick="javascript:window.print()">
+        
 
     </div>
     <div class="col-md-3">
