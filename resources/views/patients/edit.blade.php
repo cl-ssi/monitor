@@ -7,7 +7,7 @@
     <div class="card mb-3">
         <div class="card-body">
 
-            <h3 class="mb-3">Editar Paciente</h3>
+            <h3 class="mb-3">Ver/Editar Paciente</h3>
 
             <form method="POST" class="form-horizontal" action="{{ route('patients.update',$patient) }}">
                 @csrf
@@ -148,9 +148,17 @@
                 </div>
 <!--**********************************-->
                 <div class="row align-items-center">
+                    @can('Patient: edit')                    
                       <div class="col-4 col-sm-2 col-md-2 col-lg-2">
                         <button type="submit" class="btn btn-primary">Guardar</button>
                       </div>
+                    @endcan
+
+                    @can('Patient: show')                    
+                      <div class="col-4 col-sm-2 col-md-2 col-lg-2">
+                        <button type="button" onclick="history.back()" class="btn btn-secondary">Volver</button>
+                      </div>
+                    @endcan
                       <!--<div class="col-4 px-1 text-center">
                           <a class="btn btn-outline-secondary" href="{{ route('patients.index') }}">Cancelar</a>
                       </div>-->

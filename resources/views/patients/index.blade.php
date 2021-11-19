@@ -4,7 +4,7 @@
 
 @section('content')
 
-<h3 class="mb-3"><i class="fas fa-user-injured"></i> Listado de Pacientes</h3>
+<h3 class="mb-3"><i class="fas fa-user-injured"></i> Buscador de Pacientes</h3>
 
 <div class="row">
     @can('Patient: create')
@@ -41,7 +41,7 @@
 </div>
 
 <hr>
-
+@if(!empty($patients))
 <div class="table-responsive">
     <table class="table table-sm table-bordered table-striped small">
         <thead>
@@ -61,13 +61,14 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($patients as $patient)
+            @forelse($patients as $patient)
             <tr>
                 <td>
-                    @canany(['Patient: edit','Patient: demographic edit'])
+                    @canany(['Patient: edit','Patient: demographic edit','Patient: show'])
                     <a href="{{ route('patients.edit', $patient) }}">
-                        Editar
+                        Editar/Ver
                     </a>
+
                     @endcan
                 </td>
                 <td class="text-right" nowrap>{{ $patient->identifier }}</td>
@@ -97,13 +98,17 @@
                 </td>
                 @endcan
             </tr>
-            @endforeach
+            @empty
+            <p class="bg-danger text-white p-1">Debe ingresar valor a buscar</p>
+            @endforelse
         </tbody>
     </table>
 
 
     {{ $patients->appends(request()->query())->links() }}
 </div>
+@endif
+
 
 @endsection
 
