@@ -314,7 +314,8 @@
                         'Report: user performance',
                         'Report: more than two days',
                         'Report: suspect cases by commune',
-                        'Report: positive average by commune'
+                        'Report: positive average by commune',
+                        'Report: cases with barcodes'
                         ])
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
