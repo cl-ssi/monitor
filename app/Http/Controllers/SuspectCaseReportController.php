@@ -1507,7 +1507,8 @@ class SuspectCaseReportController extends Controller
      */
     public function casesWithBarcodes(Request $request){
         $selectedEstablishment = $request->input('establishment_id');
-        $selectedSampleAt = $request->input('sample_at');
+        $selectedSampleAt = $request->input('sample_at_from');
+        $selectedSampleTo = $request->input('sample_at_to');
         $selectedCaseType = $request->input('case_type');
 
         $suspectCases = null;
@@ -1518,9 +1519,9 @@ class SuspectCaseReportController extends Controller
                         $q->where('establishment_id', $selectedEstablishment);
                     }
                 })
-                ->where(function ($q) use ($selectedSampleAt) {
-                    if ($selectedSampleAt) {
-                        $q->whereDate('sample_at', $selectedSampleAt);
+                ->where(function ($q) use ($selectedSampleAt, $selectedSampleTo) {
+                    if ($selectedSampleAt) {                        
+                        $q->where('sample_at','>=', $selectedSampleAt)->where('sample_at','<=', $selectedSampleTo);
                     }
                 })
                 ->where(function($q) use ($selectedCaseType){
@@ -1533,12 +1534,13 @@ class SuspectCaseReportController extends Controller
                 ->where('pcr_sars_cov_2', 'pending')
                 ->latest()
                 ->get();
+                //dd($suspectCases);
         }
 
         $env_communes = array_map('trim',explode(",",env('COMUNAS')));
         $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
 
-        return view('lab.suspect_cases.reports.cases_with_barcodes', compact('suspectCases', 'establishments', 'selectedEstablishment', 'selectedSampleAt', 'selectedCaseType'));
+        return view('lab.suspect_cases.reports.cases_with_barcodes', compact('suspectCases', 'establishments', 'selectedEstablishment', 'selectedSampleAt','selectedSampleTo', 'selectedCaseType'));
 
     }
 

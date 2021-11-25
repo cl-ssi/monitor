@@ -42,9 +42,15 @@
             </div>
 
             <div class="col-12 col-md-4 col-lg-4">
-                <label for="for_sample_at">Toma Muestra*</label>
-                <input class="form-control" type="date" id="for_sample_at" name="sample_at" required
-                       value={{ ($selectedSampleAt) ? \Carbon\Carbon::parse($selectedSampleAt) : '' }}>
+                <label for="for_sample_at_from">Fecha Toma de Muestra Desde*</label>
+                <input class="form-control" type="datetime-local" id="for_sample_at_from" name="sample_at_from" required
+                       value={{ ($selectedSampleAt) ? \Carbon\Carbon::parse($selectedSampleAt)->format('Y-m-d\TH:i') : '' }}>
+            </div>
+
+            <div class="col-12 col-md-4 col-lg-4">
+                <label for="for_sample_at_to">Fecha Toma de Muestra Hasta*</label>
+                <input class="form-control" type="datetime-local" id="for_sample_at_to" name="sample_at_to" required
+                       value={{ ($selectedSampleTo) ? \Carbon\Carbon::parse($selectedSampleTo)->format('Y-m-d\TH:i') : '' }}>
             </div>
 
             <div class="col-12 col-md-4 col-lg-4">
