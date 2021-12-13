@@ -1059,16 +1059,16 @@ class SuspectCaseReportController extends Controller
      */
     public function getHl7Files(Request $request)
     {
-        $patientId = $request->input('patient_id');
+        // $patientId = $request->input('patient_id');
         $patientNames = $request->input('patient_names');
         $patientFamilyFather = $request->input('patient_family_father');
         $patientFamilyMother = $request->input('patient_family_mother');
         $pcrSarsCov2At = Carbon::parse($request->input('observation_datetime'));
         $pcrSarsCov2 = $request->input('observation_value');
         //        $sampleAt = Carbon::parse($request->input('sample_observation_datetime'));
-        $sampleAt = Carbon::parse($request->input('message_datetime'));
+        $sampleAt = Carbon::parse($request->input('sample_observation_datetime'));
         error_log('---------------WEBSERVICE: HL7 FILES TEST----------------');
-        error_log('patientId: ' . $patientId);
+        // error_log('patientId: ' . $patientId);
         error_log('patientNames: ' . $patientNames);
         error_log('patientFamilyFather: ' . $patientFamilyFather);
         error_log('patientFamilyMother: ' . $patientFamilyMother);
