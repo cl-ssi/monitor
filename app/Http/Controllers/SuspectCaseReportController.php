@@ -1076,6 +1076,8 @@ class SuspectCaseReportController extends Controller
         error_log('pcrSarsCov2: ' . $pcrSarsCov2);
         error_log('sampleAt: ' . $sampleAt->toDateString());
 
+        dd('soy el ws hl7');
+
         if (strtoupper($pcrSarsCov2) == "N") {
             $pcrSarsCov2 = "negative";
         }
