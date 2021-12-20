@@ -1076,35 +1076,35 @@ class SuspectCaseReportController extends Controller
         error_log('pcrSarsCov2: ' . $pcrSarsCov2);
         error_log('sampleAt: ' . $sampleAt->toDateString());
 
-        dd('soy el ws hl7');
+        // dd('soy el ws hl7');
 
-        if (strtoupper($pcrSarsCov2) == "N") {
-            $pcrSarsCov2 = "negative";
-        }
-        if (strtoupper($pcrSarsCov2) == "P") {
-            $pcrSarsCov2 = "positive";
-        }
-        if (strtoupper($pcrSarsCov2) == "ENM") {
-            $pcrSarsCov2 = "rejected";
-        }
-        if (strtoupper($pcrSarsCov2) == "INDET") {
-            $pcrSarsCov2 = "undetermined";
-        }
-        //            if(strtoupper($pcrSarsCov2) == "PENDIENTE"){$pcrSarsCov2 = "pending";}
+        // if (strtoupper($pcrSarsCov2) == "N") {
+        //     $pcrSarsCov2 = "negative";
+        // }
+        // if (strtoupper($pcrSarsCov2) == "P") {
+        //     $pcrSarsCov2 = "positive";
+        // }
+        // if (strtoupper($pcrSarsCov2) == "ENM") {
+        //     $pcrSarsCov2 = "rejected";
+        // }
+        // if (strtoupper($pcrSarsCov2) == "INDET") {
+        //     $pcrSarsCov2 = "undetermined";
+        // }
+        // //            if(strtoupper($pcrSarsCov2) == "PENDIENTE"){$pcrSarsCov2 = "pending";}
 
-        $suspectCase = SuspectCase::whereHas('patient', function ($q) use ($patientFamilyFather, $patientFamilyMother, $patientNames) {
-            $q->where('fathers_family', 'LIKE', '%' . $patientFamilyFather . '%')
-                ->where('mothers_family', 'like', '%' . $patientFamilyMother . '%')
-                ->where('name', 'like', '%' . $patientNames . '%');
-        })->whereDate('sample_at', $sampleAt->toDateString())
-            ->orderBy('updated_at', 'desc')->first();
+        // $suspectCase = SuspectCase::whereHas('patient', function ($q) use ($patientFamilyFather, $patientFamilyMother, $patientNames) {
+        //     $q->where('fathers_family', 'LIKE', '%' . $patientFamilyFather . '%')
+        //         ->where('mothers_family', 'like', '%' . $patientFamilyMother . '%')
+        //         ->where('name', 'like', '%' . $patientNames . '%');
+        // })->whereDate('sample_at', $sampleAt->toDateString())
+        //     ->orderBy('updated_at', 'desc')->first();
 
-        if ($suspectCase != null) {
-            $suspectCase->pcr_sars_cov_2 = $pcrSarsCov2;
-            $suspectCase->pcr_sars_cov_2_at = $pcrSarsCov2At;
-            $suspectCase->save();
-            error_log($suspectCase);
-        }
+        // if ($suspectCase != null) {
+        //     $suspectCase->pcr_sars_cov_2 = $pcrSarsCov2;
+        //     $suspectCase->pcr_sars_cov_2_at = $pcrSarsCov2At;
+        //     $suspectCase->save();
+        //     error_log($suspectCase);
+        // }
     }
 
     public function case_chart(Request $request)
