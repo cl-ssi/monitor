@@ -28,6 +28,7 @@ use App\Commune;
 use App\Country;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Log;
 
 use App\User;
 
@@ -1075,6 +1076,14 @@ class SuspectCaseReportController extends Controller
         error_log('pcrSarsCov2At: ' . $pcrSarsCov2At);
         error_log('pcrSarsCov2: ' . $pcrSarsCov2);
         error_log('sampleAt: ' . $sampleAt->toDateString());
+
+       Log::channel('incoming_hl7')->info('Names:' . $patientNames . PHP_EOL .
+                                            'familyFather:' . $patientFamilyFather . PHP_EOL .
+                                            'familyMother:' . $patientFamilyMother . PHP_EOL .
+                                            'pcrSarsCov2At:' . $pcrSarsCov2At . PHP_EOL .
+                                            'pcrSarsCov2:' . $pcrSarsCov2 . PHP_EOL .
+                                            'sampleAt:' . $sampleAt . PHP_EOL); 
+
 
         // dd('soy el ws hl7');
 
