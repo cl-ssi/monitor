@@ -20,10 +20,13 @@
                     <br>
 
                     @if($suspectCase->Covid19 == 'Positivo')
-                        <p><strong>Deberá cumplir una cuarentena por 11 días. </strong>
-                            Sin perjuicio de lo anterior, dicho tiempo puede
+                        <p>
+                            <!-- <strong>Deberá cumplir una cuarentena por 11 días. </strong> -->
+                            La duración de la licencia médica es definida por la autoridad sanitaria
+                            <!-- Sin perjuicio de lo anterior, dicho tiempo puede
                             extenderse si no se ha recuperado totalmente de la
-                            enfermedad.</p>
+                            enfermedad. -->
+                        </p>
                         <br>
 
                         <p>Se le realizará seguimiento telefónico diario por parte
