@@ -661,16 +661,16 @@ class SuspectCaseController extends Controller
 
 
         // ws minsal: previo a guardar, se verifica que la información sea correcta.
-        //  if (env('ACTIVA_WS', false) == true) {
-        //      if ($suspectCase->laboratory->minsal_ws == true) {
-        //          $response = WSMinsal::valida_crea_muestra($request);
-        //          $ws_minsal_id = $response['msg'];
-        //          if ($response['status'] == 0) {
-        //              session()->flash('warning', 'Error al validar muestra . ' . $response['msg']);
-        //              return redirect()->back()->withInput();
-        //          }
-        //      }
-        //  }
+         if (env('ACTIVA_WS', false) == true) {
+             if ($suspectCase->laboratory->minsal_ws == true) {
+                 $response = WSMinsal::valida_crea_muestra($request);
+                 $ws_minsal_id = $response['msg'];
+                 if ($response['status'] == 0) {
+                     session()->flash('warning', 'Error al validar muestra . ' . $response['msg']);
+                     return redirect()->back()->withInput();
+                 }
+             }
+         }
 
 
 
