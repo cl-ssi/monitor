@@ -2347,6 +2347,12 @@ class SuspectCaseController extends Controller
 
             if ($id_esmeralda != NULL && $resultado != NULL && $fecha_resultado != NULL) {
                 $suspectCase = SuspectCase::find($id_esmeralda);
+
+                if($suspectCase->laboratory_id != auth()->user()->laboratory_id){
+                    session()->flash('warning', 'La muestra ' . $suspectCase->id . ' no corresponde a su laboratorio.');
+                    return view('lab.suspect_cases.import_results');
+                }
+
                 if ($suspectCase) {
                     $suspectCase->pcr_sars_cov_2 = $resultado;
                     $suspectCase->pcr_sars_cov_2_at = $fecha_resultado;
