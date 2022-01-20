@@ -26,6 +26,7 @@ use App\Region;
 use App\WSMinsal;
 use App\Commune;
 use App\Country;
+use App\Hl7ResultMessage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Log;
@@ -1060,60 +1061,77 @@ class SuspectCaseReportController extends Controller
      */
     public function getHl7Files(Request $request)
     {
-        // $patientId = $request->input('patient_id');
         $patientNames = $request->input('patient_names');
         $patientFamilyFather = $request->input('patient_family_father');
         $patientFamilyMother = $request->input('patient_family_mother');
         $pcrSarsCov2At = Carbon::parse($request->input('observation_datetime'));
         $pcrSarsCov2 = $request->input('observation_value');
-        //        $sampleAt = Carbon::parse($request->input('sample_observation_datetime'));
         $sampleAt = Carbon::parse($request->input('sample_observation_datetime'));
-        error_log('---------------WEBSERVICE: HL7 FILES TEST----------------');
-        // error_log('patientId: ' . $patientId);
-        error_log('patientNames: ' . $patientNames);
-        error_log('patientFamilyFather: ' . $patientFamilyFather);
-        error_log('patientFamilyMother: ' . $patientFamilyMother);
-        error_log('pcrSarsCov2At: ' . $pcrSarsCov2At);
-        error_log('pcrSarsCov2: ' . $pcrSarsCov2);
-        error_log('sampleAt: ' . $sampleAt->toDateString());
+        $messageId = $request->input('message_id');
+        $fullMessage = $request->input('full_message');
 
-       Log::channel('incoming_hl7')->info('Names:' . $patientNames . PHP_EOL .
+        $hl7ResultMessage = new Hl7ResultMessage();
+        $hl7ResultMessage->full_message = $fullMessage;
+        $hl7ResultMessage->message_id = $messageId;
+        $hl7ResultMessage->patient_names = $patientNames;
+        $hl7ResultMessage->patient_family_father = $patientFamilyFather;
+        $hl7ResultMessage->patient_family_mother = $patientFamilyMother;
+        $hl7ResultMessage->observation_datetime = $pcrSarsCov2At;
+        $hl7ResultMessage->observation_value = $pcrSarsCov2;
+        $hl7ResultMessage->sample_observation_datetime = $sampleAt;
+        $hl7ResultMessage->save();
+
+        Log::channel('incoming_hl7')->info('Names:' . $patientNames . PHP_EOL .
                                             'familyFather:' . $patientFamilyFather . PHP_EOL .
                                             'familyMother:' . $patientFamilyMother . PHP_EOL .
                                             'pcrSarsCov2At:' . $pcrSarsCov2At . PHP_EOL .
                                             'pcrSarsCov2:' . $pcrSarsCov2 . PHP_EOL .
                                             'sampleAt:' . $sampleAt . PHP_EOL); 
 
-
-        // dd('soy el ws hl7');
-
-        // if (strtoupper($pcrSarsCov2) == "N") {
+        // if (strtoupper($pcrSarsCov2) == "Negativo") {
         //     $pcrSarsCov2 = "negative";
         // }
-        // if (strtoupper($pcrSarsCov2) == "P") {
+        // if (strtoupper($pcrSarsCov2) == "Positivo") {
         //     $pcrSarsCov2 = "positive";
         // }
-        // if (strtoupper($pcrSarsCov2) == "ENM") {
+        // if (strtoupper($pcrSarsCov2) == "Rechazado") {
         //     $pcrSarsCov2 = "rejected";
         // }
-        // if (strtoupper($pcrSarsCov2) == "INDET") {
+        // if (strtoupper($pcrSarsCov2) == "Indeterminado") {
         //     $pcrSarsCov2 = "undetermined";
         // }
-        // //            if(strtoupper($pcrSarsCov2) == "PENDIENTE"){$pcrSarsCov2 = "pending";}
+        // // if(strtoupper($pcrSarsCov2) == "PENDIENTE"){$pcrSarsCov2 = "pending";}
 
-        // $suspectCase = SuspectCase::whereHas('patient', function ($q) use ($patientFamilyFather, $patientFamilyMother, $patientNames) {
+        // $suspectCases = SuspectCase::whereHas('patient', function ($q) use ($patientFamilyFather, $patientFamilyMother, $patientNames) {
         //     $q->where('fathers_family', 'LIKE', '%' . $patientFamilyFather . '%')
         //         ->where('mothers_family', 'like', '%' . $patientFamilyMother . '%')
         //         ->where('name', 'like', '%' . $patientNames . '%');
-        // })->whereDate('sample_at', $sampleAt->toDateString())
-        //     ->orderBy('updated_at', 'desc')->first();
+        //     })
+        //     ->whereDate('sample_at', $sampleAt->toDateString())
+        //     ->where('pcr_sars_cov_2', 'pending');
+        //     // ->orderBy('updated_at', 'desc')->first();
 
-        // if ($suspectCase != null) {
-        //     $suspectCase->pcr_sars_cov_2 = $pcrSarsCov2;
-        //     $suspectCase->pcr_sars_cov_2_at = $pcrSarsCov2At;
-        //     $suspectCase->save();
-        //     error_log($suspectCase);
+        // if($suspectCases != null){
+        //     if($suspectCases->count() === 1){
+        //         $suspectCases->first()->pcr_sars_cov_2 = $pcrSarsCov2;
+        //         $suspectCases->first()->pcr_sars_cov_2_at = $pcrSarsCov2At;
+        //         $suspectCases->first()->hl7_message_id = $messageId;
+        //         $suspectCases->first()->save();
+
+        //         //enviar por pntm
+        //         //marcar mensaje listo
+
+        //     }
+        //     elseif($suspectCases->count() >= 1){
+        //         $suspectCases->update(['hl7_message_id', $messageId]);
+        //     }elseif($suspectCases->count() === 0){
+        //         //marcar el mensaje como pendiente
+        //     }
+
+        // }else{
+        //     //marcar el mensaje como pendiente
         // }
+        
     }
 
     public function case_chart(Request $request)
