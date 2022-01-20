@@ -11,7 +11,7 @@
         <table class="table table-sm table-bordered">
             <thead>
                 <tr class="table-active">
-                    <th>Casos del Servicio de Salud</th>
+                    <th>Casos</th>
                     <th>Hom</th>
                     <th>Muj</th>
                     <th>Total</th>
@@ -417,6 +417,7 @@
             backgroundColor: '#f8fafc',
             hAxis: {
                 textStyle : {
+                    format: 'short',
                     fontSize: 9 // or the number you want
                 },
                 gridlines:{count: {{ count($evolucion) }} },
