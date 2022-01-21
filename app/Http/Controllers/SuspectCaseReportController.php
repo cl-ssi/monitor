@@ -904,6 +904,7 @@ class SuspectCaseReportController extends Controller
 
         $casosCreados = SuspectCase::whereNull('minsal_ws_id')
             ->whereNull('external_laboratory')
+            ->whereNull('reception_at')
             ->where('created_at', '>=', $from)->get();
 
        foreach ($casosCreados as $case){
