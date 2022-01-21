@@ -896,19 +896,22 @@ class SuspectCaseReportController extends Controller
     {
         set_time_limit(3600);
 
-        $from = '2020-10-30 08:35:23'; //date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+        $from = '2022-01-20 14:15:00'; //date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $errors = '';
 
-        $case = SuspectCase::find('114122');
+        // $case = SuspectCase::find('114122');
+        // dump($case);
 
-        dump($case);
+        $casosCreados = SuspectCase::whereNull('minsal_ws_id')
+            ->whereNull('external_laboratory')
+            ->where('created_at', '>=', $from)->get();
 
-//        foreach ($casosCreados as $case){
+       foreach ($casosCreados as $case){
             $response = WSMinsal::crea_muestra_v2($case);
             if ($response['status'] == 0) {
                 $errors = $errors . "case: " .$case->id . " " . $response['msg'] . "<br>";
             }
-//        }
+       }
 
         if($errors){
             session()->flash('info', $errors);
@@ -929,7 +932,7 @@ class SuspectCaseReportController extends Controller
     {
         set_time_limit(3600);
 
-        $from = '2022-01-21 14:15:00'; //date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
+        $from = '2022-01-20 14:15:00'; //date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
         $errors = '';
 
         $casosRecepcionados = SuspectCase::whereNotNull('minsal_ws_id')
