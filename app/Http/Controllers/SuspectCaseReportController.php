@@ -907,8 +907,7 @@ class SuspectCaseReportController extends Controller
             ->whereNull('reception_at')
             ->where('created_at', '>=', $from)->get();
 
-
-        dd($casosCreados);
+        // dd($casosCreados);
 
        foreach ($casosCreados as $case){
             $response = WSMinsal::crea_muestra_v2($case);
