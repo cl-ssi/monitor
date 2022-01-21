@@ -2292,6 +2292,12 @@ class SuspectCaseController extends Controller
 //        return redirect()->route('lab.bulk_load_from_pntm.index');
 //    }
 
+    /**
+     * Importa planilla de resultados, genera pdf y carga a pntm si requiere.
+     *
+     * @param Request $request
+     * @return void
+     */
     public function results_import(Request $request){
         $file = $request->file('file');
         $patientsCollection = Excel::toCollection(new PatientImport, $file);

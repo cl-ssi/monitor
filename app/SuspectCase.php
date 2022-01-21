@@ -40,7 +40,7 @@ class SuspectCase extends Model implements Auditable
         'observation', 'minsal_ws_id','case_type', 'positive_condition',
         'patient_id', 'laboratory_id', 'establishment_id',
         'user_id',
-        'ct', 'candidate_for_sq'
+        'ct', 'candidate_for_sq', 'hl7_result_message_id'
     ];
 
     public function patient() {

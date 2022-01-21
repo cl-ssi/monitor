@@ -24,7 +24,7 @@ class CreateHl7ResultMessagesTable extends Migration
             $table->string('observation_value')->nullable();
             $table->string('sample_observation_datetime')->nullable();
             $table->string('url')->nullable();
-            $table->enum('status', ['pending', 'assigned_to_case', 'case_not_found', 'too_many_cases']);
+            $table->enum('status', ['pending', 'assigned_to_case', 'case_not_found', 'too_many_cases'])->nullable();
             $table->timestamps();
         });
     }
