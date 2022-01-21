@@ -911,7 +911,7 @@ class SuspectCaseReportController extends Controller
             })
             ->get();
 
-        dd($casosCreados);
+        // dd($casosCreados);
 
        foreach ($casosCreados as $case){
             $response = WSMinsal::crea_muestra_v2($case);
