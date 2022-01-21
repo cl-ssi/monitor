@@ -15,14 +15,16 @@ class CreateHl7ResultMessagesTable extends Migration
     {
         Schema::create('hl7_result_messages', function (Blueprint $table) {
             $table->id();
-            $table->text('full_message');
-            $table->string('message_id');
-            $table->string('patient_names');
-            $table->string('patient_family_father');
-            $table->string('patient_family_mother');
-            $table->string('observation_datetime');
-            $table->string('observation_value');
-            $table->string('sample_observation_datetime');
+            $table->text('full_message')->nullable();
+            $table->string('message_id')->nullable();
+            $table->string('patient_names')->nullable();
+            $table->string('patient_family_father')->nullable();
+            $table->string('patient_family_mother')->nullable();
+            $table->string('observation_datetime')->nullable();
+            $table->string('observation_value')->nullable();
+            $table->string('sample_observation_datetime')->nullable();
+            $table->string('url')->nullable();
+            $table->enum('status', ['pending', 'assigned_to_case', 'case_not_found', 'too_many_cases']);
             $table->timestamps();
         });
     }
