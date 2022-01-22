@@ -904,7 +904,7 @@ class SuspectCaseReportController extends Controller
 
         $casosCreados = SuspectCase::whereNull('minsal_ws_id')
             ->whereNull('external_laboratory')
-            ->whereNull('reception_at')
+            //->whereNull('reception_at')
             ->where('created_at', '>=', $from)
             ->whereHas('laboratory', function ($q){
               $q->where('minsal_ws', 1);  
