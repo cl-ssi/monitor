@@ -2015,6 +2015,10 @@ class SuspectCaseController extends Controller
         return view('lab.bulk_load_from_pntm.import');
     }
 
+    public function index_bulk_load_from_pntm_no_creation(){
+        return view('lab.bulk_load_from_pntm.import_no_creation');
+    }
+
     /**
      * @throws Throwable
      */
@@ -2233,6 +2237,99 @@ class SuspectCaseController extends Controller
         return redirect()->route('lab.bulk_load_from_pntm.index');
     }
 
+/**
+     * @throws Throwable
+     */
+    public function bulk_load_import_from_pntm_no_creation(Request $request){  
+     
+        set_time_limit(0);
+        $timeStart = microtime(true);
+
+        $file = $request->file('file');
+        $warningMsg = '';
+        $casesInsertedNumber = 0;
+        $patientsCollection = Excel::toCollection(new PatientImport, $file);
+
+        foreach ($patientsCollection[0] as $patient) {
+            // if (SuspectCase::where('minsal_ws_id', '=', $patient['id_muestra'])->exists()) {
+            //     continue;
+            // }
+
+            DB::beginTransaction();
+            try {
+              
+
+                if (SuspectCase::where('minsal_ws_id', '=', $patient['id_muestra'])->exists()) {
+                    $new_suspect_case = SuspectCase::where('minsal_ws_id', $patient['id_muestra'])->first();
+
+
+                    if($new_suspect_case->laboratory_id == 13 && $new_suspect_case->derivation_internal_lab_at != null && $new_suspect_case->pcr_sars_cov_2 == 'pending'){
+                        // dump($new_suspect_case);
+
+                        if ($patient['fecha_recepcion_muestra'] != null && $new_suspect_case->reception_at == null) {
+                            $new_suspect_case->reception_at = Carbon::parse($patient['fecha_recepcion_muestra'] . ' ' . $patient['hora_recepcion']);
+                            //                    $new_suspect_case->reception_at       = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['fecha_recepcion_muestra']))->format('Y-m-d H:i:s');
+                            $new_suspect_case->receptor_id = Auth::user()->id;
+                            $new_suspect_case->ws_recepciona_muestra_added_at = Carbon::parse($patient['fecha_recepcion_muestra'] . ' ' . $patient['hora_recepcion']);
+                        }
+
+                        if ($patient['fecha_resultado_muestra'] != null && $new_suspect_case->pcr_sars_cov_2_at == null) {
+                            $new_suspect_case->pcr_sars_cov_2_at = Carbon::parse($patient['fecha_resultado_muestra'] . ' ' . $patient['hora_resultado']);
+                            //                    $new_suspect_case->pcr_sars_cov_2_at       = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['fecha_resultado_muestra']))->format('Y-m-d H:i:s');
+                            $new_suspect_case->validator_id = Auth::user()->id;
+                            $new_suspect_case->pcr_result_added_at = Carbon::now(); //poner a la funcion de arriba
+                            $new_suspect_case->ws_resultado_muestra_added_at = Carbon::parse($patient['fecha_resultado_muestra'] . ' ' . $patient['hora_recepcion']);
+                        }
+
+                        if ($patient['resultado'] != null && $new_suspect_case->pcr_sars_cov_2 == 'pending') {
+                            if ($patient['resultado'] == 'Positivo') {
+                                $new_suspect_case->pcr_sars_cov_2 = 'positive';
+                            }
+                            if ($patient['resultado'] == 'Negativo') {
+                                $new_suspect_case->pcr_sars_cov_2 = 'negative';
+                            }
+                            if ($patient['resultado'] == 'Indeterminado') {
+                                $new_suspect_case->pcr_sars_cov_2 = 'undetermined';
+                            }
+                            if ($patient['resultado'] == 'Muestra no apta') {
+                                $new_suspect_case->pcr_sars_cov_2 = 'rejected';
+                            }
+                        } else {
+                            $new_suspect_case->pcr_sars_cov_2 = 'pending';
+                        }
+
+                        $isSaved = $new_suspect_case->save();
+
+                        if ($isSaved && $new_suspect_case->pcr_sars_cov_2_at != null && $new_suspect_case->pcr_sars_cov_2 != null) {
+                            \PDF::loadView('lab.results.result', ['case' => $new_suspect_case])
+                                ->save(storage_path() . '/app/suspect_cases/' . $new_suspect_case->id . '.pdf');
+                            $new_suspect_case->file = true;
+                            $new_suspect_case->save();
+                            $casesInsertedNumber++;
+                        }
+                    }
+                }
+                DB::commit();
+
+            } catch (Throwable $e) {
+                DB::rollBack();
+                throw $e;
+            }
+        }
+
+        $timeElapsed = microtime(true) - $timeStart;
+//        error_log($timeElapsed);
+
+        if ($warningMsg != '') {
+            $warningMsg = "Se insertaron exitosamente $casesInsertedNumber casos." . "<br>" . $warningMsg;
+            session()->flash('warning', $warningMsg);
+        } else
+            session()->flash('success', "Se insertaron exitosamente $casesInsertedNumber casos.");
+
+        return redirect()->route('lab.bulk_load_from_pntm.index');
+    }
+
+
 //    public function bulk_load_import_from_pntm_passport(Request $request){
 //        set_time_limit(0);
 //        $file = $request->file('file');
@@ -2398,8 +2495,6 @@ class SuspectCaseController extends Controller
         session()->flash('success', 'Se han modificado ' . $cont . ' casos.');
         return view('lab.suspect_cases.import_results');
     }
-
-
 
     public function ws_test(){
         $case = SuspectCase::find(507934);

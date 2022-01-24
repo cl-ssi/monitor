@@ -324,6 +324,9 @@ Route::prefix('lab')->name('lab.')->group(function () {
     Route::prefix('bulk_load_from_pntm')->name('bulk_load_from_pntm.')->group(function () {
         Route::get('/','SuspectCaseController@index_bulk_load_from_pntm')->name('index')->middleware('auth');
         Route::post('/import','SuspectCaseController@bulk_load_import_from_pntm')->name('import.excel')->middleware('auth');
+
+        Route::get('/no-creation','SuspectCaseController@index_bulk_load_from_pntm_no_creation')->name('index.no.creation')->middleware('auth');
+        Route::post('/import-no-creation','SuspectCaseController@bulk_load_import_from_pntm_no_creation')->name('import.excel.no.creation')->middleware('auth');
         Route::post('/importpassport','SuspectCaseController@bulk_load_import_from_pntm_passport')->name('import.excel.passport')->middleware('auth');
     });
 

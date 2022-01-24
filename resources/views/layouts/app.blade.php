@@ -193,6 +193,9 @@
                                     <a class="dropdown-item" href="{{ route('lab.bulk_load_from_pntm.index') }}">Carga Masiva Resultados PNTM</a>
                                 @endcan
 
+                                @can('SuspectCase: bulk load PNTM')
+                                    <a class="dropdown-item" href="{{ route('lab.bulk_load_from_pntm.index.no.creation') }}">Carga Masiva Resultados PNTM HETG a Bluelab</a>
+                                @endcan
                                 
 
                             </div>
