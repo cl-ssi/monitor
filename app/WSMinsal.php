@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class WSMinsal extends Model
 {
@@ -340,6 +341,7 @@ class WSMinsal extends Model
 
             $array = json_decode($response->getBody()->getContents(), true);
             $suspectCase->minsal_ws_id = $array[0]['id_muestra'];
+            $suspectCase->ws_crea_muestra_added_at = Carbon::now();
             $suspectCase->save();
             $response = ['status' => 1, 'msg' => $array[0]['id_muestra']];
 
@@ -364,6 +366,9 @@ class WSMinsal extends Model
                   'json' => $array,
                   'headers'  => [ 'ACCESSKEY' => $suspectCase->laboratory->token_ws]
             ]);
+
+            $suspectCase->ws_recepciona_muestra_added_at = Carbon::now();
+            $suspectCase->save();
 
             $response = ['status' => 1, 'msg' => 'OK'];
 
@@ -437,6 +442,9 @@ class WSMinsal extends Model
                     'headers'  => [ 'ACCESSKEY' => $suspectCase->laboratory->token_ws]
                 ]);
             }
+
+            $suspectCase->ws_resultado_muestra_added_at = Carbon::now();
+            $suspectCase->save();
             $response = ['status' => 1, 'msg' => 'OK'];
 
         } catch (RequestException $e) {
@@ -462,6 +470,8 @@ class WSMinsal extends Model
                   'headers'  => [ 'ACCESSKEY' => $suspectCase->laboratory->token_ws]
             ]);
 
+            $suspectCase->ws_cambia_laboratorio_added_at = Carbon::now();
+            $suspectCase->save();
             $response = ['status' => 1, 'msg' => 'OK'];
 
         } catch (RequestException $e) {
