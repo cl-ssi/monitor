@@ -206,6 +206,7 @@
                 <option value="Migrante Sospecha" {{ ($booking->entry_criteria == 'Migrante Sospecha')?'selected':'' }} >Migrante Sospecha</option>
                 <option value="Migrante Caso Probable" {{ ($booking->entry_criteria == 'Migrante Caso Probable')?'selected':'' }} >Migrante Caso Probable</option>
                 <option value="Migrante Otro" {{ ($booking->entry_criteria == 'Migrante Otro')?'selected':'' }} >Migrante Otro</option>
+                <option value="Persona en Alerta Covid 19" {{ ($booking->entry_criteria == 'Persona en Alerta Covid 19')?'selected':'' }} >Persona en Alerta Covid 19</option>
             </select>
         </fieldset>
 
