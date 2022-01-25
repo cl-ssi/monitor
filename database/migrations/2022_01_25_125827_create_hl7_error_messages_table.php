@@ -17,6 +17,7 @@ class CreateHl7ErrorMessagesTable extends Migration
             $table->id();
             $table->string('alert_id')->nullable();
             $table->string('channel_name')->nullable();
+            $table->string('connector_name')->nullable();
             $table->string('message_id')->nullable();
             $table->text('error')->nullable();
             $table->text('error_message')->nullable();
