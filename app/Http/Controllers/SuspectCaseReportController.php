@@ -1073,6 +1073,8 @@ class SuspectCaseReportController extends Controller
      */
     public function getHl7Files(Request $request)
     {
+
+        $patientIdentifier = $request->input('patient_identifier');
         $patientNames = $request->input('patient_names');
         $patientFamilyFather = $request->input('patient_family_father');
         $patientFamilyMother = $request->input('patient_family_mother');
@@ -1085,6 +1087,7 @@ class SuspectCaseReportController extends Controller
         $hl7ResultMessage = new Hl7ResultMessage();
         $hl7ResultMessage->full_message = $fullMessage;
         $hl7ResultMessage->message_id = $messageId;
+        $hl7ResultMessage->patient_identifier = $patientIdentifier;
         $hl7ResultMessage->patient_names = $patientNames;
         $hl7ResultMessage->patient_family_father = $patientFamilyFather;
         $hl7ResultMessage->patient_family_mother = $patientFamilyMother;
@@ -1093,13 +1096,6 @@ class SuspectCaseReportController extends Controller
         $hl7ResultMessage->sample_observation_datetime = $sampleAt;
         $hl7ResultMessage->status = 'pending';
         $hl7ResultMessage->save();
-
-        // Log::channel('incoming_hl7')->info('Names:' . $patientNames . PHP_EOL .
-        //                                     'familyFather:' . $patientFamilyFather . PHP_EOL .
-        //                                     'familyMother:' . $patientFamilyMother . PHP_EOL .
-        //                                     'pcrSarsCov2At:' . $pcrSarsCov2At . PHP_EOL .
-        //                                     'pcrSarsCov2:' . $pcrSarsCov2 . PHP_EOL .
-        //                                     'sampleAt:' . $sampleAt . PHP_EOL); 
 
         if ($pcrSarsCov2 == "Negativo") {
             $pcrSarsCov2 = "negative";
