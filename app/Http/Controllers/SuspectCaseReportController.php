@@ -31,6 +31,7 @@ use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use App\Hl7ErrorMessage;
 
 use App\User;
 
@@ -1164,6 +1165,31 @@ class SuspectCaseReportController extends Controller
         }else{
             $hl7ResultMessage->update(['status' => 'case_not_found']);
         }
+        
+    }
+
+    public function getHl7Errors(Request $request)
+    {
+        $alertId = $request->input('alert_id');
+        $channelName = $request->input('channel_name');
+        $messageId = $request->input('message_id');
+        $error = $request->input('error');
+        $errorMessage = $request->input('error_message');
+        
+        $hl7ErrorMessage = new Hl7ErrorMessage();
+        $hl7ErrorMessage->alert_id = $alertId;
+        $hl7ErrorMessage->channel_name = $channelName;
+        $hl7ErrorMessage->message_id = $messageId;
+        $hl7ErrorMessage->error = $error;
+        $hl7ErrorMessage->error_message = $errorMessage;
+        $hl7ErrorMessage->save();
+
+        Log::channel('incoming_hl7')->info('AlertId:' . $alertId . PHP_EOL .
+                                            'ChannelName:' . $channelName . PHP_EOL .
+                                            'MessageId:' . $messageId . PHP_EOL .
+                                            'Error:' . $error . PHP_EOL .
+                                            'ErrorMessage:' . $errorMessage . PHP_EOL
+                                            ); 
         
     }
 
