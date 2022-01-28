@@ -32,6 +32,7 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use App\Hl7ErrorMessage;
 
 use App\User;
 use PDO;
@@ -1074,6 +1075,10 @@ class SuspectCaseReportController extends Controller
      */
     public function getHl7Files(Request $request)
     {
+        // Storage::put('suspect_cases/' . 'bytefile' . '.pdf' , $request->getContent());
+        // return 0;
+
+        $patientIdentifier = $request->input('patient_identifier');
         $patientNames = $request->input('patient_names');
         $patientFamilyFather = $request->input('patient_family_father');
         $patientFamilyMother = $request->input('patient_family_mother');
@@ -1082,10 +1087,12 @@ class SuspectCaseReportController extends Controller
         $sampleAt = Carbon::parse($request->input('sample_observation_datetime'));
         $messageId = $request->input('message_id');
         $fullMessage = $request->input('full_message');
+        $pdfFile = $request->getContent();
 
         $hl7ResultMessage = new Hl7ResultMessage();
         $hl7ResultMessage->full_message = $fullMessage;
         $hl7ResultMessage->message_id = $messageId;
+        $hl7ResultMessage->patient_identifier = $patientIdentifier;
         $hl7ResultMessage->patient_names = $patientNames;
         $hl7ResultMessage->patient_family_father = $patientFamilyFather;
         $hl7ResultMessage->patient_family_mother = $patientFamilyMother;
@@ -1094,13 +1101,6 @@ class SuspectCaseReportController extends Controller
         $hl7ResultMessage->sample_observation_datetime = $sampleAt;
         $hl7ResultMessage->status = 'pending';
         $hl7ResultMessage->save();
-
-        // Log::channel('incoming_hl7')->info('Names:' . $patientNames . PHP_EOL .
-        //                                     'familyFather:' . $patientFamilyFather . PHP_EOL .
-        //                                     'familyMother:' . $patientFamilyMother . PHP_EOL .
-        //                                     'pcrSarsCov2At:' . $pcrSarsCov2At . PHP_EOL .
-        //                                     'pcrSarsCov2:' . $pcrSarsCov2 . PHP_EOL .
-        //                                     'sampleAt:' . $sampleAt . PHP_EOL);
 
         if ($pcrSarsCov2 == "Negativo") {
             $pcrSarsCov2 = "negative";
@@ -1127,16 +1127,22 @@ class SuspectCaseReportController extends Controller
         if($suspectCases != null){
             if($suspectCases->count() === 1){
                 $foundSuspectCase = $suspectCases->first();
-                // $foundSuspectCase->pcr_sars_cov_2 = $pcrSarsCov2;
-                // $foundSuspectCase->pcr_sars_cov_2_at = $pcrSarsCov2At;
                 $foundSuspectCase->hl7_result_message_id = $hl7ResultMessage->id;
                 $foundSuspectCase->save();
 
-                $hl7ResultMessage->status = 'assigned_to_case';
-                $hl7ResultMessage->save();
+                // $sucesfulStore = Storage::put('suspect_cases/' . $foundSuspectCase->id . '.pdf' , $pdfFile);
 
-                //obtiene ftp
-                // $content = Storage::disk('ftp')->download('readme.txt');
+                //Si no es exitoso, cambiar estado de mensaje a 'sin_archivo'?
+                // if($sucesfulStore){
+                    // $foundSuspectCase->pcr_sars_cov_2 = $pcrSarsCov2;
+                    // $foundSuspectCase->pcr_sars_cov_2_at = $pcrSarsCov2At;
+                    // $foundSuspectCase->pcr_result_added_at = Carbon::now();
+                    // $foundSuspectCase->file = 1;
+                    // $foundSuspectCase->save();
+
+                    $hl7ResultMessage->status = 'assigned_to_case';
+                    $hl7ResultMessage->save();
+                // }
 
                 //enviar por pntm
                 // if ($foundSuspectCase->pcr_result_added_at == null) {
@@ -1158,15 +1164,34 @@ class SuspectCaseReportController extends Controller
             }
             elseif($suspectCases->count() >= 1){
                 $suspectCases->update(['hl7_result_message_id' => $hl7ResultMessage->id]);
-                $hl7ResultMessage->update(['status' => 'too_many_cases']);
+                $hl7ResultMessage->update(['status' => 'too_many_cases', 'pdf_file' => $pdfFile]);
             }elseif($suspectCases->count() === 0){
-                $hl7ResultMessage->update(['status' => 'case_not_found']);
+                $hl7ResultMessage->update(['status' => 'case_not_found', 'pdf_file' => $pdfFile]);
             }
 
         }else{
-            $hl7ResultMessage->update(['status' => 'case_not_found']);
+            $hl7ResultMessage->update(['status' => 'case_not_found', 'pdf_file' => $pdfFile]);
         }
 
+    }
+
+    public function getHl7Errors(Request $request)
+    {
+        $alertId = $request->input('alert_id');
+        $channelName = $request->input('channel_name');
+        $connectorName = $request->input('connector_name');
+        $messageId = $request->input('message_id');
+        $error = $request->input('error');
+        $errorMessage = $request->input('error_message');
+
+        $hl7ErrorMessage = new Hl7ErrorMessage();
+        $hl7ErrorMessage->alert_id = $alertId;
+        $hl7ErrorMessage->channel_name = $channelName;
+        $hl7ErrorMessage->connector_name = $connectorName;
+        $hl7ErrorMessage->message_id = $messageId;
+        $hl7ErrorMessage->error = $error;
+        $hl7ErrorMessage->error_message = $errorMessage;
+        $hl7ErrorMessage->save();
     }
 
     public function case_chart(Request $request)
