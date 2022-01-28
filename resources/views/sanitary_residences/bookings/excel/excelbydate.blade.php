@@ -84,7 +84,7 @@
             <td nowrap>{{$booking->room->number}}</td>
             <td nowrap>{{ ($booking->patient->demographic)?$booking->patient->demographic->commune->name:'' }}</td>
             
-            <td nowrap>{{ ($booking->patient->suspectCases->last())? $booking->patient->suspectCases->last()->establishment->alias.' - '.$booking->patient->suspectCases->last()->origin:'' }}</td>
+            <td nowrap>{{ ($booking->patient->suspectCases->last() and $booking->patient->suspectCases->last()->establishment)? $booking->patient->suspectCases->last()->establishment->alias.' - '.$booking->patient->suspectCases->last()->origin:'' }}</td>
             <td nowrap> {{$booking->doctor}} </td>
             
             <td nowrap>{{$booking->patient->identifier}}</td>
