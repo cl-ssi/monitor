@@ -267,7 +267,9 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::get('/cases_by_ids_index','SuspectCaseReportController@casesByIdsIndex')->name('cases_by_ids_index')->middleware('auth');
             Route::post('/export_excel_by_cases_ids','SuspectCaseReportController@exportExcelByCasesIds')->name('export_excel_by_cases_ids')->middleware('auth');
             Route::get('/allrapidtests','SuspectCaseReportController@allRapidTests')->name('all_rapid_tests')->middleware('auth');
-
+            Route::get('/integrationhetgmonitorpendings','SuspectCaseReportController@integrationHetgMonitorPendings')->name('integration_hetg_monitor_pendings')->middleware('auth');
+            Route::get('/integrationhetgmonitorpendingsDetails/{hl7ResultMessage}','SuspectCaseReportController@integrationHetgMonitorPendingsDetails')->name('integration_hetg_monitor_pendings_details')->middleware('auth');
+            Route::get('/Hl7ResultMessageSuspectCaseAsignation/{hl7ResultMessage}/{suspectCase}','SuspectCaseReportController@Hl7ResultMessageSuspectCaseAsignation')->name('hl7Result_message_suspectCase_asignation')->middleware('auth');
         });
         Route::prefix('report')->name('report.')->group(function () {
             Route::get('/','SuspectCaseReportController@positives')->name('index')->middleware('auth','can:Report: other');
