@@ -163,61 +163,61 @@
           </tr>
       </thead>
       <tbody id="tableCases">
-          @foreach($suspectCases as $case)
-          <tr class="row_{{$case->covid19}} {{ ($case->pcr_sars_cov_2 == 'positive')?'table-danger':''}}">
+          @foreach($suspectCases as $suspectCase)
+          <tr class="row_{{$suspectCase->covid19}} {{ ($suspectCase->pcr_sars_cov_2 == 'positive')?'table-danger':''}}">
               <td class="text-center">
-                  {{ $case->id }}<br>
-                  <small>{{ $case->laboratory->alias }}</small>
+                  {{ $suspectCase->id }}<br>
+                  <small>{{ $suspectCase->laboratory->alias }}</small>
                   @canany(['SuspectCase: edit','SuspectCase: tecnologo'])
-                  <a href="{{ route('lab.suspect_cases.edit', $case) }}" class="btn_edit"><i class="fas fa-edit"></i></a>
+                  <a href="{{ route('lab.suspect_cases.edit', $suspectCase) }}" class="btn_edit"><i class="fas fa-edit"></i></a>
                   @endcan
-                  <small>{{ $case->minsal_ws_id }}</small>
+                  <small>{{ $suspectCase->minsal_ws_id }}</small>
               </td>
-              <td nowrap class="small">{{ (isset($case->sample_at))? $case->sample_at->format('Y-m-d'):'' }}</td>
+              <td nowrap class="small">{{ (isset($suspectCase->sample_at))? $suspectCase->sample_at->format('Y-m-d'):'' }}</td>
               <td>
-                  {{ ($case->establishment) ? $case->establishment->alias . ' - ': '' }}
-                  {{ $case->origin }}
+                  {{ ($suspectCase->establishment) ? $suspectCase->establishment->alias . ' - ': '' }}
+                  {{ $suspectCase->origin }}
               </td>
               <td>
-                  @if($case->patient)
-                  <a class="link" href="{{ route('patients.edit', $case->patient) }}">
-                      {{ $case->patient->fullName }}
-                      @if($case->gestation == "1") <img align="center" src="{{ asset('images/pregnant.png') }}" width="24"> @endif
-                      @if($case->close_contact == "1") <img align="center" src="{{ asset('images/contact.png') }}" width="24"> @endif
+                  @if($suspectCase->patient)
+                  <a class="link" href="{{ route('patients.edit', $suspectCase->patient) }}">
+                      {{ $suspectCase->patient->fullName }}
+                      @if($suspectCase->gestation == "1") <img align="center" src="{{ asset('images/pregnant.png') }}" width="24"> @endif
+                      @if($suspectCase->close_contact == "1") <img align="center" src="{{ asset('images/contact.png') }}" width="24"> @endif
                    </a>
                    @endif
               </td>
               <td class="text-center" nowrap>
-                  @if($case->patient)
-                  {{ $case->patient->identifier }}
+                  @if($suspectCase->patient)
+                  {{ $suspectCase->patient->identifier }}
                   @endif
               </td>
-              <td>{{ $case->age }}</td>
-              <td>{{ strtoupper($case->gender[0]) }}</td>
-              <td>{{ $case->covid19 }}
-                  @if($case->file)
-                      <a href="{{ route('lab.suspect_cases.download', $case->id) }}"
+              <td>{{ $suspectCase->age }}</td>
+              <td>{{ strtoupper($suspectCase->gender[0]) }}</td>
+              <td>{{ $suspectCase->covid19 }}
+                  @if($suspectCase->file)
+                      <a href="{{ route('lab.suspect_cases.download', $suspectCase->id) }}"
                       target="_blank"><i class="fas fa-paperclip"></i>&nbsp
                   </a>
                   @endif
 
-                  @if ($case->laboratory->pdf_generate == 1 && $case->pcr_sars_cov_2 <> 'pending')
+                  @if ($suspectCase->laboratory->pdf_generate == 1 && $suspectCase->pcr_sars_cov_2 <> 'pending')
                   <a href="{{ route('lab.print', $case) }}"
                       target="_blank"><i class="fas fa-paperclip"></i>&nbsp
                   </a>
                   @endif
-                  @if($case->positive_condition == "Excreción Viral Remanente") <img align="center" src="{{ asset('images/head-side-virus-solid.png') }}" width="24"> @endif
-                  @if($case->positive_condition == "Reinfección") <img align="center" src="{{ asset('images/viruses-solid.png') }}" width="24"> @endif
+                  @if($suspectCase->positive_condition == "Excreción Viral Remanente") <img align="center" src="{{ asset('images/head-side-virus-solid.png') }}" width="24"> @endif
+                  @if($suspectCase->positive_condition == "Reinfección") <img align="center" src="{{ asset('images/viruses-solid.png') }}" width="24"> @endif
 
               </td>
-              <!-- <td class="{{ ($case->result_ifd <> 'Negativo' AND $case->result_ifd <> 'No solicitado')?'text-danger':''}}">{{ $case->result_ifd }} {{ $case->subtype }}</td>
-              <td>{{ $case->external_laboratory }}</td>
-              <td>{{ $case->epivigila }}</td> -->
-              <td>{{ ($case->pcr_sars_cov_2_at)?$case->pcr_sars_cov_2_at->format('d-m-Y'):'' }}</td>
-              <td>{{ $case->patient->status }}</td>
-              <td class="text-muted small">{{ $case->observation }}</td>
+              <!-- <td class="{{ ($suspectCase->result_ifd <> 'Negativo' AND $suspectCase->result_ifd <> 'No solicitado')?'text-danger':''}}">{{ $suspectCase->result_ifd }} {{ $suspectCase->subtype }}</td>
+              <td>{{ $suspectCase->external_laboratory }}</td>
+              <td>{{ $suspectCase->epivigila }}</td> -->
+              <td>{{ ($suspectCase->pcr_sars_cov_2_at)?$suspectCase->pcr_sars_cov_2_at->format('d-m-Y'):'' }}</td>
+              <td>{{ $suspectCase->patient->status }}</td>
+              <td class="text-muted small">{{ $suspectCase->observation }}</td>
               <td class="text-center">
-                  <a class="btn btn-primary btn-sm">
+                  <a class="btn btn-primary btn-sm" href="{{ route('lab.suspect_cases.reports.hl7Result_message_suspectCase_asignation', [$hl7ResultMessage,$suspectCase]) }}">
                     Asignar
                   </a>
               </td>
