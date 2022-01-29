@@ -31,9 +31,11 @@ use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use App\Hl7ErrorMessage;
 
 use App\User;
+use PDO;
 
 class SuspectCaseReportController extends Controller
 {
@@ -908,7 +910,7 @@ class SuspectCaseReportController extends Controller
             //->whereNull('reception_at')
             ->where('created_at', '>=', $from)
             ->whereHas('laboratory', function ($q){
-              $q->where('minsal_ws', 1);  
+              $q->where('minsal_ws', 1);
             })
             ->get();
 
@@ -1073,6 +1075,8 @@ class SuspectCaseReportController extends Controller
      */
     public function getHl7Files(Request $request)
     {
+        // Storage::put('suspect_cases/' . 'bytefile' . '.pdf' , $request->getContent());
+        // return 0;
 
         $patientIdentifier = $request->input('patient_identifier');
         $patientNames = $request->input('patient_names');
@@ -1083,6 +1087,7 @@ class SuspectCaseReportController extends Controller
         $sampleAt = Carbon::parse($request->input('sample_observation_datetime'));
         $messageId = $request->input('message_id');
         $fullMessage = $request->input('full_message');
+        $pdfFile = $request->getContent();
 
         $hl7ResultMessage = new Hl7ResultMessage();
         $hl7ResultMessage->full_message = $fullMessage;
@@ -1122,16 +1127,22 @@ class SuspectCaseReportController extends Controller
         if($suspectCases != null){
             if($suspectCases->count() === 1){
                 $foundSuspectCase = $suspectCases->first();
-                // $foundSuspectCase->pcr_sars_cov_2 = $pcrSarsCov2;
-                // $foundSuspectCase->pcr_sars_cov_2_at = $pcrSarsCov2At;
                 $foundSuspectCase->hl7_result_message_id = $hl7ResultMessage->id;
                 $foundSuspectCase->save();
 
-                $hl7ResultMessage->status = 'assigned_to_case';
-                $hl7ResultMessage->save();
+                // $sucesfulStore = Storage::put('suspect_cases/' . $foundSuspectCase->id . '.pdf' , $pdfFile);
 
-                //obtiene ftp
-                // $content = Storage::disk('ftp')->download('readme.txt');
+                //Si no es exitoso, cambiar estado de mensaje a 'sin_archivo'?
+                // if($sucesfulStore){
+                    // $foundSuspectCase->pcr_sars_cov_2 = $pcrSarsCov2;
+                    // $foundSuspectCase->pcr_sars_cov_2_at = $pcrSarsCov2At;
+                    // $foundSuspectCase->pcr_result_added_at = Carbon::now();
+                    // $foundSuspectCase->file = 1;
+                    // $foundSuspectCase->save();
+
+                    $hl7ResultMessage->status = 'assigned_to_case';
+                    $hl7ResultMessage->save();
+                // }
 
                 //enviar por pntm
                 // if ($foundSuspectCase->pcr_result_added_at == null) {
@@ -1153,15 +1164,15 @@ class SuspectCaseReportController extends Controller
             }
             elseif($suspectCases->count() >= 1){
                 $suspectCases->update(['hl7_result_message_id' => $hl7ResultMessage->id]);
-                $hl7ResultMessage->update(['status' => 'too_many_cases']);
+                $hl7ResultMessage->update(['status' => 'too_many_cases', 'pdf_file' => $pdfFile]);
             }elseif($suspectCases->count() === 0){
-                $hl7ResultMessage->update(['status' => 'case_not_found']);
+                $hl7ResultMessage->update(['status' => 'case_not_found', 'pdf_file' => $pdfFile]);
             }
 
         }else{
-            $hl7ResultMessage->update(['status' => 'case_not_found']);
+            $hl7ResultMessage->update(['status' => 'case_not_found', 'pdf_file' => $pdfFile]);
         }
-        
+
     }
 
     public function getHl7Errors(Request $request)
@@ -1172,7 +1183,7 @@ class SuspectCaseReportController extends Controller
         $messageId = $request->input('message_id');
         $error = $request->input('error');
         $errorMessage = $request->input('error_message');
-        
+
         $hl7ErrorMessage = new Hl7ErrorMessage();
         $hl7ErrorMessage->alert_id = $alertId;
         $hl7ErrorMessage->channel_name = $channelName;
@@ -1598,7 +1609,7 @@ class SuspectCaseReportController extends Controller
                     }
                 })
                 ->where(function ($q) use ($selectedSampleAt, $selectedSampleTo) {
-                    if ($selectedSampleAt) {                        
+                    if ($selectedSampleAt) {
                         $q->where('sample_at','>=', $selectedSampleAt)->where('sample_at','<=', $selectedSampleTo);
                     }
                 })
@@ -1745,6 +1756,112 @@ class SuspectCaseReportController extends Controller
         return view('lab.suspect_cases.reports.all_rapid_tests', compact('rapidtests'));
     }
 
+    public function integrationHetgMonitorPendings(Request $request)
+    {
+      $status = null;
+      if ($request->status) {
+        $status = $request->status;
+      }else{
+        $status = "case_not_found";
+      }
 
+      $hl7ResultMessages = Hl7ResultMessage::whereNotNull('status')
+                                            ->when($status != null, function ($q) use ($status) {
+                                                return $q->where('status',$status);
+                                            })
+                                            ->get();
+
+      return view('lab.suspect_cases.reports.integration_hetg_monitor_pendings',compact('hl7ResultMessages','request'));
+    }
+
+    public function integrationHetgMonitorPendingsDetails(Hl7ResultMessage $hl7ResultMessage, Request $request)
+    {
+
+      $suspectCases = null;
+      $cases = null;
+      if ($request->text != null && $hl7ResultMessage->status == "case_not_found") {
+        $collection = collect(['positivos', 'negativos', 'pendientes', 'rechazados', 'indeterminados']);
+        $filtro = collect([]);
+        $collection->each(function ($item, $key) use ($request, $filtro){
+                    switch ($item) {
+                case "positivos":
+                    $request->get('positivos')=="on"?$filtro->push('positive'):true;
+                    break;
+                case "negativos":
+                    $request->get('negativos')=="on"?$filtro->push('negative'):true;
+                    break;
+                case "pendientes":
+                    $request->get('pendientes')=="on"?$filtro->push('pending'):true;
+                    break;
+                case "rechazados":
+                    $request->get('rechazados')=="on"?$filtro->push('rejected'):true;
+                    break;
+                case "indeterminados":
+                    $request->get('indeterminados')=="on"?$filtro->push('undetermined'):true;
+                    break;
+            }
+        });
+
+        $patients = Patient::getPatientsBySearch($request->get('text'));
+
+         DB::connection()->getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
+         $suspectCases = SuspectCase::getCaseByPatient($patients)
+                             ->latest('id')
+                             ->where('laboratory_id',1) //solo laboratorio hospital
+                             ->whereIn('pcr_sars_cov_2',$filtro)
+                             ->whereNotNull('reception_at')
+                             ->paginate(200);
+         DB::connection()->getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+      }
+      // dd($suspectCases);
+
+      return view('lab.suspect_cases.reports.integration_hetg_monitor_pendings_details',compact('hl7ResultMessage','request','suspectCases'));
+    }
+
+    public function Hl7ResultMessageSuspectCaseAsignation(Hl7ResultMessage $hl7ResultMessage, SuspectCase $suspectCase, Request $request)
+    {
+      if ($hl7ResultMessage->observation_value == "Negativo") {
+          $pcrSarsCov2 = "negative";
+      }
+      if ($hl7ResultMessage->observation_value == "Positivo") {
+          $pcrSarsCov2 = "positive";
+      }
+      if ($hl7ResultMessage->observation_value == "Rechazado") {
+          $pcrSarsCov2 = "rejected";
+      }
+      if ($hl7ResultMessage->observation_value == "Indeterminado") {
+          $pcrSarsCov2 = "undetermined";
+      }
+
+      $sucesfulStore = Storage::put('suspect_cases/' . $suspectCase->id . '.pdf' , $hl7ResultMessage->pdf_file);
+
+      if ($sucesfulStore) {
+        $suspectCase->pcr_sars_cov_2_at = $hl7ResultMessage->observation_datetime;
+        $suspectCase->pcr_sars_cov_2 = $pcrSarsCov2;
+        $suspectCase->hl7_result_message_id = $hl7ResultMessage->id;
+        $suspectCase->file = 1;
+        $suspectCase->save();
+
+        foreach ($hl7ResultMessage->suspectCases as $key => $suspectCase_item) {
+          if ($suspectCase_item->id != $suspectCase->id) {
+            $suspectCase_item->hl7_result_message_id = null;
+            $suspectCase_item->save();
+          }
+        }
+
+        $hl7ResultMessage->status = "assigned_to_case";
+        $hl7ResultMessage->pdf_file = null;
+        $hl7ResultMessage->save();
+
+        session()->flash('success', 'Se asignó muestra ' . $suspectCase->id . " a caso pendiente " . $hl7ResultMessage->id);
+        return redirect()->route('lab.suspect_cases.reports.integration_hetg_monitor_pendings');
+
+      }else{
+        session()->flash('error', "Error al obtener archivo pdf");
+        return redirect()->route('lab.suspect_cases.reports.integration_hetg_monitor_pendings');
+      }
+
+
+    }
 
 }

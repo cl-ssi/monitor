@@ -67,6 +67,10 @@ class SuspectCase extends Model implements Auditable
         return $this->belongsTo('App\User');
     }
 
+    public function hl7ResultMessage() {
+        return $this->belongsTo('App\Hl7ResultMessage');
+    }
+
     function getCovid19Attribute(){
         switch($this->pcr_sars_cov_2) {
             case 'pending': return 'Pendiente'; break;

@@ -196,7 +196,11 @@
                                 @can('SuspectCase: bulk load PNTM')
                                     <a class="dropdown-item" href="{{ route('lab.bulk_load_from_pntm.index.no.creation') }}">Carga Masiva Resultados PNTM HETG a Bluelab</a>
                                 @endcan
-                                
+
+                                @can('SuspectCase: edit')
+                                  <a class="dropdown-item" href="{{ route('lab.suspect_cases.reports.integration_hetg_monitor_pendings') }}">Integración HETG - Esmeralda - Pendientes</a>
+                                @endcan
+
 
                             </div>
 
