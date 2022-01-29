@@ -85,7 +85,7 @@
                 <option value="Migrante Sospecha">Migrante Sospecha</option>
                 <option value="Migrante Caso Probable">Migrante Caso Probable</option>
                 <option value="Migrante Otro">Migrante Otro</option>
-                <option value="Persona en Alerta Covid 19">Persona en Alerta Covid 19</option>
+                <!-- <option value="Persona en Alerta Covid 19">Persona en Alerta Covid 19</option> -->
             </select>
         </fieldset>
 
