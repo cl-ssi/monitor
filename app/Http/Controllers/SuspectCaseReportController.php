@@ -1075,9 +1075,7 @@ class SuspectCaseReportController extends Controller
      */
     public function getHl7Files(Request $request)
     {
-        // Storage::put('suspect_cases/' . 'bytefile' . '.pdf' , $request->getContent());
-        // return 0;
-
+        //Asignacion de variables
         $patientIdentifier = $request->input('patient_identifier');
         $patientNames = $request->input('patient_names');
         $patientFamilyFather = $request->input('patient_family_father');
@@ -1114,16 +1112,38 @@ class SuspectCaseReportController extends Controller
         if ($pcrSarsCov2 == "Indeterminado") {
             $pcrSarsCov2 = "undetermined";
         }
-        // if(strtoupper($pcrSarsCov2) == "PENDIENTE"){$pcrSarsCov2 = "pending";}
 
-        $suspectCases = SuspectCase::whereHas('patient', function ($q) use ($patientFamilyFather, $patientFamilyMother, $patientNames) {
+        //Búsqueda de casos por run o other_identification
+        if($patientIdentifier != null){
+            if(Str::contains($patientIdentifier, '-')){
+                $patientIdentifierExploded = explode('-', $patientIdentifier);
+
+                error_log($patientIdentifierExploded[0]);
+                $suspectCases = SuspectCase::whereHas('patient', function ($q) use ($patientIdentifierExploded) {
+                    $q->where('run', $patientIdentifierExploded[0])
+                    ->orWhere('other_identification', $patientIdentifierExploded[0]);
+                })
+                ->where('pcr_sars_cov_2', 'pending');
+            }
+            else{
+                $suspectCases = SuspectCase::whereHas('patient', function ($q) use ($patientIdentifier) {
+                    $q->where('other_identification', $patientIdentifier);
+                })
+                ->where('pcr_sars_cov_2', 'pending');
+            } 
+        }
+
+        //Si no viene la identificacion o no se encontró por run ni other_identification, se busca por nombre
+        if($patientIdentifier == null || $suspectCases == null || ($suspectCases != null && $suspectCases->count() == 0)){
+            $suspectCases = SuspectCase::whereHas('patient', function ($q) use ($patientFamilyFather, $patientFamilyMother, $patientNames) {
             $q->where('fathers_family', 'LIKE', '%' . $patientFamilyFather . '%')
                 ->where('mothers_family', 'like', '%' . $patientFamilyMother . '%')
                 ->where('name', 'like', '%' . $patientNames . '%');
             })
             ->where('pcr_sars_cov_2', 'pending');
-            // ->whereDate('sample_at', $sampleAt->toDateString())
+        }
 
+        //Procesa suspect_case
         if($suspectCases != null){
             if($suspectCases->count() === 1){
                 $foundSuspectCase = $suspectCases->first();
