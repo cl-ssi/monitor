@@ -93,7 +93,7 @@
                 </fieldset>
                 <fieldset class="form-group col-12 col-md-6 ">
                     <button class="btn btn-danger float-md-right" type="submit" form="delete_form"
-                            onclick="return confirm('¿Está seguro que desea eliminar al usuario : {{$user->name}}? ' )">
+                            onclick="return confirm('¿Está seguro que desea eliminar al usuario {{$user->name}}?' )">
                         <i class="fas fa-user-slash"></i> Eliminar Usuario
                     </button>
                 </fieldset>
@@ -107,21 +107,32 @@
     <div class="form-row">
         <div class="col">
 
+            @php
+            $renderedCategories = array();
+            @endphp
 
-
-            <h5>Roles:</h5>
+            <h3>Permisos</h3>
             @foreach($permissions as $permission)
+
+            @if(!in_array($permission->category, $renderedCategories))
+            <h4>{{ $permission->category }}</h4>
+            @php
+            $renderedCategories[] = $permission->category;
+            @endphp
+            @endif
+
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="permissions[]"
-                    value="{{ $permission->name }}" {{ ($user->hasPermissionTo($permission->name))?'checked':'' }}>
+                <input class="form-check-input" type="checkbox" name="permissions[]" onclick="if('{{ $permission->name }}' === 'Admin'|| '{{ $permission->name }}' === 'Developer' && this.checked) return confirm('¿Estás seguro de que quieres darle el rol {{$permission->name}} a {{$user->name}}?\n¡Este es un permiso peligroso!')"
+                    value="{{ $permission->name }}" {{ ($user->hasPermissionTo($permission->name))?'checked':'' }} >
                 <label class="form-check-label">
                     {{ $permission->name }}
                 </label>
+                <p class="text-muted">{{ $permission->description }}</p>
             </div>
             @endforeach
         </div>
         <!-- <div class="col">
-            <h5>Establecimientos:</h5>
+            <h3>Establecimientos:</h3>
             @foreach($establishments_user as $establishment_user)
               {{ $establishments_user }}
             @endforeach
