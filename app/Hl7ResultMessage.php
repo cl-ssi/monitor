@@ -13,4 +13,20 @@ class Hl7ResultMessage extends Model
 
     protected $fillable = ['full_message', 'message_id', 'patient_names', 'patient_family_father', 'patient_family_mother',
      'observation_datetime', 'observation_value', 'sample_observation_datetime', 'status', 'pdf_file'];
+
+
+    public function getObservationValueEngAttribute(){
+        if ($this->observation_value == "Negativo") {
+            return "negative";
+        }
+        if ($this->observation_value == "Positivo") {
+            return "positive";
+        }
+        if ($this->observation_value == "Rechazado") {
+            return "rejected";
+        }
+        if ($this->observation_value == "Indeterminado") {
+            return "undetermined";
+        }
+    }
 }
