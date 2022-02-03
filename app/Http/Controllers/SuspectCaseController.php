@@ -2632,12 +2632,12 @@ class SuspectCaseController extends Controller
                 $foundSuspectCase->save();
 
                 // error_log('entré a solo 1 caso');
-                $succesfulCaseResult = $this->addSuspectCaseResult($foundSuspectCase, $hl7ResultMessage, $pdfFile);
+                // $succesfulCaseResult = $this->addSuspectCaseResult($foundSuspectCase, $hl7ResultMessage, $pdfFile);
 
-                if($succesfulCaseResult){
+                // if($succesfulCaseResult){
                     $hl7ResultMessage->status = 'assigned_to_case';
                     $hl7ResultMessage->save();
-                }
+                // }
 
             }
             elseif($suspectCases->count() >= 1){
