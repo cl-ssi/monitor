@@ -90,6 +90,12 @@
                                 excel...</label>
                         </div>
                     </div>
+                    <div class="col-4">
+                        <select name="send_email" id="for_send_email" class="form-control">
+                            <option value=1>Enviar correo a pacientes positivos</option>
+                            <option value=0>No enviar correos.</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="mb-3">
