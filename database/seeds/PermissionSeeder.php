@@ -58,6 +58,12 @@ class PermissionSeeder extends Seeder
             'description' => 'Permite visualizar listado de pacientes',
             'category' => 'Paciente'
         ]);
+        
+        $permission = Permission::create([
+            'name' => 'Patient: fusion',
+            'description' => 'Permite fusionar pacientes',
+            'category' => 'Paciente'
+        ]);
 
         $permission = Permission::create([
             'name' => 'Patient: show',
