@@ -502,3 +502,6 @@ Route::prefix('pending_patient')->name('pending_patient.')->middleware('auth')->
    Route::get('/export_excel_by_status/{selectedStatus}','PendingPatientController@exportExcelByStatus')->name('export_excel_by_status')->middleware('auth');
 
 });
+
+
+Route::get('/email_queue_test', 'SuspectCaseController@emailQueueTest');

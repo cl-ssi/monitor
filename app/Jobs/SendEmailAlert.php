@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 use App\Mail\NewPositive;
 use App\SuspectCase;
 
-class SendEmail implements ShouldQueue
+class SendEmailAlert implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -35,11 +35,8 @@ class SendEmail implements ShouldQueue
      */
     public function handle()
     {
-        //
-        //$email = new NewPositive($this->suspectCase);
         $emails  = explode(',', env('EMAILS_ALERT'));
         $emails_bcc  = explode(',', env('EMAILS_ALERT_BCC'));
-        //dd('entre');
         Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($this->suspectCase));
     }
 }
