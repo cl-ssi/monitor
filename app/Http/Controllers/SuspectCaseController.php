@@ -2583,7 +2583,7 @@ class SuspectCaseController extends Controller
     public function emailQueueTest(){
         $i = 0;
         while($i < 3){
-            $delay = \DB::table('jobs')->count()*20;
+            $delay = \DB::table('jobs')->count()*30;
             $emailJob = ((new TestEmailJob())->delay($delay));
             dispatch($emailJob);
             $i++;
