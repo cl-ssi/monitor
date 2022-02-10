@@ -10,20 +10,14 @@
 
     <title>{{ config('app.name') }} @yield('title')</title>
 
-    <!-- Scripts -->
-    {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
-
-    <!-- Font Awesome - load everything-->
-    <script defer src="{{ asset('js/font-awesome/all.min.js') }}"></script>
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    {{-- <!--<script src="{{ asset('js/app.js') }}" defer></script>--> --}}
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/ssi.css') }}" rel="stylesheet">
     @yield('custom_js_head')
+
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com"></link>
 
     <style media="screen">
         .navbar-custom {
@@ -505,9 +499,12 @@
     <div id="watermark">{{ Auth::id() }}</div>
     @endauth
 
-    <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('js/principal.js') }}"></script>
+    <!-- External CDN Libraries -->
+    <!-- JQuery, Bootstrap, Axios -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/js/bootstrap.bundle.min.js" integrity="sha512-mULnawDVcCnsk9a4aG1QLZZ6rcce/jSzEGqUkeOLy0b6q0+T6syHrxlsAGH7ZVoqC93Pd0lBqd6WguPWih7VHA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.25.0/axios.min.js" integrity="sha512-/Q6t3CASm04EliI1QyIDAA/nDo9R8FQ/BULoUFyN4n/BDdyIxeH7u++Z+eobdmr11gG5D/6nPFyDlnisDwhpYA==" crossorigin="anonymous"></script>
+    
     @yield('custom_js')
 </body>
 

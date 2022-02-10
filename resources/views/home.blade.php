@@ -16,7 +16,7 @@
                         {{ session('status') }}
                     </div>
                     @endif
-                    <img src="{{ asset('images/esmeralda.png') }}" width="300" alt="Foto de la esmeralda">
+                    <img id="esmeralda" src="{{ asset('images/esmeralda.png') }}" height="300" width="300" alt="Foto de la esmeralda">
                     <br>
                     Usted tiene acceso a los siguientes establecimientos:
                     @foreach($establishmentsusers as $establishmentsusers)
