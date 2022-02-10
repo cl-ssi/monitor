@@ -1643,7 +1643,8 @@ class SuspectCaseReportController extends Controller
 
       $hl7ResultMessages = Hl7ResultMessage::whereNotNull('status')
                                             ->when($status != null, function ($q) use ($status) {
-                                                return $q->where('status',$status);
+                                                return $q->where('status',$status)
+                                                ->where('created_at', '>', '2022-02-03 12:52:00');
                                             })
                                             ->whereNotNull('pdf_file')
                                             ->orderBy('observation_datetime','DESC')

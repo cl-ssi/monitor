@@ -72,7 +72,7 @@
             <p class="texto">
                 <span class="linea_firma" style="color: #EE3A43">——</span><span class="linea_firma" style="color: #0168B3">———</span><br>
                 <br><br>
-                Correo generado automáticamente a través del {{env('APP_NAME')}}
+                No responder. Correo generado automáticamente a través del {{env('APP_NAME')}}.
             </p>
 
         </div>

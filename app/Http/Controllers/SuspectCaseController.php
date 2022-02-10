@@ -48,6 +48,9 @@ use App\SequencingCriteria;
 use App\Hl7ErrorMessage;
 use App\Hl7ResultMessage;
 use Illuminate\Support\Str;
+use App\Jobs\SendEmailAlert;
+use App\Jobs\SendEmailPatient;
+use App\Jobs\TestEmailJob;
 use Exception;
 
 use App\WSMinsal;
@@ -2464,6 +2467,7 @@ class SuspectCaseController extends Controller
                 }
 
                 if ($suspectCase) {
+                    $old_pcr = $suspectCase->pcr_sars_cov_2;
                     $suspectCase->pcr_sars_cov_2 = $resultado;
                     $suspectCase->pcr_sars_cov_2_at = $fecha_resultado;
                     $suspectCase->validator_id = Auth::id();
@@ -2493,6 +2497,72 @@ class SuspectCaseController extends Controller
                         }
                     }
 
+                    // if ($request->send_email == true) {
+                    //     if (env('APP_ENV') == 'production') {
+                    //         // if ($old_pcr == 'pending' and $suspectCase->pcr_sars_cov_2 == 'positive') {
+                    //         //     $emails  = explode(',', env('EMAILS_ALERT'));
+                    //         //     $emails_bcc  = explode(',', env('EMAILS_ALERT_BCC'));
+                    //         //     Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($suspectCase));
+                    //         // }
+
+                    //         /* Enviar resultado al usuario, solo si tiene registrado un correo electronico */
+                    //         if($old_pcr == 'pending' && ($suspectCase->pcr_sars_cov_2 == 'positive')
+                    //                                 && $suspectCase->patient->demographic != NULL){
+                    //             if($suspectCase->patient->demographic->email != NULL){
+                    //                 $email  = $suspectCase->patient->demographic->email;
+                    //                 /*PDF SI ES DE */
+                    //                 if ($suspectCase->laboratory) {
+                    //                     if ($suspectCase->laboratory->pdf_generate == 1) {
+                    //                         $case = $suspectCase;
+                    //                         $pdf = \PDF::loadView('lab.results.result', compact('case'));
+                    //                         $message = new NewNegative($suspectCase);
+                    //                         $message->attachData($pdf->output(), $suspectCase->id.'.pdf');
+                    //                         Mail::to($email)->send($message);
+                    //                     }
+                    //                     else{
+                    //                     if($suspectCase->file == 1){
+                    //                         $message = new NewNegative($suspectCase);
+                    //                         $message->attachFromStorage('suspect_cases/'.$suspectCase->id.'.pdf', $suspectCase->id.'.pdf', [
+                    //                                     'mime' => 'application/pdf',
+                    //                                     ]);
+                    //                         Mail::to($email)->send($message);
+
+                    //                     }
+                    //                     else{
+                    //                         $message = new NewNegative($suspectCase);
+                    //                         Mail::to($email)->send($message);
+                    //                     }
+                    //                     }
+                    //                 }
+
+                    //             }
+                    //         }
+                    //     }
+                    // }
+
+                    //Envio correo con COLAS
+                    if ($request->send_email == true) {
+                        if (env('APP_ENV') == 'production') {
+                            if ($old_pcr == 'pending' and $suspectCase->pcr_sars_cov_2 == 'positive') {
+                                $delay = \DB::table('jobs')->count()*40;
+                                $emailJob = ((new SendEmailAlert($suspectCase))->delay($delay));
+                                dispatch($emailJob);
+                            }
+
+                            /* Enviar resultado al usuario, solo si tiene registrado un correo electronico */
+                            if($old_pcr == 'pending' && ($suspectCase->pcr_sars_cov_2 == 'negative' || $suspectCase->pcr_sars_cov_2 == 'undetermined' ||
+                            $suspectCase->pcr_sars_cov_2 == 'rejected' || $suspectCase->pcr_sars_cov_2 == 'positive') && $suspectCase->patient->demographic != NULL){
+
+                                if($suspectCase->patient->demographic->email != NULL){
+                                    if ($suspectCase->laboratory) {
+                                        $delay = \DB::table('jobs')->count()*40;
+                                        $emailJob = ((new SendEmailPatient($suspectCase))->delay($delay));
+                                        dispatch($emailJob);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -2501,13 +2571,23 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.import_results');
     }
 
+    public function emailQueueTest(){
+        $i = 0;
+        while($i < 3){
+            $delay = \DB::table('jobs')->count()*40;
+            $emailJob = ((new TestEmailJob())->delay($delay));
+            dispatch($emailJob);
+            $i++;
+        }
+        echo 'sent emails:' . $i;
+    }
+
     public function ws_test(){
         $case = SuspectCase::find(507934);
         $estadoMuestra = WSMinsal::obtiene_estado_muestra($case);
         dd($estadoMuestra);
         return redirect()->back();
     }
-
 
     public function positiveCondition(Request $request, SuspectCase $suspectCase){
 
@@ -2589,12 +2669,12 @@ class SuspectCaseController extends Controller
                 $foundSuspectCase->save();
 
                 // error_log('entré a solo 1 caso');
-                // $succesfulCaseResult = $this->addSuspectCaseResult($foundSuspectCase, $hl7ResultMessage, $pdfFile);
+                $succesfulCaseResult = $this->addSuspectCaseResult($foundSuspectCase, $hl7ResultMessage, $pdfFile);
 
-                // if($succesfulCaseResult){
+                if($succesfulCaseResult){
                     $hl7ResultMessage->status = 'assigned_to_case';
                     $hl7ResultMessage->save();
-                // }
+                }
 
             }
             elseif($suspectCases->count() >= 1){

@@ -94,6 +94,12 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
         Route::get('delete/{contact_patient}','ContactPatientController@destroy')->name('destroy')->middleware('auth');;
     });
 
+    Route::prefix('fusion')->name('fusion.')->middleware('can:Patient: fusion')->group(function () {
+        Route::get('/', 'PatientController@createFusion')->name('create');
+        Route::post('/show', 'PatientController@showFusion')->name('show');
+        Route::post('/', 'PatientController@doFusion')->name('do');
+    });
+
     Route::prefix('tracings')->name('tracings.')->middleware('auth')->group(function () {
         Route::get('/notifications', 'TracingController@notificationsReport')->name('notifications_report');
         Route::get('/cartoindex', 'TracingController@carToIndex')->name('cartoindex');
@@ -503,3 +509,6 @@ Route::prefix('pending_patient')->name('pending_patient.')->middleware('auth')->
    Route::get('/export_excel_by_status/{selectedStatus}','PendingPatientController@exportExcelByStatus')->name('export_excel_by_status')->middleware('auth');
 
 });
+
+
+Route::get('/email_queue_test', 'SuspectCaseController@emailQueueTest');
