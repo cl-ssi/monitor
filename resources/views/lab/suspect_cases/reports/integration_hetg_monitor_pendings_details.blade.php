@@ -9,19 +9,18 @@
 
         <div class="form-row">
             <fieldset class="form-group col-12 col-sm-4 col-md-4">
-                <h3 class="mb-3">Resultado pendiente</h3>
+                <h3 class="mb-3">{{$hl7ResultMessage->getStatusValueAttribute()}}</h3>
             </fieldset>
             <fieldset class="form-group col-12 col-sm-4 col-md-4">
                 <h3 class="mb-3"></h3>
             </fieldset>
-            <fieldset class="form-group col-12 col-sm-4 col-md-4">
+            <!-- <fieldset class="form-group col-12 col-sm-4 col-md-4">
               <div class="d-flex justify-content-end">
-                <a class="btn btn-warning btn" href="#">
+                <a class="btn btn-warning btn" href="{{ route('lab.suspect_cases.Hl7Result_message_dismiss', [$hl7ResultMessage]) }}">
                   Descartar
                 </a>
               </div>
-
-            </fieldset>
+            </fieldset> -->
         </div>
 
 
@@ -86,6 +85,14 @@
 
       </div>
 </div>
+
+<hr>
+
+@if($hl7ResultMessage->hl7ErrorMessage)
+  <div class="alert alert-danger" role="alert">
+    {{$hl7ResultMessage->hl7ErrorMessage->error . ": " . $hl7ResultMessage->hl7ErrorMessage->error_message}}
+  </div>
+@endif
 
 <hr>
 
