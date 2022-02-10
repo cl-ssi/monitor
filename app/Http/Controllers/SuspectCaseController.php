@@ -2245,8 +2245,8 @@ class SuspectCaseController extends Controller
 /**
      * @throws Throwable
      */
-    public function bulk_load_import_from_pntm_no_creation(Request $request){  
-     
+    public function bulk_load_import_from_pntm_no_creation(Request $request){
+
         set_time_limit(0);
         $timeStart = microtime(true);
 
@@ -2262,7 +2262,7 @@ class SuspectCaseController extends Controller
 
             DB::beginTransaction();
             try {
-              
+
 
                 if (SuspectCase::where('minsal_ws_id', '=', $patient['id_muestra'])->exists()) {
                     $new_suspect_case = SuspectCase::where('minsal_ws_id', $patient['id_muestra'])->first();
@@ -2550,7 +2550,7 @@ class SuspectCaseController extends Controller
         $hl7ResultMessage->status = 'pending';
         $hl7ResultMessage->save();
 
-        
+
 
         //Búsqueda de casos por run o other_identification
         if($patientIdentifier != null){
@@ -2568,7 +2568,7 @@ class SuspectCaseController extends Controller
                     $q->where('other_identification', $patientIdentifier);
                 })
                 ->where('pcr_sars_cov_2', 'pending');
-            } 
+            }
         }
 
         //Si no viene la identificacion o no se encontró por run ni other_identification, se busca por nombre
@@ -2616,7 +2616,7 @@ class SuspectCaseController extends Controller
      * @param  \App\SuspectCase  $suspectCase
      * @return \Illuminate\Http\Response
      */
-    public function addSuspectCaseResult(SuspectCase $suspectCase, Hl7ResultMessage $hl7ResultMessage, $pdfFile = false)
+    public function addSuspectCaseResult(SuspectCase $suspectCase, Hl7ResultMessage $hl7ResultMessage, $pdfFile = false, $send_pntm = true)
     {
         try{
 
@@ -2672,134 +2672,140 @@ class SuspectCaseController extends Controller
 
             /* Webservice minsal */
             //##### se genera envio de resultado a ws minsal #####
-            if (env('ACTIVA_WS', false) == true) {
-                if ($suspectCase->laboratory_id != null) {
-                    if ($suspectCase->laboratory->minsal_ws == true) {
-                        if ($suspectCase->minsal_ws_id) {
+            if ($send_pntm) {
+              if (env('ACTIVA_WS', false) == true) {
+                  if ($suspectCase->laboratory_id != null) {
+                      if ($suspectCase->laboratory->minsal_ws == true) {
+                          if ($suspectCase->minsal_ws_id) {
 
-                            if ($old_pcr == 'pending' && ($suspectCase->pcr_sars_cov_2 == 'positive' || $suspectCase->pcr_sars_cov_2 == 'negative' ||
-                                    $suspectCase->pcr_sars_cov_2 == 'undetermined' || $suspectCase->pcr_sars_cov_2 == 'rejected')
-                                && $suspectCase->patient->demographic != NULL && $suspectCase->external_laboratory == null) {
+                              if ($old_pcr == 'pending' && ($suspectCase->pcr_sars_cov_2 == 'positive' || $suspectCase->pcr_sars_cov_2 == 'negative' ||
+                                      $suspectCase->pcr_sars_cov_2 == 'undetermined' || $suspectCase->pcr_sars_cov_2 == 'rejected')
+                                  && $suspectCase->patient->demographic != NULL && $suspectCase->external_laboratory == null) {
 
-                                // error_log('entro a envio pntm');
+                                  // error_log('entro a envio pntm');
 
-                                //envío información minsal
-                                $response = WSMinsal::resultado_muestra($suspectCase);
-                                if ($response['status'] == 0) {
-                                    //Verificar, si en pntm esta en estado 2 (no recepcionado) se recepciona.
-                                    $responseSampleStatus = WSMinsal::obtiene_estado_muestra($suspectCase);
-                                    if($responseSampleStatus['status'] == 1 && $responseSampleStatus['sample_status'] == 2 && $suspectCase->reception_at != NULL){
-                                            $responseReception = WSMinsal::recepciona_muestra($suspectCase);
-                                            if($responseReception['status'] == 1){
-                                                $response = WSMinsal::resultado_muestra($suspectCase);
-                                                if ($response['status'] == 0) {
-                                                    $newHl7ErrorMessage = new Hl7ErrorMessage();
-                                                    $newHl7ErrorMessage->error = 'PNTM';
-                                                    $newHl7ErrorMessage->error_message = 'Error al recepcionar y subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'];
-                                                    $newHl7ErrorMessage->save();
-                                                    $hl7ResultMessage->status = 'monitor_error';
-                                                    $hl7ResultMessage->hl7_error_message_id = $newHl7ErrorMessage->id;
-                                                    $hl7ResultMessage->save();
+                                  //envío información minsal
+                                  $response = WSMinsal::resultado_muestra($suspectCase);
+                                  if ($response['status'] == 0) {
+                                      //Verificar, si en pntm esta en estado 2 (no recepcionado) se recepciona.
+                                      $responseSampleStatus = WSMinsal::obtiene_estado_muestra($suspectCase);
+                                      if($responseSampleStatus['status'] == 1 && $responseSampleStatus['sample_status'] == 2 && $suspectCase->reception_at != NULL){
+                                              $responseReception = WSMinsal::recepciona_muestra($suspectCase);
+                                              if($responseReception['status'] == 1){
+                                                  $response = WSMinsal::resultado_muestra($suspectCase);
+                                                  if ($response['status'] == 0) {
+                                                      $newHl7ErrorMessage = new Hl7ErrorMessage();
+                                                      $newHl7ErrorMessage->error = 'PNTM';
+                                                      $newHl7ErrorMessage->error_message = 'Error al recepcionar y subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'];
+                                                      $newHl7ErrorMessage->save();
+                                                      $hl7ResultMessage->status = 'monitor_error';
+                                                      $hl7ResultMessage->hl7_error_message_id = $newHl7ErrorMessage->id;
+                                                      $hl7ResultMessage->save();
 
-                                                    $this->suspectCaseBackToPending($suspectCase);
-                                                    return false;
-                                                    // return redirect()->back()->withInput();
-                                                }
-                                            }else{
-                                                $newHl7ErrorMessage = new Hl7ErrorMessage();
-                                                $newHl7ErrorMessage->error = 'PNTM';
-                                                $newHl7ErrorMessage->error_message = 'Error al recepcionar y subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'];
-                                                $newHl7ErrorMessage->save();
-                                                $hl7ResultMessage->status = 'monitor_error';
-                                                $hl7ResultMessage->hl7_error_message_id = $newHl7ErrorMessage->id;
-                                                $hl7ResultMessage->save();
+                                                      $this->suspectCaseBackToPending($suspectCase);
+                                                      return false;
+                                                      // return redirect()->back()->withInput();
+                                                  }
+                                              }else{
+                                                  $newHl7ErrorMessage = new Hl7ErrorMessage();
+                                                  $newHl7ErrorMessage->error = 'PNTM';
+                                                  $newHl7ErrorMessage->error_message = 'Error al recepcionar y subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'];
+                                                  $newHl7ErrorMessage->save();
+                                                  $hl7ResultMessage->status = 'monitor_error';
+                                                  $hl7ResultMessage->hl7_error_message_id = $newHl7ErrorMessage->id;
+                                                  $hl7ResultMessage->save();
 
-                                                $this->suspectCaseBackToPending($suspectCase);
-                                                return false;
-                                                // return redirect()->back()->withInput();
-                                            }
-                                    //Si en PNTM está con resultado y no es el mismo que se intenta cargar, se devuelve a pending
-                                    }elseif ($responseSampleStatus['status'] == 1 && $responseSampleStatus['sample_status'] == 4 && $suspectCase->pcr_sars_cov_2 != 'pending'){
-                                        if ($responseSampleStatus['sample_result'] != $suspectCase->covid19) {
-                                            $newHl7ErrorMessage = new Hl7ErrorMessage();
-                                            $newHl7ErrorMessage->error = 'PNTM';
-                                            $newHl7ErrorMessage->error_message = 'Ya existe muestra en PNTM y el resultado es diferente al especificado ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'];
-                                            $newHl7ErrorMessage->save();
-                                            $hl7ResultMessage->status = 'monitor_error';
-                                            $hl7ResultMessage->hl7_error_message_id = $newHl7ErrorMessage->id;
-                                            $hl7ResultMessage->save();
+                                                  $this->suspectCaseBackToPending($suspectCase);
+                                                  return false;
+                                                  // return redirect()->back()->withInput();
+                                              }
+                                      //Si en PNTM está con resultado y no es el mismo que se intenta cargar, se devuelve a pending
+                                      }elseif ($responseSampleStatus['status'] == 1 && $responseSampleStatus['sample_status'] == 4 && $suspectCase->pcr_sars_cov_2 != 'pending'){
+                                          if ($responseSampleStatus['sample_result'] != $suspectCase->covid19) {
+                                              $newHl7ErrorMessage = new Hl7ErrorMessage();
+                                              $newHl7ErrorMessage->error = 'PNTM';
+                                              $newHl7ErrorMessage->error_message = 'Ya existe muestra en PNTM y el resultado es diferente al especificado ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'];
+                                              $newHl7ErrorMessage->save();
+                                              $hl7ResultMessage->status = 'monitor_error';
+                                              $hl7ResultMessage->hl7_error_message_id = $newHl7ErrorMessage->id;
+                                              $hl7ResultMessage->save();
 
 
-                                            $this->suspectCaseBackToPending($suspectCase);
-                                            return false;
-                                            // return redirect()->back()->withInput();
-                                        }
-                                    }
-                                    else{
-                                        //GUARDAR ERROR EN DB HL7 ERRORS
-                                        $newHl7ErrorMessage = new Hl7ErrorMessage();
-                                        $newHl7ErrorMessage->error = 'PNTM';
-                                        $newHl7ErrorMessage->error_message = 'Error al subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'];
-                                        $newHl7ErrorMessage->save();
-                                        $hl7ResultMessage->status = 'monitor_error';
-                                        $hl7ResultMessage->hl7_error_message_id = $newHl7ErrorMessage->id;
-                                        $hl7ResultMessage->save();
+                                              $this->suspectCaseBackToPending($suspectCase);
+                                              return false;
+                                              // return redirect()->back()->withInput();
+                                          }
+                                      }
+                                      else{
+                                          //GUARDAR ERROR EN DB HL7 ERRORS
+                                          $newHl7ErrorMessage = new Hl7ErrorMessage();
+                                          $newHl7ErrorMessage->error = 'PNTM';
+                                          $newHl7ErrorMessage->error_message = 'Error al subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'];
+                                          $newHl7ErrorMessage->save();
+                                          $hl7ResultMessage->status = 'monitor_error';
+                                          $hl7ResultMessage->hl7_error_message_id = $newHl7ErrorMessage->id;
+                                          $hl7ResultMessage->save();
 
-                                        $this->suspectCaseBackToPending($suspectCase);
-                                        return false;
-                                        // return redirect()->back()->withInput();
-                                    }
+                                          $this->suspectCaseBackToPending($suspectCase);
+                                          return false;
+                                          // return redirect()->back()->withInput();
+                                      }
 
-                                }
+                                  }
 
-                                // session()->flash('success', 'Se subió resultado a PNTM');
-                            }
-                        }
-                    }
-                }
+                                  // session()->flash('success', 'Se subió resultado a PNTM');
+                              }
+                          }
+                      }
+                  }
+              }
+
+
+              if (env('APP_ENV') == 'production') {
+                  if ($old_pcr == 'pending' and $suspectCase->pcr_sars_cov_2 == 'positive') {
+                      $emails  = explode(',', env('EMAILS_ALERT'));
+                      $emails_bcc  = explode(',', env('EMAILS_ALERT_BCC'));
+                      Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($suspectCase));
+                  }
+
+                  /* Enviar resultado al usuario, solo si tiene registrado un correo electronico */
+                  if($old_pcr == 'pending' && ($suspectCase->pcr_sars_cov_2 == 'negative' || $suspectCase->pcr_sars_cov_2 == 'undetermined' ||
+                                              $suspectCase->pcr_sars_cov_2 == 'rejected' || $suspectCase->pcr_sars_cov_2 == 'positive')
+                                          && $suspectCase->patient->demographic != NULL){
+                      if($suspectCase->patient->demographic->email != NULL){
+                          $email  = $suspectCase->patient->demographic->email;
+                          /*PDF SI ES DE */
+                          if ($suspectCase->laboratory) {
+                              if ($suspectCase->laboratory->pdf_generate == 1) {
+                                  $case = $suspectCase;
+                                  $pdf = \PDF::loadView('lab.results.result', compact('case'));
+                                  $message = new NewNegative($suspectCase);
+                                  $message->attachData($pdf->output(), $suspectCase->id.'.pdf');
+                                  Mail::to($email)->send($message);
+                              }
+                              else{
+                              if($suspectCase->file == 1){
+                                  $message = new NewNegative($suspectCase);
+                                  $message->attachFromStorage('suspect_cases/'.$suspectCase->id.'.pdf', $suspectCase->id.'.pdf', [
+                                              'mime' => 'application/pdf',
+                                              ]);
+                                  Mail::to($email)->send($message);
+
+                              }
+                              else{
+                                  $message = new NewNegative($suspectCase);
+                                  Mail::to($email)->send($message);
+                              }
+                              }
+                          }
+
+                      }
+                  }
+              }
+
+
             }
 
-            if (env('APP_ENV') == 'production') {
-                if ($old_pcr == 'pending' and $suspectCase->pcr_sars_cov_2 == 'positive') {
-                    $emails  = explode(',', env('EMAILS_ALERT'));
-                    $emails_bcc  = explode(',', env('EMAILS_ALERT_BCC'));
-                    Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($suspectCase));
-                }
-
-                /* Enviar resultado al usuario, solo si tiene registrado un correo electronico */
-                if($old_pcr == 'pending' && ($suspectCase->pcr_sars_cov_2 == 'negative' || $suspectCase->pcr_sars_cov_2 == 'undetermined' ||
-                                            $suspectCase->pcr_sars_cov_2 == 'rejected' || $suspectCase->pcr_sars_cov_2 == 'positive')
-                                        && $suspectCase->patient->demographic != NULL){
-                    if($suspectCase->patient->demographic->email != NULL){
-                        $email  = $suspectCase->patient->demographic->email;
-                        /*PDF SI ES DE */
-                        if ($suspectCase->laboratory) {
-                            if ($suspectCase->laboratory->pdf_generate == 1) {
-                                $case = $suspectCase;
-                                $pdf = \PDF::loadView('lab.results.result', compact('case'));
-                                $message = new NewNegative($suspectCase);
-                                $message->attachData($pdf->output(), $suspectCase->id.'.pdf');
-                                Mail::to($email)->send($message);
-                            }
-                            else{
-                            if($suspectCase->file == 1){
-                                $message = new NewNegative($suspectCase);
-                                $message->attachFromStorage('suspect_cases/'.$suspectCase->id.'.pdf', $suspectCase->id.'.pdf', [
-                                            'mime' => 'application/pdf',
-                                            ]);
-                                Mail::to($email)->send($message);
-
-                            }
-                            else{
-                                $message = new NewNegative($suspectCase);
-                                Mail::to($email)->send($message);
-                            }
-                            }
-                        }
-
-                    }
-                }
-            }
 
             return true;
 
@@ -2839,6 +2845,52 @@ class SuspectCaseController extends Controller
         $hl7ErrorMessage->error = $error;
         $hl7ErrorMessage->error_message = $errorMessage;
         $hl7ErrorMessage->save();
+    }
+
+    public function Hl7ResultMessageSuspectCaseAsignation(Hl7ResultMessage $hl7ResultMessage, SuspectCase $suspectCase, Request $request)
+    {
+      if ($suspectCase->pcr_sars_cov_2 == "pending") {
+        if ($this->addSuspectCaseResult($suspectCase, $hl7ResultMessage, false, true)) {
+          foreach ($hl7ResultMessage->suspectCases as $key => $suspectCase_item) {
+            if ($suspectCase_item->id != $suspectCase->id) {
+              $suspectCase_item->hl7_result_message_id = null;
+              $suspectCase_item->save();
+            }
+          }
+
+          $hl7ResultMessage->status = "assigned_to_case";
+          $hl7ResultMessage->pdf_file = null;
+          $hl7ResultMessage->save();
+
+          session()->flash('success', 'Se asignó muestra ' . $suspectCase->id . " a caso pendiente " . $hl7ResultMessage->id);
+          return redirect()->route('lab.suspect_cases.reports.integration_hetg_monitor_pendings');
+
+        }else{
+          session()->flash('warning', $hl7ResultMessage->hl7ErrorMessage->error . ": " . $hl7ResultMessage->hl7ErrorMessage->error_message);
+          return redirect()->route('lab.suspect_cases.reports.integration_hetg_monitor_pendings');
+        }
+
+      }else{
+        if ($this->addSuspectCaseResult($suspectCase, $hl7ResultMessage, false, false)) {
+          foreach ($hl7ResultMessage->suspectCases as $key => $suspectCase_item) {
+            if ($suspectCase_item->id != $suspectCase->id) {
+              $suspectCase_item->hl7_result_message_id = null;
+              $suspectCase_item->save();
+            }
+          }
+
+          $hl7ResultMessage->status = "assigned_to_case";
+          $hl7ResultMessage->pdf_file = null;
+          $hl7ResultMessage->save();
+
+          session()->flash('success', 'Se asignó muestra ' . $suspectCase->id . " a caso " . $hl7ResultMessage->id . ". <b>REGULARIZAR ESTADO DE LA MUESTRA EN PNTM.</b>");
+          return redirect()->route('lab.suspect_cases.reports.integration_hetg_monitor_pendings');
+        }else{
+          session()->flash('warning', $hl7ResultMessage->hl7ErrorMessage->error . ": " . $hl7ResultMessage->hl7ErrorMessage->error_message);
+          return redirect()->route('lab.suspect_cases.reports.integration_hetg_monitor_pendings');
+        }
+      }
+
     }
 
 }

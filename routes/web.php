@@ -232,6 +232,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/{suspect_case}/notificationForm','SuspectCaseController@notificationForm')->name('notificationForm')->middleware('auth','can:SuspectCase: admission');
         Route::get('/{suspect_case}/notificationFormSmall','SuspectCaseController@notificationFormSmall')->name('notificationFormSmall')->middleware('auth','can:SuspectCase: admission');
         Route::post('/notificationFormSmallBulk','SuspectCaseController@notificationFormSmallBulk')->name('notificationFormSmallBulk')->middleware('auth','can:SuspectCase: admission');
+        Route::get('/Hl7ResultMessageSuspectCaseAsignation/{hl7ResultMessage}/{suspectCase}','SuspectCaseController@Hl7ResultMessageSuspectCaseAsignation')->name('hl7Result_message_suspectCase_asignation')->middleware('auth');
 
         Route::get('/index_import_results','SuspectCaseController@index_import_results')->name('index_import_results')->middleware('auth');
         Route::post('/results_import', 'SuspectCaseController@results_import')->name('results_import');
@@ -269,7 +270,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
             Route::get('/allrapidtests','SuspectCaseReportController@allRapidTests')->name('all_rapid_tests')->middleware('auth');
             Route::get('/integrationhetgmonitorpendings','SuspectCaseReportController@integrationHetgMonitorPendings')->name('integration_hetg_monitor_pendings')->middleware('auth');
             Route::get('/integrationhetgmonitorpendingsDetails/{hl7ResultMessage}','SuspectCaseReportController@integrationHetgMonitorPendingsDetails')->name('integration_hetg_monitor_pendings_details')->middleware('auth');
-            Route::get('/Hl7ResultMessageSuspectCaseAsignation/{hl7ResultMessage}/{suspectCase}','SuspectCaseReportController@Hl7ResultMessageSuspectCaseAsignation')->name('hl7Result_message_suspectCase_asignation')->middleware('auth');
+            // Route::get('/Hl7ResultMessageSuspectCaseAsignation/{hl7ResultMessage}/{suspectCase}','SuspectCaseReportController@Hl7ResultMessageSuspectCaseAsignation')->name('hl7Result_message_suspectCase_asignation')->middleware('auth');
         });
         Route::prefix('report')->name('report.')->group(function () {
             Route::get('/','SuspectCaseReportController@positives')->name('index')->middleware('auth','can:Report: other');

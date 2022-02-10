@@ -15,6 +15,7 @@
               <option value="case_not_found" {{("case_not_found" == $request->status)?'selected':''}}>Muestra no encontrada</option>
               <option value="too_many_cases" {{("too_many_cases" == $request->status)?'selected':''}}>Muchas muestras encontradas</option>
               <option value="assigned_to_case" {{("assigned_to_case" == $request->status)?'selected':''}}>Muestras asignadas</option>
+              <option value="monitor_error" {{("monitor_error" == $request->status)?'selected':''}}>Error monitor</option>
             </select>
         </fieldset>
     </div>

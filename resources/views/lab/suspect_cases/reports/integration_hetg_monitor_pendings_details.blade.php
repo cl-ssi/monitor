@@ -7,7 +7,23 @@
 <div class="card mb-3">
     <div class="card-body">
 
-        <h3 class="mb-3">Resultado pendiente</h3>
+        <div class="form-row">
+            <fieldset class="form-group col-12 col-sm-4 col-md-4">
+                <h3 class="mb-3">Resultado pendiente</h3>
+            </fieldset>
+            <fieldset class="form-group col-12 col-sm-4 col-md-4">
+                <h3 class="mb-3"></h3>
+            </fieldset>
+            <fieldset class="form-group col-12 col-sm-4 col-md-4">
+              <div class="d-flex justify-content-end">
+                <a class="btn btn-warning btn" href="#">
+                  Descartar
+                </a>
+              </div>
+
+            </fieldset>
+        </div>
+
 
         <div class="form-row">
             <fieldset class="form-group col-12 col-sm-4 col-md-4">
@@ -93,7 +109,16 @@
   	<tbody>
       @foreach($hl7ResultMessage->suspectCases as $suspectCase)
         <tr>
-          <td>{{$suspectCase->id}}</td>
+          <!-- <td>{{$suspectCase->id}}</td> -->
+          <td>
+              @can('SuspectCase: edit')
+              <a href="{{ route('lab.suspect_cases.edit', $suspectCase )}}">
+              @endcan
+                  {{ $suspectCase->id }}
+              @can('SuspectCase: edit')
+              </a>
+              @endcan
+          </td>
           <td>{{$suspectCase->sample_at}}</td>
           <!-- <td>{{$suspectCase->reception_at}}</td> -->
           <td>{{$suspectCase->pcr_sars_cov_2_at}}</td>
@@ -101,7 +126,7 @@
           <td>{{$suspectCase->observation}}</td>
           <td class="text-center">
               @if($hl7ResultMessage->status == "too_many_cases")
-                <a class="btn btn-primary btn-sm"  href="{{ route('lab.suspect_cases.reports.hl7Result_message_suspectCase_asignation', [$hl7ResultMessage,$suspectCase]) }}">
+                <a class="btn btn-primary btn-sm"  href="{{ route('lab.suspect_cases.hl7Result_message_suspectCase_asignation', [$hl7ResultMessage,$suspectCase]) }}">
                   Asignar
                 </a>
               @endif
@@ -217,7 +242,7 @@
               <td>{{ $suspectCase->patient->status }}</td>
               <td class="text-muted small">{{ $suspectCase->observation }}</td>
               <td class="text-center">
-                  <a class="btn btn-primary btn-sm" href="{{ route('lab.suspect_cases.reports.hl7Result_message_suspectCase_asignation', [$hl7ResultMessage,$suspectCase]) }}">
+                  <a class="btn btn-primary btn-sm" href="{{ route('lab.suspect_cases.hl7Result_message_suspectCase_asignation', [$hl7ResultMessage,$suspectCase]) }}">
                     Asignar
                   </a>
               </td>

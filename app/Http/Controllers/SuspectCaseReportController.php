@@ -1645,6 +1645,8 @@ class SuspectCaseReportController extends Controller
                                             ->when($status != null, function ($q) use ($status) {
                                                 return $q->where('status',$status);
                                             })
+                                            ->whereNotNull('pdf_file')
+                                            ->orderBy('observation_datetime','DESC')
                                             ->get();
 
       return view('lab.suspect_cases.reports.integration_hetg_monitor_pendings',compact('hl7ResultMessages','request'));
@@ -1694,50 +1696,65 @@ class SuspectCaseReportController extends Controller
       return view('lab.suspect_cases.reports.integration_hetg_monitor_pendings_details',compact('hl7ResultMessage','request','suspectCases'));
     }
 
-    public function Hl7ResultMessageSuspectCaseAsignation(Hl7ResultMessage $hl7ResultMessage, SuspectCase $suspectCase, Request $request)
-    {
-      if ($hl7ResultMessage->observation_value == "Negativo") {
-          $pcrSarsCov2 = "negative";
-      }
-      if ($hl7ResultMessage->observation_value == "Positivo") {
-          $pcrSarsCov2 = "positive";
-      }
-      if ($hl7ResultMessage->observation_value == "Rechazado") {
-          $pcrSarsCov2 = "rejected";
-      }
-      if ($hl7ResultMessage->observation_value == "Indeterminado") {
-          $pcrSarsCov2 = "undetermined";
-      }
-
-      $sucesfulStore = Storage::put('suspect_cases/' . $suspectCase->id . '.pdf' , $hl7ResultMessage->pdf_file);
-
-      if ($sucesfulStore) {
-        $suspectCase->pcr_sars_cov_2_at = $hl7ResultMessage->observation_datetime;
-        $suspectCase->pcr_sars_cov_2 = $pcrSarsCov2;
-        $suspectCase->hl7_result_message_id = $hl7ResultMessage->id;
-        $suspectCase->file = 1;
-        $suspectCase->save();
-
-        foreach ($hl7ResultMessage->suspectCases as $key => $suspectCase_item) {
-          if ($suspectCase_item->id != $suspectCase->id) {
-            $suspectCase_item->hl7_result_message_id = null;
-            $suspectCase_item->save();
-          }
-        }
-
-        $hl7ResultMessage->status = "assigned_to_case";
-        $hl7ResultMessage->pdf_file = null;
-        $hl7ResultMessage->save();
-
-        session()->flash('success', 'Se asignó muestra ' . $suspectCase->id . " a caso pendiente " . $hl7ResultMessage->id);
-        return redirect()->route('lab.suspect_cases.reports.integration_hetg_monitor_pendings');
-
-      }else{
-        session()->flash('error', "Error al obtener archivo pdf");
-        return redirect()->route('lab.suspect_cases.reports.integration_hetg_monitor_pendings');
-      }
-
-
-    }
+    // public function Hl7ResultMessageSuspectCaseAsignation(Hl7ResultMessage $hl7ResultMessage, SuspectCase $suspectCase, Request $request)
+    // {
+    //   // if ($hl7ResultMessage->observation_value == "Negativo") {
+    //   //     $pcrSarsCov2 = "negative";
+    //   // }
+    //   // if ($hl7ResultMessage->observation_value == "Positivo") {
+    //   //     $pcrSarsCov2 = "positive";
+    //   // }
+    //   // if ($hl7ResultMessage->observation_value == "Rechazado") {
+    //   //     $pcrSarsCov2 = "rejected";
+    //   // }
+    //   // if ($hl7ResultMessage->observation_value == "Indeterminado") {
+    //   //     $pcrSarsCov2 = "undetermined";
+    //   // }
+    //   //
+    //   // $sucesfulStore = Storage::put('suspect_cases/' . $suspectCase->id . '.pdf' , $hl7ResultMessage->pdf_file);
+    //   //
+    //   // if ($sucesfulStore) {
+    //   //   $suspectCase->pcr_sars_cov_2_at = $hl7ResultMessage->observation_datetime;
+    //   //   $suspectCase->pcr_sars_cov_2 = $pcrSarsCov2;
+    //   //   $suspectCase->hl7_result_message_id = $hl7ResultMessage->id;
+    //   //   $suspectCase->file = 1;
+    //   //   $suspectCase->save();
+    //   //
+    //   //   foreach ($hl7ResultMessage->suspectCases as $key => $suspectCase_item) {
+    //   //     if ($suspectCase_item->id != $suspectCase->id) {
+    //   //       $suspectCase_item->hl7_result_message_id = null;
+    //   //       $suspectCase_item->save();
+    //   //     }
+    //   //   }
+    //   //
+    //   //   $hl7ResultMessage->status = "assigned_to_case";
+    //   //   $hl7ResultMessage->pdf_file = null;
+    //   //   $hl7ResultMessage->save();
+    //   //
+    //   //   //se intenta subir a PNTM
+    //   //   $this->addSuspectCaseResult($suspectCase, $hl7ResultMessage);
+    //   //
+    //   //   session()->flash('success', 'Se asignó muestra ' . $suspectCase->id . " a caso pendiente " . $hl7ResultMessage->id);
+    //   //   return redirect()->route('lab.suspect_cases.reports.integration_hetg_monitor_pendings');
+    //   //
+    //   // }else{
+    //   //   session()->flash('error', "Error al obtener archivo pdf");
+    //   //   return redirect()->route('lab.suspect_cases.reports.integration_hetg_monitor_pendings');
+    //   // }
+    //
+    //   if ($this->addSuspectCaseResult($suspectCase, $hl7ResultMessage)) {
+    //       $hl7ResultMessage->status = "assigned_to_case";
+    //       $hl7ResultMessage->pdf_file = null;
+    //       $hl7ResultMessage->save();
+    //
+    //       session()->flash('success', 'Se asignó muestra ' . $suspectCase->id . " a caso pendiente " . $hl7ResultMessage->id);
+    //       return redirect()->route('lab.suspect_cases.reports.integration_hetg_monitor_pendings');
+    //   }else{
+    //     session()->flash('error', "Error--");
+    //     return redirect()->route('lab.suspect_cases.reports.integration_hetg_monitor_pendings');
+    //   }
+    //
+    //
+    // }
 
 }
