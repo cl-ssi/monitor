@@ -239,6 +239,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/{suspect_case}/notificationFormSmall','SuspectCaseController@notificationFormSmall')->name('notificationFormSmall')->middleware('auth','can:SuspectCase: admission');
         Route::post('/notificationFormSmallBulk','SuspectCaseController@notificationFormSmallBulk')->name('notificationFormSmallBulk')->middleware('auth','can:SuspectCase: admission');
         Route::get('/Hl7ResultMessageSuspectCaseAsignation/{hl7ResultMessage}/{suspectCase}','SuspectCaseController@Hl7ResultMessageSuspectCaseAsignation')->name('hl7Result_message_suspectCase_asignation')->middleware('auth');
+        Route::get('/Hl7ResultMessageDismiss/{hl7ResultMessage}','SuspectCaseController@Hl7ResultMessageDismiss')->name('Hl7Result_message_dismiss')->middleware('auth');
 
         Route::get('/index_import_results','SuspectCaseController@index_import_results')->name('index_import_results')->middleware('auth');
         Route::post('/results_import', 'SuspectCaseController@results_import')->name('results_import');

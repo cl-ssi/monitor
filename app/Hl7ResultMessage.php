@@ -32,4 +32,19 @@ class Hl7ResultMessage extends Model
             return "undetermined";
         }
     }
+
+    public function getStatusValueAttribute(){
+      if ($this->status == "assigned_to_case") {
+          return "Muestra asignada";
+      }
+      if ($this->status == "case_not_found") {
+          return "Muestra no encontrada";
+      }
+      if ($this->status == "too_many_cases") {
+          return "Muchas muestras encontradas";
+      }
+      if ($this->status == "monitor_error") {
+          return "Error monitor";
+      }
+    }
 }

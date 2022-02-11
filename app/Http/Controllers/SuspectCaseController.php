@@ -2706,6 +2706,9 @@ class SuspectCaseController extends Controller
             $suspectCase->pcr_sars_cov_2 = $hl7ResultMessage->observationValueEng;
             $suspectCase->pcr_sars_cov_2_at = $hl7ResultMessage->observation_datetime;
 
+            // agregado por esteban
+            $suspectCase->hl7_result_message_id = $hl7ResultMessage->id;
+
             $suspectCase->epidemiological_week = Carbon::createFromDate(
                 $suspectCase->sample_at->format('Y-m-d'))->add(1, 'days')->weekOfYear;
 
@@ -2929,12 +2932,17 @@ class SuspectCaseController extends Controller
 
     public function Hl7ResultMessageSuspectCaseAsignation(Hl7ResultMessage $hl7ResultMessage, SuspectCase $suspectCase, Request $request)
     {
+      // dd($hl7ResultMessage, $suspectCase);
+
+      //si es pendiente, se intenta se sube el resultado a PNTM
       if ($suspectCase->pcr_sars_cov_2 == "pending") {
         if ($this->addSuspectCaseResult($suspectCase, $hl7ResultMessage, false, true)) {
-          foreach ($hl7ResultMessage->suspectCases as $key => $suspectCase_item) {
-            if ($suspectCase_item->id != $suspectCase->id) {
-              $suspectCase_item->hl7_result_message_id = null;
-              $suspectCase_item->save();
+          if ($hl7ResultMessage->suspectCase != null) {
+            foreach ($hl7ResultMessage->suspectCases as $key => $suspectCase_item) {
+              if ($suspectCase_item->id != $suspectCase->id) {
+                $suspectCase_item->hl7_result_message_id = null;
+                $suspectCase_item->save();
+              }
             }
           }
 
@@ -2945,17 +2953,23 @@ class SuspectCaseController extends Controller
           session()->flash('success', 'Se asignó muestra ' . $suspectCase->id . " a caso pendiente " . $hl7ResultMessage->id);
           return redirect()->route('lab.suspect_cases.reports.integration_hetg_monitor_pendings');
 
-        }else{
+        }
+        // si no es pendiente, no se sube el resultado a PNTM
+        else
+        {
           session()->flash('warning', $hl7ResultMessage->hl7ErrorMessage->error . ": " . $hl7ResultMessage->hl7ErrorMessage->error_message);
           return redirect()->route('lab.suspect_cases.reports.integration_hetg_monitor_pendings');
         }
 
       }else{
+
         if ($this->addSuspectCaseResult($suspectCase, $hl7ResultMessage, false, false)) {
-          foreach ($hl7ResultMessage->suspectCases as $key => $suspectCase_item) {
-            if ($suspectCase_item->id != $suspectCase->id) {
-              $suspectCase_item->hl7_result_message_id = null;
-              $suspectCase_item->save();
+          if ($hl7ResultMessage->suspectCase != null) {
+            foreach ($hl7ResultMessage->suspectCases as $key => $suspectCase_item) {
+              if ($suspectCase_item->id != $suspectCase->id) {
+                $suspectCase_item->hl7_result_message_id = null;
+                $suspectCase_item->save();
+              }
             }
           }
 
@@ -2971,6 +2985,11 @@ class SuspectCaseController extends Controller
         }
       }
 
+    }
+
+    public function Hl7ResultMessageDismiss(Hl7ResultMessage $hl7ResultMessage)
+    {
+      dd($hl7ResultMessage);
     }
 
 }

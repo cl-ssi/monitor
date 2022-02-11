@@ -1641,12 +1641,17 @@ class SuspectCaseReportController extends Controller
         $status = "case_not_found";
       }
 
+      // dd($status);
+
       $hl7ResultMessages = Hl7ResultMessage::whereNotNull('status')
                                             ->when($status != null, function ($q) use ($status) {
                                                 return $q->where('status',$status)
                                                 ->where('created_at', '>', '2022-02-03 12:52:00');
                                             })
-                                            ->whereNotNull('pdf_file')
+                                            ->when($status != "assigned_to_case" && $status != "monitor_error", function ($q) use ($status) {
+                                                return $q->whereNotNull('pdf_file');
+                                            })
+                                            // ->whereNotNull('pdf_file')
                                             ->orderBy('observation_datetime','DESC')
                                             ->get();
 
