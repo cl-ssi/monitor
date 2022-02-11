@@ -2937,7 +2937,7 @@ class SuspectCaseController extends Controller
       //si es pendiente, se intenta se sube el resultado a PNTM
       if ($suspectCase->pcr_sars_cov_2 == "pending") {
         if ($this->addSuspectCaseResult($suspectCase, $hl7ResultMessage, false, true)) {
-          if ($hl7ResultMessage->suspectCase != null) {
+          if ($hl7ResultMessage->suspectCases != null) {
             foreach ($hl7ResultMessage->suspectCases as $key => $suspectCase_item) {
               if ($suspectCase_item->id != $suspectCase->id) {
                 $suspectCase_item->hl7_result_message_id = null;
@@ -2964,7 +2964,7 @@ class SuspectCaseController extends Controller
       }else{
 
         if ($this->addSuspectCaseResult($suspectCase, $hl7ResultMessage, false, false)) {
-          if ($hl7ResultMessage->suspectCase != null) {
+          if ($hl7ResultMessage->suspectCases != null) {
             foreach ($hl7ResultMessage->suspectCases as $key => $suspectCase_item) {
               if ($suspectCase_item->id != $suspectCase->id) {
                 $suspectCase_item->hl7_result_message_id = null;
@@ -2977,7 +2977,7 @@ class SuspectCaseController extends Controller
           $hl7ResultMessage->pdf_file = null;
           $hl7ResultMessage->save();
 
-          session()->flash('success', 'Se asignó muestra ' . $suspectCase->id . " a caso " . $hl7ResultMessage->id . ". <b>REGULARIZAR ESTADO DE LA MUESTRA EN PNTM.</b>");
+          session()->flash('success', 'Se asignó muestra ' . $suspectCase->id . " a caso " . $hl7ResultMessage->id . ". <b>SI ES NECESARIO, REGULARIZAR ESTADO DE LA MUESTRA EN PNTM.</b>");
           return redirect()->route('lab.suspect_cases.reports.integration_hetg_monitor_pendings');
         }else{
           session()->flash('warning', $hl7ResultMessage->hl7ErrorMessage->error . ": " . $hl7ResultMessage->hl7ErrorMessage->error_message);

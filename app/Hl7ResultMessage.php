@@ -11,7 +11,7 @@ class Hl7ResultMessage extends Model
         return $this->hasMany('App\SuspectCase');
     }
 
-    protected $fillable = ['full_message', 'message_id', 'patient_names', 'patient_family_father', 'patient_family_mother',
+    protected $fillable = ['full_message', 'message_id', 'patient_identifier', 'patient_names', 'patient_family_father', 'patient_family_mother',
      'observation_datetime', 'observation_value', 'sample_observation_datetime', 'status', 'pdf_file', 'hl7_error_message_id'];
 
    public function hl7ErrorMessage() {

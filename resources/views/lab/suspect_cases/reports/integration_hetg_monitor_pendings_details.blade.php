@@ -26,9 +26,16 @@
 
         <div class="form-row">
             <fieldset class="form-group col-12 col-sm-4 col-md-4">
-                <label for="for_name">ID</label>
+                <label for="for_name">ID MSG</label>
                 <input type="text" class="form-control" id="for_name" name="name"
                        value="{{$hl7ResultMessage->id}}" style="text-transform: uppercase;"
+                       disabled>
+            </fieldset>
+
+            <fieldset class="form-group col-12 col-sm-4 col-md-4">
+                <label for="for_name">RUT/PASAPORTE</label>
+                <input type="text" class="form-control" id="for_patient_identifier" name="patient_identifier"
+                       value="{{$hl7ResultMessage->patient_identifier}}" style="text-transform: uppercase;"
                        disabled>
             </fieldset>
         </div>
