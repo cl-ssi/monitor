@@ -26,7 +26,7 @@ class TestEmailJob implements ShouldQueue
     }
 
     public function retryAfter(){
-        return 10;
+        return 20;
     }
 
     /**

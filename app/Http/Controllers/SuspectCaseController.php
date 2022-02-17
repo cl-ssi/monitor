@@ -2544,7 +2544,7 @@ class SuspectCaseController extends Controller
                     if ($request->send_email == true) {
                         if (env('APP_ENV') == 'production') {
                             if ($old_pcr == 'pending' and $suspectCase->pcr_sars_cov_2 == 'positive') {
-                                $delay = \DB::table('jobs')->count()*40;
+                                $delay = \DB::table('jobs')->count()*60;
                                 $emailJob = ((new SendEmailAlert($suspectCase))->delay($delay));
                                 dispatch($emailJob);
                             }
@@ -2555,7 +2555,7 @@ class SuspectCaseController extends Controller
 
                                 if($suspectCase->patient->demographic->email != NULL){
                                     if ($suspectCase->laboratory) {
-                                        $delay = \DB::table('jobs')->count()*40;
+                                        $delay = \DB::table('jobs')->count()*60;
                                         $emailJob = ((new SendEmailPatient($suspectCase))->delay($delay));
                                         dispatch($emailJob);
                                     }
