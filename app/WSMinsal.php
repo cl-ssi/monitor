@@ -11,6 +11,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class WSMinsal extends Model
 {
@@ -136,102 +137,6 @@ class WSMinsal extends Model
         return $response;
     }
 
-    /**
-     * Ya no se utiliza
-     * @param SuspectCase $suspectCase
-     * @return array
-     * @throws GuzzleException
-     */
-    public static function crea_muestra(SuspectCase $suspectCase) {
-
-        $response = [];
-        $client = new Client();
-
-        if($suspectCase->gender == "female"){$genero = "F";}
-        elseif($suspectCase->gender == "male"){$genero = "M";}
-        elseif($suspectCase->gender == "other"){$genero = "Intersex";} //intersex
-        else{$genero = "Desconocido";} //desconocido
-
-        $commune_code_deis = Commune::find($suspectCase->patient->demographic->commune_id)->code_deis;
-
-        $paciente_ext_paisorigen = '';
-
-        if($suspectCase->patient->run == "") {
-            $paciente_tipodoc = "PASAPORTE";
-            $country = Country::where('name',$suspectCase->patient->demographic->nationality)->get();
-            $paciente_ext_paisorigen = $country->first()->id_minsal;
-        }
-        else {
-            $paciente_tipodoc = "RUN";
-        }
-
-
-        if ($suspectCase->run_medic == "0-0"
-            || $suspectCase->run_medic == "25540525-k"
-            || $suspectCase->run_medic == "25540525"
-            || $suspectCase->run_medic == "26128476-6"
-            || $suspectCase->run_medic == "15685849-8"
-            || $suspectCase->run_medic == "13867622-6"
-            || $suspectCase->run_medic == "17430962-0"
-        ) {
-            $run_medic = "16350555-K";
-        }elseif ($suspectCase->run_medic == NULL){
-            $run_medic = '';
-        }
-        else{
-            $run_medic = $suspectCase->run_medic;
-        }
-
-        $array = array(
-            'raw' => array(
-                'codigo_muestra_cliente' => $suspectCase->id,
-                'rut_responsable' => $suspectCase->user->run . "-" . $suspectCase->user->dv,//'15980951-K', //Claudia Caronna
-                'cod_deis' => $suspectCase->establishment->new_code_deis, //'102100', //$request->establishment_id
-                'rut_medico' => $run_medic,//$suspectCase->run_medic, //'16350555-K', //Pedro Valjalo
-                'paciente_run' => $suspectCase->patient->run,
-                'paciente_dv' => $suspectCase->patient->dv,
-                'paciente_nombres' => $suspectCase->patient->name,
-                'paciente_ap_pat' => $suspectCase->patient->fathers_family,
-                'paciente_ap_mat' => $suspectCase->patient->mothers_family,
-                'paciente_fecha_nac' => $suspectCase->patient->birthday,
-                'paciente_comuna' => $commune_code_deis,
-                'paciente_direccion' => $suspectCase->patient->demographic->address . " " . $suspectCase->patient->demographic->number,
-                'paciente_telefono' => $suspectCase->patient->demographic->telephone,
-                'paciente_tipodoc' => $paciente_tipodoc,
-                'paciente_ext_paisorigen' => $paciente_ext_paisorigen,
-                'paciente_pasaporte' => $suspectCase->patient->other_identification,
-                'paciente_sexo' => $genero,
-                'paciente_prevision' => 'FONASA', //fijo por el momento
-                'fecha_muestra' => $suspectCase->sample_at,
-                'tecnica_muestra' => 'RT-PCR', //fijo
-                'tipo_muestra' => $suspectCase->sample_type,
-                'busqueda_activa' => ($suspectCase->case_type == 'Busqueda activa') ? 'true' : 'false',
-                'id_laboratorio' => $suspectCase->laboratory->id_openagora
-            )
-        );
-
-//        dd(json_encode($array, JSON_PRETTY_PRINT) );
-
-        try {
-            $response = $client->request('POST', env('WS_CREAR_MUESTRA'), [
-                'json' => $array,
-                'headers'  => [ 'ACCESSKEY' => $suspectCase->laboratory->token_ws]
-            ]);
-
-            $array = json_decode($response->getBody()->getContents(), true);
-            $suspectCase->minsal_ws_id = $array[0]['id_muestra'];
-            $suspectCase->save();
-            $response = ['status' => 1, 'msg' => $array[0]['id_muestra']];
-
-        } catch (RequestException $e) {
-            $response = ['status' => 0, 'msg' => $e->getMessage()];
-        }catch (Exception $e){
-            $response = ['status' => 0, 'msg' => "Error inesperado en conexión a plataforma de toma de muestras. Por favor intente nuevamente en un momento. {$e->getMessage()}"];
-        }
-
-        return $response;
-    }
-
     public static function crea_muestra_v2(SuspectCase $suspectCase)
     {
         $response = [];
@@ -330,8 +235,7 @@ class WSMinsal extends Model
             )
         );
 
-//        dd($array);
-//        dd(json_encode($array, JSON_PRETTY_PRINT) );
+        // Log::channel('suspect_cases_json')->info(json_encode($array, JSON_PRETTY_PRINT));
 
         try {
             $response = $client->request('POST', env('WS_CREAR_MUESTRA_V2'), [

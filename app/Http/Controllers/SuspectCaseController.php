@@ -714,7 +714,7 @@ class SuspectCaseController extends Controller
                     $response = WSMinsal::crea_muestra_v2($suspectCase);
                     $ws_minsal_id = $response['msg'];
                     if ($response['status'] == 0) {
-                        session()->flash('warninig', 'Error al subir muestra a MINSAL. ' . $response['msg']);
+                        session()->flash('warning', 'Error al subir muestra a MINSAL. ' . $response['msg']);
                         $suspectCase->forceDelete();
                         return redirect()->back()->withInput();
                     }
