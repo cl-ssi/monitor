@@ -16,6 +16,7 @@ class SendEmailPatient implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     public $suspectCase;
     public $generatePdf;
+    public $tries = 3;
 
     /**
      * Create a new job instance.
@@ -25,6 +26,10 @@ class SendEmailPatient implements ShouldQueue
     public function __construct(SuspectCase $suspectCase)
     {
         $this->suspectCase = $suspectCase;
+    }
+
+    public function retryAfter(){
+        return 10;
     }
 
     /**

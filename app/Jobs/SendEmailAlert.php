@@ -14,8 +14,8 @@ use App\SuspectCase;
 class SendEmailAlert implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
     public $suspectCase;
+    public $tries = 3;
 
     /**
      * Create a new job instance.
@@ -26,6 +26,10 @@ class SendEmailAlert implements ShouldQueue
     {
         //
         $this->suspectCase = $suspectCase;
+    }
+
+    public function retryAfter(){
+        return 10;
     }
 
     /**
