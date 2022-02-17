@@ -2846,9 +2846,9 @@ class SuspectCaseController extends Controller
 
               if (env('APP_ENV') == 'production') {
                   if ($old_pcr == 'pending' and $suspectCase->pcr_sars_cov_2 == 'positive') {
-                      $emails  = explode(',', env('EMAILS_ALERT'));
-                      $emails_bcc  = explode(',', env('EMAILS_ALERT_BCC'));
-                      Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($suspectCase));
+                    $delay = \DB::table('jobs')->count()*60;
+                    $emailJob = ((new SendEmailAlert($suspectCase))->delay($delay));
+                    dispatch($emailJob);
                   }
 
                   /* Enviar resultado al usuario, solo si tiene registrado un correo electronico */
@@ -2856,32 +2856,11 @@ class SuspectCaseController extends Controller
                                               $suspectCase->pcr_sars_cov_2 == 'rejected' || $suspectCase->pcr_sars_cov_2 == 'positive')
                                           && $suspectCase->patient->demographic != NULL){
                       if($suspectCase->patient->demographic->email != NULL){
-                          $email  = $suspectCase->patient->demographic->email;
-                          /*PDF SI ES DE */
-                          if ($suspectCase->laboratory) {
-                              if ($suspectCase->laboratory->pdf_generate == 1) {
-                                  $case = $suspectCase;
-                                  $pdf = \PDF::loadView('lab.results.result', compact('case'));
-                                  $message = new NewNegative($suspectCase);
-                                  $message->attachData($pdf->output(), $suspectCase->id.'.pdf');
-                                  Mail::to($email)->send($message);
-                              }
-                              else{
-                              if($suspectCase->file == 1){
-                                  $message = new NewNegative($suspectCase);
-                                  $message->attachFromStorage('suspect_cases/'.$suspectCase->id.'.pdf', $suspectCase->id.'.pdf', [
-                                              'mime' => 'application/pdf',
-                                              ]);
-                                  Mail::to($email)->send($message);
-
-                              }
-                              else{
-                                  $message = new NewNegative($suspectCase);
-                                  Mail::to($email)->send($message);
-                              }
-                              }
-                          }
-
+                        if ($suspectCase->laboratory) {
+                            $delay = \DB::table('jobs')->count()*60;
+                            $emailJob = ((new SendEmailPatient($suspectCase))->delay($delay));
+                            dispatch($emailJob);
+                        }
                       }
                   }
               }
