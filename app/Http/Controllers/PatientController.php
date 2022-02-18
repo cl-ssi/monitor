@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\SanitaryResidence\AdmissionSurvey;
 use App\Country;
 use App\SuspectCase;
 use App\Patient;
@@ -27,7 +28,7 @@ class PatientController extends Controller
      */
     public function index(Request $request, Establishment $establishment)
     {
-        $patients = array();        
+        $patients = array();
         if (isset($request->search)) {
             $patients = Patient::search($request->input('search'))
                 ->with('demographic')
@@ -35,7 +36,7 @@ class PatientController extends Controller
                 ->with('contactPatient')
                 ->orderBy('name')
                 ->paginate(250);
-        } 
+        }
 
         return view('patients.index', compact('patients', 'request', 'establishment'));
     }
@@ -530,7 +531,7 @@ class PatientController extends Controller
         $patient1 = Patient::find($request->input('p1_id'));
         $patient2 = Patient::find($request->input('p2_id'));
 
-        return view('patients.fusion.show',compact('patient1','patient2'));
+        return view('patients.fusion.show', compact('patient1', 'patient2'));
     }
 
     public function doFusion(Request $request)
@@ -542,23 +543,35 @@ class PatientController extends Controller
         SuspectCase::disableAuditing();
         Demographic::disableAuditing();
         Tracing::disableAuditing();
+        AdmissionSurvey::disableAuditing();
 
         // This operation won't be audited
         $patient1 = Patient::find($request->input('p1_id'));
         $patient2 = Patient::find($request->input('p2_id'));
 
-        foreach($patient1->suspectCases as $sc) {
+        foreach ($patient1->suspectCases as $sc) {
             $sc->update(['patient_id' => $patient2->id]);
         }
 
-        foreach($patient1->audits as $audit) {
+        foreach ($patient1->admissionSurvey as $as) {
+            $as->update(['patient_id' => $patient2->id]);
+        }
+
+        foreach ($patient1->audits as $audit) {
             $audit->update(['auditable_id' => $patient2->id]);
         }
 
-        /* TODO: Pendiente encuestas, booking residencia, signos vitales */
 
-        $patient1->tracing->delete();
+
+
+
+        /* TODO: Pendiente encuestas, booking residencia, signos vitales */
+        if ($patient1->tracing) {
+            $patient1->tracing->delete();
+        }        
+        if ($patient1->demographic) {
         $patient1->demographic->delete();
+        }
         $patient1->delete();
 
         // Re-enable auditing
@@ -566,9 +579,10 @@ class PatientController extends Controller
         SuspectCase::enableAuditing();
         Demographic::enableAuditing();
         Tracing::enableAuditing();
+        AdmissionSurvey::enableAuditing();
 
         session()->flash('success', 'Paciente fusionado exitosamente');
 
-        return redirect()->route('patients.edit',$patient2);
+        return redirect()->route('patients.edit', $patient2);
     }
 }

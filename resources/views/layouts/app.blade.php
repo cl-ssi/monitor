@@ -293,6 +293,12 @@
                                 <a class="dropdown-item" href="{{ route('sanitary_residences.admission.inbox') }}">Bandeja SEREMI</a>
                                 @endcan
 
+
+                                @canany(['Patient: fusion','Developer'])
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ route('patients.fusion.create') }}">Fusion de Pacientes</a>
+                                @endcan
+
                             </div>
                         </li>
                         @endcan
