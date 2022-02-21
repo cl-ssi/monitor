@@ -125,7 +125,7 @@
         <fieldset class="form-group col-12 col-md-4">
             <label for="for_room_id">Residencia - Habitación</label>
             <select name="room_id" id="for_room_id" class="form-control" readonly>
-                <option >{{ $booking->room->residence->name }} - Habitación {{ $booking->room->number }}</option>
+                <option>{{ $booking->room->residence->name }} - Habitación {{ $booking->room->number }}</option>
 
             </select>
         </fieldset>
@@ -133,7 +133,7 @@
         <fieldset class="form-group col-6 col-md-2">
             <label for="for_prevision">Previsión</label>
             <select name="prevision" id="for_prevision" class="form-control" readonly>
-                <option >{{ $booking->prevision }}</option>
+                <option>{{ $booking->prevision }}</option>
             </select>
         </fieldset>
 
@@ -248,6 +248,11 @@
 @include('sanitary_residences.indications.partials.index', compact('booking'))
 <hr>
 @include('sanitary_residences.bookings.medical_release.partials.index', compact('booking'))
+
+@can('Admin')
+
+@include('partials.audit', ['audits' => $booking->audits] )
+@endcan
 
 @endsection
 
