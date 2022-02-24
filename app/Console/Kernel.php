@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('Report:backup')->everyMinute();
         $schedule->command('Report:backup')->dailyAt('21:00');
-        $schedule->command('queue:retry all')->dailyAt('13:00');
+        $schedule->command('queue:retry all')->hourly();
     }
 
     /**

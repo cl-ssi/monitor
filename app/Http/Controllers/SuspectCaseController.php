@@ -625,7 +625,10 @@ class SuspectCaseController extends Controller
     public function storeAdmission(Request $request)
     {
         $request->validate([
-           'id' => new UniqueSampleDateByPatient($request->sample_at)
+           'id' => new UniqueSampleDateByPatient($request->sample_at),
+           'email' => 'email:rfc'
+        ],[
+            'email' => 'Debe ingresar un email válido.'
         ]);
 
         /* Si existe el paciente lo actualiza, si no, crea uno nuevo */
