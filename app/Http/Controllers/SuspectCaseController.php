@@ -626,7 +626,7 @@ class SuspectCaseController extends Controller
     {
         $request->validate([
            'id' => new UniqueSampleDateByPatient($request->sample_at),
-           'email' => 'email:rfc'
+           'email' => 'nullable|email:rfc'
         ],[
             'email' => 'Debe ingresar un email válido.'
         ]);
