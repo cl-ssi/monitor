@@ -1646,7 +1646,7 @@ class SuspectCaseReportController extends Controller
       $hl7ResultMessages = Hl7ResultMessage::whereNotNull('status')
                                             ->when($status != null, function ($q) use ($status) {
                                                 return $q->where('status',$status)
-                                                ->where('created_at', '>', '2022-02-14 00:00:00');
+                                                ->where('created_at', '>', '2022-03-01 00:00:00');
                                             })
                                             ->when($status != "assigned_to_case" && $status != "monitor_error", function ($q) use ($status) {
                                                 return $q->whereNotNull('pdf_file');
