@@ -301,8 +301,10 @@
             </select>
     </fieldset>
 
-
-
+    <fieldset class="form-group col-md-3">
+                  <label for="for_epivigila">Epivigila:</label>
+                  <input type="number" class="form-control" name="epivigila">
+                </fieldset>
     </div>
 
     <button type="submit" class="btn btn-primary">Guardar</button>
