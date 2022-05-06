@@ -37,11 +37,11 @@ class Demographic extends Model implements Auditable
     }
 
     public function region() {
-        return $this->belongsTo('App\Region');
+        return $this->belongsTo('App\Region')->withDefault();
     }
 
     public function commune() {
-        return $this->belongsTo('App\Commune');
+        return $this->belongsTo('App\Commune')->withDefault();
     }
 
 

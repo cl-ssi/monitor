@@ -91,7 +91,7 @@ class Patient extends Model implements Auditable //Authenticatable
     }
 
     public function demographic() {
-        return $this->hasOne('App\Demographic');
+        return $this->hasOne('App\Demographic')->withDefault();
     }
 
     public function bookings() {
