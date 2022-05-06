@@ -370,6 +370,8 @@
                         <th>Fecha Examen</th>
                         <th>Valor</th>
                         <th>Fecha de Digitación en Sistema</th>
+                        <th>Epivigila</th>
+                        <th>Observación</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -384,6 +386,8 @@
                             <td>{{ $rapidTest->register_at }}</td>
                             <td>{{ ($rapidTest->value_test) }}</td>
                             <td>{{ $rapidTest->created_at }}</td>
+                            <td>{{ $rapidTest->epivigila }}</td>
+                            <td>{{ $rapidTest->observation??'' }}</td>
                         </tr>
                     @endforeach
                     </tbody>

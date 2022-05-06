@@ -13,7 +13,7 @@ class RapidTest extends Model implements Auditable //Authenticatable
     use softDeletes;
 
     protected $fillable = [
-        'register_at', 'type', 'value_test', 'patient_id'
+        'register_at', 'type', 'value_test', 'patient_id', 'epivigila', 'observation'
     ];
 
     public function patient() {
