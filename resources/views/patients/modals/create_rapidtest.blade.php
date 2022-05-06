@@ -75,6 +75,11 @@
                   <input type="number" class="form-control" name="epivigila">
                 </fieldset>
 
+                <fieldset class="form-group col-md-12">
+                  <label for="for_epivigila">Observación:</label>
+                  <input type="text" class="form-control" name="observation" autocomplete="off">
+                </fieldset>
+
                 <fieldset class="form-group col-md-4" hidden>
                   <input type="text" class="form-control" name="patient_id" id="for_patient_id" value="{{ $patient->id }}">
                 </fieldset>
