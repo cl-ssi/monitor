@@ -1880,7 +1880,7 @@ class SuspectCaseController extends Controller
             }
 
                 if($patient_create){
-                  if(!$patient_create->demographic){
+                  if(!$patient_create->demographic->id){
                       $new_demographic = new Demographic();
 
                       $new_demographic->street_type   = $patient['Via Residencia'];
