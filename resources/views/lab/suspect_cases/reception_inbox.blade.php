@@ -168,6 +168,16 @@
                             @method('POST')
                             <button type="submit" class="btn btn-sm btn-primary" title="Recepcionar"><i class="fas fa-inbox"></i></button>
                         </form>
+
+                        @can('Developer')
+                            @if(Auth::user()->laboratory->id === 1 && $case->patient->run != null )
+                                <form method="POST" class="form-inline" action="{{ route('lab.suspect_cases.send_to_yani', $case) }}">
+                                    @csrf
+                                    @method('POST')
+                                    <button type="submit" class="btn btn-sm btn-outline-primary mt-1" title="Enviar a YANI"><i class="fas fa-paper-plane"></i></button>
+                                </form>
+                            @endif
+                        @endcan
                     @endcan
                 @endif
             </td>

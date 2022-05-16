@@ -199,6 +199,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
     Route::prefix('suspect_cases')->name('suspect_cases.')->group(function () {
         Route::get('reception_inbox','SuspectCaseController@reception_inbox')->name('reception_inbox')->middleware('auth','can:SuspectCase: reception');
         Route::post('reception/{suspect_case}','SuspectCaseController@reception')->name('reception')->middleware('auth','can:SuspectCase: reception');
+        Route::post('send-to-yani/{suspect_case}','WsHetgRequestController@sendToYani')->name('send_to_yani')->middleware('auth','can:SuspectCase: reception');
         Route::post('derive','SuspectCaseController@derive')->name('derive')->middleware('auth');
         Route::post('mass_reception','SuspectCaseController@massReception')->name('mass_reception')->middleware('auth');
 
