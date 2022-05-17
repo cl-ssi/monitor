@@ -170,12 +170,20 @@
                         </form>
 
                         @can('Developer')
-                            @if(Auth::user()->laboratory->id === 1 && $case->patient->run != null )
+                            @if(Auth::user()->laboratory->id === 1 && $case->patient->run != null)
+
+
                                 <form method="POST" class="form-inline" action="{{ route('lab.suspect_cases.send_to_yani', $case) }}">
                                     @csrf
                                     @method('POST')
-                                    <button type="submit" class="btn btn-sm btn-outline-primary mt-1" title="Enviar a YANI"><i class="fas fa-paper-plane"></i></button>
-                                </form>
+                                    <button
+                                        type="submit"
+                                        class="btn btn-sm btn-outline-{{$case->hasSuccessfulWsHetgRequests() ? 'success' : 'primary'}} mt-1"
+                                        title="{{$case->hasSuccessfulWsHetgRequests() ? 'Enviado' : 'Enviar'}} a YANI">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </form
+
                             @endif
                         @endcan
                     @endcan

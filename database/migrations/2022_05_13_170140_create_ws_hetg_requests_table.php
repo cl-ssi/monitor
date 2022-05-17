@@ -20,6 +20,7 @@ class CreateWsHetgRequestsTable extends Migration
             $table->text('response_data');
             $table->text('token');
             $table->string('status');
+            $table->foreignId('suspect_case_id')->nullable()->constrained('suspect_cases');
             $table->timestamps();
         });
     }

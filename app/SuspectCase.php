@@ -71,6 +71,19 @@ class SuspectCase extends Model implements Auditable
         return $this->belongsTo('App\Hl7ResultMessage');
     }
 
+    public function wsHetgRequests()
+    {
+        return $this->hasMany('App\WsHetgRequest');
+    }
+
+    public function hasSuccessfulWsHetgRequests()
+    {
+        return $this->wsHetgRequests()
+            ->where('type', WsHetgRequest::TYPE_REQUEST)
+            ->where('status', '201')
+            ->count() > 0;
+    }
+
     function getCovid19Attribute(){
         switch($this->pcr_sars_cov_2) {
             case 'pending': return 'Pendiente'; break;

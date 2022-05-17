@@ -73,7 +73,7 @@ class WsHetgRequestController extends Controller
         $token = self::getToken();
 
         $suspectCaseData = array(
-            'corpac' => 155,
+            'corpac' => $suspectCase->id,
             'rut' => "{$suspectCase->patient->run}-{$suspectCase->patient->dv}",
             'nombres' => $suspectCase->patient->name,
             'apellido_paterno' => $suspectCase->patient->fathers_family,
@@ -103,6 +103,7 @@ class WsHetgRequestController extends Controller
         $wsHetgRequest->response_data = $response->body();
         $wsHetgRequest->status = $response->status();
         $wsHetgRequest->token = $token;
+        $wsHetgRequest->suspect_case_id = $suspectCase->id;
         $wsHetgRequest->save();
 
         $response->throw();
