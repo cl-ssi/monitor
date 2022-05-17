@@ -17,7 +17,7 @@
                     <fieldset class="form-group col-10 col-sm-4 col-md-2 col-lg-2">
                         <label for="for_run">Run</label>
                         <input type="text" class="form-control" id="for_run" name="run"
-                               value="{{ $patient->run }}" max="50000000">
+                               value="{{ $patient->run }}" max="80000000">
                     </fieldset>
 
                     <fieldset class="form-group col-2 col-sm-2 col-md-1 col-lg-1">
@@ -148,13 +148,13 @@
                 </div>
 <!--**********************************-->
                 <div class="row align-items-center">
-                    @can('Patient: edit')                    
+                    @can('Patient: edit')
                       <div class="col-4 col-sm-2 col-md-2 col-lg-2">
                         <button type="submit" class="btn btn-primary">Guardar</button>
                       </div>
                     @endcan
 
-                    @can('Patient: show')                    
+                    @can('Patient: show')
                       <div class="col-4 col-sm-2 col-md-2 col-lg-2">
                         <button type="button" onclick="history.back()" class="btn btn-secondary">Volver</button>
                       </div>

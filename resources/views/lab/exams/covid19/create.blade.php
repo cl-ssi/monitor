@@ -12,7 +12,7 @@
     <div class="form-row">
         <fieldset class="form-group col-md-2">
             <label for="for_run">Run (sin digito)</label>
-            <input type="number" max="50000000" class="form-control" name="run" id="for_run">
+            <input type="number" max="80000000" class="form-control" name="run" id="for_run">
         </fieldset>
 
         <fieldset class="form-group col-md-1">
