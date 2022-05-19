@@ -121,6 +121,42 @@
 </div>
 
 <hr>
+<h4 class="mt-4">Test Rápido</h4>
+
+<div class="table-responsive-sm">
+                <table class="table table-sm table-bordered small mb-4 mt-4">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Tipo de Examen</th>
+                        <th>Fecha Examen</th>
+                        <th>Valor</th>
+                        <th>Fecha de Digitación en Sistema</th>
+                        <th>Epivigila</th>
+                        <th>Observación</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($booking->patient->rapidTests as $rapidTest)
+                        <tr>
+                            <td>
+                                <a href="#">
+                                    {{ $rapidTest->id }}
+                                </a>
+                            </td>
+                            <td>{{ ($rapidTest->type) }}</td>
+                            <td>{{ $rapidTest->register_at }}</td>
+                            <td>{{ ($rapidTest->value_test) }}</td>
+                            <td>{{ $rapidTest->created_at }}</td>
+                            <td>{{ $rapidTest->epivigila }}</td>
+                            <td>{{ $rapidTest->observation??'' }}</td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+              </div>
+
+<hr>
 
 
 <form method="POST" class="form-horizontal" action="{{ route('sanitary_residences.bookings.update', $booking) }}">
