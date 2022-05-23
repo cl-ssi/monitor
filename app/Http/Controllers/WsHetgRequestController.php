@@ -73,23 +73,28 @@ class WsHetgRequestController extends Controller
         $token = self::getToken();
 
         $suspectCaseData = array(
-            'corpac' => $suspectCase->id,
-            'rut' => "{$suspectCase->patient->run}-{$suspectCase->patient->dv}",
+            'id_esmeralda' => $suspectCase->id,
+            'rut' => "{$suspectCase->patient->run}",
+            'dv' => $suspectCase->patient->dv,
+            'tipo_documento' => 1, //TODO dinámico
+            'numero_documento' => $suspectCase->patient->run, //$suspectCase->patient->other_identification, //TODO enviar el que corresponda
             'nombres' => $suspectCase->patient->name,
-            'apellido_paterno' => $suspectCase->patient->fathers_family,
-            'apellido_materno' => $suspectCase->patient->mothers_family,
+            'primer_apellido' => $suspectCase->patient->fathers_family,
+            'segundo_apellido' => $suspectCase->patient->mothers_family,
+            'nombre_social' => '',
             'fecha_nacimiento' => Carbon::parse($suspectCase->patient->birthday)->format('d/m/Y'),
-            'telefono_fijo' => $suspectCase->patient->demographic->telephone,
-            'sexo' => 'M', //TODO homologar con $suspectCase->patient->gender,
-            'pais' => 'cl', //TODO homologar con $suspectCase->patient->demographic->nationality
-            'nombre_social' => $suspectCase->patient->name,
-            'tipo_documento' => 'P', //TODO homologar
-            'numero_documento' => $suspectCase->patient->run, //$suspectCase->patient->other_identification, //TODO si no tiene que se envía?
+            'codigo_sexo' => '01', //TODO homologar con $suspectCase->patient->gender,
+            'email' => 'prueba@prueba.com', //$suspectCase->patient->demographic->email ?? "", //TODO si no tiene que se envía?
+            'codigo_comuna' => '01000', //$suspectCase->patient->demographic->email ?? "", //TODO si no tiene que se envía?
+            'codigo_pais' => 'cl', //TODO homologar con $suspectCase->patient->demographic->nationality
             'tipo_via' => '01', //TODO homologar con $suspectCase->demographic->street_type
             'nombre_via' => $suspectCase->patient->demographic->address,
             'numero_via' => $suspectCase->patient->demographic->number,
-            'email' => 'prueba@prueba.com', //$suspectCase->patient->demographic->email ?? "", //TODO si no tiene que se envía?
-            'tipo_solicitud' => 'solicitud pcr esmeralda',
+            'telefono_fijo' => $suspectCase->patient->demographic->telephone,
+            'telefono_movil' => $suspectCase->patient->demographic->telephone, //TODO si no tiene que se envía?
+            'codigo_establecimiento' => 111111,
+            'fecha_muestra' => '18/05/2022 05:35',
+            'tipo_solicitud' => 'pcr esmeralda',
         );
 
         $response = Http::withHeaders([
