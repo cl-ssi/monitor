@@ -25,6 +25,7 @@ use App\Mail\NewPositive;
 use App\Mail\NewNegative;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -54,7 +55,7 @@ class SuspectCaseController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|Response|View
      */
     public function index(request $request, Laboratory $laboratory)
     {
@@ -83,13 +84,6 @@ class SuspectCaseController extends Controller
         $patients = Patient::getPatientsBySearch($request->get('text'));
         if (!empty($laboratory->id)) {
 
-//          $cases['total'] = SuspectCase::where('laboratory_id',$laboratory->id)->whereNotNull('reception_at')->count();
-//          $cases['positivos']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','positive')->count();
-//          $cases['negativos']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','negative')->count();
-//          $cases['pendientes']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','pending')->count();
-//          $cases['rechazados']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','rejected')->count();
-//          $cases['indeterminados']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','undetermined')->count();
-
             $cases['total'] = SuspectCase::where('laboratory_id', $laboratory->id)->whereNotNull('reception_at')->count();
             $cases['positivos'] = SuspectCase::where('laboratory_id', $laboratory->id)->where('pcr_sars_cov_2', 'positive')->whereNotNull('reception_at')->count();
             $cases['negativos'] = SuspectCase::where('laboratory_id', $laboratory->id)->where('pcr_sars_cov_2', 'negative')->whereNotNull('reception_at')->count();
@@ -106,12 +100,6 @@ class SuspectCaseController extends Controller
             DB::connection()->getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
         } else {
             $laboratory = null;
-//          $cases['total'] = SuspectCase::whereNotNull('laboratory_id')->count();
-//          $cases['positivos']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','positive')->count();
-//          $cases['negativos']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','negative')->count();
-//          $cases['pendientes']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','pending')->count();
-//          $cases['rechazados']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','rejected')->count();
-//          $cases['indeterminados']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','undetermined')->count();
 
             $cases['total'] = SuspectCase::whereNotNull('laboratory_id')->count();
             $cases['positivos'] = SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2', 'positive')->whereNotNull('reception_at')->count();
@@ -194,7 +182,7 @@ class SuspectCaseController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -212,7 +200,7 @@ class SuspectCaseController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
 
     public function search()
@@ -536,7 +524,7 @@ class SuspectCaseController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -606,7 +594,7 @@ class SuspectCaseController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function storeAdmission(Request $request)
     {
@@ -728,7 +716,7 @@ class SuspectCaseController extends Controller
      * Display the specified resource.
      *
      * @param \App\SuspectCase $suspectCase
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(SuspectCase $suspectCase)
     {
@@ -739,7 +727,7 @@ class SuspectCaseController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param \App\SuspectCase $suspectCase
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(SuspectCase $suspectCase)
     {
@@ -761,7 +749,7 @@ class SuspectCaseController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param \App\SuspectCase $suspectCase
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, SuspectCase $suspectCase)
     {
@@ -1017,7 +1005,7 @@ class SuspectCaseController extends Controller
      *
      * @param \App\request $request
      * @param \App\SuspectCase $suspectCase
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function updateNotification(Request $request, SuspectCase $suspectCase)
     {
@@ -1040,7 +1028,7 @@ class SuspectCaseController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\SuspectCase $suspectCase
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(SuspectCase $suspectCase)
     {
@@ -1066,7 +1054,7 @@ class SuspectCaseController extends Controller
      * Search suspectCase by ID.
      *
      * @param \App\SuspectCase $suspectCase
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function search_id(Request $request)
     {
@@ -2681,7 +2669,7 @@ class SuspectCaseController extends Controller
      * Agrega resultado, sube pntm, envia correo.
      *
      * @param \App\SuspectCase $suspectCase
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function addSuspectCaseResult(SuspectCase $suspectCase, Hl7ResultMessage $hl7ResultMessage, $pdfFile = false, $send_pntm = true)
     {
