@@ -1,9 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Log;
+
 use App\Rules\UniqueSampleDateByPatient;
-use GuzzleHttp\Client;
 use App\SuspectCase;
 use App\Patient;
 use App\Demographic;
@@ -29,21 +28,14 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\SuspectCasesExport;
-use App\Exports\HetgSuspectCasesExport;
-use App\Exports\UnapSuspectCasesExport;
 use App\Exports\MinsalSuspectCasesExport;
 use App\Exports\SeremiSuspectCasesExport;
 use App\Imports\PatientImport;
-use App\Imports\DemographicImport;
-use App\Imports\SuspectCaseImport;
 use App\SequencingCriteria;
 use App\Hl7ErrorMessage;
 use App\Hl7ResultMessage;
@@ -54,43 +46,42 @@ use App\Jobs\TestEmailJob;
 use Exception;
 
 use App\WSMinsal;
-use MongoDB\Driver\Session;
 use PDO;
-use Redirect;
 use Throwable;
 
 class SuspectCaseController extends Controller
 {
-  /**
-   * Display a listing of the resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function index(request $request, Laboratory $laboratory){
-      $collection = collect(['positivos', 'negativos', 'pendientes', 'rechazados', 'indeterminados']);
-      $filtro = collect([]);
-      $collection->each(function ($item, $key) use ($request, $filtro){
-                  switch ($item) {
-              case "positivos":
-                  $request->get('positivos')=="on"?$filtro->push('positive'):true;
-                  break;
-              case "negativos":
-                  $request->get('negativos')=="on"?$filtro->push('negative'):true;
-                  break;
-              case "pendientes":
-                  $request->get('pendientes')=="on"?$filtro->push('pending'):true;
-                  break;
-              case "rechazados":
-                  $request->get('rechazados')=="on"?$filtro->push('rejected'):true;
-                  break;
-              case "indeterminados":
-                  $request->get('indeterminados')=="on"?$filtro->push('undetermined'):true;
-                  break;
-          }
-      });
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(request $request, Laboratory $laboratory)
+    {
+        $collection = collect(['positivos', 'negativos', 'pendientes', 'rechazados', 'indeterminados']);
+        $filtro = collect([]);
+        $collection->each(function ($item, $key) use ($request, $filtro) {
+            switch ($item) {
+                case "positivos":
+                    $request->get('positivos') == "on" ? $filtro->push('positive') : true;
+                    break;
+                case "negativos":
+                    $request->get('negativos') == "on" ? $filtro->push('negative') : true;
+                    break;
+                case "pendientes":
+                    $request->get('pendientes') == "on" ? $filtro->push('pending') : true;
+                    break;
+                case "rechazados":
+                    $request->get('rechazados') == "on" ? $filtro->push('rejected') : true;
+                    break;
+                case "indeterminados":
+                    $request->get('indeterminados') == "on" ? $filtro->push('undetermined') : true;
+                    break;
+            }
+        });
 
-      $patients = Patient::getPatientsBySearch($request->get('text'));
-      if(!empty($laboratory->id)){
+        $patients = Patient::getPatientsBySearch($request->get('text'));
+        if (!empty($laboratory->id)) {
 
 //          $cases['total'] = SuspectCase::where('laboratory_id',$laboratory->id)->whereNotNull('reception_at')->count();
 //          $cases['positivos']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','positive')->count();
@@ -99,23 +90,22 @@ class SuspectCaseController extends Controller
 //          $cases['rechazados']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','rejected')->count();
 //          $cases['indeterminados']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','undetermined')->count();
 
-          $cases['total'] = SuspectCase::where('laboratory_id',$laboratory->id)->whereNotNull('reception_at')->count();
-          $cases['positivos']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','positive')->whereNotNull('reception_at')->count();
-          $cases['negativos']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','negative')->whereNotNull('reception_at')->count();
-          $cases['pendientes']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','pending')->whereNotNull('reception_at')->count();
-          $cases['rechazados']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','rejected')->whereNotNull('reception_at')->count();
-          $cases['indeterminados']=SuspectCase::where('laboratory_id',$laboratory->id)->where('pcr_sars_cov_2','undetermined')->whereNotNull('reception_at')->count();
+            $cases['total'] = SuspectCase::where('laboratory_id', $laboratory->id)->whereNotNull('reception_at')->count();
+            $cases['positivos'] = SuspectCase::where('laboratory_id', $laboratory->id)->where('pcr_sars_cov_2', 'positive')->whereNotNull('reception_at')->count();
+            $cases['negativos'] = SuspectCase::where('laboratory_id', $laboratory->id)->where('pcr_sars_cov_2', 'negative')->whereNotNull('reception_at')->count();
+            $cases['pendientes'] = SuspectCase::where('laboratory_id', $laboratory->id)->where('pcr_sars_cov_2', 'pending')->whereNotNull('reception_at')->count();
+            $cases['rechazados'] = SuspectCase::where('laboratory_id', $laboratory->id)->where('pcr_sars_cov_2', 'rejected')->whereNotNull('reception_at')->count();
+            $cases['indeterminados'] = SuspectCase::where('laboratory_id', $laboratory->id)->where('pcr_sars_cov_2', 'undetermined')->whereNotNull('reception_at')->count();
 
-          DB::connection()->getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
-          $suspectCases = SuspectCase::getCaseByPatientLaboratory($patients, $laboratory->id)
-                               ->latest('id')
-                               ->whereIn('pcr_sars_cov_2',$filtro)
-                               ->whereNotNull('reception_at')
-                               ->paginate(200);
-          DB::connection()->getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-     }
-     else{
-          $laboratory = null;
+            DB::connection()->getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
+            $suspectCases = SuspectCase::getCaseByPatientLaboratory($patients, $laboratory->id)
+                ->latest('id')
+                ->whereIn('pcr_sars_cov_2', $filtro)
+                ->whereNotNull('reception_at')
+                ->paginate(200);
+            DB::connection()->getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+        } else {
+            $laboratory = null;
 //          $cases['total'] = SuspectCase::whereNotNull('laboratory_id')->count();
 //          $cases['positivos']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','positive')->count();
 //          $cases['negativos']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','negative')->count();
@@ -123,35 +113,35 @@ class SuspectCaseController extends Controller
 //          $cases['rechazados']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','rejected')->count();
 //          $cases['indeterminados']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','undetermined')->count();
 
-         $cases['total'] = SuspectCase::whereNotNull('laboratory_id')->count();
-         $cases['positivos']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','positive')->whereNotNull('reception_at')->count();
-         $cases['negativos']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','negative')->whereNotNull('reception_at')->count();
-         $cases['pendientes']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','pending')->whereNotNull('reception_at')->count();
-         $cases['rechazados']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','rejected')->whereNotNull('reception_at')->count();
-         $cases['indeterminados']=SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2','undetermined')->whereNotNull('reception_at')->count();
+            $cases['total'] = SuspectCase::whereNotNull('laboratory_id')->count();
+            $cases['positivos'] = SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2', 'positive')->whereNotNull('reception_at')->count();
+            $cases['negativos'] = SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2', 'negative')->whereNotNull('reception_at')->count();
+            $cases['pendientes'] = SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2', 'pending')->whereNotNull('reception_at')->count();
+            $cases['rechazados'] = SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2', 'rejected')->whereNotNull('reception_at')->count();
+            $cases['indeterminados'] = SuspectCase::whereNotNull('laboratory_id')->where('pcr_sars_cov_2', 'undetermined')->whereNotNull('reception_at')->count();
 
-          DB::connection()->getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
-          $suspectCases = SuspectCase::getCaseByPatient($patients)
-                              ->latest('id')
-                              ->whereNotNull('laboratory_id')
-                              ->whereIn('pcr_sars_cov_2',$filtro)
-                              ->whereNotNull('reception_at')
-                              ->paginate(200);
-          DB::connection()->getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-      }
-      return view('lab.suspect_cases.index', compact('suspectCases','request','laboratory','cases'));
-  }
+            DB::connection()->getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
+            $suspectCases = SuspectCase::getCaseByPatient($patients)
+                ->latest('id')
+                ->whereNotNull('laboratory_id')
+                ->whereIn('pcr_sars_cov_2', $filtro)
+                ->whereNotNull('reception_at')
+                ->paginate(200);
+            DB::connection()->getPdo()->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+        }
+        return view('lab.suspect_cases.index', compact('suspectCases', 'request', 'laboratory', 'cases'));
+    }
 
     /**
-    * Muestra exámenes asociados al establishment de usuario actual.
-    * @param Request $request
-    * @param Laboratory $laboratory
-    * @return Application|Factory|View
-    */
+     * Muestra exámenes asociados al establishment de usuario actual.
+     * @param Request $request
+     * @param Laboratory $laboratory
+     * @return Application|Factory|View
+     */
     public function ownIndex(request $request, Laboratory $laboratory)
     {
-      $searchText = $request->get('text');
-      $arrayFilter = (empty($request->filter)) ? array() : $request->filter;
+        $searchText = $request->get('text');
+        $arrayFilter = (empty($request->filter)) ? array() : $request->filter;
 
 //      $suspectCasesTotal = SuspectCase::where(function($q){
 //          $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
@@ -159,7 +149,7 @@ class SuspectCaseController extends Controller
 //      })->get();
 
         $suspectCasesTotal = SuspectCase::whereNotNull('reception_at')
-            ->where(function($q){
+            ->where(function ($q) {
                 $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
                     ->orWhere('user_id', Auth::user()->id);
             })->get();
@@ -173,7 +163,7 @@ class SuspectCaseController extends Controller
 //          ->paginate(200);
 
         $suspectCases = SuspectCase::whereNotNull('reception_at')
-            ->where(function($q){
+            ->where(function ($q) {
                 $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'))
                     ->orWhere('user_id', Auth::user()->id);
             })
@@ -181,7 +171,7 @@ class SuspectCaseController extends Controller
             ->whereIn('pcr_sars_cov_2', $arrayFilter)
             ->paginate(200);
 
-      return view('lab.suspect_cases.ownIndex', compact('suspectCases', 'arrayFilter', 'searchText', 'laboratory', 'suspectCasesTotal'));
+        return view('lab.suspect_cases.ownIndex', compact('suspectCases', 'arrayFilter', 'searchText', 'laboratory', 'suspectCasesTotal'));
     }
 
     /**
@@ -193,21 +183,21 @@ class SuspectCaseController extends Controller
         $from = Carbon::now()->subDays(3);
         $to = Carbon::now();
 
-            /*
-            where(function($q){
-                                $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'));
-                            })
-                            ->
-                */
-        $suspectCases = SuspectCase::whereHas('patient', function($q){
-                                $q->whereHas('demographic', function($q){
-                                        $q->whereIn('commune_id',auth()->user()->communes());
-                                });
+        /*
+        where(function($q){
+                            $q->whereIn('establishment_id', Auth::user()->establishments->pluck('id'));
                         })
-                        ->whereNotIn('pcr_sars_cov_2', ['pending','positive','undetermined'])
-                        ->whereNull('notification_at')
-                        ->whereBetween('created_at', [$from, $to])
-                        ->get();
+                        ->
+            */
+        $suspectCases = SuspectCase::whereHas('patient', function ($q) {
+            $q->whereHas('demographic', function ($q) {
+                $q->whereIn('commune_id', auth()->user()->communes());
+            });
+        })
+            ->whereNotIn('pcr_sars_cov_2', ['pending', 'positive', 'undetermined'])
+            ->whereNull('notification_at')
+            ->whereBetween('created_at', [$from, $to])
+            ->get();
 
         // dd($suspectCases);
 
@@ -221,15 +211,15 @@ class SuspectCaseController extends Controller
      */
     public function create()
     {
-        $external_labs = Laboratory::where('external',1)->orderBy('name')->get();
-        $establishments = Establishment::orderBy('name','ASC')->get();
+        $external_labs = Laboratory::where('external', 1)->orderBy('name')->get();
+        $establishments = Establishment::orderBy('name', 'ASC')->get();
 
         /* FIX codigo duro */
-        $env_communes = array_map('trim',explode(",",env('COMUNAS')));
-        $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
+        $env_communes = array_map('trim', explode(",", env('COMUNAS')));
+        $establishments = Establishment::whereIn('commune_id', $env_communes)->orderBy('name', 'ASC')->get();
 
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
-        return view('lab.suspect_cases.create',compact('sampleOrigins','establishments','external_labs'));
+        return view('lab.suspect_cases.create', compact('sampleOrigins', 'establishments', 'external_labs'));
     }
 
     /**
@@ -245,27 +235,26 @@ class SuspectCaseController extends Controller
     }
 
 
-
     public function admission()
     {
-        if(!Auth::user()->laboratory_id){
+        if (!Auth::user()->laboratory_id) {
             session()->flash('warning', 'Ud. debe tener asignado un laboratorio para agregar un nuevo caso.');
             return redirect()->back()->withInput();
         }
 
-        $regions = Region::orderBy('id','ASC')->get();
-        $communes = Commune::orderBy('id','ASC')->get();
+        $regions = Region::orderBy('id', 'ASC')->get();
+        $communes = Commune::orderBy('id', 'ASC')->get();
         $countries = Country::select('name')->orderBy('id', 'ASC')->get();
 
-        $env_communes = array_map('trim',explode(",",env('COMUNAS')));
+        $env_communes = array_map('trim', explode(",", env('COMUNAS')));
         //$establishments = Establishment::whereIn('commune_id',$env_communes)->where('name','<>','Otros')->orderBy('name','ASC')->get();
 
-        $establishmentsusers = EstablishmentUser::where('user_id',Auth::id())->get();
+        $establishmentsusers = EstablishmentUser::where('user_id', Auth::id())->get();
 
         //dd($establishmentsusers);
 
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
-        return view('lab.suspect_cases.admission',compact('sampleOrigins','regions', 'communes','establishmentsusers', 'countries'));
+        return view('lab.suspect_cases.admission', compact('sampleOrigins', 'regions', 'communes', 'establishmentsusers', 'countries'));
     }
 
 
@@ -299,7 +288,7 @@ class SuspectCaseController extends Controller
 
                                 if ($barcodeReception) return true;
                                 return redirect()->back();
-                            }else{
+                            } else {
                                 session()->flash('warning', 'Error al recepcionar muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'] . ".");
                                 $suspectCase->receptor_id = $receptor_id_old;
                                 $suspectCase->reception_at = $reception_at_old;
@@ -405,38 +394,40 @@ class SuspectCaseController extends Controller
                                     $case->receptor_id = Auth::id();
                                     $case->reception_at = date('Y-m-d H:i:s');
                                     $case->save();
-                                }else{
+                                } else {
                                     $errorMsg = $errorMsg . 'Error al recepcionar muestra ' . $case->id . ' en MINSAL. ' . $response['msg'] . "<br>";
                                 }
                             }
-                        }else{
+                        } else {
                             $case->receptor_id = Auth::id();
                             $case->reception_at = date('Y-m-d H:i:s');
                             $case->save();
                         }
-                    }else{
+                    } else {
                         $errorMsg = $errorMsg . 'No es posible modificar laboratorio en PNTM para caso ' . $case->id . ' No existe laboratory_id.' . '<br>';
                     }
-                }else{
+                } else {
                     $case->receptor_id = Auth::id();
                     $case->reception_at = date('Y-m-d H:i:s');
                     $case->laboratory_id = Auth::user()->laboratory->id;
                     $case->save();
                 }
             }
-        }else{
+        } else {
             /* Recepciona en sistema sin pasar por ws */
             //todo quitar update de laboratory_id cuando todos los casos tengan laboratory_id?
             DB::table('suspect_cases')
                 ->whereIn('id', $idsCasesReceptionArray)
-                ->update(['receptor_id' => Auth::id(),
+                ->update([
+                    'receptor_id' => Auth::id(),
                     'reception_at' => date('Y-m-d H:i:s'),
-                    'laboratory_id' => Auth::user()->laboratory->id]);
+                    'laboratory_id' => Auth::user()->laboratory->id
+                ]);
         }
 
-        if($errorMsg == ''){
+        if ($errorMsg == '') {
             session()->flash('success', 'Se recepcionaron muestras correctamente.');
-        }else{
+        } else {
             session()->flash('warning', $errorMsg);
         }
         return redirect()->back();
@@ -452,9 +443,9 @@ class SuspectCaseController extends Controller
         $request->validate([
             'casos_seleccionados' => ['required']
         ],
-        [
-            'required' => 'Debe seleccionar al menos un exámen.'
-        ]);
+            [
+                'required' => 'Debe seleccionar al menos un exámen.'
+            ]);
 
         $idsCasosDerivarArray = $request->get('casos_seleccionados');
         $laboratory = Laboratory::find($request->get('laboratory_id_derive'));
@@ -478,44 +469,52 @@ class SuspectCaseController extends Controller
                             } else {
                                 $errorMsg = $errorMsg . 'No es posible modificar laboratorio en PNTM para caso ' . $case->id . '. No existe *id PNTM* del laboratorio.' . '<br>';
                             }
-                        }else{
+                        } else {
                             $this->saveDerivation($laboratory, $case);
                         }
-                    }else{
-                        $errorMsg = $errorMsg . 'No es posible modificar laboratorio en PNTM para caso '. $case->id  . '. No existe laboratory_id.' . '<br>';
+                    } else {
+                        $errorMsg = $errorMsg . 'No es posible modificar laboratorio en PNTM para caso ' . $case->id . '. No existe laboratory_id.' . '<br>';
                     }
-                }else{
+                } else {
                     $this->saveDerivation($laboratory, $case);
                 }
             }
-        }else{
+        } else {
             //SE GUARDA EN BD ESMERALDA SIN PASAR POR WS
-            if($laboratory->external){
+            if ($laboratory->external) {
                 $derivedCasesCant = DB::table('suspect_cases')
                     ->whereIn('id', $idsCasosDerivarArray)
-                    ->update(['external_laboratory' => $laboratory->name,
-                        'sent_external_lab_at' => date("Y-m-d H:i:s")]);
+                    ->update([
+                        'external_laboratory' => $laboratory->name,
+                        'sent_external_lab_at' => date("Y-m-d H:i:s")
+                    ]);
 
                 DB::table('suspect_cases')
                     ->whereIn('id', $idsCasosDerivarArray)
-                    ->update(['reception_at' => date('Y-m-d H:i:s'),
-                        'receptor_id' => Auth::id()]);
-            }else{
+                    ->update([
+                        'reception_at' => date('Y-m-d H:i:s'),
+                        'receptor_id' => Auth::id()
+                    ]);
+            } else {
                 $derivedCasesCant = DB::table('suspect_cases')
                     ->whereIn('id', $idsCasosDerivarArray)
-                    ->update(['laboratory_id' => $laboratory->id,
-                        'derivation_internal_lab_at' => date("Y-m-d H:i:s")]);
+                    ->update([
+                        'laboratory_id' => $laboratory->id,
+                        'derivation_internal_lab_at' => date("Y-m-d H:i:s")
+                    ]);
 
                 DB::table('suspect_cases')
                     ->whereIn('id', $idsCasosDerivarArray)
-                    ->update(['reception_at' => NULL,
-                        'receptor_id' => NULL]);
+                    ->update([
+                        'reception_at' => NULL,
+                        'receptor_id' => NULL
+                    ]);
             }
         }
 
-        if($errorMsg == ''){
+        if ($errorMsg == '') {
             session()->flash('success', "Se derivaron los casos a laboratorio $laboratory->alias ");
-        }else{
+        } else {
             session()->flash('warning', $errorMsg);
         }
 
@@ -549,7 +548,7 @@ class SuspectCaseController extends Controller
      * NO UTILIZAR
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -574,15 +573,15 @@ class SuspectCaseController extends Controller
 
         $suspectCase->reception_at = date('Y-m-d H:i:s');
 
-        if(!$request->input('pcr_sars_cov_2')) {
+        if (!$request->input('pcr_sars_cov_2')) {
             $suspectCase->pcr_sars_cov_2 = 'pending';
         }
 
-        if($request->input('pcr_sars_cov_2_at')){
-            $suspectCase->pcr_sars_cov_2_at = $request->input('pcr_sars_cov_2_at').' '.date('H:i:s');
+        if ($request->input('pcr_sars_cov_2_at')) {
+            $suspectCase->pcr_sars_cov_2_at = $request->input('pcr_sars_cov_2_at') . ' ' . date('H:i:s');
         }
 
-        $suspectCase->sample_at = $request->input('sample_at').' '.date('H:i:s');
+        $suspectCase->sample_at = $request->input('sample_at') . ' ' . date('H:i:s');
 
         $patient->suspectCases()->save($suspectCase);
 
@@ -600,8 +599,8 @@ class SuspectCaseController extends Controller
 
         if (env('APP_ENV') == 'production') {
             if ($suspectCase->pcr_sars_cov_2 == 'positive') {
-                $emails  = explode(',', env('EMAILS_ALERT'));
-                $emails_bcc  = explode(',', env('EMAILS_ALERT_BCC'));
+                $emails = explode(',', env('EMAILS_ALERT'));
+                $emails_bcc = explode(',', env('EMAILS_ALERT_BCC'));
                 Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($suspectCase));
             }
         }
@@ -612,22 +611,22 @@ class SuspectCaseController extends Controller
         //$log->save();
 
         session()->flash('success', 'Se ha creado el caso número: <h3>' . $suspectCase->id . '</h3>');
-        return redirect()->route('lab.suspect_cases.index',$suspectCase->laboratory_id);
+        return redirect()->route('lab.suspect_cases.index', $suspectCase->laboratory_id);
     }
 
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function storeAdmission(Request $request)
     {
         $request->validate([
-           'id' => new UniqueSampleDateByPatient($request->sample_at),
-           'email' => 'nullable|email:rfc'
-        ],[
+            'id' => new UniqueSampleDateByPatient($request->sample_at),
+            'email' => 'nullable|email:rfc'
+        ], [
             'email' => 'Debe ingresar un email válido.'
         ]);
 
@@ -643,31 +642,30 @@ class SuspectCaseController extends Controller
         $suspectCase = new SuspectCase($request->All());
         $suspectCase->user_id = Auth::id();
 
-        if(trim($request->run_medic_s_dv) == ''){
+        if (trim($request->run_medic_s_dv) == '') {
             $suspectCase->run_medic = NULL;
-        }else{
+        } else {
             $suspectCase->run_medic = $request->run_medic_s_dv . "-" . $request->run_medic_dv;
         }
 
 
         /* Calcula la semana epidemiológica */
         $suspectCase->epidemiological_week = Carbon::createFromDate($suspectCase->sample_at->format('Y-m-d'))
-                                                    ->add(1, 'days')->weekOfYear;
+            ->add(1, 'days')->weekOfYear;
 
         /* Marca como pendiente el resultado, no viene en el form */
         $suspectCase->pcr_sars_cov_2 = 'pending';
 
         /* Si viene la fecha de nacimiento entonces calcula la edad y la almaceno en suspectCase */
-        if($request->input('birthday')) {
+        if ($request->input('birthday')) {
             $suspectCase->age = $patient->age;
         }
 
         /* Si se crea el caso por alguien con laboratorio asignado */
         /* La muestra se recepciona inmediatamente */
-        if(Auth::user()->laboratory_id) {
+        if (Auth::user()->laboratory_id) {
             $suspectCase->laboratory_id = Auth::user()->laboratory_id;
         }
-
 
 
         // ws minsal: previo a guardar, se verifica que la información sea correcta.
@@ -683,23 +681,21 @@ class SuspectCaseController extends Controller
         //  }
 
 
-
         /* Guarda el caso sospecha */
 
         $patient->suspectCases()->save($suspectCase);
 
-        if($patient->demographic) {
+        if ($patient->demographic) {
             $patient->demographic->fill($request->all());
             $patient->demographic->save();
-        }
-        else {
+        } else {
             $demographic = new Demographic($request->All());
             $demographic->patient_id = $patient->id;
             $demographic->save();
         }
 
         /*Guarda Examen Rápido*/
-        if($request->input('value_test')) {
+        if ($request->input('value_test')) {
             $rapidtest = new RapidTest($request->All());
             $rapidtest->patient_id = $patient->id;
             $rapidtest->type = "Antígeno";
@@ -711,7 +707,7 @@ class SuspectCaseController extends Controller
         /* Si se crea el caso por alguien con laboratorio asignado */
         /* La muestra se crea y recepciona inmediatamente en minsal */
         if (env('ACTIVA_WS', false) == true) {
-            if($suspectCase->laboratory_id != null) {
+            if ($suspectCase->laboratory_id != null) {
                 if ($suspectCase->laboratory->minsal_ws == true) {
                     //####### crea muestra en webservice ########
                     $response = WSMinsal::crea_muestra_v2($suspectCase);
@@ -725,8 +721,8 @@ class SuspectCaseController extends Controller
                     $suspectCase->minsal_ws_id = $ws_minsal_id;
                     $suspectCase->save();
 
-                    session()->flash('success', 'Se ha creado el caso número: <h3>'. $suspectCase->id. ' <a href="' . route('lab.suspect_cases.notificationFormSmall',$suspectCase)
-                        . '">Imprimir Formulario</a></h3><br />Se ha creado muestra en PNTM. Id generado: ' .$ws_minsal_id);
+                    session()->flash('success', 'Se ha creado el caso número: <h3>' . $suspectCase->id . ' <a href="' . route('lab.suspect_cases.notificationFormSmall', $suspectCase)
+                        . '">Imprimir Formulario</a></h3><br />Se ha creado muestra en PNTM. Id generado: ' . $ws_minsal_id);
 
                     return redirect()->back();
                 }
@@ -734,9 +730,8 @@ class SuspectCaseController extends Controller
         }
 
 
-
         session()->flash('success', 'Se ha creado el caso número: <h3>'
-            . $suspectCase->id. ' <a href="' . route('lab.suspect_cases.notificationFormSmall',$suspectCase)
+            . $suspectCase->id . ' <a href="' . route('lab.suspect_cases.notificationFormSmall', $suspectCase)
             . '">Imprimir Formulario</a></h3>');
 
         return redirect()->back();
@@ -745,7 +740,7 @@ class SuspectCaseController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\SuspectCase  $suspectCase
+     * @param \App\SuspectCase $suspectCase
      * @return \Illuminate\Http\Response
      */
     public function show(SuspectCase $suspectCase)
@@ -756,7 +751,7 @@ class SuspectCaseController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\SuspectCase  $suspectCase
+     * @param \App\SuspectCase $suspectCase
      * @return \Illuminate\Http\Response
      */
     public function edit(SuspectCase $suspectCase)
@@ -764,21 +759,21 @@ class SuspectCaseController extends Controller
         //TODO solo debe ser withtrashed si ya existe un registro que ya viene con un lab que se haya eliminado, para poder editar
         $laboratories = Laboratory::withTrashed()->get();
 
-        $establishments = Establishment::whereIn('commune_id',explode(',',env('COMUNAS')))
-                                        ->orderBy('name','ASC')->get();
+        $establishments = Establishment::whereIn('commune_id', explode(',', env('COMUNAS')))
+            ->orderBy('name', 'ASC')->get();
 
         $sampleOrigins = SampleOrigin::orderBy('alias')->get();
 
         return view('lab.suspect_cases.edit',
-            compact('suspectCase','establishments','sampleOrigins', 'laboratories')
+            compact('suspectCase', 'establishments', 'sampleOrigins', 'laboratories')
         );
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\SuspectCase  $suspectCase
+     * @param \Illuminate\Http\Request $request
+     * @param \App\SuspectCase $suspectCase
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, SuspectCase $suspectCase)
@@ -803,13 +798,12 @@ class SuspectCaseController extends Controller
         }
 
 
-
-        if(Auth::user()->can('SuspectCase: reception')){
+        if (Auth::user()->can('SuspectCase: reception')) {
             if ($request->laboratory_id == null) {
-            $suspectCase->receptor_id = null;
-            $suspectCase->reception_at = null;
-            $suspectCase->laboratory_id = null;
-        }
+                $suspectCase->receptor_id = null;
+                $suspectCase->reception_at = null;
+                $suspectCase->laboratory_id = null;
+            }
         }
 
         if ($old_pcr == 'pending' && ($suspectCase->pcr_sars_cov_2 == 'positive' || $suspectCase->pcr_sars_cov_2 == 'negative' ||
@@ -878,29 +872,28 @@ class SuspectCaseController extends Controller
                             if ($response['status'] == 0) {
                                 //Verificar si en pntm esta en estado 2 (no recepcionado) se recepciona.
                                 $responseSampleStatus = WSMinsal::obtiene_estado_muestra($suspectCase);
-                                if($responseSampleStatus['status'] == 1 && $responseSampleStatus['sample_status'] == 2 && $suspectCase->reception_at != NULL){
-                                        $responseReception = WSMinsal::recepciona_muestra($suspectCase);
-                                        if($responseReception['status'] == 1){
-                                            $response = WSMinsal::resultado_muestra($suspectCase);
-                                            if ($response['status'] == 0) {
-                                                session()->flash('warning', 'Error al recepcionar y subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg']);
-                                                $this->suspectCaseBackToPending($suspectCase);
-                                                return redirect()->back()->withInput();
-                                            }
-                                        }else{
+                                if ($responseSampleStatus['status'] == 1 && $responseSampleStatus['sample_status'] == 2 && $suspectCase->reception_at != NULL) {
+                                    $responseReception = WSMinsal::recepciona_muestra($suspectCase);
+                                    if ($responseReception['status'] == 1) {
+                                        $response = WSMinsal::resultado_muestra($suspectCase);
+                                        if ($response['status'] == 0) {
                                             session()->flash('warning', 'Error al recepcionar y subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg']);
                                             $this->suspectCaseBackToPending($suspectCase);
                                             return redirect()->back()->withInput();
                                         }
-                                //Si en PNTM está con resultado y no es el mismo que se intenta cargar, se devuelve a pending
-                                }elseif ($responseSampleStatus['status'] == 1 && $responseSampleStatus['sample_status'] == 4 && $suspectCase->pcr_sars_cov_2 != 'pending'){
+                                    } else {
+                                        session()->flash('warning', 'Error al recepcionar y subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg']);
+                                        $this->suspectCaseBackToPending($suspectCase);
+                                        return redirect()->back()->withInput();
+                                    }
+                                    //Si en PNTM está con resultado y no es el mismo que se intenta cargar, se devuelve a pending
+                                } elseif ($responseSampleStatus['status'] == 1 && $responseSampleStatus['sample_status'] == 4 && $suspectCase->pcr_sars_cov_2 != 'pending') {
                                     if ($responseSampleStatus['sample_result'] != $suspectCase->covid19) {
                                         session()->flash('warning', 'Ya existe muestra en PNTM y el resultado es diferente al especificado ' . $suspectCase->id . ' en MINSAL. ' . $response['msg']);
                                         $this->suspectCaseBackToPending($suspectCase);
                                         return redirect()->back()->withInput();
                                     }
-                                }
-                                else{
+                                } else {
                                     session()->flash('warning', 'Error al subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg']);
                                     $this->suspectCaseBackToPending($suspectCase);
                                     return redirect()->back()->withInput();
@@ -921,36 +914,35 @@ class SuspectCaseController extends Controller
         }
 
         /* Crea un TRACING si el resultado es positivo o indeterminado */
-        if ($old_pcr == 'pending' and ($suspectCase->pcr_sars_cov_2 == 'positive' OR $suspectCase->pcr_sars_cov_2 == 'undetermined')) {
+        if ($old_pcr == 'pending' and ($suspectCase->pcr_sars_cov_2 == 'positive' or $suspectCase->pcr_sars_cov_2 == 'undetermined')) {
             /* Si el paciente no tiene Tracing */
-            if($suspectCase->patient->tracing) {
+            if ($suspectCase->patient->tracing) {
                 $suspectCase->patient->tracing->index = 1;
-                $suspectCase->patient->tracing->status = ($suspectCase->patient->status == 'Fallecido') ? 0:1;
+                $suspectCase->patient->tracing->status = ($suspectCase->patient->status == 'Fallecido') ? 0 : 1;
                 $suspectCase->patient->tracing->quarantine_start_at = ($suspectCase->symptoms_at) ?
-                                                $suspectCase->symptoms_at :
-                                                $suspectCase->pcr_sars_cov_2_at;
-                $suspectCase->patient->tracing->quarantine_end_at = $suspectCase->patient->tracing->quarantine_start_at->add(13,'days');
-                $suspectCase->patient->tracing->next_control_at   = now();
+                    $suspectCase->symptoms_at :
+                    $suspectCase->pcr_sars_cov_2_at;
+                $suspectCase->patient->tracing->quarantine_end_at = $suspectCase->patient->tracing->quarantine_start_at->add(13, 'days');
+                $suspectCase->patient->tracing->next_control_at = now();
                 $suspectCase->patient->tracing->save();
-            }
-            else {
-                $tracing                    = new Tracing();
-                $tracing->patient_id        = $suspectCase->patient_id;
-                $tracing->user_id           = $suspectCase->user_id;
-                $tracing->index             = 1;
-                $tracing->establishment_id  = $suspectCase->establishment_id;
-                $tracing->functionary       = $suspectCase->functionary;
-                $tracing->gestation         = $suspectCase->gestation;
-                $tracing->gestation_week    = $suspectCase->gestation_week;
-                $tracing->next_control_at   = now(); //$suspectCase->pcr_sars_cov_2_at;
+            } else {
+                $tracing = new Tracing();
+                $tracing->patient_id = $suspectCase->patient_id;
+                $tracing->user_id = $suspectCase->user_id;
+                $tracing->index = 1;
+                $tracing->establishment_id = $suspectCase->establishment_id;
+                $tracing->functionary = $suspectCase->functionary;
+                $tracing->gestation = $suspectCase->gestation;
+                $tracing->gestation_week = $suspectCase->gestation_week;
+                $tracing->next_control_at = now(); //$suspectCase->pcr_sars_cov_2_at;
                 $tracing->quarantine_start_at = ($suspectCase->symptoms_at) ?
-                                                $suspectCase->symptoms_at :
-                                                $suspectCase->pcr_sars_cov_2_at;
-                $tracing->quarantine_end_at = $tracing->quarantine_start_at->add(13,'days');
-                $tracing->observations      = $suspectCase->observation;
-                $tracing->notification_at   = $suspectCase->notification_at;
+                    $suspectCase->symptoms_at :
+                    $suspectCase->pcr_sars_cov_2_at;
+                $tracing->quarantine_end_at = $tracing->quarantine_start_at->add(13, 'days');
+                $tracing->observations = $suspectCase->observation;
+                $tracing->notification_at = $suspectCase->notification_at;
                 $tracing->notification_mechanism = $suspectCase->notification_mechanism;
-                $tracing->discharged_at     = $suspectCase->discharged_at;
+                $tracing->discharged_at = $suspectCase->discharged_at;
                 $tracing->symptoms_start_at = $suspectCase->symptoms_at;
 //                switch ($suspectCase->symptoms) {
 //                    case 'Si': $tracing->symptoms = 1; break;
@@ -958,49 +950,47 @@ class SuspectCaseController extends Controller
 //                    default:   $tracing->symptoms = null; break;
 //                }
                 $tracing->symptoms = $suspectCase->symptoms;
-                $tracing->status            = ($suspectCase->patient->status == 'Fallecido') ? 0:1;
+                $tracing->status = ($suspectCase->patient->status == 'Fallecido') ? 0 : 1;
                 $tracing->save();
             }
         }
 
         if (env('APP_ENV') == 'production') {
             if ($old_pcr == 'pending' and $suspectCase->pcr_sars_cov_2 == 'positive') {
-                $emails  = explode(',', env('EMAILS_ALERT'));
-                $emails_bcc  = explode(',', env('EMAILS_ALERT_BCC'));
+                $emails = explode(',', env('EMAILS_ALERT'));
+                $emails_bcc = explode(',', env('EMAILS_ALERT_BCC'));
                 Mail::to($emails)->bcc($emails_bcc)->send(new NewPositive($suspectCase));
             }
 
             /* Enviar resultado al usuario, solo si tiene registrado un correo electronico */
-            if($old_pcr == 'pending' && ($suspectCase->pcr_sars_cov_2 == 'negative' || $suspectCase->pcr_sars_cov_2 == 'undetermined' ||
-                                          $suspectCase->pcr_sars_cov_2 == 'rejected' || $suspectCase->pcr_sars_cov_2 == 'positive')
-                                      && $suspectCase->patient->demographic != NULL){
-                if($suspectCase->patient->demographic->email != NULL){
-                    $email  = $suspectCase->patient->demographic->email;
+            if ($old_pcr == 'pending' && ($suspectCase->pcr_sars_cov_2 == 'negative' || $suspectCase->pcr_sars_cov_2 == 'undetermined' ||
+                    $suspectCase->pcr_sars_cov_2 == 'rejected' || $suspectCase->pcr_sars_cov_2 == 'positive')
+                && $suspectCase->patient->demographic != NULL) {
+                if ($suspectCase->patient->demographic->email != NULL) {
+                    $email = $suspectCase->patient->demographic->email;
                     /*PDF SI ES DE */
                     if ($suspectCase->laboratory) {
                         if ($suspectCase->laboratory->pdf_generate == 1) {
                             $case = $suspectCase;
                             $pdf = \PDF::loadView('lab.results.result', compact('case'));
                             $message = new NewNegative($suspectCase);
-                            $message->attachData($pdf->output(), $suspectCase->id.'.pdf');
+                            $message->attachData($pdf->output(), $suspectCase->id . '.pdf');
                             Mail::to($email)->send($message);
-                        }
-                        else{
-                          if($suspectCase->file == 1){
-                              // $exists = Storage::disk('local')->exists('suspect_cases/'.$suspectCase->id.'.pdf');
-                              // dd($exists);
+                        } else {
+                            if ($suspectCase->file == 1) {
+                                // $exists = Storage::disk('local')->exists('suspect_cases/'.$suspectCase->id.'.pdf');
+                                // dd($exists);
 
-                              $message = new NewNegative($suspectCase);
-                              $message->attachFromStorage('suspect_cases/'.$suspectCase->id.'.pdf', $suspectCase->id.'.pdf', [
-                                          'mime' => 'application/pdf',
-                                        ]);
-                              Mail::to($email)->send($message);
+                                $message = new NewNegative($suspectCase);
+                                $message->attachFromStorage('suspect_cases/' . $suspectCase->id . '.pdf', $suspectCase->id . '.pdf', [
+                                    'mime' => 'application/pdf',
+                                ]);
+                                Mail::to($email)->send($message);
 
-                          }
-                          else{
-                              $message = new NewNegative($suspectCase);
-                              Mail::to($email)->send($message);
-                          }
+                            } else {
+                                $message = new NewNegative($suspectCase);
+                                Mail::to($email)->send($message);
+                            }
                         }
                     }
 
@@ -1038,20 +1028,21 @@ class SuspectCaseController extends Controller
     /**
      * Modifica datos notificación de suspect case.
      *
-     * @param  \App\request  $request
-     * @param  \App\SuspectCase  $suspectCase
+     * @param \App\request $request
+     * @param \App\SuspectCase $suspectCase
      * @return \Illuminate\Http\Response
      */
-    public function updateNotification(Request $request, SuspectCase $suspectCase){
+    public function updateNotification(Request $request, SuspectCase $suspectCase)
+    {
         $selected_establishment = $request->selected_establishment;
 
-        if($request->notification_at != null && $request->notification_mechanism != null){
+        if ($request->notification_at != null && $request->notification_mechanism != null) {
             $suspectCase->notification_at = $request->notification_at;
             $suspectCase->notification_mechanism = $request->notification_mechanism;
             $suspectCase->save();
 
             session()->flash('success', 'Se ha ingresado la notificación');
-        }else{
+        } else {
             session()->flash('warning', 'Debe seleccionar ambos parámetros');
         }
 
@@ -1061,7 +1052,7 @@ class SuspectCaseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\SuspectCase  $suspectCase
+     * @param \App\SuspectCase $suspectCase
      * @return \Illuminate\Http\Response
      */
     public function destroy(SuspectCase $suspectCase)
@@ -1074,7 +1065,7 @@ class SuspectCaseController extends Controller
     public function fileDelete(SuspectCase $suspectCase)
     {
         /* TODO: implementar auditable en file delete  */
-        if (Storage::delete( 'suspect_cases/' . $suspectCase->id . '.pdf')){
+        if (Storage::delete('suspect_cases/' . $suspectCase->id . '.pdf')) {
             $suspectCase->file = false;
             $suspectCase->save();
             session()->flash('info', 'Se ha eliminado el archivo correctamente.');
@@ -1087,13 +1078,13 @@ class SuspectCaseController extends Controller
     /**
      * Search suspectCase by ID.
      *
-     * @param  \App\SuspectCase  $suspectCase
+     * @param \App\SuspectCase $suspectCase
      * @return \Illuminate\Http\Response
      */
     public function search_id(Request $request)
     {
         $suspectCase = SuspectCase::find($request->input('id'));
-        if($suspectCase) return redirect()->route('lab.suspect_cases.edit', $suspectCase);
+        if ($suspectCase) return redirect()->route('lab.suspect_cases.edit', $suspectCase);
         else {
             session()->flash('warning', 'No se ha encontrado el exámen ID: <h3>' . $request->input('id') . '</h3>');
             return redirect()->back();
@@ -1103,43 +1094,43 @@ class SuspectCaseController extends Controller
 
     public function historical_report(Request $request)
     {
-        if($request->has('date')){
+        if ($request->has('date')) {
             $date = $request->get('date');
         } else {
             $date = Carbon::now();
         }
 
-        $reportBackup = ReportBackup::whereDate('created_at',$date)->get();
+        $reportBackup = ReportBackup::whereDate('created_at', $date)->get();
 
-        if($reportBackup->count() <> 0){
-            if($reportBackup->first()->id <= 10){
+        if ($reportBackup->count() <> 0) {
+            if ($reportBackup->first()->id <= 10) {
                 $html = json_decode($reportBackup->first()->data, true);
-            }else{
+            } else {
                 $html = $reportBackup->first()->data;
             }
 
-            $begin = strpos($html, '<main class="py-4 container">')+29;
+            $begin = strpos($html, '<main class="py-4 container">') + 29;
             $v1 = substr($html, $begin, 999999);
-            $end   = strpos($v1, '</main>')-7;
+            $end = strpos($v1, '</main>') - 7;
             $main = substr($v1, 0, $end);
 
-            $begin = strpos($html, '<head>')+6;
+            $begin = strpos($html, '<head>') + 6;
             $v1 = substr($html, $begin, 999999);
-            $end   = strpos($v1, '</head>');
+            $end = strpos($v1, '</head>');
             $head = substr($v1, 0, $end);
-        }else{
-            $head="";
-            $main="";
+        } else {
+            $head = "";
+            $main = "";
         }
 
-        return view('lab.suspect_cases.reports.historical_report', compact('head','main','date'));
+        return view('lab.suspect_cases.reports.historical_report', compact('head', 'main', 'date'));
     }
 
     public function diary_by_lab_report(Request $request)
     {
         $start = microtime(true);
 
-        if (SuspectCase::count() == 0){
+        if (SuspectCase::count() == 0) {
             session()->flash('info', 'No existen casos.');
             return redirect()->route('home');
         }
@@ -1154,19 +1145,19 @@ class SuspectCaseController extends Controller
         // NUEVO CODIGO
         foreach ($periods as $key => $period) {
             foreach ($laboratories as $lab) {
-          		$cases_by_days[$period->format('d-m-Y')]['laboratories'][$lab->name] = 0;
-          	}
+                $cases_by_days[$period->format('d-m-Y')]['laboratories'][$lab->name] = 0;
+            }
             $cases_by_days[$period->format('d-m-Y')]['cases'] = 0;
         }
 
         $total_cases_by_days['cases'] = $suspectCases = SuspectCase::count();
 
         $suspectCases = SuspectCase::selectRaw('DATE(pcr_sars_cov_2_at) as pcr_sars_cov_2_at, external_laboratory, count(*) as cantidad')
-                                    // ->addSelect('external_laboratory')
-                                    ->whereNotNull('pcr_sars_cov_2_at')
-                                    ->wherenotnull('external_laboratory')
-                                    ->groupBy('pcr_sars_cov_2_at','external_laboratory')
-                                    ->get();
+            // ->addSelect('external_laboratory')
+            ->whereNotNull('pcr_sars_cov_2_at')
+            ->wherenotnull('external_laboratory')
+            ->groupBy('pcr_sars_cov_2_at', 'external_laboratory')
+            ->get();
 
         foreach ($suspectCases as $suspectCase) {
             $cases_by_days[$suspectCase->pcr_sars_cov_2_at->format('d-m-Y')]['laboratories'][$suspectCase->external_laboratory] += $suspectCase->cantidad;
@@ -1174,13 +1165,13 @@ class SuspectCaseController extends Controller
             $total_cases_by_days['cases'] += $suspectCase->cantidad;
         }
 
-        $suspectCases = SuspectCase::select('laboratories.name',\DB::raw('DATE_FORMAT(suspect_cases.pcr_sars_cov_2_at, "%d-%m-%Y") as pcr_sars_cov_2_at, count(*) as cantidad'))
-                                    ->leftJoin('laboratories', 'laboratories.id', '=', 'suspect_cases.laboratory_id')
-                                    ->groupBy('laboratories.name',\DB::raw('DATE_FORMAT(suspect_cases.pcr_sars_cov_2_at, "%d-%m-%Y")'))
-                                    ->whereNotNull('pcr_sars_cov_2_at')
-                                    ->whereNotNull('laboratories.name')
-                                    ->whereNull('external_laboratory')
-                                    ->get();
+        $suspectCases = SuspectCase::select('laboratories.name', \DB::raw('DATE_FORMAT(suspect_cases.pcr_sars_cov_2_at, "%d-%m-%Y") as pcr_sars_cov_2_at, count(*) as cantidad'))
+            ->leftJoin('laboratories', 'laboratories.id', '=', 'suspect_cases.laboratory_id')
+            ->groupBy('laboratories.name', \DB::raw('DATE_FORMAT(suspect_cases.pcr_sars_cov_2_at, "%d-%m-%Y")'))
+            ->whereNotNull('pcr_sars_cov_2_at')
+            ->whereNotNull('laboratories.name')
+            ->whereNull('external_laboratory')
+            ->get();
 
         //CARGA ARRAY CASOS
         foreach ($suspectCases as $suspectCase) {
@@ -1195,7 +1186,7 @@ class SuspectCaseController extends Controller
     public function diary_lab_report(Request $request)
     {
 
-        if (SuspectCase::count() == 0){
+        if (SuspectCase::count() == 0) {
             session()->flash('info', 'No existen casos.');
             return redirect()->route('home');
         }
@@ -1217,41 +1208,40 @@ class SuspectCaseController extends Controller
 
         }
 
-        $env_communes = array_map('trim',explode(",",env('COMUNAS')));
-        $communes = Commune::whereIn('id',$env_communes)->orderBy('name','ASC')->get();
+        $env_communes = array_map('trim', explode(",", env('COMUNAS')));
+        $communes = Commune::whereIn('id', $env_communes)->orderBy('name', 'ASC')->get();
         $suspectCases = SuspectCase::whereNotNull('laboratory_id')
-                                    ->whereHas('patient', function($q) use ($env_communes){
-                                            $q->whereHas('demographic', function($q) use ($env_communes){
-                                                    $q->whereIn('commune_id',$env_communes);
-                                            });
-                                     })
-                                    ->get();
+            ->whereHas('patient', function ($q) use ($env_communes) {
+                $q->whereHas('demographic', function ($q) use ($env_communes) {
+                    $q->whereIn('commune_id', $env_communes);
+                });
+            })
+            ->get();
 
-        if ($suspectCases->count() == 0){
+        if ($suspectCases->count() == 0) {
             session()->flash('info', 'No existen casos con laboratorio.');
             return redirect()->route('home');
         }
 
         foreach ($suspectCases as $suspectCase) {
-          $total_cases_by_days['cases'] = 0;
-          $total_cases_by_days[$suspectCase->pcr_sars_cov_2] = 0;
+            $total_cases_by_days['cases'] = 0;
+            $total_cases_by_days[$suspectCase->pcr_sars_cov_2] = 0;
         }
-
 
 
         //CARGA ARRAY CASOS
         foreach ($suspectCases as $suspectCase) {
 
-          $cases_by_days[$suspectCase->sample_at->format('d-m-Y')]['cases'] += 1;
-          if($suspectCase->reception_at != null){
-            $cases_by_days[$suspectCase->sample_at->format('d-m-Y')][$suspectCase->pcr_sars_cov_2] += 1;
-          }
-          if($suspectCase->pcr_sars_cov_2_at != null){
-            $cases_by_days[$suspectCase->pcr_sars_cov_2_at->format('d-m-Y')]['procesing'] += 1;
-          }
+            $cases_by_days[$suspectCase->sample_at->format('d-m-Y')]['cases'] += 1;
+            if ($suspectCase->reception_at != null) {
+                $cases_by_days[$suspectCase->sample_at->format('d-m-Y')][$suspectCase->pcr_sars_cov_2] += 1;
+            }
+            if ($suspectCase->pcr_sars_cov_2_at != null) {
+                $cases_by_days[$suspectCase->pcr_sars_cov_2_at->format('d-m-Y')]['procesing'] += 1;
+            }
 
-          $total_cases_by_days['cases'] += 1;
-          $total_cases_by_days[$suspectCase->pcr_sars_cov_2] += 1;
+            $total_cases_by_days['cases'] += 1;
+            $total_cases_by_days[$suspectCase->pcr_sars_cov_2] += 1;
         }
 
         return view('lab.suspect_cases.reports.diary_lab_report', compact('cases_by_days', 'total_cases_by_days'));
@@ -1260,10 +1250,10 @@ class SuspectCaseController extends Controller
     public function positive_average_by_commune(Request $request)
     {
         // FIX TIEMPO LIMITE DE EJECUCUCION Y MEMORIA LIMITE EN PHP.INI
-          set_time_limit(3600);
-          ini_set('memory_limit', '1024M');
+        set_time_limit(3600);
+        ini_set('memory_limit', '1024M');
 
-        if (SuspectCase::count() == 0){
+        if (SuspectCase::count() == 0) {
             session()->flash('info', 'No existen casos.');
             return redirect()->route('home');
         }
@@ -1271,18 +1261,18 @@ class SuspectCaseController extends Controller
         $from = Carbon::now()->subDays(30);
         $to = Carbon::now();
 
-        $env_communes = array_map('trim',explode(",",env('COMUNAS')));
-        $communes = Commune::whereIn('id',$env_communes)->orderBy('name','ASC')->get();
+        $env_communes = array_map('trim', explode(",", env('COMUNAS')));
+        $communes = Commune::whereIn('id', $env_communes)->orderBy('name', 'ASC')->get();
 
-        $beginExamDate = SuspectCase::whereBetween('sample_at',[$from,$to])
-                                    ->whereNotNull('laboratory_id')
-                                    ->whereHas('patient', function($q) use ($env_communes){
-                                            $q->whereHas('demographic', function($q) use ($env_communes){
-                                                    $q->whereIn('commune_id',$env_communes);
-                                            });
-                                     })
-                                    ->orderBy('sample_at')
-                                    ->first()->sample_at;
+        $beginExamDate = SuspectCase::whereBetween('sample_at', [$from, $to])
+            ->whereNotNull('laboratory_id')
+            ->whereHas('patient', function ($q) use ($env_communes) {
+                $q->whereHas('demographic', function ($q) use ($env_communes) {
+                    $q->whereIn('commune_id', $env_communes);
+                });
+            })
+            ->orderBy('sample_at')
+            ->first()->sample_at;
 
         $periods = CarbonPeriod::create($beginExamDate, now());
 
@@ -1307,17 +1297,17 @@ class SuspectCaseController extends Controller
             $cases_by_days[$to->format('d-m-Y')][$commune->name]['positivos'] = 0;
         }
 
-        $suspectCases = SuspectCase::whereBetween('sample_at',[$from,$to])
-                                   ->whereNotNull('laboratory_id')
-                                   // ->where('pcr_sars_cov_2','positive')
-                                   ->whereHas('patient', function($q) use ($env_communes){
-                                           $q->whereHas('demographic', function($q) use ($env_communes){
-                                                   $q->whereIn('commune_id',$env_communes);
-                                           });
-                                    })
-                                   ->get();
+        $suspectCases = SuspectCase::whereBetween('sample_at', [$from, $to])
+            ->whereNotNull('laboratory_id')
+            // ->where('pcr_sars_cov_2','positive')
+            ->whereHas('patient', function ($q) use ($env_communes) {
+                $q->whereHas('demographic', function ($q) use ($env_communes) {
+                    $q->whereIn('commune_id', $env_communes);
+                });
+            })
+            ->get();
 
-        if ($suspectCases->count() == 0){
+        if ($suspectCases->count() == 0) {
             session()->flash('info', 'No existen casos con laboratorio.');
             return redirect()->route('home');
         }
@@ -1325,13 +1315,13 @@ class SuspectCaseController extends Controller
         //CARGA ARRAY CASOS
         foreach ($suspectCases as $suspectCase) {
             //total
-            if ($communes->contains('name',$suspectCase->patient->demographic->commune->name)) {
+            if ($communes->contains('name', $suspectCase->patient->demographic->commune->name)) {
                 $cases_by_days[$suspectCase->sample_at->format('d-m-Y')][$suspectCase->patient->demographic->commune->name]['total'] += 1;
             }
 
             //positivos
             if ($suspectCase->pcr_sars_cov_2 == "positive") {
-                if ($communes->contains('name',$suspectCase->patient->demographic->commune->name)) {
+                if ($communes->contains('name', $suspectCase->patient->demographic->commune->name)) {
                     $cases_by_days[$suspectCase->sample_at->format('d-m-Y')][$suspectCase->patient->demographic->commune->name]['positivos'] += 1;
                 }
             }
@@ -1393,10 +1383,9 @@ class SuspectCaseController extends Controller
 //    }
 
 
-
     public function download(SuspectCase $suspectCase)
     {
-        return Storage::response( 'suspect_cases/' . $suspectCase->id . '.pdf', mb_convert_encoding($suspectCase->id . '.pdf', 'ASCII'));
+        return Storage::response('suspect_cases/' . $suspectCase->id . '.pdf', mb_convert_encoding($suspectCase->id . '.pdf', 'ASCII'));
     }
 
     public function login($access_token = null)
@@ -1408,7 +1397,7 @@ class SuspectCaseController extends Controller
 
     public function result()
     {
-      // dd("");
+        // dd("");
         if (env('APP_ENV') == 'production') {
             $access_token = session()->get('access_token');
             $url_base = "https://www.claveunica.gob.cl/openid/userinfo/";
@@ -1466,12 +1455,12 @@ class SuspectCaseController extends Controller
         $idFilter = $request->input('search');
 
         $suspectCases = SuspectCase::search($idFilter)
-            ->where(function($q) use($selectedEstablishment){
-                if($selectedEstablishment){
+            ->where(function ($q) use ($selectedEstablishment) {
+                if ($selectedEstablishment) {
                     $q->where('establishment_id', $selectedEstablishment);
                 }
             })
-            ->where(function ($query){
+            ->where(function ($query) {
                 $query->where('laboratory_id', Auth::user()->laboratory_id)
                     ->orWhereNull('laboratory_id');
             })
@@ -1482,8 +1471,8 @@ class SuspectCaseController extends Controller
             ->latest()
             ->paginate(200);
 
-        $env_communes = array_map('trim',explode(",",env('COMUNAS')));
-        $establishments = Establishment::whereIn('commune_id',$env_communes)->orderBy('name','ASC')->get();
+        $env_communes = array_map('trim', explode(",", env('COMUNAS')));
+        $establishments = Establishment::whereIn('commune_id', $env_communes)->orderBy('name', 'ASC')->get();
         $laboratories = Laboratory::all();
 
         return view('lab.suspect_cases.reception_inbox', compact('suspectCases', 'establishments', 'selectedEstablishment', 'laboratories', 'nameFilter', 'idFilter'));
@@ -1504,8 +1493,9 @@ class SuspectCaseController extends Controller
      * @param Request $request
      * @return Application|Factory|View
      */
-    public function barcodeReception(Request $request){
-        if($request->has('id')){
+    public function barcodeReception(Request $request)
+    {
+        if ($request->has('id')) {
             $suspectCase = SuspectCase::find($request->get('id'));
             $arraySuspectCase['id'] = $suspectCase->id;
             $arraySuspectCase['fullName'] = $suspectCase->patient->fullName;
@@ -1513,19 +1503,19 @@ class SuspectCaseController extends Controller
         }
 
 
-        if(!$suspectCase){
+        if (!$suspectCase) {
             session()->flash('warning', "No se encuentra muestra con la id $request->get('id'.");
-        }elseif ($suspectCase->reception_at == NULL){
+        } elseif ($suspectCase->reception_at == NULL) {
             $receptionSuccess = $this->reception($request, $suspectCase, true);
 
             if ($receptionSuccess) {
-                if(!session()->has('suspect_cases.received')){
+                if (!session()->has('suspect_cases.received')) {
                     session()->put('suspect_cases.received', array());
                 }
                 session()->push('suspect_cases.received', $arraySuspectCase);
             }
 
-        }else{
+        } else {
             session()->flash('warning', "La muestra $suspectCase->id ya se encuentra recepcionada");
         }
 
@@ -1549,7 +1539,8 @@ class SuspectCaseController extends Controller
 //        return Excel::download(new SuspectCasesExport($cod_lab), 'lista-examenes.xlsx');
 //    }
 
-    public function exportExcel($cod_lab, $date = null){
+    public function exportExcel($cod_lab, $date = null)
+    {
         $headers = array(
             "Content-type" => "text/csv",
             "Content-Disposition" => "attachment; filename=lista-examenes.csv",
@@ -1600,7 +1591,7 @@ class SuspectCaseController extends Controller
             'Laboratorio',
             'resultado_ifd',
             'pcr_sars_cov2',
-            'Casos Recuperados (Nueva Muestra)' ,
+            'Casos Recuperados (Nueva Muestra)',
             'sem',
             'epivigila',
             'fecha de resultado',
@@ -1618,23 +1609,22 @@ class SuspectCaseController extends Controller
             'tipo de caso'
         );
 
-        $callback = function() use ($filas, $columnas)
-        {
+        $callback = function () use ($filas, $columnas) {
             $file = fopen('php://output', 'w');
-            fputs($file, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
-            fputcsv($file, $columnas,';');
+            fputs($file, $bom = (chr(0xEF) . chr(0xBB) . chr(0xBF)));
+            fputcsv($file, $columnas, ';');
 
-            foreach($filas as $fila) {
+            foreach ($filas as $fila) {
                 fputcsv($file, array(
                     $fila->id,
                     $fila->sample_at,
-                    ($fila->establishment)?$fila->establishment->alias.' - '.$fila->origin: '',
+                    ($fila->establishment) ? $fila->establishment->alias . ' - ' . $fila->origin : '',
                     // ($fila->patient)?$fila->patient->fullName:'',
-                    ($fila->patient)?$fila->patient->name:'',
-                    ($fila->patient)?$fila->patient->fathers_family:'',
-                    ($fila->patient)?$fila->patient->mothers_family:'',
-                    ($fila->patient)?$fila->patient->Identifier:'',
-                    ($fila->patient && $fila->patient->birthday)?$fila->patient->birthday->format('d-m-Y'):'',
+                    ($fila->patient) ? $fila->patient->name : '',
+                    ($fila->patient) ? $fila->patient->fathers_family : '',
+                    ($fila->patient) ? $fila->patient->mothers_family : '',
+                    ($fila->patient) ? $fila->patient->Identifier : '',
+                    ($fila->patient && $fila->patient->birthday) ? $fila->patient->birthday->format('d-m-Y') : '',
                     $fila->age,
                     strtoupper($fila->gender[0]),
                     $fila->laboratory->name,
@@ -1646,17 +1636,17 @@ class SuspectCaseController extends Controller
                     $fila->pcr_sars_cov_2_at,
                     $fila->observation,
                     $fila->notification_mechanism,
-                    ($fila->notification_at)?$fila->notification_at->format('d-m-Y'):'',
-                    ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->telephone:'',
-                    ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->fullAddress:'',
-                    ($fila->patient && $fila->patient->demographic && $fila->patient->demographic->commune)?$fila->patient->demographic->commune->name:'',
+                    ($fila->notification_at) ? $fila->notification_at->format('d-m-Y') : '',
+                    ($fila->patient && $fila->patient->demographic) ? $fila->patient->demographic->telephone : '',
+                    ($fila->patient && $fila->patient->demographic) ? $fila->patient->demographic->fullAddress : '',
+                    ($fila->patient && $fila->patient->demographic && $fila->patient->demographic->commune) ? $fila->patient->demographic->commune->name : '',
                     ($fila->patient && $fila->patient->demographic && $fila->patient->demographic->nationality) ? $fila->patient->demographic->nationality : '',
-                    ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->email:'',
-                    ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->workplace:'',
-                    ($fila->functionaryEsp)?$fila->functionaryEsp:'',
+                    ($fila->patient && $fila->patient->demographic) ? $fila->patient->demographic->email : '',
+                    ($fila->patient && $fila->patient->demographic) ? $fila->patient->demographic->workplace : '',
+                    ($fila->functionaryEsp) ? $fila->functionaryEsp : '',
                     $fila->sent_external_lab_at,
                     $fila->case_type
-                ),';');
+                ), ';');
             }
             fclose($file);
         };
@@ -1665,15 +1655,15 @@ class SuspectCaseController extends Controller
 
     public function exportMinsalExcel($laboratory, Request $request)
     {
-        if($from = $request->has('from')){
+        if ($from = $request->has('from')) {
             $from = $request->get('from');
             $to = $request->get('to');
-        }else{
+        } else {
             $from = date("Y-m-d 21:00:00", time() - 60 * 60 * 24);
             $to = date("Y-m-d 20:59:59");
         }
 
-        return Excel::download(new MinsalSuspectCasesExport($laboratory, $from, $to), 'reporte-minsal-desde-'.$from.'-hasta-'.$to.'.xlsx');
+        return Excel::download(new MinsalSuspectCasesExport($laboratory, $from, $to), 'reporte-minsal-desde-' . $from . '-hasta-' . $to . '.xlsx');
     }
 
     public function exportSeremiExcel($cod_lab = null)
@@ -1687,12 +1677,14 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.notification_form', compact('suspectCase', 'user'));
     }
 
-    public function notificationFormSmall(SuspectCase $suspectCase){
+    public function notificationFormSmall(SuspectCase $suspectCase)
+    {
         $user = auth()->user();
         return view('lab.suspect_cases.notification_form_small', compact('suspectCase', 'user'));
     }
 
-    public function notificationFormSmallBulk(Request $request){
+    public function notificationFormSmallBulk(Request $request)
+    {
         if ($request->has('selected_cases_ids')) {
             $selectedCasesIds = $request->get('selected_cases_ids');
             $suspectCases = SuspectCase::whereIn('id', $selectedCasesIds)->get();
@@ -1701,7 +1693,8 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.notification_form_small_bulk', compact('suspectCases'));
     }
 
-    public function exportExcelReceptionInbox($cod_lab){
+    public function exportExcelReceptionInbox($cod_lab)
+    {
         $headers = array(
             "Content-type" => "text/csv",
             "Content-Disposition" => "attachment; filename=examenes_pendientes_recepcionar.csv",
@@ -1753,19 +1746,18 @@ class SuspectCaseController extends Controller
 //            'comuna'
         );
 
-        $callback = function() use ($filas, $columnas)
-        {
+        $callback = function () use ($filas, $columnas) {
             $file = fopen('php://output', 'w');
-            fputs($file, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
-            fputcsv($file, $columnas,';');
-            foreach($filas as $fila) {
+            fputs($file, $bom = (chr(0xEF) . chr(0xBB) . chr(0xBF)));
+            fputcsv($file, $columnas, ';');
+            foreach ($filas as $fila) {
                 fputcsv($file, array(
                     $fila->id,
                     $fila->sample_at,
-                    ($fila->establishment)?$fila->establishment->alias: '',
+                    ($fila->establishment) ? $fila->establishment->alias : '',
                     $fila->origin,
-                    ($fila->patient)?$fila->patient->fullName:'',
-                    ($fila->patient)?$fila->patient->Identifier:'',
+                    ($fila->patient) ? $fila->patient->fullName : '',
+                    ($fila->patient) ? $fila->patient->Identifier : '',
                     $fila->age,
                     strtoupper($fila->gender[0]),
                     $fila->Covid19,
@@ -1788,35 +1780,38 @@ class SuspectCaseController extends Controller
 //                    ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->telephone:'',
 //                    ($fila->patient && $fila->patient->demographic)?$fila->patient->demographic->fullAddress:'',
 //                    ($fila->patient && $fila->patient->demographic && $fila->patient->demographic->commune)?$fila->patient->demographic->commune->name:'',
-                ),';');
+                ), ';');
             }
             fclose($file);
         };
         return response()->stream($callback, 200, $headers);
     }
 
-    public function index_bulk_load(){
+    public function index_bulk_load()
+    {
         $bulkLoadRecords = BulkLoadRecord::orderBy('id', 'Desc')->get();
         return view('lab.bulk_load.import', compact('bulkLoadRecords'));
     }
 
-    public function index_import_results(){
+    public function index_import_results()
+    {
         return view('lab.suspect_cases.import_results');
     }
 
-    public function bulk_load_import(Request $request){
+    public function bulk_load_import(Request $request)
+    {
         set_time_limit(0);
         $file = $request->file('file');
-        $startDate = Carbon::now()->subWeeks(4)->setTime(0,0,0,0);
-        $endDate = Carbon::now()->setTime(0,0,0,0);
+        $startDate = Carbon::now()->subWeeks(4)->setTime(0, 0, 0, 0);
+        $endDate = Carbon::now()->setTime(0, 0, 0, 0);
 
         $patientsCollection = Excel::toCollection(new PatientImport, $file);
 
         foreach ($patientsCollection[0] as $patient) {
 
-            if($patient['Fecha Resultado'] != null){
+            if ($patient['Fecha Resultado'] != null) {
                 $fecha_resultado_carbon = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Resultado']));
-                if(!$fecha_resultado_carbon->betweenIncluded($startDate, $endDate)){
+                if (!$fecha_resultado_carbon->betweenIncluded($startDate, $endDate)) {
                     session()->flash('warning', "La fecha de resultado {$fecha_resultado_carbon->format('d-m-Y')} debe estar entre {$startDate->format('d-m-Y')} y {$endDate->format('d-m-Y')}.");
                     return redirect()->route('lab.bulk_load.index');
                     // return view('lab.bulk_load.index');
@@ -1827,213 +1822,213 @@ class SuspectCaseController extends Controller
                 $patientsDB = Patient::where('run', $patient['RUN'])
                     ->orWhere('other_identification', $patient['RUN'])
                     ->get();
-            }
-            else{
+            } else {
                 $patientsDB = Patient::where('other_identification', $patient['RUN'])
                     ->get();
             }
 
-                if($patientsDB->count() == 0){
-                    $new_patient = new Patient();
-                    if($patient['DV'] != null){
-                        $new_patient->run = $patient['RUN'];
-                        $new_patient->dv  = $patient['DV'];
-                    }
-                    else {
-                        $new_patient->other_identification  = $patient['RUN'];
-                    }
-
-                    $new_patient->name            = $patient['Nombres'];
-                    $new_patient->fathers_family  = $patient['Apellido Paterno'];
-                    $new_patient->mothers_family  = $patient['Apellido Materno'];
-
-                    if($patient['Sexo'] == 'Masculino'){
-                        $new_patient->gender = 'male';
-                    }
-                    if($patient['Sexo'] == 'Femenino'){
-                        $new_patient->gender = 'female';
-                    }
-                    if($patient['Sexo'] == 'Otro'){
-                        $new_patient->gender = 'other';
-                    }
-                    if($patient['Sexo'] == 'Desconocido'){
-                        $new_patient->gender = 'unknown';
-                    }
-
-                    $new_patient->birthday        = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Nacimiento']))->format('Y-m-d H:i:s');
-
-                    $new_patient->status          = $patient['Estado'];
-
-                    $new_patient->save();
+            if ($patientsDB->count() == 0) {
+                $new_patient = new Patient();
+                if ($patient['DV'] != null) {
+                    $new_patient->run = $patient['RUN'];
+                    $new_patient->dv = $patient['DV'];
+                } else {
+                    $new_patient->other_identification = $patient['RUN'];
                 }
+
+                $new_patient->name = $patient['Nombres'];
+                $new_patient->fathers_family = $patient['Apellido Paterno'];
+                $new_patient->mothers_family = $patient['Apellido Materno'];
+
+                if ($patient['Sexo'] == 'Masculino') {
+                    $new_patient->gender = 'male';
+                }
+                if ($patient['Sexo'] == 'Femenino') {
+                    $new_patient->gender = 'female';
+                }
+                if ($patient['Sexo'] == 'Otro') {
+                    $new_patient->gender = 'other';
+                }
+                if ($patient['Sexo'] == 'Desconocido') {
+                    $new_patient->gender = 'unknown';
+                }
+
+                $new_patient->birthday = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Nacimiento']))->format('Y-m-d H:i:s');
+
+                $new_patient->status = $patient['Estado'];
+
+                $new_patient->save();
+            }
 
             if (ctype_digit($patient['RUN'])) {
                 $patient_create = Patient::where('run', $patient['RUN'])
                     ->orWhere('other_identification', $patient['RUN'])
                     ->get()
                     ->first();
-            }
-            else{
+            } else {
                 $patient_create = Patient::where('other_identification', $patient['RUN'])
                     ->get()
                     ->first();
             }
 
-                if($patient_create){
-                  if(!$patient_create->demographic->id){
-                      $new_demographic = new Demographic();
+            if ($patient_create) {
+                if (!$patient_create->demographic->id) {
+                    $new_demographic = new Demographic();
 
-                      $new_demographic->street_type   = $patient['Via Residencia'];
-                      $new_demographic->address       = $patient['Direccion'];
-                      $new_demographic->number        = $patient['Numero'];
-                      $new_demographic->department    = $patient['Depto'];
-                      $new_demographic->city          = $patient['Ciudad o Pueblo'];
-                      $new_demographic->suburb        = $patient['Poblacion o Suburbio'];
-                      $new_demographic->commune_id    = $patient['Comuna'];
-                      $new_demographic->region_id     = $patient['Region'];
-                      $new_demographic->nationality   = ucfirst(strtolower($patient['Nacionalidad']));
-                      $new_demographic->telephone     = $patient['Telefono'];
-                      $new_demographic->email         = $patient['Email'];
-                      $new_demographic->patient_id    = $patient_create->id;
-                      $new_demographic->save();
-                  }
-                }
-
-                if($patient_create && $patient['Laboratorio'] != null){
-                    $new_suspect_case = new SuspectCase();
-
-                    $new_suspect_case->laboratory_id      = $patient['Laboratorio'];
-                    $new_suspect_case->sample_type        = strtoupper($patient['Tipo Muestra']);
-                    $new_suspect_case->sample_at          = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Muestra']))->format('Y-m-d H:i:s');
-
-                    if($patient['Fecha Recepcion'] != null){
-                        $new_suspect_case->reception_at       = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Recepcion']))->format('Y-m-d H:i:s');
-                    }
-
-                    if($patient['Fecha Resultado'] != null){
-                        $new_suspect_case->pcr_sars_cov_2_at       = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Resultado']))->format('Y-m-d H:i:s');
-                    }
-
-                    if($patient['Resultado'] == 'Positivo'){
-                        $new_suspect_case->pcr_sars_cov_2 = 'positive';
-                    }
-                    if($patient['Resultado'] == 'Negativo'){
-                        $new_suspect_case->pcr_sars_cov_2 = 'negative';
-                    }
-                    if($patient['Resultado'] == 'Indeterminado'){
-                        $new_suspect_case->pcr_sars_cov_2 = 'undetermined';
-                    }
-                    if($patient['Resultado'] == 'Rechazado'){
-                        $new_suspect_case->pcr_sars_cov_2 = 'rejected';
-                    }
-                    if($patient['Resultado'] == 'Pendiente'){
-                        $new_suspect_case->pcr_sars_cov_2 = 'pending';
-                    }
-
-                    $establishment = Establishment::where('name', $patient['Establecimiento Muestra'])
-                        ->get()
-                        ->first();
-
-                    $new_suspect_case->establishment_id = $establishment['id'];
-                    $new_suspect_case->origin = $patient['Detalle Origen'];
-                    $new_suspect_case->run_medic = $patient['Run Medico'];
-
-                    // ---------------------------------------------------------------------
-                    if($patient['Sintomas'] == 'Si' || $patient['Sintomas'] == 'si' ||
-                          $patient['Sintomas'] == 'si' || $patient['Sintomas'] == 'sI' ||
-                        $patient['Sintomas'] == 'SI'){
-                        $new_suspect_case->symptoms = 1;
-                        $new_suspect_case->symptoms_at = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Inicio Sintomas']))->format('Y-m-d H:i:s');
-                    }
-                    if($patient['Sintomas'] == 'No' || $patient['Sintomas'] == 'no' ||
-                          $patient['Sintomas'] == 'no' || $patient['Sintomas'] == 'nO' || $patient['Sintomas'] == 'NO'){
-                        $new_suspect_case->symptoms = 0;
-                    }
-                    // ---------------------------------------------------------------------
-
-                    if($patient['Gestante'] == 'Si' || $patient['Gestante'] == 'si' ||
-                          $patient['Gestante'] == 'si' || $patient['Gestante'] == 'sI' ||
-                        $patient['Gestante'] == 'SI' ){
-                        $new_suspect_case->gestation = 1;
-                        $new_suspect_case->gestation_week = $patient['Semanas Gestacion'];
-
-                    }
-                    if($patient['Gestante'] == 'No' || $patient['Gestante'] == 'no' ||
-                          $patient['Gestante'] == 'no' || $patient['Gestante'] == 'nO' ||
-                        $patient['Gestante'] == 'NO'){
-                        $new_suspect_case->gestation = 0;
-                    }
-                    // ---------------------------------------------------------------------
-
-                    if($patient['Indice'] == 'Si' || $patient['Indice'] == 'si' ||
-                          $patient['Indice'] == 'si' || $patient['Indice'] == 'sI' ||
-                        $patient['Indice'] == 'SI'){
-                        $new_suspect_case->close_contact = 1;
-                    }
-                    if($patient['Indice'] == 'No' || $patient['Indice'] == 'no' ||
-                          $patient['Indice'] == 'no' || $patient['Indice'] == 'nO' ||
-                        $patient['Indice'] == 'NO'){
-                        $new_suspect_case->close_contact = 0;
-                    }
-                    // ---------------------------------------------------------------------
-
-                    if($patient['Funcionario Salud'] == 'Si' || $patient['Funcionario Salud'] == 'si' ||
-                          $patient['Funcionario Salud'] == 'si' || $patient['Funcionario Salud'] == 'sI' ||
-                        $patient['Funcionario Salud'] == 'SI'){
-                        $new_suspect_case->functionary = 1;
-                    }
-                    if($patient['Funcionario Salud'] == 'No' || $patient['Funcionario Salud'] == 'no' ||
-                          $patient['Funcionario Salud'] == 'no' || $patient['Funcionario Salud'] == 'nO' ||
-                        $patient['Funcionario Salud'] == 'NO'){
-                        $new_suspect_case->functionary = 0;
-                    }
-                    // ---------------------------------------------------------------------
-
-                    $new_suspect_case->observation = $patient['Observacion'];
-                    $new_suspect_case->epivigila = $patient['Epivigila'];
-                    $new_suspect_case->patient_id = $patient_create->id;
-                    $new_suspect_case->user_id = Auth::user()->id;
-                    $new_suspect_case->validator_id = Auth::user()->id;
-
-                    if($patient['Sexo'] == 'Masculino'){
-                        $new_suspect_case->gender = 'male';
-                    }
-                    if($patient['Sexo'] == 'Femenino'){
-                        $new_suspect_case->gender = 'female';
-                    }
-                    if($patient['Sexo'] == 'Otro'){
-                        $new_suspect_case->gender = 'other';
-                    }
-                    if($patient['Sexo'] == 'Desconocido'){
-                        $new_suspect_case->gender = 'unknown';
-                    }
-
-                    $new_suspect_case->save();
+                    $new_demographic->street_type = $patient['Via Residencia'];
+                    $new_demographic->address = $patient['Direccion'];
+                    $new_demographic->number = $patient['Numero'];
+                    $new_demographic->department = $patient['Depto'];
+                    $new_demographic->city = $patient['Ciudad o Pueblo'];
+                    $new_demographic->suburb = $patient['Poblacion o Suburbio'];
+                    $new_demographic->commune_id = $patient['Comuna'];
+                    $new_demographic->region_id = $patient['Region'];
+                    $new_demographic->nationality = ucfirst(strtolower($patient['Nacionalidad']));
+                    $new_demographic->telephone = $patient['Telefono'];
+                    $new_demographic->email = $patient['Email'];
+                    $new_demographic->patient_id = $patient_create->id;
+                    $new_demographic->save();
                 }
             }
 
-            //AGREGAR EVENTO DE INGRESA QUIEN SOLICITA.
-            $bulkLoadRecord = new BulkLoadRecord();
-            $bulkLoadRecord->description = $request->description;
-            $bulkLoadRecord->user()->associate(Auth::user());
-            $bulkLoadRecord->save();
+            if ($patient_create && $patient['Laboratorio'] != null) {
+                $new_suspect_case = new SuspectCase();
+
+                $new_suspect_case->laboratory_id = $patient['Laboratorio'];
+                $new_suspect_case->sample_type = strtoupper($patient['Tipo Muestra']);
+                $new_suspect_case->sample_at = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Muestra']))->format('Y-m-d H:i:s');
+
+                if ($patient['Fecha Recepcion'] != null) {
+                    $new_suspect_case->reception_at = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Recepcion']))->format('Y-m-d H:i:s');
+                }
+
+                if ($patient['Fecha Resultado'] != null) {
+                    $new_suspect_case->pcr_sars_cov_2_at = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Resultado']))->format('Y-m-d H:i:s');
+                }
+
+                if ($patient['Resultado'] == 'Positivo') {
+                    $new_suspect_case->pcr_sars_cov_2 = 'positive';
+                }
+                if ($patient['Resultado'] == 'Negativo') {
+                    $new_suspect_case->pcr_sars_cov_2 = 'negative';
+                }
+                if ($patient['Resultado'] == 'Indeterminado') {
+                    $new_suspect_case->pcr_sars_cov_2 = 'undetermined';
+                }
+                if ($patient['Resultado'] == 'Rechazado') {
+                    $new_suspect_case->pcr_sars_cov_2 = 'rejected';
+                }
+                if ($patient['Resultado'] == 'Pendiente') {
+                    $new_suspect_case->pcr_sars_cov_2 = 'pending';
+                }
+
+                $establishment = Establishment::where('name', $patient['Establecimiento Muestra'])
+                    ->get()
+                    ->first();
+
+                $new_suspect_case->establishment_id = $establishment['id'];
+                $new_suspect_case->origin = $patient['Detalle Origen'];
+                $new_suspect_case->run_medic = $patient['Run Medico'];
+
+                // ---------------------------------------------------------------------
+                if ($patient['Sintomas'] == 'Si' || $patient['Sintomas'] == 'si' ||
+                    $patient['Sintomas'] == 'si' || $patient['Sintomas'] == 'sI' ||
+                    $patient['Sintomas'] == 'SI') {
+                    $new_suspect_case->symptoms = 1;
+                    $new_suspect_case->symptoms_at = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($patient['Fecha Inicio Sintomas']))->format('Y-m-d H:i:s');
+                }
+                if ($patient['Sintomas'] == 'No' || $patient['Sintomas'] == 'no' ||
+                    $patient['Sintomas'] == 'no' || $patient['Sintomas'] == 'nO' || $patient['Sintomas'] == 'NO') {
+                    $new_suspect_case->symptoms = 0;
+                }
+                // ---------------------------------------------------------------------
+
+                if ($patient['Gestante'] == 'Si' || $patient['Gestante'] == 'si' ||
+                    $patient['Gestante'] == 'si' || $patient['Gestante'] == 'sI' ||
+                    $patient['Gestante'] == 'SI') {
+                    $new_suspect_case->gestation = 1;
+                    $new_suspect_case->gestation_week = $patient['Semanas Gestacion'];
+
+                }
+                if ($patient['Gestante'] == 'No' || $patient['Gestante'] == 'no' ||
+                    $patient['Gestante'] == 'no' || $patient['Gestante'] == 'nO' ||
+                    $patient['Gestante'] == 'NO') {
+                    $new_suspect_case->gestation = 0;
+                }
+                // ---------------------------------------------------------------------
+
+                if ($patient['Indice'] == 'Si' || $patient['Indice'] == 'si' ||
+                    $patient['Indice'] == 'si' || $patient['Indice'] == 'sI' ||
+                    $patient['Indice'] == 'SI') {
+                    $new_suspect_case->close_contact = 1;
+                }
+                if ($patient['Indice'] == 'No' || $patient['Indice'] == 'no' ||
+                    $patient['Indice'] == 'no' || $patient['Indice'] == 'nO' ||
+                    $patient['Indice'] == 'NO') {
+                    $new_suspect_case->close_contact = 0;
+                }
+                // ---------------------------------------------------------------------
+
+                if ($patient['Funcionario Salud'] == 'Si' || $patient['Funcionario Salud'] == 'si' ||
+                    $patient['Funcionario Salud'] == 'si' || $patient['Funcionario Salud'] == 'sI' ||
+                    $patient['Funcionario Salud'] == 'SI') {
+                    $new_suspect_case->functionary = 1;
+                }
+                if ($patient['Funcionario Salud'] == 'No' || $patient['Funcionario Salud'] == 'no' ||
+                    $patient['Funcionario Salud'] == 'no' || $patient['Funcionario Salud'] == 'nO' ||
+                    $patient['Funcionario Salud'] == 'NO') {
+                    $new_suspect_case->functionary = 0;
+                }
+                // ---------------------------------------------------------------------
+
+                $new_suspect_case->observation = $patient['Observacion'];
+                $new_suspect_case->epivigila = $patient['Epivigila'];
+                $new_suspect_case->patient_id = $patient_create->id;
+                $new_suspect_case->user_id = Auth::user()->id;
+                $new_suspect_case->validator_id = Auth::user()->id;
+
+                if ($patient['Sexo'] == 'Masculino') {
+                    $new_suspect_case->gender = 'male';
+                }
+                if ($patient['Sexo'] == 'Femenino') {
+                    $new_suspect_case->gender = 'female';
+                }
+                if ($patient['Sexo'] == 'Otro') {
+                    $new_suspect_case->gender = 'other';
+                }
+                if ($patient['Sexo'] == 'Desconocido') {
+                    $new_suspect_case->gender = 'unknown';
+                }
+
+                $new_suspect_case->save();
+            }
+        }
+
+        //AGREGAR EVENTO DE INGRESA QUIEN SOLICITA.
+        $bulkLoadRecord = new BulkLoadRecord();
+        $bulkLoadRecord->description = $request->description;
+        $bulkLoadRecord->user()->associate(Auth::user());
+        $bulkLoadRecord->save();
 
         session()->flash('success', 'El archivo fue cargado exitosamente.');
         return redirect()->route('lab.bulk_load.index');
     }
 
-    public function index_bulk_load_from_pntm(){
+    public function index_bulk_load_from_pntm()
+    {
         return view('lab.bulk_load_from_pntm.import');
     }
 
-    public function index_bulk_load_from_pntm_no_creation(){
+    public function index_bulk_load_from_pntm_no_creation()
+    {
         return view('lab.bulk_load_from_pntm.import_no_creation');
     }
 
     /**
      * @throws Throwable
      */
-    public function bulk_load_import_from_pntm(Request $request){
+    public function bulk_load_import_from_pntm(Request $request)
+    {
         set_time_limit(0);
         $timeStart = microtime(true);
 
@@ -2248,10 +2243,11 @@ class SuspectCaseController extends Controller
         return redirect()->route('lab.bulk_load_from_pntm.index');
     }
 
-/**
+    /**
      * @throws Throwable
      */
-    public function bulk_load_import_from_pntm_no_creation(Request $request){
+    public function bulk_load_import_from_pntm_no_creation(Request $request)
+    {
 
         set_time_limit(0);
         $timeStart = microtime(true);
@@ -2274,7 +2270,7 @@ class SuspectCaseController extends Controller
                     $new_suspect_case = SuspectCase::where('minsal_ws_id', $patient['id_muestra'])->first();
 
 
-                    if($new_suspect_case->laboratory_id == 13 && $new_suspect_case->derivation_internal_lab_at != null && $new_suspect_case->pcr_sars_cov_2 == 'pending'){
+                    if ($new_suspect_case->laboratory_id == 13 && $new_suspect_case->derivation_internal_lab_at != null && $new_suspect_case->pcr_sars_cov_2 == 'pending') {
                         // dump($new_suspect_case);
 
                         if ($patient['fecha_recepcion_muestra'] != null && $new_suspect_case->reception_at == null) {
@@ -2408,11 +2404,12 @@ class SuspectCaseController extends Controller
      * @param Request $request
      * @return void
      */
-    public function results_import(Request $request){
+    public function results_import(Request $request)
+    {
         $file = $request->file('file');
         $patientsCollection = Excel::toCollection(new PatientImport, $file);
-        $startDate = Carbon::now()->subWeeks(4)->setTime(0,0,0,0);
-        $endDate = Carbon::now()->setTime(0,0,0,0);
+        $startDate = Carbon::now()->subWeeks(4)->setTime(0, 0, 0, 0);
+        $endDate = Carbon::now()->setTime(0, 0, 0, 0);
         $cont = 0;
 
         foreach ($patientsCollection[0] as $data) {
@@ -2440,7 +2437,7 @@ class SuspectCaseController extends Controller
             $fecha_resultado_carbon = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($data['fecha resultado']));
             $fecha_resultado = $fecha_resultado_carbon->format('Y-m-d H:i:s');
 
-            if(!$fecha_resultado_carbon->betweenIncluded($startDate, $endDate)){
+            if (!$fecha_resultado_carbon->betweenIncluded($startDate, $endDate)) {
                 session()->flash('warning', "La fecha de resultado {$fecha_resultado_carbon->format('d-m-Y')} de la muestra $id_esmeralda debe estar entre {$startDate->format('d-m-Y')} y {$endDate->format('d-m-Y')}.");
                 return view('lab.suspect_cases.import_results');
             }
@@ -2464,7 +2461,7 @@ class SuspectCaseController extends Controller
             if ($id_esmeralda != NULL && $resultado != NULL && $fecha_resultado != NULL) {
                 $suspectCase = SuspectCase::find($id_esmeralda);
 
-                if($suspectCase->laboratory_id != auth()->user()->laboratory_id){
+                if ($suspectCase->laboratory_id != auth()->user()->laboratory_id) {
                     session()->flash('warning', 'La muestra ' . $suspectCase->id . ' no corresponde a su laboratorio.');
                     return view('lab.suspect_cases.import_results');
                 }
@@ -2547,18 +2544,18 @@ class SuspectCaseController extends Controller
                     if ($request->send_email == true) {
                         if (env('APP_ENV') == 'production') {
                             if ($old_pcr == 'pending' and $suspectCase->pcr_sars_cov_2 == 'positive') {
-                                $delay = \DB::table('jobs')->count()*60;
+                                $delay = \DB::table('jobs')->count() * 60;
                                 $emailJob = ((new SendEmailAlert($suspectCase))->delay($delay));
                                 dispatch($emailJob);
                             }
 
                             /* Enviar resultado al usuario, solo si tiene registrado un correo electronico */
-                            if($old_pcr == 'pending' && ($suspectCase->pcr_sars_cov_2 == 'negative' || $suspectCase->pcr_sars_cov_2 == 'undetermined' ||
-                            $suspectCase->pcr_sars_cov_2 == 'rejected' || $suspectCase->pcr_sars_cov_2 == 'positive') && $suspectCase->patient->demographic != NULL){
+                            if ($old_pcr == 'pending' && ($suspectCase->pcr_sars_cov_2 == 'negative' || $suspectCase->pcr_sars_cov_2 == 'undetermined' ||
+                                    $suspectCase->pcr_sars_cov_2 == 'rejected' || $suspectCase->pcr_sars_cov_2 == 'positive') && $suspectCase->patient->demographic != NULL) {
 
-                                if($suspectCase->patient->demographic->email != NULL){
+                                if ($suspectCase->patient->demographic->email != NULL) {
                                     if ($suspectCase->laboratory) {
-                                        $delay = \DB::table('jobs')->count()*60;
+                                        $delay = \DB::table('jobs')->count() * 60;
                                         $emailJob = ((new SendEmailPatient($suspectCase))->delay($delay));
                                         dispatch($emailJob);
                                     }
@@ -2574,10 +2571,11 @@ class SuspectCaseController extends Controller
         return view('lab.suspect_cases.import_results');
     }
 
-    public function emailQueueTest(){
+    public function emailQueueTest()
+    {
         $i = 0;
-        while($i < 3){
-            $delay = \DB::table('jobs')->count()*60;
+        while ($i < 3) {
+            $delay = \DB::table('jobs')->count() * 60;
             $emailJob = ((new TestEmailJob())->delay($delay));
             dispatch($emailJob);
             $i++;
@@ -2585,14 +2583,16 @@ class SuspectCaseController extends Controller
         echo 'sent emails:' . $i;
     }
 
-    public function ws_test(){
+    public function ws_test()
+    {
         $case = SuspectCase::find(507934);
         $estadoMuestra = WSMinsal::obtiene_estado_muestra($case);
         dd($estadoMuestra);
         return redirect()->back();
     }
 
-    public function positiveCondition(Request $request, SuspectCase $suspectCase){
+    public function positiveCondition(Request $request, SuspectCase $suspectCase)
+    {
 
         $suspectCase->positive_condition = $request->positive_condition;
         $suspectCase->save();
@@ -2634,39 +2634,37 @@ class SuspectCaseController extends Controller
         $hl7ResultMessage->save();
 
 
-
         //Búsqueda de casos por run o other_identification
-        if($patientIdentifier != null){
-            if(Str::contains($patientIdentifier, '-')){
+        if ($patientIdentifier != null) {
+            if (Str::contains($patientIdentifier, '-')) {
                 $patientIdentifierExploded = explode('-', $patientIdentifier);
 
                 $suspectCases = SuspectCase::whereHas('patient', function ($q) use ($patientIdentifierExploded) {
                     $q->where('run', $patientIdentifierExploded[0])
-                    ->orWhere('other_identification', $patientIdentifierExploded[0]);
+                        ->orWhere('other_identification', $patientIdentifierExploded[0]);
                 })
-                ->where('pcr_sars_cov_2', 'pending');
-            }
-            else{
+                    ->where('pcr_sars_cov_2', 'pending');
+            } else {
                 $suspectCases = SuspectCase::whereHas('patient', function ($q) use ($patientIdentifier) {
                     $q->where('other_identification', $patientIdentifier);
                 })
-                ->where('pcr_sars_cov_2', 'pending');
+                    ->where('pcr_sars_cov_2', 'pending');
             }
         }
 
         //Si no viene la identificacion o no se encontró por run ni other_identification, se busca por nombre
-        if($patientIdentifier == null || $suspectCases == null || ($suspectCases != null && $suspectCases->count() == 0)){
+        if ($patientIdentifier == null || $suspectCases == null || ($suspectCases != null && $suspectCases->count() == 0)) {
             $suspectCases = SuspectCase::whereHas('patient', function ($q) use ($patientFamilyFather, $patientFamilyMother, $patientNames) {
-            $q->where('fathers_family', 'LIKE', '%' . $patientFamilyFather . '%')
-                ->where('mothers_family', 'like', '%' . $patientFamilyMother . '%')
-                ->where('name', 'like', '%' . $patientNames . '%');
+                $q->where('fathers_family', 'LIKE', '%' . $patientFamilyFather . '%')
+                    ->where('mothers_family', 'like', '%' . $patientFamilyMother . '%')
+                    ->where('name', 'like', '%' . $patientNames . '%');
             })
-            ->where('pcr_sars_cov_2', 'pending');
+                ->where('pcr_sars_cov_2', 'pending');
         }
 
         //Procesa suspect_case
-        if($suspectCases != null){
-            if($suspectCases->count() === 1){
+        if ($suspectCases != null) {
+            if ($suspectCases->count() === 1) {
                 $foundSuspectCase = $suspectCases->first();
                 $foundSuspectCase->hl7_result_message_id = $hl7ResultMessage->id;
                 $foundSuspectCase->save();
@@ -2674,20 +2672,19 @@ class SuspectCaseController extends Controller
                 // error_log('entré a solo 1 caso');
                 $succesfulCaseResult = $this->addSuspectCaseResult($foundSuspectCase, $hl7ResultMessage, $pdfFile);
 
-                if($succesfulCaseResult){
+                if ($succesfulCaseResult) {
                     $hl7ResultMessage->status = 'assigned_to_case';
                     $hl7ResultMessage->save();
                 }
 
-            }
-            elseif($suspectCases->count() >= 1){
+            } elseif ($suspectCases->count() >= 1) {
                 $suspectCases->update(['hl7_result_message_id' => $hl7ResultMessage->id]);
                 $hl7ResultMessage->update(['status' => 'too_many_cases', 'pdf_file' => $pdfFile]);
-            }elseif($suspectCases->count() === 0){
+            } elseif ($suspectCases->count() === 0) {
                 $hl7ResultMessage->update(['status' => 'case_not_found', 'pdf_file' => $pdfFile]);
             }
 
-        }else{
+        } else {
             $hl7ResultMessage->update(['status' => 'case_not_found', 'pdf_file' => $pdfFile]);
         }
 
@@ -2696,12 +2693,12 @@ class SuspectCaseController extends Controller
     /**
      * Agrega resultado, sube pntm, envia correo.
      *
-     * @param  \App\SuspectCase  $suspectCase
+     * @param \App\SuspectCase $suspectCase
      * @return \Illuminate\Http\Response
      */
     public function addSuspectCaseResult(SuspectCase $suspectCase, Hl7ResultMessage $hl7ResultMessage, $pdfFile = false, $send_pntm = true)
     {
-        try{
+        try {
 
             $old_pcr = $suspectCase->pcr_sars_cov_2;
 
@@ -2721,12 +2718,12 @@ class SuspectCaseController extends Controller
             }
 
             if ($pdfFile) {
-                $sucesfulStore = Storage::put('suspect_cases/' . $suspectCase->id . '.pdf' , $pdfFile);
+                $sucesfulStore = Storage::put('suspect_cases/' . $suspectCase->id . '.pdf', $pdfFile);
                 $suspectCase->file = true;
-            }elseif($hl7ResultMessage->pdf_file){
-                $sucesfulStore = Storage::put('suspect_cases/' . $suspectCase->id . '.pdf' , $hl7ResultMessage->pdf_file);
+            } elseif ($hl7ResultMessage->pdf_file) {
+                $sucesfulStore = Storage::put('suspect_cases/' . $suspectCase->id . '.pdf', $hl7ResultMessage->pdf_file);
                 $suspectCase->file = true;
-            }else{
+            } else {
                 $newHl7ErrorMessage = new Hl7ErrorMessage();
                 $newHl7ErrorMessage->error = 'MONITOR';
                 $newHl7ErrorMessage->error_message = 'No se encuentra pdf';
@@ -2738,7 +2735,7 @@ class SuspectCaseController extends Controller
             }
 
 
-            if(Auth::user()->can('SuspectCase: reception')){
+            if (Auth::user()->can('SuspectCase: reception')) {
                 if ($suspectCase->laboratory_id == null) {
                     $suspectCase->receptor_id = null;
                     $suspectCase->reception_at = null;
@@ -2759,114 +2756,113 @@ class SuspectCaseController extends Controller
             /* Webservice minsal */
             //##### se genera envio de resultado a ws minsal #####
             if ($send_pntm) {
-              if (env('ACTIVA_WS', false) == true) {
-                  if ($suspectCase->laboratory_id != null) {
-                      if ($suspectCase->laboratory->minsal_ws == true) {
-                          if ($suspectCase->minsal_ws_id) {
+                if (env('ACTIVA_WS', false) == true) {
+                    if ($suspectCase->laboratory_id != null) {
+                        if ($suspectCase->laboratory->minsal_ws == true) {
+                            if ($suspectCase->minsal_ws_id) {
 
-                              if ($old_pcr == 'pending' && ($suspectCase->pcr_sars_cov_2 == 'positive' || $suspectCase->pcr_sars_cov_2 == 'negative' ||
-                                      $suspectCase->pcr_sars_cov_2 == 'undetermined' || $suspectCase->pcr_sars_cov_2 == 'rejected')
-                                  && $suspectCase->patient->demographic != NULL && $suspectCase->external_laboratory == null) {
+                                if ($old_pcr == 'pending' && ($suspectCase->pcr_sars_cov_2 == 'positive' || $suspectCase->pcr_sars_cov_2 == 'negative' ||
+                                        $suspectCase->pcr_sars_cov_2 == 'undetermined' || $suspectCase->pcr_sars_cov_2 == 'rejected')
+                                    && $suspectCase->patient->demographic != NULL && $suspectCase->external_laboratory == null) {
 
-                                  // error_log('entro a envio pntm');
+                                    // error_log('entro a envio pntm');
 
-                                  //envío información minsal
-                                  $response = WSMinsal::resultado_muestra($suspectCase);
-                                  if ($response['status'] == 0) {
-                                      //Verificar, si en pntm esta en estado 2 (no recepcionado) se recepciona.
-                                      $responseSampleStatus = WSMinsal::obtiene_estado_muestra($suspectCase);
-                                      if($responseSampleStatus['status'] == 1 && $responseSampleStatus['sample_status'] == 2 && $suspectCase->reception_at != NULL){
-                                              $responseReception = WSMinsal::recepciona_muestra($suspectCase);
-                                              if($responseReception['status'] == 1){
-                                                  $response = WSMinsal::resultado_muestra($suspectCase);
-                                                  if ($response['status'] == 0) {
-                                                      $newHl7ErrorMessage = new Hl7ErrorMessage();
-                                                      $newHl7ErrorMessage->error = 'PNTM';
-                                                      $newHl7ErrorMessage->error_message = 'Error al recepcionar y subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'];
-                                                      $newHl7ErrorMessage->save();
-                                                      $hl7ResultMessage->status = 'monitor_error';
-                                                      $hl7ResultMessage->hl7_error_message_id = $newHl7ErrorMessage->id;
-                                                      $hl7ResultMessage->save();
+                                    //envío información minsal
+                                    $response = WSMinsal::resultado_muestra($suspectCase);
+                                    if ($response['status'] == 0) {
+                                        //Verificar, si en pntm esta en estado 2 (no recepcionado) se recepciona.
+                                        $responseSampleStatus = WSMinsal::obtiene_estado_muestra($suspectCase);
+                                        if ($responseSampleStatus['status'] == 1 && $responseSampleStatus['sample_status'] == 2 && $suspectCase->reception_at != NULL) {
+                                            $responseReception = WSMinsal::recepciona_muestra($suspectCase);
+                                            if ($responseReception['status'] == 1) {
+                                                $response = WSMinsal::resultado_muestra($suspectCase);
+                                                if ($response['status'] == 0) {
+                                                    $newHl7ErrorMessage = new Hl7ErrorMessage();
+                                                    $newHl7ErrorMessage->error = 'PNTM';
+                                                    $newHl7ErrorMessage->error_message = 'Error al recepcionar y subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'];
+                                                    $newHl7ErrorMessage->save();
+                                                    $hl7ResultMessage->status = 'monitor_error';
+                                                    $hl7ResultMessage->hl7_error_message_id = $newHl7ErrorMessage->id;
+                                                    $hl7ResultMessage->save();
 
-                                                      $this->suspectCaseBackToPending($suspectCase);
-                                                      return false;
-                                                      // return redirect()->back()->withInput();
-                                                  }
-                                              }else{
-                                                  $newHl7ErrorMessage = new Hl7ErrorMessage();
-                                                  $newHl7ErrorMessage->error = 'PNTM';
-                                                  $newHl7ErrorMessage->error_message = 'Error al recepcionar y subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'];
-                                                  $newHl7ErrorMessage->save();
-                                                  $hl7ResultMessage->status = 'monitor_error';
-                                                  $hl7ResultMessage->hl7_error_message_id = $newHl7ErrorMessage->id;
-                                                  $hl7ResultMessage->save();
+                                                    $this->suspectCaseBackToPending($suspectCase);
+                                                    return false;
+                                                    // return redirect()->back()->withInput();
+                                                }
+                                            } else {
+                                                $newHl7ErrorMessage = new Hl7ErrorMessage();
+                                                $newHl7ErrorMessage->error = 'PNTM';
+                                                $newHl7ErrorMessage->error_message = 'Error al recepcionar y subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'];
+                                                $newHl7ErrorMessage->save();
+                                                $hl7ResultMessage->status = 'monitor_error';
+                                                $hl7ResultMessage->hl7_error_message_id = $newHl7ErrorMessage->id;
+                                                $hl7ResultMessage->save();
 
-                                                  $this->suspectCaseBackToPending($suspectCase);
-                                                  return false;
-                                                  // return redirect()->back()->withInput();
-                                              }
-                                      //Si en PNTM está con resultado y no es el mismo que se intenta cargar, se devuelve a pending
-                                      }elseif ($responseSampleStatus['status'] == 1 && $responseSampleStatus['sample_status'] == 4 && $suspectCase->pcr_sars_cov_2 != 'pending'){
-                                          if ($responseSampleStatus['sample_result'] != $suspectCase->covid19) {
-                                              $newHl7ErrorMessage = new Hl7ErrorMessage();
-                                              $newHl7ErrorMessage->error = 'PNTM';
-                                              $newHl7ErrorMessage->error_message = 'Ya existe muestra en PNTM y el resultado es diferente al especificado ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'];
-                                              $newHl7ErrorMessage->save();
-                                              $hl7ResultMessage->status = 'monitor_error';
-                                              $hl7ResultMessage->hl7_error_message_id = $newHl7ErrorMessage->id;
-                                              $hl7ResultMessage->save();
-
-
-                                              $this->suspectCaseBackToPending($suspectCase);
-                                              return false;
-                                              // return redirect()->back()->withInput();
-                                          }
-                                      }
-                                      else{
-                                          //GUARDAR ERROR EN DB HL7 ERRORS
-                                          $newHl7ErrorMessage = new Hl7ErrorMessage();
-                                          $newHl7ErrorMessage->error = 'PNTM';
-                                          $newHl7ErrorMessage->error_message = 'Error al subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'];
-                                          $newHl7ErrorMessage->save();
-                                          $hl7ResultMessage->status = 'monitor_error';
-                                          $hl7ResultMessage->hl7_error_message_id = $newHl7ErrorMessage->id;
-                                          $hl7ResultMessage->save();
-
-                                          $this->suspectCaseBackToPending($suspectCase);
-                                          return false;
-                                          // return redirect()->back()->withInput();
-                                      }
-
-                                  }
-
-                                  // session()->flash('success', 'Se subió resultado a PNTM');
-                              }
-                          }
-                      }
-                  }
-              }
+                                                $this->suspectCaseBackToPending($suspectCase);
+                                                return false;
+                                                // return redirect()->back()->withInput();
+                                            }
+                                            //Si en PNTM está con resultado y no es el mismo que se intenta cargar, se devuelve a pending
+                                        } elseif ($responseSampleStatus['status'] == 1 && $responseSampleStatus['sample_status'] == 4 && $suspectCase->pcr_sars_cov_2 != 'pending') {
+                                            if ($responseSampleStatus['sample_result'] != $suspectCase->covid19) {
+                                                $newHl7ErrorMessage = new Hl7ErrorMessage();
+                                                $newHl7ErrorMessage->error = 'PNTM';
+                                                $newHl7ErrorMessage->error_message = 'Ya existe muestra en PNTM y el resultado es diferente al especificado ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'];
+                                                $newHl7ErrorMessage->save();
+                                                $hl7ResultMessage->status = 'monitor_error';
+                                                $hl7ResultMessage->hl7_error_message_id = $newHl7ErrorMessage->id;
+                                                $hl7ResultMessage->save();
 
 
-              if (env('APP_ENV') == 'production') {
-                  if ($old_pcr == 'pending' and $suspectCase->pcr_sars_cov_2 == 'positive') {
-                    $delay = \DB::table('jobs')->count()*60;
-                    $emailJob = ((new SendEmailAlert($suspectCase))->delay($delay));
-                    dispatch($emailJob);
-                  }
+                                                $this->suspectCaseBackToPending($suspectCase);
+                                                return false;
+                                                // return redirect()->back()->withInput();
+                                            }
+                                        } else {
+                                            //GUARDAR ERROR EN DB HL7 ERRORS
+                                            $newHl7ErrorMessage = new Hl7ErrorMessage();
+                                            $newHl7ErrorMessage->error = 'PNTM';
+                                            $newHl7ErrorMessage->error_message = 'Error al subir resultado de muestra ' . $suspectCase->id . ' en MINSAL. ' . $response['msg'];
+                                            $newHl7ErrorMessage->save();
+                                            $hl7ResultMessage->status = 'monitor_error';
+                                            $hl7ResultMessage->hl7_error_message_id = $newHl7ErrorMessage->id;
+                                            $hl7ResultMessage->save();
 
-                  /* Enviar resultado al usuario, solo si tiene registrado un correo electronico */
-                  if($old_pcr == 'pending' && ($suspectCase->pcr_sars_cov_2 == 'negative' || $suspectCase->pcr_sars_cov_2 == 'undetermined' ||
-                                              $suspectCase->pcr_sars_cov_2 == 'rejected' || $suspectCase->pcr_sars_cov_2 == 'positive')
-                                          && $suspectCase->patient->demographic != NULL){
-                      if($suspectCase->patient->demographic->email != NULL){
-                        if ($suspectCase->laboratory) {
-                            $delay = \DB::table('jobs')->count()*60;
-                            $emailJob = ((new SendEmailPatient($suspectCase))->delay($delay));
-                            dispatch($emailJob);
+                                            $this->suspectCaseBackToPending($suspectCase);
+                                            return false;
+                                            // return redirect()->back()->withInput();
+                                        }
+
+                                    }
+
+                                    // session()->flash('success', 'Se subió resultado a PNTM');
+                                }
+                            }
                         }
-                      }
-                  }
-              }
+                    }
+                }
+
+
+                if (env('APP_ENV') == 'production') {
+                    if ($old_pcr == 'pending' and $suspectCase->pcr_sars_cov_2 == 'positive') {
+                        $delay = \DB::table('jobs')->count() * 60;
+                        $emailJob = ((new SendEmailAlert($suspectCase))->delay($delay));
+                        dispatch($emailJob);
+                    }
+
+                    /* Enviar resultado al usuario, solo si tiene registrado un correo electronico */
+                    if ($old_pcr == 'pending' && ($suspectCase->pcr_sars_cov_2 == 'negative' || $suspectCase->pcr_sars_cov_2 == 'undetermined' ||
+                            $suspectCase->pcr_sars_cov_2 == 'rejected' || $suspectCase->pcr_sars_cov_2 == 'positive')
+                        && $suspectCase->patient->demographic != NULL) {
+                        if ($suspectCase->patient->demographic->email != NULL) {
+                            if ($suspectCase->laboratory) {
+                                $delay = \DB::table('jobs')->count() * 60;
+                                $emailJob = ((new SendEmailPatient($suspectCase))->delay($delay));
+                                dispatch($emailJob);
+                            }
+                        }
+                    }
+                }
 
 
             }
@@ -2880,8 +2876,7 @@ class SuspectCaseController extends Controller
             //     $sequencingCriteria->save();
             // }
 
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             $newHl7ErrorMessage = new Hl7ErrorMessage();
             $newHl7ErrorMessage->error = 'MONITOR';
             $newHl7ErrorMessage->error_message = $e->getMessage();
@@ -2914,64 +2909,62 @@ class SuspectCaseController extends Controller
 
     public function Hl7ResultMessageSuspectCaseAsignation(Hl7ResultMessage $hl7ResultMessage, SuspectCase $suspectCase, Request $request)
     {
-      // dd($hl7ResultMessage, $suspectCase);
+        // dd($hl7ResultMessage, $suspectCase);
 
-      //si es pendiente, se intenta se sube el resultado a PNTM
-      if ($suspectCase->pcr_sars_cov_2 == "pending") {
-        if ($this->addSuspectCaseResult($suspectCase, $hl7ResultMessage, false, true)) {
-          if ($hl7ResultMessage->suspectCases != null) {
-            foreach ($hl7ResultMessage->suspectCases as $key => $suspectCase_item) {
-              if ($suspectCase_item->id != $suspectCase->id) {
-                $suspectCase_item->hl7_result_message_id = null;
-                $suspectCase_item->save();
-              }
+        //si es pendiente, se intenta se sube el resultado a PNTM
+        if ($suspectCase->pcr_sars_cov_2 == "pending") {
+            if ($this->addSuspectCaseResult($suspectCase, $hl7ResultMessage, false, true)) {
+                if ($hl7ResultMessage->suspectCases != null) {
+                    foreach ($hl7ResultMessage->suspectCases as $key => $suspectCase_item) {
+                        if ($suspectCase_item->id != $suspectCase->id) {
+                            $suspectCase_item->hl7_result_message_id = null;
+                            $suspectCase_item->save();
+                        }
+                    }
+                }
+
+                $hl7ResultMessage->status = "assigned_to_case";
+                $hl7ResultMessage->pdf_file = null;
+                $hl7ResultMessage->save();
+
+                session()->flash('success', 'Se asignó muestra ' . $suspectCase->id . " a caso pendiente " . $hl7ResultMessage->id);
+                return redirect()->route('lab.suspect_cases.reports.integration_hetg_monitor_pendings');
+
+            } // si no es pendiente, no se sube el resultado a PNTM
+            else {
+                session()->flash('warning', $hl7ResultMessage->hl7ErrorMessage->error . ": " . $hl7ResultMessage->hl7ErrorMessage->error_message);
+                return redirect()->route('lab.suspect_cases.reports.integration_hetg_monitor_pendings');
             }
-          }
 
-          $hl7ResultMessage->status = "assigned_to_case";
-          $hl7ResultMessage->pdf_file = null;
-          $hl7ResultMessage->save();
+        } else {
 
-          session()->flash('success', 'Se asignó muestra ' . $suspectCase->id . " a caso pendiente " . $hl7ResultMessage->id);
-          return redirect()->route('lab.suspect_cases.reports.integration_hetg_monitor_pendings');
+            if ($this->addSuspectCaseResult($suspectCase, $hl7ResultMessage, false, false)) {
+                if ($hl7ResultMessage->suspectCases != null) {
+                    foreach ($hl7ResultMessage->suspectCases as $key => $suspectCase_item) {
+                        if ($suspectCase_item->id != $suspectCase->id) {
+                            $suspectCase_item->hl7_result_message_id = null;
+                            $suspectCase_item->save();
+                        }
+                    }
+                }
 
-        }
-        // si no es pendiente, no se sube el resultado a PNTM
-        else
-        {
-          session()->flash('warning', $hl7ResultMessage->hl7ErrorMessage->error . ": " . $hl7ResultMessage->hl7ErrorMessage->error_message);
-          return redirect()->route('lab.suspect_cases.reports.integration_hetg_monitor_pendings');
-        }
+                $hl7ResultMessage->status = "assigned_to_case";
+                $hl7ResultMessage->pdf_file = null;
+                $hl7ResultMessage->save();
 
-      }else{
-
-        if ($this->addSuspectCaseResult($suspectCase, $hl7ResultMessage, false, false)) {
-          if ($hl7ResultMessage->suspectCases != null) {
-            foreach ($hl7ResultMessage->suspectCases as $key => $suspectCase_item) {
-              if ($suspectCase_item->id != $suspectCase->id) {
-                $suspectCase_item->hl7_result_message_id = null;
-                $suspectCase_item->save();
-              }
+                session()->flash('success', 'Se asignó muestra ' . $suspectCase->id . " a caso " . $hl7ResultMessage->id . ". <b>SI ES NECESARIO, REGULARIZAR ESTADO DE LA MUESTRA EN PNTM.</b>");
+                return redirect()->route('lab.suspect_cases.reports.integration_hetg_monitor_pendings');
+            } else {
+                session()->flash('warning', $hl7ResultMessage->hl7ErrorMessage->error . ": " . $hl7ResultMessage->hl7ErrorMessage->error_message);
+                return redirect()->route('lab.suspect_cases.reports.integration_hetg_monitor_pendings');
             }
-          }
-
-          $hl7ResultMessage->status = "assigned_to_case";
-          $hl7ResultMessage->pdf_file = null;
-          $hl7ResultMessage->save();
-
-          session()->flash('success', 'Se asignó muestra ' . $suspectCase->id . " a caso " . $hl7ResultMessage->id . ". <b>SI ES NECESARIO, REGULARIZAR ESTADO DE LA MUESTRA EN PNTM.</b>");
-          return redirect()->route('lab.suspect_cases.reports.integration_hetg_monitor_pendings');
-        }else{
-          session()->flash('warning', $hl7ResultMessage->hl7ErrorMessage->error . ": " . $hl7ResultMessage->hl7ErrorMessage->error_message);
-          return redirect()->route('lab.suspect_cases.reports.integration_hetg_monitor_pendings');
         }
-      }
 
     }
 
     public function Hl7ResultMessageDismiss(Hl7ResultMessage $hl7ResultMessage)
     {
-      dd($hl7ResultMessage);
+        dd($hl7ResultMessage);
     }
 
 }
