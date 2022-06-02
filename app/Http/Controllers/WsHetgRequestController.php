@@ -72,35 +72,47 @@ class WsHetgRequestController extends Controller
     {
         $token = self::getToken();
 
+        $documentType = $suspectCase->other_identification === null ? 1 : 9;
+
+        if (strlen($suspectCase->patient->demographic->commune->code_deis) > 4) {
+            $communeCodeDeis = $suspectCase->patient->demographic->commune->code_deis;
+        }else{
+            $communeCodeDeis = '0' . $suspectCase->patient->demographic->commune->code_deis;
+        }
+
         $suspectCaseData = array(
             'id_esmeralda' => $suspectCase->id,
             'rut' => "{$suspectCase->patient->run}",
             'dv' => $suspectCase->patient->dv,
-            'tipo_documento' => 1, //TODO dinámico
-            'numero_documento' => $suspectCase->patient->run, //$suspectCase->patient->other_identification, //TODO enviar el que corresponda
+            'tipo_documento' => $documentType,
+            'numero_documento' => $suspectCase->patient->other_identification,
             'nombres' => $suspectCase->patient->name,
             'primer_apellido' => $suspectCase->patient->fathers_family,
             'segundo_apellido' => $suspectCase->patient->mothers_family,
             'nombre_social' => '',
             'fecha_nacimiento' => Carbon::parse($suspectCase->patient->birthday)->format('d/m/Y'),
-            'codigo_sexo' => '01', //TODO homologar con $suspectCase->patient->gender,
-            'email' => 'prueba@prueba.com', //$suspectCase->patient->demographic->email ?? "", //TODO si no tiene que se envía?
-            'codigo_comuna' => '01000', //$suspectCase->patient->demographic->email ?? "", //TODO si no tiene que se envía?
+            'codigo_sexo' => $suspectCase->patient->sexCode,
+            'email' => $suspectCase->patient->demographic->email ?? null,
+            'codigo_comuna' => $communeCodeDeis,
             'codigo_pais' => 'cl', //TODO homologar con $suspectCase->patient->demographic->nationality
-            'tipo_via' => '01', //TODO homologar con $suspectCase->demographic->street_type
+            'tipo_via' => $suspectCase->patient->demographic->streetTypeCode,
             'nombre_via' => $suspectCase->patient->demographic->address,
             'numero_via' => $suspectCase->patient->demographic->number,
-            'telefono_fijo' => $suspectCase->patient->demographic->telephone,
-            'telefono_movil' => $suspectCase->patient->demographic->telephone, //TODO si no tiene que se envía?
-            'codigo_establecimiento' => 111111,
+            'telefono_fijo' => $suspectCase->patient->demographic->telephone2,
+            'telefono_movil' => $suspectCase->patient->demographic->telephone,
+            'codigo_establecimiento' => $suspectCase->establishment->new_code_deis,
             'fecha_muestra' => '18/05/2022 05:35',
             'tipo_solicitud' => 'pcr esmeralda',
         );
+
+//        dd(json_encode($suspectCaseData, JSON_PRETTY_PRINT));
 
         $response = Http::withHeaders([
             'Authorization' => $token,
         ])
             ->post(env('HETG_WS_URL_REQUEST'), $suspectCaseData);
+
+//        dd($response->json());
 
         $wsHetgRequest = new WsHetgRequest();
         $wsHetgRequest->type = WsHetgRequest::TYPE_REQUEST;

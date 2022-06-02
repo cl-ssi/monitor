@@ -15,6 +15,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Demographic extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -44,7 +45,6 @@ class Demographic extends Model implements Auditable
         return $this->belongsTo('App\Commune')->withDefault();
     }
 
-
     function getFullAddressAttribute(){
         return mb_strtoupper($this->address . ' ' . $this->number . ' ' . $this->department);
     }
@@ -53,7 +53,19 @@ class Demographic extends Model implements Auditable
         return mb_strtoupper($this->telephone . ' ' . $this->telephone2);
     }
 
-    use SoftDeletes;
+    function getStreetTypeCodeAttribute()
+    {
+        switch ($this->street_type) {
+            case 'Calle':
+                return '01'; break;
+            case 'Avenida':
+                return '02'; break;
+            case 'Pasaje':
+                return '03'; break;
+            case 'Camino':
+                return '04'; break;
+        }
+    }
 
     /**
      * The attributes that should be mutated to dates.

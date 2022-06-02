@@ -159,6 +159,20 @@ class Patient extends Model implements Auditable //Authenticatable
         }
     }
 
+    function getSexCodeAttribute()
+    {
+        switch ($this->gender) {
+            case 'male':
+                return '01'; break;
+            case 'female':
+                return '02'; break;
+            case 'other':
+                return '03'; break;
+            case 'unknown':
+                return '99'; break;
+        }
+    }
+
     function getGenderEspAttribute(){
         switch($this->gender) {
             case 'male': return 'Hombre'; break;
