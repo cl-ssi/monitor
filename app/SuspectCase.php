@@ -80,7 +80,7 @@ class SuspectCase extends Model implements Auditable
     {
         return $this->wsHetgRequests()
             ->where('type', WsHetgRequest::TYPE_REQUEST)
-            ->where('status', '201')
+            ->whereIn('status', ['201', '200'])
             ->count() > 0;
     }
 

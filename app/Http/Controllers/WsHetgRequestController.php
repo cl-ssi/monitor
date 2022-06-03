@@ -104,7 +104,7 @@ class WsHetgRequestController extends Controller
             'telefono_fijo' => $suspectCase->patient->demographic->telephone2,
             'telefono_movil' => $suspectCase->patient->demographic->telephone,
             'codigo_establecimiento' => $suspectCase->establishment->new_code_deis,
-            'fecha_muestra' => $suspectCase->sample_at->format('d/m/y H:m'),
+            'fecha_muestra' => $suspectCase->sample_at->format('d/m/Y H:i'),
             'tipo_solicitud' => 'pcr esmeralda',
         );
 
