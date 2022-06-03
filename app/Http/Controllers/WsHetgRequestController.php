@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Country;
 use App\SuspectCase;
 use App\WsHetgRequest;
 use Carbon\Carbon;
@@ -80,6 +81,8 @@ class WsHetgRequestController extends Controller
             $communeCodeDeis = '0' . $suspectCase->patient->demographic->commune->code_deis;
         }
 
+        $nationalityCountry = Country::where('name', $suspectCase->patient->demographic->nationality)->first();
+
         $suspectCaseData = array(
             'id_esmeralda' => $suspectCase->id,
             'rut' => "{$suspectCase->patient->run}",
@@ -94,14 +97,14 @@ class WsHetgRequestController extends Controller
             'codigo_sexo' => $suspectCase->patient->sexCode,
             'email' => $suspectCase->patient->demographic->email ?? null,
             'codigo_comuna' => $communeCodeDeis,
-            'codigo_pais' => 'cl', //TODO homologar con $suspectCase->patient->demographic->nationality
+            'codigo_pais' => $nationalityCountry->code_deis,
             'tipo_via' => $suspectCase->patient->demographic->streetTypeCode,
             'nombre_via' => $suspectCase->patient->demographic->address,
             'numero_via' => $suspectCase->patient->demographic->number,
             'telefono_fijo' => $suspectCase->patient->demographic->telephone2,
             'telefono_movil' => $suspectCase->patient->demographic->telephone,
             'codigo_establecimiento' => $suspectCase->establishment->new_code_deis,
-            'fecha_muestra' => '18/05/2022 05:35',
+            'fecha_muestra' => $suspectCase->sample_at->format('d/m/y H:m'),
             'tipo_solicitud' => 'pcr esmeralda',
         );
 
