@@ -24,5 +24,14 @@ class RapidTestController extends Controller
             return redirect()->route('lab.inmuno_tests.index');
         }
     }
+
+    public function destroy(RapidTest $rapidTest)
+    {
+        $rapidTest->delete();
+        session()->flash('success', 'Test rápido eliminado exitosamente');        
+        return redirect()->route('patients.index');
+    }
+
+
 }
 

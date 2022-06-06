@@ -317,13 +317,15 @@ Route::prefix('lab')->name('lab.')->group(function () {
         Route::get('/{inmunoTest}/edit', 'InmunoTestController@edit')->name('edit')->middleware('auth');
         Route::post('/{store}', 'InmunoTestController@store')->name('store')->middleware('auth');
         Route::put('/update/{inmunoTest}', 'InmunoTestController@update')->name('update')->middleware('auth');
+        Route::delete('/{inmunoTest}', 'InmunoTestController@destroy')->name('destroy')->middleware('auth');
     });
 
-    Route::prefix('rapid_tests')->name('rapid_tests.')->group(function () {
+    Route::prefix('rapid_tests')->name('rapid_tests.')->middleware('auth')->group(function () {
         //Route::get('/', 'InmunoTestController@index')->name('index')->middleware('auth');
         //Route::get('/create/{search}', 'InmunoTestController@create')->name('create')->middleware('auth');
-        Route::get('/{inmunoTest}/edit', 'InmunoTestController@edit')->name('edit')->middleware('auth');
-        Route::post('/{store}', 'RapidTestController@store')->name('store')->middleware('auth');
+        Route::get('/{inmunoTest}/edit', 'InmunoTestController@edit')->name('edit');
+        Route::post('/{store}', 'RapidTestController@store')->name('store');
+        Route::delete('/{rapidTest}', 'RapidTestController@destroy')->name('destroy');
         //Route::put('/update/{inmunoTest}', 'InmunoTestController@update')->name('update')->middleware('auth');
     });
 

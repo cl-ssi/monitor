@@ -283,6 +283,12 @@ class PermissionSeeder extends Seeder
         ]);
 
         $permission = Permission::create([
+            'name' => 'Rapid Test: delete',
+            'description' => 'Pemite eliminar un test rápido',
+            'category' => 'Test Rápido'
+        ]);
+
+        $permission = Permission::create([
             'name' => 'SocialTracing: seremi',
             'description' => 'Permite acceder a los solicitudes de licencia SEREMI',
             'category' => 'Trazabilidad'
