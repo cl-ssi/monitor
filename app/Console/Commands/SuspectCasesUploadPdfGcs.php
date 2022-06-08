@@ -50,7 +50,7 @@ class SuspectCasesUploadPdfGcs extends Command
             }
         }
 
-        echo "Se cargaron $count archivos";
+        $this->info("Se cargaron $count archivos");
         return 0;
     }
 }
