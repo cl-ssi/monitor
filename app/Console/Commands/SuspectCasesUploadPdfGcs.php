@@ -20,7 +20,7 @@ class SuspectCasesUploadPdfGcs extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Carga pdf de los casos a gcs';
 
     /**
      * Create a new command instance.
@@ -39,9 +39,18 @@ class SuspectCasesUploadPdfGcs extends Command
      */
     public function handle()
     {
-        $suspectCaseId = 987654;
-        $file = Storage::disk('local')->get('suspect_cases/'. $suspectCaseId .'.pdf');
-        Storage::disk('gcs')->put('esmeralda/suspect_cases/'. $suspectCaseId, $file);
+        $suspectCases = SuspectCase::query()->limit(10)->get();
+
+        $count = 0;
+        foreach ($suspectCases as $suspectCase) {
+            if($suspectCase->file == 1){
+                $file = Storage::disk('local')->get('suspect_cases/'. $suspectCase->id .'.pdf');
+                $succesfull = Storage::disk('gcs')->put('esmeralda/suspect_cases/'. $suspectCase->id, $file);
+                if($succesfull) $count++;
+            }
+        }
+
+        echo "Se cargaron $count archivos";
         return 0;
     }
 }
