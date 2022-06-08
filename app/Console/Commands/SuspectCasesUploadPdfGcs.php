@@ -45,7 +45,7 @@ class SuspectCasesUploadPdfGcs extends Command
         foreach ($suspectCases as $suspectCase) {
             if($suspectCase->file == 1){
                 $file = Storage::disk('local')->get('suspect_cases/'. $suspectCase->id .'.pdf');
-                $succesfull = Storage::disk('gcs')->put('esmeralda/suspect_cases/'. $suspectCase->id, $file);
+                $succesfull = Storage::disk('gcs')->put('esmeralda/suspect_cases/'. $suspectCase->id . '.pdf', $file);
                 if($succesfull) $count++;
             }
         }
