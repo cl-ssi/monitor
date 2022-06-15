@@ -154,22 +154,6 @@ Route::prefix('patients')->name('patients.')->middleware('auth')->group(function
 
 Route::resource('epp','EppController')->middleware('auth');
 
-
-Route::prefix('help_basket')->name('help_basket.')->middleware('auth')->group(function () {
-    Route::get('/', 'HelpBasketController@index')->name('index');
-    Route::get('/create', 'HelpBasketController@create')->name('create');
-    Route::get('/georeferencing', 'HelpBasketController@georeferencing')->name('georeferencing');
-    Route::post('/store', 'HelpBasketController@store')->name('store');
-    Route::get('/{helpBasket}/edit', 'HelpBasketController@edit')->name('edit');
-    Route::put('{helpBasket}', 'HelpBasketController@update')->name('update');
-    Route::delete('/{helpBasket}', 'HelpBasketController@Destroy')->name('destroy');
-    Route::get('/download/{storage}/{file?}', 'HelpBasketController@download')->name('download');
-    Route::get('/excel','HelpBasketController@excel')->name('excel');
-
-});
-
-
-
 Route::prefix('lab')->name('lab.')->group(function () {
     //Route::get('/', 'LaboratoryController@index')->name('index');
     //Route::get('/create', 'LaboratoryController@create')->name('create');
