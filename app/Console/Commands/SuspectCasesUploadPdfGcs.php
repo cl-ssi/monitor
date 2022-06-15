@@ -4,7 +4,9 @@ namespace App\Console\Commands;
 
 use App\SuspectCase;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\Storage;
+use Str;
 
 class SuspectCasesUploadPdfGcs extends Command
 {
@@ -13,14 +15,14 @@ class SuspectCasesUploadPdfGcs extends Command
      *
      * @var string
      */
-    protected $signature = 'SuspectCases:uploadPdfGcs';
+    protected $signature = 'SuspectCases:uploadPdfGcs {p1_id_case_from} {p2_id_case_to}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Carga pdf de los casos a gcs';
+    protected $description = 'Carga pdf de los casos a gcs en un rango de ids de suspect cases';
 
     /**
      * Create a new command instance.
@@ -34,19 +36,32 @@ class SuspectCasesUploadPdfGcs extends Command
 
     /**
      * Execute the console command.
-     *
      * @return int
+     * @throws FileNotFoundException
      */
     public function handle()
     {
-        $suspectCases = SuspectCase::query()->limit(10)->get();
+        $idSuspectCaseFrom = $this->argument('p1_id_case_from');
+        $idSuspectCaseTo = $this->argument('p2_id_case_to');
+
+        $suspectCases = SuspectCase::query()
+            ->whereBetween('id', [
+                $idSuspectCaseFrom,
+                $idSuspectCaseTo
+            ])->get();
 
         $count = 0;
         foreach ($suspectCases as $suspectCase) {
-            if($suspectCase->file == 1){
-                $file = Storage::disk('local')->get('suspect_cases/'. $suspectCase->id .'.pdf');
-                $succesfull = Storage::disk('gcs')->put('esmeralda/suspect_cases/'. $suspectCase->id . '.pdf', $file);
-                if($succesfull) $count++;
+            if ($suspectCase->file == 1) {
+                $filePath = 'suspect_cases/' . $suspectCase->id . '.pdf';
+                $file = Storage::disk('local')->get($filePath);
+                $filename = Str::uuid();
+                $suspectCase->update(['filename_gcs' => $filename]);
+                $succesfull = Storage::disk('gcs')->put('esmeralda/suspect_cases/' . $filename . '.pdf', $file, ['CacheControl' => 'no-cache, must-revalidate']);
+                if ($succesfull) {
+                    Storage::move($filePath, 'suspect_cases_bkp/' . $suspectCase->id . '.pdf');
+                    $count++;
+                }
             }
         }
 
