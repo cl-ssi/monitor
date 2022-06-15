@@ -26,7 +26,7 @@ Route::prefix('webservices')->name('webservices.')->group(function () {
 Route::get('positives', 'SuspectCaseReportController@countPositives')->middleware('auth.basic');
 Route::get('reporte_expertos', 'SuspectCaseReportController@reporteExpertos')->middleware('auth.basic');
 
-//WS para modificación de resultado mediante integración Mirth Connect (EN DESARROLLO)
+//WS para modificación de resultado mediante integración Mirth Connect
 Route::post('hl7_files', 'SuspectCaseController@getHl7Files')->middleware('auth.basic');
 Route::post('hl7_errors', 'SuspectCaseController@getHl7Errors')->middleware('auth.basic');
 
