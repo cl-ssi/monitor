@@ -1314,6 +1314,8 @@
                 "rest",
                 "web service"
             ],
+<<<<<<< HEAD
+=======
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
                 "source": "https://github.com/guzzle/guzzle/tree/6.5.7"
@@ -1332,6 +1334,7 @@
                     "type": "tidelift"
                 }
             ],
+>>>>>>> d91b4b7f17187f3f1d2add28444d5fd04d301f5b
             "time": "2022-06-09T21:36:50+00:00"
         },
         {
@@ -2417,16 +2420,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "2.6.0",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "247918972acd74356b0a91dfaa5adcaec069b6c0"
+                "reference": "5579edf28aee1190a798bfa5be8bc16c563bd524"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/247918972acd74356b0a91dfaa5adcaec069b6c0",
-                "reference": "247918972acd74356b0a91dfaa5adcaec069b6c0",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/5579edf28aee1190a798bfa5be8bc16c563bd524",
+                "reference": "5579edf28aee1190a798bfa5be8bc16c563bd524",
                 "shasum": ""
             },
             "require": {
@@ -2503,7 +2506,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2022-05-10T09:36:00+00:00"
+            "time": "2022-06-09T08:59:12+00:00"
         },
         {
             "name": "myclabs/php-enum",
@@ -3791,16 +3794,6 @@
                 "issues": "https://github.com/rize/UriTemplate/issues",
                 "source": "https://github.com/rize/UriTemplate/tree/0.3.4"
             },
-            "funding": [
-                {
-                    "url": "https://www.paypal.me/rezigned",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://opencollective.com/rize-uri-template",
-                    "type": "open_collective"
-                }
-            ],
             "time": "2021-10-09T06:30:16+00:00"
         },
         {
@@ -8080,6 +8073,5 @@
         "php": "^7.2.5",
         "ext-json": "*"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "platform-dev": []
 }
