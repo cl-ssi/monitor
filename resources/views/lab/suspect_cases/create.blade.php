@@ -97,6 +97,7 @@
             </select>
         </fieldset>
 
+        @can('SuspectCase: origin')
         <fieldset class="form-group col-6 col-md-3">
             <label for="for_origin">Estab. Detalle (Opcional)</label>
             <select name="origin" id="for_origin" class="form-control">
@@ -106,6 +107,7 @@
                 @endforeach
             </select>
         </fieldset>
+        @endcan
 
         <fieldset class="form-group col-4 col-md-1">
             <label for="for_age">Edad</label>
