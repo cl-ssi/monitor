@@ -54,11 +54,11 @@ class SuspectCasesUploadPdfGcs extends Command
         SuspectCase::disableAuditing();
         
         foreach ($suspectCases as $suspectCase) {
-            if ($suspectCase->file == 1) {
-                $filePath = 'suspect_cases/' . $suspectCase->id . '.pdf';
+            $filePath = 'suspect_cases/' . $suspectCase->id . '.pdf';
+            
+            if ($suspectCase->file == 1 && Storage::disk('local')->exists($filePath) ) {
                 $file = Storage::disk('local')->get($filePath);
                 $filename = Str::uuid();
-//                $suspectCase->update(['filename_gcs' => $filename]);
                 
                 $suspectCase->filename_gcs = $filename;
                 $suspectCase->save();
