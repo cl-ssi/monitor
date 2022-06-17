@@ -457,11 +457,11 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                @can('Admin')
+                                @canany(['Admin','SuspectCase: origin'])                                
                                 <a class="nav-link" href="{{ route('parameters.index') }}">
                                     <i class="fas fa-cog fa-fw"></i> Configuracion
                                 </a>
-                                @endcan
+                                @endcanany
 
                                 <a class="dropdown-item" target="_blank" href="https://www.youtube.com/channel/UCynVYUM4qEu9eGPvM_3Z-WA">
                                     Tutoriales

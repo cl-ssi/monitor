@@ -142,7 +142,7 @@
                 </select>
             </fieldset>
 
-            @can('SuspectCase: origin')
+            
             <fieldset class="form-group col-12 col-md-3">
                 <label for="for_origin">Estab. Detalle (Opcional)</label>
                 <select name="origin" id="for_origin" class="form-control">
@@ -155,7 +155,7 @@
                     @endforeach
                 </select>
             </fieldset>
-            @endcan
+            
 
         </div>
 

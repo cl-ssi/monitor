@@ -398,7 +398,7 @@ class PermissionSeeder extends Seeder
 
         $permission = Permission::create([
             'name' => 'SuspectCase: origin',
-            'description' => 'Añade Estab. Detalle (Opcional) a los Casos Sospecha',
+            'description' => 'Mantenedor de los orígenes de muestra',
             'category' => 'Caso Sospechoso'
         ]);
 
