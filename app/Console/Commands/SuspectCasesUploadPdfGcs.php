@@ -51,6 +51,8 @@ class SuspectCasesUploadPdfGcs extends Command
             ])->get();
 
         $count = 0;
+        SuspectCase::disableAuditing();
+        
         foreach ($suspectCases as $suspectCase) {
             if ($suspectCase->file == 1) {
                 $filePath = 'suspect_cases/' . $suspectCase->id . '.pdf';
@@ -68,6 +70,8 @@ class SuspectCasesUploadPdfGcs extends Command
                 }
             }
         }
+        
+        SuspectCase::enableAuditing();
 
         $this->info("Se cargaron $count archivos");
         return 0;
