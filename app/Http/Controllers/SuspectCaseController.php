@@ -2226,8 +2226,17 @@ class SuspectCaseController extends Controller
                     $isSaved = $new_suspect_case->save();
 
                     if ($isSaved && $new_suspect_case->pcr_sars_cov_2_at != null && $new_suspect_case->pcr_sars_cov_2 != null) {
-                        \PDF::loadView('lab.results.result', ['case' => $new_suspect_case])
-                            ->save(storage_path() . '/app/suspect_cases/' . $new_suspect_case->id . '.pdf');
+//                        \PDF::loadView('lab.results.result', ['case' => $new_suspect_case])
+//                            ->save(storage_path() . '/app/suspect_cases/' . $new_suspect_case->id . '.pdf');
+
+                        $file = \PDF::loadView('lab.results.result', ['case' => $new_suspect_case]);
+
+                        $filenameGcs = Str::uuid();
+                        $new_suspect_case->filename_gcs = $filenameGcs;
+                        $new_suspect_case->save();
+
+                        $successful = Storage::disk('gcs')->put(self::CASE_PDF_PATH_GCS . $filenameGcs . '.pdf' , $file->output(), ['CacheControl' => 'no-cache, must-revalidate']);
+                        
                         $new_suspect_case->file = true;
                         $new_suspect_case->save();
                         $casesInsertedNumber++;
