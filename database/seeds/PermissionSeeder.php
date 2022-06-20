@@ -394,6 +394,15 @@ class PermissionSeeder extends Seeder
             'description' => 'Añade resultado ISP y Sospecha Local',
             'category' => 'Caso Sospechoso'
         ]);
+
+
+        $permission = Permission::create([
+            'name' => 'SuspectCase: origin',
+            'description' => 'Mantenedor de los orígenes de muestra',
+            'category' => 'Caso Sospechoso'
+        ]);
+
+
 /*
         $users = User::all();
         foreach($users as $user) {
