@@ -17,6 +17,7 @@ class SendEmailPatient implements ShouldQueue
     public $suspectCase;
     public $generatePdf;
     public $tries = 3;
+    const CASE_PDF_PATH_GCS = 'esmeralda/suspect_cases/';
 
     /**
      * Create a new job instance.
@@ -49,7 +50,7 @@ class SendEmailPatient implements ShouldQueue
         } else {
             if ($this->suspectCase->file == 1) {
                 $message = new NewNegative($this->suspectCase);
-                $message->attachFromStorage('suspect_cases/' . $this->suspectCase->id . '.pdf', $this->suspectCase->id . '.pdf', [
+                $message->attachFromStorageDisk('gcs',self::CASE_PDF_PATH_GCS . $this->suspectCase->filename_gcs . '.pdf', $this->suspectCase->id . '.pdf', [
                     'mime' => 'application/pdf',
                 ]);
                 Mail::to($email)->send($message);

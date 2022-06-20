@@ -108,12 +108,12 @@ class WsHetgRequestController extends Controller
             'tipo_solicitud' => 'pcr esmeralda',
         );
 
-//        dd(json_encode($suspectCaseData, JSON_PRETTY_PRINT));
+//        dd(json_encode($suspectCaseData, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT));
 
         $response = Http::withHeaders([
             'Authorization' => $token,
         ])
-            ->post(env('HETG_WS_URL_REQUEST'), $suspectCaseData);
+            ->post(env('HETG_WS_URL_REQUEST'), $suspectCaseData, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8']);
 
 //        dd($response->json());
 

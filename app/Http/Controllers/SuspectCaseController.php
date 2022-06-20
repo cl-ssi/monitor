@@ -52,6 +52,8 @@ use Throwable;
 
 class SuspectCaseController extends Controller
 {
+    const CASE_PDF_PATH_GCS = 'esmeralda/suspect_cases/';
+    
     /**
      * Display a listing of the resource.
      *
@@ -768,8 +770,17 @@ class SuspectCaseController extends Controller
 
         if ($request->hasFile('forfile')) {
             $file = $request->file('forfile');
-            $file->storeAs('suspect_cases', $suspectCase->id . '.pdf');
-            $suspectCase->file = true;
+//            $file->storeAs('suspect_cases', $suspectCase->id . '.pdf'); //TODO borrar storeAs al cargar a cloud run
+
+            $filenameGcs = Str::uuid();
+            $suspectCase->filename_gcs = $filenameGcs;
+            $suspectCase->save();
+            
+            $successful = Storage::disk('gcs')->put(self::CASE_PDF_PATH_GCS . $filenameGcs . '.pdf' , $file->get(), ['CacheControl' => 'no-cache, must-revalidate']);
+
+            if ($successful) {
+                $suspectCase->file = true;
+            }
         }
 
 
@@ -957,7 +968,7 @@ class SuspectCaseController extends Controller
                                 // dd($exists);
 
                                 $message = new NewNegative($suspectCase);
-                                $message->attachFromStorage('suspect_cases/' . $suspectCase->id . '.pdf', $suspectCase->id . '.pdf', [
+                                $message->attachFromStorageDisk('gcs',self::CASE_PDF_PATH_GCS . $suspectCase->filename_gcs . '.pdf', $suspectCase->id . '.pdf', [
                                     'mime' => 'application/pdf',
                                 ]);
                                 Mail::to($email)->send($message);
@@ -1039,11 +1050,24 @@ class SuspectCaseController extends Controller
 
     public function fileDelete(SuspectCase $suspectCase)
     {
-        /* TODO: implementar auditable en file delete  */
+        /* TODO: BORRAR IF AL CARGAR CARGAR A CLOUD RUN  */
         if (Storage::delete('suspect_cases/' . $suspectCase->id . '.pdf')) {
             $suspectCase->file = false;
             $suspectCase->save();
             session()->flash('info', 'Se ha eliminado el archivo correctamente.');
+        } 
+        
+        if (Storage::disk('gcs')->exists(self::CASE_PDF_PATH_GCS . $suspectCase->filename_gcs . '.pdf')) {
+            $successful = Storage::disk('gcs')->delete(self::CASE_PDF_PATH_GCS . $suspectCase->filename_gcs . '.pdf');
+
+            if ($successful) {
+                $suspectCase->file = false;
+                $suspectCase->filename_gcs = null;
+                $suspectCase->save();
+                session()->flash('info', 'Se ha eliminado el archivo correctamente.');
+            }else{
+                session()->flash('warning', 'Ha ocurrido un problema al eliminar el archivo, por favor intente nuevamente.');
+            }
         }
 
         return redirect()->back();
@@ -1360,7 +1384,18 @@ class SuspectCaseController extends Controller
 
     public function download(SuspectCase $suspectCase)
     {
-        return Storage::response('suspect_cases/' . $suspectCase->id . '.pdf', mb_convert_encoding($suspectCase->id . '.pdf', 'ASCII'));
+        $missingOnGcs = Storage::disk('gcs')->missing(self::CASE_PDF_PATH_GCS . $suspectCase->filename_gcs . '.pdf');
+
+        if ($missingOnGcs) {
+            return Storage::response('suspect_cases/' . $suspectCase->id . '.pdf', mb_convert_encoding($suspectCase->id . '.pdf', 'ASCII'));
+        }
+
+        return Storage::disk('gcs')
+            ->response(
+                self::CASE_PDF_PATH_GCS . $suspectCase->filename_gcs . '.pdf',
+                mb_convert_encoding($suspectCase->id . '.pdf', 'ASCII'),
+                ['CacheControl' => 'no-cache, must-revalidate']
+            );
     }
 
     public function login($access_token = null)
@@ -2450,8 +2485,18 @@ class SuspectCaseController extends Controller
                     $cont += 1;
 
                     if ($request->generate_pdf == true) {
-                        \PDF::loadView('lab.results.result', ['case' => $suspectCase])
-                            ->save(storage_path() . '/app/suspect_cases/' . $suspectCase->id . '.pdf');
+                        \PDF::loadView('lab.results.result', ['case' => $suspectCase]) //TODO BORRAR AL SUBIR A GOOGLE CLOUD RUN
+                            ->save(storage_path() . '/app/suspect_cases/' . $suspectCase->id . '.pdf'); //TODO BORRAR AL SUBIR A GOOGLE CLOUD RUN
+
+                        $file = \PDF::loadView('lab.results.result', ['case' => $suspectCase]);
+
+                        $filenameGcs = Str::uuid();
+                        $suspectCase->filename_gcs = $filenameGcs;
+                        $suspectCase->save(); 
+                        
+                        
+                        $successful = Storage::disk('gcs')->put(self::CASE_PDF_PATH_GCS . $filenameGcs . '.pdf' , $file->output(), ['CacheControl' => 'no-cache, must-revalidate']);
+                            
                         $suspectCase->file = true;
                         $suspectCase->save();
                     }
@@ -2577,13 +2622,13 @@ class SuspectCaseController extends Controller
     }
 
     /**
-     * En desarrollo. Web service que obtiene data de archivos HL7 enviados por herramienta de integración
+     * Web service que obtiene data de archivos HL7 enviados por herramienta de integración
      * Mirth Connect.
      * @param Request $request
      */
     public function getHl7Files(Request $request)
     {
-        //Asignacion de variables
+        //Asignación de variables
         $patientIdentifier = $request->input('patient_identifier');
         $patientNames = $request->input('patient_names');
         $patientFamilyFather = $request->input('patient_family_father');
@@ -2607,7 +2652,6 @@ class SuspectCaseController extends Controller
         $hl7ResultMessage->sample_observation_datetime = $sampleAt;
         $hl7ResultMessage->status = 'pending';
         $hl7ResultMessage->save();
-
 
         //Búsqueda de casos por run o other_identification
         if ($patientIdentifier != null) {
@@ -2692,11 +2736,17 @@ class SuspectCaseController extends Controller
                 $suspectCase->validator_id = Auth::id();
             }
 
+            $filenameGcs = Str::uuid();
+            $suspectCase->filename_gcs = $filenameGcs;
+            $suspectCase->save(); 
+            
             if ($pdfFile) {
-                $sucesfulStore = Storage::put('suspect_cases/' . $suspectCase->id . '.pdf', $pdfFile);
+                $sucesfulStore = Storage::disk('gcs')->put(self::CASE_PDF_PATH_GCS . $filenameGcs . '.pdf' , $pdfFile, ['CacheControl' => 'no-cache, must-revalidate']);
+                $sucesfulStore = Storage::put('suspect_cases/' . $suspectCase->id . '.pdf', $pdfFile); //TODO ELIMINAR AL SUBIR A GCS
                 $suspectCase->file = true;
             } elseif ($hl7ResultMessage->pdf_file) {
-                $sucesfulStore = Storage::put('suspect_cases/' . $suspectCase->id . '.pdf', $hl7ResultMessage->pdf_file);
+                $sucesfulStore = Storage::disk('gcs')->put(self::CASE_PDF_PATH_GCS . $filenameGcs . '.pdf' , $hl7ResultMessage->pdf_file, ['CacheControl' => 'no-cache, must-revalidate']);
+                $sucesfulStore = Storage::put('suspect_cases/' . $suspectCase->id . '.pdf', $hl7ResultMessage->pdf_file); //TODO ELIMINAR AL SUBIR A GCS
                 $suspectCase->file = true;
             } else {
                 $newHl7ErrorMessage = new Hl7ErrorMessage();
