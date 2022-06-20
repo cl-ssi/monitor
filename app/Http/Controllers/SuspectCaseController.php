@@ -1384,11 +1384,11 @@ class SuspectCaseController extends Controller
 
     public function download(SuspectCase $suspectCase)
     {
-        $missingOnGcs = Storage::disk('gcs')->missing(self::CASE_PDF_PATH_GCS . $suspectCase->filename_gcs . '.pdf');
-
-        if ($missingOnGcs) {
-            return Storage::response('suspect_cases/' . $suspectCase->id . '.pdf', mb_convert_encoding($suspectCase->id . '.pdf', 'ASCII'));
-        }
+//        $missingOnGcs = Storage::disk('gcs')->missing(self::CASE_PDF_PATH_GCS . $suspectCase->filename_gcs . '.pdf');
+//
+//        if ($missingOnGcs) {
+//            return Storage::response('suspect_cases/' . $suspectCase->id . '.pdf', mb_convert_encoding($suspectCase->id . '.pdf', 'ASCII'));
+//        }
 
         return Storage::disk('gcs')
             ->response(
