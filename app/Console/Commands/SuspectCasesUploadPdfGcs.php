@@ -65,7 +65,7 @@ class SuspectCasesUploadPdfGcs extends Command
                 
                 $succesfull = Storage::disk('gcs')->put('esmeralda/suspect_cases/' . $filename . '.pdf', $file, ['CacheControl' => 'no-cache, must-revalidate']);
                 if ($succesfull) {
-                    Storage::move($filePath, 'suspect_cases_bkp/' . $suspectCase->id . '.pdf');
+//                    Storage::move($filePath, 'suspect_cases_bkp/' . $suspectCase->id . '.pdf');
                     $count++;
                 }
             }
