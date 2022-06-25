@@ -303,14 +303,7 @@
                         </li>
                         @endcan
 
-                        @can('Basket:')
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('help_basket.index')  }}">
-                                <i class="fas fa-shopping-basket"></i>
-                                Canasta
-                            </a>
-                        </li>
-                        @endcan
+                        
 
 
                         @canany(['Report: positives',
