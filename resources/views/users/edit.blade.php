@@ -65,7 +65,6 @@
                     </select>
                 </fieldset>
 
-
                 <fieldset class="form-group col-6 col-md-3">
                     <label for="for_telephone">Telefono</label>
                     <input type="text" class="form-control" name="telephone" id="for_telephone" placeholder="ej:+56912345678"
@@ -78,12 +77,7 @@
                     value="{{ $user->function }}">
                 </fieldset>
 
-
-
-
             </div>
-
-
 
             <div class="form-row">
                 <fieldset class="form-group col-12 col-md-6">
@@ -91,9 +85,24 @@
                         <i class="fas fa-plus"></i> Generar Nueva Contraseña
                     </a>
                 </fieldset>
-                <fieldset class="form-group col-12 col-md-6 ">
-                    <button class="btn btn-danger float-md-right" type="submit" form="delete_form"
-                            onclick="return confirm('¿Está seguro que desea eliminar al usuario {{$user->name}}?' )">
+                <fieldset class="form-group col-12 col-md-6 text-right">
+                    <button
+                        class="btn btn-warning btn-sm"
+                        type="submit"
+                        onclick="return confirm('¿Está seguro que desea @if($user->active) Desactivar @else Activar @endif al usuario {{ $user->name }}?' )"
+                        form="update_active"
+                    >
+                        @if($user->active) <i class="fa fa-lock"></i> @else <i class="fa fa-lock-open"></i> @endif
+                        @if($user->active) Desactivar @else Activar @endif
+                        Usuario
+                    </button>
+
+                    <button
+                        class="btn btn-danger btn-sm"
+                        type="submit"
+                        onclick="return confirm('¿Está seguro que desea eliminar al usuario {{ $user->name }}?' )"
+                        form="delete_form"
+                    >
                         <i class="fas fa-user-slash"></i> Eliminar Usuario
                     </button>
                 </fieldset>
@@ -116,7 +125,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($user->lastSessions as $logSession)
+                @forelse($user->lastSessions as $logSession)
                 <tr>
                     <td class="text-center">
                         {{ $logSession->id }}
@@ -133,7 +142,13 @@
                         </span>
                     </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                    <td class="text-center" colspan="4">
+                        <em>No hay registros</em>
+                    </td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
@@ -177,6 +192,10 @@
     <button type="submit" class="btn btn-primary mt-3">Guardar</button>
 
 
+</form>
+
+<form method="POST" id="update_active" action="{{ route('users.update-active', $user) }}">
+    @csrf
 </form>
 
 <form method="POST" id="delete_form" action="{{route('users.destroy', $user)}}">
