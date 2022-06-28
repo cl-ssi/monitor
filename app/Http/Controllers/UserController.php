@@ -82,6 +82,7 @@ class UserController extends Controller
         $user->telephone = $request->input('telephone');
         $user->function = $request->input('function');
         $user->laboratory_id = $request->input('laboratory_id');
+        $user->establishment_id = $request->input('my_establishment_id');
         //$user->dialysis_center_id = $request->input('dialysis_center_id');
         //$user->password = bcrypt($request->input('password'));
         if($request->input('password')) {
@@ -198,6 +199,7 @@ class UserController extends Controller
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->laboratory_id = $request->input('laboratory_id');
+        $user->establishment_id = $request->input('my_establishment_id');
         //$user->dialysis_center_id = $request->input('dialysis_center_id');
         $user->telephone = $request->input('telephone');
         $user->function = $request->input('function');

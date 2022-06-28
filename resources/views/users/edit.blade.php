@@ -28,7 +28,7 @@
                         value="{{ $user->dv }}" required>
                 </fieldset>
 
-                <fieldset class="form-group col-12 col-md-3">
+                <fieldset class="form-group col-12 col-md-4">
                     <label for="for_name">Nombre y Apellido</label>
                     <input type="text" class="form-control" name="name" id="for_name"
                         value="{{ $user->name }}" required>
@@ -40,8 +40,35 @@
                         value="{{ $user->email }}" required style="text-transform: lowercase;">
                 </fieldset>
 
+                <fieldset class="form-group col-6 col-md-3">
+                    <label for="for_telephone">Telefono</label>
+                    <input type="text" class="form-control" name="telephone" id="for_telephone" placeholder="ej:+56912345678"
+                    value="{{ $user->telephone }}">
+                </fieldset>
+
+            </div>
+
+            <div class="form-row">
+                
+                <fieldset class="form-group col-12 col-md-5">
+                    <label for="for_my_establishment_id">Establecimiento al que pertenece*</label>
+                    <select name="my_establishment_id" id="my_establishment_id" class="form-control" required>
+                        <option value=""></option>
+                        @foreach($establishments as $establishment)
+                            <option value="{{ $establishment->id }}" {{ ($user->establishment_id == $establishment->id) ? 'selected' : '' }}>{{ $establishment->alias }}</option>
+                        @endforeach
+
+                    </select>
+                </fieldset>
+
+                <fieldset class="form-group col-6 col-md-3">
+                    <label for="for_function">Función que cumple</label>
+                    <input type="text" class="form-control" name="function" id="for_function"
+                    value="{{ $user->function }}">
+                </fieldset>
+
                 <fieldset class="form-group col-12 col-md-3">
-                    <label for="for_laboratory_id">Laboratorio</label>
+                    <label for="for_laboratory_id">Laboratorio asociado</label>
                     <select name="laboratory_id" id="for_laboratory_id" class="form-control">
                         <option value=""></option>
                         @foreach($laboratories as $lab)
@@ -50,12 +77,14 @@
                     </select>
                 </fieldset>
 
+
+
             </div>
 
             <div class="form-row">
 
-                <fieldset class="form-group col-12 col-md-6">
-                    <label for="for_establishment_id">Establecimiento *</label>
+                <fieldset class="form-group col-12 col-md-12">
+                    <label for="for_establishment_id">Acceso a astablecimientos *</label>
                     <select name="establishment_id[]" id="for_establishment_id" class="form-control selectpicker" data-live-search="true" multiple="" data-size="10" title="Seleccione..." multiple data-actions-box="true" required>
 
                             @foreach($establishments as $establishment)
@@ -63,18 +92,6 @@
                             @endforeach
 
                     </select>
-                </fieldset>
-
-                <fieldset class="form-group col-6 col-md-3">
-                    <label for="for_telephone">Telefono</label>
-                    <input type="text" class="form-control" name="telephone" id="for_telephone" placeholder="ej:+56912345678"
-                    value="{{ $user->telephone }}">
-                </fieldset>
-
-                <fieldset class="form-group col-6 col-md-3">
-                    <label for="for_function">Función</label>
-                    <input type="text" class="form-control" name="function" id="for_function"
-                    value="{{ $user->function }}">
                 </fieldset>
 
             </div>

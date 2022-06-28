@@ -36,7 +36,7 @@
                         required>
                 </fieldset>
 
-                <fieldset class="form-group col-12 col-md-3">
+                <fieldset class="form-group col-12 col-md-4">
                     <label for="for_name">Nombre y Apellido *</label>
                     <input type="text" class="form-control" name="name" id="for_name"
                         required autocomplete="off">
@@ -49,8 +49,44 @@
                         required autocomplete="new-text">
                 </fieldset>
 
+                <fieldset class="form-group col-12 col-md-2">
+                    <label for="for_telephone">Telefono</label>
+                    <input type="text" class="form-control" name="telephone"
+                        id="for_telephone" placeholder="ej:+56912345678">
+                </fieldset>
+            
+            </div>
+
+            <div class="form-row">
+                
+                <fieldset class="form-group col-12 col-md-4">
+                    <label for="for_password">Clave</label>
+                    <input type="password" class="form-control" name="password" id="for_password"
+                    autocomplete="new-password" placeholder="blanco=genera nueva al azar">
+                </fieldset>
+
+            </div>
+
+            <div class="form-row">
+
+                <fieldset class="form-group col-12 col-md-5">
+                    <label for="for_my_establishment_id">Establecimiento al que pertenece*</label>
+                    <select name="my_establishment_id" id="my_establishment_id" class="form-control" required>
+                        <option value=""></option>
+                        @foreach($establishments as $establishment)
+                            <option value="{{ $establishment->id }}">{{ $establishment->alias }}</option>
+                        @endforeach
+
+                    </select>
+                </fieldset>
+
+                <fieldset class="form-group col-12 col-md-4">
+                    <label for="for_function">Función que cumple</label>
+                    <input type="text" class="form-control" name="function" id="for_function">
+                </fieldset>
+
                 <fieldset class="form-group col-12 col-md-3">
-                    <label for="for_laboratory_id">Laboratorio</label>
+                    <label for="for_laboratory_id">Laboratorio asociado</label>
                     <select name="laboratory_id" id="for_laboratory_id" class="form-control">
                         <option value=""></option>
                         @foreach($laboratories as $lab)
@@ -60,29 +96,16 @@
                     <small id="laboratoryHelp" class="form-text text-muted">Sólo para ingresos en laboratorio</small>
                 </fieldset>
 
-                <fieldset class="form-group col-12 col-md-6">
-                    <label for="for_establishment_id">Establecimiento *</label>
+                </div>
+
+            <div class="form-row">
+                <fieldset class="form-group col-12 col-md-12">
+                    <label for="for_establishment_id">Establecimientos a los que tiene acceso *</label>
                     <select name="establishment_id[]" id="for_establishment_id" class="form-control selectpicker" data-live-search="true" multiple="" data-size="10" title="Seleccione..." multiple data-actions-box="true" required>
                         @foreach($establishments as $establishment)
-                            <option value="{{ $establishment->id }}">{{ $establishment->alias }}</option>
+                        <option value="{{ $establishment->id }}">{{ $establishment->alias }}</option>
                         @endforeach
                     </select>
-                </fieldset>
-                <fieldset class="form-group col-12 col-md-2">
-                    <label for="for_password">Clave</label>
-                    <input type="password" class="form-control" name="password" id="for_password"
-                    autocomplete="new-password" placeholder="blanco=genera nueva al azar">
-                </fieldset>
-
-                <fieldset class="form-group col-12 col-md-2">
-                    <label for="for_telephone">Telefono</label>
-                    <input type="text" class="form-control" name="telephone"
-                        id="for_telephone" placeholder="ej:+56912345678">
-                </fieldset>
-
-                <fieldset class="form-group col-12 col-md-2">
-                    <label for="for_function">Función</label>
-                    <input type="text" class="form-control" name="function" id="for_function">
                 </fieldset>
             </div>
       </div>
