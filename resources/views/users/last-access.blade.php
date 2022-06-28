@@ -37,10 +37,10 @@
                 <td>
                     {{ $logSession->user->function }}
                 </td>
-                <td class="text-center">
+                <td class="text-center small" nowrap>
                     {{ $logSession->created_at }}
                 </td>
-                <td class="text-center">
+                <td class="text-center small" nowrap>
                     <span class="text-monospace">
                         {{ $logSession->ip }}
                     </span>
