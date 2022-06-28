@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\LogSession;
 use App\Providers\RouteServiceProvider;
+use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
@@ -38,6 +40,43 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    /**
+     * Handle a login request to the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     */
+    public function login(Request $request)
+    {
+        $this->validateLogin($request);
+
+        if ($this->hasTooManyLoginAttempts($request)) {
+            $this->fireLockoutEvent($request);
+
+            return $this->sendLockoutResponse($request);
+        }
+
+        $user = User::whereEmail($request->email)->first();
+
+        if($user && $user->active) {
+            if(Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+                $this->authenticated();
+                return redirect()->intended('home');
+            } else {
+                session()->flash('danger', 'El correo y/o la clave están erradas.');
+                return redirect()->back();
+            }
+        }  else {
+            $this->incrementLoginAttempts($request);
+
+            session()->flash('danger', 'La cuenta de usuario no existe o no está activa.');
+            return redirect()->back();
+        }
+
+        $this->incrementLoginAttempts($request);
+        return $this->sendFailedLoginResponse($request);
     }
 
     /**
