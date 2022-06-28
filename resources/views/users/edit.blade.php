@@ -40,7 +40,7 @@
                         value="{{ $user->email }}" required style="text-transform: lowercase;">
                 </fieldset>
 
-                <fieldset class="form-group col-6 col-md-3">
+                <fieldset class="form-group col-6 col-md-2">
                     <label for="for_telephone">Telefono</label>
                     <input type="text" class="form-control" name="telephone" id="for_telephone" placeholder="ej:+56912345678"
                     value="{{ $user->telephone }}">
@@ -61,7 +61,7 @@
                     </select>
                 </fieldset>
 
-                <fieldset class="form-group col-6 col-md-3">
+                <fieldset class="form-group col-6 col-md-4">
                     <label for="for_function">Función que cumple</label>
                     <input type="text" class="form-control" name="function" id="for_function"
                     value="{{ $user->function }}">
