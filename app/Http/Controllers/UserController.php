@@ -331,4 +331,22 @@ class UserController extends Controller
 
         return view('users.last-access', compact('logSessions'));
     }
+
+    /**
+     * Update the active field of the user
+     *
+     * @param \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function updateActive(User $user)
+    {
+        $user->update([
+            'active' => !$user->active
+        ]);
+
+        $msg = $user->active ? 'activado' : 'desactivado';
+
+        session()->flash('success', "El usuario $user->name fue $msg.");
+        return redirect()->route('users.edit', $user);
+    }
 }
