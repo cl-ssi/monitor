@@ -109,26 +109,28 @@
         <table class="table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th class="text-center">ID</th>
                     <th>Usuario</th>
-                    <th>Fecha y hora</th>
-                    <th>IP</th>
+                    <th class="text-center">Fecha y hora</th>
+                    <th class="text-center">IP</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($user->lastSessions as $logSession)
                 <tr>
-                    <td>
+                    <td class="text-center">
                         {{ $logSession->id }}
                     </td>
                     <td>
                         {{ $logSession->user->name }}
                     </td>
-                    <td>
+                    <td class="text-center">
                         {{ $logSession->created_at }}
                     </td>
-                    <td>
-                        {{ $logSession->ip }}
+                    <td class="text-center">
+                        <span class="text-monospace">
+                            {{ $logSession->ip }}
+                        </span>
                     </td>
                 </tr>
                 @endforeach
