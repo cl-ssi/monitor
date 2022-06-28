@@ -14,8 +14,10 @@
             <tr>
                 <th class="text-center">ID</th>
                 <th>Usuario</th>
-                <th class="text-center">Fecha y hora</th>
-                <th class="text-center">IP</th>
+                <th>Establecimiento</th>
+                <th>Función</th>
+                <th class="text-center small">Fecha y hora</th>
+                <th class="text-center small">IP</th>
             </tr>
         </thead>
         <tbody>
@@ -28,6 +30,12 @@
                     <a href="{{ route('users.edit', $logSession->user) }}">
                         {{ $logSession->user->name }}
                     </a>
+                </td>
+                <td>
+                    {{ optional($logSession->user->establishment)->alias }}
+                </td>
+                <td>
+                    {{ $logSession->user->function }}
                 </td>
                 <td class="text-center">
                     {{ $logSession->created_at }}
@@ -42,7 +50,7 @@
         </tbody>
     </table>
 
-    {{ $logSessions->links() }}
 </div>
+{{ $logSessions->links() }}
 
 @endsection
