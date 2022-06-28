@@ -104,6 +104,42 @@
 
     <hr>
 
+    <h3>Sesiones</h3>
+    <div class="table-responsive">
+        <table class="table table-sm table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">ID</th>
+                    <th>Usuario</th>
+                    <th class="text-center">Fecha y hora</th>
+                    <th class="text-center">IP</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($user->lastSessions as $logSession)
+                <tr>
+                    <td class="text-center">
+                        {{ $logSession->id }}
+                    </td>
+                    <td>
+                        {{ $logSession->user->name }}
+                    </td>
+                    <td class="text-center">
+                        {{ $logSession->created_at }}
+                    </td>
+                    <td class="text-center">
+                        <span class="text-monospace">
+                            {{ $logSession->ip }}
+                        </span>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
+    <hr>
+
     <div class="form-row">
         <div class="col">
 

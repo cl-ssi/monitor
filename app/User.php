@@ -70,6 +70,14 @@ class User extends Authenticatable
       return $this->hasMany('\App\BulkLoadRecord');
     }
 
+    public function logSessions() {
+        return $this->hasMany('App\LogSession');
+    }
+
+    public function getLastSessionsAttribute(){
+        return $this->hasMany('App\LogSession')->limit(30)->orderByDesc('created_at')->get();
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *
