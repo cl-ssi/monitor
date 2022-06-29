@@ -30,6 +30,7 @@
                     <a href="{{ route('users.edit', $logSession->user) }}">
                         {{ $logSession->user->name }}
                     </a>
+                    {{ $logSession->user->active == false ? '(x)':'    ' }}
                 </td>
                 <td>
                     {{ optional($logSession->user->establishment)->alias }}

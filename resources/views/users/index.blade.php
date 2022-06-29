@@ -57,7 +57,10 @@
             @foreach($users as $user)
             <tr>
                 <td nowrap>{{ $user->run }}-{{$user->dv}}</td>
-                <td nowrap><a href="{{ route('users.edit', $user) }}">{{ $user->name }}</a></td>
+                <td nowrap>
+                    <a href="{{ route('users.edit', $user) }}">{{ $user->name }}</a>
+                    {{ $user->active == false ? '(x)':'' }}
+                </td>
                 <td nowrap>{{ $user->email }}</td>
                 <td>{{ $user->function }}</td>
                 <td class="small">

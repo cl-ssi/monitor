@@ -52,7 +52,7 @@
                 
                 <fieldset class="form-group col-12 col-md-5">
                     <label for="for_my_establishment_id">Establecimiento al que pertenece*</label>
-                    <select name="my_establishment_id" id="my_establishment_id" class="form-control" required>
+                    <select name="my_establishment_id" id="my_establishment_id" class="form-control">
                         <option value=""></option>
                         @foreach($establishments as $establishment)
                             <option value="{{ $establishment->id }}" {{ ($user->establishment_id == $establishment->id) ? 'selected' : '' }}>{{ $establishment->alias }}</option>
@@ -61,7 +61,7 @@
                     </select>
                 </fieldset>
 
-                <fieldset class="form-group col-6 col-md-4">
+                <fieldset class="form-group col-12 col-md-4">
                     <label for="for_function">Función que cumple</label>
                     <input type="text" class="form-control" name="function" id="for_function"
                     value="{{ $user->function }}">
