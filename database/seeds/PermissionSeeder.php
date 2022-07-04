@@ -402,6 +402,12 @@ class PermissionSeeder extends Seeder
             'category' => 'Caso Sospechoso'
         ]);
 
+        $permission = Permission::create([
+            'name' => 'Redirection: https://esmeralda.saludtarapaca.org/',
+            'description' => 'Sale por pantalla un mensaje que deben ingresar al nuevo link',
+            'category' => 'Otros'
+        ]);
+
 
 /*
         $users = User::all();
