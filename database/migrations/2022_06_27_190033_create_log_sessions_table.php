@@ -15,12 +15,10 @@ class CreateLogSessionsTable extends Migration
     {
         Schema::create('log_sessions', function (Blueprint $table) {
             $table->id();
-
+            $table->string('app_name')->nullable();
             $table->text('user_agent')->nullable();
             $table->ipAddress('ip')->nullable();
-
             $table->foreignId('user_id')->nullable()->constrained('users');
-
             $table->timestamps();
             $table->softDeletes();
         });

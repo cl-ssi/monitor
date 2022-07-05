@@ -88,6 +88,7 @@ class LoginController extends Controller
     {
         LogSession::create([
             'user_id' => Auth::id(),
+            'app_name' => env('APP_NAME'),
             'ip' => request()->getClientIp(),
             'user_agent' => request()->userAgent(),
         ]);

@@ -41,6 +41,9 @@
                 <td class="text-center small" nowrap>
                     {{ $logSession->created_at }}
                 </td>
+                <td>
+                    {{ $logSession->app_name }}
+                </td>
                 <td class="text-center small" nowrap>
                     <span class="text-monospace">
                         {{ $logSession->ip }}
