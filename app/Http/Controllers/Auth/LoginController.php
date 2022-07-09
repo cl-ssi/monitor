@@ -60,6 +60,11 @@ class LoginController extends Controller
 
         $user = User::whereEmail($request->email)->first();
 
+        if($user->can('Redirection: https://esmeralda.saludtarapaca.org/')) {
+            session()->flash('info', 
+                'Estimado usuario.<br> Desde ahora deberá ingresar al esmeralda a través de la siguiente dirección: <b>https://esmeralda.saludtarapaca.org</b> <br>Muchas gracias.');
+            return redirect()->back();
+        }
         if($user && $user->active) {
             if(Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
                 $this->authenticated();

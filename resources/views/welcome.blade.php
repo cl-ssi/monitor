@@ -86,7 +86,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Monitor Esmeralda
+                    Monitor
                 </div>
 
                 <div class="servicio m-b-md">

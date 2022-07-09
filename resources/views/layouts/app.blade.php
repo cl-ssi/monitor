@@ -1,4 +1,4 @@
-@cannot('Redirection: https://esmeralda.saludtarapaca.org/')
+
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -208,7 +208,7 @@
                         </li>
                         @endcan
 
-
+                        {{--
                         @canany(['Patient: georeferencing', 'Geo: communes', 'Geo: region', 'Geo: establishments'] )
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -228,7 +228,9 @@
                             </div>
                         </li>
                         @endcan
+                        --}}
 
+                        {{--
                         @can('Epp: list')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('epp.index') }}">
@@ -237,7 +239,7 @@
                             </a>
                         </li>
                         @endcan
-
+                        --}}
 
 
                         @canany(['SanitaryResidence: user', 'SanitaryResidence: admin' ,'SanitaryResidence: admission', 'Report: residences','SanitaryResidence: view'] )
@@ -512,21 +514,3 @@
 </body>
 
 </html>
-@else
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
-<head>
-
-</head>
-<body>
-    <div id="app">
-    </div>
-</body>
-@include('redirection')
-
-</html>
-
-@php return @endphp
-
-@endcannot
