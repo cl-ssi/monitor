@@ -60,6 +60,10 @@ class MassPermissions extends Command
             if($user->can('Report: other')) $user->revokePermissionTo('Report: other');
             if($user->can('SuspectCase: create')) $user->revokePermissionTo('SuspectCase: create');
             if($user->can('Basket:')) $user->revokePermissionTo('Basket:');
+            if($user->can('NotContacted: create')) $user->revokePermissionTo('NotContacted: create');
+            if($user->can('NotContacted: delete')) $user->revokePermissionTo('NotContacted: delete');
+            if($user->can('NotContacted: list')) $user->revokePermissionTo('NotContacted: list');
+            if($user->can('NotContacted: show all')) $user->revokePermissionTo('NotContacted: show all');
             //if($user->can('SuspectCase: bulk load PNTM')) $user->revokePermissionTo('SuspectCase: bulk load PNTM');
 
             /** Si ya tiene el permiso, entonces no hago nada */
