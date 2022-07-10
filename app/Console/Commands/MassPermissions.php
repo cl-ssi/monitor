@@ -47,7 +47,6 @@ class MassPermissions extends Command
 
         foreach($users as $user)
         {
-            echo $user->name."\n";
             /** Convertimos en mayúscula la primera letra del nombre */
             $user->name = ucwords(mb_strtolower($user->name));
 
