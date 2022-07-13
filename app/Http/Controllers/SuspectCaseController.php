@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Test1;
 use App\Rules\UniqueSampleDateByPatient;
 use App\SuspectCase;
 use App\Patient;
@@ -3011,4 +3012,11 @@ class SuspectCaseController extends Controller
         dd($hl7ResultMessage);
     }
 
+    public function emailTest() {
+        Mail::to( env('MAIL_TO_TEST') )->send(
+            (new Test1())->attachFromStorageDisk('gcs','esmeralda/suspect_cases/000002ee-dc60-4a85-9e67-11a06642f271.pdf', 'test.pdf', [
+                'mime' => 'application/pdf',
+            ])
+        );
+    }
 }
